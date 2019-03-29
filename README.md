@@ -22,5 +22,5 @@ PhyWhisperer-USB primarily closely integrates the FPGA with the triggering based
 
 Compared to GreatFET or FaceWhisperer this tool cannot perform tasks such as fuzzing or complex state machines (which are relatively easy with those tools).
 
-The PhyWhisperer hardware could be used as a USB analyzer or logic analyzer, but the software/firmware/fpga does not support this (and no plans to add such functionality). If you require a USB analyzer the TotalPhase Beagle 480 comes highly recommended by Colin (no connection - he just really likes them).
+The PhyWhisperer hardware could be used as a USB analyzer or logic analyzer, but the software/firmware/fpga does not support this (and no plans to add such functionality but commits are welcome). If you require a USB analyzer the TotalPhase Beagle 480 comes highly recommended by Colin (no connection - he just really likes them).
 
