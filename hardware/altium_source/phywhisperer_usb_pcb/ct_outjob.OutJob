@@ -21,7 +21,7 @@ TargetOutputMedium=Folder Structure
 VariantName=[No Variations]
 VariantScope=1
 CurrentConfigurationName=
-TargetPrinter=Canon MF220 Series
+TargetPrinter=Canon MF220
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputMedium1=Print Job
 OutputMedium1_Type=Printer
@@ -79,7 +79,7 @@ PcbPrintPreferences2=
 OutputType3=BOM_PartType
 OutputName3=Bill of Materials
 OutputCategory3=Report
-OutputDocumentPath3=newae_pcbtemplate.PcbDoc
+OutputDocumentPath3=
 OutputVariantName3=
 OutputEnabled3=0
 OutputEnabled3_OutputMedium1=0
@@ -90,18 +90,16 @@ OutputDefault3=0
 PageOptions3=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
 Configuration3_Name1=ColumnNameFormat
 Configuration3_Item1=CaptionAsName
-Configuration3_Name2=Filter
-Configuration3_Item2=545046300E5446696C74657257726170706572000D46696C7465722E416374697665090F46696C7465722E43726974657269610A04000000000000000000
-Configuration3_Name3=General
-Configuration3_Item3=OpenExported=False|AddToProject=False|ForceFit=False|NotFitted=False|Database=False|DatabasePriority=False|IncludePCBData=True|IncludeVaultData=False|IncludeAlternatives=False|ShowExportOptions=True|TemplateFilename=C:\Users\colin\Dropbox (NewAE Technology Inc)\engineering\altium\newae_template\BOM NewAE.XLT|BatchMode=5|FormWidth=1370|FormHeight=885|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=<none>
-Configuration3_Name4=GroupOrder
-Configuration3_Item4=
-Configuration3_Name5=OutputConfigurationParameter1
-Configuration3_Item5=??
-Configuration3_Name6=SortOrder
-Configuration3_Item6=
-Configuration3_Name7=VisibleOrder
-Configuration3_Item7=
+Configuration3_Name2=General
+Configuration3_Item2=OpenExported=False|AddToProject=False|ReportBOMViolationsInMessages=False|ForceFit=False|NotFitted=False|Database=False|DatabasePriority=False|IncludePcbData=True|IncludeVaultData=False|IncludeCloudData=False|IncludeDocumentData=True|IncludeAlternatives=False|ShowExportOptions=True|TemplateFilename=C:\Users\colin\Dropbox (NewAE Technology Inc)\engineering\altium\newae_template\BOM NewAE.XLT|TemplateVaultGuid=|TemplateRevisionGuid=|BatchMode=5|FormWidth=1370|FormHeight=885|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=<none>|SolutionsPerItem=1|SuppliersPerSolution=1|ViewType=0|UseDirectApi=False|BomSetName=
+Configuration3_Name3=GroupOrder
+Configuration3_Item3=Supplier Part Number 1=True|Part Number=True|PartNumber=True
+Configuration3_Name4=OutputConfigurationParameter1
+Configuration3_Item4=??
+Configuration3_Name5=VisibleOrder
+Configuration3_Item5=Comment=151|Manufacture Part Number 1=160|Part Number=260|Quantity=100|Supplier Part Number 1=127|PartNumber=100
+Configuration3_Name6=VisibleOrder_Flat
+Configuration3_Item6=Comment=151|Manufacture Part Number 1=160|Part Number=260|Quantity=100|Supplier Part Number 1=127|PartNumber=100
 OutputType4=Pick Place
 OutputName4=Generates pick and place files
 OutputCategory4=Assembly
@@ -181,7 +179,7 @@ ShowComponentParameters2=1
 GlobalBookmarks2=0
 PDFACompliance2=Disabled
 PDFVersion2=Default
-OutputFilePath3=C:\Users\colin\dropbox\engineering\hardware_tools\usb_trigger\cwtrigger_usb\OUTPUT\FILES\
+OutputFilePath3=C:\Users\Colin\Dropbox (NewAE Technology Inc)\engineering\hardware_tools\phywhispererusb\hardware\altium_source\phywhisperer_usb_pcb\OUTPUT\FILES\
 ReleaseManaged3=0
 OutputBasePath3=OUTPUT\FILES\
 OutputPathMedia3=
@@ -235,7 +233,7 @@ WmvQuality4=80
 [GeneratedFilesSettings]
 RelativeOutputPath2=OUTPUT\PRINT\My Company Outjob Template.PDF
 OpenOutputs2=1
-RelativeOutputPath3=C:\Users\colin\dropbox\engineering\hardware_tools\usb_trigger\cwtrigger_usb\OUTPUT\FILES\
+RelativeOutputPath3=C:\Users\Colin\Dropbox (NewAE Technology Inc)\engineering\hardware_tools\phywhispererusb\hardware\altium_source\phywhisperer_usb_pcb\OUTPUT\FILES\
 OpenOutputs3=1
 AddToProject3=1
 TimestampFolder3=0
