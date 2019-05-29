@@ -44,6 +44,7 @@
 #define REQ_AVR_PROGRAM 0x21
 #define REQ_SAM3U_CFG 0x22
 #define REQ_CC_PROGRAM 0x23
+#define REQ_CHANGE_PWR 0x24
 
 volatile bool g_captureinprogress = true;
 
@@ -215,7 +216,19 @@ static void ctrl_sam3ucfg_cb(void)
           /* Jump to ROM-resident bootloader */
      case 0x03:
           /* Turn off connected stuff */
+          board_power(0);
 
+          /* Clear ROM-mapping bit. */
+          efc_perform_command(EFC0, EFC_FCMD_CGPB, 1);
+
+          /* Disconnect USB (will kill connection) */
+          udc_detach();
+
+          /* With knowledge that I will rise again, I lay down my life. */
+          while (RSTC->RSTC_SR & RSTC_SR_SRCMP);
+          RSTC->RSTC_CR |= RSTC_CR_KEY(0xA5) | RSTC_CR_PERRST | RSTC_CR_PROCRST;
+          while(1);
+          break;
           /* Disconnect USB (will kill stuff) */
 
           /* Make the jump */
@@ -293,6 +306,10 @@ bool main_setup_out_received(void)
      case REQ_FPGA_PROGRAM:
           udd_g_ctrlreq.callback = ctrl_progfpga_bulk;
           return true;
+
+     case REQ_CHANGE_PWR:
+          //TODO
+          return false;
      default:
           return false;
      }
