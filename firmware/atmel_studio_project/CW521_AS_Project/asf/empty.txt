@@ -1,0 +1,1 @@
+This is an empty folder, without something within it GIT is unhappy.

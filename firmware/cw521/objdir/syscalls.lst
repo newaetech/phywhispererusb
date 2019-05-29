@@ -1,0 +1,666 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "syscalls.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .text._sbrk,"ax",%progbits
+  16              	 .align 1
+  17              	 .global _sbrk
+  18              	 .syntax unified
+  19              	 .thumb
+  20              	 .thumb_func
+  21              	 .fpu softvfp
+  23              	_sbrk:
+  24              	.LFB1:
+  25              	 .file 1 ".././hal/sam3u1c/syscalls.c"
+   1:.././hal/sam3u1c/syscalls.c **** /**
+   2:.././hal/sam3u1c/syscalls.c ****  * \file
+   3:.././hal/sam3u1c/syscalls.c ****  *
+   4:.././hal/sam3u1c/syscalls.c ****  * \brief Syscalls for SAM (GCC).
+   5:.././hal/sam3u1c/syscalls.c ****  *
+   6:.././hal/sam3u1c/syscalls.c ****  * Copyright (c) 2011-2013 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/syscalls.c ****  *
+   8:.././hal/sam3u1c/syscalls.c ****  * \asf_license_start
+   9:.././hal/sam3u1c/syscalls.c ****  *
+  10:.././hal/sam3u1c/syscalls.c ****  * \page License
+  11:.././hal/sam3u1c/syscalls.c ****  *
+  12:.././hal/sam3u1c/syscalls.c ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/syscalls.c ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/syscalls.c ****  *
+  15:.././hal/sam3u1c/syscalls.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/syscalls.c ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/syscalls.c ****  *
+  18:.././hal/sam3u1c/syscalls.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/syscalls.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/syscalls.c ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/syscalls.c ****  *
+  22:.././hal/sam3u1c/syscalls.c ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/syscalls.c ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/syscalls.c ****  *
+  25:.././hal/sam3u1c/syscalls.c ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/syscalls.c ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/syscalls.c ****  *
+  28:.././hal/sam3u1c/syscalls.c ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/syscalls.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/syscalls.c ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/syscalls.c ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/syscalls.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/syscalls.c ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/syscalls.c ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/syscalls.c ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/syscalls.c ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/syscalls.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/syscalls.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/syscalls.c ****  *
+  40:.././hal/sam3u1c/syscalls.c ****  * \asf_license_stop
+  41:.././hal/sam3u1c/syscalls.c ****  *
+  42:.././hal/sam3u1c/syscalls.c ****  */
+  43:.././hal/sam3u1c/syscalls.c **** 
+  44:.././hal/sam3u1c/syscalls.c **** #include <stdio.h>
+  45:.././hal/sam3u1c/syscalls.c **** #include <stdarg.h>
+  46:.././hal/sam3u1c/syscalls.c **** #include <sys/types.h>
+  47:.././hal/sam3u1c/syscalls.c **** #include <sys/stat.h>
+  48:.././hal/sam3u1c/syscalls.c **** 
+  49:.././hal/sam3u1c/syscalls.c **** /// @cond 0
+  50:.././hal/sam3u1c/syscalls.c **** /**INDENT-OFF**/
+  51:.././hal/sam3u1c/syscalls.c **** #ifdef __cplusplus
+  52:.././hal/sam3u1c/syscalls.c **** extern "C" {
+  53:.././hal/sam3u1c/syscalls.c **** #endif
+  54:.././hal/sam3u1c/syscalls.c **** /**INDENT-ON**/
+  55:.././hal/sam3u1c/syscalls.c **** /// @endcond
+  56:.././hal/sam3u1c/syscalls.c **** 
+  57:.././hal/sam3u1c/syscalls.c **** #undef errno
+  58:.././hal/sam3u1c/syscalls.c **** extern int errno;
+  59:.././hal/sam3u1c/syscalls.c **** extern int _end;
+  60:.././hal/sam3u1c/syscalls.c **** extern int __ram_end__;
+  61:.././hal/sam3u1c/syscalls.c **** 
+  62:.././hal/sam3u1c/syscalls.c **** extern caddr_t _sbrk(int incr);
+  63:.././hal/sam3u1c/syscalls.c **** extern int link(char *old, char *new);
+  64:.././hal/sam3u1c/syscalls.c **** extern int _close(int file);
+  65:.././hal/sam3u1c/syscalls.c **** extern int _fstat(int file, struct stat *st);
+  66:.././hal/sam3u1c/syscalls.c **** extern int _isatty(int file);
+  67:.././hal/sam3u1c/syscalls.c **** extern int _lseek(int file, int ptr, int dir);
+  68:.././hal/sam3u1c/syscalls.c **** extern void _exit(int status);
+  69:.././hal/sam3u1c/syscalls.c **** extern void _kill(int pid, int sig);
+  70:.././hal/sam3u1c/syscalls.c **** extern int _getpid(void);
+  71:.././hal/sam3u1c/syscalls.c **** 
+  72:.././hal/sam3u1c/syscalls.c **** extern caddr_t _sbrk(int incr)
+  73:.././hal/sam3u1c/syscalls.c **** {
+  26              	 .loc 1 73 0
+  27              	 .cfi_startproc
+  28              	 
+  29              	 
+  30              	 
+  31 0000 80B4     	 push {r7}
+  32              	.LCFI0:
+  33              	 .cfi_def_cfa_offset 4
+  34              	 .cfi_offset 7,-4
+  35 0002 85B0     	 sub sp,sp,#20
+  36              	.LCFI1:
+  37              	 .cfi_def_cfa_offset 24
+  38 0004 00AF     	 add r7,sp,#0
+  39              	.LCFI2:
+  40              	 .cfi_def_cfa_register 7
+  41 0006 7860     	 str r0,[r7,#4]
+  74:.././hal/sam3u1c/syscalls.c **** 	static unsigned char *heap = NULL;
+  75:.././hal/sam3u1c/syscalls.c **** 	unsigned char *prev_heap;
+  76:.././hal/sam3u1c/syscalls.c **** 	int ramend = (int)&__ram_end__;
+  42              	 .loc 1 76 0
+  43 0008 104B     	 ldr r3,.L5
+  44 000a FB60     	 str r3,[r7,#12]
+  77:.././hal/sam3u1c/syscalls.c **** 
+  78:.././hal/sam3u1c/syscalls.c **** 	if (heap == NULL) {
+  45              	 .loc 1 78 0
+  46 000c 104B     	 ldr r3,.L5+4
+  47 000e 1B68     	 ldr r3,[r3]
+  48 0010 002B     	 cmp r3,#0
+  49 0012 02D1     	 bne .L2
+  79:.././hal/sam3u1c/syscalls.c **** 		heap = (unsigned char *)&_end;
+  50              	 .loc 1 79 0
+  51 0014 0E4B     	 ldr r3,.L5+4
+  52 0016 0F4A     	 ldr r2,.L5+8
+  53 0018 1A60     	 str r2,[r3]
+  54              	.L2:
+  80:.././hal/sam3u1c/syscalls.c **** 	}
+  81:.././hal/sam3u1c/syscalls.c **** 	prev_heap = heap;
+  55              	 .loc 1 81 0
+  56 001a 0D4B     	 ldr r3,.L5+4
+  57 001c 1B68     	 ldr r3,[r3]
+  58 001e BB60     	 str r3,[r7,#8]
+  82:.././hal/sam3u1c/syscalls.c **** 
+  83:.././hal/sam3u1c/syscalls.c **** 	if (((int)prev_heap + incr) > ramend) {
+  59              	 .loc 1 83 0
+  60 0020 BA68     	 ldr r2,[r7,#8]
+  61 0022 7B68     	 ldr r3,[r7,#4]
+  62 0024 1A44     	 add r2,r2,r3
+  63 0026 FB68     	 ldr r3,[r7,#12]
+  64 0028 9A42     	 cmp r2,r3
+  65 002a 02DD     	 ble .L3
+  84:.././hal/sam3u1c/syscalls.c **** 		return (caddr_t) -1;	
+  66              	 .loc 1 84 0
+  67 002c 4FF0FF33 	 mov r3,#-1
+  68 0030 06E0     	 b .L4
+  69              	.L3:
+  85:.././hal/sam3u1c/syscalls.c **** 	}
+  86:.././hal/sam3u1c/syscalls.c **** 
+  87:.././hal/sam3u1c/syscalls.c **** 	heap += incr;
+  70              	 .loc 1 87 0
+  71 0032 074B     	 ldr r3,.L5+4
+  72 0034 1A68     	 ldr r2,[r3]
+  73 0036 7B68     	 ldr r3,[r7,#4]
+  74 0038 1344     	 add r3,r3,r2
+  75 003a 054A     	 ldr r2,.L5+4
+  76 003c 1360     	 str r3,[r2]
+  88:.././hal/sam3u1c/syscalls.c **** 
+  89:.././hal/sam3u1c/syscalls.c **** 	return (caddr_t) prev_heap;
+  77              	 .loc 1 89 0
+  78 003e BB68     	 ldr r3,[r7,#8]
+  79              	.L4:
+  90:.././hal/sam3u1c/syscalls.c **** }
+  80              	 .loc 1 90 0
+  81 0040 1846     	 mov r0,r3
+  82 0042 1437     	 adds r7,r7,#20
+  83              	.LCFI3:
+  84              	 .cfi_def_cfa_offset 4
+  85 0044 BD46     	 mov sp,r7
+  86              	.LCFI4:
+  87              	 .cfi_def_cfa_register 13
+  88              	 
+  89 0046 80BC     	 pop {r7}
+  90              	.LCFI5:
+  91              	 .cfi_restore 7
+  92              	 .cfi_def_cfa_offset 0
+  93 0048 7047     	 bx lr
+  94              	.L6:
+  95 004a 00BF     	 .align 2
+  96              	.L5:
+  97 004c 00000000 	 .word __ram_end__
+  98 0050 00000000 	 .word heap.5297
+  99 0054 00000000 	 .word _end
+ 100              	 .cfi_endproc
+ 101              	.LFE1:
+ 103              	 .section .text.link,"ax",%progbits
+ 104              	 .align 1
+ 105              	 .global link
+ 106              	 .syntax unified
+ 107              	 .thumb
+ 108              	 .thumb_func
+ 109              	 .fpu softvfp
+ 111              	link:
+ 112              	.LFB2:
+  91:.././hal/sam3u1c/syscalls.c **** 
+  92:.././hal/sam3u1c/syscalls.c **** extern int link(char *old, char *new)
+  93:.././hal/sam3u1c/syscalls.c **** {
+ 113              	 .loc 1 93 0
+ 114              	 .cfi_startproc
+ 115              	 
+ 116              	 
+ 117              	 
+ 118 0000 80B4     	 push {r7}
+ 119              	.LCFI6:
+ 120              	 .cfi_def_cfa_offset 4
+ 121              	 .cfi_offset 7,-4
+ 122 0002 83B0     	 sub sp,sp,#12
+ 123              	.LCFI7:
+ 124              	 .cfi_def_cfa_offset 16
+ 125 0004 00AF     	 add r7,sp,#0
+ 126              	.LCFI8:
+ 127              	 .cfi_def_cfa_register 7
+ 128 0006 7860     	 str r0,[r7,#4]
+ 129 0008 3960     	 str r1,[r7]
+  94:.././hal/sam3u1c/syscalls.c **** 	return -1;
+ 130              	 .loc 1 94 0
+ 131 000a 4FF0FF33 	 mov r3,#-1
+  95:.././hal/sam3u1c/syscalls.c **** }
+ 132              	 .loc 1 95 0
+ 133 000e 1846     	 mov r0,r3
+ 134 0010 0C37     	 adds r7,r7,#12
+ 135              	.LCFI9:
+ 136              	 .cfi_def_cfa_offset 4
+ 137 0012 BD46     	 mov sp,r7
+ 138              	.LCFI10:
+ 139              	 .cfi_def_cfa_register 13
+ 140              	 
+ 141 0014 80BC     	 pop {r7}
+ 142              	.LCFI11:
+ 143              	 .cfi_restore 7
+ 144              	 .cfi_def_cfa_offset 0
+ 145 0016 7047     	 bx lr
+ 146              	 .cfi_endproc
+ 147              	.LFE2:
+ 149              	 .section .text._close,"ax",%progbits
+ 150              	 .align 1
+ 151              	 .global _close
+ 152              	 .syntax unified
+ 153              	 .thumb
+ 154              	 .thumb_func
+ 155              	 .fpu softvfp
+ 157              	_close:
+ 158              	.LFB3:
+  96:.././hal/sam3u1c/syscalls.c **** 
+  97:.././hal/sam3u1c/syscalls.c **** extern int _close(int file)
+  98:.././hal/sam3u1c/syscalls.c **** {
+ 159              	 .loc 1 98 0
+ 160              	 .cfi_startproc
+ 161              	 
+ 162              	 
+ 163              	 
+ 164 0000 80B4     	 push {r7}
+ 165              	.LCFI12:
+ 166              	 .cfi_def_cfa_offset 4
+ 167              	 .cfi_offset 7,-4
+ 168 0002 83B0     	 sub sp,sp,#12
+ 169              	.LCFI13:
+ 170              	 .cfi_def_cfa_offset 16
+ 171 0004 00AF     	 add r7,sp,#0
+ 172              	.LCFI14:
+ 173              	 .cfi_def_cfa_register 7
+ 174 0006 7860     	 str r0,[r7,#4]
+  99:.././hal/sam3u1c/syscalls.c **** 	return -1;
+ 175              	 .loc 1 99 0
+ 176 0008 4FF0FF33 	 mov r3,#-1
+ 100:.././hal/sam3u1c/syscalls.c **** }
+ 177              	 .loc 1 100 0
+ 178 000c 1846     	 mov r0,r3
+ 179 000e 0C37     	 adds r7,r7,#12
+ 180              	.LCFI15:
+ 181              	 .cfi_def_cfa_offset 4
+ 182 0010 BD46     	 mov sp,r7
+ 183              	.LCFI16:
+ 184              	 .cfi_def_cfa_register 13
+ 185              	 
+ 186 0012 80BC     	 pop {r7}
+ 187              	.LCFI17:
+ 188              	 .cfi_restore 7
+ 189              	 .cfi_def_cfa_offset 0
+ 190 0014 7047     	 bx lr
+ 191              	 .cfi_endproc
+ 192              	.LFE3:
+ 194              	 .section .text._fstat,"ax",%progbits
+ 195              	 .align 1
+ 196              	 .global _fstat
+ 197              	 .syntax unified
+ 198              	 .thumb
+ 199              	 .thumb_func
+ 200              	 .fpu softvfp
+ 202              	_fstat:
+ 203              	.LFB4:
+ 101:.././hal/sam3u1c/syscalls.c **** 
+ 102:.././hal/sam3u1c/syscalls.c **** extern int _fstat(int file, struct stat *st)
+ 103:.././hal/sam3u1c/syscalls.c **** {
+ 204              	 .loc 1 103 0
+ 205              	 .cfi_startproc
+ 206              	 
+ 207              	 
+ 208              	 
+ 209 0000 80B4     	 push {r7}
+ 210              	.LCFI18:
+ 211              	 .cfi_def_cfa_offset 4
+ 212              	 .cfi_offset 7,-4
+ 213 0002 83B0     	 sub sp,sp,#12
+ 214              	.LCFI19:
+ 215              	 .cfi_def_cfa_offset 16
+ 216 0004 00AF     	 add r7,sp,#0
+ 217              	.LCFI20:
+ 218              	 .cfi_def_cfa_register 7
+ 219 0006 7860     	 str r0,[r7,#4]
+ 220 0008 3960     	 str r1,[r7]
+ 104:.././hal/sam3u1c/syscalls.c **** 	st->st_mode = S_IFCHR;
+ 221              	 .loc 1 104 0
+ 222 000a 3B68     	 ldr r3,[r7]
+ 223 000c 4FF40052 	 mov r2,#8192
+ 224 0010 5A60     	 str r2,[r3,#4]
+ 105:.././hal/sam3u1c/syscalls.c **** 
+ 106:.././hal/sam3u1c/syscalls.c **** 	return 0;
+ 225              	 .loc 1 106 0
+ 226 0012 0023     	 movs r3,#0
+ 107:.././hal/sam3u1c/syscalls.c **** }
+ 227              	 .loc 1 107 0
+ 228 0014 1846     	 mov r0,r3
+ 229 0016 0C37     	 adds r7,r7,#12
+ 230              	.LCFI21:
+ 231              	 .cfi_def_cfa_offset 4
+ 232 0018 BD46     	 mov sp,r7
+ 233              	.LCFI22:
+ 234              	 .cfi_def_cfa_register 13
+ 235              	 
+ 236 001a 80BC     	 pop {r7}
+ 237              	.LCFI23:
+ 238              	 .cfi_restore 7
+ 239              	 .cfi_def_cfa_offset 0
+ 240 001c 7047     	 bx lr
+ 241              	 .cfi_endproc
+ 242              	.LFE4:
+ 244              	 .section .text._isatty,"ax",%progbits
+ 245              	 .align 1
+ 246              	 .global _isatty
+ 247              	 .syntax unified
+ 248              	 .thumb
+ 249              	 .thumb_func
+ 250              	 .fpu softvfp
+ 252              	_isatty:
+ 253              	.LFB5:
+ 108:.././hal/sam3u1c/syscalls.c **** 
+ 109:.././hal/sam3u1c/syscalls.c **** extern int _isatty(int file)
+ 110:.././hal/sam3u1c/syscalls.c **** {
+ 254              	 .loc 1 110 0
+ 255              	 .cfi_startproc
+ 256              	 
+ 257              	 
+ 258              	 
+ 259 0000 80B4     	 push {r7}
+ 260              	.LCFI24:
+ 261              	 .cfi_def_cfa_offset 4
+ 262              	 .cfi_offset 7,-4
+ 263 0002 83B0     	 sub sp,sp,#12
+ 264              	.LCFI25:
+ 265              	 .cfi_def_cfa_offset 16
+ 266 0004 00AF     	 add r7,sp,#0
+ 267              	.LCFI26:
+ 268              	 .cfi_def_cfa_register 7
+ 269 0006 7860     	 str r0,[r7,#4]
+ 111:.././hal/sam3u1c/syscalls.c **** 	return 1;
+ 270              	 .loc 1 111 0
+ 271 0008 0123     	 movs r3,#1
+ 112:.././hal/sam3u1c/syscalls.c **** }
+ 272              	 .loc 1 112 0
+ 273 000a 1846     	 mov r0,r3
+ 274 000c 0C37     	 adds r7,r7,#12
+ 275              	.LCFI27:
+ 276              	 .cfi_def_cfa_offset 4
+ 277 000e BD46     	 mov sp,r7
+ 278              	.LCFI28:
+ 279              	 .cfi_def_cfa_register 13
+ 280              	 
+ 281 0010 80BC     	 pop {r7}
+ 282              	.LCFI29:
+ 283              	 .cfi_restore 7
+ 284              	 .cfi_def_cfa_offset 0
+ 285 0012 7047     	 bx lr
+ 286              	 .cfi_endproc
+ 287              	.LFE5:
+ 289              	 .section .text._lseek,"ax",%progbits
+ 290              	 .align 1
+ 291              	 .global _lseek
+ 292              	 .syntax unified
+ 293              	 .thumb
+ 294              	 .thumb_func
+ 295              	 .fpu softvfp
+ 297              	_lseek:
+ 298              	.LFB6:
+ 113:.././hal/sam3u1c/syscalls.c **** 
+ 114:.././hal/sam3u1c/syscalls.c **** extern int _lseek(int file, int ptr, int dir)
+ 115:.././hal/sam3u1c/syscalls.c **** {
+ 299              	 .loc 1 115 0
+ 300              	 .cfi_startproc
+ 301              	 
+ 302              	 
+ 303              	 
+ 304 0000 80B4     	 push {r7}
+ 305              	.LCFI30:
+ 306              	 .cfi_def_cfa_offset 4
+ 307              	 .cfi_offset 7,-4
+ 308 0002 85B0     	 sub sp,sp,#20
+ 309              	.LCFI31:
+ 310              	 .cfi_def_cfa_offset 24
+ 311 0004 00AF     	 add r7,sp,#0
+ 312              	.LCFI32:
+ 313              	 .cfi_def_cfa_register 7
+ 314 0006 F860     	 str r0,[r7,#12]
+ 315 0008 B960     	 str r1,[r7,#8]
+ 316 000a 7A60     	 str r2,[r7,#4]
+ 116:.././hal/sam3u1c/syscalls.c **** 	return 0;
+ 317              	 .loc 1 116 0
+ 318 000c 0023     	 movs r3,#0
+ 117:.././hal/sam3u1c/syscalls.c **** }
+ 319              	 .loc 1 117 0
+ 320 000e 1846     	 mov r0,r3
+ 321 0010 1437     	 adds r7,r7,#20
+ 322              	.LCFI33:
+ 323              	 .cfi_def_cfa_offset 4
+ 324 0012 BD46     	 mov sp,r7
+ 325              	.LCFI34:
+ 326              	 .cfi_def_cfa_register 13
+ 327              	 
+ 328 0014 80BC     	 pop {r7}
+ 329              	.LCFI35:
+ 330              	 .cfi_restore 7
+ 331              	 .cfi_def_cfa_offset 0
+ 332 0016 7047     	 bx lr
+ 333              	 .cfi_endproc
+ 334              	.LFE6:
+ 336              	 .section .rodata
+ 337              	 .align 2
+ 338              	.LC0:
+ 339 0000 45786974 	 .ascii "Exiting with status %d.\012\000"
+ 339      696E6720 
+ 339      77697468 
+ 339      20737461 
+ 339      74757320 
+ 340              	 .section .text._exit,"ax",%progbits
+ 341              	 .align 1
+ 342              	 .global _exit
+ 343              	 .syntax unified
+ 344              	 .thumb
+ 345              	 .thumb_func
+ 346              	 .fpu softvfp
+ 348              	_exit:
+ 349              	.LFB7:
+ 118:.././hal/sam3u1c/syscalls.c **** 
+ 119:.././hal/sam3u1c/syscalls.c **** extern void _exit(int status)
+ 120:.././hal/sam3u1c/syscalls.c **** {
+ 350              	 .loc 1 120 0
+ 351              	 .cfi_startproc
+ 352              	 
+ 353              	 
+ 354 0000 80B5     	 push {r7,lr}
+ 355              	.LCFI36:
+ 356              	 .cfi_def_cfa_offset 8
+ 357              	 .cfi_offset 7,-8
+ 358              	 .cfi_offset 14,-4
+ 359 0002 82B0     	 sub sp,sp,#8
+ 360              	.LCFI37:
+ 361              	 .cfi_def_cfa_offset 16
+ 362 0004 00AF     	 add r7,sp,#0
+ 363              	.LCFI38:
+ 364              	 .cfi_def_cfa_register 7
+ 365 0006 7860     	 str r0,[r7,#4]
+ 121:.././hal/sam3u1c/syscalls.c **** 	printf("Exiting with status %d.\n", status);
+ 366              	 .loc 1 121 0
+ 367 0008 7968     	 ldr r1,[r7,#4]
+ 368 000a 0248     	 ldr r0,.L19
+ 369 000c 024B     	 ldr r3,.L19+4
+ 370 000e 9847     	 blx r3
+ 371              	.LVL0:
+ 372              	.L18:
+ 122:.././hal/sam3u1c/syscalls.c **** 
+ 123:.././hal/sam3u1c/syscalls.c **** 	for (;;);
+ 373              	 .loc 1 123 0 discriminator 1
+ 374 0010 FEE7     	 b .L18
+ 375              	.L20:
+ 376 0012 00BF     	 .align 2
+ 377              	.L19:
+ 378 0014 00000000 	 .word .LC0
+ 379 0018 00000000 	 .word iprintf
+ 380              	 .cfi_endproc
+ 381              	.LFE7:
+ 383              	 .section .text._kill,"ax",%progbits
+ 384              	 .align 1
+ 385              	 .global _kill
+ 386              	 .syntax unified
+ 387              	 .thumb
+ 388              	 .thumb_func
+ 389              	 .fpu softvfp
+ 391              	_kill:
+ 392              	.LFB8:
+ 124:.././hal/sam3u1c/syscalls.c **** }
+ 125:.././hal/sam3u1c/syscalls.c **** 
+ 126:.././hal/sam3u1c/syscalls.c **** extern void _kill(int pid, int sig)
+ 127:.././hal/sam3u1c/syscalls.c **** {
+ 393              	 .loc 1 127 0
+ 394              	 .cfi_startproc
+ 395              	 
+ 396              	 
+ 397              	 
+ 398 0000 80B4     	 push {r7}
+ 399              	.LCFI39:
+ 400              	 .cfi_def_cfa_offset 4
+ 401              	 .cfi_offset 7,-4
+ 402 0002 83B0     	 sub sp,sp,#12
+ 403              	.LCFI40:
+ 404              	 .cfi_def_cfa_offset 16
+ 405 0004 00AF     	 add r7,sp,#0
+ 406              	.LCFI41:
+ 407              	 .cfi_def_cfa_register 7
+ 408 0006 7860     	 str r0,[r7,#4]
+ 409 0008 3960     	 str r1,[r7]
+ 128:.././hal/sam3u1c/syscalls.c **** 	return;
+ 410              	 .loc 1 128 0
+ 411 000a 00BF     	 nop
+ 129:.././hal/sam3u1c/syscalls.c **** }
+ 412              	 .loc 1 129 0
+ 413 000c 0C37     	 adds r7,r7,#12
+ 414              	.LCFI42:
+ 415              	 .cfi_def_cfa_offset 4
+ 416 000e BD46     	 mov sp,r7
+ 417              	.LCFI43:
+ 418              	 .cfi_def_cfa_register 13
+ 419              	 
+ 420 0010 80BC     	 pop {r7}
+ 421              	.LCFI44:
+ 422              	 .cfi_restore 7
+ 423              	 .cfi_def_cfa_offset 0
+ 424 0012 7047     	 bx lr
+ 425              	 .cfi_endproc
+ 426              	.LFE8:
+ 428              	 .section .text._getpid,"ax",%progbits
+ 429              	 .align 1
+ 430              	 .global _getpid
+ 431              	 .syntax unified
+ 432              	 .thumb
+ 433              	 .thumb_func
+ 434              	 .fpu softvfp
+ 436              	_getpid:
+ 437              	.LFB9:
+ 130:.././hal/sam3u1c/syscalls.c **** 
+ 131:.././hal/sam3u1c/syscalls.c **** extern int _getpid(void)
+ 132:.././hal/sam3u1c/syscalls.c **** {
+ 438              	 .loc 1 132 0
+ 439              	 .cfi_startproc
+ 440              	 
+ 441              	 
+ 442              	 
+ 443 0000 80B4     	 push {r7}
+ 444              	.LCFI45:
+ 445              	 .cfi_def_cfa_offset 4
+ 446              	 .cfi_offset 7,-4
+ 447 0002 00AF     	 add r7,sp,#0
+ 448              	.LCFI46:
+ 449              	 .cfi_def_cfa_register 7
+ 133:.././hal/sam3u1c/syscalls.c **** 	return -1;
+ 450              	 .loc 1 133 0
+ 451 0004 4FF0FF33 	 mov r3,#-1
+ 134:.././hal/sam3u1c/syscalls.c **** }
+ 452              	 .loc 1 134 0
+ 453 0008 1846     	 mov r0,r3
+ 454 000a BD46     	 mov sp,r7
+ 455              	.LCFI47:
+ 456              	 .cfi_def_cfa_register 13
+ 457              	 
+ 458 000c 80BC     	 pop {r7}
+ 459              	.LCFI48:
+ 460              	 .cfi_restore 7
+ 461              	 .cfi_def_cfa_offset 0
+ 462 000e 7047     	 bx lr
+ 463              	 .cfi_endproc
+ 464              	.LFE9:
+ 466              	 .section .bss.heap.5297,"aw",%nobits
+ 467              	 .align 2
+ 470              	heap.5297:
+ 471 0000 00000000 	 .space 4
+ 472              	 .text
+ 473              	.Letext0:
+ 474              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 475              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 476              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 477              	 .file 5 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 478              	 .file 6 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 479              	 .file 7 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_timeval.h"
+ 480              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\types.h"
+ 481              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\time.h"
+ 482              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\stat.h"
+ 483              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdio.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 syscalls.c
+    {standard input}:16     .text._sbrk:00000000 $t
+    {standard input}:23     .text._sbrk:00000000 _sbrk
+    {standard input}:97     .text._sbrk:0000004c $d
+    {standard input}:470    .bss.heap.5297:00000000 heap.5297
+    {standard input}:104    .text.link:00000000 $t
+    {standard input}:111    .text.link:00000000 link
+    {standard input}:150    .text._close:00000000 $t
+    {standard input}:157    .text._close:00000000 _close
+    {standard input}:195    .text._fstat:00000000 $t
+    {standard input}:202    .text._fstat:00000000 _fstat
+    {standard input}:245    .text._isatty:00000000 $t
+    {standard input}:252    .text._isatty:00000000 _isatty
+    {standard input}:290    .text._lseek:00000000 $t
+    {standard input}:297    .text._lseek:00000000 _lseek
+    {standard input}:337    .rodata:00000000 $d
+    {standard input}:341    .text._exit:00000000 $t
+    {standard input}:348    .text._exit:00000000 _exit
+    {standard input}:378    .text._exit:00000014 $d
+    {standard input}:384    .text._kill:00000000 $t
+    {standard input}:391    .text._kill:00000000 _kill
+    {standard input}:429    .text._getpid:00000000 $t
+    {standard input}:436    .text._getpid:00000000 _getpid
+    {standard input}:467    .bss.heap.5297:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.newlib.h.21.59901f4bf241ab46c63694665baa7297
+                           .group:00000000 wm4.features.h.22.692cd1f2e947ca7b8fea300222f5f1f2
+                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
+                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
+                           .group:00000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
+                           .group:00000000 wm4.stddef.h.187.2ff233552538c6ff9b8575ca8ea52cb3
+                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.stddef.h.39.a231a87e043a95babfd62cebe88e50f8
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
+                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdarg.h.31.3fa7b8f6daaa31edd1696c08c77f2a73
+                           .group:00000000 wm4.time.h.8.db4619001f026d0b4874c029fef0e91f
+                           .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:00000000 wm4.time.h.2.4581ce0ffb6627cfc02162c94bf846c9
+                           .group:00000000 wm4.time.h.25.0e6a0fdbc9955f5707ed54246ed2e089
+                           .group:00000000 wm4.time.h.162.d096f2f5887c52e271c4dc33d795dc64
+                           .group:00000000 wm4.stat.h.71.d65ac61ff88c651e198008cfb38bda9c
+
+UNDEFINED SYMBOLS
+__ram_end__
+_end
+iprintf

@@ -1,0 +1,1239 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "usart_serial.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
+  16              	 .align 2
+  19              	cpu_irq_critical_section_counter:
+  20 0000 00000000 	 .space 4
+  21              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
+  24              	cpu_irq_prev_interrupt_state:
+  25 0000 00       	 .space 1
+  26              	 .section .text.usart_serial_putchar,"ax",%progbits
+  27              	 .align 1
+  28              	 .syntax unified
+  29              	 .thumb
+  30              	 .thumb_func
+  31              	 .fpu softvfp
+  33              	usart_serial_putchar:
+  34              	.LFB88:
+  35              	 .file 1 ".././hal/sam3u1c/inc/sam_uart/uart_serial.h"
+   1:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /**
+   2:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \file
+   3:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+   4:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \brief Uart Serial for SAM.
+   5:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+   6:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+   8:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \asf_license_start
+   9:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  10:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \page License
+  11:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  12:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  15:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  18:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  22:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  25:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  28:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  40:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \asf_license_stop
+  41:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  42:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  */
+  43:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifndef _UART_SERIAL_H_
+  44:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #define _UART_SERIAL_H_
+  45:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  46:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #include "compiler.h"
+  47:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #include "sysclk.h"
+  48:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+  49:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #include "flexcom.h"
+  50:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+  51:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if ((!SAM4L) && (!SAMG55))
+  52:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #include "uart.h"
+  53:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+  54:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #include "usart.h"
+  55:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  56:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /** 
+  57:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \name Serial Management Configuration
+  58:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  */
+  59:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** //! @{
+  60:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #include "conf_uart_serial.h"
+  61:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  62:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** //! @}
+  63:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  64:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /** Input parameters when initializing RS232 and similar modes. */
+  65:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** typedef struct uart_rs232_options {
+  66:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	/** Set baud rate of the USART (unused in slave modes). */
+  67:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uint32_t baudrate;
+  68:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  69:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	/** Number of bits to transmit as a character (5 to 9). */
+  70:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uint32_t charlength;
+  71:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  72:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	/**
+  73:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	 * Parity type: USART_PMODE_DISABLED_gc, USART_PMODE_EVEN_gc,
+  74:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	 * USART_PMODE_ODD_gc.
+  75:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	 */
+  76:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uint32_t paritytype;
+  77:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  78:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	/** 
+  79:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	 * Number of stop bits between two characters:
+  80:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	 * true: 2 stop bits
+  81:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	 * false: 1 stop bit
+  82:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	 */
+  83:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	bool stopbits;
+  84:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  85:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** } usart_rs232_options_t;
+  86:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  87:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** typedef usart_rs232_options_t usart_serial_options_t;
+  88:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  89:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** typedef Usart *usart_if;
+  90:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+  91:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /** 
+  92:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \brief Initializes the Usart in master mode.
+  93:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+  94:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \param p_usart  Base address of the USART instance.
+  95:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \param opt      Options needed to set up RS232 communication (see
+  96:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \ref usart_options_t).
+  97:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  */
+  98:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** static inline void usart_serial_init(usart_if p_usart,
+  99:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_serial_options_t *opt)
+ 100:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** {
+ 101:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if ((!SAM4L) && (!SAMG55))
+ 102:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	sam_uart_opt_t uart_settings;
+ 103:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uart_settings.ul_mck = sysclk_get_peripheral_hz();
+ 104:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uart_settings.ul_baudrate = opt->baudrate;
+ 105:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uart_settings.ul_mode = opt->paritytype;
+ 106:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 107:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 108:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	sam_usart_opt_t usart_settings;
+ 109:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	usart_settings.baudrate = opt->baudrate;
+ 110:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	usart_settings.char_length = opt->charlength;
+ 111:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	usart_settings.parity_type = opt->paritytype;
+ 112:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	usart_settings.stop_bits= opt->stopbits;
+ 113:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	usart_settings.channel_mode= US_MR_CHMODE_NORMAL;
+ 114:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	
+ 115:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef UART
+ 116:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART == (Uart*)p_usart) {
+ 117:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_UART);
+ 118:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure UART */
+ 119:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		uart_init((Uart*)p_usart, &uart_settings);
+ 120:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 121:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
+ 122:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART0
+ 123:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART0 == (Uart*)p_usart) {
+ 124:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_UART0);
+ 125:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure UART */
+ 126:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		uart_init((Uart*)p_usart, &uart_settings);
+ 127:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 128:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 129:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART1
+ 130:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART1 == (Uart*)p_usart) {
+ 131:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_UART1);
+ 132:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure UART */
+ 133:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		uart_init((Uart*)p_usart, &uart_settings);
+ 134:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 135:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 136:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART2
+ 137:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART2 == (Uart*)p_usart) {
+ 138:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_UART2);
+ 139:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure UART */
+ 140:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		uart_init((Uart*)p_usart, &uart_settings);
+ 141:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 142:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 143:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART3
+ 144:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART3 == (Uart*)p_usart) {
+ 145:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_UART3);
+ 146:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure UART */
+ 147:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		uart_init((Uart*)p_usart, &uart_settings);
+ 148:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 149:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 150:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef UART */
+ 151:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 152:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 153:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef USART
+ 154:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART == p_usart) {
+ 155:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 156:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART);
+ 157:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 158:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 159:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 160:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 161:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 162:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 163:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 164:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 165:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 166:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 167:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 168:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 169:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 170:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 171:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
+ 172:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART0
+ 173:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART0 == p_usart) {
+ 174:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 175:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART0);
+ 176:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 177:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM0);
+ 178:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM0, FLEXCOM_USART);
+ 179:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 180:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 181:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 182:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 183:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 184:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 185:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 186:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 187:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 188:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 189:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 190:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 191:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 192:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 193:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 194:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 195:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART1
+ 196:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART1 == p_usart) {
+ 197:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 198:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART1);
+ 199:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 200:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM1);
+ 201:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM1, FLEXCOM_USART);
+ 202:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 203:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 204:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 205:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 206:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 207:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 208:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 209:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 210:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 211:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 212:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 213:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 214:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 215:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 216:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 217:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 218:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART2
+ 219:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART2 == p_usart) {
+ 220:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 221:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART2);
+ 222:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 223:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM2);
+ 224:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM2, FLEXCOM_USART);
+ 225:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 226:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 227:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 228:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 229:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 230:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 231:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 232:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 233:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 234:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 235:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 236:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 237:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 238:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 239:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 240:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 241:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART3
+ 242:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART3 == p_usart) {
+ 243:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 244:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART3);
+ 245:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 246:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM3);
+ 247:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM3, FLEXCOM_USART);
+ 248:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 249:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 250:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 251:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 252:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 253:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 254:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 255:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 256:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 257:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 258:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 259:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 260:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 261:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 262:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 263:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 264:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART4
+ 265:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART4 == p_usart) {
+ 266:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 267:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART4);
+ 268:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 269:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM4);
+ 270:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM4, FLEXCOM_USART);
+ 271:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 272:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 273:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 274:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 275:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 276:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 277:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 278:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 279:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 280:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 281:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 282:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 283:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 284:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 285:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 286:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 287:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART5
+ 288:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART5 == p_usart) {
+ 289:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 290:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART5);
+ 291:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 292:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM5);
+ 293:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM5, FLEXCOM_USART);
+ 294:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 295:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 296:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 297:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 298:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 299:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 300:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 301:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 302:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 303:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 304:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 305:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 306:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 307:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 308:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 309:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 310:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART6
+ 311:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART6 == p_usart) {
+ 312:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 313:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART6);
+ 314:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 315:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM6);
+ 316:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM6, FLEXCOM_USART);
+ 317:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 318:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 319:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 320:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 321:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 322:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 323:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 324:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 325:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 326:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 327:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 328:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 329:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 330:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 331:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 332:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 333:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART7
+ 334:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART7 == p_usart) {
+ 335:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (!SAM4L)
+ 336:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(ID_USART7);
+ 337:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAMG55)
+ 338:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_enable(FLEXCOM7);
+ 339:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		flexcom_set_opmode(FLEXCOM7, FLEXCOM_USART);
+ 340:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 341:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 342:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 343:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_hz());
+ 344:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 345:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #if (SAM4L)
+ 346:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		sysclk_enable_peripheral_clock(p_usart);
+ 347:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Configure USART */
+ 348:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_init_rs232(p_usart, &usart_settings,
+ 349:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 				sysclk_get_peripheral_bus_hz(p_usart));
+ 350:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif
+ 351:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		/* Enable the receiver and transmitter. */
+ 352:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_tx(p_usart);
+ 353:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		usart_enable_rx(p_usart);
+ 354:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 355:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 356:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 357:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef USART */
+ 358:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 359:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** }
+ 360:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 361:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /**
+ 362:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \brief Sends a character with the USART.
+ 363:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+ 364:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \param p_usart   Base address of the USART instance.
+ 365:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \param c       Character to write.
+ 366:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+ 367:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \return Status.
+ 368:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *   \retval 1  The character was written.
+ 369:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *   \retval 0  The function timed out before the USART transmitter became
+ 370:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * ready to send.
+ 371:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  */
+ 372:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** static inline int usart_serial_putchar(usart_if p_usart, const uint8_t c)
+ 373:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** {
+  36              	 .loc 1 373 0
+  37              	 .cfi_startproc
+  38              	 
+  39              	 
+  40 0000 80B5     	 push {r7,lr}
+  41              	.LCFI0:
+  42              	 .cfi_def_cfa_offset 8
+  43              	 .cfi_offset 7,-8
+  44              	 .cfi_offset 14,-4
+  45 0002 82B0     	 sub sp,sp,#8
+  46              	.LCFI1:
+  47              	 .cfi_def_cfa_offset 16
+  48 0004 00AF     	 add r7,sp,#0
+  49              	.LCFI2:
+  50              	 .cfi_def_cfa_register 7
+  51 0006 7860     	 str r0,[r7,#4]
+  52 0008 0B46     	 mov r3,r1
+  53 000a FB70     	 strb r3,[r7,#3]
+ 374:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef UART
+ 375:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART == (Uart*)p_usart) {
+  54              	 .loc 1 375 0
+  55 000c 7B68     	 ldr r3,[r7,#4]
+  56 000e 204A     	 ldr r2,.L11
+  57 0010 9342     	 cmp r3,r2
+  58 0012 0AD1     	 bne .L2
+ 376:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_write((Uart*)p_usart, c)!=0);
+  59              	 .loc 1 376 0
+  60 0014 00BF     	 nop
+  61              	.L3:
+  62              	 .loc 1 376 0 is_stmt 0 discriminator 1
+  63 0016 FB78     	 ldrb r3,[r7,#3]
+  64 0018 1946     	 mov r1,r3
+  65 001a 7868     	 ldr r0,[r7,#4]
+  66 001c 1D4B     	 ldr r3,.L11+4
+  67 001e 9847     	 blx r3
+  68              	.LVL0:
+  69 0020 0346     	 mov r3,r0
+  70 0022 002B     	 cmp r3,#0
+  71 0024 F7D1     	 bne .L3
+ 377:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+  72              	 .loc 1 377 0 is_stmt 1
+  73 0026 0123     	 movs r3,#1
+  74 0028 2DE0     	 b .L4
+  75              	.L2:
+ 378:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 379:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
+ 380:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART0
+ 381:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART0 == (Uart*)p_usart) {
+ 382:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_write((Uart*)p_usart, c)!=0);
+ 383:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 384:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 385:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 386:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART1
+ 387:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART1 == (Uart*)p_usart) {
+ 388:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_write((Uart*)p_usart, c)!=0);
+ 389:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 390:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 391:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 392:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART2
+ 393:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART2 == (Uart*)p_usart) {
+ 394:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_write((Uart*)p_usart, c)!=0);
+ 395:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 396:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 397:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 398:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART3
+ 399:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART3 == (Uart*)p_usart) {
+ 400:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_write((Uart*)p_usart, c)!=0);
+ 401:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 402:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 403:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 404:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef UART */
+ 405:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 406:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 407:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef USART
+ 408:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART == p_usart) {
+ 409:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 410:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 411:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 412:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
+ 413:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART0
+ 414:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART0 == p_usart) {
+  76              	 .loc 1 414 0
+  77 002a 7B68     	 ldr r3,[r7,#4]
+  78 002c 1A4A     	 ldr r2,.L11+8
+  79 002e 9342     	 cmp r3,r2
+  80 0030 0AD1     	 bne .L5
+ 415:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+  81              	 .loc 1 415 0
+  82 0032 00BF     	 nop
+  83              	.L6:
+  84              	 .loc 1 415 0 is_stmt 0 discriminator 1
+  85 0034 FB78     	 ldrb r3,[r7,#3]
+  86 0036 1946     	 mov r1,r3
+  87 0038 7868     	 ldr r0,[r7,#4]
+  88 003a 184B     	 ldr r3,.L11+12
+  89 003c 9847     	 blx r3
+  90              	.LVL1:
+  91 003e 0346     	 mov r3,r0
+  92 0040 002B     	 cmp r3,#0
+  93 0042 F7D1     	 bne .L6
+ 416:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+  94              	 .loc 1 416 0 is_stmt 1
+  95 0044 0123     	 movs r3,#1
+  96 0046 1EE0     	 b .L4
+  97              	.L5:
+ 417:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 418:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 419:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART1
+ 420:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART1 == p_usart) {
+  98              	 .loc 1 420 0
+  99 0048 7B68     	 ldr r3,[r7,#4]
+ 100 004a 154A     	 ldr r2,.L11+16
+ 101 004c 9342     	 cmp r3,r2
+ 102 004e 0AD1     	 bne .L7
+ 421:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 103              	 .loc 1 421 0
+ 104 0050 00BF     	 nop
+ 105              	.L8:
+ 106              	 .loc 1 421 0 is_stmt 0 discriminator 1
+ 107 0052 FB78     	 ldrb r3,[r7,#3]
+ 108 0054 1946     	 mov r1,r3
+ 109 0056 7868     	 ldr r0,[r7,#4]
+ 110 0058 104B     	 ldr r3,.L11+12
+ 111 005a 9847     	 blx r3
+ 112              	.LVL2:
+ 113 005c 0346     	 mov r3,r0
+ 114 005e 002B     	 cmp r3,#0
+ 115 0060 F7D1     	 bne .L8
+ 422:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 116              	 .loc 1 422 0 is_stmt 1
+ 117 0062 0123     	 movs r3,#1
+ 118 0064 0FE0     	 b .L4
+ 119              	.L7:
+ 423:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 424:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 425:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART2
+ 426:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART2 == p_usart) {
+ 120              	 .loc 1 426 0
+ 121 0066 7B68     	 ldr r3,[r7,#4]
+ 122 0068 0E4A     	 ldr r2,.L11+20
+ 123 006a 9342     	 cmp r3,r2
+ 124 006c 0AD1     	 bne .L9
+ 427:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 125              	 .loc 1 427 0
+ 126 006e 00BF     	 nop
+ 127              	.L10:
+ 128              	 .loc 1 427 0 is_stmt 0 discriminator 1
+ 129 0070 FB78     	 ldrb r3,[r7,#3]
+ 130 0072 1946     	 mov r1,r3
+ 131 0074 7868     	 ldr r0,[r7,#4]
+ 132 0076 094B     	 ldr r3,.L11+12
+ 133 0078 9847     	 blx r3
+ 134              	.LVL3:
+ 135 007a 0346     	 mov r3,r0
+ 136 007c 002B     	 cmp r3,#0
+ 137 007e F7D1     	 bne .L10
+ 428:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 138              	 .loc 1 428 0 is_stmt 1
+ 139 0080 0123     	 movs r3,#1
+ 140 0082 00E0     	 b .L4
+ 141              	.L9:
+ 429:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 430:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 431:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART3
+ 432:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART3 == p_usart) {
+ 433:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 434:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 435:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 436:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 437:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART4
+ 438:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART4 == p_usart) {
+ 439:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 440:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 441:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 442:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 443:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART5
+ 444:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART5 == p_usart) {
+ 445:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 446:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 447:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 448:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 449:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART6
+ 450:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART6 == p_usart) {
+ 451:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 452:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 453:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 454:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 455:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART7
+ 456:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART7 == p_usart) {
+ 457:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
+ 458:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
+ 459:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 460:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 461:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef USART */
+ 462:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 463:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	return 0;
+ 142              	 .loc 1 463 0
+ 143 0084 0023     	 movs r3,#0
+ 144              	.L4:
+ 464:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** }
+ 145              	 .loc 1 464 0
+ 146 0086 1846     	 mov r0,r3
+ 147 0088 0837     	 adds r7,r7,#8
+ 148              	.LCFI3:
+ 149              	 .cfi_def_cfa_offset 8
+ 150 008a BD46     	 mov sp,r7
+ 151              	.LCFI4:
+ 152              	 .cfi_def_cfa_register 13
+ 153              	 
+ 154 008c 80BD     	 pop {r7,pc}
+ 155              	.L12:
+ 156 008e 00BF     	 .align 2
+ 157              	.L11:
+ 158 0090 00060E40 	 .word 1074660864
+ 159 0094 00000000 	 .word uart_write
+ 160 0098 00000940 	 .word 1074331648
+ 161 009c 00000000 	 .word usart_write
+ 162 00a0 00400940 	 .word 1074348032
+ 163 00a4 00800940 	 .word 1074364416
+ 164              	 .cfi_endproc
+ 165              	.LFE88:
+ 167              	 .section .text.usart_serial_getchar,"ax",%progbits
+ 168              	 .align 1
+ 169              	 .syntax unified
+ 170              	 .thumb
+ 171              	 .thumb_func
+ 172              	 .fpu softvfp
+ 174              	usart_serial_getchar:
+ 175              	.LFB89:
+ 465:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /**
+ 466:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \brief Waits until a character is received, and returns it.
+ 467:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+ 468:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \param p_usart   Base address of the USART instance.
+ 469:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \param data   Data to read
+ 470:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
+ 471:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  */
+ 472:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** static inline void usart_serial_getchar(usart_if p_usart, uint8_t *data)
+ 473:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** {
+ 176              	 .loc 1 473 0
+ 177              	 .cfi_startproc
+ 178              	 
+ 179              	 
+ 180 0000 80B5     	 push {r7,lr}
+ 181              	.LCFI5:
+ 182              	 .cfi_def_cfa_offset 8
+ 183              	 .cfi_offset 7,-8
+ 184              	 .cfi_offset 14,-4
+ 185 0002 84B0     	 sub sp,sp,#16
+ 186              	.LCFI6:
+ 187              	 .cfi_def_cfa_offset 24
+ 188 0004 00AF     	 add r7,sp,#0
+ 189              	.LCFI7:
+ 190              	 .cfi_def_cfa_register 7
+ 191 0006 7860     	 str r0,[r7,#4]
+ 192 0008 3960     	 str r1,[r7]
+ 474:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uint32_t val = 0;
+ 193              	 .loc 1 474 0
+ 194 000a 0023     	 movs r3,#0
+ 195 000c FB60     	 str r3,[r7,#12]
+ 475:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 476:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	/* Avoid Cppcheck Warning */
+ 477:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	UNUSED(val);
+ 478:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 479:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef UART
+ 480:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART == (Uart*)p_usart) {
+ 196              	 .loc 1 480 0
+ 197 000e 7B68     	 ldr r3,[r7,#4]
+ 198 0010 224A     	 ldr r2,.L23
+ 199 0012 9342     	 cmp r3,r2
+ 200 0014 07D1     	 bne .L14
+ 481:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_read((Uart*)p_usart, data));
+ 201              	 .loc 1 481 0
+ 202 0016 00BF     	 nop
+ 203              	.L15:
+ 204              	 .loc 1 481 0 is_stmt 0 discriminator 1
+ 205 0018 3968     	 ldr r1,[r7]
+ 206 001a 7868     	 ldr r0,[r7,#4]
+ 207 001c 204B     	 ldr r3,.L23+4
+ 208 001e 9847     	 blx r3
+ 209              	.LVL4:
+ 210 0020 0346     	 mov r3,r0
+ 211 0022 002B     	 cmp r3,#0
+ 212 0024 F8D1     	 bne .L15
+ 213              	.L14:
+ 482:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 483:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
+ 484:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART0
+ 485:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART0 == (Uart*)p_usart) {
+ 486:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_read((Uart*)p_usart, data));
+ 487:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 488:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 489:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART1
+ 490:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART1 == (Uart*)p_usart) {
+ 491:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_read((Uart*)p_usart, data));
+ 492:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 493:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 494:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART2
+ 495:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART2 == (Uart*)p_usart) {
+ 496:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_read((Uart*)p_usart, data));
+ 497:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 498:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 499:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART3
+ 500:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART3 == (Uart*)p_usart) {
+ 501:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_read((Uart*)p_usart, data));
+ 502:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 503:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 504:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef UART */
+ 505:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 506:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 507:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef USART
+ 508:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART == p_usart) {
+ 509:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 510:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 511:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 512:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
+ 513:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART0
+ 514:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART0 == p_usart) {
+ 214              	 .loc 1 514 0 is_stmt 1
+ 215 0026 7B68     	 ldr r3,[r7,#4]
+ 216 0028 1E4A     	 ldr r2,.L23+8
+ 217 002a 9342     	 cmp r3,r2
+ 218 002c 0DD1     	 bne .L16
+ 515:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 219              	 .loc 1 515 0
+ 220 002e 00BF     	 nop
+ 221              	.L17:
+ 222              	 .loc 1 515 0 is_stmt 0 discriminator 1
+ 223 0030 07F10C03 	 add r3,r7,#12
+ 224 0034 1946     	 mov r1,r3
+ 225 0036 7868     	 ldr r0,[r7,#4]
+ 226 0038 1B4B     	 ldr r3,.L23+12
+ 227 003a 9847     	 blx r3
+ 228              	.LVL5:
+ 229 003c 0346     	 mov r3,r0
+ 230 003e 002B     	 cmp r3,#0
+ 231 0040 F6D1     	 bne .L17
+ 516:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 232              	 .loc 1 516 0 is_stmt 1
+ 233 0042 FB68     	 ldr r3,[r7,#12]
+ 234 0044 DAB2     	 uxtb r2,r3
+ 235 0046 3B68     	 ldr r3,[r7]
+ 236 0048 1A70     	 strb r2,[r3]
+ 237              	.L16:
+ 517:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 518:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 519:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART1
+ 520:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART1 == p_usart) {
+ 238              	 .loc 1 520 0
+ 239 004a 7B68     	 ldr r3,[r7,#4]
+ 240 004c 174A     	 ldr r2,.L23+16
+ 241 004e 9342     	 cmp r3,r2
+ 242 0050 0DD1     	 bne .L18
+ 521:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 243              	 .loc 1 521 0
+ 244 0052 00BF     	 nop
+ 245              	.L19:
+ 246              	 .loc 1 521 0 is_stmt 0 discriminator 1
+ 247 0054 07F10C03 	 add r3,r7,#12
+ 248 0058 1946     	 mov r1,r3
+ 249 005a 7868     	 ldr r0,[r7,#4]
+ 250 005c 124B     	 ldr r3,.L23+12
+ 251 005e 9847     	 blx r3
+ 252              	.LVL6:
+ 253 0060 0346     	 mov r3,r0
+ 254 0062 002B     	 cmp r3,#0
+ 255 0064 F6D1     	 bne .L19
+ 522:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 256              	 .loc 1 522 0 is_stmt 1
+ 257 0066 FB68     	 ldr r3,[r7,#12]
+ 258 0068 DAB2     	 uxtb r2,r3
+ 259 006a 3B68     	 ldr r3,[r7]
+ 260 006c 1A70     	 strb r2,[r3]
+ 261              	.L18:
+ 523:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 524:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 525:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART2
+ 526:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART2 == p_usart) {
+ 262              	 .loc 1 526 0
+ 263 006e 7B68     	 ldr r3,[r7,#4]
+ 264 0070 0F4A     	 ldr r2,.L23+20
+ 265 0072 9342     	 cmp r3,r2
+ 266 0074 0DD1     	 bne .L22
+ 527:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 267              	 .loc 1 527 0
+ 268 0076 00BF     	 nop
+ 269              	.L21:
+ 270              	 .loc 1 527 0 is_stmt 0 discriminator 1
+ 271 0078 07F10C03 	 add r3,r7,#12
+ 272 007c 1946     	 mov r1,r3
+ 273 007e 7868     	 ldr r0,[r7,#4]
+ 274 0080 094B     	 ldr r3,.L23+12
+ 275 0082 9847     	 blx r3
+ 276              	.LVL7:
+ 277 0084 0346     	 mov r3,r0
+ 278 0086 002B     	 cmp r3,#0
+ 279 0088 F6D1     	 bne .L21
+ 528:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 280              	 .loc 1 528 0 is_stmt 1
+ 281 008a FB68     	 ldr r3,[r7,#12]
+ 282 008c DAB2     	 uxtb r2,r3
+ 283 008e 3B68     	 ldr r3,[r7]
+ 284 0090 1A70     	 strb r2,[r3]
+ 285              	.L22:
+ 529:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 530:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 531:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART3
+ 532:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART3 == p_usart) {
+ 533:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 534:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 535:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 536:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 537:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART4
+ 538:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART4 == p_usart) {
+ 539:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 540:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 541:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 542:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 543:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART5
+ 544:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART5 == p_usart) {
+ 545:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 546:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 547:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 548:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 549:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART6
+ 550:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART6 == p_usart) {
+ 551:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 552:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 553:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 554:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 555:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART7
+ 556:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART7 == p_usart) {
+ 557:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
+ 558:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
+ 559:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
+ 560:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
+ 561:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef USART */
+ 562:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
+ 563:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** }
+ 286              	 .loc 1 563 0
+ 287 0092 00BF     	 nop
+ 288 0094 1037     	 adds r7,r7,#16
+ 289              	.LCFI8:
+ 290              	 .cfi_def_cfa_offset 8
+ 291 0096 BD46     	 mov sp,r7
+ 292              	.LCFI9:
+ 293              	 .cfi_def_cfa_register 13
+ 294              	 
+ 295 0098 80BD     	 pop {r7,pc}
+ 296              	.L24:
+ 297 009a 00BF     	 .align 2
+ 298              	.L23:
+ 299 009c 00060E40 	 .word 1074660864
+ 300 00a0 00000000 	 .word uart_read
+ 301 00a4 00000940 	 .word 1074331648
+ 302 00a8 00000000 	 .word usart_read
+ 303 00ac 00400940 	 .word 1074348032
+ 304 00b0 00800940 	 .word 1074364416
+ 305              	 .cfi_endproc
+ 306              	.LFE89:
+ 308              	 .section .text.usart_serial_write_packet,"ax",%progbits
+ 309              	 .align 1
+ 310              	 .global usart_serial_write_packet
+ 311              	 .syntax unified
+ 312              	 .thumb
+ 313              	 .thumb_func
+ 314              	 .fpu softvfp
+ 316              	usart_serial_write_packet:
+ 317              	.LFB91:
+ 318              	 .file 2 ".././hal/sam3u1c/usart_serial.c"
+   1:.././hal/sam3u1c/usart_serial.c **** /**
+   2:.././hal/sam3u1c/usart_serial.c ****  *
+   3:.././hal/sam3u1c/usart_serial.c ****  * \file
+   4:.././hal/sam3u1c/usart_serial.c ****  *
+   5:.././hal/sam3u1c/usart_serial.c ****  * \brief USART Serial driver functions.
+   6:.././hal/sam3u1c/usart_serial.c ****  *
+   7:.././hal/sam3u1c/usart_serial.c ****  *
+   8:.././hal/sam3u1c/usart_serial.c ****  * Copyright (c) 2010-2013 Atmel Corporation. All rights reserved.
+   9:.././hal/sam3u1c/usart_serial.c ****  *
+  10:.././hal/sam3u1c/usart_serial.c ****  * \asf_license_start
+  11:.././hal/sam3u1c/usart_serial.c ****  *
+  12:.././hal/sam3u1c/usart_serial.c ****  * \page License
+  13:.././hal/sam3u1c/usart_serial.c ****  *
+  14:.././hal/sam3u1c/usart_serial.c ****  * Redistribution and use in source and binary forms, with or without
+  15:.././hal/sam3u1c/usart_serial.c ****  * modification, are permitted provided that the following conditions are met:
+  16:.././hal/sam3u1c/usart_serial.c ****  *
+  17:.././hal/sam3u1c/usart_serial.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  18:.././hal/sam3u1c/usart_serial.c ****  *    this list of conditions and the following disclaimer.
+  19:.././hal/sam3u1c/usart_serial.c ****  *
+  20:.././hal/sam3u1c/usart_serial.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  21:.././hal/sam3u1c/usart_serial.c ****  *    this list of conditions and the following disclaimer in the documentation
+  22:.././hal/sam3u1c/usart_serial.c ****  *    and/or other materials provided with the distribution.
+  23:.././hal/sam3u1c/usart_serial.c ****  *
+  24:.././hal/sam3u1c/usart_serial.c ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  25:.././hal/sam3u1c/usart_serial.c ****  *    from this software without specific prior written permission.
+  26:.././hal/sam3u1c/usart_serial.c ****  *
+  27:.././hal/sam3u1c/usart_serial.c ****  * 4. This software may only be redistributed and used in connection with an
+  28:.././hal/sam3u1c/usart_serial.c ****  *    Atmel microcontroller product.
+  29:.././hal/sam3u1c/usart_serial.c ****  *
+  30:.././hal/sam3u1c/usart_serial.c ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  31:.././hal/sam3u1c/usart_serial.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  32:.././hal/sam3u1c/usart_serial.c ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  33:.././hal/sam3u1c/usart_serial.c ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  34:.././hal/sam3u1c/usart_serial.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  35:.././hal/sam3u1c/usart_serial.c ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  36:.././hal/sam3u1c/usart_serial.c ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  37:.././hal/sam3u1c/usart_serial.c ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  38:.././hal/sam3u1c/usart_serial.c ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  39:.././hal/sam3u1c/usart_serial.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  40:.././hal/sam3u1c/usart_serial.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  41:.././hal/sam3u1c/usart_serial.c ****  *
+  42:.././hal/sam3u1c/usart_serial.c ****  * \asf_license_stop
+  43:.././hal/sam3u1c/usart_serial.c ****  *
+  44:.././hal/sam3u1c/usart_serial.c ****  */
+  45:.././hal/sam3u1c/usart_serial.c **** #include "serial.h"
+  46:.././hal/sam3u1c/usart_serial.c **** 
+  47:.././hal/sam3u1c/usart_serial.c **** /**
+  48:.././hal/sam3u1c/usart_serial.c ****  * \brief Send a sequence of bytes to USART device
+  49:.././hal/sam3u1c/usart_serial.c ****  *
+  50:.././hal/sam3u1c/usart_serial.c ****  * \param usart  Base address of the USART instance.
+  51:.././hal/sam3u1c/usart_serial.c ****  * \param data   Data buffer to read
+  52:.././hal/sam3u1c/usart_serial.c ****  * \param len    Length of data
+  53:.././hal/sam3u1c/usart_serial.c ****  *
+  54:.././hal/sam3u1c/usart_serial.c ****  */
+  55:.././hal/sam3u1c/usart_serial.c **** status_code_t usart_serial_write_packet(usart_if usart, const uint8_t *data,
+  56:.././hal/sam3u1c/usart_serial.c **** 		size_t len)
+  57:.././hal/sam3u1c/usart_serial.c **** {
+ 319              	 .loc 2 57 0
+ 320              	 .cfi_startproc
+ 321              	 
+ 322              	 
+ 323 0000 80B5     	 push {r7,lr}
+ 324              	.LCFI10:
+ 325              	 .cfi_def_cfa_offset 8
+ 326              	 .cfi_offset 7,-8
+ 327              	 .cfi_offset 14,-4
+ 328 0002 84B0     	 sub sp,sp,#16
+ 329              	.LCFI11:
+ 330              	 .cfi_def_cfa_offset 24
+ 331 0004 00AF     	 add r7,sp,#0
+ 332              	.LCFI12:
+ 333              	 .cfi_def_cfa_register 7
+ 334 0006 F860     	 str r0,[r7,#12]
+ 335 0008 B960     	 str r1,[r7,#8]
+ 336 000a 7A60     	 str r2,[r7,#4]
+  58:.././hal/sam3u1c/usart_serial.c **** 	while (len) {
+ 337              	 .loc 2 58 0
+ 338 000c 0BE0     	 b .L26
+ 339              	.L27:
+  59:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_putchar(usart, *data);
+ 340              	 .loc 2 59 0
+ 341 000e BB68     	 ldr r3,[r7,#8]
+ 342 0010 1B78     	 ldrb r3,[r3]
+ 343 0012 1946     	 mov r1,r3
+ 344 0014 F868     	 ldr r0,[r7,#12]
+ 345 0016 084B     	 ldr r3,.L29
+ 346 0018 9847     	 blx r3
+ 347              	.LVL8:
+  60:.././hal/sam3u1c/usart_serial.c **** 		len--;
+ 348              	 .loc 2 60 0
+ 349 001a 7B68     	 ldr r3,[r7,#4]
+ 350 001c 013B     	 subs r3,r3,#1
+ 351 001e 7B60     	 str r3,[r7,#4]
+  61:.././hal/sam3u1c/usart_serial.c **** 		data++;
+ 352              	 .loc 2 61 0
+ 353 0020 BB68     	 ldr r3,[r7,#8]
+ 354 0022 0133     	 adds r3,r3,#1
+ 355 0024 BB60     	 str r3,[r7,#8]
+ 356              	.L26:
+  58:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_putchar(usart, *data);
+ 357              	 .loc 2 58 0
+ 358 0026 7B68     	 ldr r3,[r7,#4]
+ 359 0028 002B     	 cmp r3,#0
+ 360 002a F0D1     	 bne .L27
+  62:.././hal/sam3u1c/usart_serial.c **** 	}
+  63:.././hal/sam3u1c/usart_serial.c **** 	return STATUS_OK;
+ 361              	 .loc 2 63 0
+ 362 002c 0023     	 movs r3,#0
+  64:.././hal/sam3u1c/usart_serial.c **** }
+ 363              	 .loc 2 64 0
+ 364 002e 1846     	 mov r0,r3
+ 365 0030 1037     	 adds r7,r7,#16
+ 366              	.LCFI13:
+ 367              	 .cfi_def_cfa_offset 8
+ 368 0032 BD46     	 mov sp,r7
+ 369              	.LCFI14:
+ 370              	 .cfi_def_cfa_register 13
+ 371              	 
+ 372 0034 80BD     	 pop {r7,pc}
+ 373              	.L30:
+ 374 0036 00BF     	 .align 2
+ 375              	.L29:
+ 376 0038 00000000 	 .word usart_serial_putchar
+ 377              	 .cfi_endproc
+ 378              	.LFE91:
+ 380              	 .section .text.usart_serial_read_packet,"ax",%progbits
+ 381              	 .align 1
+ 382              	 .global usart_serial_read_packet
+ 383              	 .syntax unified
+ 384              	 .thumb
+ 385              	 .thumb_func
+ 386              	 .fpu softvfp
+ 388              	usart_serial_read_packet:
+ 389              	.LFB92:
+  65:.././hal/sam3u1c/usart_serial.c **** 
+  66:.././hal/sam3u1c/usart_serial.c **** 
+  67:.././hal/sam3u1c/usart_serial.c **** /**
+  68:.././hal/sam3u1c/usart_serial.c ****  * \brief Receive a sequence of bytes from USART device
+  69:.././hal/sam3u1c/usart_serial.c ****  *
+  70:.././hal/sam3u1c/usart_serial.c ****  * \param usart  Base address of the USART instance.
+  71:.././hal/sam3u1c/usart_serial.c ****  * \param data   Data buffer to write
+  72:.././hal/sam3u1c/usart_serial.c ****  * \param len    Length of data
+  73:.././hal/sam3u1c/usart_serial.c ****  *
+  74:.././hal/sam3u1c/usart_serial.c ****  */
+  75:.././hal/sam3u1c/usart_serial.c **** status_code_t usart_serial_read_packet(usart_if usart, uint8_t *data,
+  76:.././hal/sam3u1c/usart_serial.c **** 		size_t len)
+  77:.././hal/sam3u1c/usart_serial.c **** {
+ 390              	 .loc 2 77 0
+ 391              	 .cfi_startproc
+ 392              	 
+ 393              	 
+ 394 0000 80B5     	 push {r7,lr}
+ 395              	.LCFI15:
+ 396              	 .cfi_def_cfa_offset 8
+ 397              	 .cfi_offset 7,-8
+ 398              	 .cfi_offset 14,-4
+ 399 0002 84B0     	 sub sp,sp,#16
+ 400              	.LCFI16:
+ 401              	 .cfi_def_cfa_offset 24
+ 402 0004 00AF     	 add r7,sp,#0
+ 403              	.LCFI17:
+ 404              	 .cfi_def_cfa_register 7
+ 405 0006 F860     	 str r0,[r7,#12]
+ 406 0008 B960     	 str r1,[r7,#8]
+ 407 000a 7A60     	 str r2,[r7,#4]
+  78:.././hal/sam3u1c/usart_serial.c **** 	while (len) {
+ 408              	 .loc 2 78 0
+ 409 000c 09E0     	 b .L32
+ 410              	.L33:
+  79:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_getchar(usart, data);
+ 411              	 .loc 2 79 0
+ 412 000e B968     	 ldr r1,[r7,#8]
+ 413 0010 F868     	 ldr r0,[r7,#12]
+ 414 0012 084B     	 ldr r3,.L35
+ 415 0014 9847     	 blx r3
+ 416              	.LVL9:
+  80:.././hal/sam3u1c/usart_serial.c **** 		len--;
+ 417              	 .loc 2 80 0
+ 418 0016 7B68     	 ldr r3,[r7,#4]
+ 419 0018 013B     	 subs r3,r3,#1
+ 420 001a 7B60     	 str r3,[r7,#4]
+  81:.././hal/sam3u1c/usart_serial.c **** 		data++;
+ 421              	 .loc 2 81 0
+ 422 001c BB68     	 ldr r3,[r7,#8]
+ 423 001e 0133     	 adds r3,r3,#1
+ 424 0020 BB60     	 str r3,[r7,#8]
+ 425              	.L32:
+  78:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_getchar(usart, data);
+ 426              	 .loc 2 78 0
+ 427 0022 7B68     	 ldr r3,[r7,#4]
+ 428 0024 002B     	 cmp r3,#0
+ 429 0026 F2D1     	 bne .L33
+  82:.././hal/sam3u1c/usart_serial.c **** 	}
+  83:.././hal/sam3u1c/usart_serial.c **** 	return STATUS_OK;
+ 430              	 .loc 2 83 0
+ 431 0028 0023     	 movs r3,#0
+  84:.././hal/sam3u1c/usart_serial.c **** }
+ 432              	 .loc 2 84 0
+ 433 002a 1846     	 mov r0,r3
+ 434 002c 1037     	 adds r7,r7,#16
+ 435              	.LCFI18:
+ 436              	 .cfi_def_cfa_offset 8
+ 437 002e BD46     	 mov sp,r7
+ 438              	.LCFI19:
+ 439              	 .cfi_def_cfa_register 13
+ 440              	 
+ 441 0030 80BD     	 pop {r7,pc}
+ 442              	.L36:
+ 443 0032 00BF     	 .align 2
+ 444              	.L35:
+ 445 0034 00000000 	 .word usart_serial_getchar
+ 446              	 .cfi_endproc
+ 447              	.LFE92:
+ 449              	 .text
+ 450              	.Letext0:
+ 451              	 .file 3 ".././hal/sam3u1c/inc/status_codes.h"
+ 452              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 453              	 .file 5 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 454              	 .file 6 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 455              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 456              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
+ 457              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 458              	 .file 10 ".././hal/sam3u1c/inc/component/component_uart.h"
+ 459              	 .file 11 ".././hal/sam3u1c/inc/component/component_usart.h"
+ 460              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 461              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 462              	 .file 14 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 463              	 .file 15 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 464              	 .file 16 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 465              	 .file 17 ".././hal/sam3u1c/inc/uart.h"
+ 466              	 .file 18 ".././hal/sam3u1c/inc/usart.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 usart_serial.c
+    {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
+    {standard input}:19     .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
+    {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
+    {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
+    {standard input}:27     .text.usart_serial_putchar:00000000 $t
+    {standard input}:33     .text.usart_serial_putchar:00000000 usart_serial_putchar
+    {standard input}:158    .text.usart_serial_putchar:00000090 $d
+    {standard input}:168    .text.usart_serial_getchar:00000000 $t
+    {standard input}:174    .text.usart_serial_getchar:00000000 usart_serial_getchar
+    {standard input}:299    .text.usart_serial_getchar:0000009c $d
+    {standard input}:309    .text.usart_serial_write_packet:00000000 $t
+    {standard input}:316    .text.usart_serial_write_packet:00000000 usart_serial_write_packet
+    {standard input}:376    .text.usart_serial_write_packet:00000038 $d
+    {standard input}:381    .text.usart_serial_read_packet:00000000 $t
+    {standard input}:388    .text.usart_serial_read_packet:00000000 usart_serial_read_packet
+    {standard input}:445    .text.usart_serial_read_packet:00000034 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
+                           .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
+                           .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
+                           .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.sam3u1c.h.220.c0b54b5a55bc87791749ae17b1487779
+                           .group:00000000 wm4.core_cm3.h.32.5c59c312db585622d253fdb887b0afb1
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm3.h.127.b561404f2a159dc517b409bc244d16c1
+                           .group:00000000 wm4.component_adc.h.43.d49887380d07d1cd08cc4e37b3485e31
+                           .group:00000000 wm4.component_adc12b.h.43.eadc09f1073923fb91f1f393cc397dcb
+                           .group:00000000 wm4.component_chipid.h.43.15825c969b1cc9eeea3d9416499874c8
+                           .group:00000000 wm4.component_dmac.h.43.cc8187b1cf6bfeadc91b14fdd28b9e8b
+                           .group:00000000 wm4.component_efc.h.43.cb1b3997ad9ea3733ad421ecbfd02fdd
+                           .group:00000000 wm4.component_gpbr.h.43.49b7e13894fe38b29f2243bbbe530227
+                           .group:00000000 wm4.component_hsmci.h.43.7b7194c92e1480c038f3342f7cec440a
+                           .group:00000000 wm4.component_matrix.h.43.1d209838fb75b4827119203a357141ee
+                           .group:00000000 wm4.component_pdc.h.43.19528a5f9ef5a348234ea06f89069c55
+                           .group:00000000 wm4.component_pio.h.43.163b46c3683ccf92e8de39a5554f50e8
+                           .group:00000000 wm4.component_pmc.h.43.ee4f030602866917aeed15fb2b948de8
+                           .group:00000000 wm4.component_pwm.h.43.ab6262a86f0aea354b43fe6dce7e7eb3
+                           .group:00000000 wm4.component_rstc.h.43.4eb59dc2ddcf585fabf251d0c329fcdd
+                           .group:00000000 wm4.component_rtc.h.43.ba8ccafc772b11d562a3cceab8b95072
+                           .group:00000000 wm4.component_rtt.h.43.3206ef8f067e5e747c3c4c7e719c1429
+                           .group:00000000 wm4.component_smc.h.43.907847915f1a5616734199d7e34424fa
+                           .group:00000000 wm4.component_spi.h.43.a2a09df64ab768c0a32be55285c74ded
+                           .group:00000000 wm4.component_ssc.h.43.d7c78f990c13fc511671b64798c4bcd0
+                           .group:00000000 wm4.component_supc.h.43.7d17f8e5ed3ba815e84381152735062f
+                           .group:00000000 wm4.component_tc.h.43.662eac8137408372b4f9d26c0b5f8621
+                           .group:00000000 wm4.component_twi.h.43.eda18625bd851fc4605861f5b3240c0b
+                           .group:00000000 wm4.component_uart.h.43.2d92735c5ea05c973661e1ba99a2f37c
+                           .group:00000000 wm4.component_udphs.h.43.21cecd26a4e44df0013037f29f2716e4
+                           .group:00000000 wm4.component_usart.h.43.7872f8f455adb38b67b9fbdb15657fbe
+                           .group:00000000 wm4.component_wdt.h.43.e31e10a5469b62c3660b49ab250f802f
+                           .group:00000000 wm4.instance_hsmci.h.43.e233236cc7fd5a805539a7ecc0e1d8d2
+                           .group:00000000 wm4.instance_ssc.h.43.c0cfabc3b9f3bb60745c913111bce965
+                           .group:00000000 wm4.instance_spi.h.43.570ae46af19e4179d9796872b9a8b9bc
+                           .group:00000000 wm4.instance_tc0.h.43.049b3a82387d2961594190609e896a29
+                           .group:00000000 wm4.instance_twi0.h.43.255dc0afa9e0d45eaea0a935eca2f103
+                           .group:00000000 wm4.instance_twi1.h.43.652d1d407893f259f2a817544ba662c2
+                           .group:00000000 wm4.instance_pwm.h.43.88294acec3ca56d6fc521038521a1567
+                           .group:00000000 wm4.instance_usart0.h.43.e26677512aee3dd3bedd71d394410000
+                           .group:00000000 wm4.instance_usart1.h.43.1ba97dbc6610d9fb3132b9d845688201
+                           .group:00000000 wm4.instance_usart2.h.43.baa1bf30b3c5acdee90c4a1f50fe9ebd
+                           .group:00000000 wm4.instance_udphs.h.43.b1ce94181e0d1f22877b81c6040a4363
+                           .group:00000000 wm4.instance_adc12b.h.43.d73ed59e867ccdfdb846d9ef32a50c0c
+                           .group:00000000 wm4.instance_adc.h.43.2b7611a00afeb4c555339b844d4b8456
+                           .group:00000000 wm4.instance_dmac.h.43.ee72691d84889c8f285932be4a075ddb
+                           .group:00000000 wm4.instance_smc.h.43.29610fd00979caaaa65821ad40e9da06
+                           .group:00000000 wm4.instance_matrix.h.43.01ee474141594385374c41a29daeeefe
+                           .group:00000000 wm4.instance_pmc.h.43.37430325ed7b8b24c3fe640c41c29ef5
+                           .group:00000000 wm4.instance_uart.h.43.bd378395ba022bc8670c82ebe656fbbd
+                           .group:00000000 wm4.instance_chipid.h.43.29cd8fb600f149aa58830fcc78fe36f9
+                           .group:00000000 wm4.instance_efc0.h.43.6b85dba20721a7e9fc4350e78d193680
+                           .group:00000000 wm4.instance_efc1.h.43.2c5e94fc4d2742678318d73450d08d57
+                           .group:00000000 wm4.instance_pioa.h.43.eeb46cc3bfe01a1f28e67aa3a6851ed8
+                           .group:00000000 wm4.instance_piob.h.43.652ce26b6c37ac56f9ed42a9216d9aca
+                           .group:00000000 wm4.instance_rstc.h.43.c5de224364a50a85f237c0b864aa4c8f
+                           .group:00000000 wm4.instance_supc.h.43.a5f1a5ca08f468ccf34ed3653e045f1f
+                           .group:00000000 wm4.instance_rtt.h.43.8622b192c23334996132415e3095df7f
+                           .group:00000000 wm4.instance_wdt.h.43.407ea53e133eacf09acf2c7fcb6b7524
+                           .group:00000000 wm4.instance_rtc.h.43.f70b77f9180401c8d9d920cb4a1cd166
+                           .group:00000000 wm4.instance_gpbr.h.43.9066cb40d557f6755101368854272348
+                           .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
+                           .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
+                           .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
+                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
+                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
+                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
+                           .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
+                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:00000000 wm4.stdlib.h.56.d4493cd3736e51e9d56335045f26df45
+                           .group:00000000 wm4.compiler.h.88.0e6ad966134fa012ce9a34053d3f48aa
+                           .group:00000000 wm4.interrupt_sam_nvic.h.45.4876da6c127868305d66389e87e0876f
+                           .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
+                           .group:00000000 wm4.conf_clock.h.45.5dc276d21b4d793a62f1a9757cc18d5c
+                           .group:00000000 wm4.board.h.69.3670053ec9e880dbc2016be2b8dca792
+                           .group:00000000 wm4.cw521.h.62.49e8a34af6a9b815e03b7858792ba391
+                           .group:00000000 wm4.pmc.h.45.bbe1bf97a811e3b283420b2eeadf0b35
+                           .group:00000000 wm4.osc.h.94.b766cddafe899eca01d775f7b2906680
+                           .group:00000000 wm4.pll.h.45.a605c31ca466ae25752a678e8572be48
+                           .group:00000000 wm4.sysclk.h.156.541a142b0016a365728ea1f7c0e3db84
+                           .group:00000000 wm4.uart.h.45.a5af743b8064bd84d1a6438457096e18
+                           .group:00000000 wm4.usart.h.46.eae6fe592b7ea0768efef8d312e7f44f
+                           .group:00000000 wm4.conf_uart_serial.h.45.245cdceaa1a3811fd043bf660ce38054
+
+UNDEFINED SYMBOLS
+uart_write
+usart_write
+uart_read
+usart_read

@@ -1,0 +1,3817 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "pio.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
+  16              	 .align 2
+  19              	cpu_irq_critical_section_counter:
+  20 0000 00000000 	 .space 4
+  21              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
+  24              	cpu_irq_prev_interrupt_state:
+  25 0000 00       	 .space 1
+  26              	 .section .text.pio_pull_up,"ax",%progbits
+  27              	 .align 1
+  28              	 .global pio_pull_up
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	pio_pull_up:
+  35              	.LFB67:
+  36              	 .file 1 ".././hal/sam3u1c/pio.c"
+   1:.././hal/sam3u1c/pio.c **** /**
+   2:.././hal/sam3u1c/pio.c ****  * \file
+   3:.././hal/sam3u1c/pio.c ****  *
+   4:.././hal/sam3u1c/pio.c ****  * \brief Parallel Input/Output (PIO) Controller driver for SAM.
+   5:.././hal/sam3u1c/pio.c ****  *
+   6:.././hal/sam3u1c/pio.c ****  * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/pio.c ****  *
+   8:.././hal/sam3u1c/pio.c ****  * \asf_license_start
+   9:.././hal/sam3u1c/pio.c ****  *
+  10:.././hal/sam3u1c/pio.c ****  * \page License
+  11:.././hal/sam3u1c/pio.c ****  *
+  12:.././hal/sam3u1c/pio.c ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/pio.c ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/pio.c ****  *
+  15:.././hal/sam3u1c/pio.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/pio.c ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/pio.c ****  *
+  18:.././hal/sam3u1c/pio.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/pio.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/pio.c ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/pio.c ****  *
+  22:.././hal/sam3u1c/pio.c ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/pio.c ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/pio.c ****  *
+  25:.././hal/sam3u1c/pio.c ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/pio.c ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/pio.c ****  *
+  28:.././hal/sam3u1c/pio.c ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/pio.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/pio.c ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/pio.c ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/pio.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/pio.c ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/pio.c ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/pio.c ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/pio.c ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/pio.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/pio.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/pio.c ****  *
+  40:.././hal/sam3u1c/pio.c ****  * \asf_license_stop
+  41:.././hal/sam3u1c/pio.c ****  *
+  42:.././hal/sam3u1c/pio.c ****  */
+  43:.././hal/sam3u1c/pio.c **** 
+  44:.././hal/sam3u1c/pio.c **** #include "pio.h"
+  45:.././hal/sam3u1c/pio.c **** 
+  46:.././hal/sam3u1c/pio.c **** #ifndef PIO_WPMR_WPKEY_PASSWD
+  47:.././hal/sam3u1c/pio.c **** #  define PIO_WPMR_WPKEY_PASSWD PIO_WPMR_WPKEY(0x50494Fu)
+  48:.././hal/sam3u1c/pio.c **** #endif
+  49:.././hal/sam3u1c/pio.c **** 
+  50:.././hal/sam3u1c/pio.c **** /**
+  51:.././hal/sam3u1c/pio.c ****  * \defgroup sam_drivers_pio_group Peripheral Parallel Input/Output (PIO) Controller
+  52:.././hal/sam3u1c/pio.c ****  *
+  53:.././hal/sam3u1c/pio.c ****  * \par Purpose
+  54:.././hal/sam3u1c/pio.c ****  *
+  55:.././hal/sam3u1c/pio.c ****  * The Parallel Input/Output Controller (PIO) manages up to 32 fully
+  56:.././hal/sam3u1c/pio.c ****  * programmable input/output lines. Each I/O line may be dedicated as a
+  57:.././hal/sam3u1c/pio.c ****  * general-purpose I/O or be assigned to a function of an embedded peripheral.
+  58:.././hal/sam3u1c/pio.c ****  * This assures effective optimization of the pins of a product.
+  59:.././hal/sam3u1c/pio.c ****  *
+  60:.././hal/sam3u1c/pio.c ****  * @{
+  61:.././hal/sam3u1c/pio.c ****  */
+  62:.././hal/sam3u1c/pio.c **** 
+  63:.././hal/sam3u1c/pio.c **** #ifndef FREQ_SLOW_CLOCK_EXT
+  64:.././hal/sam3u1c/pio.c **** /* External slow clock frequency (hz) */
+  65:.././hal/sam3u1c/pio.c **** #define FREQ_SLOW_CLOCK_EXT 32768
+  66:.././hal/sam3u1c/pio.c **** #endif
+  67:.././hal/sam3u1c/pio.c **** 
+  68:.././hal/sam3u1c/pio.c **** /**
+  69:.././hal/sam3u1c/pio.c ****  * \brief Configure PIO internal pull-up.
+  70:.././hal/sam3u1c/pio.c ****  *
+  71:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+  72:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+  73:.././hal/sam3u1c/pio.c ****  * \param ul_pull_up_enable Indicates if the pin(s) internal pull-up shall be
+  74:.././hal/sam3u1c/pio.c ****  * configured.
+  75:.././hal/sam3u1c/pio.c ****  */
+  76:.././hal/sam3u1c/pio.c **** void pio_pull_up(Pio *p_pio, const uint32_t ul_mask,
+  77:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_pull_up_enable)
+  78:.././hal/sam3u1c/pio.c **** {
+  37              	 .loc 1 78 0
+  38              	 .cfi_startproc
+  39              	 
+  40              	 
+  41              	 
+  42 0000 80B4     	 push {r7}
+  43              	.LCFI0:
+  44              	 .cfi_def_cfa_offset 4
+  45              	 .cfi_offset 7,-4
+  46 0002 85B0     	 sub sp,sp,#20
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 24
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52 0006 F860     	 str r0,[r7,#12]
+  53 0008 B960     	 str r1,[r7,#8]
+  54 000a 7A60     	 str r2,[r7,#4]
+  79:.././hal/sam3u1c/pio.c **** 	/* Enable the pull-up(s) if necessary */
+  80:.././hal/sam3u1c/pio.c **** 	if (ul_pull_up_enable) {
+  55              	 .loc 1 80 0
+  56 000c 7B68     	 ldr r3,[r7,#4]
+  57 000e 002B     	 cmp r3,#0
+  58 0010 03D0     	 beq .L2
+  81:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_PUER = ul_mask;
+  59              	 .loc 1 81 0
+  60 0012 FB68     	 ldr r3,[r7,#12]
+  61 0014 BA68     	 ldr r2,[r7,#8]
+  62 0016 5A66     	 str r2,[r3,#100]
+  82:.././hal/sam3u1c/pio.c **** 	} else {
+  83:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_PUDR = ul_mask;
+  84:.././hal/sam3u1c/pio.c **** 	}
+  85:.././hal/sam3u1c/pio.c **** }
+  63              	 .loc 1 85 0
+  64 0018 02E0     	 b .L4
+  65              	.L2:
+  83:.././hal/sam3u1c/pio.c **** 	}
+  66              	 .loc 1 83 0
+  67 001a FB68     	 ldr r3,[r7,#12]
+  68 001c BA68     	 ldr r2,[r7,#8]
+  69 001e 1A66     	 str r2,[r3,#96]
+  70              	.L4:
+  71              	 .loc 1 85 0
+  72 0020 00BF     	 nop
+  73 0022 1437     	 adds r7,r7,#20
+  74              	.LCFI3:
+  75              	 .cfi_def_cfa_offset 4
+  76 0024 BD46     	 mov sp,r7
+  77              	.LCFI4:
+  78              	 .cfi_def_cfa_register 13
+  79              	 
+  80 0026 80BC     	 pop {r7}
+  81              	.LCFI5:
+  82              	 .cfi_restore 7
+  83              	 .cfi_def_cfa_offset 0
+  84 0028 7047     	 bx lr
+  85              	 .cfi_endproc
+  86              	.LFE67:
+  88              	 .section .text.pio_set_debounce_filter,"ax",%progbits
+  89              	 .align 1
+  90              	 .global pio_set_debounce_filter
+  91              	 .syntax unified
+  92              	 .thumb
+  93              	 .thumb_func
+  94              	 .fpu softvfp
+  96              	pio_set_debounce_filter:
+  97              	.LFB68:
+  86:.././hal/sam3u1c/pio.c **** 
+  87:.././hal/sam3u1c/pio.c **** /**
+  88:.././hal/sam3u1c/pio.c ****  * \brief Configure Glitch or Debouncing filter for the specified input(s).
+  89:.././hal/sam3u1c/pio.c ****  *
+  90:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+  91:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+  92:.././hal/sam3u1c/pio.c ****  * \param ul_cut_off Cuts off frequency for debouncing filter.
+  93:.././hal/sam3u1c/pio.c ****  */
+  94:.././hal/sam3u1c/pio.c **** void pio_set_debounce_filter(Pio *p_pio, const uint32_t ul_mask,
+  95:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_cut_off)
+  96:.././hal/sam3u1c/pio.c **** {
+  98              	 .loc 1 96 0
+  99              	 .cfi_startproc
+ 100              	 
+ 101              	 
+ 102              	 
+ 103 0000 80B4     	 push {r7}
+ 104              	.LCFI6:
+ 105              	 .cfi_def_cfa_offset 4
+ 106              	 .cfi_offset 7,-4
+ 107 0002 85B0     	 sub sp,sp,#20
+ 108              	.LCFI7:
+ 109              	 .cfi_def_cfa_offset 24
+ 110 0004 00AF     	 add r7,sp,#0
+ 111              	.LCFI8:
+ 112              	 .cfi_def_cfa_register 7
+ 113 0006 F860     	 str r0,[r7,#12]
+ 114 0008 B960     	 str r1,[r7,#8]
+ 115 000a 7A60     	 str r2,[r7,#4]
+  97:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+  98:.././hal/sam3u1c/pio.c **** 	/* Set Debouncing, 0 bit field no effect */
+  99:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_IFSCER = ul_mask;
+ 100:.././hal/sam3u1c/pio.c **** #elif (SAM3XA || SAM3U)
+ 101:.././hal/sam3u1c/pio.c **** 	/* Set Debouncing, 0 bit field no effect */
+ 102:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_DIFSR = ul_mask;
+ 116              	 .loc 1 102 0
+ 117 000c FB68     	 ldr r3,[r7,#12]
+ 118 000e BA68     	 ldr r2,[r7,#8]
+ 119 0010 C3F88420 	 str r2,[r3,#132]
+ 103:.././hal/sam3u1c/pio.c **** #else
+ 104:.././hal/sam3u1c/pio.c **** #error "Unsupported device"
+ 105:.././hal/sam3u1c/pio.c **** #endif
+ 106:.././hal/sam3u1c/pio.c **** 
+ 107:.././hal/sam3u1c/pio.c **** 	/*
+ 108:.././hal/sam3u1c/pio.c **** 	 * The debouncing filter can filter a pulse of less than 1/2 Period of a
+ 109:.././hal/sam3u1c/pio.c **** 	 * programmable Divided Slow Clock:
+ 110:.././hal/sam3u1c/pio.c **** 	 * Tdiv_slclk = ((DIV+1)*2).Tslow_clock
+ 111:.././hal/sam3u1c/pio.c **** 	 */
+ 112:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_SCDR = PIO_SCDR_DIV((FREQ_SLOW_CLOCK_EXT /
+ 120              	 .loc 1 112 0
+ 121 0014 7B68     	 ldr r3,[r7,#4]
+ 122 0016 5B00     	 lsls r3,r3,#1
+ 123 0018 4FF40042 	 mov r2,#32768
+ 124 001c B2FBF3F3 	 udiv r3,r2,r3
+ 125 0020 013B     	 subs r3,r3,#1
+ 126 0022 C3F30D02 	 ubfx r2,r3,#0,#14
+ 127 0026 FB68     	 ldr r3,[r7,#12]
+ 128 0028 C3F88C20 	 str r2,[r3,#140]
+ 113:.././hal/sam3u1c/pio.c **** 			(2 * (ul_cut_off))) - 1);
+ 114:.././hal/sam3u1c/pio.c **** }
+ 129              	 .loc 1 114 0
+ 130 002c 00BF     	 nop
+ 131 002e 1437     	 adds r7,r7,#20
+ 132              	.LCFI9:
+ 133              	 .cfi_def_cfa_offset 4
+ 134 0030 BD46     	 mov sp,r7
+ 135              	.LCFI10:
+ 136              	 .cfi_def_cfa_register 13
+ 137              	 
+ 138 0032 80BC     	 pop {r7}
+ 139              	.LCFI11:
+ 140              	 .cfi_restore 7
+ 141              	 .cfi_def_cfa_offset 0
+ 142 0034 7047     	 bx lr
+ 143              	 .cfi_endproc
+ 144              	.LFE68:
+ 146              	 .section .text.pio_set,"ax",%progbits
+ 147              	 .align 1
+ 148              	 .global pio_set
+ 149              	 .syntax unified
+ 150              	 .thumb
+ 151              	 .thumb_func
+ 152              	 .fpu softvfp
+ 154              	pio_set:
+ 155              	.LFB69:
+ 115:.././hal/sam3u1c/pio.c **** 
+ 116:.././hal/sam3u1c/pio.c **** /**
+ 117:.././hal/sam3u1c/pio.c ****  * \brief Set a high output level on all the PIOs defined in ul_mask.
+ 118:.././hal/sam3u1c/pio.c ****  * This has no immediate effects on PIOs that are not output, but the PIO
+ 119:.././hal/sam3u1c/pio.c ****  * controller will save the value if they are changed to outputs.
+ 120:.././hal/sam3u1c/pio.c ****  *
+ 121:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 122:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 123:.././hal/sam3u1c/pio.c ****  */
+ 124:.././hal/sam3u1c/pio.c **** void pio_set(Pio *p_pio, const uint32_t ul_mask)
+ 125:.././hal/sam3u1c/pio.c **** {
+ 156              	 .loc 1 125 0
+ 157              	 .cfi_startproc
+ 158              	 
+ 159              	 
+ 160              	 
+ 161 0000 80B4     	 push {r7}
+ 162              	.LCFI12:
+ 163              	 .cfi_def_cfa_offset 4
+ 164              	 .cfi_offset 7,-4
+ 165 0002 83B0     	 sub sp,sp,#12
+ 166              	.LCFI13:
+ 167              	 .cfi_def_cfa_offset 16
+ 168 0004 00AF     	 add r7,sp,#0
+ 169              	.LCFI14:
+ 170              	 .cfi_def_cfa_register 7
+ 171 0006 7860     	 str r0,[r7,#4]
+ 172 0008 3960     	 str r1,[r7]
+ 126:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_SODR = ul_mask;
+ 173              	 .loc 1 126 0
+ 174 000a 7B68     	 ldr r3,[r7,#4]
+ 175 000c 3A68     	 ldr r2,[r7]
+ 176 000e 1A63     	 str r2,[r3,#48]
+ 127:.././hal/sam3u1c/pio.c **** }
+ 177              	 .loc 1 127 0
+ 178 0010 00BF     	 nop
+ 179 0012 0C37     	 adds r7,r7,#12
+ 180              	.LCFI15:
+ 181              	 .cfi_def_cfa_offset 4
+ 182 0014 BD46     	 mov sp,r7
+ 183              	.LCFI16:
+ 184              	 .cfi_def_cfa_register 13
+ 185              	 
+ 186 0016 80BC     	 pop {r7}
+ 187              	.LCFI17:
+ 188              	 .cfi_restore 7
+ 189              	 .cfi_def_cfa_offset 0
+ 190 0018 7047     	 bx lr
+ 191              	 .cfi_endproc
+ 192              	.LFE69:
+ 194              	 .section .text.pio_clear,"ax",%progbits
+ 195              	 .align 1
+ 196              	 .global pio_clear
+ 197              	 .syntax unified
+ 198              	 .thumb
+ 199              	 .thumb_func
+ 200              	 .fpu softvfp
+ 202              	pio_clear:
+ 203              	.LFB70:
+ 128:.././hal/sam3u1c/pio.c **** 
+ 129:.././hal/sam3u1c/pio.c **** /**
+ 130:.././hal/sam3u1c/pio.c ****  * \brief Set a low output level on all the PIOs defined in ul_mask.
+ 131:.././hal/sam3u1c/pio.c ****  * This has no immediate effects on PIOs that are not output, but the PIO
+ 132:.././hal/sam3u1c/pio.c ****  * controller will save the value if they are changed to outputs.
+ 133:.././hal/sam3u1c/pio.c ****  *
+ 134:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 135:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 136:.././hal/sam3u1c/pio.c ****  */
+ 137:.././hal/sam3u1c/pio.c **** void pio_clear(Pio *p_pio, const uint32_t ul_mask)
+ 138:.././hal/sam3u1c/pio.c **** {
+ 204              	 .loc 1 138 0
+ 205              	 .cfi_startproc
+ 206              	 
+ 207              	 
+ 208              	 
+ 209 0000 80B4     	 push {r7}
+ 210              	.LCFI18:
+ 211              	 .cfi_def_cfa_offset 4
+ 212              	 .cfi_offset 7,-4
+ 213 0002 83B0     	 sub sp,sp,#12
+ 214              	.LCFI19:
+ 215              	 .cfi_def_cfa_offset 16
+ 216 0004 00AF     	 add r7,sp,#0
+ 217              	.LCFI20:
+ 218              	 .cfi_def_cfa_register 7
+ 219 0006 7860     	 str r0,[r7,#4]
+ 220 0008 3960     	 str r1,[r7]
+ 139:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_CODR = ul_mask;
+ 221              	 .loc 1 139 0
+ 222 000a 7B68     	 ldr r3,[r7,#4]
+ 223 000c 3A68     	 ldr r2,[r7]
+ 224 000e 5A63     	 str r2,[r3,#52]
+ 140:.././hal/sam3u1c/pio.c **** }
+ 225              	 .loc 1 140 0
+ 226 0010 00BF     	 nop
+ 227 0012 0C37     	 adds r7,r7,#12
+ 228              	.LCFI21:
+ 229              	 .cfi_def_cfa_offset 4
+ 230 0014 BD46     	 mov sp,r7
+ 231              	.LCFI22:
+ 232              	 .cfi_def_cfa_register 13
+ 233              	 
+ 234 0016 80BC     	 pop {r7}
+ 235              	.LCFI23:
+ 236              	 .cfi_restore 7
+ 237              	 .cfi_def_cfa_offset 0
+ 238 0018 7047     	 bx lr
+ 239              	 .cfi_endproc
+ 240              	.LFE70:
+ 242              	 .section .text.pio_get,"ax",%progbits
+ 243              	 .align 1
+ 244              	 .global pio_get
+ 245              	 .syntax unified
+ 246              	 .thumb
+ 247              	 .thumb_func
+ 248              	 .fpu softvfp
+ 250              	pio_get:
+ 251              	.LFB71:
+ 141:.././hal/sam3u1c/pio.c **** 
+ 142:.././hal/sam3u1c/pio.c **** /**
+ 143:.././hal/sam3u1c/pio.c ****  * \brief Return 1 if one or more PIOs of the given Pin instance currently have
+ 144:.././hal/sam3u1c/pio.c ****  * a high level; otherwise returns 0. This method returns the actual value that
+ 145:.././hal/sam3u1c/pio.c ****  * is being read on the pin. To return the supposed output value of a pin, use
+ 146:.././hal/sam3u1c/pio.c ****  * pio_get_output_data_status() instead.
+ 147:.././hal/sam3u1c/pio.c ****  *
+ 148:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 149:.././hal/sam3u1c/pio.c ****  * \param ul_type PIO type.
+ 150:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 151:.././hal/sam3u1c/pio.c ****  *
+ 152:.././hal/sam3u1c/pio.c ****  * \retval 1 at least one PIO currently has a high level.
+ 153:.././hal/sam3u1c/pio.c ****  * \retval 0 all PIOs have a low level.
+ 154:.././hal/sam3u1c/pio.c ****  */
+ 155:.././hal/sam3u1c/pio.c **** uint32_t pio_get(Pio *p_pio, const pio_type_t ul_type,
+ 156:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_mask)
+ 157:.././hal/sam3u1c/pio.c **** {
+ 252              	 .loc 1 157 0
+ 253              	 .cfi_startproc
+ 254              	 
+ 255              	 
+ 256              	 
+ 257 0000 80B4     	 push {r7}
+ 258              	.LCFI24:
+ 259              	 .cfi_def_cfa_offset 4
+ 260              	 .cfi_offset 7,-4
+ 261 0002 87B0     	 sub sp,sp,#28
+ 262              	.LCFI25:
+ 263              	 .cfi_def_cfa_offset 32
+ 264 0004 00AF     	 add r7,sp,#0
+ 265              	.LCFI26:
+ 266              	 .cfi_def_cfa_register 7
+ 267 0006 F860     	 str r0,[r7,#12]
+ 268 0008 B960     	 str r1,[r7,#8]
+ 269 000a 7A60     	 str r2,[r7,#4]
+ 158:.././hal/sam3u1c/pio.c **** 	uint32_t ul_reg;
+ 159:.././hal/sam3u1c/pio.c **** 
+ 160:.././hal/sam3u1c/pio.c **** 	if ((ul_type == PIO_OUTPUT_0) || (ul_type == PIO_OUTPUT_1)) {
+ 270              	 .loc 1 160 0
+ 271 000c BB68     	 ldr r3,[r7,#8]
+ 272 000e B3F1405F 	 cmp r3,#805306368
+ 273 0012 03D0     	 beq .L9
+ 274              	 .loc 1 160 0 is_stmt 0 discriminator 1
+ 275 0014 BB68     	 ldr r3,[r7,#8]
+ 276 0016 B3F1605F 	 cmp r3,#939524096
+ 277 001a 03D1     	 bne .L10
+ 278              	.L9:
+ 161:.././hal/sam3u1c/pio.c **** 		ul_reg = p_pio->PIO_ODSR;
+ 279              	 .loc 1 161 0 is_stmt 1
+ 280 001c FB68     	 ldr r3,[r7,#12]
+ 281 001e 9B6B     	 ldr r3,[r3,#56]
+ 282 0020 7B61     	 str r3,[r7,#20]
+ 283 0022 02E0     	 b .L11
+ 284              	.L10:
+ 162:.././hal/sam3u1c/pio.c **** 	} else {
+ 163:.././hal/sam3u1c/pio.c **** 		ul_reg = p_pio->PIO_PDSR;
+ 285              	 .loc 1 163 0
+ 286 0024 FB68     	 ldr r3,[r7,#12]
+ 287 0026 DB6B     	 ldr r3,[r3,#60]
+ 288 0028 7B61     	 str r3,[r7,#20]
+ 289              	.L11:
+ 164:.././hal/sam3u1c/pio.c **** 	}
+ 165:.././hal/sam3u1c/pio.c **** 
+ 166:.././hal/sam3u1c/pio.c **** 	if ((ul_reg & ul_mask) == 0) {
+ 290              	 .loc 1 166 0
+ 291 002a 7A69     	 ldr r2,[r7,#20]
+ 292 002c 7B68     	 ldr r3,[r7,#4]
+ 293 002e 1340     	 ands r3,r3,r2
+ 294 0030 002B     	 cmp r3,#0
+ 295 0032 01D1     	 bne .L12
+ 167:.././hal/sam3u1c/pio.c **** 		return 0;
+ 296              	 .loc 1 167 0
+ 297 0034 0023     	 movs r3,#0
+ 298 0036 00E0     	 b .L13
+ 299              	.L12:
+ 168:.././hal/sam3u1c/pio.c **** 	} else {
+ 169:.././hal/sam3u1c/pio.c **** 		return 1;
+ 300              	 .loc 1 169 0
+ 301 0038 0123     	 movs r3,#1
+ 302              	.L13:
+ 170:.././hal/sam3u1c/pio.c **** 	}
+ 171:.././hal/sam3u1c/pio.c **** }
+ 303              	 .loc 1 171 0
+ 304 003a 1846     	 mov r0,r3
+ 305 003c 1C37     	 adds r7,r7,#28
+ 306              	.LCFI27:
+ 307              	 .cfi_def_cfa_offset 4
+ 308 003e BD46     	 mov sp,r7
+ 309              	.LCFI28:
+ 310              	 .cfi_def_cfa_register 13
+ 311              	 
+ 312 0040 80BC     	 pop {r7}
+ 313              	.LCFI29:
+ 314              	 .cfi_restore 7
+ 315              	 .cfi_def_cfa_offset 0
+ 316 0042 7047     	 bx lr
+ 317              	 .cfi_endproc
+ 318              	.LFE71:
+ 320              	 .section .text.pio_set_peripheral,"ax",%progbits
+ 321              	 .align 1
+ 322              	 .global pio_set_peripheral
+ 323              	 .syntax unified
+ 324              	 .thumb
+ 325              	 .thumb_func
+ 326              	 .fpu softvfp
+ 328              	pio_set_peripheral:
+ 329              	.LFB72:
+ 172:.././hal/sam3u1c/pio.c **** 
+ 173:.././hal/sam3u1c/pio.c **** /**
+ 174:.././hal/sam3u1c/pio.c ****  * \brief Configure IO of a PIO controller as being controlled by a specific
+ 175:.././hal/sam3u1c/pio.c ****  * peripheral.
+ 176:.././hal/sam3u1c/pio.c ****  *
+ 177:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 178:.././hal/sam3u1c/pio.c ****  * \param ul_type PIO type.
+ 179:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 180:.././hal/sam3u1c/pio.c ****  */
+ 181:.././hal/sam3u1c/pio.c **** void pio_set_peripheral(Pio *p_pio, const pio_type_t ul_type,
+ 182:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_mask)
+ 183:.././hal/sam3u1c/pio.c **** {
+ 330              	 .loc 1 183 0
+ 331              	 .cfi_startproc
+ 332              	 
+ 333              	 
+ 334              	 
+ 335 0000 80B4     	 push {r7}
+ 336              	.LCFI30:
+ 337              	 .cfi_def_cfa_offset 4
+ 338              	 .cfi_offset 7,-4
+ 339 0002 87B0     	 sub sp,sp,#28
+ 340              	.LCFI31:
+ 341              	 .cfi_def_cfa_offset 32
+ 342 0004 00AF     	 add r7,sp,#0
+ 343              	.LCFI32:
+ 344              	 .cfi_def_cfa_register 7
+ 345 0006 F860     	 str r0,[r7,#12]
+ 346 0008 B960     	 str r1,[r7,#8]
+ 347 000a 7A60     	 str r2,[r7,#4]
+ 184:.././hal/sam3u1c/pio.c **** 	uint32_t ul_sr;
+ 185:.././hal/sam3u1c/pio.c **** 
+ 186:.././hal/sam3u1c/pio.c **** 	/* Disable interrupts on the pin(s) */
+ 187:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_IDR = ul_mask;
+ 348              	 .loc 1 187 0
+ 349 000c FB68     	 ldr r3,[r7,#12]
+ 350 000e 7A68     	 ldr r2,[r7,#4]
+ 351 0010 5A64     	 str r2,[r3,#68]
+ 188:.././hal/sam3u1c/pio.c **** 
+ 189:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+ 190:.././hal/sam3u1c/pio.c **** 	switch (ul_type) {
+ 191:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_A:
+ 192:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[0];
+ 193:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[0] &= (~ul_mask & ul_sr);
+ 194:.././hal/sam3u1c/pio.c **** 
+ 195:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[1];
+ 196:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[1] &= (~ul_mask & ul_sr);
+ 197:.././hal/sam3u1c/pio.c **** 		break;
+ 198:.././hal/sam3u1c/pio.c **** 
+ 199:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_B:
+ 200:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[0];
+ 201:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[0] = (ul_mask | ul_sr);
+ 202:.././hal/sam3u1c/pio.c **** 
+ 203:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[1];
+ 204:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[1] &= (~ul_mask & ul_sr);
+ 205:.././hal/sam3u1c/pio.c **** 		break;
+ 206:.././hal/sam3u1c/pio.c **** #if (!SAMG)
+ 207:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_C:
+ 208:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[0];
+ 209:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[0] &= (~ul_mask & ul_sr);
+ 210:.././hal/sam3u1c/pio.c **** 
+ 211:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[1];
+ 212:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[1] = (ul_mask | ul_sr);
+ 213:.././hal/sam3u1c/pio.c **** 		break;
+ 214:.././hal/sam3u1c/pio.c **** 
+ 215:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_D:
+ 216:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[0];
+ 217:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[0] = (ul_mask | ul_sr);
+ 218:.././hal/sam3u1c/pio.c **** 
+ 219:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABCDSR[1];
+ 220:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABCDSR[1] = (ul_mask | ul_sr);
+ 221:.././hal/sam3u1c/pio.c **** 		break;
+ 222:.././hal/sam3u1c/pio.c **** #endif
+ 223:.././hal/sam3u1c/pio.c **** 		/* Other types are invalid in this function */
+ 224:.././hal/sam3u1c/pio.c **** 	case PIO_INPUT:
+ 225:.././hal/sam3u1c/pio.c **** 	case PIO_OUTPUT_0:
+ 226:.././hal/sam3u1c/pio.c **** 	case PIO_OUTPUT_1:
+ 227:.././hal/sam3u1c/pio.c **** 	case PIO_NOT_A_PIN:
+ 228:.././hal/sam3u1c/pio.c **** 		return;
+ 229:.././hal/sam3u1c/pio.c **** 	}
+ 230:.././hal/sam3u1c/pio.c **** #elif (SAM3XA|| SAM3U)
+ 231:.././hal/sam3u1c/pio.c **** 	switch (ul_type) {
+ 352              	 .loc 1 231 0
+ 353 0012 BB68     	 ldr r3,[r7,#8]
+ 354 0014 B3F1805F 	 cmp r3,#268435456
+ 355 0018 1FD0     	 beq .L16
+ 356 001a B3F1805F 	 cmp r3,#268435456
+ 357 001e 05D8     	 bhi .L17
+ 358 0020 002B     	 cmp r3,#0
+ 359 0022 27D0     	 beq .L21
+ 360 0024 B3F1006F 	 cmp r3,#134217728
+ 361 0028 0AD0     	 beq .L19
+ 362 002a 1FE0     	 b .L15
+ 363              	.L17:
+ 364 002c B3F1405F 	 cmp r3,#805306368
+ 365 0030 20D0     	 beq .L21
+ 366 0032 B3F1605F 	 cmp r3,#939524096
+ 367 0036 1DD0     	 beq .L21
+ 368 0038 B3F1205F 	 cmp r3,#671088640
+ 369 003c 1AD0     	 beq .L21
+ 370 003e 15E0     	 b .L15
+ 371              	.L19:
+ 232:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_A:
+ 233:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABSR;
+ 372              	 .loc 1 233 0
+ 373 0040 FB68     	 ldr r3,[r7,#12]
+ 374 0042 1B6F     	 ldr r3,[r3,#112]
+ 375 0044 7B61     	 str r3,[r7,#20]
+ 234:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABSR &= (~ul_mask & ul_sr);
+ 376              	 .loc 1 234 0
+ 377 0046 FB68     	 ldr r3,[r7,#12]
+ 378 0048 1A6F     	 ldr r2,[r3,#112]
+ 379 004a 7B68     	 ldr r3,[r7,#4]
+ 380 004c D943     	 mvns r1,r3
+ 381 004e 7B69     	 ldr r3,[r7,#20]
+ 382 0050 0B40     	 ands r3,r3,r1
+ 383 0052 1A40     	 ands r2,r2,r3
+ 384 0054 FB68     	 ldr r3,[r7,#12]
+ 385 0056 1A67     	 str r2,[r3,#112]
+ 235:.././hal/sam3u1c/pio.c **** 		break;
+ 386              	 .loc 1 235 0
+ 387 0058 08E0     	 b .L15
+ 388              	.L16:
+ 236:.././hal/sam3u1c/pio.c **** 
+ 237:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_B:
+ 238:.././hal/sam3u1c/pio.c **** 		ul_sr = p_pio->PIO_ABSR;
+ 389              	 .loc 1 238 0
+ 390 005a FB68     	 ldr r3,[r7,#12]
+ 391 005c 1B6F     	 ldr r3,[r3,#112]
+ 392 005e 7B61     	 str r3,[r7,#20]
+ 239:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_ABSR = (ul_mask | ul_sr);
+ 393              	 .loc 1 239 0
+ 394 0060 7A68     	 ldr r2,[r7,#4]
+ 395 0062 7B69     	 ldr r3,[r7,#20]
+ 396 0064 1A43     	 orrs r2,r2,r3
+ 397 0066 FB68     	 ldr r3,[r7,#12]
+ 398 0068 1A67     	 str r2,[r3,#112]
+ 240:.././hal/sam3u1c/pio.c **** 		break;
+ 399              	 .loc 1 240 0
+ 400 006a 00BF     	 nop
+ 401              	.L15:
+ 241:.././hal/sam3u1c/pio.c **** 
+ 242:.././hal/sam3u1c/pio.c **** 		// other types are invalid in this function
+ 243:.././hal/sam3u1c/pio.c **** 	case PIO_INPUT:
+ 244:.././hal/sam3u1c/pio.c **** 	case PIO_OUTPUT_0:
+ 245:.././hal/sam3u1c/pio.c **** 	case PIO_OUTPUT_1:
+ 246:.././hal/sam3u1c/pio.c **** 	case PIO_NOT_A_PIN:
+ 247:.././hal/sam3u1c/pio.c **** 		return;
+ 248:.././hal/sam3u1c/pio.c **** 	}
+ 249:.././hal/sam3u1c/pio.c **** #else
+ 250:.././hal/sam3u1c/pio.c **** #error "Unsupported device"
+ 251:.././hal/sam3u1c/pio.c **** #endif
+ 252:.././hal/sam3u1c/pio.c **** 
+ 253:.././hal/sam3u1c/pio.c **** 	/* Remove the pins from under the control of PIO */
+ 254:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_PDR = ul_mask;
+ 402              	 .loc 1 254 0
+ 403 006c FB68     	 ldr r3,[r7,#12]
+ 404 006e 7A68     	 ldr r2,[r7,#4]
+ 405 0070 5A60     	 str r2,[r3,#4]
+ 406 0072 00E0     	 b .L14
+ 407              	.L21:
+ 247:.././hal/sam3u1c/pio.c **** 	}
+ 408              	 .loc 1 247 0
+ 409 0074 00BF     	 nop
+ 410              	.L14:
+ 255:.././hal/sam3u1c/pio.c **** }
+ 411              	 .loc 1 255 0
+ 412 0076 1C37     	 adds r7,r7,#28
+ 413              	.LCFI33:
+ 414              	 .cfi_def_cfa_offset 4
+ 415 0078 BD46     	 mov sp,r7
+ 416              	.LCFI34:
+ 417              	 .cfi_def_cfa_register 13
+ 418              	 
+ 419 007a 80BC     	 pop {r7}
+ 420              	.LCFI35:
+ 421              	 .cfi_restore 7
+ 422              	 .cfi_def_cfa_offset 0
+ 423 007c 7047     	 bx lr
+ 424              	 .cfi_endproc
+ 425              	.LFE72:
+ 427              	 .section .text.pio_set_input,"ax",%progbits
+ 428              	 .align 1
+ 429              	 .global pio_set_input
+ 430              	 .syntax unified
+ 431              	 .thumb
+ 432              	 .thumb_func
+ 433              	 .fpu softvfp
+ 435              	pio_set_input:
+ 436              	.LFB73:
+ 256:.././hal/sam3u1c/pio.c **** 
+ 257:.././hal/sam3u1c/pio.c **** /**
+ 258:.././hal/sam3u1c/pio.c ****  * \brief Configure one or more pin(s) or a PIO controller as inputs.
+ 259:.././hal/sam3u1c/pio.c ****  * Optionally, the corresponding internal pull-up(s) and glitch filter(s) can
+ 260:.././hal/sam3u1c/pio.c ****  * be enabled.
+ 261:.././hal/sam3u1c/pio.c ****  *
+ 262:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 263:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask indicating which pin(s) to configure as input(s).
+ 264:.././hal/sam3u1c/pio.c ****  * \param ul_attribute PIO attribute(s).
+ 265:.././hal/sam3u1c/pio.c ****  */
+ 266:.././hal/sam3u1c/pio.c **** void pio_set_input(Pio *p_pio, const uint32_t ul_mask,
+ 267:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_attribute)
+ 268:.././hal/sam3u1c/pio.c **** {
+ 437              	 .loc 1 268 0
+ 438              	 .cfi_startproc
+ 439              	 
+ 440              	 
+ 441 0000 80B5     	 push {r7,lr}
+ 442              	.LCFI36:
+ 443              	 .cfi_def_cfa_offset 8
+ 444              	 .cfi_offset 7,-8
+ 445              	 .cfi_offset 14,-4
+ 446 0002 84B0     	 sub sp,sp,#16
+ 447              	.LCFI37:
+ 448              	 .cfi_def_cfa_offset 24
+ 449 0004 00AF     	 add r7,sp,#0
+ 450              	.LCFI38:
+ 451              	 .cfi_def_cfa_register 7
+ 452 0006 F860     	 str r0,[r7,#12]
+ 453 0008 B960     	 str r1,[r7,#8]
+ 454 000a 7A60     	 str r2,[r7,#4]
+ 269:.././hal/sam3u1c/pio.c **** 	pio_disable_interrupt(p_pio, ul_mask);
+ 455              	 .loc 1 269 0
+ 456 000c B968     	 ldr r1,[r7,#8]
+ 457 000e F868     	 ldr r0,[r7,#12]
+ 458 0010 194B     	 ldr r3,.L27
+ 459 0012 9847     	 blx r3
+ 460              	.LVL0:
+ 270:.././hal/sam3u1c/pio.c **** 	pio_pull_up(p_pio, ul_mask, ul_attribute & PIO_PULLUP);
+ 461              	 .loc 1 270 0
+ 462 0014 7B68     	 ldr r3,[r7,#4]
+ 463 0016 03F00103 	 and r3,r3,#1
+ 464 001a 1A46     	 mov r2,r3
+ 465 001c B968     	 ldr r1,[r7,#8]
+ 466 001e F868     	 ldr r0,[r7,#12]
+ 467 0020 164B     	 ldr r3,.L27+4
+ 468 0022 9847     	 blx r3
+ 469              	.LVL1:
+ 271:.././hal/sam3u1c/pio.c **** 
+ 272:.././hal/sam3u1c/pio.c **** 	/* Enable Input Filter if necessary */
+ 273:.././hal/sam3u1c/pio.c **** 	if (ul_attribute & (PIO_DEGLITCH | PIO_DEBOUNCE)) {
+ 470              	 .loc 1 273 0
+ 471 0024 7B68     	 ldr r3,[r7,#4]
+ 472 0026 03F00A03 	 and r3,r3,#10
+ 473 002a 002B     	 cmp r3,#0
+ 474 002c 03D0     	 beq .L23
+ 274:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_IFER = ul_mask;
+ 475              	 .loc 1 274 0
+ 476 002e FB68     	 ldr r3,[r7,#12]
+ 477 0030 BA68     	 ldr r2,[r7,#8]
+ 478 0032 1A62     	 str r2,[r3,#32]
+ 479 0034 02E0     	 b .L24
+ 480              	.L23:
+ 275:.././hal/sam3u1c/pio.c **** 	} else {
+ 276:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_IFDR = ul_mask;
+ 481              	 .loc 1 276 0
+ 482 0036 FB68     	 ldr r3,[r7,#12]
+ 483 0038 BA68     	 ldr r2,[r7,#8]
+ 484 003a 5A62     	 str r2,[r3,#36]
+ 485              	.L24:
+ 277:.././hal/sam3u1c/pio.c **** 	}
+ 278:.././hal/sam3u1c/pio.c **** 
+ 279:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+ 280:.././hal/sam3u1c/pio.c **** 	/* Enable de-glitch or de-bounce if necessary */
+ 281:.././hal/sam3u1c/pio.c **** 	if (ul_attribute & PIO_DEGLITCH) {
+ 282:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_IFSCDR = ul_mask;
+ 283:.././hal/sam3u1c/pio.c **** 	} else {
+ 284:.././hal/sam3u1c/pio.c **** 		if (ul_attribute & PIO_DEBOUNCE) {
+ 285:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_IFSCER = ul_mask;
+ 286:.././hal/sam3u1c/pio.c **** 		}
+ 287:.././hal/sam3u1c/pio.c **** 	}
+ 288:.././hal/sam3u1c/pio.c **** #elif (SAM3XA|| SAM3U)
+ 289:.././hal/sam3u1c/pio.c **** 	/* Enable de-glitch or de-bounce if necessary */
+ 290:.././hal/sam3u1c/pio.c **** 	if (ul_attribute & PIO_DEGLITCH) {
+ 486              	 .loc 1 290 0
+ 487 003c 7B68     	 ldr r3,[r7,#4]
+ 488 003e 03F00203 	 and r3,r3,#2
+ 489 0042 002B     	 cmp r3,#0
+ 490 0044 04D0     	 beq .L25
+ 291:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_SCIFSR = ul_mask;
+ 491              	 .loc 1 291 0
+ 492 0046 FB68     	 ldr r3,[r7,#12]
+ 493 0048 BA68     	 ldr r2,[r7,#8]
+ 494 004a C3F88020 	 str r2,[r3,#128]
+ 495 004e 08E0     	 b .L26
+ 496              	.L25:
+ 292:.././hal/sam3u1c/pio.c **** 	} else {
+ 293:.././hal/sam3u1c/pio.c **** 		if (ul_attribute & PIO_DEBOUNCE) {
+ 497              	 .loc 1 293 0
+ 498 0050 7B68     	 ldr r3,[r7,#4]
+ 499 0052 03F00803 	 and r3,r3,#8
+ 500 0056 002B     	 cmp r3,#0
+ 501 0058 03D0     	 beq .L26
+ 294:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_DIFSR = ul_mask;
+ 502              	 .loc 1 294 0
+ 503 005a FB68     	 ldr r3,[r7,#12]
+ 504 005c BA68     	 ldr r2,[r7,#8]
+ 505 005e C3F88420 	 str r2,[r3,#132]
+ 506              	.L26:
+ 295:.././hal/sam3u1c/pio.c **** 		}
+ 296:.././hal/sam3u1c/pio.c **** 	}
+ 297:.././hal/sam3u1c/pio.c **** #else
+ 298:.././hal/sam3u1c/pio.c **** #error "Unsupported device"
+ 299:.././hal/sam3u1c/pio.c **** #endif
+ 300:.././hal/sam3u1c/pio.c **** 
+ 301:.././hal/sam3u1c/pio.c **** 	/* Configure pin as input */
+ 302:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_ODR = ul_mask;
+ 507              	 .loc 1 302 0
+ 508 0062 FB68     	 ldr r3,[r7,#12]
+ 509 0064 BA68     	 ldr r2,[r7,#8]
+ 510 0066 5A61     	 str r2,[r3,#20]
+ 303:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_PER = ul_mask;
+ 511              	 .loc 1 303 0
+ 512 0068 FB68     	 ldr r3,[r7,#12]
+ 513 006a BA68     	 ldr r2,[r7,#8]
+ 514 006c 1A60     	 str r2,[r3]
+ 304:.././hal/sam3u1c/pio.c **** }
+ 515              	 .loc 1 304 0
+ 516 006e 00BF     	 nop
+ 517 0070 1037     	 adds r7,r7,#16
+ 518              	.LCFI39:
+ 519              	 .cfi_def_cfa_offset 8
+ 520 0072 BD46     	 mov sp,r7
+ 521              	.LCFI40:
+ 522              	 .cfi_def_cfa_register 13
+ 523              	 
+ 524 0074 80BD     	 pop {r7,pc}
+ 525              	.L28:
+ 526 0076 00BF     	 .align 2
+ 527              	.L27:
+ 528 0078 00000000 	 .word pio_disable_interrupt
+ 529 007c 00000000 	 .word pio_pull_up
+ 530              	 .cfi_endproc
+ 531              	.LFE73:
+ 533              	 .section .text.pio_set_output,"ax",%progbits
+ 534              	 .align 1
+ 535              	 .global pio_set_output
+ 536              	 .syntax unified
+ 537              	 .thumb
+ 538              	 .thumb_func
+ 539              	 .fpu softvfp
+ 541              	pio_set_output:
+ 542              	.LFB74:
+ 305:.././hal/sam3u1c/pio.c **** 
+ 306:.././hal/sam3u1c/pio.c **** /**
+ 307:.././hal/sam3u1c/pio.c ****  * \brief Configure one or more pin(s) of a PIO controller as outputs, with
+ 308:.././hal/sam3u1c/pio.c ****  * the given default value. Optionally, the multi-drive feature can be enabled
+ 309:.././hal/sam3u1c/pio.c ****  * on the pin(s).
+ 310:.././hal/sam3u1c/pio.c ****  *
+ 311:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 312:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask indicating which pin(s) to configure.
+ 313:.././hal/sam3u1c/pio.c ****  * \param ul_default_level Default level on the pin(s).
+ 314:.././hal/sam3u1c/pio.c ****  * \param ul_multidrive_enable Indicates if the pin(s) shall be configured as
+ 315:.././hal/sam3u1c/pio.c ****  * open-drain.
+ 316:.././hal/sam3u1c/pio.c ****  * \param ul_pull_up_enable Indicates if the pin shall have its pull-up
+ 317:.././hal/sam3u1c/pio.c ****  * activated.
+ 318:.././hal/sam3u1c/pio.c ****  */
+ 319:.././hal/sam3u1c/pio.c **** void pio_set_output(Pio *p_pio, const uint32_t ul_mask,
+ 320:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_default_level,
+ 321:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_multidrive_enable,
+ 322:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_pull_up_enable)
+ 323:.././hal/sam3u1c/pio.c **** {
+ 543              	 .loc 1 323 0
+ 544              	 .cfi_startproc
+ 545              	 
+ 546              	 
+ 547 0000 80B5     	 push {r7,lr}
+ 548              	.LCFI41:
+ 549              	 .cfi_def_cfa_offset 8
+ 550              	 .cfi_offset 7,-8
+ 551              	 .cfi_offset 14,-4
+ 552 0002 84B0     	 sub sp,sp,#16
+ 553              	.LCFI42:
+ 554              	 .cfi_def_cfa_offset 24
+ 555 0004 00AF     	 add r7,sp,#0
+ 556              	.LCFI43:
+ 557              	 .cfi_def_cfa_register 7
+ 558 0006 F860     	 str r0,[r7,#12]
+ 559 0008 B960     	 str r1,[r7,#8]
+ 560 000a 7A60     	 str r2,[r7,#4]
+ 561 000c 3B60     	 str r3,[r7]
+ 324:.././hal/sam3u1c/pio.c **** 	pio_disable_interrupt(p_pio, ul_mask);
+ 562              	 .loc 1 324 0
+ 563 000e B968     	 ldr r1,[r7,#8]
+ 564 0010 F868     	 ldr r0,[r7,#12]
+ 565 0012 124B     	 ldr r3,.L34
+ 566 0014 9847     	 blx r3
+ 567              	.LVL2:
+ 325:.././hal/sam3u1c/pio.c **** 	pio_pull_up(p_pio, ul_mask, ul_pull_up_enable);
+ 568              	 .loc 1 325 0
+ 569 0016 BA69     	 ldr r2,[r7,#24]
+ 570 0018 B968     	 ldr r1,[r7,#8]
+ 571 001a F868     	 ldr r0,[r7,#12]
+ 572 001c 104B     	 ldr r3,.L34+4
+ 573 001e 9847     	 blx r3
+ 574              	.LVL3:
+ 326:.././hal/sam3u1c/pio.c **** 
+ 327:.././hal/sam3u1c/pio.c **** 	/* Enable multi-drive if necessary */
+ 328:.././hal/sam3u1c/pio.c **** 	if (ul_multidrive_enable) {
+ 575              	 .loc 1 328 0
+ 576 0020 3B68     	 ldr r3,[r7]
+ 577 0022 002B     	 cmp r3,#0
+ 578 0024 03D0     	 beq .L30
+ 329:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_MDER = ul_mask;
+ 579              	 .loc 1 329 0
+ 580 0026 FB68     	 ldr r3,[r7,#12]
+ 581 0028 BA68     	 ldr r2,[r7,#8]
+ 582 002a 1A65     	 str r2,[r3,#80]
+ 583 002c 02E0     	 b .L31
+ 584              	.L30:
+ 330:.././hal/sam3u1c/pio.c **** 	} else {
+ 331:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_MDDR = ul_mask;
+ 585              	 .loc 1 331 0
+ 586 002e FB68     	 ldr r3,[r7,#12]
+ 587 0030 BA68     	 ldr r2,[r7,#8]
+ 588 0032 5A65     	 str r2,[r3,#84]
+ 589              	.L31:
+ 332:.././hal/sam3u1c/pio.c **** 	}
+ 333:.././hal/sam3u1c/pio.c **** 
+ 334:.././hal/sam3u1c/pio.c **** 	/* Set default value */
+ 335:.././hal/sam3u1c/pio.c **** 	if (ul_default_level) {
+ 590              	 .loc 1 335 0
+ 591 0034 7B68     	 ldr r3,[r7,#4]
+ 592 0036 002B     	 cmp r3,#0
+ 593 0038 03D0     	 beq .L32
+ 336:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_SODR = ul_mask;
+ 594              	 .loc 1 336 0
+ 595 003a FB68     	 ldr r3,[r7,#12]
+ 596 003c BA68     	 ldr r2,[r7,#8]
+ 597 003e 1A63     	 str r2,[r3,#48]
+ 598 0040 02E0     	 b .L33
+ 599              	.L32:
+ 337:.././hal/sam3u1c/pio.c **** 	} else {
+ 338:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_CODR = ul_mask;
+ 600              	 .loc 1 338 0
+ 601 0042 FB68     	 ldr r3,[r7,#12]
+ 602 0044 BA68     	 ldr r2,[r7,#8]
+ 603 0046 5A63     	 str r2,[r3,#52]
+ 604              	.L33:
+ 339:.././hal/sam3u1c/pio.c **** 	}
+ 340:.././hal/sam3u1c/pio.c **** 
+ 341:.././hal/sam3u1c/pio.c **** 	/* Configure pin(s) as output(s) */
+ 342:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_OER = ul_mask;
+ 605              	 .loc 1 342 0
+ 606 0048 FB68     	 ldr r3,[r7,#12]
+ 607 004a BA68     	 ldr r2,[r7,#8]
+ 608 004c 1A61     	 str r2,[r3,#16]
+ 343:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_PER = ul_mask;
+ 609              	 .loc 1 343 0
+ 610 004e FB68     	 ldr r3,[r7,#12]
+ 611 0050 BA68     	 ldr r2,[r7,#8]
+ 612 0052 1A60     	 str r2,[r3]
+ 344:.././hal/sam3u1c/pio.c **** }
+ 613              	 .loc 1 344 0
+ 614 0054 00BF     	 nop
+ 615 0056 1037     	 adds r7,r7,#16
+ 616              	.LCFI44:
+ 617              	 .cfi_def_cfa_offset 8
+ 618 0058 BD46     	 mov sp,r7
+ 619              	.LCFI45:
+ 620              	 .cfi_def_cfa_register 13
+ 621              	 
+ 622 005a 80BD     	 pop {r7,pc}
+ 623              	.L35:
+ 624              	 .align 2
+ 625              	.L34:
+ 626 005c 00000000 	 .word pio_disable_interrupt
+ 627 0060 00000000 	 .word pio_pull_up
+ 628              	 .cfi_endproc
+ 629              	.LFE74:
+ 631              	 .section .text.pio_configure,"ax",%progbits
+ 632              	 .align 1
+ 633              	 .global pio_configure
+ 634              	 .syntax unified
+ 635              	 .thumb
+ 636              	 .thumb_func
+ 637              	 .fpu softvfp
+ 639              	pio_configure:
+ 640              	.LFB75:
+ 345:.././hal/sam3u1c/pio.c **** 
+ 346:.././hal/sam3u1c/pio.c **** /**
+ 347:.././hal/sam3u1c/pio.c ****  * \brief Perform complete pin(s) configuration; general attributes and PIO init
+ 348:.././hal/sam3u1c/pio.c ****  * if necessary.
+ 349:.././hal/sam3u1c/pio.c ****  *
+ 350:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 351:.././hal/sam3u1c/pio.c ****  * \param ul_type PIO type.
+ 352:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 353:.././hal/sam3u1c/pio.c ****  * \param ul_attribute Pins attributes.
+ 354:.././hal/sam3u1c/pio.c ****  *
+ 355:.././hal/sam3u1c/pio.c ****  * \return Whether the pin(s) have been configured properly.
+ 356:.././hal/sam3u1c/pio.c ****  */
+ 357:.././hal/sam3u1c/pio.c **** uint32_t pio_configure(Pio *p_pio, const pio_type_t ul_type,
+ 358:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_mask, const uint32_t ul_attribute)
+ 359:.././hal/sam3u1c/pio.c **** {
+ 641              	 .loc 1 359 0
+ 642              	 .cfi_startproc
+ 643              	 
+ 644              	 
+ 645 0000 90B5     	 push {r4,r7,lr}
+ 646              	.LCFI46:
+ 647              	 .cfi_def_cfa_offset 12
+ 648              	 .cfi_offset 4,-12
+ 649              	 .cfi_offset 7,-8
+ 650              	 .cfi_offset 14,-4
+ 651 0002 87B0     	 sub sp,sp,#28
+ 652              	.LCFI47:
+ 653              	 .cfi_def_cfa_offset 40
+ 654 0004 02AF     	 add r7,sp,#8
+ 655              	.LCFI48:
+ 656              	 .cfi_def_cfa 7,32
+ 657 0006 F860     	 str r0,[r7,#12]
+ 658 0008 B960     	 str r1,[r7,#8]
+ 659 000a 7A60     	 str r2,[r7,#4]
+ 660 000c 3B60     	 str r3,[r7]
+ 360:.././hal/sam3u1c/pio.c **** 	/* Configure pins */
+ 361:.././hal/sam3u1c/pio.c **** 	switch (ul_type) {
+ 661              	 .loc 1 361 0
+ 662 000e BB68     	 ldr r3,[r7,#8]
+ 663 0010 B3F1205F 	 cmp r3,#671088640
+ 664 0014 1ED0     	 beq .L38
+ 665 0016 B3F1205F 	 cmp r3,#671088640
+ 666 001a 06D8     	 bhi .L39
+ 667 001c B3F1006F 	 cmp r3,#134217728
+ 668 0020 0AD0     	 beq .L40
+ 669 0022 B3F1805F 	 cmp r3,#268435456
+ 670 0026 07D0     	 beq .L40
+ 671 0028 3AE0     	 b .L37
+ 672              	.L39:
+ 673 002a B3F1405F 	 cmp r3,#805306368
+ 674 002e 17D0     	 beq .L41
+ 675 0030 B3F1605F 	 cmp r3,#939524096
+ 676 0034 14D0     	 beq .L41
+ 677 0036 33E0     	 b .L37
+ 678              	.L40:
+ 362:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_A:
+ 363:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_B:
+ 364:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM)
+ 365:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_C:
+ 366:.././hal/sam3u1c/pio.c **** 	case PIO_PERIPH_D:
+ 367:.././hal/sam3u1c/pio.c **** #endif
+ 368:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, ul_type, ul_mask);
+ 679              	 .loc 1 368 0
+ 680 0038 7A68     	 ldr r2,[r7,#4]
+ 681 003a B968     	 ldr r1,[r7,#8]
+ 682 003c F868     	 ldr r0,[r7,#12]
+ 683 003e 1C4B     	 ldr r3,.L44
+ 684 0040 9847     	 blx r3
+ 685              	.LVL4:
+ 369:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, ul_mask, (ul_attribute & PIO_PULLUP));
+ 686              	 .loc 1 369 0
+ 687 0042 3B68     	 ldr r3,[r7]
+ 688 0044 03F00103 	 and r3,r3,#1
+ 689 0048 1A46     	 mov r2,r3
+ 690 004a 7968     	 ldr r1,[r7,#4]
+ 691 004c F868     	 ldr r0,[r7,#12]
+ 692 004e 194B     	 ldr r3,.L44+4
+ 693 0050 9847     	 blx r3
+ 694              	.LVL5:
+ 370:.././hal/sam3u1c/pio.c **** 		break;
+ 695              	 .loc 1 370 0
+ 696 0052 27E0     	 b .L42
+ 697              	.L38:
+ 371:.././hal/sam3u1c/pio.c **** 
+ 372:.././hal/sam3u1c/pio.c **** 	case PIO_INPUT:
+ 373:.././hal/sam3u1c/pio.c **** 		pio_set_input(p_pio, ul_mask, ul_attribute);
+ 698              	 .loc 1 373 0
+ 699 0054 3A68     	 ldr r2,[r7]
+ 700 0056 7968     	 ldr r1,[r7,#4]
+ 701 0058 F868     	 ldr r0,[r7,#12]
+ 702 005a 174B     	 ldr r3,.L44+8
+ 703 005c 9847     	 blx r3
+ 704              	.LVL6:
+ 374:.././hal/sam3u1c/pio.c **** 		break;
+ 705              	 .loc 1 374 0
+ 706 005e 21E0     	 b .L42
+ 707              	.L41:
+ 375:.././hal/sam3u1c/pio.c **** 
+ 376:.././hal/sam3u1c/pio.c **** 	case PIO_OUTPUT_0:
+ 377:.././hal/sam3u1c/pio.c **** 	case PIO_OUTPUT_1:
+ 378:.././hal/sam3u1c/pio.c **** 		pio_set_output(p_pio, ul_mask, (ul_type == PIO_OUTPUT_1),
+ 708              	 .loc 1 378 0
+ 709 0060 BB68     	 ldr r3,[r7,#8]
+ 710 0062 B3F1605F 	 cmp r3,#939524096
+ 711 0066 0CBF     	 ite eq
+ 712 0068 0123     	 moveq r3,#1
+ 713 006a 0023     	 movne r3,#0
+ 714 006c DBB2     	 uxtb r3,r3
+ 715 006e 1A46     	 mov r2,r3
+ 379:.././hal/sam3u1c/pio.c **** 				(ul_attribute & PIO_OPENDRAIN) ? 1 : 0,
+ 716              	 .loc 1 379 0
+ 717 0070 3B68     	 ldr r3,[r7]
+ 718 0072 03F00403 	 and r3,r3,#4
+ 378:.././hal/sam3u1c/pio.c **** 				(ul_attribute & PIO_OPENDRAIN) ? 1 : 0,
+ 719              	 .loc 1 378 0
+ 720 0076 002B     	 cmp r3,#0
+ 721 0078 14BF     	 ite ne
+ 722 007a 0123     	 movne r3,#1
+ 723 007c 0023     	 moveq r3,#0
+ 724 007e DBB2     	 uxtb r3,r3
+ 725 0080 1946     	 mov r1,r3
+ 380:.././hal/sam3u1c/pio.c **** 				(ul_attribute & PIO_PULLUP) ? 1 : 0);
+ 726              	 .loc 1 380 0
+ 727 0082 3B68     	 ldr r3,[r7]
+ 728 0084 03F00103 	 and r3,r3,#1
+ 378:.././hal/sam3u1c/pio.c **** 				(ul_attribute & PIO_OPENDRAIN) ? 1 : 0,
+ 729              	 .loc 1 378 0
+ 730 0088 002B     	 cmp r3,#0
+ 731 008a 14BF     	 ite ne
+ 732 008c 0123     	 movne r3,#1
+ 733 008e 0023     	 moveq r3,#0
+ 734 0090 DBB2     	 uxtb r3,r3
+ 735 0092 0093     	 str r3,[sp]
+ 736 0094 0B46     	 mov r3,r1
+ 737 0096 7968     	 ldr r1,[r7,#4]
+ 738 0098 F868     	 ldr r0,[r7,#12]
+ 739 009a 084C     	 ldr r4,.L44+12
+ 740 009c A047     	 blx r4
+ 741              	.LVL7:
+ 381:.././hal/sam3u1c/pio.c **** 		break;
+ 742              	 .loc 1 381 0
+ 743 009e 01E0     	 b .L42
+ 744              	.L37:
+ 382:.././hal/sam3u1c/pio.c **** 
+ 383:.././hal/sam3u1c/pio.c **** 	default:
+ 384:.././hal/sam3u1c/pio.c **** 		return 0;
+ 745              	 .loc 1 384 0
+ 746 00a0 0023     	 movs r3,#0
+ 747 00a2 00E0     	 b .L43
+ 748              	.L42:
+ 385:.././hal/sam3u1c/pio.c **** 	}
+ 386:.././hal/sam3u1c/pio.c **** 
+ 387:.././hal/sam3u1c/pio.c **** 	return 1;
+ 749              	 .loc 1 387 0
+ 750 00a4 0123     	 movs r3,#1
+ 751              	.L43:
+ 388:.././hal/sam3u1c/pio.c **** }
+ 752              	 .loc 1 388 0
+ 753 00a6 1846     	 mov r0,r3
+ 754 00a8 1437     	 adds r7,r7,#20
+ 755              	.LCFI49:
+ 756              	 .cfi_def_cfa_offset 12
+ 757 00aa BD46     	 mov sp,r7
+ 758              	.LCFI50:
+ 759              	 .cfi_def_cfa_register 13
+ 760              	 
+ 761 00ac 90BD     	 pop {r4,r7,pc}
+ 762              	.L45:
+ 763 00ae 00BF     	 .align 2
+ 764              	.L44:
+ 765 00b0 00000000 	 .word pio_set_peripheral
+ 766 00b4 00000000 	 .word pio_pull_up
+ 767 00b8 00000000 	 .word pio_set_input
+ 768 00bc 00000000 	 .word pio_set_output
+ 769              	 .cfi_endproc
+ 770              	.LFE75:
+ 772              	 .section .text.pio_get_output_data_status,"ax",%progbits
+ 773              	 .align 1
+ 774              	 .global pio_get_output_data_status
+ 775              	 .syntax unified
+ 776              	 .thumb
+ 777              	 .thumb_func
+ 778              	 .fpu softvfp
+ 780              	pio_get_output_data_status:
+ 781              	.LFB76:
+ 389:.././hal/sam3u1c/pio.c **** 
+ 390:.././hal/sam3u1c/pio.c **** /**
+ 391:.././hal/sam3u1c/pio.c ****  * \brief Return 1 if one or more PIOs of the given Pin are configured to
+ 392:.././hal/sam3u1c/pio.c ****  * output a high level (even if they are not output).
+ 393:.././hal/sam3u1c/pio.c ****  * To get the actual value of the pin, use PIO_Get() instead.
+ 394:.././hal/sam3u1c/pio.c ****  *
+ 395:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 396:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s).
+ 397:.././hal/sam3u1c/pio.c ****  *
+ 398:.././hal/sam3u1c/pio.c ****  * \retval 1 At least one PIO is configured to output a high level.
+ 399:.././hal/sam3u1c/pio.c ****  * \retval 0 All PIOs are configured to output a low level.
+ 400:.././hal/sam3u1c/pio.c ****  */
+ 401:.././hal/sam3u1c/pio.c **** uint32_t pio_get_output_data_status(const Pio *p_pio,
+ 402:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_mask)
+ 403:.././hal/sam3u1c/pio.c **** {
+ 782              	 .loc 1 403 0
+ 783              	 .cfi_startproc
+ 784              	 
+ 785              	 
+ 786              	 
+ 787 0000 80B4     	 push {r7}
+ 788              	.LCFI51:
+ 789              	 .cfi_def_cfa_offset 4
+ 790              	 .cfi_offset 7,-4
+ 791 0002 83B0     	 sub sp,sp,#12
+ 792              	.LCFI52:
+ 793              	 .cfi_def_cfa_offset 16
+ 794 0004 00AF     	 add r7,sp,#0
+ 795              	.LCFI53:
+ 796              	 .cfi_def_cfa_register 7
+ 797 0006 7860     	 str r0,[r7,#4]
+ 798 0008 3960     	 str r1,[r7]
+ 404:.././hal/sam3u1c/pio.c **** 	if ((p_pio->PIO_ODSR & ul_mask) == 0) {
+ 799              	 .loc 1 404 0
+ 800 000a 7B68     	 ldr r3,[r7,#4]
+ 801 000c 9A6B     	 ldr r2,[r3,#56]
+ 802 000e 3B68     	 ldr r3,[r7]
+ 803 0010 1340     	 ands r3,r3,r2
+ 804 0012 002B     	 cmp r3,#0
+ 805 0014 01D1     	 bne .L47
+ 405:.././hal/sam3u1c/pio.c **** 		return 0;
+ 806              	 .loc 1 405 0
+ 807 0016 0023     	 movs r3,#0
+ 808 0018 00E0     	 b .L48
+ 809              	.L47:
+ 406:.././hal/sam3u1c/pio.c **** 	} else {
+ 407:.././hal/sam3u1c/pio.c **** 		return 1;
+ 810              	 .loc 1 407 0
+ 811 001a 0123     	 movs r3,#1
+ 812              	.L48:
+ 408:.././hal/sam3u1c/pio.c **** 	}
+ 409:.././hal/sam3u1c/pio.c **** }
+ 813              	 .loc 1 409 0
+ 814 001c 1846     	 mov r0,r3
+ 815 001e 0C37     	 adds r7,r7,#12
+ 816              	.LCFI54:
+ 817              	 .cfi_def_cfa_offset 4
+ 818 0020 BD46     	 mov sp,r7
+ 819              	.LCFI55:
+ 820              	 .cfi_def_cfa_register 13
+ 821              	 
+ 822 0022 80BC     	 pop {r7}
+ 823              	.LCFI56:
+ 824              	 .cfi_restore 7
+ 825              	 .cfi_def_cfa_offset 0
+ 826 0024 7047     	 bx lr
+ 827              	 .cfi_endproc
+ 828              	.LFE76:
+ 830              	 .section .text.pio_set_multi_driver,"ax",%progbits
+ 831              	 .align 1
+ 832              	 .global pio_set_multi_driver
+ 833              	 .syntax unified
+ 834              	 .thumb
+ 835              	 .thumb_func
+ 836              	 .fpu softvfp
+ 838              	pio_set_multi_driver:
+ 839              	.LFB77:
+ 410:.././hal/sam3u1c/pio.c **** 
+ 411:.././hal/sam3u1c/pio.c **** /**
+ 412:.././hal/sam3u1c/pio.c ****  * \brief Configure PIO pin multi-driver.
+ 413:.././hal/sam3u1c/pio.c ****  *
+ 414:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 415:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 416:.././hal/sam3u1c/pio.c ****  * \param ul_multi_driver_enable Indicates if the pin(s) multi-driver shall be
+ 417:.././hal/sam3u1c/pio.c ****  * configured.
+ 418:.././hal/sam3u1c/pio.c ****  */
+ 419:.././hal/sam3u1c/pio.c **** void pio_set_multi_driver(Pio *p_pio, const uint32_t ul_mask,
+ 420:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_multi_driver_enable)
+ 421:.././hal/sam3u1c/pio.c **** {
+ 840              	 .loc 1 421 0
+ 841              	 .cfi_startproc
+ 842              	 
+ 843              	 
+ 844              	 
+ 845 0000 80B4     	 push {r7}
+ 846              	.LCFI57:
+ 847              	 .cfi_def_cfa_offset 4
+ 848              	 .cfi_offset 7,-4
+ 849 0002 85B0     	 sub sp,sp,#20
+ 850              	.LCFI58:
+ 851              	 .cfi_def_cfa_offset 24
+ 852 0004 00AF     	 add r7,sp,#0
+ 853              	.LCFI59:
+ 854              	 .cfi_def_cfa_register 7
+ 855 0006 F860     	 str r0,[r7,#12]
+ 856 0008 B960     	 str r1,[r7,#8]
+ 857 000a 7A60     	 str r2,[r7,#4]
+ 422:.././hal/sam3u1c/pio.c **** 	/* Enable the multi-driver if necessary */
+ 423:.././hal/sam3u1c/pio.c **** 	if (ul_multi_driver_enable) {
+ 858              	 .loc 1 423 0
+ 859 000c 7B68     	 ldr r3,[r7,#4]
+ 860 000e 002B     	 cmp r3,#0
+ 861 0010 03D0     	 beq .L50
+ 424:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_MDER = ul_mask;
+ 862              	 .loc 1 424 0
+ 863 0012 FB68     	 ldr r3,[r7,#12]
+ 864 0014 BA68     	 ldr r2,[r7,#8]
+ 865 0016 1A65     	 str r2,[r3,#80]
+ 425:.././hal/sam3u1c/pio.c **** 	} else {
+ 426:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_MDDR = ul_mask;
+ 427:.././hal/sam3u1c/pio.c **** 	}
+ 428:.././hal/sam3u1c/pio.c **** }
+ 866              	 .loc 1 428 0
+ 867 0018 02E0     	 b .L52
+ 868              	.L50:
+ 426:.././hal/sam3u1c/pio.c **** 	}
+ 869              	 .loc 1 426 0
+ 870 001a FB68     	 ldr r3,[r7,#12]
+ 871 001c BA68     	 ldr r2,[r7,#8]
+ 872 001e 5A65     	 str r2,[r3,#84]
+ 873              	.L52:
+ 874              	 .loc 1 428 0
+ 875 0020 00BF     	 nop
+ 876 0022 1437     	 adds r7,r7,#20
+ 877              	.LCFI60:
+ 878              	 .cfi_def_cfa_offset 4
+ 879 0024 BD46     	 mov sp,r7
+ 880              	.LCFI61:
+ 881              	 .cfi_def_cfa_register 13
+ 882              	 
+ 883 0026 80BC     	 pop {r7}
+ 884              	.LCFI62:
+ 885              	 .cfi_restore 7
+ 886              	 .cfi_def_cfa_offset 0
+ 887 0028 7047     	 bx lr
+ 888              	 .cfi_endproc
+ 889              	.LFE77:
+ 891              	 .section .text.pio_get_multi_driver_status,"ax",%progbits
+ 892              	 .align 1
+ 893              	 .global pio_get_multi_driver_status
+ 894              	 .syntax unified
+ 895              	 .thumb
+ 896              	 .thumb_func
+ 897              	 .fpu softvfp
+ 899              	pio_get_multi_driver_status:
+ 900              	.LFB78:
+ 429:.././hal/sam3u1c/pio.c **** 
+ 430:.././hal/sam3u1c/pio.c **** /**
+ 431:.././hal/sam3u1c/pio.c ****  * \brief Get multi-driver status.
+ 432:.././hal/sam3u1c/pio.c ****  *
+ 433:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 434:.././hal/sam3u1c/pio.c ****  *
+ 435:.././hal/sam3u1c/pio.c ****  * \return The multi-driver mask value.
+ 436:.././hal/sam3u1c/pio.c ****  */
+ 437:.././hal/sam3u1c/pio.c **** uint32_t pio_get_multi_driver_status(const Pio *p_pio)
+ 438:.././hal/sam3u1c/pio.c **** {
+ 901              	 .loc 1 438 0
+ 902              	 .cfi_startproc
+ 903              	 
+ 904              	 
+ 905              	 
+ 906 0000 80B4     	 push {r7}
+ 907              	.LCFI63:
+ 908              	 .cfi_def_cfa_offset 4
+ 909              	 .cfi_offset 7,-4
+ 910 0002 83B0     	 sub sp,sp,#12
+ 911              	.LCFI64:
+ 912              	 .cfi_def_cfa_offset 16
+ 913 0004 00AF     	 add r7,sp,#0
+ 914              	.LCFI65:
+ 915              	 .cfi_def_cfa_register 7
+ 916 0006 7860     	 str r0,[r7,#4]
+ 439:.././hal/sam3u1c/pio.c **** 	return p_pio->PIO_MDSR;
+ 917              	 .loc 1 439 0
+ 918 0008 7B68     	 ldr r3,[r7,#4]
+ 919 000a 9B6D     	 ldr r3,[r3,#88]
+ 440:.././hal/sam3u1c/pio.c **** }
+ 920              	 .loc 1 440 0
+ 921 000c 1846     	 mov r0,r3
+ 922 000e 0C37     	 adds r7,r7,#12
+ 923              	.LCFI66:
+ 924              	 .cfi_def_cfa_offset 4
+ 925 0010 BD46     	 mov sp,r7
+ 926              	.LCFI67:
+ 927              	 .cfi_def_cfa_register 13
+ 928              	 
+ 929 0012 80BC     	 pop {r7}
+ 930              	.LCFI68:
+ 931              	 .cfi_restore 7
+ 932              	 .cfi_def_cfa_offset 0
+ 933 0014 7047     	 bx lr
+ 934              	 .cfi_endproc
+ 935              	.LFE78:
+ 937              	 .section .text.pio_enable_output_write,"ax",%progbits
+ 938              	 .align 1
+ 939              	 .global pio_enable_output_write
+ 940              	 .syntax unified
+ 941              	 .thumb
+ 942              	 .thumb_func
+ 943              	 .fpu softvfp
+ 945              	pio_enable_output_write:
+ 946              	.LFB79:
+ 441:.././hal/sam3u1c/pio.c **** 
+ 442:.././hal/sam3u1c/pio.c **** 
+ 443:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+ 444:.././hal/sam3u1c/pio.c **** /**
+ 445:.././hal/sam3u1c/pio.c ****  * \brief Configure PIO pin internal pull-down.
+ 446:.././hal/sam3u1c/pio.c ****  *
+ 447:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 448:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 449:.././hal/sam3u1c/pio.c ****  * \param ul_pull_down_enable Indicates if the pin(s) internal pull-down shall
+ 450:.././hal/sam3u1c/pio.c ****  * be configured.
+ 451:.././hal/sam3u1c/pio.c ****  */
+ 452:.././hal/sam3u1c/pio.c **** void pio_pull_down(Pio *p_pio, const uint32_t ul_mask,
+ 453:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_pull_down_enable)
+ 454:.././hal/sam3u1c/pio.c **** {
+ 455:.././hal/sam3u1c/pio.c **** 	/* Enable the pull-down if necessary */
+ 456:.././hal/sam3u1c/pio.c **** 	if (ul_pull_down_enable) {
+ 457:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_PPDER = ul_mask;
+ 458:.././hal/sam3u1c/pio.c **** 	} else {
+ 459:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_PPDDR = ul_mask;
+ 460:.././hal/sam3u1c/pio.c **** 	}
+ 461:.././hal/sam3u1c/pio.c **** }
+ 462:.././hal/sam3u1c/pio.c **** #endif
+ 463:.././hal/sam3u1c/pio.c **** 
+ 464:.././hal/sam3u1c/pio.c **** /**
+ 465:.././hal/sam3u1c/pio.c ****  * \brief Enable PIO output write for synchronous data output.
+ 466:.././hal/sam3u1c/pio.c ****  *
+ 467:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 468:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 469:.././hal/sam3u1c/pio.c ****  */
+ 470:.././hal/sam3u1c/pio.c **** void pio_enable_output_write(Pio *p_pio, const uint32_t ul_mask)
+ 471:.././hal/sam3u1c/pio.c **** {
+ 947              	 .loc 1 471 0
+ 948              	 .cfi_startproc
+ 949              	 
+ 950              	 
+ 951              	 
+ 952 0000 80B4     	 push {r7}
+ 953              	.LCFI69:
+ 954              	 .cfi_def_cfa_offset 4
+ 955              	 .cfi_offset 7,-4
+ 956 0002 83B0     	 sub sp,sp,#12
+ 957              	.LCFI70:
+ 958              	 .cfi_def_cfa_offset 16
+ 959 0004 00AF     	 add r7,sp,#0
+ 960              	.LCFI71:
+ 961              	 .cfi_def_cfa_register 7
+ 962 0006 7860     	 str r0,[r7,#4]
+ 963 0008 3960     	 str r1,[r7]
+ 472:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_OWER = ul_mask;
+ 964              	 .loc 1 472 0
+ 965 000a 7B68     	 ldr r3,[r7,#4]
+ 966 000c 3A68     	 ldr r2,[r7]
+ 967 000e C3F8A020 	 str r2,[r3,#160]
+ 473:.././hal/sam3u1c/pio.c **** }
+ 968              	 .loc 1 473 0
+ 969 0012 00BF     	 nop
+ 970 0014 0C37     	 adds r7,r7,#12
+ 971              	.LCFI72:
+ 972              	 .cfi_def_cfa_offset 4
+ 973 0016 BD46     	 mov sp,r7
+ 974              	.LCFI73:
+ 975              	 .cfi_def_cfa_register 13
+ 976              	 
+ 977 0018 80BC     	 pop {r7}
+ 978              	.LCFI74:
+ 979              	 .cfi_restore 7
+ 980              	 .cfi_def_cfa_offset 0
+ 981 001a 7047     	 bx lr
+ 982              	 .cfi_endproc
+ 983              	.LFE79:
+ 985              	 .section .text.pio_disable_output_write,"ax",%progbits
+ 986              	 .align 1
+ 987              	 .global pio_disable_output_write
+ 988              	 .syntax unified
+ 989              	 .thumb
+ 990              	 .thumb_func
+ 991              	 .fpu softvfp
+ 993              	pio_disable_output_write:
+ 994              	.LFB80:
+ 474:.././hal/sam3u1c/pio.c **** 
+ 475:.././hal/sam3u1c/pio.c **** /**
+ 476:.././hal/sam3u1c/pio.c ****  * \brief Disable PIO output write.
+ 477:.././hal/sam3u1c/pio.c ****  *
+ 478:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 479:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 480:.././hal/sam3u1c/pio.c ****  */
+ 481:.././hal/sam3u1c/pio.c **** void pio_disable_output_write(Pio *p_pio, const uint32_t ul_mask)
+ 482:.././hal/sam3u1c/pio.c **** {
+ 995              	 .loc 1 482 0
+ 996              	 .cfi_startproc
+ 997              	 
+ 998              	 
+ 999              	 
+ 1000 0000 80B4     	 push {r7}
+ 1001              	.LCFI75:
+ 1002              	 .cfi_def_cfa_offset 4
+ 1003              	 .cfi_offset 7,-4
+ 1004 0002 83B0     	 sub sp,sp,#12
+ 1005              	.LCFI76:
+ 1006              	 .cfi_def_cfa_offset 16
+ 1007 0004 00AF     	 add r7,sp,#0
+ 1008              	.LCFI77:
+ 1009              	 .cfi_def_cfa_register 7
+ 1010 0006 7860     	 str r0,[r7,#4]
+ 1011 0008 3960     	 str r1,[r7]
+ 483:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_OWDR = ul_mask;
+ 1012              	 .loc 1 483 0
+ 1013 000a 7B68     	 ldr r3,[r7,#4]
+ 1014 000c 3A68     	 ldr r2,[r7]
+ 1015 000e C3F8A420 	 str r2,[r3,#164]
+ 484:.././hal/sam3u1c/pio.c **** }
+ 1016              	 .loc 1 484 0
+ 1017 0012 00BF     	 nop
+ 1018 0014 0C37     	 adds r7,r7,#12
+ 1019              	.LCFI78:
+ 1020              	 .cfi_def_cfa_offset 4
+ 1021 0016 BD46     	 mov sp,r7
+ 1022              	.LCFI79:
+ 1023              	 .cfi_def_cfa_register 13
+ 1024              	 
+ 1025 0018 80BC     	 pop {r7}
+ 1026              	.LCFI80:
+ 1027              	 .cfi_restore 7
+ 1028              	 .cfi_def_cfa_offset 0
+ 1029 001a 7047     	 bx lr
+ 1030              	 .cfi_endproc
+ 1031              	.LFE80:
+ 1033              	 .section .text.pio_get_output_write_status,"ax",%progbits
+ 1034              	 .align 1
+ 1035              	 .global pio_get_output_write_status
+ 1036              	 .syntax unified
+ 1037              	 .thumb
+ 1038              	 .thumb_func
+ 1039              	 .fpu softvfp
+ 1041              	pio_get_output_write_status:
+ 1042              	.LFB81:
+ 485:.././hal/sam3u1c/pio.c **** 
+ 486:.././hal/sam3u1c/pio.c **** /**
+ 487:.././hal/sam3u1c/pio.c ****  * \brief Read PIO output write status.
+ 488:.././hal/sam3u1c/pio.c ****  *
+ 489:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 490:.././hal/sam3u1c/pio.c ****  *
+ 491:.././hal/sam3u1c/pio.c ****  * \return The output write mask value.
+ 492:.././hal/sam3u1c/pio.c ****  */
+ 493:.././hal/sam3u1c/pio.c **** uint32_t pio_get_output_write_status(const Pio *p_pio)
+ 494:.././hal/sam3u1c/pio.c **** {
+ 1043              	 .loc 1 494 0
+ 1044              	 .cfi_startproc
+ 1045              	 
+ 1046              	 
+ 1047              	 
+ 1048 0000 80B4     	 push {r7}
+ 1049              	.LCFI81:
+ 1050              	 .cfi_def_cfa_offset 4
+ 1051              	 .cfi_offset 7,-4
+ 1052 0002 83B0     	 sub sp,sp,#12
+ 1053              	.LCFI82:
+ 1054              	 .cfi_def_cfa_offset 16
+ 1055 0004 00AF     	 add r7,sp,#0
+ 1056              	.LCFI83:
+ 1057              	 .cfi_def_cfa_register 7
+ 1058 0006 7860     	 str r0,[r7,#4]
+ 495:.././hal/sam3u1c/pio.c **** 	return p_pio->PIO_OWSR;
+ 1059              	 .loc 1 495 0
+ 1060 0008 7B68     	 ldr r3,[r7,#4]
+ 1061 000a D3F8A830 	 ldr r3,[r3,#168]
+ 496:.././hal/sam3u1c/pio.c **** }
+ 1062              	 .loc 1 496 0
+ 1063 000e 1846     	 mov r0,r3
+ 1064 0010 0C37     	 adds r7,r7,#12
+ 1065              	.LCFI84:
+ 1066              	 .cfi_def_cfa_offset 4
+ 1067 0012 BD46     	 mov sp,r7
+ 1068              	.LCFI85:
+ 1069              	 .cfi_def_cfa_register 13
+ 1070              	 
+ 1071 0014 80BC     	 pop {r7}
+ 1072              	.LCFI86:
+ 1073              	 .cfi_restore 7
+ 1074              	 .cfi_def_cfa_offset 0
+ 1075 0016 7047     	 bx lr
+ 1076              	 .cfi_endproc
+ 1077              	.LFE81:
+ 1079              	 .section .text.pio_sync_output_write,"ax",%progbits
+ 1080              	 .align 1
+ 1081              	 .global pio_sync_output_write
+ 1082              	 .syntax unified
+ 1083              	 .thumb
+ 1084              	 .thumb_func
+ 1085              	 .fpu softvfp
+ 1087              	pio_sync_output_write:
+ 1088              	.LFB82:
+ 497:.././hal/sam3u1c/pio.c **** 
+ 498:.././hal/sam3u1c/pio.c **** /**
+ 499:.././hal/sam3u1c/pio.c ****  * \brief Synchronously write on output pins.
+ 500:.././hal/sam3u1c/pio.c ****  * \note Only bits unmasked by PIO_OWSR (Output Write Status Register) are
+ 501:.././hal/sam3u1c/pio.c ****  * written.
+ 502:.././hal/sam3u1c/pio.c ****  *
+ 503:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 504:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 505:.././hal/sam3u1c/pio.c ****  */
+ 506:.././hal/sam3u1c/pio.c **** void pio_sync_output_write(Pio *p_pio, const uint32_t ul_mask)
+ 507:.././hal/sam3u1c/pio.c **** {
+ 1089              	 .loc 1 507 0
+ 1090              	 .cfi_startproc
+ 1091              	 
+ 1092              	 
+ 1093              	 
+ 1094 0000 80B4     	 push {r7}
+ 1095              	.LCFI87:
+ 1096              	 .cfi_def_cfa_offset 4
+ 1097              	 .cfi_offset 7,-4
+ 1098 0002 83B0     	 sub sp,sp,#12
+ 1099              	.LCFI88:
+ 1100              	 .cfi_def_cfa_offset 16
+ 1101 0004 00AF     	 add r7,sp,#0
+ 1102              	.LCFI89:
+ 1103              	 .cfi_def_cfa_register 7
+ 1104 0006 7860     	 str r0,[r7,#4]
+ 1105 0008 3960     	 str r1,[r7]
+ 508:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_ODSR = ul_mask;
+ 1106              	 .loc 1 508 0
+ 1107 000a 7B68     	 ldr r3,[r7,#4]
+ 1108 000c 3A68     	 ldr r2,[r7]
+ 1109 000e 9A63     	 str r2,[r3,#56]
+ 509:.././hal/sam3u1c/pio.c **** }
+ 1110              	 .loc 1 509 0
+ 1111 0010 00BF     	 nop
+ 1112 0012 0C37     	 adds r7,r7,#12
+ 1113              	.LCFI90:
+ 1114              	 .cfi_def_cfa_offset 4
+ 1115 0014 BD46     	 mov sp,r7
+ 1116              	.LCFI91:
+ 1117              	 .cfi_def_cfa_register 13
+ 1118              	 
+ 1119 0016 80BC     	 pop {r7}
+ 1120              	.LCFI92:
+ 1121              	 .cfi_restore 7
+ 1122              	 .cfi_def_cfa_offset 0
+ 1123 0018 7047     	 bx lr
+ 1124              	 .cfi_endproc
+ 1125              	.LFE82:
+ 1127              	 .section .text.pio_configure_interrupt,"ax",%progbits
+ 1128              	 .align 1
+ 1129              	 .global pio_configure_interrupt
+ 1130              	 .syntax unified
+ 1131              	 .thumb
+ 1132              	 .thumb_func
+ 1133              	 .fpu softvfp
+ 1135              	pio_configure_interrupt:
+ 1136              	.LFB83:
+ 510:.././hal/sam3u1c/pio.c **** 
+ 511:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+ 512:.././hal/sam3u1c/pio.c **** /**
+ 513:.././hal/sam3u1c/pio.c ****  * \brief Configure PIO pin schmitt trigger. By default the Schmitt trigger is
+ 514:.././hal/sam3u1c/pio.c ****  * active.
+ 515:.././hal/sam3u1c/pio.c ****  * Disabling the Schmitt Trigger is requested when using the QTouch Library.
+ 516:.././hal/sam3u1c/pio.c ****  *
+ 517:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 518:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 519:.././hal/sam3u1c/pio.c ****  */
+ 520:.././hal/sam3u1c/pio.c **** void pio_set_schmitt_trigger(Pio *p_pio, const uint32_t ul_mask)
+ 521:.././hal/sam3u1c/pio.c **** {
+ 522:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_SCHMITT = ul_mask;
+ 523:.././hal/sam3u1c/pio.c **** }
+ 524:.././hal/sam3u1c/pio.c **** 
+ 525:.././hal/sam3u1c/pio.c **** /**
+ 526:.././hal/sam3u1c/pio.c ****  * \brief Get PIO pin schmitt trigger status.
+ 527:.././hal/sam3u1c/pio.c ****  *
+ 528:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 529:.././hal/sam3u1c/pio.c ****  *
+ 530:.././hal/sam3u1c/pio.c ****  * \return The schmitt trigger mask value.
+ 531:.././hal/sam3u1c/pio.c ****  */
+ 532:.././hal/sam3u1c/pio.c **** uint32_t pio_get_schmitt_trigger(const Pio *p_pio)
+ 533:.././hal/sam3u1c/pio.c **** {
+ 534:.././hal/sam3u1c/pio.c **** 	return p_pio->PIO_SCHMITT;
+ 535:.././hal/sam3u1c/pio.c **** }
+ 536:.././hal/sam3u1c/pio.c **** #endif
+ 537:.././hal/sam3u1c/pio.c **** 
+ 538:.././hal/sam3u1c/pio.c **** /**
+ 539:.././hal/sam3u1c/pio.c ****  * \brief Configure the given interrupt source.
+ 540:.././hal/sam3u1c/pio.c ****  * Interrupt can be configured to trigger on rising edge, falling edge,
+ 541:.././hal/sam3u1c/pio.c ****  * high level, low level or simply on level change.
+ 542:.././hal/sam3u1c/pio.c ****  *
+ 543:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 544:.././hal/sam3u1c/pio.c ****  * \param ul_mask Interrupt source bit map.
+ 545:.././hal/sam3u1c/pio.c ****  * \param ul_attr Interrupt source attributes.
+ 546:.././hal/sam3u1c/pio.c ****  */
+ 547:.././hal/sam3u1c/pio.c **** void pio_configure_interrupt(Pio *p_pio, const uint32_t ul_mask,
+ 548:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_attr)
+ 549:.././hal/sam3u1c/pio.c **** {
+ 1137              	 .loc 1 549 0
+ 1138              	 .cfi_startproc
+ 1139              	 
+ 1140              	 
+ 1141              	 
+ 1142 0000 80B4     	 push {r7}
+ 1143              	.LCFI93:
+ 1144              	 .cfi_def_cfa_offset 4
+ 1145              	 .cfi_offset 7,-4
+ 1146 0002 85B0     	 sub sp,sp,#20
+ 1147              	.LCFI94:
+ 1148              	 .cfi_def_cfa_offset 24
+ 1149 0004 00AF     	 add r7,sp,#0
+ 1150              	.LCFI95:
+ 1151              	 .cfi_def_cfa_register 7
+ 1152 0006 F860     	 str r0,[r7,#12]
+ 1153 0008 B960     	 str r1,[r7,#8]
+ 1154 000a 7A60     	 str r2,[r7,#4]
+ 550:.././hal/sam3u1c/pio.c **** 	/* Configure additional interrupt mode registers. */
+ 551:.././hal/sam3u1c/pio.c **** 	if (ul_attr & PIO_IT_AIME) {
+ 1155              	 .loc 1 551 0
+ 1156 000c 7B68     	 ldr r3,[r7,#4]
+ 1157 000e 03F01003 	 and r3,r3,#16
+ 1158 0012 002B     	 cmp r3,#0
+ 1159 0014 20D0     	 beq .L61
+ 552:.././hal/sam3u1c/pio.c **** 		/* Enable additional interrupt mode. */
+ 553:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_AIMER = ul_mask;
+ 1160              	 .loc 1 553 0
+ 1161 0016 FB68     	 ldr r3,[r7,#12]
+ 1162 0018 BA68     	 ldr r2,[r7,#8]
+ 1163 001a C3F8B020 	 str r2,[r3,#176]
+ 554:.././hal/sam3u1c/pio.c **** 
+ 555:.././hal/sam3u1c/pio.c **** 		/* If bit field of the selected pin is 1, set as
+ 556:.././hal/sam3u1c/pio.c **** 		   Rising Edge/High level detection event. */
+ 557:.././hal/sam3u1c/pio.c **** 		if (ul_attr & PIO_IT_RE_OR_HL) {
+ 1164              	 .loc 1 557 0
+ 1165 001e 7B68     	 ldr r3,[r7,#4]
+ 1166 0020 03F02003 	 and r3,r3,#32
+ 1167 0024 002B     	 cmp r3,#0
+ 1168 0026 04D0     	 beq .L62
+ 558:.././hal/sam3u1c/pio.c **** 			/* Rising Edge or High Level */
+ 559:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_REHLSR = ul_mask;
+ 1169              	 .loc 1 559 0
+ 1170 0028 FB68     	 ldr r3,[r7,#12]
+ 1171 002a BA68     	 ldr r2,[r7,#8]
+ 1172 002c C3F8D420 	 str r2,[r3,#212]
+ 1173 0030 03E0     	 b .L63
+ 1174              	.L62:
+ 560:.././hal/sam3u1c/pio.c **** 		} else {
+ 561:.././hal/sam3u1c/pio.c **** 			/* Falling Edge or Low Level */
+ 562:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_FELLSR = ul_mask;
+ 1175              	 .loc 1 562 0
+ 1176 0032 FB68     	 ldr r3,[r7,#12]
+ 1177 0034 BA68     	 ldr r2,[r7,#8]
+ 1178 0036 C3F8D020 	 str r2,[r3,#208]
+ 1179              	.L63:
+ 563:.././hal/sam3u1c/pio.c **** 		}
+ 564:.././hal/sam3u1c/pio.c **** 
+ 565:.././hal/sam3u1c/pio.c **** 		/* If bit field of the selected pin is 1, set as
+ 566:.././hal/sam3u1c/pio.c **** 		   edge detection source. */
+ 567:.././hal/sam3u1c/pio.c **** 		if (ul_attr & PIO_IT_EDGE) {
+ 1180              	 .loc 1 567 0
+ 1181 003a 7B68     	 ldr r3,[r7,#4]
+ 1182 003c 03F04003 	 and r3,r3,#64
+ 1183 0040 002B     	 cmp r3,#0
+ 1184 0042 04D0     	 beq .L64
+ 568:.././hal/sam3u1c/pio.c **** 			/* Edge select */
+ 569:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_ESR = ul_mask;
+ 1185              	 .loc 1 569 0
+ 1186 0044 FB68     	 ldr r3,[r7,#12]
+ 1187 0046 BA68     	 ldr r2,[r7,#8]
+ 1188 0048 C3F8C020 	 str r2,[r3,#192]
+ 570:.././hal/sam3u1c/pio.c **** 		} else {
+ 571:.././hal/sam3u1c/pio.c **** 			/* Level select */
+ 572:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_LSR = ul_mask;
+ 573:.././hal/sam3u1c/pio.c **** 		}
+ 574:.././hal/sam3u1c/pio.c **** 	} else {
+ 575:.././hal/sam3u1c/pio.c **** 		/* Disable additional interrupt mode. */
+ 576:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_AIMDR = ul_mask;
+ 577:.././hal/sam3u1c/pio.c **** 	}
+ 578:.././hal/sam3u1c/pio.c **** }
+ 1189              	 .loc 1 578 0
+ 1190 004c 08E0     	 b .L67
+ 1191              	.L64:
+ 572:.././hal/sam3u1c/pio.c **** 		}
+ 1192              	 .loc 1 572 0
+ 1193 004e FB68     	 ldr r3,[r7,#12]
+ 1194 0050 BA68     	 ldr r2,[r7,#8]
+ 1195 0052 C3F8C420 	 str r2,[r3,#196]
+ 1196              	 .loc 1 578 0
+ 1197 0056 03E0     	 b .L67
+ 1198              	.L61:
+ 576:.././hal/sam3u1c/pio.c **** 	}
+ 1199              	 .loc 1 576 0
+ 1200 0058 FB68     	 ldr r3,[r7,#12]
+ 1201 005a BA68     	 ldr r2,[r7,#8]
+ 1202 005c C3F8B420 	 str r2,[r3,#180]
+ 1203              	.L67:
+ 1204              	 .loc 1 578 0
+ 1205 0060 00BF     	 nop
+ 1206 0062 1437     	 adds r7,r7,#20
+ 1207              	.LCFI96:
+ 1208              	 .cfi_def_cfa_offset 4
+ 1209 0064 BD46     	 mov sp,r7
+ 1210              	.LCFI97:
+ 1211              	 .cfi_def_cfa_register 13
+ 1212              	 
+ 1213 0066 80BC     	 pop {r7}
+ 1214              	.LCFI98:
+ 1215              	 .cfi_restore 7
+ 1216              	 .cfi_def_cfa_offset 0
+ 1217 0068 7047     	 bx lr
+ 1218              	 .cfi_endproc
+ 1219              	.LFE83:
+ 1221              	 .section .text.pio_enable_interrupt,"ax",%progbits
+ 1222              	 .align 1
+ 1223              	 .global pio_enable_interrupt
+ 1224              	 .syntax unified
+ 1225              	 .thumb
+ 1226              	 .thumb_func
+ 1227              	 .fpu softvfp
+ 1229              	pio_enable_interrupt:
+ 1230              	.LFB84:
+ 579:.././hal/sam3u1c/pio.c **** 
+ 580:.././hal/sam3u1c/pio.c **** /**
+ 581:.././hal/sam3u1c/pio.c ****  * \brief Enable the given interrupt source.
+ 582:.././hal/sam3u1c/pio.c ****  * The PIO must be configured as an NVIC interrupt source as well.
+ 583:.././hal/sam3u1c/pio.c ****  * The status register of the corresponding PIO controller is cleared
+ 584:.././hal/sam3u1c/pio.c ****  * prior to enabling the interrupt.
+ 585:.././hal/sam3u1c/pio.c ****  *
+ 586:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 587:.././hal/sam3u1c/pio.c ****  * \param ul_mask Interrupt sources bit map.
+ 588:.././hal/sam3u1c/pio.c ****  */
+ 589:.././hal/sam3u1c/pio.c **** void pio_enable_interrupt(Pio *p_pio, const uint32_t ul_mask)
+ 590:.././hal/sam3u1c/pio.c **** {
+ 1231              	 .loc 1 590 0
+ 1232              	 .cfi_startproc
+ 1233              	 
+ 1234              	 
+ 1235              	 
+ 1236 0000 80B4     	 push {r7}
+ 1237              	.LCFI99:
+ 1238              	 .cfi_def_cfa_offset 4
+ 1239              	 .cfi_offset 7,-4
+ 1240 0002 83B0     	 sub sp,sp,#12
+ 1241              	.LCFI100:
+ 1242              	 .cfi_def_cfa_offset 16
+ 1243 0004 00AF     	 add r7,sp,#0
+ 1244              	.LCFI101:
+ 1245              	 .cfi_def_cfa_register 7
+ 1246 0006 7860     	 str r0,[r7,#4]
+ 1247 0008 3960     	 str r1,[r7]
+ 591:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_ISR;
+ 1248              	 .loc 1 591 0
+ 1249 000a 7B68     	 ldr r3,[r7,#4]
+ 1250 000c DB6C     	 ldr r3,[r3,#76]
+ 592:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_IER = ul_mask;
+ 1251              	 .loc 1 592 0
+ 1252 000e 7B68     	 ldr r3,[r7,#4]
+ 1253 0010 3A68     	 ldr r2,[r7]
+ 1254 0012 1A64     	 str r2,[r3,#64]
+ 593:.././hal/sam3u1c/pio.c **** }
+ 1255              	 .loc 1 593 0
+ 1256 0014 00BF     	 nop
+ 1257 0016 0C37     	 adds r7,r7,#12
+ 1258              	.LCFI102:
+ 1259              	 .cfi_def_cfa_offset 4
+ 1260 0018 BD46     	 mov sp,r7
+ 1261              	.LCFI103:
+ 1262              	 .cfi_def_cfa_register 13
+ 1263              	 
+ 1264 001a 80BC     	 pop {r7}
+ 1265              	.LCFI104:
+ 1266              	 .cfi_restore 7
+ 1267              	 .cfi_def_cfa_offset 0
+ 1268 001c 7047     	 bx lr
+ 1269              	 .cfi_endproc
+ 1270              	.LFE84:
+ 1272              	 .section .text.pio_disable_interrupt,"ax",%progbits
+ 1273              	 .align 1
+ 1274              	 .global pio_disable_interrupt
+ 1275              	 .syntax unified
+ 1276              	 .thumb
+ 1277              	 .thumb_func
+ 1278              	 .fpu softvfp
+ 1280              	pio_disable_interrupt:
+ 1281              	.LFB85:
+ 594:.././hal/sam3u1c/pio.c **** 
+ 595:.././hal/sam3u1c/pio.c **** /**
+ 596:.././hal/sam3u1c/pio.c ****  * \brief Disable a given interrupt source, with no added side effects.
+ 597:.././hal/sam3u1c/pio.c ****  *
+ 598:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 599:.././hal/sam3u1c/pio.c ****  * \param ul_mask Interrupt sources bit map.
+ 600:.././hal/sam3u1c/pio.c ****  */
+ 601:.././hal/sam3u1c/pio.c **** void pio_disable_interrupt(Pio *p_pio, const uint32_t ul_mask)
+ 602:.././hal/sam3u1c/pio.c **** {
+ 1282              	 .loc 1 602 0
+ 1283              	 .cfi_startproc
+ 1284              	 
+ 1285              	 
+ 1286              	 
+ 1287 0000 80B4     	 push {r7}
+ 1288              	.LCFI105:
+ 1289              	 .cfi_def_cfa_offset 4
+ 1290              	 .cfi_offset 7,-4
+ 1291 0002 83B0     	 sub sp,sp,#12
+ 1292              	.LCFI106:
+ 1293              	 .cfi_def_cfa_offset 16
+ 1294 0004 00AF     	 add r7,sp,#0
+ 1295              	.LCFI107:
+ 1296              	 .cfi_def_cfa_register 7
+ 1297 0006 7860     	 str r0,[r7,#4]
+ 1298 0008 3960     	 str r1,[r7]
+ 603:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_IDR = ul_mask;
+ 1299              	 .loc 1 603 0
+ 1300 000a 7B68     	 ldr r3,[r7,#4]
+ 1301 000c 3A68     	 ldr r2,[r7]
+ 1302 000e 5A64     	 str r2,[r3,#68]
+ 604:.././hal/sam3u1c/pio.c **** }
+ 1303              	 .loc 1 604 0
+ 1304 0010 00BF     	 nop
+ 1305 0012 0C37     	 adds r7,r7,#12
+ 1306              	.LCFI108:
+ 1307              	 .cfi_def_cfa_offset 4
+ 1308 0014 BD46     	 mov sp,r7
+ 1309              	.LCFI109:
+ 1310              	 .cfi_def_cfa_register 13
+ 1311              	 
+ 1312 0016 80BC     	 pop {r7}
+ 1313              	.LCFI110:
+ 1314              	 .cfi_restore 7
+ 1315              	 .cfi_def_cfa_offset 0
+ 1316 0018 7047     	 bx lr
+ 1317              	 .cfi_endproc
+ 1318              	.LFE85:
+ 1320              	 .section .text.pio_get_interrupt_status,"ax",%progbits
+ 1321              	 .align 1
+ 1322              	 .global pio_get_interrupt_status
+ 1323              	 .syntax unified
+ 1324              	 .thumb
+ 1325              	 .thumb_func
+ 1326              	 .fpu softvfp
+ 1328              	pio_get_interrupt_status:
+ 1329              	.LFB86:
+ 605:.././hal/sam3u1c/pio.c **** 
+ 606:.././hal/sam3u1c/pio.c **** /**
+ 607:.././hal/sam3u1c/pio.c ****  * \brief Read PIO interrupt status.
+ 608:.././hal/sam3u1c/pio.c ****  *
+ 609:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 610:.././hal/sam3u1c/pio.c ****  *
+ 611:.././hal/sam3u1c/pio.c ****  * \return The interrupt status mask value.
+ 612:.././hal/sam3u1c/pio.c ****  */
+ 613:.././hal/sam3u1c/pio.c **** uint32_t pio_get_interrupt_status(const Pio *p_pio)
+ 614:.././hal/sam3u1c/pio.c **** {
+ 1330              	 .loc 1 614 0
+ 1331              	 .cfi_startproc
+ 1332              	 
+ 1333              	 
+ 1334              	 
+ 1335 0000 80B4     	 push {r7}
+ 1336              	.LCFI111:
+ 1337              	 .cfi_def_cfa_offset 4
+ 1338              	 .cfi_offset 7,-4
+ 1339 0002 83B0     	 sub sp,sp,#12
+ 1340              	.LCFI112:
+ 1341              	 .cfi_def_cfa_offset 16
+ 1342 0004 00AF     	 add r7,sp,#0
+ 1343              	.LCFI113:
+ 1344              	 .cfi_def_cfa_register 7
+ 1345 0006 7860     	 str r0,[r7,#4]
+ 615:.././hal/sam3u1c/pio.c **** 	return p_pio->PIO_ISR;
+ 1346              	 .loc 1 615 0
+ 1347 0008 7B68     	 ldr r3,[r7,#4]
+ 1348 000a DB6C     	 ldr r3,[r3,#76]
+ 616:.././hal/sam3u1c/pio.c **** }
+ 1349              	 .loc 1 616 0
+ 1350 000c 1846     	 mov r0,r3
+ 1351 000e 0C37     	 adds r7,r7,#12
+ 1352              	.LCFI114:
+ 1353              	 .cfi_def_cfa_offset 4
+ 1354 0010 BD46     	 mov sp,r7
+ 1355              	.LCFI115:
+ 1356              	 .cfi_def_cfa_register 13
+ 1357              	 
+ 1358 0012 80BC     	 pop {r7}
+ 1359              	.LCFI116:
+ 1360              	 .cfi_restore 7
+ 1361              	 .cfi_def_cfa_offset 0
+ 1362 0014 7047     	 bx lr
+ 1363              	 .cfi_endproc
+ 1364              	.LFE86:
+ 1366              	 .section .text.pio_get_interrupt_mask,"ax",%progbits
+ 1367              	 .align 1
+ 1368              	 .global pio_get_interrupt_mask
+ 1369              	 .syntax unified
+ 1370              	 .thumb
+ 1371              	 .thumb_func
+ 1372              	 .fpu softvfp
+ 1374              	pio_get_interrupt_mask:
+ 1375              	.LFB87:
+ 617:.././hal/sam3u1c/pio.c **** 
+ 618:.././hal/sam3u1c/pio.c **** /**
+ 619:.././hal/sam3u1c/pio.c ****  * \brief Read PIO interrupt mask.
+ 620:.././hal/sam3u1c/pio.c ****  *
+ 621:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 622:.././hal/sam3u1c/pio.c ****  *
+ 623:.././hal/sam3u1c/pio.c ****  * \return The interrupt mask value.
+ 624:.././hal/sam3u1c/pio.c ****  */
+ 625:.././hal/sam3u1c/pio.c **** uint32_t pio_get_interrupt_mask(const Pio *p_pio)
+ 626:.././hal/sam3u1c/pio.c **** {
+ 1376              	 .loc 1 626 0
+ 1377              	 .cfi_startproc
+ 1378              	 
+ 1379              	 
+ 1380              	 
+ 1381 0000 80B4     	 push {r7}
+ 1382              	.LCFI117:
+ 1383              	 .cfi_def_cfa_offset 4
+ 1384              	 .cfi_offset 7,-4
+ 1385 0002 83B0     	 sub sp,sp,#12
+ 1386              	.LCFI118:
+ 1387              	 .cfi_def_cfa_offset 16
+ 1388 0004 00AF     	 add r7,sp,#0
+ 1389              	.LCFI119:
+ 1390              	 .cfi_def_cfa_register 7
+ 1391 0006 7860     	 str r0,[r7,#4]
+ 627:.././hal/sam3u1c/pio.c **** 	return p_pio->PIO_IMR;
+ 1392              	 .loc 1 627 0
+ 1393 0008 7B68     	 ldr r3,[r7,#4]
+ 1394 000a 9B6C     	 ldr r3,[r3,#72]
+ 628:.././hal/sam3u1c/pio.c **** }
+ 1395              	 .loc 1 628 0
+ 1396 000c 1846     	 mov r0,r3
+ 1397 000e 0C37     	 adds r7,r7,#12
+ 1398              	.LCFI120:
+ 1399              	 .cfi_def_cfa_offset 4
+ 1400 0010 BD46     	 mov sp,r7
+ 1401              	.LCFI121:
+ 1402              	 .cfi_def_cfa_register 13
+ 1403              	 
+ 1404 0012 80BC     	 pop {r7}
+ 1405              	.LCFI122:
+ 1406              	 .cfi_restore 7
+ 1407              	 .cfi_def_cfa_offset 0
+ 1408 0014 7047     	 bx lr
+ 1409              	 .cfi_endproc
+ 1410              	.LFE87:
+ 1412              	 .section .text.pio_set_additional_interrupt_mode,"ax",%progbits
+ 1413              	 .align 1
+ 1414              	 .global pio_set_additional_interrupt_mode
+ 1415              	 .syntax unified
+ 1416              	 .thumb
+ 1417              	 .thumb_func
+ 1418              	 .fpu softvfp
+ 1420              	pio_set_additional_interrupt_mode:
+ 1421              	.LFB88:
+ 629:.././hal/sam3u1c/pio.c **** 
+ 630:.././hal/sam3u1c/pio.c **** /**
+ 631:.././hal/sam3u1c/pio.c ****  * \brief Set additional interrupt mode.
+ 632:.././hal/sam3u1c/pio.c ****  *
+ 633:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 634:.././hal/sam3u1c/pio.c ****  * \param ul_mask Interrupt sources bit map.
+ 635:.././hal/sam3u1c/pio.c ****  * \param ul_attribute Pin(s) attributes.
+ 636:.././hal/sam3u1c/pio.c ****  */
+ 637:.././hal/sam3u1c/pio.c **** void pio_set_additional_interrupt_mode(Pio *p_pio,
+ 638:.././hal/sam3u1c/pio.c **** 		const uint32_t ul_mask, const uint32_t ul_attribute)
+ 639:.././hal/sam3u1c/pio.c **** {
+ 1422              	 .loc 1 639 0
+ 1423              	 .cfi_startproc
+ 1424              	 
+ 1425              	 
+ 1426              	 
+ 1427 0000 80B4     	 push {r7}
+ 1428              	.LCFI123:
+ 1429              	 .cfi_def_cfa_offset 4
+ 1430              	 .cfi_offset 7,-4
+ 1431 0002 85B0     	 sub sp,sp,#20
+ 1432              	.LCFI124:
+ 1433              	 .cfi_def_cfa_offset 24
+ 1434 0004 00AF     	 add r7,sp,#0
+ 1435              	.LCFI125:
+ 1436              	 .cfi_def_cfa_register 7
+ 1437 0006 F860     	 str r0,[r7,#12]
+ 1438 0008 B960     	 str r1,[r7,#8]
+ 1439 000a 7A60     	 str r2,[r7,#4]
+ 640:.././hal/sam3u1c/pio.c **** 	/* Enables additional interrupt mode if needed */
+ 641:.././hal/sam3u1c/pio.c **** 	if (ul_attribute & PIO_IT_AIME) {
+ 1440              	 .loc 1 641 0
+ 1441 000c 7B68     	 ldr r3,[r7,#4]
+ 1442 000e 03F01003 	 and r3,r3,#16
+ 1443 0012 002B     	 cmp r3,#0
+ 1444 0014 20D0     	 beq .L75
+ 642:.././hal/sam3u1c/pio.c **** 		/* Enables additional interrupt mode */
+ 643:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_AIMER = ul_mask;
+ 1445              	 .loc 1 643 0
+ 1446 0016 FB68     	 ldr r3,[r7,#12]
+ 1447 0018 BA68     	 ldr r2,[r7,#8]
+ 1448 001a C3F8B020 	 str r2,[r3,#176]
+ 644:.././hal/sam3u1c/pio.c **** 
+ 645:.././hal/sam3u1c/pio.c **** 		/* Configures the Polarity of the event detection */
+ 646:.././hal/sam3u1c/pio.c **** 		/* (Rising/Falling Edge or High/Low Level) */
+ 647:.././hal/sam3u1c/pio.c **** 		if (ul_attribute & PIO_IT_RE_OR_HL) {
+ 1449              	 .loc 1 647 0
+ 1450 001e 7B68     	 ldr r3,[r7,#4]
+ 1451 0020 03F02003 	 and r3,r3,#32
+ 1452 0024 002B     	 cmp r3,#0
+ 1453 0026 04D0     	 beq .L76
+ 648:.././hal/sam3u1c/pio.c **** 			/* Rising Edge or High Level */
+ 649:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_REHLSR = ul_mask;
+ 1454              	 .loc 1 649 0
+ 1455 0028 FB68     	 ldr r3,[r7,#12]
+ 1456 002a BA68     	 ldr r2,[r7,#8]
+ 1457 002c C3F8D420 	 str r2,[r3,#212]
+ 1458 0030 03E0     	 b .L77
+ 1459              	.L76:
+ 650:.././hal/sam3u1c/pio.c **** 		} else {
+ 651:.././hal/sam3u1c/pio.c **** 			/* Falling Edge or Low Level */
+ 652:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_FELLSR = ul_mask;
+ 1460              	 .loc 1 652 0
+ 1461 0032 FB68     	 ldr r3,[r7,#12]
+ 1462 0034 BA68     	 ldr r2,[r7,#8]
+ 1463 0036 C3F8D020 	 str r2,[r3,#208]
+ 1464              	.L77:
+ 653:.././hal/sam3u1c/pio.c **** 		}
+ 654:.././hal/sam3u1c/pio.c **** 
+ 655:.././hal/sam3u1c/pio.c **** 		/* Configures the type of event detection (Edge or Level) */
+ 656:.././hal/sam3u1c/pio.c **** 		if (ul_attribute & PIO_IT_EDGE) {
+ 1465              	 .loc 1 656 0
+ 1466 003a 7B68     	 ldr r3,[r7,#4]
+ 1467 003c 03F04003 	 and r3,r3,#64
+ 1468 0040 002B     	 cmp r3,#0
+ 1469 0042 04D0     	 beq .L78
+ 657:.././hal/sam3u1c/pio.c **** 			/* Edge select */
+ 658:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_ESR = ul_mask;
+ 1470              	 .loc 1 658 0
+ 1471 0044 FB68     	 ldr r3,[r7,#12]
+ 1472 0046 BA68     	 ldr r2,[r7,#8]
+ 1473 0048 C3F8C020 	 str r2,[r3,#192]
+ 659:.././hal/sam3u1c/pio.c **** 		} else {
+ 660:.././hal/sam3u1c/pio.c **** 			/* Level select */
+ 661:.././hal/sam3u1c/pio.c **** 			p_pio->PIO_LSR = ul_mask;
+ 662:.././hal/sam3u1c/pio.c **** 		}
+ 663:.././hal/sam3u1c/pio.c **** 	} else {
+ 664:.././hal/sam3u1c/pio.c **** 		/* Disable additional interrupt mode */
+ 665:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_AIMDR = ul_mask;
+ 666:.././hal/sam3u1c/pio.c **** 	}
+ 667:.././hal/sam3u1c/pio.c **** }
+ 1474              	 .loc 1 667 0
+ 1475 004c 08E0     	 b .L81
+ 1476              	.L78:
+ 661:.././hal/sam3u1c/pio.c **** 		}
+ 1477              	 .loc 1 661 0
+ 1478 004e FB68     	 ldr r3,[r7,#12]
+ 1479 0050 BA68     	 ldr r2,[r7,#8]
+ 1480 0052 C3F8C420 	 str r2,[r3,#196]
+ 1481              	 .loc 1 667 0
+ 1482 0056 03E0     	 b .L81
+ 1483              	.L75:
+ 665:.././hal/sam3u1c/pio.c **** 	}
+ 1484              	 .loc 1 665 0
+ 1485 0058 FB68     	 ldr r3,[r7,#12]
+ 1486 005a BA68     	 ldr r2,[r7,#8]
+ 1487 005c C3F8B420 	 str r2,[r3,#180]
+ 1488              	.L81:
+ 1489              	 .loc 1 667 0
+ 1490 0060 00BF     	 nop
+ 1491 0062 1437     	 adds r7,r7,#20
+ 1492              	.LCFI126:
+ 1493              	 .cfi_def_cfa_offset 4
+ 1494 0064 BD46     	 mov sp,r7
+ 1495              	.LCFI127:
+ 1496              	 .cfi_def_cfa_register 13
+ 1497              	 
+ 1498 0066 80BC     	 pop {r7}
+ 1499              	.LCFI128:
+ 1500              	 .cfi_restore 7
+ 1501              	 .cfi_def_cfa_offset 0
+ 1502 0068 7047     	 bx lr
+ 1503              	 .cfi_endproc
+ 1504              	.LFE88:
+ 1506              	 .section .text.pio_set_writeprotect,"ax",%progbits
+ 1507              	 .align 1
+ 1508              	 .global pio_set_writeprotect
+ 1509              	 .syntax unified
+ 1510              	 .thumb
+ 1511              	 .thumb_func
+ 1512              	 .fpu softvfp
+ 1514              	pio_set_writeprotect:
+ 1515              	.LFB89:
+ 668:.././hal/sam3u1c/pio.c **** 
+ 669:.././hal/sam3u1c/pio.c **** #ifndef PIO_WPMR_WPKEY_PASSWD
+ 670:.././hal/sam3u1c/pio.c **** #define PIO_WPMR_WPKEY_PASSWD    PIO_WPMR_WPKEY(0x50494FU)
+ 671:.././hal/sam3u1c/pio.c **** #endif
+ 672:.././hal/sam3u1c/pio.c **** 
+ 673:.././hal/sam3u1c/pio.c **** /**
+ 674:.././hal/sam3u1c/pio.c ****  * \brief Enable or disable write protect of PIO registers.
+ 675:.././hal/sam3u1c/pio.c ****  *
+ 676:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 677:.././hal/sam3u1c/pio.c ****  * \param ul_enable 1 to enable, 0 to disable.
+ 678:.././hal/sam3u1c/pio.c ****  */
+ 679:.././hal/sam3u1c/pio.c **** void pio_set_writeprotect(Pio *p_pio, const uint32_t ul_enable)
+ 680:.././hal/sam3u1c/pio.c **** {
+ 1516              	 .loc 1 680 0
+ 1517              	 .cfi_startproc
+ 1518              	 
+ 1519              	 
+ 1520              	 
+ 1521 0000 80B4     	 push {r7}
+ 1522              	.LCFI129:
+ 1523              	 .cfi_def_cfa_offset 4
+ 1524              	 .cfi_offset 7,-4
+ 1525 0002 83B0     	 sub sp,sp,#12
+ 1526              	.LCFI130:
+ 1527              	 .cfi_def_cfa_offset 16
+ 1528 0004 00AF     	 add r7,sp,#0
+ 1529              	.LCFI131:
+ 1530              	 .cfi_def_cfa_register 7
+ 1531 0006 7860     	 str r0,[r7,#4]
+ 1532 0008 3960     	 str r1,[r7]
+ 681:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_WPMR = PIO_WPMR_WPKEY_PASSWD | ul_enable;
+ 1533              	 .loc 1 681 0
+ 1534 000a 3A68     	 ldr r2,[r7]
+ 1535 000c 044B     	 ldr r3,.L83
+ 1536 000e 1343     	 orrs r3,r3,r2
+ 1537 0010 7A68     	 ldr r2,[r7,#4]
+ 1538 0012 C2F8E430 	 str r3,[r2,#228]
+ 682:.././hal/sam3u1c/pio.c **** }
+ 1539              	 .loc 1 682 0
+ 1540 0016 00BF     	 nop
+ 1541 0018 0C37     	 adds r7,r7,#12
+ 1542              	.LCFI132:
+ 1543              	 .cfi_def_cfa_offset 4
+ 1544 001a BD46     	 mov sp,r7
+ 1545              	.LCFI133:
+ 1546              	 .cfi_def_cfa_register 13
+ 1547              	 
+ 1548 001c 80BC     	 pop {r7}
+ 1549              	.LCFI134:
+ 1550              	 .cfi_restore 7
+ 1551              	 .cfi_def_cfa_offset 0
+ 1552 001e 7047     	 bx lr
+ 1553              	.L84:
+ 1554              	 .align 2
+ 1555              	.L83:
+ 1556 0020 004F4950 	 .word 1346981632
+ 1557              	 .cfi_endproc
+ 1558              	.LFE89:
+ 1560              	 .section .text.pio_get_writeprotect_status,"ax",%progbits
+ 1561              	 .align 1
+ 1562              	 .global pio_get_writeprotect_status
+ 1563              	 .syntax unified
+ 1564              	 .thumb
+ 1565              	 .thumb_func
+ 1566              	 .fpu softvfp
+ 1568              	pio_get_writeprotect_status:
+ 1569              	.LFB90:
+ 683:.././hal/sam3u1c/pio.c **** 
+ 684:.././hal/sam3u1c/pio.c **** /**
+ 685:.././hal/sam3u1c/pio.c ****  * \brief Read write protect status.
+ 686:.././hal/sam3u1c/pio.c ****  *
+ 687:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 688:.././hal/sam3u1c/pio.c ****  *
+ 689:.././hal/sam3u1c/pio.c ****  * \return Return write protect status.
+ 690:.././hal/sam3u1c/pio.c ****  */
+ 691:.././hal/sam3u1c/pio.c **** uint32_t pio_get_writeprotect_status(const Pio *p_pio)
+ 692:.././hal/sam3u1c/pio.c **** {
+ 1570              	 .loc 1 692 0
+ 1571              	 .cfi_startproc
+ 1572              	 
+ 1573              	 
+ 1574              	 
+ 1575 0000 80B4     	 push {r7}
+ 1576              	.LCFI135:
+ 1577              	 .cfi_def_cfa_offset 4
+ 1578              	 .cfi_offset 7,-4
+ 1579 0002 83B0     	 sub sp,sp,#12
+ 1580              	.LCFI136:
+ 1581              	 .cfi_def_cfa_offset 16
+ 1582 0004 00AF     	 add r7,sp,#0
+ 1583              	.LCFI137:
+ 1584              	 .cfi_def_cfa_register 7
+ 1585 0006 7860     	 str r0,[r7,#4]
+ 693:.././hal/sam3u1c/pio.c **** 	return p_pio->PIO_WPSR;
+ 1586              	 .loc 1 693 0
+ 1587 0008 7B68     	 ldr r3,[r7,#4]
+ 1588 000a D3F8E830 	 ldr r3,[r3,#232]
+ 694:.././hal/sam3u1c/pio.c **** }
+ 1589              	 .loc 1 694 0
+ 1590 000e 1846     	 mov r0,r3
+ 1591 0010 0C37     	 adds r7,r7,#12
+ 1592              	.LCFI138:
+ 1593              	 .cfi_def_cfa_offset 4
+ 1594 0012 BD46     	 mov sp,r7
+ 1595              	.LCFI139:
+ 1596              	 .cfi_def_cfa_register 13
+ 1597              	 
+ 1598 0014 80BC     	 pop {r7}
+ 1599              	.LCFI140:
+ 1600              	 .cfi_restore 7
+ 1601              	 .cfi_def_cfa_offset 0
+ 1602 0016 7047     	 bx lr
+ 1603              	 .cfi_endproc
+ 1604              	.LFE90:
+ 1606              	 .section .text.pio_get_pin_value,"ax",%progbits
+ 1607              	 .align 1
+ 1608              	 .global pio_get_pin_value
+ 1609              	 .syntax unified
+ 1610              	 .thumb
+ 1611              	 .thumb_func
+ 1612              	 .fpu softvfp
+ 1614              	pio_get_pin_value:
+ 1615              	.LFB91:
+ 695:.././hal/sam3u1c/pio.c **** 
+ 696:.././hal/sam3u1c/pio.c **** /**
+ 697:.././hal/sam3u1c/pio.c ****  * \brief Return the value of a pin.
+ 698:.././hal/sam3u1c/pio.c ****  *
+ 699:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin number.
+ 700:.././hal/sam3u1c/pio.c ****  *
+ 701:.././hal/sam3u1c/pio.c ****  * \return The pin value.
+ 702:.././hal/sam3u1c/pio.c ****  *
+ 703:.././hal/sam3u1c/pio.c ****  * \note If pin is output: a pull-up or pull-down could hide the actual value.
+ 704:.././hal/sam3u1c/pio.c ****  *       The function \ref pio_get can be called to get the actual pin output
+ 705:.././hal/sam3u1c/pio.c ****  *       level.
+ 706:.././hal/sam3u1c/pio.c ****  * \note If pin is input: PIOx must be clocked to sample the signal.
+ 707:.././hal/sam3u1c/pio.c ****  *       See PMC driver.
+ 708:.././hal/sam3u1c/pio.c ****  */
+ 709:.././hal/sam3u1c/pio.c **** uint32_t pio_get_pin_value(uint32_t ul_pin)
+ 710:.././hal/sam3u1c/pio.c **** {
+ 1616              	 .loc 1 710 0
+ 1617              	 .cfi_startproc
+ 1618              	 
+ 1619              	 
+ 1620 0000 80B5     	 push {r7,lr}
+ 1621              	.LCFI141:
+ 1622              	 .cfi_def_cfa_offset 8
+ 1623              	 .cfi_offset 7,-8
+ 1624              	 .cfi_offset 14,-4
+ 1625 0002 84B0     	 sub sp,sp,#16
+ 1626              	.LCFI142:
+ 1627              	 .cfi_def_cfa_offset 24
+ 1628 0004 00AF     	 add r7,sp,#0
+ 1629              	.LCFI143:
+ 1630              	 .cfi_def_cfa_register 7
+ 1631 0006 7860     	 str r0,[r7,#4]
+ 711:.././hal/sam3u1c/pio.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
+ 1632              	 .loc 1 711 0
+ 1633 0008 7868     	 ldr r0,[r7,#4]
+ 1634 000a 084B     	 ldr r3,.L89
+ 1635 000c 9847     	 blx r3
+ 1636              	.LVL8:
+ 1637 000e F860     	 str r0,[r7,#12]
+ 712:.././hal/sam3u1c/pio.c **** 
+ 713:.././hal/sam3u1c/pio.c **** 	return (p_pio->PIO_PDSR >> (ul_pin & 0x1F)) & 1;
+ 1638              	 .loc 1 713 0
+ 1639 0010 FB68     	 ldr r3,[r7,#12]
+ 1640 0012 DA6B     	 ldr r2,[r3,#60]
+ 1641 0014 7B68     	 ldr r3,[r7,#4]
+ 1642 0016 03F01F03 	 and r3,r3,#31
+ 1643 001a 22FA03F3 	 lsr r3,r2,r3
+ 1644 001e 03F00103 	 and r3,r3,#1
+ 714:.././hal/sam3u1c/pio.c **** }
+ 1645              	 .loc 1 714 0
+ 1646 0022 1846     	 mov r0,r3
+ 1647 0024 1037     	 adds r7,r7,#16
+ 1648              	.LCFI144:
+ 1649              	 .cfi_def_cfa_offset 8
+ 1650 0026 BD46     	 mov sp,r7
+ 1651              	.LCFI145:
+ 1652              	 .cfi_def_cfa_register 13
+ 1653              	 
+ 1654 0028 80BD     	 pop {r7,pc}
+ 1655              	.L90:
+ 1656 002a 00BF     	 .align 2
+ 1657              	.L89:
+ 1658 002c 00000000 	 .word pio_get_pin_group
+ 1659              	 .cfi_endproc
+ 1660              	.LFE91:
+ 1662              	 .section .text.pio_set_pin_high,"ax",%progbits
+ 1663              	 .align 1
+ 1664              	 .global pio_set_pin_high
+ 1665              	 .syntax unified
+ 1666              	 .thumb
+ 1667              	 .thumb_func
+ 1668              	 .fpu softvfp
+ 1670              	pio_set_pin_high:
+ 1671              	.LFB92:
+ 715:.././hal/sam3u1c/pio.c **** 
+ 716:.././hal/sam3u1c/pio.c **** /**
+ 717:.././hal/sam3u1c/pio.c ****  * \brief Drive a GPIO pin to 1.
+ 718:.././hal/sam3u1c/pio.c ****  *
+ 719:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+ 720:.././hal/sam3u1c/pio.c ****  *
+ 721:.././hal/sam3u1c/pio.c ****  * \note The function \ref pio_configure_pin must be called beforehand.
+ 722:.././hal/sam3u1c/pio.c ****  */
+ 723:.././hal/sam3u1c/pio.c **** void pio_set_pin_high(uint32_t ul_pin)
+ 724:.././hal/sam3u1c/pio.c **** {
+ 1672              	 .loc 1 724 0
+ 1673              	 .cfi_startproc
+ 1674              	 
+ 1675              	 
+ 1676 0000 80B5     	 push {r7,lr}
+ 1677              	.LCFI146:
+ 1678              	 .cfi_def_cfa_offset 8
+ 1679              	 .cfi_offset 7,-8
+ 1680              	 .cfi_offset 14,-4
+ 1681 0002 84B0     	 sub sp,sp,#16
+ 1682              	.LCFI147:
+ 1683              	 .cfi_def_cfa_offset 24
+ 1684 0004 00AF     	 add r7,sp,#0
+ 1685              	.LCFI148:
+ 1686              	 .cfi_def_cfa_register 7
+ 1687 0006 7860     	 str r0,[r7,#4]
+ 725:.././hal/sam3u1c/pio.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
+ 1688              	 .loc 1 725 0
+ 1689 0008 7868     	 ldr r0,[r7,#4]
+ 1690 000a 084B     	 ldr r3,.L92
+ 1691 000c 9847     	 blx r3
+ 1692              	.LVL9:
+ 1693 000e F860     	 str r0,[r7,#12]
+ 726:.././hal/sam3u1c/pio.c **** 
+ 727:.././hal/sam3u1c/pio.c **** 	/* Value to be driven on the I/O line: 1. */
+ 728:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_SODR = 1 << (ul_pin & 0x1F);
+ 1694              	 .loc 1 728 0
+ 1695 0010 7B68     	 ldr r3,[r7,#4]
+ 1696 0012 03F01F03 	 and r3,r3,#31
+ 1697 0016 0122     	 movs r2,#1
+ 1698 0018 02FA03F3 	 lsl r3,r2,r3
+ 1699 001c 1A46     	 mov r2,r3
+ 1700 001e FB68     	 ldr r3,[r7,#12]
+ 1701 0020 1A63     	 str r2,[r3,#48]
+ 729:.././hal/sam3u1c/pio.c **** }
+ 1702              	 .loc 1 729 0
+ 1703 0022 00BF     	 nop
+ 1704 0024 1037     	 adds r7,r7,#16
+ 1705              	.LCFI149:
+ 1706              	 .cfi_def_cfa_offset 8
+ 1707 0026 BD46     	 mov sp,r7
+ 1708              	.LCFI150:
+ 1709              	 .cfi_def_cfa_register 13
+ 1710              	 
+ 1711 0028 80BD     	 pop {r7,pc}
+ 1712              	.L93:
+ 1713 002a 00BF     	 .align 2
+ 1714              	.L92:
+ 1715 002c 00000000 	 .word pio_get_pin_group
+ 1716              	 .cfi_endproc
+ 1717              	.LFE92:
+ 1719              	 .section .text.pio_set_pin_low,"ax",%progbits
+ 1720              	 .align 1
+ 1721              	 .global pio_set_pin_low
+ 1722              	 .syntax unified
+ 1723              	 .thumb
+ 1724              	 .thumb_func
+ 1725              	 .fpu softvfp
+ 1727              	pio_set_pin_low:
+ 1728              	.LFB93:
+ 730:.././hal/sam3u1c/pio.c **** 
+ 731:.././hal/sam3u1c/pio.c **** /**
+ 732:.././hal/sam3u1c/pio.c ****  * \brief Drive a GPIO pin to 0.
+ 733:.././hal/sam3u1c/pio.c ****  *
+ 734:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+ 735:.././hal/sam3u1c/pio.c ****  *
+ 736:.././hal/sam3u1c/pio.c ****  * \note The function \ref pio_configure_pin must be called before.
+ 737:.././hal/sam3u1c/pio.c ****  */
+ 738:.././hal/sam3u1c/pio.c **** void pio_set_pin_low(uint32_t ul_pin)
+ 739:.././hal/sam3u1c/pio.c **** {
+ 1729              	 .loc 1 739 0
+ 1730              	 .cfi_startproc
+ 1731              	 
+ 1732              	 
+ 1733 0000 80B5     	 push {r7,lr}
+ 1734              	.LCFI151:
+ 1735              	 .cfi_def_cfa_offset 8
+ 1736              	 .cfi_offset 7,-8
+ 1737              	 .cfi_offset 14,-4
+ 1738 0002 84B0     	 sub sp,sp,#16
+ 1739              	.LCFI152:
+ 1740              	 .cfi_def_cfa_offset 24
+ 1741 0004 00AF     	 add r7,sp,#0
+ 1742              	.LCFI153:
+ 1743              	 .cfi_def_cfa_register 7
+ 1744 0006 7860     	 str r0,[r7,#4]
+ 740:.././hal/sam3u1c/pio.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
+ 1745              	 .loc 1 740 0
+ 1746 0008 7868     	 ldr r0,[r7,#4]
+ 1747 000a 084B     	 ldr r3,.L95
+ 1748 000c 9847     	 blx r3
+ 1749              	.LVL10:
+ 1750 000e F860     	 str r0,[r7,#12]
+ 741:.././hal/sam3u1c/pio.c **** 
+ 742:.././hal/sam3u1c/pio.c **** 	/* Value to be driven on the I/O line: 0. */
+ 743:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_CODR = 1 << (ul_pin & 0x1F);
+ 1751              	 .loc 1 743 0
+ 1752 0010 7B68     	 ldr r3,[r7,#4]
+ 1753 0012 03F01F03 	 and r3,r3,#31
+ 1754 0016 0122     	 movs r2,#1
+ 1755 0018 02FA03F3 	 lsl r3,r2,r3
+ 1756 001c 1A46     	 mov r2,r3
+ 1757 001e FB68     	 ldr r3,[r7,#12]
+ 1758 0020 5A63     	 str r2,[r3,#52]
+ 744:.././hal/sam3u1c/pio.c **** }
+ 1759              	 .loc 1 744 0
+ 1760 0022 00BF     	 nop
+ 1761 0024 1037     	 adds r7,r7,#16
+ 1762              	.LCFI154:
+ 1763              	 .cfi_def_cfa_offset 8
+ 1764 0026 BD46     	 mov sp,r7
+ 1765              	.LCFI155:
+ 1766              	 .cfi_def_cfa_register 13
+ 1767              	 
+ 1768 0028 80BD     	 pop {r7,pc}
+ 1769              	.L96:
+ 1770 002a 00BF     	 .align 2
+ 1771              	.L95:
+ 1772 002c 00000000 	 .word pio_get_pin_group
+ 1773              	 .cfi_endproc
+ 1774              	.LFE93:
+ 1776              	 .section .text.pio_toggle_pin,"ax",%progbits
+ 1777              	 .align 1
+ 1778              	 .global pio_toggle_pin
+ 1779              	 .syntax unified
+ 1780              	 .thumb
+ 1781              	 .thumb_func
+ 1782              	 .fpu softvfp
+ 1784              	pio_toggle_pin:
+ 1785              	.LFB94:
+ 745:.././hal/sam3u1c/pio.c **** 
+ 746:.././hal/sam3u1c/pio.c **** /**
+ 747:.././hal/sam3u1c/pio.c ****  * \brief Toggle a GPIO pin.
+ 748:.././hal/sam3u1c/pio.c ****  *
+ 749:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+ 750:.././hal/sam3u1c/pio.c ****  *
+ 751:.././hal/sam3u1c/pio.c ****  * \note The function \ref pio_configure_pin must be called before.
+ 752:.././hal/sam3u1c/pio.c ****  */
+ 753:.././hal/sam3u1c/pio.c **** void pio_toggle_pin(uint32_t ul_pin)
+ 754:.././hal/sam3u1c/pio.c **** {
+ 1786              	 .loc 1 754 0
+ 1787              	 .cfi_startproc
+ 1788              	 
+ 1789              	 
+ 1790 0000 80B5     	 push {r7,lr}
+ 1791              	.LCFI156:
+ 1792              	 .cfi_def_cfa_offset 8
+ 1793              	 .cfi_offset 7,-8
+ 1794              	 .cfi_offset 14,-4
+ 1795 0002 84B0     	 sub sp,sp,#16
+ 1796              	.LCFI157:
+ 1797              	 .cfi_def_cfa_offset 24
+ 1798 0004 00AF     	 add r7,sp,#0
+ 1799              	.LCFI158:
+ 1800              	 .cfi_def_cfa_register 7
+ 1801 0006 7860     	 str r0,[r7,#4]
+ 755:.././hal/sam3u1c/pio.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
+ 1802              	 .loc 1 755 0
+ 1803 0008 7868     	 ldr r0,[r7,#4]
+ 1804 000a 124B     	 ldr r3,.L101
+ 1805 000c 9847     	 blx r3
+ 1806              	.LVL11:
+ 1807 000e F860     	 str r0,[r7,#12]
+ 756:.././hal/sam3u1c/pio.c **** 
+ 757:.././hal/sam3u1c/pio.c **** 	if (p_pio->PIO_ODSR & (1 << (ul_pin & 0x1F))) {
+ 1808              	 .loc 1 757 0
+ 1809 0010 FB68     	 ldr r3,[r7,#12]
+ 1810 0012 9B6B     	 ldr r3,[r3,#56]
+ 1811 0014 7A68     	 ldr r2,[r7,#4]
+ 1812 0016 02F01F02 	 and r2,r2,#31
+ 1813 001a 0121     	 movs r1,#1
+ 1814 001c 01FA02F2 	 lsl r2,r1,r2
+ 1815 0020 1340     	 ands r3,r3,r2
+ 1816 0022 002B     	 cmp r3,#0
+ 1817 0024 09D0     	 beq .L98
+ 758:.././hal/sam3u1c/pio.c **** 		/* Value to be driven on the I/O line: 0. */
+ 759:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_CODR = 1 << (ul_pin & 0x1F);
+ 1818              	 .loc 1 759 0
+ 1819 0026 7B68     	 ldr r3,[r7,#4]
+ 1820 0028 03F01F03 	 and r3,r3,#31
+ 1821 002c 0122     	 movs r2,#1
+ 1822 002e 02FA03F3 	 lsl r3,r2,r3
+ 1823 0032 1A46     	 mov r2,r3
+ 1824 0034 FB68     	 ldr r3,[r7,#12]
+ 1825 0036 5A63     	 str r2,[r3,#52]
+ 760:.././hal/sam3u1c/pio.c **** 	} else {
+ 761:.././hal/sam3u1c/pio.c **** 		/* Value to be driven on the I/O line: 1. */
+ 762:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_SODR = 1 << (ul_pin & 0x1F);
+ 763:.././hal/sam3u1c/pio.c **** 	}
+ 764:.././hal/sam3u1c/pio.c **** }
+ 1826              	 .loc 1 764 0
+ 1827 0038 08E0     	 b .L100
+ 1828              	.L98:
+ 762:.././hal/sam3u1c/pio.c **** 	}
+ 1829              	 .loc 1 762 0
+ 1830 003a 7B68     	 ldr r3,[r7,#4]
+ 1831 003c 03F01F03 	 and r3,r3,#31
+ 1832 0040 0122     	 movs r2,#1
+ 1833 0042 02FA03F3 	 lsl r3,r2,r3
+ 1834 0046 1A46     	 mov r2,r3
+ 1835 0048 FB68     	 ldr r3,[r7,#12]
+ 1836 004a 1A63     	 str r2,[r3,#48]
+ 1837              	.L100:
+ 1838              	 .loc 1 764 0
+ 1839 004c 00BF     	 nop
+ 1840 004e 1037     	 adds r7,r7,#16
+ 1841              	.LCFI159:
+ 1842              	 .cfi_def_cfa_offset 8
+ 1843 0050 BD46     	 mov sp,r7
+ 1844              	.LCFI160:
+ 1845              	 .cfi_def_cfa_register 13
+ 1846              	 
+ 1847 0052 80BD     	 pop {r7,pc}
+ 1848              	.L102:
+ 1849              	 .align 2
+ 1850              	.L101:
+ 1851 0054 00000000 	 .word pio_get_pin_group
+ 1852              	 .cfi_endproc
+ 1853              	.LFE94:
+ 1855              	 .section .text.pio_configure_pin,"ax",%progbits
+ 1856              	 .align 1
+ 1857              	 .global pio_configure_pin
+ 1858              	 .syntax unified
+ 1859              	 .thumb
+ 1860              	 .thumb_func
+ 1861              	 .fpu softvfp
+ 1863              	pio_configure_pin:
+ 1864              	.LFB95:
+ 765:.././hal/sam3u1c/pio.c **** 
+ 766:.././hal/sam3u1c/pio.c **** /**
+ 767:.././hal/sam3u1c/pio.c ****  * \brief Perform complete pin(s) configuration; general attributes and PIO init
+ 768:.././hal/sam3u1c/pio.c ****  * if necessary.
+ 769:.././hal/sam3u1c/pio.c ****  *
+ 770:.././hal/sam3u1c/pio.c ****  * \param ul_pin Bitmask of one or more pin(s) to configure.
+ 771:.././hal/sam3u1c/pio.c ****  * \param ul_flags Pins attributes.
+ 772:.././hal/sam3u1c/pio.c ****  *
+ 773:.././hal/sam3u1c/pio.c ****  * \return Whether the pin(s) have been configured properly.
+ 774:.././hal/sam3u1c/pio.c ****  */
+ 775:.././hal/sam3u1c/pio.c **** uint32_t pio_configure_pin(uint32_t ul_pin, const uint32_t ul_flags)
+ 776:.././hal/sam3u1c/pio.c **** {
+ 1865              	 .loc 1 776 0
+ 1866              	 .cfi_startproc
+ 1867              	 
+ 1868              	 
+ 1869 0000 90B5     	 push {r4,r7,lr}
+ 1870              	.LCFI161:
+ 1871              	 .cfi_def_cfa_offset 12
+ 1872              	 .cfi_offset 4,-12
+ 1873              	 .cfi_offset 7,-8
+ 1874              	 .cfi_offset 14,-4
+ 1875 0002 87B0     	 sub sp,sp,#28
+ 1876              	.LCFI162:
+ 1877              	 .cfi_def_cfa_offset 40
+ 1878 0004 02AF     	 add r7,sp,#8
+ 1879              	.LCFI163:
+ 1880              	 .cfi_def_cfa 7,32
+ 1881 0006 7860     	 str r0,[r7,#4]
+ 1882 0008 3960     	 str r1,[r7]
+ 777:.././hal/sam3u1c/pio.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
+ 1883              	 .loc 1 777 0
+ 1884 000a 7868     	 ldr r0,[r7,#4]
+ 1885 000c 454B     	 ldr r3,.L112
+ 1886 000e 9847     	 blx r3
+ 1887              	.LVL12:
+ 1888 0010 F860     	 str r0,[r7,#12]
+ 778:.././hal/sam3u1c/pio.c **** 
+ 779:.././hal/sam3u1c/pio.c **** 	/* Configure pins */
+ 780:.././hal/sam3u1c/pio.c **** 	switch (ul_flags & PIO_TYPE_Msk) {
+ 1889              	 .loc 1 780 0
+ 1890 0012 3B68     	 ldr r3,[r7]
+ 1891 0014 03F0F043 	 and r3,r3,#2013265920
+ 1892 0018 B3F1205F 	 cmp r3,#671088640
+ 1893 001c 46D0     	 beq .L105
+ 1894 001e B3F1205F 	 cmp r3,#671088640
+ 1895 0022 06D8     	 bhi .L106
+ 1896 0024 B3F1006F 	 cmp r3,#134217728
+ 1897 0028 0AD0     	 beq .L107
+ 1898 002a B3F1805F 	 cmp r3,#268435456
+ 1899 002e 22D0     	 beq .L108
+ 1900 0030 70E0     	 b .L104
+ 1901              	.L106:
+ 1902 0032 B3F1405F 	 cmp r3,#805306368
+ 1903 0036 45D0     	 beq .L109
+ 1904 0038 B3F1605F 	 cmp r3,#939524096
+ 1905 003c 42D0     	 beq .L109
+ 1906 003e 69E0     	 b .L104
+ 1907              	.L107:
+ 781:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_A:
+ 782:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_A, (1 << (ul_pin & 0x1F)));
+ 1908              	 .loc 1 782 0
+ 1909 0040 7B68     	 ldr r3,[r7,#4]
+ 1910 0042 03F01F03 	 and r3,r3,#31
+ 1911 0046 0122     	 movs r2,#1
+ 1912 0048 02FA03F3 	 lsl r3,r2,r3
+ 1913 004c 1A46     	 mov r2,r3
+ 1914 004e 4FF00061 	 mov r1,#134217728
+ 1915 0052 F868     	 ldr r0,[r7,#12]
+ 1916 0054 344B     	 ldr r3,.L112+4
+ 1917 0056 9847     	 blx r3
+ 1918              	.LVL13:
+ 783:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, (1 << (ul_pin & 0x1F)),
+ 1919              	 .loc 1 783 0
+ 1920 0058 7B68     	 ldr r3,[r7,#4]
+ 1921 005a 03F01F03 	 and r3,r3,#31
+ 1922 005e 0122     	 movs r2,#1
+ 1923 0060 02FA03F3 	 lsl r3,r2,r3
+ 1924 0064 1946     	 mov r1,r3
+ 1925 0066 3B68     	 ldr r3,[r7]
+ 1926 0068 03F00103 	 and r3,r3,#1
+ 1927 006c 1A46     	 mov r2,r3
+ 1928 006e F868     	 ldr r0,[r7,#12]
+ 1929 0070 2E4B     	 ldr r3,.L112+8
+ 1930 0072 9847     	 blx r3
+ 1931              	.LVL14:
+ 784:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_PULLUP));
+ 785:.././hal/sam3u1c/pio.c **** 		break;
+ 1932              	 .loc 1 785 0
+ 1933 0074 50E0     	 b .L110
+ 1934              	.L108:
+ 786:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_B:
+ 787:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_B, (1 << (ul_pin & 0x1F)));
+ 1935              	 .loc 1 787 0
+ 1936 0076 7B68     	 ldr r3,[r7,#4]
+ 1937 0078 03F01F03 	 and r3,r3,#31
+ 1938 007c 0122     	 movs r2,#1
+ 1939 007e 02FA03F3 	 lsl r3,r2,r3
+ 1940 0082 1A46     	 mov r2,r3
+ 1941 0084 4FF08051 	 mov r1,#268435456
+ 1942 0088 F868     	 ldr r0,[r7,#12]
+ 1943 008a 274B     	 ldr r3,.L112+4
+ 1944 008c 9847     	 blx r3
+ 1945              	.LVL15:
+ 788:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, (1 << (ul_pin & 0x1F)),
+ 1946              	 .loc 1 788 0
+ 1947 008e 7B68     	 ldr r3,[r7,#4]
+ 1948 0090 03F01F03 	 and r3,r3,#31
+ 1949 0094 0122     	 movs r2,#1
+ 1950 0096 02FA03F3 	 lsl r3,r2,r3
+ 1951 009a 1946     	 mov r1,r3
+ 1952 009c 3B68     	 ldr r3,[r7]
+ 1953 009e 03F00103 	 and r3,r3,#1
+ 1954 00a2 1A46     	 mov r2,r3
+ 1955 00a4 F868     	 ldr r0,[r7,#12]
+ 1956 00a6 214B     	 ldr r3,.L112+8
+ 1957 00a8 9847     	 blx r3
+ 1958              	.LVL16:
+ 789:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_PULLUP));
+ 790:.././hal/sam3u1c/pio.c **** 		break;
+ 1959              	 .loc 1 790 0
+ 1960 00aa 35E0     	 b .L110
+ 1961              	.L105:
+ 791:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM)
+ 792:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_C:
+ 793:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_C, (1 << (ul_pin & 0x1F)));
+ 794:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, (1 << (ul_pin & 0x1F)),
+ 795:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_PULLUP));
+ 796:.././hal/sam3u1c/pio.c **** 		break;
+ 797:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_D:
+ 798:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_D, (1 << (ul_pin & 0x1F)));
+ 799:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, (1 << (ul_pin & 0x1F)),
+ 800:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_PULLUP));
+ 801:.././hal/sam3u1c/pio.c **** 		break;
+ 802:.././hal/sam3u1c/pio.c **** #endif
+ 803:.././hal/sam3u1c/pio.c **** 
+ 804:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_INPUT:
+ 805:.././hal/sam3u1c/pio.c **** 		pio_set_input(p_pio, (1 << (ul_pin & 0x1F)), ul_flags);
+ 1962              	 .loc 1 805 0
+ 1963 00ac 7B68     	 ldr r3,[r7,#4]
+ 1964 00ae 03F01F03 	 and r3,r3,#31
+ 1965 00b2 0122     	 movs r2,#1
+ 1966 00b4 02FA03F3 	 lsl r3,r2,r3
+ 1967 00b8 3A68     	 ldr r2,[r7]
+ 1968 00ba 1946     	 mov r1,r3
+ 1969 00bc F868     	 ldr r0,[r7,#12]
+ 1970 00be 1C4B     	 ldr r3,.L112+12
+ 1971 00c0 9847     	 blx r3
+ 1972              	.LVL17:
+ 806:.././hal/sam3u1c/pio.c **** 		break;
+ 1973              	 .loc 1 806 0
+ 1974 00c2 29E0     	 b .L110
+ 1975              	.L109:
+ 807:.././hal/sam3u1c/pio.c **** 
+ 808:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_OUTPUT_0:
+ 809:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_OUTPUT_1:
+ 810:.././hal/sam3u1c/pio.c **** 		pio_set_output(p_pio, (1 << (ul_pin & 0x1F)),
+ 1976              	 .loc 1 810 0
+ 1977 00c4 7B68     	 ldr r3,[r7,#4]
+ 1978 00c6 03F01F03 	 and r3,r3,#31
+ 1979 00ca 0122     	 movs r2,#1
+ 1980 00cc 02FA03F3 	 lsl r3,r2,r3
+ 1981 00d0 1946     	 mov r1,r3
+ 811:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 1982              	 .loc 1 811 0
+ 1983 00d2 3B68     	 ldr r3,[r7]
+ 1984 00d4 03F06053 	 and r3,r3,#939524096
+ 810:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 1985              	 .loc 1 810 0
+ 1986 00d8 B3F1605F 	 cmp r3,#939524096
+ 1987 00dc 0CBF     	 ite eq
+ 1988 00de 0123     	 moveq r3,#1
+ 1989 00e0 0023     	 movne r3,#0
+ 1990 00e2 DBB2     	 uxtb r3,r3
+ 1991 00e4 1A46     	 mov r2,r3
+ 812:.././hal/sam3u1c/pio.c **** 				== PIO_TYPE_PIO_OUTPUT_1) ? 1 : 0,
+ 813:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_OPENDRAIN) ? 1 : 0,
+ 1992              	 .loc 1 813 0
+ 1993 00e6 3B68     	 ldr r3,[r7]
+ 1994 00e8 03F00403 	 and r3,r3,#4
+ 810:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 1995              	 .loc 1 810 0
+ 1996 00ec 002B     	 cmp r3,#0
+ 1997 00ee 14BF     	 ite ne
+ 1998 00f0 0123     	 movne r3,#1
+ 1999 00f2 0023     	 moveq r3,#0
+ 2000 00f4 DBB2     	 uxtb r3,r3
+ 2001 00f6 1846     	 mov r0,r3
+ 814:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_PULLUP) ? 1 : 0);
+ 2002              	 .loc 1 814 0
+ 2003 00f8 3B68     	 ldr r3,[r7]
+ 2004 00fa 03F00103 	 and r3,r3,#1
+ 810:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 2005              	 .loc 1 810 0
+ 2006 00fe 002B     	 cmp r3,#0
+ 2007 0100 14BF     	 ite ne
+ 2008 0102 0123     	 movne r3,#1
+ 2009 0104 0023     	 moveq r3,#0
+ 2010 0106 DBB2     	 uxtb r3,r3
+ 2011 0108 0093     	 str r3,[sp]
+ 2012 010a 0346     	 mov r3,r0
+ 2013 010c F868     	 ldr r0,[r7,#12]
+ 2014 010e 094C     	 ldr r4,.L112+16
+ 2015 0110 A047     	 blx r4
+ 2016              	.LVL18:
+ 815:.././hal/sam3u1c/pio.c **** 		break;
+ 2017              	 .loc 1 815 0
+ 2018 0112 01E0     	 b .L110
+ 2019              	.L104:
+ 816:.././hal/sam3u1c/pio.c **** 
+ 817:.././hal/sam3u1c/pio.c **** 	default:
+ 818:.././hal/sam3u1c/pio.c **** 		return 0;
+ 2020              	 .loc 1 818 0
+ 2021 0114 0023     	 movs r3,#0
+ 2022 0116 00E0     	 b .L111
+ 2023              	.L110:
+ 819:.././hal/sam3u1c/pio.c **** 	}
+ 820:.././hal/sam3u1c/pio.c **** 
+ 821:.././hal/sam3u1c/pio.c **** 	return 1;
+ 2024              	 .loc 1 821 0
+ 2025 0118 0123     	 movs r3,#1
+ 2026              	.L111:
+ 822:.././hal/sam3u1c/pio.c **** }
+ 2027              	 .loc 1 822 0
+ 2028 011a 1846     	 mov r0,r3
+ 2029 011c 1437     	 adds r7,r7,#20
+ 2030              	.LCFI164:
+ 2031              	 .cfi_def_cfa_offset 12
+ 2032 011e BD46     	 mov sp,r7
+ 2033              	.LCFI165:
+ 2034              	 .cfi_def_cfa_register 13
+ 2035              	 
+ 2036 0120 90BD     	 pop {r4,r7,pc}
+ 2037              	.L113:
+ 2038 0122 00BF     	 .align 2
+ 2039              	.L112:
+ 2040 0124 00000000 	 .word pio_get_pin_group
+ 2041 0128 00000000 	 .word pio_set_peripheral
+ 2042 012c 00000000 	 .word pio_pull_up
+ 2043 0130 00000000 	 .word pio_set_input
+ 2044 0134 00000000 	 .word pio_set_output
+ 2045              	 .cfi_endproc
+ 2046              	.LFE95:
+ 2048              	 .section .text.pio_set_pin_group_high,"ax",%progbits
+ 2049              	 .align 1
+ 2050              	 .global pio_set_pin_group_high
+ 2051              	 .syntax unified
+ 2052              	 .thumb
+ 2053              	 .thumb_func
+ 2054              	 .fpu softvfp
+ 2056              	pio_set_pin_group_high:
+ 2057              	.LFB96:
+ 823:.././hal/sam3u1c/pio.c **** 
+ 824:.././hal/sam3u1c/pio.c **** /**
+ 825:.././hal/sam3u1c/pio.c ****  * \brief Drive a GPIO port to 1.
+ 826:.././hal/sam3u1c/pio.c ****  *
+ 827:.././hal/sam3u1c/pio.c ****  * \param p_pio Base address of the PIO port.
+ 828:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to toggle.
+ 829:.././hal/sam3u1c/pio.c ****  */
+ 830:.././hal/sam3u1c/pio.c **** void pio_set_pin_group_high(Pio *p_pio, uint32_t ul_mask)
+ 831:.././hal/sam3u1c/pio.c **** {
+ 2058              	 .loc 1 831 0
+ 2059              	 .cfi_startproc
+ 2060              	 
+ 2061              	 
+ 2062              	 
+ 2063 0000 80B4     	 push {r7}
+ 2064              	.LCFI166:
+ 2065              	 .cfi_def_cfa_offset 4
+ 2066              	 .cfi_offset 7,-4
+ 2067 0002 83B0     	 sub sp,sp,#12
+ 2068              	.LCFI167:
+ 2069              	 .cfi_def_cfa_offset 16
+ 2070 0004 00AF     	 add r7,sp,#0
+ 2071              	.LCFI168:
+ 2072              	 .cfi_def_cfa_register 7
+ 2073 0006 7860     	 str r0,[r7,#4]
+ 2074 0008 3960     	 str r1,[r7]
+ 832:.././hal/sam3u1c/pio.c **** 	/* Value to be driven on the I/O line: 1. */
+ 833:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_SODR = ul_mask;
+ 2075              	 .loc 1 833 0
+ 2076 000a 7B68     	 ldr r3,[r7,#4]
+ 2077 000c 3A68     	 ldr r2,[r7]
+ 2078 000e 1A63     	 str r2,[r3,#48]
+ 834:.././hal/sam3u1c/pio.c **** }
+ 2079              	 .loc 1 834 0
+ 2080 0010 00BF     	 nop
+ 2081 0012 0C37     	 adds r7,r7,#12
+ 2082              	.LCFI169:
+ 2083              	 .cfi_def_cfa_offset 4
+ 2084 0014 BD46     	 mov sp,r7
+ 2085              	.LCFI170:
+ 2086              	 .cfi_def_cfa_register 13
+ 2087              	 
+ 2088 0016 80BC     	 pop {r7}
+ 2089              	.LCFI171:
+ 2090              	 .cfi_restore 7
+ 2091              	 .cfi_def_cfa_offset 0
+ 2092 0018 7047     	 bx lr
+ 2093              	 .cfi_endproc
+ 2094              	.LFE96:
+ 2096              	 .section .text.pio_set_pin_group_low,"ax",%progbits
+ 2097              	 .align 1
+ 2098              	 .global pio_set_pin_group_low
+ 2099              	 .syntax unified
+ 2100              	 .thumb
+ 2101              	 .thumb_func
+ 2102              	 .fpu softvfp
+ 2104              	pio_set_pin_group_low:
+ 2105              	.LFB97:
+ 835:.././hal/sam3u1c/pio.c **** 
+ 836:.././hal/sam3u1c/pio.c **** /**
+ 837:.././hal/sam3u1c/pio.c ****  * \brief Drive a GPIO port to 0.
+ 838:.././hal/sam3u1c/pio.c ****  *
+ 839:.././hal/sam3u1c/pio.c ****  * \param p_pio Base address of the PIO port.
+ 840:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to toggle.
+ 841:.././hal/sam3u1c/pio.c ****  */
+ 842:.././hal/sam3u1c/pio.c **** void pio_set_pin_group_low(Pio *p_pio, uint32_t ul_mask)
+ 843:.././hal/sam3u1c/pio.c **** {
+ 2106              	 .loc 1 843 0
+ 2107              	 .cfi_startproc
+ 2108              	 
+ 2109              	 
+ 2110              	 
+ 2111 0000 80B4     	 push {r7}
+ 2112              	.LCFI172:
+ 2113              	 .cfi_def_cfa_offset 4
+ 2114              	 .cfi_offset 7,-4
+ 2115 0002 83B0     	 sub sp,sp,#12
+ 2116              	.LCFI173:
+ 2117              	 .cfi_def_cfa_offset 16
+ 2118 0004 00AF     	 add r7,sp,#0
+ 2119              	.LCFI174:
+ 2120              	 .cfi_def_cfa_register 7
+ 2121 0006 7860     	 str r0,[r7,#4]
+ 2122 0008 3960     	 str r1,[r7]
+ 844:.././hal/sam3u1c/pio.c **** 	/* Value to be driven on the I/O line: 0. */
+ 845:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_CODR = ul_mask;
+ 2123              	 .loc 1 845 0
+ 2124 000a 7B68     	 ldr r3,[r7,#4]
+ 2125 000c 3A68     	 ldr r2,[r7]
+ 2126 000e 5A63     	 str r2,[r3,#52]
+ 846:.././hal/sam3u1c/pio.c **** }
+ 2127              	 .loc 1 846 0
+ 2128 0010 00BF     	 nop
+ 2129 0012 0C37     	 adds r7,r7,#12
+ 2130              	.LCFI175:
+ 2131              	 .cfi_def_cfa_offset 4
+ 2132 0014 BD46     	 mov sp,r7
+ 2133              	.LCFI176:
+ 2134              	 .cfi_def_cfa_register 13
+ 2135              	 
+ 2136 0016 80BC     	 pop {r7}
+ 2137              	.LCFI177:
+ 2138              	 .cfi_restore 7
+ 2139              	 .cfi_def_cfa_offset 0
+ 2140 0018 7047     	 bx lr
+ 2141              	 .cfi_endproc
+ 2142              	.LFE97:
+ 2144              	 .section .text.pio_toggle_pin_group,"ax",%progbits
+ 2145              	 .align 1
+ 2146              	 .global pio_toggle_pin_group
+ 2147              	 .syntax unified
+ 2148              	 .thumb
+ 2149              	 .thumb_func
+ 2150              	 .fpu softvfp
+ 2152              	pio_toggle_pin_group:
+ 2153              	.LFB98:
+ 847:.././hal/sam3u1c/pio.c **** 
+ 848:.././hal/sam3u1c/pio.c **** /**
+ 849:.././hal/sam3u1c/pio.c ****  * \brief Toggle a GPIO group.
+ 850:.././hal/sam3u1c/pio.c ****  *
+ 851:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 852:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 853:.././hal/sam3u1c/pio.c ****  */
+ 854:.././hal/sam3u1c/pio.c **** void pio_toggle_pin_group(Pio *p_pio, uint32_t ul_mask)
+ 855:.././hal/sam3u1c/pio.c **** {
+ 2154              	 .loc 1 855 0
+ 2155              	 .cfi_startproc
+ 2156              	 
+ 2157              	 
+ 2158              	 
+ 2159 0000 80B4     	 push {r7}
+ 2160              	.LCFI178:
+ 2161              	 .cfi_def_cfa_offset 4
+ 2162              	 .cfi_offset 7,-4
+ 2163 0002 83B0     	 sub sp,sp,#12
+ 2164              	.LCFI179:
+ 2165              	 .cfi_def_cfa_offset 16
+ 2166 0004 00AF     	 add r7,sp,#0
+ 2167              	.LCFI180:
+ 2168              	 .cfi_def_cfa_register 7
+ 2169 0006 7860     	 str r0,[r7,#4]
+ 2170 0008 3960     	 str r1,[r7]
+ 856:.././hal/sam3u1c/pio.c **** 	if (p_pio->PIO_ODSR & ul_mask) {
+ 2171              	 .loc 1 856 0
+ 2172 000a 7B68     	 ldr r3,[r7,#4]
+ 2173 000c 9A6B     	 ldr r2,[r3,#56]
+ 2174 000e 3B68     	 ldr r3,[r7]
+ 2175 0010 1340     	 ands r3,r3,r2
+ 2176 0012 002B     	 cmp r3,#0
+ 2177 0014 03D0     	 beq .L117
+ 857:.././hal/sam3u1c/pio.c **** 		/* Value to be driven on the I/O line: 0. */
+ 858:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_CODR = ul_mask;
+ 2178              	 .loc 1 858 0
+ 2179 0016 7B68     	 ldr r3,[r7,#4]
+ 2180 0018 3A68     	 ldr r2,[r7]
+ 2181 001a 5A63     	 str r2,[r3,#52]
+ 859:.././hal/sam3u1c/pio.c **** 	} else {
+ 860:.././hal/sam3u1c/pio.c **** 		/* Value to be driven on the I/O line: 1. */
+ 861:.././hal/sam3u1c/pio.c **** 		p_pio->PIO_SODR = ul_mask;
+ 862:.././hal/sam3u1c/pio.c **** 	}
+ 863:.././hal/sam3u1c/pio.c **** }
+ 2182              	 .loc 1 863 0
+ 2183 001c 02E0     	 b .L119
+ 2184              	.L117:
+ 861:.././hal/sam3u1c/pio.c **** 	}
+ 2185              	 .loc 1 861 0
+ 2186 001e 7B68     	 ldr r3,[r7,#4]
+ 2187 0020 3A68     	 ldr r2,[r7]
+ 2188 0022 1A63     	 str r2,[r3,#48]
+ 2189              	.L119:
+ 2190              	 .loc 1 863 0
+ 2191 0024 00BF     	 nop
+ 2192 0026 0C37     	 adds r7,r7,#12
+ 2193              	.LCFI181:
+ 2194              	 .cfi_def_cfa_offset 4
+ 2195 0028 BD46     	 mov sp,r7
+ 2196              	.LCFI182:
+ 2197              	 .cfi_def_cfa_register 13
+ 2198              	 
+ 2199 002a 80BC     	 pop {r7}
+ 2200              	.LCFI183:
+ 2201              	 .cfi_restore 7
+ 2202              	 .cfi_def_cfa_offset 0
+ 2203 002c 7047     	 bx lr
+ 2204              	 .cfi_endproc
+ 2205              	.LFE98:
+ 2207              	 .section .text.pio_configure_pin_group,"ax",%progbits
+ 2208              	 .align 1
+ 2209              	 .global pio_configure_pin_group
+ 2210              	 .syntax unified
+ 2211              	 .thumb
+ 2212              	 .thumb_func
+ 2213              	 .fpu softvfp
+ 2215              	pio_configure_pin_group:
+ 2216              	.LFB99:
+ 864:.././hal/sam3u1c/pio.c **** 
+ 865:.././hal/sam3u1c/pio.c **** /**
+ 866:.././hal/sam3u1c/pio.c ****  * \brief Perform complete pin(s) configuration; general attributes and PIO init
+ 867:.././hal/sam3u1c/pio.c ****  * if necessary.
+ 868:.././hal/sam3u1c/pio.c ****  *
+ 869:.././hal/sam3u1c/pio.c ****  * \param p_pio Pointer to a PIO instance.
+ 870:.././hal/sam3u1c/pio.c ****  * \param ul_mask Bitmask of one or more pin(s) to configure.
+ 871:.././hal/sam3u1c/pio.c ****  * \param ul_flags Pin(s) attributes.
+ 872:.././hal/sam3u1c/pio.c ****  *
+ 873:.././hal/sam3u1c/pio.c ****  * \return Whether the pin(s) have been configured properly.
+ 874:.././hal/sam3u1c/pio.c ****  */
+ 875:.././hal/sam3u1c/pio.c **** uint32_t pio_configure_pin_group(Pio *p_pio,
+ 876:.././hal/sam3u1c/pio.c **** 		uint32_t ul_mask, const uint32_t ul_flags)
+ 877:.././hal/sam3u1c/pio.c **** {
+ 2217              	 .loc 1 877 0
+ 2218              	 .cfi_startproc
+ 2219              	 
+ 2220              	 
+ 2221 0000 90B5     	 push {r4,r7,lr}
+ 2222              	.LCFI184:
+ 2223              	 .cfi_def_cfa_offset 12
+ 2224              	 .cfi_offset 4,-12
+ 2225              	 .cfi_offset 7,-8
+ 2226              	 .cfi_offset 14,-4
+ 2227 0002 87B0     	 sub sp,sp,#28
+ 2228              	.LCFI185:
+ 2229              	 .cfi_def_cfa_offset 40
+ 2230 0004 02AF     	 add r7,sp,#8
+ 2231              	.LCFI186:
+ 2232              	 .cfi_def_cfa 7,32
+ 2233 0006 F860     	 str r0,[r7,#12]
+ 2234 0008 B960     	 str r1,[r7,#8]
+ 2235 000a 7A60     	 str r2,[r7,#4]
+ 878:.././hal/sam3u1c/pio.c **** 	/* Configure pins */
+ 879:.././hal/sam3u1c/pio.c **** 	switch (ul_flags & PIO_TYPE_Msk) {
+ 2236              	 .loc 1 879 0
+ 2237 000c 7B68     	 ldr r3,[r7,#4]
+ 2238 000e 03F0F043 	 and r3,r3,#2013265920
+ 2239 0012 B3F1205F 	 cmp r3,#671088640
+ 2240 0016 2ED0     	 beq .L122
+ 2241 0018 B3F1205F 	 cmp r3,#671088640
+ 2242 001c 06D8     	 bhi .L123
+ 2243 001e B3F1006F 	 cmp r3,#134217728
+ 2244 0022 0AD0     	 beq .L124
+ 2245 0024 B3F1805F 	 cmp r3,#268435456
+ 2246 0028 16D0     	 beq .L125
+ 2247 002a 4CE0     	 b .L121
+ 2248              	.L123:
+ 2249 002c B3F1405F 	 cmp r3,#805306368
+ 2250 0030 27D0     	 beq .L126
+ 2251 0032 B3F1605F 	 cmp r3,#939524096
+ 2252 0036 24D0     	 beq .L126
+ 2253 0038 45E0     	 b .L121
+ 2254              	.L124:
+ 880:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_A:
+ 881:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_A, ul_mask);
+ 2255              	 .loc 1 881 0
+ 2256 003a BA68     	 ldr r2,[r7,#8]
+ 2257 003c 4FF00061 	 mov r1,#134217728
+ 2258 0040 F868     	 ldr r0,[r7,#12]
+ 2259 0042 244B     	 ldr r3,.L129
+ 2260 0044 9847     	 blx r3
+ 2261              	.LVL19:
+ 882:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, ul_mask, (ul_flags & PIO_PULLUP));
+ 2262              	 .loc 1 882 0
+ 2263 0046 7B68     	 ldr r3,[r7,#4]
+ 2264 0048 03F00103 	 and r3,r3,#1
+ 2265 004c 1A46     	 mov r2,r3
+ 2266 004e B968     	 ldr r1,[r7,#8]
+ 2267 0050 F868     	 ldr r0,[r7,#12]
+ 2268 0052 214B     	 ldr r3,.L129+4
+ 2269 0054 9847     	 blx r3
+ 2270              	.LVL20:
+ 883:.././hal/sam3u1c/pio.c **** 		break;
+ 2271              	 .loc 1 883 0
+ 2272 0056 38E0     	 b .L127
+ 2273              	.L125:
+ 884:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_B:
+ 885:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_B, ul_mask);
+ 2274              	 .loc 1 885 0
+ 2275 0058 BA68     	 ldr r2,[r7,#8]
+ 2276 005a 4FF08051 	 mov r1,#268435456
+ 2277 005e F868     	 ldr r0,[r7,#12]
+ 2278 0060 1C4B     	 ldr r3,.L129
+ 2279 0062 9847     	 blx r3
+ 2280              	.LVL21:
+ 886:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, ul_mask, (ul_flags & PIO_PULLUP));
+ 2281              	 .loc 1 886 0
+ 2282 0064 7B68     	 ldr r3,[r7,#4]
+ 2283 0066 03F00103 	 and r3,r3,#1
+ 2284 006a 1A46     	 mov r2,r3
+ 2285 006c B968     	 ldr r1,[r7,#8]
+ 2286 006e F868     	 ldr r0,[r7,#12]
+ 2287 0070 194B     	 ldr r3,.L129+4
+ 2288 0072 9847     	 blx r3
+ 2289              	.LVL22:
+ 887:.././hal/sam3u1c/pio.c **** 		break;
+ 2290              	 .loc 1 887 0
+ 2291 0074 29E0     	 b .L127
+ 2292              	.L122:
+ 888:.././hal/sam3u1c/pio.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM)
+ 889:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_C:
+ 890:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_C, ul_mask);
+ 891:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, ul_mask, (ul_flags & PIO_PULLUP));
+ 892:.././hal/sam3u1c/pio.c **** 		break;
+ 893:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_PERIPH_D:
+ 894:.././hal/sam3u1c/pio.c **** 		pio_set_peripheral(p_pio, PIO_PERIPH_D, ul_mask);
+ 895:.././hal/sam3u1c/pio.c **** 		pio_pull_up(p_pio, ul_mask, (ul_flags & PIO_PULLUP));
+ 896:.././hal/sam3u1c/pio.c **** 		break;
+ 897:.././hal/sam3u1c/pio.c **** #endif
+ 898:.././hal/sam3u1c/pio.c **** 
+ 899:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_INPUT:
+ 900:.././hal/sam3u1c/pio.c **** 		pio_set_input(p_pio, ul_mask, ul_flags);
+ 2293              	 .loc 1 900 0
+ 2294 0076 7A68     	 ldr r2,[r7,#4]
+ 2295 0078 B968     	 ldr r1,[r7,#8]
+ 2296 007a F868     	 ldr r0,[r7,#12]
+ 2297 007c 174B     	 ldr r3,.L129+8
+ 2298 007e 9847     	 blx r3
+ 2299              	.LVL23:
+ 901:.././hal/sam3u1c/pio.c **** 		break;
+ 2300              	 .loc 1 901 0
+ 2301 0080 23E0     	 b .L127
+ 2302              	.L126:
+ 902:.././hal/sam3u1c/pio.c **** 
+ 903:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_OUTPUT_0:
+ 904:.././hal/sam3u1c/pio.c **** 	case PIO_TYPE_PIO_OUTPUT_1:
+ 905:.././hal/sam3u1c/pio.c **** 		pio_set_output(p_pio, ul_mask,
+ 906:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 2303              	 .loc 1 906 0
+ 2304 0082 7B68     	 ldr r3,[r7,#4]
+ 2305 0084 03F06053 	 and r3,r3,#939524096
+ 905:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 2306              	 .loc 1 905 0
+ 2307 0088 B3F1605F 	 cmp r3,#939524096
+ 2308 008c 0CBF     	 ite eq
+ 2309 008e 0123     	 moveq r3,#1
+ 2310 0090 0023     	 movne r3,#0
+ 2311 0092 DBB2     	 uxtb r3,r3
+ 2312 0094 1A46     	 mov r2,r3
+ 907:.././hal/sam3u1c/pio.c **** 				== PIO_TYPE_PIO_OUTPUT_1) ? 1 : 0,
+ 908:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_OPENDRAIN) ? 1 : 0,
+ 2313              	 .loc 1 908 0
+ 2314 0096 7B68     	 ldr r3,[r7,#4]
+ 2315 0098 03F00403 	 and r3,r3,#4
+ 905:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 2316              	 .loc 1 905 0
+ 2317 009c 002B     	 cmp r3,#0
+ 2318 009e 14BF     	 ite ne
+ 2319 00a0 0123     	 movne r3,#1
+ 2320 00a2 0023     	 moveq r3,#0
+ 2321 00a4 DBB2     	 uxtb r3,r3
+ 2322 00a6 1946     	 mov r1,r3
+ 909:.././hal/sam3u1c/pio.c **** 				(ul_flags & PIO_PULLUP) ? 1 : 0);
+ 2323              	 .loc 1 909 0
+ 2324 00a8 7B68     	 ldr r3,[r7,#4]
+ 2325 00aa 03F00103 	 and r3,r3,#1
+ 905:.././hal/sam3u1c/pio.c **** 				((ul_flags & PIO_TYPE_PIO_OUTPUT_1)
+ 2326              	 .loc 1 905 0
+ 2327 00ae 002B     	 cmp r3,#0
+ 2328 00b0 14BF     	 ite ne
+ 2329 00b2 0123     	 movne r3,#1
+ 2330 00b4 0023     	 moveq r3,#0
+ 2331 00b6 DBB2     	 uxtb r3,r3
+ 2332 00b8 0093     	 str r3,[sp]
+ 2333 00ba 0B46     	 mov r3,r1
+ 2334 00bc B968     	 ldr r1,[r7,#8]
+ 2335 00be F868     	 ldr r0,[r7,#12]
+ 2336 00c0 074C     	 ldr r4,.L129+12
+ 2337 00c2 A047     	 blx r4
+ 2338              	.LVL24:
+ 910:.././hal/sam3u1c/pio.c **** 		break;
+ 2339              	 .loc 1 910 0
+ 2340 00c4 01E0     	 b .L127
+ 2341              	.L121:
+ 911:.././hal/sam3u1c/pio.c **** 
+ 912:.././hal/sam3u1c/pio.c **** 	default:
+ 913:.././hal/sam3u1c/pio.c **** 		return 0;
+ 2342              	 .loc 1 913 0
+ 2343 00c6 0023     	 movs r3,#0
+ 2344 00c8 00E0     	 b .L128
+ 2345              	.L127:
+ 914:.././hal/sam3u1c/pio.c **** 	}
+ 915:.././hal/sam3u1c/pio.c **** 
+ 916:.././hal/sam3u1c/pio.c **** 	return 1;
+ 2346              	 .loc 1 916 0
+ 2347 00ca 0123     	 movs r3,#1
+ 2348              	.L128:
+ 917:.././hal/sam3u1c/pio.c **** }
+ 2349              	 .loc 1 917 0
+ 2350 00cc 1846     	 mov r0,r3
+ 2351 00ce 1437     	 adds r7,r7,#20
+ 2352              	.LCFI187:
+ 2353              	 .cfi_def_cfa_offset 12
+ 2354 00d0 BD46     	 mov sp,r7
+ 2355              	.LCFI188:
+ 2356              	 .cfi_def_cfa_register 13
+ 2357              	 
+ 2358 00d2 90BD     	 pop {r4,r7,pc}
+ 2359              	.L130:
+ 2360              	 .align 2
+ 2361              	.L129:
+ 2362 00d4 00000000 	 .word pio_set_peripheral
+ 2363 00d8 00000000 	 .word pio_pull_up
+ 2364 00dc 00000000 	 .word pio_set_input
+ 2365 00e0 00000000 	 .word pio_set_output
+ 2366              	 .cfi_endproc
+ 2367              	.LFE99:
+ 2369              	 .section .text.pio_enable_pin_interrupt,"ax",%progbits
+ 2370              	 .align 1
+ 2371              	 .global pio_enable_pin_interrupt
+ 2372              	 .syntax unified
+ 2373              	 .thumb
+ 2374              	 .thumb_func
+ 2375              	 .fpu softvfp
+ 2377              	pio_enable_pin_interrupt:
+ 2378              	.LFB100:
+ 918:.././hal/sam3u1c/pio.c **** 
+ 919:.././hal/sam3u1c/pio.c **** /**
+ 920:.././hal/sam3u1c/pio.c ****  * \brief Enable interrupt for a GPIO pin.
+ 921:.././hal/sam3u1c/pio.c ****  *
+ 922:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+ 923:.././hal/sam3u1c/pio.c ****  *
+ 924:.././hal/sam3u1c/pio.c ****  * \note The function \ref gpio_configure_pin must be called before.
+ 925:.././hal/sam3u1c/pio.c ****  */
+ 926:.././hal/sam3u1c/pio.c **** void pio_enable_pin_interrupt(uint32_t ul_pin)
+ 927:.././hal/sam3u1c/pio.c **** {
+ 2379              	 .loc 1 927 0
+ 2380              	 .cfi_startproc
+ 2381              	 
+ 2382              	 
+ 2383 0000 80B5     	 push {r7,lr}
+ 2384              	.LCFI189:
+ 2385              	 .cfi_def_cfa_offset 8
+ 2386              	 .cfi_offset 7,-8
+ 2387              	 .cfi_offset 14,-4
+ 2388 0002 84B0     	 sub sp,sp,#16
+ 2389              	.LCFI190:
+ 2390              	 .cfi_def_cfa_offset 24
+ 2391 0004 00AF     	 add r7,sp,#0
+ 2392              	.LCFI191:
+ 2393              	 .cfi_def_cfa_register 7
+ 2394 0006 7860     	 str r0,[r7,#4]
+ 928:.././hal/sam3u1c/pio.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
+ 2395              	 .loc 1 928 0
+ 2396 0008 7868     	 ldr r0,[r7,#4]
+ 2397 000a 084B     	 ldr r3,.L132
+ 2398 000c 9847     	 blx r3
+ 2399              	.LVL25:
+ 2400 000e F860     	 str r0,[r7,#12]
+ 929:.././hal/sam3u1c/pio.c **** 
+ 930:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_IER = 1 << (ul_pin & 0x1F);
+ 2401              	 .loc 1 930 0
+ 2402 0010 7B68     	 ldr r3,[r7,#4]
+ 2403 0012 03F01F03 	 and r3,r3,#31
+ 2404 0016 0122     	 movs r2,#1
+ 2405 0018 02FA03F3 	 lsl r3,r2,r3
+ 2406 001c 1A46     	 mov r2,r3
+ 2407 001e FB68     	 ldr r3,[r7,#12]
+ 2408 0020 1A64     	 str r2,[r3,#64]
+ 931:.././hal/sam3u1c/pio.c **** }
+ 2409              	 .loc 1 931 0
+ 2410 0022 00BF     	 nop
+ 2411 0024 1037     	 adds r7,r7,#16
+ 2412              	.LCFI192:
+ 2413              	 .cfi_def_cfa_offset 8
+ 2414 0026 BD46     	 mov sp,r7
+ 2415              	.LCFI193:
+ 2416              	 .cfi_def_cfa_register 13
+ 2417              	 
+ 2418 0028 80BD     	 pop {r7,pc}
+ 2419              	.L133:
+ 2420 002a 00BF     	 .align 2
+ 2421              	.L132:
+ 2422 002c 00000000 	 .word pio_get_pin_group
+ 2423              	 .cfi_endproc
+ 2424              	.LFE100:
+ 2426              	 .section .text.pio_disable_pin_interrupt,"ax",%progbits
+ 2427              	 .align 1
+ 2428              	 .global pio_disable_pin_interrupt
+ 2429              	 .syntax unified
+ 2430              	 .thumb
+ 2431              	 .thumb_func
+ 2432              	 .fpu softvfp
+ 2434              	pio_disable_pin_interrupt:
+ 2435              	.LFB101:
+ 932:.././hal/sam3u1c/pio.c **** 
+ 933:.././hal/sam3u1c/pio.c **** 
+ 934:.././hal/sam3u1c/pio.c **** /**
+ 935:.././hal/sam3u1c/pio.c ****  * \brief Disable interrupt for a GPIO pin.
+ 936:.././hal/sam3u1c/pio.c ****  *
+ 937:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+ 938:.././hal/sam3u1c/pio.c ****  *
+ 939:.././hal/sam3u1c/pio.c ****  * \note The function \ref gpio_configure_pin must be called before.
+ 940:.././hal/sam3u1c/pio.c ****  */
+ 941:.././hal/sam3u1c/pio.c **** void pio_disable_pin_interrupt(uint32_t ul_pin)
+ 942:.././hal/sam3u1c/pio.c **** {
+ 2436              	 .loc 1 942 0
+ 2437              	 .cfi_startproc
+ 2438              	 
+ 2439              	 
+ 2440 0000 80B5     	 push {r7,lr}
+ 2441              	.LCFI194:
+ 2442              	 .cfi_def_cfa_offset 8
+ 2443              	 .cfi_offset 7,-8
+ 2444              	 .cfi_offset 14,-4
+ 2445 0002 84B0     	 sub sp,sp,#16
+ 2446              	.LCFI195:
+ 2447              	 .cfi_def_cfa_offset 24
+ 2448 0004 00AF     	 add r7,sp,#0
+ 2449              	.LCFI196:
+ 2450              	 .cfi_def_cfa_register 7
+ 2451 0006 7860     	 str r0,[r7,#4]
+ 943:.././hal/sam3u1c/pio.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
+ 2452              	 .loc 1 943 0
+ 2453 0008 7868     	 ldr r0,[r7,#4]
+ 2454 000a 084B     	 ldr r3,.L135
+ 2455 000c 9847     	 blx r3
+ 2456              	.LVL26:
+ 2457 000e F860     	 str r0,[r7,#12]
+ 944:.././hal/sam3u1c/pio.c **** 
+ 945:.././hal/sam3u1c/pio.c **** 	p_pio->PIO_IDR = 1 << (ul_pin & 0x1F);
+ 2458              	 .loc 1 945 0
+ 2459 0010 7B68     	 ldr r3,[r7,#4]
+ 2460 0012 03F01F03 	 and r3,r3,#31
+ 2461 0016 0122     	 movs r2,#1
+ 2462 0018 02FA03F3 	 lsl r3,r2,r3
+ 2463 001c 1A46     	 mov r2,r3
+ 2464 001e FB68     	 ldr r3,[r7,#12]
+ 2465 0020 5A64     	 str r2,[r3,#68]
+ 946:.././hal/sam3u1c/pio.c **** }
+ 2466              	 .loc 1 946 0
+ 2467 0022 00BF     	 nop
+ 2468 0024 1037     	 adds r7,r7,#16
+ 2469              	.LCFI197:
+ 2470              	 .cfi_def_cfa_offset 8
+ 2471 0026 BD46     	 mov sp,r7
+ 2472              	.LCFI198:
+ 2473              	 .cfi_def_cfa_register 13
+ 2474              	 
+ 2475 0028 80BD     	 pop {r7,pc}
+ 2476              	.L136:
+ 2477 002a 00BF     	 .align 2
+ 2478              	.L135:
+ 2479 002c 00000000 	 .word pio_get_pin_group
+ 2480              	 .cfi_endproc
+ 2481              	.LFE101:
+ 2483              	 .section .text.pio_get_pin_group,"ax",%progbits
+ 2484              	 .align 1
+ 2485              	 .global pio_get_pin_group
+ 2486              	 .syntax unified
+ 2487              	 .thumb
+ 2488              	 .thumb_func
+ 2489              	 .fpu softvfp
+ 2491              	pio_get_pin_group:
+ 2492              	.LFB102:
+ 947:.././hal/sam3u1c/pio.c **** 
+ 948:.././hal/sam3u1c/pio.c **** 
+ 949:.././hal/sam3u1c/pio.c **** /**
+ 950:.././hal/sam3u1c/pio.c ****  * \brief Return GPIO port for a GPIO pin.
+ 951:.././hal/sam3u1c/pio.c ****  *
+ 952:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+ 953:.././hal/sam3u1c/pio.c ****  *
+ 954:.././hal/sam3u1c/pio.c ****  * \return Pointer to \ref Pio struct for GPIO port.
+ 955:.././hal/sam3u1c/pio.c ****  */
+ 956:.././hal/sam3u1c/pio.c **** Pio *pio_get_pin_group(uint32_t ul_pin)
+ 957:.././hal/sam3u1c/pio.c **** {
+ 2493              	 .loc 1 957 0
+ 2494              	 .cfi_startproc
+ 2495              	 
+ 2496              	 
+ 2497              	 
+ 2498 0000 80B4     	 push {r7}
+ 2499              	.LCFI199:
+ 2500              	 .cfi_def_cfa_offset 4
+ 2501              	 .cfi_offset 7,-4
+ 2502 0002 85B0     	 sub sp,sp,#20
+ 2503              	.LCFI200:
+ 2504              	 .cfi_def_cfa_offset 24
+ 2505 0004 00AF     	 add r7,sp,#0
+ 2506              	.LCFI201:
+ 2507              	 .cfi_def_cfa_register 7
+ 2508 0006 7860     	 str r0,[r7,#4]
+ 958:.././hal/sam3u1c/pio.c **** 	Pio *p_pio;
+ 959:.././hal/sam3u1c/pio.c **** 
+ 960:.././hal/sam3u1c/pio.c **** #if (SAM4C || SAM4CP)
+ 961:.././hal/sam3u1c/pio.c **** #  ifdef ID_PIOD
+ 962:.././hal/sam3u1c/pio.c **** 	if (ul_pin > PIO_PC9_IDX) {
+ 963:.././hal/sam3u1c/pio.c **** 		p_pio = PIOD;
+ 964:.././hal/sam3u1c/pio.c **** 	} else if (ul_pin > PIO_PB31_IDX) {
+ 965:.././hal/sam3u1c/pio.c **** #  else
+ 966:.././hal/sam3u1c/pio.c **** 	if  (ul_pin > PIO_PB31_IDX) {
+ 967:.././hal/sam3u1c/pio.c **** #  endif
+ 968:.././hal/sam3u1c/pio.c **** 		p_pio = PIOC;
+ 969:.././hal/sam3u1c/pio.c **** 	} else {
+ 970:.././hal/sam3u1c/pio.c **** 		p_pio = (Pio *)((uint32_t)PIOA + (PIO_DELTA * (ul_pin >> 5)));
+ 971:.././hal/sam3u1c/pio.c **** 	}
+ 972:.././hal/sam3u1c/pio.c **** #elif (SAM4CM)
+ 973:.././hal/sam3u1c/pio.c **** 	if (ul_pin > PIO_PB21_IDX) {
+ 974:.././hal/sam3u1c/pio.c **** 		p_pio = PIOC;
+ 975:.././hal/sam3u1c/pio.c **** 	} else {
+ 976:.././hal/sam3u1c/pio.c **** 		p_pio = (Pio *)((uint32_t)PIOA + (PIO_DELTA * (ul_pin >> 5)));
+ 977:.././hal/sam3u1c/pio.c **** 	}
+ 978:.././hal/sam3u1c/pio.c **** #else
+ 979:.././hal/sam3u1c/pio.c **** 	p_pio = (Pio *)((uint32_t)PIOA + (PIO_DELTA * (ul_pin >> 5)));
+ 2509              	 .loc 1 979 0
+ 2510 0008 7B68     	 ldr r3,[r7,#4]
+ 2511 000a 5B09     	 lsrs r3,r3,#5
+ 2512 000c 03F50013 	 add r3,r3,#2097152
+ 2513 0010 03F20673 	 addw r3,r3,#1798
+ 2514 0014 5B02     	 lsls r3,r3,#9
+ 2515 0016 FB60     	 str r3,[r7,#12]
+ 980:.././hal/sam3u1c/pio.c **** #endif
+ 981:.././hal/sam3u1c/pio.c **** 	return p_pio;
+ 2516              	 .loc 1 981 0
+ 2517 0018 FB68     	 ldr r3,[r7,#12]
+ 982:.././hal/sam3u1c/pio.c **** }
+ 2518              	 .loc 1 982 0
+ 2519 001a 1846     	 mov r0,r3
+ 2520 001c 1437     	 adds r7,r7,#20
+ 2521              	.LCFI202:
+ 2522              	 .cfi_def_cfa_offset 4
+ 2523 001e BD46     	 mov sp,r7
+ 2524              	.LCFI203:
+ 2525              	 .cfi_def_cfa_register 13
+ 2526              	 
+ 2527 0020 80BC     	 pop {r7}
+ 2528              	.LCFI204:
+ 2529              	 .cfi_restore 7
+ 2530              	 .cfi_def_cfa_offset 0
+ 2531 0022 7047     	 bx lr
+ 2532              	 .cfi_endproc
+ 2533              	.LFE102:
+ 2535              	 .section .text.pio_get_pin_group_id,"ax",%progbits
+ 2536              	 .align 1
+ 2537              	 .global pio_get_pin_group_id
+ 2538              	 .syntax unified
+ 2539              	 .thumb
+ 2540              	 .thumb_func
+ 2541              	 .fpu softvfp
+ 2543              	pio_get_pin_group_id:
+ 2544              	.LFB103:
+ 983:.././hal/sam3u1c/pio.c **** 
+ 984:.././hal/sam3u1c/pio.c **** /**
+ 985:.././hal/sam3u1c/pio.c ****  * \brief Return GPIO port peripheral ID for a GPIO pin.
+ 986:.././hal/sam3u1c/pio.c ****  *
+ 987:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+ 988:.././hal/sam3u1c/pio.c ****  *
+ 989:.././hal/sam3u1c/pio.c ****  * \return GPIO port peripheral ID.
+ 990:.././hal/sam3u1c/pio.c ****  */
+ 991:.././hal/sam3u1c/pio.c **** uint32_t pio_get_pin_group_id(uint32_t ul_pin)
+ 992:.././hal/sam3u1c/pio.c **** {
+ 2545              	 .loc 1 992 0
+ 2546              	 .cfi_startproc
+ 2547              	 
+ 2548              	 
+ 2549              	 
+ 2550 0000 80B4     	 push {r7}
+ 2551              	.LCFI205:
+ 2552              	 .cfi_def_cfa_offset 4
+ 2553              	 .cfi_offset 7,-4
+ 2554 0002 85B0     	 sub sp,sp,#20
+ 2555              	.LCFI206:
+ 2556              	 .cfi_def_cfa_offset 24
+ 2557 0004 00AF     	 add r7,sp,#0
+ 2558              	.LCFI207:
+ 2559              	 .cfi_def_cfa_register 7
+ 2560 0006 7860     	 str r0,[r7,#4]
+ 993:.././hal/sam3u1c/pio.c **** 	uint32_t ul_id;
+ 994:.././hal/sam3u1c/pio.c **** 
+ 995:.././hal/sam3u1c/pio.c **** #if (SAM4C || SAM4CP)
+ 996:.././hal/sam3u1c/pio.c **** #  ifdef ID_PIOD
+ 997:.././hal/sam3u1c/pio.c **** 	if (ul_pin > PIO_PC9_IDX) {
+ 998:.././hal/sam3u1c/pio.c **** 		ul_id = ID_PIOD;
+ 999:.././hal/sam3u1c/pio.c **** 	} else if (ul_pin > PIO_PB31_IDX) {
+1000:.././hal/sam3u1c/pio.c **** #  else
+1001:.././hal/sam3u1c/pio.c **** 	if (ul_pin > PIO_PB31_IDX) {
+1002:.././hal/sam3u1c/pio.c **** #  endif
+1003:.././hal/sam3u1c/pio.c **** 		ul_id = ID_PIOC;
+1004:.././hal/sam3u1c/pio.c **** 	} else {
+1005:.././hal/sam3u1c/pio.c **** 		ul_id = ID_PIOA + (ul_pin >> 5);
+1006:.././hal/sam3u1c/pio.c **** 	}
+1007:.././hal/sam3u1c/pio.c **** #elif (SAM4CM)
+1008:.././hal/sam3u1c/pio.c **** 	if (ul_pin > PIO_PB21_IDX) {
+1009:.././hal/sam3u1c/pio.c **** 		ul_id = ID_PIOC;
+1010:.././hal/sam3u1c/pio.c **** 	} else {
+1011:.././hal/sam3u1c/pio.c **** 		ul_id = ID_PIOA + (ul_pin >> 5);
+1012:.././hal/sam3u1c/pio.c **** 	}
+1013:.././hal/sam3u1c/pio.c **** #else
+1014:.././hal/sam3u1c/pio.c **** 	ul_id = ID_PIOA + (ul_pin >> 5);
+ 2561              	 .loc 1 1014 0
+ 2562 0008 7B68     	 ldr r3,[r7,#4]
+ 2563 000a 5B09     	 lsrs r3,r3,#5
+ 2564 000c 0A33     	 adds r3,r3,#10
+ 2565 000e FB60     	 str r3,[r7,#12]
+1015:.././hal/sam3u1c/pio.c **** #endif
+1016:.././hal/sam3u1c/pio.c **** 	return ul_id;
+ 2566              	 .loc 1 1016 0
+ 2567 0010 FB68     	 ldr r3,[r7,#12]
+1017:.././hal/sam3u1c/pio.c **** }
+ 2568              	 .loc 1 1017 0
+ 2569 0012 1846     	 mov r0,r3
+ 2570 0014 1437     	 adds r7,r7,#20
+ 2571              	.LCFI208:
+ 2572              	 .cfi_def_cfa_offset 4
+ 2573 0016 BD46     	 mov sp,r7
+ 2574              	.LCFI209:
+ 2575              	 .cfi_def_cfa_register 13
+ 2576              	 
+ 2577 0018 80BC     	 pop {r7}
+ 2578              	.LCFI210:
+ 2579              	 .cfi_restore 7
+ 2580              	 .cfi_def_cfa_offset 0
+ 2581 001a 7047     	 bx lr
+ 2582              	 .cfi_endproc
+ 2583              	.LFE103:
+ 2585              	 .section .text.pio_get_pin_group_mask,"ax",%progbits
+ 2586              	 .align 1
+ 2587              	 .global pio_get_pin_group_mask
+ 2588              	 .syntax unified
+ 2589              	 .thumb
+ 2590              	 .thumb_func
+ 2591              	 .fpu softvfp
+ 2593              	pio_get_pin_group_mask:
+ 2594              	.LFB104:
+1018:.././hal/sam3u1c/pio.c **** 
+1019:.././hal/sam3u1c/pio.c **** 
+1020:.././hal/sam3u1c/pio.c **** /**
+1021:.././hal/sam3u1c/pio.c ****  * \brief Return GPIO port pin mask for a GPIO pin.
+1022:.././hal/sam3u1c/pio.c ****  *
+1023:.././hal/sam3u1c/pio.c ****  * \param ul_pin The pin index.
+1024:.././hal/sam3u1c/pio.c ****  *
+1025:.././hal/sam3u1c/pio.c ****  * \return GPIO port pin mask.
+1026:.././hal/sam3u1c/pio.c ****  */
+1027:.././hal/sam3u1c/pio.c **** uint32_t pio_get_pin_group_mask(uint32_t ul_pin)
+1028:.././hal/sam3u1c/pio.c **** {
+ 2595              	 .loc 1 1028 0
+ 2596              	 .cfi_startproc
+ 2597              	 
+ 2598              	 
+ 2599              	 
+ 2600 0000 80B4     	 push {r7}
+ 2601              	.LCFI211:
+ 2602              	 .cfi_def_cfa_offset 4
+ 2603              	 .cfi_offset 7,-4
+ 2604 0002 85B0     	 sub sp,sp,#20
+ 2605              	.LCFI212:
+ 2606              	 .cfi_def_cfa_offset 24
+ 2607 0004 00AF     	 add r7,sp,#0
+ 2608              	.LCFI213:
+ 2609              	 .cfi_def_cfa_register 7
+ 2610 0006 7860     	 str r0,[r7,#4]
+1029:.././hal/sam3u1c/pio.c **** 	uint32_t ul_mask = 1 << (ul_pin & 0x1F);
+ 2611              	 .loc 1 1029 0
+ 2612 0008 7B68     	 ldr r3,[r7,#4]
+ 2613 000a 03F01F03 	 and r3,r3,#31
+ 2614 000e 0122     	 movs r2,#1
+ 2615 0010 02FA03F3 	 lsl r3,r2,r3
+ 2616 0014 FB60     	 str r3,[r7,#12]
+1030:.././hal/sam3u1c/pio.c **** 	return ul_mask;
+ 2617              	 .loc 1 1030 0
+ 2618 0016 FB68     	 ldr r3,[r7,#12]
+1031:.././hal/sam3u1c/pio.c **** }
+ 2619              	 .loc 1 1031 0
+ 2620 0018 1846     	 mov r0,r3
+ 2621 001a 1437     	 adds r7,r7,#20
+ 2622              	.LCFI214:
+ 2623              	 .cfi_def_cfa_offset 4
+ 2624 001c BD46     	 mov sp,r7
+ 2625              	.LCFI215:
+ 2626              	 .cfi_def_cfa_register 13
+ 2627              	 
+ 2628 001e 80BC     	 pop {r7}
+ 2629              	.LCFI216:
+ 2630              	 .cfi_restore 7
+ 2631              	 .cfi_def_cfa_offset 0
+ 2632 0020 7047     	 bx lr
+ 2633              	 .cfi_endproc
+ 2634              	.LFE104:
+ 2636              	 .text
+ 2637              	.Letext0:
+ 2638              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2639              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2640              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 2641              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
+ 2642              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 2643              	 .file 7 ".././hal/sam3u1c/inc/component/component_pio.h"
+ 2644              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 2645              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 2646              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 2647              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 2648              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 2649              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 2650              	 .file 14 ".././hal/sam3u1c/inc/pio.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 pio.c
+    {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
+    {standard input}:19     .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
+    {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
+    {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
+    {standard input}:27     .text.pio_pull_up:00000000 $t
+    {standard input}:34     .text.pio_pull_up:00000000 pio_pull_up
+    {standard input}:89     .text.pio_set_debounce_filter:00000000 $t
+    {standard input}:96     .text.pio_set_debounce_filter:00000000 pio_set_debounce_filter
+    {standard input}:147    .text.pio_set:00000000 $t
+    {standard input}:154    .text.pio_set:00000000 pio_set
+    {standard input}:195    .text.pio_clear:00000000 $t
+    {standard input}:202    .text.pio_clear:00000000 pio_clear
+    {standard input}:243    .text.pio_get:00000000 $t
+    {standard input}:250    .text.pio_get:00000000 pio_get
+    {standard input}:321    .text.pio_set_peripheral:00000000 $t
+    {standard input}:328    .text.pio_set_peripheral:00000000 pio_set_peripheral
+    {standard input}:428    .text.pio_set_input:00000000 $t
+    {standard input}:435    .text.pio_set_input:00000000 pio_set_input
+    {standard input}:528    .text.pio_set_input:00000078 $d
+    {standard input}:1280   .text.pio_disable_interrupt:00000000 pio_disable_interrupt
+    {standard input}:534    .text.pio_set_output:00000000 $t
+    {standard input}:541    .text.pio_set_output:00000000 pio_set_output
+    {standard input}:626    .text.pio_set_output:0000005c $d
+    {standard input}:632    .text.pio_configure:00000000 $t
+    {standard input}:639    .text.pio_configure:00000000 pio_configure
+    {standard input}:765    .text.pio_configure:000000b0 $d
+    {standard input}:773    .text.pio_get_output_data_status:00000000 $t
+    {standard input}:780    .text.pio_get_output_data_status:00000000 pio_get_output_data_status
+    {standard input}:831    .text.pio_set_multi_driver:00000000 $t
+    {standard input}:838    .text.pio_set_multi_driver:00000000 pio_set_multi_driver
+    {standard input}:892    .text.pio_get_multi_driver_status:00000000 $t
+    {standard input}:899    .text.pio_get_multi_driver_status:00000000 pio_get_multi_driver_status
+    {standard input}:938    .text.pio_enable_output_write:00000000 $t
+    {standard input}:945    .text.pio_enable_output_write:00000000 pio_enable_output_write
+    {standard input}:986    .text.pio_disable_output_write:00000000 $t
+    {standard input}:993    .text.pio_disable_output_write:00000000 pio_disable_output_write
+    {standard input}:1034   .text.pio_get_output_write_status:00000000 $t
+    {standard input}:1041   .text.pio_get_output_write_status:00000000 pio_get_output_write_status
+    {standard input}:1080   .text.pio_sync_output_write:00000000 $t
+    {standard input}:1087   .text.pio_sync_output_write:00000000 pio_sync_output_write
+    {standard input}:1128   .text.pio_configure_interrupt:00000000 $t
+    {standard input}:1135   .text.pio_configure_interrupt:00000000 pio_configure_interrupt
+    {standard input}:1222   .text.pio_enable_interrupt:00000000 $t
+    {standard input}:1229   .text.pio_enable_interrupt:00000000 pio_enable_interrupt
+    {standard input}:1273   .text.pio_disable_interrupt:00000000 $t
+    {standard input}:1321   .text.pio_get_interrupt_status:00000000 $t
+    {standard input}:1328   .text.pio_get_interrupt_status:00000000 pio_get_interrupt_status
+    {standard input}:1367   .text.pio_get_interrupt_mask:00000000 $t
+    {standard input}:1374   .text.pio_get_interrupt_mask:00000000 pio_get_interrupt_mask
+    {standard input}:1413   .text.pio_set_additional_interrupt_mode:00000000 $t
+    {standard input}:1420   .text.pio_set_additional_interrupt_mode:00000000 pio_set_additional_interrupt_mode
+    {standard input}:1507   .text.pio_set_writeprotect:00000000 $t
+    {standard input}:1514   .text.pio_set_writeprotect:00000000 pio_set_writeprotect
+    {standard input}:1556   .text.pio_set_writeprotect:00000020 $d
+    {standard input}:1561   .text.pio_get_writeprotect_status:00000000 $t
+    {standard input}:1568   .text.pio_get_writeprotect_status:00000000 pio_get_writeprotect_status
+    {standard input}:1607   .text.pio_get_pin_value:00000000 $t
+    {standard input}:1614   .text.pio_get_pin_value:00000000 pio_get_pin_value
+    {standard input}:1658   .text.pio_get_pin_value:0000002c $d
+    {standard input}:2491   .text.pio_get_pin_group:00000000 pio_get_pin_group
+    {standard input}:1663   .text.pio_set_pin_high:00000000 $t
+    {standard input}:1670   .text.pio_set_pin_high:00000000 pio_set_pin_high
+    {standard input}:1715   .text.pio_set_pin_high:0000002c $d
+    {standard input}:1720   .text.pio_set_pin_low:00000000 $t
+    {standard input}:1727   .text.pio_set_pin_low:00000000 pio_set_pin_low
+    {standard input}:1772   .text.pio_set_pin_low:0000002c $d
+    {standard input}:1777   .text.pio_toggle_pin:00000000 $t
+    {standard input}:1784   .text.pio_toggle_pin:00000000 pio_toggle_pin
+    {standard input}:1851   .text.pio_toggle_pin:00000054 $d
+    {standard input}:1856   .text.pio_configure_pin:00000000 $t
+    {standard input}:1863   .text.pio_configure_pin:00000000 pio_configure_pin
+    {standard input}:2040   .text.pio_configure_pin:00000124 $d
+    {standard input}:2049   .text.pio_set_pin_group_high:00000000 $t
+    {standard input}:2056   .text.pio_set_pin_group_high:00000000 pio_set_pin_group_high
+    {standard input}:2097   .text.pio_set_pin_group_low:00000000 $t
+    {standard input}:2104   .text.pio_set_pin_group_low:00000000 pio_set_pin_group_low
+    {standard input}:2145   .text.pio_toggle_pin_group:00000000 $t
+    {standard input}:2152   .text.pio_toggle_pin_group:00000000 pio_toggle_pin_group
+    {standard input}:2208   .text.pio_configure_pin_group:00000000 $t
+    {standard input}:2215   .text.pio_configure_pin_group:00000000 pio_configure_pin_group
+    {standard input}:2362   .text.pio_configure_pin_group:000000d4 $d
+    {standard input}:2370   .text.pio_enable_pin_interrupt:00000000 $t
+    {standard input}:2377   .text.pio_enable_pin_interrupt:00000000 pio_enable_pin_interrupt
+    {standard input}:2422   .text.pio_enable_pin_interrupt:0000002c $d
+    {standard input}:2427   .text.pio_disable_pin_interrupt:00000000 $t
+    {standard input}:2434   .text.pio_disable_pin_interrupt:00000000 pio_disable_pin_interrupt
+    {standard input}:2479   .text.pio_disable_pin_interrupt:0000002c $d
+    {standard input}:2484   .text.pio_get_pin_group:00000000 $t
+    {standard input}:2536   .text.pio_get_pin_group_id:00000000 $t
+    {standard input}:2543   .text.pio_get_pin_group_id:00000000 pio_get_pin_group_id
+    {standard input}:2586   .text.pio_get_pin_group_mask:00000000 $t
+    {standard input}:2593   .text.pio_get_pin_group_mask:00000000 pio_get_pin_group_mask
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
+                           .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
+                           .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
+                           .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.sam3u1c.h.220.c0b54b5a55bc87791749ae17b1487779
+                           .group:00000000 wm4.core_cm3.h.32.5c59c312db585622d253fdb887b0afb1
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm3.h.127.b561404f2a159dc517b409bc244d16c1
+                           .group:00000000 wm4.component_adc.h.43.d49887380d07d1cd08cc4e37b3485e31
+                           .group:00000000 wm4.component_adc12b.h.43.eadc09f1073923fb91f1f393cc397dcb
+                           .group:00000000 wm4.component_chipid.h.43.15825c969b1cc9eeea3d9416499874c8
+                           .group:00000000 wm4.component_dmac.h.43.cc8187b1cf6bfeadc91b14fdd28b9e8b
+                           .group:00000000 wm4.component_efc.h.43.cb1b3997ad9ea3733ad421ecbfd02fdd
+                           .group:00000000 wm4.component_gpbr.h.43.49b7e13894fe38b29f2243bbbe530227
+                           .group:00000000 wm4.component_hsmci.h.43.7b7194c92e1480c038f3342f7cec440a
+                           .group:00000000 wm4.component_matrix.h.43.1d209838fb75b4827119203a357141ee
+                           .group:00000000 wm4.component_pdc.h.43.19528a5f9ef5a348234ea06f89069c55
+                           .group:00000000 wm4.component_pio.h.43.163b46c3683ccf92e8de39a5554f50e8
+                           .group:00000000 wm4.component_pmc.h.43.ee4f030602866917aeed15fb2b948de8
+                           .group:00000000 wm4.component_pwm.h.43.ab6262a86f0aea354b43fe6dce7e7eb3
+                           .group:00000000 wm4.component_rstc.h.43.4eb59dc2ddcf585fabf251d0c329fcdd
+                           .group:00000000 wm4.component_rtc.h.43.ba8ccafc772b11d562a3cceab8b95072
+                           .group:00000000 wm4.component_rtt.h.43.3206ef8f067e5e747c3c4c7e719c1429
+                           .group:00000000 wm4.component_smc.h.43.907847915f1a5616734199d7e34424fa
+                           .group:00000000 wm4.component_spi.h.43.a2a09df64ab768c0a32be55285c74ded
+                           .group:00000000 wm4.component_ssc.h.43.d7c78f990c13fc511671b64798c4bcd0
+                           .group:00000000 wm4.component_supc.h.43.7d17f8e5ed3ba815e84381152735062f
+                           .group:00000000 wm4.component_tc.h.43.662eac8137408372b4f9d26c0b5f8621
+                           .group:00000000 wm4.component_twi.h.43.eda18625bd851fc4605861f5b3240c0b
+                           .group:00000000 wm4.component_uart.h.43.2d92735c5ea05c973661e1ba99a2f37c
+                           .group:00000000 wm4.component_udphs.h.43.21cecd26a4e44df0013037f29f2716e4
+                           .group:00000000 wm4.component_usart.h.43.7872f8f455adb38b67b9fbdb15657fbe
+                           .group:00000000 wm4.component_wdt.h.43.e31e10a5469b62c3660b49ab250f802f
+                           .group:00000000 wm4.instance_hsmci.h.43.e233236cc7fd5a805539a7ecc0e1d8d2
+                           .group:00000000 wm4.instance_ssc.h.43.c0cfabc3b9f3bb60745c913111bce965
+                           .group:00000000 wm4.instance_spi.h.43.570ae46af19e4179d9796872b9a8b9bc
+                           .group:00000000 wm4.instance_tc0.h.43.049b3a82387d2961594190609e896a29
+                           .group:00000000 wm4.instance_twi0.h.43.255dc0afa9e0d45eaea0a935eca2f103
+                           .group:00000000 wm4.instance_twi1.h.43.652d1d407893f259f2a817544ba662c2
+                           .group:00000000 wm4.instance_pwm.h.43.88294acec3ca56d6fc521038521a1567
+                           .group:00000000 wm4.instance_usart0.h.43.e26677512aee3dd3bedd71d394410000
+                           .group:00000000 wm4.instance_usart1.h.43.1ba97dbc6610d9fb3132b9d845688201
+                           .group:00000000 wm4.instance_usart2.h.43.baa1bf30b3c5acdee90c4a1f50fe9ebd
+                           .group:00000000 wm4.instance_udphs.h.43.b1ce94181e0d1f22877b81c6040a4363
+                           .group:00000000 wm4.instance_adc12b.h.43.d73ed59e867ccdfdb846d9ef32a50c0c
+                           .group:00000000 wm4.instance_adc.h.43.2b7611a00afeb4c555339b844d4b8456
+                           .group:00000000 wm4.instance_dmac.h.43.ee72691d84889c8f285932be4a075ddb
+                           .group:00000000 wm4.instance_smc.h.43.29610fd00979caaaa65821ad40e9da06
+                           .group:00000000 wm4.instance_matrix.h.43.01ee474141594385374c41a29daeeefe
+                           .group:00000000 wm4.instance_pmc.h.43.37430325ed7b8b24c3fe640c41c29ef5
+                           .group:00000000 wm4.instance_uart.h.43.bd378395ba022bc8670c82ebe656fbbd
+                           .group:00000000 wm4.instance_chipid.h.43.29cd8fb600f149aa58830fcc78fe36f9
+                           .group:00000000 wm4.instance_efc0.h.43.6b85dba20721a7e9fc4350e78d193680
+                           .group:00000000 wm4.instance_efc1.h.43.2c5e94fc4d2742678318d73450d08d57
+                           .group:00000000 wm4.instance_pioa.h.43.eeb46cc3bfe01a1f28e67aa3a6851ed8
+                           .group:00000000 wm4.instance_piob.h.43.652ce26b6c37ac56f9ed42a9216d9aca
+                           .group:00000000 wm4.instance_rstc.h.43.c5de224364a50a85f237c0b864aa4c8f
+                           .group:00000000 wm4.instance_supc.h.43.a5f1a5ca08f468ccf34ed3653e045f1f
+                           .group:00000000 wm4.instance_rtt.h.43.8622b192c23334996132415e3095df7f
+                           .group:00000000 wm4.instance_wdt.h.43.407ea53e133eacf09acf2c7fcb6b7524
+                           .group:00000000 wm4.instance_rtc.h.43.f70b77f9180401c8d9d920cb4a1cd166
+                           .group:00000000 wm4.instance_gpbr.h.43.9066cb40d557f6755101368854272348
+                           .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
+                           .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
+                           .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
+                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
+                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
+                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
+                           .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
+                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:00000000 wm4.stdlib.h.56.d4493cd3736e51e9d56335045f26df45
+                           .group:00000000 wm4.compiler.h.88.0e6ad966134fa012ce9a34053d3f48aa
+                           .group:00000000 wm4.interrupt_sam_nvic.h.45.4876da6c127868305d66389e87e0876f
+                           .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
+                           .group:00000000 wm4.pio.h.54.7fad645764d96df2216e592c321b3717
+
+NO UNDEFINED SYMBOLS

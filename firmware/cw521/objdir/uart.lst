@@ -1,0 +1,1946 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "uart.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
+  16              	 .align 2
+  19              	cpu_irq_critical_section_counter:
+  20 0000 00000000 	 .space 4
+  21              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
+  24              	cpu_irq_prev_interrupt_state:
+  25 0000 00       	 .space 1
+  26              	 .section .text.uart_init,"ax",%progbits
+  27              	 .align 1
+  28              	 .global uart_init
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	uart_init:
+  35              	.LFB67:
+  36              	 .file 1 ".././hal/sam3u1c/uart.c"
+   1:.././hal/sam3u1c/uart.c **** /**
+   2:.././hal/sam3u1c/uart.c ****  * \file
+   3:.././hal/sam3u1c/uart.c ****  *
+   4:.././hal/sam3u1c/uart.c ****  * \brief Universal Asynchronous Receiver Transceiver (UART) driver for SAM.
+   5:.././hal/sam3u1c/uart.c ****  *
+   6:.././hal/sam3u1c/uart.c ****  * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/uart.c ****  *
+   8:.././hal/sam3u1c/uart.c ****  * \asf_license_start
+   9:.././hal/sam3u1c/uart.c ****  *
+  10:.././hal/sam3u1c/uart.c ****  * \page License
+  11:.././hal/sam3u1c/uart.c ****  *
+  12:.././hal/sam3u1c/uart.c ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/uart.c ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/uart.c ****  *
+  15:.././hal/sam3u1c/uart.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/uart.c ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/uart.c ****  *
+  18:.././hal/sam3u1c/uart.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/uart.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/uart.c ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/uart.c ****  *
+  22:.././hal/sam3u1c/uart.c ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/uart.c ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/uart.c ****  *
+  25:.././hal/sam3u1c/uart.c ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/uart.c ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/uart.c ****  *
+  28:.././hal/sam3u1c/uart.c ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/uart.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/uart.c ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/uart.c ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/uart.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/uart.c ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/uart.c ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/uart.c ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/uart.c ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/uart.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/uart.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/uart.c ****  *
+  40:.././hal/sam3u1c/uart.c ****  * \asf_license_stop
+  41:.././hal/sam3u1c/uart.c ****  *
+  42:.././hal/sam3u1c/uart.c ****  */
+  43:.././hal/sam3u1c/uart.c **** 
+  44:.././hal/sam3u1c/uart.c **** #include "uart.h"
+  45:.././hal/sam3u1c/uart.c **** 
+  46:.././hal/sam3u1c/uart.c **** /// @cond 0
+  47:.././hal/sam3u1c/uart.c **** /**INDENT-OFF**/
+  48:.././hal/sam3u1c/uart.c **** #ifdef __cplusplus
+  49:.././hal/sam3u1c/uart.c **** extern "C" {
+  50:.././hal/sam3u1c/uart.c **** #endif
+  51:.././hal/sam3u1c/uart.c **** /**INDENT-ON**/
+  52:.././hal/sam3u1c/uart.c **** /// @endcond
+  53:.././hal/sam3u1c/uart.c **** 
+  54:.././hal/sam3u1c/uart.c **** /**
+  55:.././hal/sam3u1c/uart.c ****  * \defgroup sam_drivers_uart_group Universal Asynchronous Receiver Transceiver (UART)
+  56:.././hal/sam3u1c/uart.c ****  *
+  57:.././hal/sam3u1c/uart.c ****  * The Universal Asynchronous Receiver Transmitter features a two-pin UART that
+  58:.././hal/sam3u1c/uart.c ****  * can be used for communication and trace purposes and offers an ideal medium
+  59:.././hal/sam3u1c/uart.c ****  * for in-situ programming solutions. Moreover, the association with two
+  60:.././hal/sam3u1c/uart.c ****  * peripheral DMA controller (PDC) channels permits packet handling for these
+  61:.././hal/sam3u1c/uart.c ****  * tasks with processor time reduced to a minimum.
+  62:.././hal/sam3u1c/uart.c ****  *
+  63:.././hal/sam3u1c/uart.c ****  * \par Usage
+  64:.././hal/sam3u1c/uart.c ****  *
+  65:.././hal/sam3u1c/uart.c ****  * -# Enable the UART peripheral clock in the PMC.
+  66:.././hal/sam3u1c/uart.c ****  * -# Enable the required UART PIOs (see pio.h).
+  67:.././hal/sam3u1c/uart.c ****  * -# Configure the UART by calling uart_init.
+  68:.././hal/sam3u1c/uart.c ****  * -# Send data through the UART using the uart_write.
+  69:.././hal/sam3u1c/uart.c ****  * -# Receive data from the UART using the uart_read; the availability of data
+  70:.././hal/sam3u1c/uart.c ****  *    can be polled with uart_is_rx_ready.
+  71:.././hal/sam3u1c/uart.c ****  * -# Disable the transmitter and/or the receiver of the UART with
+  72:.././hal/sam3u1c/uart.c ****  *    uart_disable_tx and uart_disable_rx.
+  73:.././hal/sam3u1c/uart.c ****  *
+  74:.././hal/sam3u1c/uart.c ****  * @{
+  75:.././hal/sam3u1c/uart.c ****  */
+  76:.././hal/sam3u1c/uart.c **** 
+  77:.././hal/sam3u1c/uart.c **** /**
+  78:.././hal/sam3u1c/uart.c ****  * \brief Configure UART with the specified parameters.
+  79:.././hal/sam3u1c/uart.c ****  *
+  80:.././hal/sam3u1c/uart.c ****  * \note The PMC and PIOs must be configured first.
+  81:.././hal/sam3u1c/uart.c ****  *
+  82:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+  83:.././hal/sam3u1c/uart.c ****  * \param p_uart_opt Pointer to sam_uart_opt_t instance.
+  84:.././hal/sam3u1c/uart.c ****  *
+  85:.././hal/sam3u1c/uart.c ****  * \retval 0 Success.
+  86:.././hal/sam3u1c/uart.c ****  * \retval 1 Bad baud rate generator value.
+  87:.././hal/sam3u1c/uart.c ****  */
+  88:.././hal/sam3u1c/uart.c **** uint32_t uart_init(Uart *p_uart, const sam_uart_opt_t *p_uart_opt)
+  89:.././hal/sam3u1c/uart.c **** {
+  37              	 .loc 1 89 0
+  38              	 .cfi_startproc
+  39              	 
+  40              	 
+  41              	 
+  42 0000 80B4     	 push {r7}
+  43              	.LCFI0:
+  44              	 .cfi_def_cfa_offset 4
+  45              	 .cfi_offset 7,-4
+  46 0002 85B0     	 sub sp,sp,#20
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 24
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52 0006 7860     	 str r0,[r7,#4]
+  53 0008 3960     	 str r1,[r7]
+  90:.././hal/sam3u1c/uart.c **** 	uint32_t cd = 0;
+  54              	 .loc 1 90 0
+  55 000a 0023     	 movs r3,#0
+  56 000c FB60     	 str r3,[r7,#12]
+  91:.././hal/sam3u1c/uart.c **** 
+  92:.././hal/sam3u1c/uart.c **** 	/* Reset and disable receiver & transmitter */
+  93:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RSTRX | UART_CR_RSTTX
+  57              	 .loc 1 93 0
+  58 000e 7B68     	 ldr r3,[r7,#4]
+  59 0010 AC22     	 movs r2,#172
+  60 0012 1A60     	 str r2,[r3]
+  94:.././hal/sam3u1c/uart.c **** 			| UART_CR_RXDIS | UART_CR_TXDIS;
+  95:.././hal/sam3u1c/uart.c **** 
+  96:.././hal/sam3u1c/uart.c **** 	/* Check and configure baudrate */
+  97:.././hal/sam3u1c/uart.c **** 	/* Asynchronous, no oversampling */
+  98:.././hal/sam3u1c/uart.c **** 	cd = (p_uart_opt->ul_mck / p_uart_opt->ul_baudrate) / UART_MCK_DIV;
+  61              	 .loc 1 98 0
+  62 0014 3B68     	 ldr r3,[r7]
+  63 0016 1A68     	 ldr r2,[r3]
+  64 0018 3B68     	 ldr r3,[r7]
+  65 001a 5B68     	 ldr r3,[r3,#4]
+  66 001c B2FBF3F3 	 udiv r3,r2,r3
+  67 0020 1B09     	 lsrs r3,r3,#4
+  68 0022 FB60     	 str r3,[r7,#12]
+  99:.././hal/sam3u1c/uart.c **** 	if (cd < UART_MCK_DIV_MIN_FACTOR || cd > UART_MCK_DIV_MAX_FACTOR)
+  69              	 .loc 1 99 0
+  70 0024 FB68     	 ldr r3,[r7,#12]
+  71 0026 002B     	 cmp r3,#0
+  72 0028 03D0     	 beq .L2
+  73              	 .loc 1 99 0 is_stmt 0 discriminator 1
+  74 002a FB68     	 ldr r3,[r7,#12]
+  75 002c B3F5803F 	 cmp r3,#65536
+  76 0030 01D3     	 bcc .L3
+  77              	.L2:
+ 100:.././hal/sam3u1c/uart.c **** 		return 1;
+  78              	 .loc 1 100 0 is_stmt 1
+  79 0032 0123     	 movs r3,#1
+  80 0034 0FE0     	 b .L4
+  81              	.L3:
+ 101:.././hal/sam3u1c/uart.c **** 
+ 102:.././hal/sam3u1c/uart.c **** 	p_uart->UART_BRGR = cd;
+  82              	 .loc 1 102 0
+  83 0036 7B68     	 ldr r3,[r7,#4]
+  84 0038 FA68     	 ldr r2,[r7,#12]
+  85 003a 1A62     	 str r2,[r3,#32]
+ 103:.././hal/sam3u1c/uart.c **** 	/* Configure mode */
+ 104:.././hal/sam3u1c/uart.c **** 	p_uart->UART_MR = p_uart_opt->ul_mode;
+  86              	 .loc 1 104 0
+  87 003c 3B68     	 ldr r3,[r7]
+  88 003e 9A68     	 ldr r2,[r3,#8]
+  89 0040 7B68     	 ldr r3,[r7,#4]
+  90 0042 5A60     	 str r2,[r3,#4]
+ 105:.././hal/sam3u1c/uart.c **** 
+ 106:.././hal/sam3u1c/uart.c **** 	/* Disable PDC channel */
+ 107:.././hal/sam3u1c/uart.c **** 	p_uart->UART_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
+  91              	 .loc 1 107 0
+  92 0044 7B68     	 ldr r3,[r7,#4]
+  93 0046 40F20222 	 movw r2,#514
+  94 004a C3F82021 	 str r2,[r3,#288]
+ 108:.././hal/sam3u1c/uart.c **** 
+ 109:.././hal/sam3u1c/uart.c **** 	/* Enable receiver and transmitter */
+ 110:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RXEN | UART_CR_TXEN;
+  95              	 .loc 1 110 0
+  96 004e 7B68     	 ldr r3,[r7,#4]
+  97 0050 5022     	 movs r2,#80
+  98 0052 1A60     	 str r2,[r3]
+ 111:.././hal/sam3u1c/uart.c **** 
+ 112:.././hal/sam3u1c/uart.c **** 	return 0;
+  99              	 .loc 1 112 0
+ 100 0054 0023     	 movs r3,#0
+ 101              	.L4:
+ 113:.././hal/sam3u1c/uart.c **** }
+ 102              	 .loc 1 113 0
+ 103 0056 1846     	 mov r0,r3
+ 104 0058 1437     	 adds r7,r7,#20
+ 105              	.LCFI3:
+ 106              	 .cfi_def_cfa_offset 4
+ 107 005a BD46     	 mov sp,r7
+ 108              	.LCFI4:
+ 109              	 .cfi_def_cfa_register 13
+ 110              	 
+ 111 005c 80BC     	 pop {r7}
+ 112              	.LCFI5:
+ 113              	 .cfi_restore 7
+ 114              	 .cfi_def_cfa_offset 0
+ 115 005e 7047     	 bx lr
+ 116              	 .cfi_endproc
+ 117              	.LFE67:
+ 119              	 .section .text.uart_enable_tx,"ax",%progbits
+ 120              	 .align 1
+ 121              	 .global uart_enable_tx
+ 122              	 .syntax unified
+ 123              	 .thumb
+ 124              	 .thumb_func
+ 125              	 .fpu softvfp
+ 127              	uart_enable_tx:
+ 128              	.LFB68:
+ 114:.././hal/sam3u1c/uart.c **** 
+ 115:.././hal/sam3u1c/uart.c **** /**
+ 116:.././hal/sam3u1c/uart.c ****  * \brief Enable UART transmitter.
+ 117:.././hal/sam3u1c/uart.c ****  *
+ 118:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 119:.././hal/sam3u1c/uart.c ****  */
+ 120:.././hal/sam3u1c/uart.c **** void uart_enable_tx(Uart *p_uart)
+ 121:.././hal/sam3u1c/uart.c **** {
+ 129              	 .loc 1 121 0
+ 130              	 .cfi_startproc
+ 131              	 
+ 132              	 
+ 133              	 
+ 134 0000 80B4     	 push {r7}
+ 135              	.LCFI6:
+ 136              	 .cfi_def_cfa_offset 4
+ 137              	 .cfi_offset 7,-4
+ 138 0002 83B0     	 sub sp,sp,#12
+ 139              	.LCFI7:
+ 140              	 .cfi_def_cfa_offset 16
+ 141 0004 00AF     	 add r7,sp,#0
+ 142              	.LCFI8:
+ 143              	 .cfi_def_cfa_register 7
+ 144 0006 7860     	 str r0,[r7,#4]
+ 122:.././hal/sam3u1c/uart.c **** 	/* Enable transmitter */
+ 123:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_TXEN;
+ 145              	 .loc 1 123 0
+ 146 0008 7B68     	 ldr r3,[r7,#4]
+ 147 000a 4022     	 movs r2,#64
+ 148 000c 1A60     	 str r2,[r3]
+ 124:.././hal/sam3u1c/uart.c **** }
+ 149              	 .loc 1 124 0
+ 150 000e 00BF     	 nop
+ 151 0010 0C37     	 adds r7,r7,#12
+ 152              	.LCFI9:
+ 153              	 .cfi_def_cfa_offset 4
+ 154 0012 BD46     	 mov sp,r7
+ 155              	.LCFI10:
+ 156              	 .cfi_def_cfa_register 13
+ 157              	 
+ 158 0014 80BC     	 pop {r7}
+ 159              	.LCFI11:
+ 160              	 .cfi_restore 7
+ 161              	 .cfi_def_cfa_offset 0
+ 162 0016 7047     	 bx lr
+ 163              	 .cfi_endproc
+ 164              	.LFE68:
+ 166              	 .section .text.uart_disable_tx,"ax",%progbits
+ 167              	 .align 1
+ 168              	 .global uart_disable_tx
+ 169              	 .syntax unified
+ 170              	 .thumb
+ 171              	 .thumb_func
+ 172              	 .fpu softvfp
+ 174              	uart_disable_tx:
+ 175              	.LFB69:
+ 125:.././hal/sam3u1c/uart.c **** 
+ 126:.././hal/sam3u1c/uart.c **** /**
+ 127:.././hal/sam3u1c/uart.c ****  * \brief Disable UART transmitter.
+ 128:.././hal/sam3u1c/uart.c ****  *
+ 129:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 130:.././hal/sam3u1c/uart.c ****  */
+ 131:.././hal/sam3u1c/uart.c **** void uart_disable_tx(Uart *p_uart)
+ 132:.././hal/sam3u1c/uart.c **** {
+ 176              	 .loc 1 132 0
+ 177              	 .cfi_startproc
+ 178              	 
+ 179              	 
+ 180              	 
+ 181 0000 80B4     	 push {r7}
+ 182              	.LCFI12:
+ 183              	 .cfi_def_cfa_offset 4
+ 184              	 .cfi_offset 7,-4
+ 185 0002 83B0     	 sub sp,sp,#12
+ 186              	.LCFI13:
+ 187              	 .cfi_def_cfa_offset 16
+ 188 0004 00AF     	 add r7,sp,#0
+ 189              	.LCFI14:
+ 190              	 .cfi_def_cfa_register 7
+ 191 0006 7860     	 str r0,[r7,#4]
+ 133:.././hal/sam3u1c/uart.c **** 	/* Disable transmitter */
+ 134:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_TXDIS;
+ 192              	 .loc 1 134 0
+ 193 0008 7B68     	 ldr r3,[r7,#4]
+ 194 000a 8022     	 movs r2,#128
+ 195 000c 1A60     	 str r2,[r3]
+ 135:.././hal/sam3u1c/uart.c **** }
+ 196              	 .loc 1 135 0
+ 197 000e 00BF     	 nop
+ 198 0010 0C37     	 adds r7,r7,#12
+ 199              	.LCFI15:
+ 200              	 .cfi_def_cfa_offset 4
+ 201 0012 BD46     	 mov sp,r7
+ 202              	.LCFI16:
+ 203              	 .cfi_def_cfa_register 13
+ 204              	 
+ 205 0014 80BC     	 pop {r7}
+ 206              	.LCFI17:
+ 207              	 .cfi_restore 7
+ 208              	 .cfi_def_cfa_offset 0
+ 209 0016 7047     	 bx lr
+ 210              	 .cfi_endproc
+ 211              	.LFE69:
+ 213              	 .section .text.uart_reset_tx,"ax",%progbits
+ 214              	 .align 1
+ 215              	 .global uart_reset_tx
+ 216              	 .syntax unified
+ 217              	 .thumb
+ 218              	 .thumb_func
+ 219              	 .fpu softvfp
+ 221              	uart_reset_tx:
+ 222              	.LFB70:
+ 136:.././hal/sam3u1c/uart.c **** 
+ 137:.././hal/sam3u1c/uart.c **** /**
+ 138:.././hal/sam3u1c/uart.c ****  * \brief Reset UART transmitter.
+ 139:.././hal/sam3u1c/uart.c ****  *
+ 140:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 141:.././hal/sam3u1c/uart.c ****  */
+ 142:.././hal/sam3u1c/uart.c **** void uart_reset_tx(Uart *p_uart)
+ 143:.././hal/sam3u1c/uart.c **** {
+ 223              	 .loc 1 143 0
+ 224              	 .cfi_startproc
+ 225              	 
+ 226              	 
+ 227              	 
+ 228 0000 80B4     	 push {r7}
+ 229              	.LCFI18:
+ 230              	 .cfi_def_cfa_offset 4
+ 231              	 .cfi_offset 7,-4
+ 232 0002 83B0     	 sub sp,sp,#12
+ 233              	.LCFI19:
+ 234              	 .cfi_def_cfa_offset 16
+ 235 0004 00AF     	 add r7,sp,#0
+ 236              	.LCFI20:
+ 237              	 .cfi_def_cfa_register 7
+ 238 0006 7860     	 str r0,[r7,#4]
+ 144:.././hal/sam3u1c/uart.c **** 	/* Reset transmitter */
+ 145:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RSTTX | UART_CR_TXDIS;
+ 239              	 .loc 1 145 0
+ 240 0008 7B68     	 ldr r3,[r7,#4]
+ 241 000a 8822     	 movs r2,#136
+ 242 000c 1A60     	 str r2,[r3]
+ 146:.././hal/sam3u1c/uart.c **** }
+ 243              	 .loc 1 146 0
+ 244 000e 00BF     	 nop
+ 245 0010 0C37     	 adds r7,r7,#12
+ 246              	.LCFI21:
+ 247              	 .cfi_def_cfa_offset 4
+ 248 0012 BD46     	 mov sp,r7
+ 249              	.LCFI22:
+ 250              	 .cfi_def_cfa_register 13
+ 251              	 
+ 252 0014 80BC     	 pop {r7}
+ 253              	.LCFI23:
+ 254              	 .cfi_restore 7
+ 255              	 .cfi_def_cfa_offset 0
+ 256 0016 7047     	 bx lr
+ 257              	 .cfi_endproc
+ 258              	.LFE70:
+ 260              	 .section .text.uart_enable_rx,"ax",%progbits
+ 261              	 .align 1
+ 262              	 .global uart_enable_rx
+ 263              	 .syntax unified
+ 264              	 .thumb
+ 265              	 .thumb_func
+ 266              	 .fpu softvfp
+ 268              	uart_enable_rx:
+ 269              	.LFB71:
+ 147:.././hal/sam3u1c/uart.c **** 
+ 148:.././hal/sam3u1c/uart.c **** /**
+ 149:.././hal/sam3u1c/uart.c ****  * \brief Enable UART receiver.
+ 150:.././hal/sam3u1c/uart.c ****  *
+ 151:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 152:.././hal/sam3u1c/uart.c ****  */
+ 153:.././hal/sam3u1c/uart.c **** void uart_enable_rx(Uart *p_uart)
+ 154:.././hal/sam3u1c/uart.c **** {
+ 270              	 .loc 1 154 0
+ 271              	 .cfi_startproc
+ 272              	 
+ 273              	 
+ 274              	 
+ 275 0000 80B4     	 push {r7}
+ 276              	.LCFI24:
+ 277              	 .cfi_def_cfa_offset 4
+ 278              	 .cfi_offset 7,-4
+ 279 0002 83B0     	 sub sp,sp,#12
+ 280              	.LCFI25:
+ 281              	 .cfi_def_cfa_offset 16
+ 282 0004 00AF     	 add r7,sp,#0
+ 283              	.LCFI26:
+ 284              	 .cfi_def_cfa_register 7
+ 285 0006 7860     	 str r0,[r7,#4]
+ 155:.././hal/sam3u1c/uart.c **** 	/* Enable receiver */
+ 156:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RXEN;
+ 286              	 .loc 1 156 0
+ 287 0008 7B68     	 ldr r3,[r7,#4]
+ 288 000a 1022     	 movs r2,#16
+ 289 000c 1A60     	 str r2,[r3]
+ 157:.././hal/sam3u1c/uart.c **** }
+ 290              	 .loc 1 157 0
+ 291 000e 00BF     	 nop
+ 292 0010 0C37     	 adds r7,r7,#12
+ 293              	.LCFI27:
+ 294              	 .cfi_def_cfa_offset 4
+ 295 0012 BD46     	 mov sp,r7
+ 296              	.LCFI28:
+ 297              	 .cfi_def_cfa_register 13
+ 298              	 
+ 299 0014 80BC     	 pop {r7}
+ 300              	.LCFI29:
+ 301              	 .cfi_restore 7
+ 302              	 .cfi_def_cfa_offset 0
+ 303 0016 7047     	 bx lr
+ 304              	 .cfi_endproc
+ 305              	.LFE71:
+ 307              	 .section .text.uart_disable_rx,"ax",%progbits
+ 308              	 .align 1
+ 309              	 .global uart_disable_rx
+ 310              	 .syntax unified
+ 311              	 .thumb
+ 312              	 .thumb_func
+ 313              	 .fpu softvfp
+ 315              	uart_disable_rx:
+ 316              	.LFB72:
+ 158:.././hal/sam3u1c/uart.c **** 
+ 159:.././hal/sam3u1c/uart.c **** /**
+ 160:.././hal/sam3u1c/uart.c ****  * \brief Disable UART receiver.
+ 161:.././hal/sam3u1c/uart.c ****  *
+ 162:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 163:.././hal/sam3u1c/uart.c ****  */
+ 164:.././hal/sam3u1c/uart.c **** void uart_disable_rx(Uart *p_uart)
+ 165:.././hal/sam3u1c/uart.c **** {
+ 317              	 .loc 1 165 0
+ 318              	 .cfi_startproc
+ 319              	 
+ 320              	 
+ 321              	 
+ 322 0000 80B4     	 push {r7}
+ 323              	.LCFI30:
+ 324              	 .cfi_def_cfa_offset 4
+ 325              	 .cfi_offset 7,-4
+ 326 0002 83B0     	 sub sp,sp,#12
+ 327              	.LCFI31:
+ 328              	 .cfi_def_cfa_offset 16
+ 329 0004 00AF     	 add r7,sp,#0
+ 330              	.LCFI32:
+ 331              	 .cfi_def_cfa_register 7
+ 332 0006 7860     	 str r0,[r7,#4]
+ 166:.././hal/sam3u1c/uart.c **** 	/* Disable receiver */
+ 167:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RXDIS;
+ 333              	 .loc 1 167 0
+ 334 0008 7B68     	 ldr r3,[r7,#4]
+ 335 000a 2022     	 movs r2,#32
+ 336 000c 1A60     	 str r2,[r3]
+ 168:.././hal/sam3u1c/uart.c **** }
+ 337              	 .loc 1 168 0
+ 338 000e 00BF     	 nop
+ 339 0010 0C37     	 adds r7,r7,#12
+ 340              	.LCFI33:
+ 341              	 .cfi_def_cfa_offset 4
+ 342 0012 BD46     	 mov sp,r7
+ 343              	.LCFI34:
+ 344              	 .cfi_def_cfa_register 13
+ 345              	 
+ 346 0014 80BC     	 pop {r7}
+ 347              	.LCFI35:
+ 348              	 .cfi_restore 7
+ 349              	 .cfi_def_cfa_offset 0
+ 350 0016 7047     	 bx lr
+ 351              	 .cfi_endproc
+ 352              	.LFE72:
+ 354              	 .section .text.uart_reset_rx,"ax",%progbits
+ 355              	 .align 1
+ 356              	 .global uart_reset_rx
+ 357              	 .syntax unified
+ 358              	 .thumb
+ 359              	 .thumb_func
+ 360              	 .fpu softvfp
+ 362              	uart_reset_rx:
+ 363              	.LFB73:
+ 169:.././hal/sam3u1c/uart.c **** 
+ 170:.././hal/sam3u1c/uart.c **** /**
+ 171:.././hal/sam3u1c/uart.c ****  * \brief Reset UART receiver.
+ 172:.././hal/sam3u1c/uart.c ****  *
+ 173:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 174:.././hal/sam3u1c/uart.c ****  */
+ 175:.././hal/sam3u1c/uart.c **** void uart_reset_rx(Uart *p_uart)
+ 176:.././hal/sam3u1c/uart.c **** {
+ 364              	 .loc 1 176 0
+ 365              	 .cfi_startproc
+ 366              	 
+ 367              	 
+ 368              	 
+ 369 0000 80B4     	 push {r7}
+ 370              	.LCFI36:
+ 371              	 .cfi_def_cfa_offset 4
+ 372              	 .cfi_offset 7,-4
+ 373 0002 83B0     	 sub sp,sp,#12
+ 374              	.LCFI37:
+ 375              	 .cfi_def_cfa_offset 16
+ 376 0004 00AF     	 add r7,sp,#0
+ 377              	.LCFI38:
+ 378              	 .cfi_def_cfa_register 7
+ 379 0006 7860     	 str r0,[r7,#4]
+ 177:.././hal/sam3u1c/uart.c **** 	/* Reset receiver */
+ 178:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RSTRX | UART_CR_RXDIS;
+ 380              	 .loc 1 178 0
+ 381 0008 7B68     	 ldr r3,[r7,#4]
+ 382 000a 2422     	 movs r2,#36
+ 383 000c 1A60     	 str r2,[r3]
+ 179:.././hal/sam3u1c/uart.c **** }
+ 384              	 .loc 1 179 0
+ 385 000e 00BF     	 nop
+ 386 0010 0C37     	 adds r7,r7,#12
+ 387              	.LCFI39:
+ 388              	 .cfi_def_cfa_offset 4
+ 389 0012 BD46     	 mov sp,r7
+ 390              	.LCFI40:
+ 391              	 .cfi_def_cfa_register 13
+ 392              	 
+ 393 0014 80BC     	 pop {r7}
+ 394              	.LCFI41:
+ 395              	 .cfi_restore 7
+ 396              	 .cfi_def_cfa_offset 0
+ 397 0016 7047     	 bx lr
+ 398              	 .cfi_endproc
+ 399              	.LFE73:
+ 401              	 .section .text.uart_enable,"ax",%progbits
+ 402              	 .align 1
+ 403              	 .global uart_enable
+ 404              	 .syntax unified
+ 405              	 .thumb
+ 406              	 .thumb_func
+ 407              	 .fpu softvfp
+ 409              	uart_enable:
+ 410              	.LFB74:
+ 180:.././hal/sam3u1c/uart.c **** 
+ 181:.././hal/sam3u1c/uart.c **** /**
+ 182:.././hal/sam3u1c/uart.c ****  * \brief Enable UART receiver and transmitter.
+ 183:.././hal/sam3u1c/uart.c ****  *
+ 184:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 185:.././hal/sam3u1c/uart.c ****  */
+ 186:.././hal/sam3u1c/uart.c **** void uart_enable(Uart *p_uart)
+ 187:.././hal/sam3u1c/uart.c **** {
+ 411              	 .loc 1 187 0
+ 412              	 .cfi_startproc
+ 413              	 
+ 414              	 
+ 415              	 
+ 416 0000 80B4     	 push {r7}
+ 417              	.LCFI42:
+ 418              	 .cfi_def_cfa_offset 4
+ 419              	 .cfi_offset 7,-4
+ 420 0002 83B0     	 sub sp,sp,#12
+ 421              	.LCFI43:
+ 422              	 .cfi_def_cfa_offset 16
+ 423 0004 00AF     	 add r7,sp,#0
+ 424              	.LCFI44:
+ 425              	 .cfi_def_cfa_register 7
+ 426 0006 7860     	 str r0,[r7,#4]
+ 188:.././hal/sam3u1c/uart.c **** 	/* Enable receiver and transmitter */
+ 189:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RXEN | UART_CR_TXEN;
+ 427              	 .loc 1 189 0
+ 428 0008 7B68     	 ldr r3,[r7,#4]
+ 429 000a 5022     	 movs r2,#80
+ 430 000c 1A60     	 str r2,[r3]
+ 190:.././hal/sam3u1c/uart.c **** }
+ 431              	 .loc 1 190 0
+ 432 000e 00BF     	 nop
+ 433 0010 0C37     	 adds r7,r7,#12
+ 434              	.LCFI45:
+ 435              	 .cfi_def_cfa_offset 4
+ 436 0012 BD46     	 mov sp,r7
+ 437              	.LCFI46:
+ 438              	 .cfi_def_cfa_register 13
+ 439              	 
+ 440 0014 80BC     	 pop {r7}
+ 441              	.LCFI47:
+ 442              	 .cfi_restore 7
+ 443              	 .cfi_def_cfa_offset 0
+ 444 0016 7047     	 bx lr
+ 445              	 .cfi_endproc
+ 446              	.LFE74:
+ 448              	 .section .text.uart_disable,"ax",%progbits
+ 449              	 .align 1
+ 450              	 .global uart_disable
+ 451              	 .syntax unified
+ 452              	 .thumb
+ 453              	 .thumb_func
+ 454              	 .fpu softvfp
+ 456              	uart_disable:
+ 457              	.LFB75:
+ 191:.././hal/sam3u1c/uart.c **** 
+ 192:.././hal/sam3u1c/uart.c **** /**
+ 193:.././hal/sam3u1c/uart.c ****  * \brief Disable UART receiver and transmitter.
+ 194:.././hal/sam3u1c/uart.c ****  *
+ 195:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 196:.././hal/sam3u1c/uart.c ****  */
+ 197:.././hal/sam3u1c/uart.c **** void uart_disable(Uart *p_uart)
+ 198:.././hal/sam3u1c/uart.c **** {
+ 458              	 .loc 1 198 0
+ 459              	 .cfi_startproc
+ 460              	 
+ 461              	 
+ 462              	 
+ 463 0000 80B4     	 push {r7}
+ 464              	.LCFI48:
+ 465              	 .cfi_def_cfa_offset 4
+ 466              	 .cfi_offset 7,-4
+ 467 0002 83B0     	 sub sp,sp,#12
+ 468              	.LCFI49:
+ 469              	 .cfi_def_cfa_offset 16
+ 470 0004 00AF     	 add r7,sp,#0
+ 471              	.LCFI50:
+ 472              	 .cfi_def_cfa_register 7
+ 473 0006 7860     	 str r0,[r7,#4]
+ 199:.././hal/sam3u1c/uart.c **** 	/* Disable receiver and transmitter */
+ 200:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RXDIS | UART_CR_TXDIS;
+ 474              	 .loc 1 200 0
+ 475 0008 7B68     	 ldr r3,[r7,#4]
+ 476 000a A022     	 movs r2,#160
+ 477 000c 1A60     	 str r2,[r3]
+ 201:.././hal/sam3u1c/uart.c **** }
+ 478              	 .loc 1 201 0
+ 479 000e 00BF     	 nop
+ 480 0010 0C37     	 adds r7,r7,#12
+ 481              	.LCFI51:
+ 482              	 .cfi_def_cfa_offset 4
+ 483 0012 BD46     	 mov sp,r7
+ 484              	.LCFI52:
+ 485              	 .cfi_def_cfa_register 13
+ 486              	 
+ 487 0014 80BC     	 pop {r7}
+ 488              	.LCFI53:
+ 489              	 .cfi_restore 7
+ 490              	 .cfi_def_cfa_offset 0
+ 491 0016 7047     	 bx lr
+ 492              	 .cfi_endproc
+ 493              	.LFE75:
+ 495              	 .section .text.uart_reset,"ax",%progbits
+ 496              	 .align 1
+ 497              	 .global uart_reset
+ 498              	 .syntax unified
+ 499              	 .thumb
+ 500              	 .thumb_func
+ 501              	 .fpu softvfp
+ 503              	uart_reset:
+ 504              	.LFB76:
+ 202:.././hal/sam3u1c/uart.c **** 
+ 203:.././hal/sam3u1c/uart.c **** /**
+ 204:.././hal/sam3u1c/uart.c ****  * \brief Reset UART receiver and transmitter.
+ 205:.././hal/sam3u1c/uart.c ****  *
+ 206:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 207:.././hal/sam3u1c/uart.c ****  */
+ 208:.././hal/sam3u1c/uart.c **** void uart_reset(Uart *p_uart)
+ 209:.././hal/sam3u1c/uart.c **** {
+ 505              	 .loc 1 209 0
+ 506              	 .cfi_startproc
+ 507              	 
+ 508              	 
+ 509              	 
+ 510 0000 80B4     	 push {r7}
+ 511              	.LCFI54:
+ 512              	 .cfi_def_cfa_offset 4
+ 513              	 .cfi_offset 7,-4
+ 514 0002 83B0     	 sub sp,sp,#12
+ 515              	.LCFI55:
+ 516              	 .cfi_def_cfa_offset 16
+ 517 0004 00AF     	 add r7,sp,#0
+ 518              	.LCFI56:
+ 519              	 .cfi_def_cfa_register 7
+ 520 0006 7860     	 str r0,[r7,#4]
+ 210:.././hal/sam3u1c/uart.c **** 	/* Reset and disable receiver & transmitter */
+ 211:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RSTRX | UART_CR_RSTTX
+ 521              	 .loc 1 211 0
+ 522 0008 7B68     	 ldr r3,[r7,#4]
+ 523 000a AC22     	 movs r2,#172
+ 524 000c 1A60     	 str r2,[r3]
+ 212:.././hal/sam3u1c/uart.c **** 			| UART_CR_RXDIS | UART_CR_TXDIS;
+ 213:.././hal/sam3u1c/uart.c **** }
+ 525              	 .loc 1 213 0
+ 526 000e 00BF     	 nop
+ 527 0010 0C37     	 adds r7,r7,#12
+ 528              	.LCFI57:
+ 529              	 .cfi_def_cfa_offset 4
+ 530 0012 BD46     	 mov sp,r7
+ 531              	.LCFI58:
+ 532              	 .cfi_def_cfa_register 13
+ 533              	 
+ 534 0014 80BC     	 pop {r7}
+ 535              	.LCFI59:
+ 536              	 .cfi_restore 7
+ 537              	 .cfi_def_cfa_offset 0
+ 538 0016 7047     	 bx lr
+ 539              	 .cfi_endproc
+ 540              	.LFE76:
+ 542              	 .section .text.uart_enable_interrupt,"ax",%progbits
+ 543              	 .align 1
+ 544              	 .global uart_enable_interrupt
+ 545              	 .syntax unified
+ 546              	 .thumb
+ 547              	 .thumb_func
+ 548              	 .fpu softvfp
+ 550              	uart_enable_interrupt:
+ 551              	.LFB77:
+ 214:.././hal/sam3u1c/uart.c **** 
+ 215:.././hal/sam3u1c/uart.c **** /** \brief Enable UART interrupts.
+ 216:.././hal/sam3u1c/uart.c ****  *
+ 217:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 218:.././hal/sam3u1c/uart.c ****  *  \param ul_sources Interrupts to be enabled.
+ 219:.././hal/sam3u1c/uart.c ****  */
+ 220:.././hal/sam3u1c/uart.c **** void uart_enable_interrupt(Uart *p_uart, uint32_t ul_sources)
+ 221:.././hal/sam3u1c/uart.c **** {
+ 552              	 .loc 1 221 0
+ 553              	 .cfi_startproc
+ 554              	 
+ 555              	 
+ 556              	 
+ 557 0000 80B4     	 push {r7}
+ 558              	.LCFI60:
+ 559              	 .cfi_def_cfa_offset 4
+ 560              	 .cfi_offset 7,-4
+ 561 0002 83B0     	 sub sp,sp,#12
+ 562              	.LCFI61:
+ 563              	 .cfi_def_cfa_offset 16
+ 564 0004 00AF     	 add r7,sp,#0
+ 565              	.LCFI62:
+ 566              	 .cfi_def_cfa_register 7
+ 567 0006 7860     	 str r0,[r7,#4]
+ 568 0008 3960     	 str r1,[r7]
+ 222:.././hal/sam3u1c/uart.c **** 	p_uart->UART_IER = ul_sources;
+ 569              	 .loc 1 222 0
+ 570 000a 7B68     	 ldr r3,[r7,#4]
+ 571 000c 3A68     	 ldr r2,[r7]
+ 572 000e 9A60     	 str r2,[r3,#8]
+ 223:.././hal/sam3u1c/uart.c **** }
+ 573              	 .loc 1 223 0
+ 574 0010 00BF     	 nop
+ 575 0012 0C37     	 adds r7,r7,#12
+ 576              	.LCFI63:
+ 577              	 .cfi_def_cfa_offset 4
+ 578 0014 BD46     	 mov sp,r7
+ 579              	.LCFI64:
+ 580              	 .cfi_def_cfa_register 13
+ 581              	 
+ 582 0016 80BC     	 pop {r7}
+ 583              	.LCFI65:
+ 584              	 .cfi_restore 7
+ 585              	 .cfi_def_cfa_offset 0
+ 586 0018 7047     	 bx lr
+ 587              	 .cfi_endproc
+ 588              	.LFE77:
+ 590              	 .section .text.uart_disable_interrupt,"ax",%progbits
+ 591              	 .align 1
+ 592              	 .global uart_disable_interrupt
+ 593              	 .syntax unified
+ 594              	 .thumb
+ 595              	 .thumb_func
+ 596              	 .fpu softvfp
+ 598              	uart_disable_interrupt:
+ 599              	.LFB78:
+ 224:.././hal/sam3u1c/uart.c **** 
+ 225:.././hal/sam3u1c/uart.c **** /** \brief Disable UART interrupts.
+ 226:.././hal/sam3u1c/uart.c ****  *
+ 227:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 228:.././hal/sam3u1c/uart.c ****  *  \param ul_sources Interrupts to be disabled.
+ 229:.././hal/sam3u1c/uart.c ****  */
+ 230:.././hal/sam3u1c/uart.c **** void uart_disable_interrupt(Uart *p_uart, uint32_t ul_sources)
+ 231:.././hal/sam3u1c/uart.c **** {
+ 600              	 .loc 1 231 0
+ 601              	 .cfi_startproc
+ 602              	 
+ 603              	 
+ 604              	 
+ 605 0000 80B4     	 push {r7}
+ 606              	.LCFI66:
+ 607              	 .cfi_def_cfa_offset 4
+ 608              	 .cfi_offset 7,-4
+ 609 0002 83B0     	 sub sp,sp,#12
+ 610              	.LCFI67:
+ 611              	 .cfi_def_cfa_offset 16
+ 612 0004 00AF     	 add r7,sp,#0
+ 613              	.LCFI68:
+ 614              	 .cfi_def_cfa_register 7
+ 615 0006 7860     	 str r0,[r7,#4]
+ 616 0008 3960     	 str r1,[r7]
+ 232:.././hal/sam3u1c/uart.c **** 	p_uart->UART_IDR = ul_sources;
+ 617              	 .loc 1 232 0
+ 618 000a 7B68     	 ldr r3,[r7,#4]
+ 619 000c 3A68     	 ldr r2,[r7]
+ 620 000e DA60     	 str r2,[r3,#12]
+ 233:.././hal/sam3u1c/uart.c **** }
+ 621              	 .loc 1 233 0
+ 622 0010 00BF     	 nop
+ 623 0012 0C37     	 adds r7,r7,#12
+ 624              	.LCFI69:
+ 625              	 .cfi_def_cfa_offset 4
+ 626 0014 BD46     	 mov sp,r7
+ 627              	.LCFI70:
+ 628              	 .cfi_def_cfa_register 13
+ 629              	 
+ 630 0016 80BC     	 pop {r7}
+ 631              	.LCFI71:
+ 632              	 .cfi_restore 7
+ 633              	 .cfi_def_cfa_offset 0
+ 634 0018 7047     	 bx lr
+ 635              	 .cfi_endproc
+ 636              	.LFE78:
+ 638              	 .section .text.uart_get_interrupt_mask,"ax",%progbits
+ 639              	 .align 1
+ 640              	 .global uart_get_interrupt_mask
+ 641              	 .syntax unified
+ 642              	 .thumb
+ 643              	 .thumb_func
+ 644              	 .fpu softvfp
+ 646              	uart_get_interrupt_mask:
+ 647              	.LFB79:
+ 234:.././hal/sam3u1c/uart.c **** 
+ 235:.././hal/sam3u1c/uart.c **** /** \brief Read UART interrupt mask.
+ 236:.././hal/sam3u1c/uart.c ****  *
+ 237:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 238:.././hal/sam3u1c/uart.c ****  *
+ 239:.././hal/sam3u1c/uart.c ****  *  \return The interrupt mask value.
+ 240:.././hal/sam3u1c/uart.c ****  */
+ 241:.././hal/sam3u1c/uart.c **** uint32_t uart_get_interrupt_mask(Uart *p_uart)
+ 242:.././hal/sam3u1c/uart.c **** {
+ 648              	 .loc 1 242 0
+ 649              	 .cfi_startproc
+ 650              	 
+ 651              	 
+ 652              	 
+ 653 0000 80B4     	 push {r7}
+ 654              	.LCFI72:
+ 655              	 .cfi_def_cfa_offset 4
+ 656              	 .cfi_offset 7,-4
+ 657 0002 83B0     	 sub sp,sp,#12
+ 658              	.LCFI73:
+ 659              	 .cfi_def_cfa_offset 16
+ 660 0004 00AF     	 add r7,sp,#0
+ 661              	.LCFI74:
+ 662              	 .cfi_def_cfa_register 7
+ 663 0006 7860     	 str r0,[r7,#4]
+ 243:.././hal/sam3u1c/uart.c **** 	return p_uart->UART_IMR;
+ 664              	 .loc 1 243 0
+ 665 0008 7B68     	 ldr r3,[r7,#4]
+ 666 000a 1B69     	 ldr r3,[r3,#16]
+ 244:.././hal/sam3u1c/uart.c **** }
+ 667              	 .loc 1 244 0
+ 668 000c 1846     	 mov r0,r3
+ 669 000e 0C37     	 adds r7,r7,#12
+ 670              	.LCFI75:
+ 671              	 .cfi_def_cfa_offset 4
+ 672 0010 BD46     	 mov sp,r7
+ 673              	.LCFI76:
+ 674              	 .cfi_def_cfa_register 13
+ 675              	 
+ 676 0012 80BC     	 pop {r7}
+ 677              	.LCFI77:
+ 678              	 .cfi_restore 7
+ 679              	 .cfi_def_cfa_offset 0
+ 680 0014 7047     	 bx lr
+ 681              	 .cfi_endproc
+ 682              	.LFE79:
+ 684              	 .section .text.uart_get_status,"ax",%progbits
+ 685              	 .align 1
+ 686              	 .global uart_get_status
+ 687              	 .syntax unified
+ 688              	 .thumb
+ 689              	 .thumb_func
+ 690              	 .fpu softvfp
+ 692              	uart_get_status:
+ 693              	.LFB80:
+ 245:.././hal/sam3u1c/uart.c **** 
+ 246:.././hal/sam3u1c/uart.c **** /**
+ 247:.././hal/sam3u1c/uart.c ****  * \brief Get current status.
+ 248:.././hal/sam3u1c/uart.c ****  *
+ 249:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 250:.././hal/sam3u1c/uart.c ****  *
+ 251:.././hal/sam3u1c/uart.c ****  * \return The current UART status.
+ 252:.././hal/sam3u1c/uart.c ****  */
+ 253:.././hal/sam3u1c/uart.c **** uint32_t uart_get_status(Uart *p_uart)
+ 254:.././hal/sam3u1c/uart.c **** {
+ 694              	 .loc 1 254 0
+ 695              	 .cfi_startproc
+ 696              	 
+ 697              	 
+ 698              	 
+ 699 0000 80B4     	 push {r7}
+ 700              	.LCFI78:
+ 701              	 .cfi_def_cfa_offset 4
+ 702              	 .cfi_offset 7,-4
+ 703 0002 83B0     	 sub sp,sp,#12
+ 704              	.LCFI79:
+ 705              	 .cfi_def_cfa_offset 16
+ 706 0004 00AF     	 add r7,sp,#0
+ 707              	.LCFI80:
+ 708              	 .cfi_def_cfa_register 7
+ 709 0006 7860     	 str r0,[r7,#4]
+ 255:.././hal/sam3u1c/uart.c **** 	return p_uart->UART_SR;
+ 710              	 .loc 1 255 0
+ 711 0008 7B68     	 ldr r3,[r7,#4]
+ 712 000a 5B69     	 ldr r3,[r3,#20]
+ 256:.././hal/sam3u1c/uart.c **** }
+ 713              	 .loc 1 256 0
+ 714 000c 1846     	 mov r0,r3
+ 715 000e 0C37     	 adds r7,r7,#12
+ 716              	.LCFI81:
+ 717              	 .cfi_def_cfa_offset 4
+ 718 0010 BD46     	 mov sp,r7
+ 719              	.LCFI82:
+ 720              	 .cfi_def_cfa_register 13
+ 721              	 
+ 722 0012 80BC     	 pop {r7}
+ 723              	.LCFI83:
+ 724              	 .cfi_restore 7
+ 725              	 .cfi_def_cfa_offset 0
+ 726 0014 7047     	 bx lr
+ 727              	 .cfi_endproc
+ 728              	.LFE80:
+ 730              	 .section .text.uart_reset_status,"ax",%progbits
+ 731              	 .align 1
+ 732              	 .global uart_reset_status
+ 733              	 .syntax unified
+ 734              	 .thumb
+ 735              	 .thumb_func
+ 736              	 .fpu softvfp
+ 738              	uart_reset_status:
+ 739              	.LFB81:
+ 257:.././hal/sam3u1c/uart.c **** 
+ 258:.././hal/sam3u1c/uart.c **** /**
+ 259:.././hal/sam3u1c/uart.c ****  * \brief Reset status bits.
+ 260:.././hal/sam3u1c/uart.c ****  *
+ 261:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 262:.././hal/sam3u1c/uart.c ****  */
+ 263:.././hal/sam3u1c/uart.c **** void uart_reset_status(Uart *p_uart)
+ 264:.././hal/sam3u1c/uart.c **** {
+ 740              	 .loc 1 264 0
+ 741              	 .cfi_startproc
+ 742              	 
+ 743              	 
+ 744              	 
+ 745 0000 80B4     	 push {r7}
+ 746              	.LCFI84:
+ 747              	 .cfi_def_cfa_offset 4
+ 748              	 .cfi_offset 7,-4
+ 749 0002 83B0     	 sub sp,sp,#12
+ 750              	.LCFI85:
+ 751              	 .cfi_def_cfa_offset 16
+ 752 0004 00AF     	 add r7,sp,#0
+ 753              	.LCFI86:
+ 754              	 .cfi_def_cfa_register 7
+ 755 0006 7860     	 str r0,[r7,#4]
+ 265:.././hal/sam3u1c/uart.c **** 	p_uart->UART_CR = UART_CR_RSTSTA;
+ 756              	 .loc 1 265 0
+ 757 0008 7B68     	 ldr r3,[r7,#4]
+ 758 000a 4FF48072 	 mov r2,#256
+ 759 000e 1A60     	 str r2,[r3]
+ 266:.././hal/sam3u1c/uart.c **** }
+ 760              	 .loc 1 266 0
+ 761 0010 00BF     	 nop
+ 762 0012 0C37     	 adds r7,r7,#12
+ 763              	.LCFI87:
+ 764              	 .cfi_def_cfa_offset 4
+ 765 0014 BD46     	 mov sp,r7
+ 766              	.LCFI88:
+ 767              	 .cfi_def_cfa_register 13
+ 768              	 
+ 769 0016 80BC     	 pop {r7}
+ 770              	.LCFI89:
+ 771              	 .cfi_restore 7
+ 772              	 .cfi_def_cfa_offset 0
+ 773 0018 7047     	 bx lr
+ 774              	 .cfi_endproc
+ 775              	.LFE81:
+ 777              	 .section .text.uart_is_tx_ready,"ax",%progbits
+ 778              	 .align 1
+ 779              	 .global uart_is_tx_ready
+ 780              	 .syntax unified
+ 781              	 .thumb
+ 782              	 .thumb_func
+ 783              	 .fpu softvfp
+ 785              	uart_is_tx_ready:
+ 786              	.LFB82:
+ 267:.././hal/sam3u1c/uart.c **** 
+ 268:.././hal/sam3u1c/uart.c **** /**
+ 269:.././hal/sam3u1c/uart.c ****  * \brief Check if Transmit is Ready.
+ 270:.././hal/sam3u1c/uart.c ****  * Check if data has been loaded in UART_THR and is waiting to be loaded in the
+ 271:.././hal/sam3u1c/uart.c ****  * Transmit Shift Register (TSR).
+ 272:.././hal/sam3u1c/uart.c ****  *
+ 273:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 274:.././hal/sam3u1c/uart.c ****  *
+ 275:.././hal/sam3u1c/uart.c ****  * \retval 1 Data has been transmitted.
+ 276:.././hal/sam3u1c/uart.c ****  * \retval 0 Transmit is not ready, data pending.
+ 277:.././hal/sam3u1c/uart.c ****  */
+ 278:.././hal/sam3u1c/uart.c **** uint32_t uart_is_tx_ready(Uart *p_uart)
+ 279:.././hal/sam3u1c/uart.c **** {
+ 787              	 .loc 1 279 0
+ 788              	 .cfi_startproc
+ 789              	 
+ 790              	 
+ 791              	 
+ 792 0000 80B4     	 push {r7}
+ 793              	.LCFI90:
+ 794              	 .cfi_def_cfa_offset 4
+ 795              	 .cfi_offset 7,-4
+ 796 0002 83B0     	 sub sp,sp,#12
+ 797              	.LCFI91:
+ 798              	 .cfi_def_cfa_offset 16
+ 799 0004 00AF     	 add r7,sp,#0
+ 800              	.LCFI92:
+ 801              	 .cfi_def_cfa_register 7
+ 802 0006 7860     	 str r0,[r7,#4]
+ 280:.././hal/sam3u1c/uart.c **** 	return (p_uart->UART_SR & UART_SR_TXRDY) > 0;
+ 803              	 .loc 1 280 0
+ 804 0008 7B68     	 ldr r3,[r7,#4]
+ 805 000a 5B69     	 ldr r3,[r3,#20]
+ 806 000c 03F00203 	 and r3,r3,#2
+ 807 0010 002B     	 cmp r3,#0
+ 808 0012 14BF     	 ite ne
+ 809 0014 0123     	 movne r3,#1
+ 810 0016 0023     	 moveq r3,#0
+ 811 0018 DBB2     	 uxtb r3,r3
+ 281:.././hal/sam3u1c/uart.c **** }
+ 812              	 .loc 1 281 0
+ 813 001a 1846     	 mov r0,r3
+ 814 001c 0C37     	 adds r7,r7,#12
+ 815              	.LCFI93:
+ 816              	 .cfi_def_cfa_offset 4
+ 817 001e BD46     	 mov sp,r7
+ 818              	.LCFI94:
+ 819              	 .cfi_def_cfa_register 13
+ 820              	 
+ 821 0020 80BC     	 pop {r7}
+ 822              	.LCFI95:
+ 823              	 .cfi_restore 7
+ 824              	 .cfi_def_cfa_offset 0
+ 825 0022 7047     	 bx lr
+ 826              	 .cfi_endproc
+ 827              	.LFE82:
+ 829              	 .section .text.uart_is_tx_empty,"ax",%progbits
+ 830              	 .align 1
+ 831              	 .global uart_is_tx_empty
+ 832              	 .syntax unified
+ 833              	 .thumb
+ 834              	 .thumb_func
+ 835              	 .fpu softvfp
+ 837              	uart_is_tx_empty:
+ 838              	.LFB83:
+ 282:.././hal/sam3u1c/uart.c **** 
+ 283:.././hal/sam3u1c/uart.c **** /**
+ 284:.././hal/sam3u1c/uart.c ****  * \brief Check if Transmit Hold Register is empty.
+ 285:.././hal/sam3u1c/uart.c ****  * Check if the last data written in UART_THR has been loaded in TSR and the
+ 286:.././hal/sam3u1c/uart.c ****  * last data loaded in TSR has been transmitted.
+ 287:.././hal/sam3u1c/uart.c ****  *
+ 288:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 289:.././hal/sam3u1c/uart.c ****  *
+ 290:.././hal/sam3u1c/uart.c ****  * \retval 1 Transmitter is empty.
+ 291:.././hal/sam3u1c/uart.c ****  * \retval 0 Transmitter is not empty.
+ 292:.././hal/sam3u1c/uart.c ****  */
+ 293:.././hal/sam3u1c/uart.c **** uint32_t uart_is_tx_empty(Uart *p_uart)
+ 294:.././hal/sam3u1c/uart.c **** {
+ 839              	 .loc 1 294 0
+ 840              	 .cfi_startproc
+ 841              	 
+ 842              	 
+ 843              	 
+ 844 0000 80B4     	 push {r7}
+ 845              	.LCFI96:
+ 846              	 .cfi_def_cfa_offset 4
+ 847              	 .cfi_offset 7,-4
+ 848 0002 83B0     	 sub sp,sp,#12
+ 849              	.LCFI97:
+ 850              	 .cfi_def_cfa_offset 16
+ 851 0004 00AF     	 add r7,sp,#0
+ 852              	.LCFI98:
+ 853              	 .cfi_def_cfa_register 7
+ 854 0006 7860     	 str r0,[r7,#4]
+ 295:.././hal/sam3u1c/uart.c **** 	return (p_uart->UART_SR & UART_SR_TXEMPTY) > 0;
+ 855              	 .loc 1 295 0
+ 856 0008 7B68     	 ldr r3,[r7,#4]
+ 857 000a 5B69     	 ldr r3,[r3,#20]
+ 858 000c 03F40073 	 and r3,r3,#512
+ 859 0010 002B     	 cmp r3,#0
+ 860 0012 14BF     	 ite ne
+ 861 0014 0123     	 movne r3,#1
+ 862 0016 0023     	 moveq r3,#0
+ 863 0018 DBB2     	 uxtb r3,r3
+ 296:.././hal/sam3u1c/uart.c **** }
+ 864              	 .loc 1 296 0
+ 865 001a 1846     	 mov r0,r3
+ 866 001c 0C37     	 adds r7,r7,#12
+ 867              	.LCFI99:
+ 868              	 .cfi_def_cfa_offset 4
+ 869 001e BD46     	 mov sp,r7
+ 870              	.LCFI100:
+ 871              	 .cfi_def_cfa_register 13
+ 872              	 
+ 873 0020 80BC     	 pop {r7}
+ 874              	.LCFI101:
+ 875              	 .cfi_restore 7
+ 876              	 .cfi_def_cfa_offset 0
+ 877 0022 7047     	 bx lr
+ 878              	 .cfi_endproc
+ 879              	.LFE83:
+ 881              	 .section .text.uart_is_rx_ready,"ax",%progbits
+ 882              	 .align 1
+ 883              	 .global uart_is_rx_ready
+ 884              	 .syntax unified
+ 885              	 .thumb
+ 886              	 .thumb_func
+ 887              	 .fpu softvfp
+ 889              	uart_is_rx_ready:
+ 890              	.LFB84:
+ 297:.././hal/sam3u1c/uart.c **** 
+ 298:.././hal/sam3u1c/uart.c **** /**
+ 299:.././hal/sam3u1c/uart.c ****  * \brief Check if Received data is ready.
+ 300:.././hal/sam3u1c/uart.c ****  * Check if data has been received and loaded in UART_RHR.
+ 301:.././hal/sam3u1c/uart.c ****  *
+ 302:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 303:.././hal/sam3u1c/uart.c ****  *
+ 304:.././hal/sam3u1c/uart.c ****  * \retval 1 One data has been received.
+ 305:.././hal/sam3u1c/uart.c ****  * \retval 0 No data has been received.
+ 306:.././hal/sam3u1c/uart.c ****  */
+ 307:.././hal/sam3u1c/uart.c **** uint32_t uart_is_rx_ready(Uart *p_uart)
+ 308:.././hal/sam3u1c/uart.c **** {
+ 891              	 .loc 1 308 0
+ 892              	 .cfi_startproc
+ 893              	 
+ 894              	 
+ 895              	 
+ 896 0000 80B4     	 push {r7}
+ 897              	.LCFI102:
+ 898              	 .cfi_def_cfa_offset 4
+ 899              	 .cfi_offset 7,-4
+ 900 0002 83B0     	 sub sp,sp,#12
+ 901              	.LCFI103:
+ 902              	 .cfi_def_cfa_offset 16
+ 903 0004 00AF     	 add r7,sp,#0
+ 904              	.LCFI104:
+ 905              	 .cfi_def_cfa_register 7
+ 906 0006 7860     	 str r0,[r7,#4]
+ 309:.././hal/sam3u1c/uart.c **** 	return (p_uart->UART_SR & UART_SR_RXRDY) > 0;
+ 907              	 .loc 1 309 0
+ 908 0008 7B68     	 ldr r3,[r7,#4]
+ 909 000a 5B69     	 ldr r3,[r3,#20]
+ 910 000c 03F00103 	 and r3,r3,#1
+ 911 0010 002B     	 cmp r3,#0
+ 912 0012 14BF     	 ite ne
+ 913 0014 0123     	 movne r3,#1
+ 914 0016 0023     	 moveq r3,#0
+ 915 0018 DBB2     	 uxtb r3,r3
+ 310:.././hal/sam3u1c/uart.c **** }
+ 916              	 .loc 1 310 0
+ 917 001a 1846     	 mov r0,r3
+ 918 001c 0C37     	 adds r7,r7,#12
+ 919              	.LCFI105:
+ 920              	 .cfi_def_cfa_offset 4
+ 921 001e BD46     	 mov sp,r7
+ 922              	.LCFI106:
+ 923              	 .cfi_def_cfa_register 13
+ 924              	 
+ 925 0020 80BC     	 pop {r7}
+ 926              	.LCFI107:
+ 927              	 .cfi_restore 7
+ 928              	 .cfi_def_cfa_offset 0
+ 929 0022 7047     	 bx lr
+ 930              	 .cfi_endproc
+ 931              	.LFE84:
+ 933              	 .section .text.uart_is_rx_buf_end,"ax",%progbits
+ 934              	 .align 1
+ 935              	 .global uart_is_rx_buf_end
+ 936              	 .syntax unified
+ 937              	 .thumb
+ 938              	 .thumb_func
+ 939              	 .fpu softvfp
+ 941              	uart_is_rx_buf_end:
+ 942              	.LFB85:
+ 311:.././hal/sam3u1c/uart.c **** 
+ 312:.././hal/sam3u1c/uart.c **** /**
+ 313:.././hal/sam3u1c/uart.c ****  * \brief Check if one receive buffer is filled.
+ 314:.././hal/sam3u1c/uart.c ****  *
+ 315:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 316:.././hal/sam3u1c/uart.c ****  *
+ 317:.././hal/sam3u1c/uart.c ****  * \retval 1 Receive is completed.
+ 318:.././hal/sam3u1c/uart.c ****  * \retval 0 Receive is still pending.
+ 319:.././hal/sam3u1c/uart.c ****  */
+ 320:.././hal/sam3u1c/uart.c **** uint32_t uart_is_rx_buf_end(Uart *p_uart)
+ 321:.././hal/sam3u1c/uart.c **** {
+ 943              	 .loc 1 321 0
+ 944              	 .cfi_startproc
+ 945              	 
+ 946              	 
+ 947              	 
+ 948 0000 80B4     	 push {r7}
+ 949              	.LCFI108:
+ 950              	 .cfi_def_cfa_offset 4
+ 951              	 .cfi_offset 7,-4
+ 952 0002 83B0     	 sub sp,sp,#12
+ 953              	.LCFI109:
+ 954              	 .cfi_def_cfa_offset 16
+ 955 0004 00AF     	 add r7,sp,#0
+ 956              	.LCFI110:
+ 957              	 .cfi_def_cfa_register 7
+ 958 0006 7860     	 str r0,[r7,#4]
+ 322:.././hal/sam3u1c/uart.c **** 	return (p_uart->UART_SR & UART_SR_ENDRX) > 0;
+ 959              	 .loc 1 322 0
+ 960 0008 7B68     	 ldr r3,[r7,#4]
+ 961 000a 5B69     	 ldr r3,[r3,#20]
+ 962 000c 03F00803 	 and r3,r3,#8
+ 963 0010 002B     	 cmp r3,#0
+ 964 0012 14BF     	 ite ne
+ 965 0014 0123     	 movne r3,#1
+ 966 0016 0023     	 moveq r3,#0
+ 967 0018 DBB2     	 uxtb r3,r3
+ 323:.././hal/sam3u1c/uart.c **** }
+ 968              	 .loc 1 323 0
+ 969 001a 1846     	 mov r0,r3
+ 970 001c 0C37     	 adds r7,r7,#12
+ 971              	.LCFI111:
+ 972              	 .cfi_def_cfa_offset 4
+ 973 001e BD46     	 mov sp,r7
+ 974              	.LCFI112:
+ 975              	 .cfi_def_cfa_register 13
+ 976              	 
+ 977 0020 80BC     	 pop {r7}
+ 978              	.LCFI113:
+ 979              	 .cfi_restore 7
+ 980              	 .cfi_def_cfa_offset 0
+ 981 0022 7047     	 bx lr
+ 982              	 .cfi_endproc
+ 983              	.LFE85:
+ 985              	 .section .text.uart_is_tx_buf_end,"ax",%progbits
+ 986              	 .align 1
+ 987              	 .global uart_is_tx_buf_end
+ 988              	 .syntax unified
+ 989              	 .thumb
+ 990              	 .thumb_func
+ 991              	 .fpu softvfp
+ 993              	uart_is_tx_buf_end:
+ 994              	.LFB86:
+ 324:.././hal/sam3u1c/uart.c **** 
+ 325:.././hal/sam3u1c/uart.c **** /**
+ 326:.././hal/sam3u1c/uart.c ****  * \brief Check if one transmit buffer is sent out.
+ 327:.././hal/sam3u1c/uart.c ****  *
+ 328:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 329:.././hal/sam3u1c/uart.c ****  *
+ 330:.././hal/sam3u1c/uart.c ****  * \retval 1 Transmit is completed.
+ 331:.././hal/sam3u1c/uart.c ****  * \retval 0 Transmit is still pending.
+ 332:.././hal/sam3u1c/uart.c ****  */
+ 333:.././hal/sam3u1c/uart.c **** uint32_t uart_is_tx_buf_end(Uart *p_uart)
+ 334:.././hal/sam3u1c/uart.c **** {
+ 995              	 .loc 1 334 0
+ 996              	 .cfi_startproc
+ 997              	 
+ 998              	 
+ 999              	 
+ 1000 0000 80B4     	 push {r7}
+ 1001              	.LCFI114:
+ 1002              	 .cfi_def_cfa_offset 4
+ 1003              	 .cfi_offset 7,-4
+ 1004 0002 83B0     	 sub sp,sp,#12
+ 1005              	.LCFI115:
+ 1006              	 .cfi_def_cfa_offset 16
+ 1007 0004 00AF     	 add r7,sp,#0
+ 1008              	.LCFI116:
+ 1009              	 .cfi_def_cfa_register 7
+ 1010 0006 7860     	 str r0,[r7,#4]
+ 335:.././hal/sam3u1c/uart.c **** 	return (p_uart->UART_SR & UART_SR_ENDTX) > 0;
+ 1011              	 .loc 1 335 0
+ 1012 0008 7B68     	 ldr r3,[r7,#4]
+ 1013 000a 5B69     	 ldr r3,[r3,#20]
+ 1014 000c 03F01003 	 and r3,r3,#16
+ 1015 0010 002B     	 cmp r3,#0
+ 1016 0012 14BF     	 ite ne
+ 1017 0014 0123     	 movne r3,#1
+ 1018 0016 0023     	 moveq r3,#0
+ 1019 0018 DBB2     	 uxtb r3,r3
+ 336:.././hal/sam3u1c/uart.c **** }
+ 1020              	 .loc 1 336 0
+ 1021 001a 1846     	 mov r0,r3
+ 1022 001c 0C37     	 adds r7,r7,#12
+ 1023              	.LCFI117:
+ 1024              	 .cfi_def_cfa_offset 4
+ 1025 001e BD46     	 mov sp,r7
+ 1026              	.LCFI118:
+ 1027              	 .cfi_def_cfa_register 13
+ 1028              	 
+ 1029 0020 80BC     	 pop {r7}
+ 1030              	.LCFI119:
+ 1031              	 .cfi_restore 7
+ 1032              	 .cfi_def_cfa_offset 0
+ 1033 0022 7047     	 bx lr
+ 1034              	 .cfi_endproc
+ 1035              	.LFE86:
+ 1037              	 .section .text.uart_is_rx_buf_full,"ax",%progbits
+ 1038              	 .align 1
+ 1039              	 .global uart_is_rx_buf_full
+ 1040              	 .syntax unified
+ 1041              	 .thumb
+ 1042              	 .thumb_func
+ 1043              	 .fpu softvfp
+ 1045              	uart_is_rx_buf_full:
+ 1046              	.LFB87:
+ 337:.././hal/sam3u1c/uart.c **** 
+ 338:.././hal/sam3u1c/uart.c **** /**
+ 339:.././hal/sam3u1c/uart.c ****  * \brief Check if both receive buffers are full.
+ 340:.././hal/sam3u1c/uart.c ****  *
+ 341:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 342:.././hal/sam3u1c/uart.c ****  *
+ 343:.././hal/sam3u1c/uart.c ****  * \retval 1 Receive buffers are full.
+ 344:.././hal/sam3u1c/uart.c ****  * \retval 0 Receive buffers are not full.
+ 345:.././hal/sam3u1c/uart.c ****  */
+ 346:.././hal/sam3u1c/uart.c **** uint32_t uart_is_rx_buf_full(Uart *p_uart)
+ 347:.././hal/sam3u1c/uart.c **** {
+ 1047              	 .loc 1 347 0
+ 1048              	 .cfi_startproc
+ 1049              	 
+ 1050              	 
+ 1051              	 
+ 1052 0000 80B4     	 push {r7}
+ 1053              	.LCFI120:
+ 1054              	 .cfi_def_cfa_offset 4
+ 1055              	 .cfi_offset 7,-4
+ 1056 0002 83B0     	 sub sp,sp,#12
+ 1057              	.LCFI121:
+ 1058              	 .cfi_def_cfa_offset 16
+ 1059 0004 00AF     	 add r7,sp,#0
+ 1060              	.LCFI122:
+ 1061              	 .cfi_def_cfa_register 7
+ 1062 0006 7860     	 str r0,[r7,#4]
+ 348:.././hal/sam3u1c/uart.c **** 	return (p_uart->UART_SR & UART_SR_RXBUFF) > 0;
+ 1063              	 .loc 1 348 0
+ 1064 0008 7B68     	 ldr r3,[r7,#4]
+ 1065 000a 5B69     	 ldr r3,[r3,#20]
+ 1066 000c 03F48053 	 and r3,r3,#4096
+ 1067 0010 002B     	 cmp r3,#0
+ 1068 0012 14BF     	 ite ne
+ 1069 0014 0123     	 movne r3,#1
+ 1070 0016 0023     	 moveq r3,#0
+ 1071 0018 DBB2     	 uxtb r3,r3
+ 349:.././hal/sam3u1c/uart.c **** }
+ 1072              	 .loc 1 349 0
+ 1073 001a 1846     	 mov r0,r3
+ 1074 001c 0C37     	 adds r7,r7,#12
+ 1075              	.LCFI123:
+ 1076              	 .cfi_def_cfa_offset 4
+ 1077 001e BD46     	 mov sp,r7
+ 1078              	.LCFI124:
+ 1079              	 .cfi_def_cfa_register 13
+ 1080              	 
+ 1081 0020 80BC     	 pop {r7}
+ 1082              	.LCFI125:
+ 1083              	 .cfi_restore 7
+ 1084              	 .cfi_def_cfa_offset 0
+ 1085 0022 7047     	 bx lr
+ 1086              	 .cfi_endproc
+ 1087              	.LFE87:
+ 1089              	 .section .text.uart_is_tx_buf_empty,"ax",%progbits
+ 1090              	 .align 1
+ 1091              	 .global uart_is_tx_buf_empty
+ 1092              	 .syntax unified
+ 1093              	 .thumb
+ 1094              	 .thumb_func
+ 1095              	 .fpu softvfp
+ 1097              	uart_is_tx_buf_empty:
+ 1098              	.LFB88:
+ 350:.././hal/sam3u1c/uart.c **** 
+ 351:.././hal/sam3u1c/uart.c **** /**
+ 352:.././hal/sam3u1c/uart.c ****  * \brief Check if both transmit buffers are sent out.
+ 353:.././hal/sam3u1c/uart.c ****  *
+ 354:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 355:.././hal/sam3u1c/uart.c ****  *
+ 356:.././hal/sam3u1c/uart.c ****  * \retval 1 Transmit buffer is empty.
+ 357:.././hal/sam3u1c/uart.c ****  * \retval 0 Transmit buffer is not empty.
+ 358:.././hal/sam3u1c/uart.c ****  */
+ 359:.././hal/sam3u1c/uart.c **** uint32_t uart_is_tx_buf_empty(Uart *p_uart)
+ 360:.././hal/sam3u1c/uart.c **** {
+ 1099              	 .loc 1 360 0
+ 1100              	 .cfi_startproc
+ 1101              	 
+ 1102              	 
+ 1103              	 
+ 1104 0000 80B4     	 push {r7}
+ 1105              	.LCFI126:
+ 1106              	 .cfi_def_cfa_offset 4
+ 1107              	 .cfi_offset 7,-4
+ 1108 0002 83B0     	 sub sp,sp,#12
+ 1109              	.LCFI127:
+ 1110              	 .cfi_def_cfa_offset 16
+ 1111 0004 00AF     	 add r7,sp,#0
+ 1112              	.LCFI128:
+ 1113              	 .cfi_def_cfa_register 7
+ 1114 0006 7860     	 str r0,[r7,#4]
+ 361:.././hal/sam3u1c/uart.c **** 	return (p_uart->UART_SR & UART_SR_TXEMPTY) > 0;
+ 1115              	 .loc 1 361 0
+ 1116 0008 7B68     	 ldr r3,[r7,#4]
+ 1117 000a 5B69     	 ldr r3,[r3,#20]
+ 1118 000c 03F40073 	 and r3,r3,#512
+ 1119 0010 002B     	 cmp r3,#0
+ 1120 0012 14BF     	 ite ne
+ 1121 0014 0123     	 movne r3,#1
+ 1122 0016 0023     	 moveq r3,#0
+ 1123 0018 DBB2     	 uxtb r3,r3
+ 362:.././hal/sam3u1c/uart.c **** }
+ 1124              	 .loc 1 362 0
+ 1125 001a 1846     	 mov r0,r3
+ 1126 001c 0C37     	 adds r7,r7,#12
+ 1127              	.LCFI129:
+ 1128              	 .cfi_def_cfa_offset 4
+ 1129 001e BD46     	 mov sp,r7
+ 1130              	.LCFI130:
+ 1131              	 .cfi_def_cfa_register 13
+ 1132              	 
+ 1133 0020 80BC     	 pop {r7}
+ 1134              	.LCFI131:
+ 1135              	 .cfi_restore 7
+ 1136              	 .cfi_def_cfa_offset 0
+ 1137 0022 7047     	 bx lr
+ 1138              	 .cfi_endproc
+ 1139              	.LFE88:
+ 1141              	 .section .text.uart_set_clock_divisor,"ax",%progbits
+ 1142              	 .align 1
+ 1143              	 .global uart_set_clock_divisor
+ 1144              	 .syntax unified
+ 1145              	 .thumb
+ 1146              	 .thumb_func
+ 1147              	 .fpu softvfp
+ 1149              	uart_set_clock_divisor:
+ 1150              	.LFB89:
+ 363:.././hal/sam3u1c/uart.c **** 
+ 364:.././hal/sam3u1c/uart.c **** /**
+ 365:.././hal/sam3u1c/uart.c ****  * \brief Set UART clock divisor value
+ 366:.././hal/sam3u1c/uart.c ****  *
+ 367:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 368:.././hal/sam3u1c/uart.c ****  * \param us_divisor Value to be set.
+ 369:.././hal/sam3u1c/uart.c ****  *
+ 370:.././hal/sam3u1c/uart.c ****  */
+ 371:.././hal/sam3u1c/uart.c **** void uart_set_clock_divisor(Uart *p_uart, uint16_t us_divisor)
+ 372:.././hal/sam3u1c/uart.c **** {
+ 1151              	 .loc 1 372 0
+ 1152              	 .cfi_startproc
+ 1153              	 
+ 1154              	 
+ 1155              	 
+ 1156 0000 80B4     	 push {r7}
+ 1157              	.LCFI132:
+ 1158              	 .cfi_def_cfa_offset 4
+ 1159              	 .cfi_offset 7,-4
+ 1160 0002 83B0     	 sub sp,sp,#12
+ 1161              	.LCFI133:
+ 1162              	 .cfi_def_cfa_offset 16
+ 1163 0004 00AF     	 add r7,sp,#0
+ 1164              	.LCFI134:
+ 1165              	 .cfi_def_cfa_register 7
+ 1166 0006 7860     	 str r0,[r7,#4]
+ 1167 0008 0B46     	 mov r3,r1
+ 1168 000a 7B80     	 strh r3,[r7,#2]
+ 373:.././hal/sam3u1c/uart.c **** 	p_uart->UART_BRGR = us_divisor;
+ 1169              	 .loc 1 373 0
+ 1170 000c 7A88     	 ldrh r2,[r7,#2]
+ 1171 000e 7B68     	 ldr r3,[r7,#4]
+ 1172 0010 1A62     	 str r2,[r3,#32]
+ 374:.././hal/sam3u1c/uart.c **** }
+ 1173              	 .loc 1 374 0
+ 1174 0012 00BF     	 nop
+ 1175 0014 0C37     	 adds r7,r7,#12
+ 1176              	.LCFI135:
+ 1177              	 .cfi_def_cfa_offset 4
+ 1178 0016 BD46     	 mov sp,r7
+ 1179              	.LCFI136:
+ 1180              	 .cfi_def_cfa_register 13
+ 1181              	 
+ 1182 0018 80BC     	 pop {r7}
+ 1183              	.LCFI137:
+ 1184              	 .cfi_restore 7
+ 1185              	 .cfi_def_cfa_offset 0
+ 1186 001a 7047     	 bx lr
+ 1187              	 .cfi_endproc
+ 1188              	.LFE89:
+ 1190              	 .section .text.uart_write,"ax",%progbits
+ 1191              	 .align 1
+ 1192              	 .global uart_write
+ 1193              	 .syntax unified
+ 1194              	 .thumb
+ 1195              	 .thumb_func
+ 1196              	 .fpu softvfp
+ 1198              	uart_write:
+ 1199              	.LFB90:
+ 375:.././hal/sam3u1c/uart.c **** 
+ 376:.././hal/sam3u1c/uart.c **** /**
+ 377:.././hal/sam3u1c/uart.c ****  * \brief Write to UART Transmit Holding Register
+ 378:.././hal/sam3u1c/uart.c ****  * Before writing user should check if tx is ready (or empty).
+ 379:.././hal/sam3u1c/uart.c ****  *
+ 380:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 381:.././hal/sam3u1c/uart.c ****  * \param data Data to be sent.
+ 382:.././hal/sam3u1c/uart.c ****  *
+ 383:.././hal/sam3u1c/uart.c ****  * \retval 0 Success.
+ 384:.././hal/sam3u1c/uart.c ****  * \retval 1 I/O Failure, UART is not ready.
+ 385:.././hal/sam3u1c/uart.c ****  */
+ 386:.././hal/sam3u1c/uart.c **** uint32_t uart_write(Uart *p_uart, const uint8_t uc_data)
+ 387:.././hal/sam3u1c/uart.c **** {
+ 1200              	 .loc 1 387 0
+ 1201              	 .cfi_startproc
+ 1202              	 
+ 1203              	 
+ 1204              	 
+ 1205 0000 80B4     	 push {r7}
+ 1206              	.LCFI138:
+ 1207              	 .cfi_def_cfa_offset 4
+ 1208              	 .cfi_offset 7,-4
+ 1209 0002 83B0     	 sub sp,sp,#12
+ 1210              	.LCFI139:
+ 1211              	 .cfi_def_cfa_offset 16
+ 1212 0004 00AF     	 add r7,sp,#0
+ 1213              	.LCFI140:
+ 1214              	 .cfi_def_cfa_register 7
+ 1215 0006 7860     	 str r0,[r7,#4]
+ 1216 0008 0B46     	 mov r3,r1
+ 1217 000a FB70     	 strb r3,[r7,#3]
+ 388:.././hal/sam3u1c/uart.c **** 	/* Check if the transmitter is ready */
+ 389:.././hal/sam3u1c/uart.c **** 	if (!(p_uart->UART_SR & UART_SR_TXRDY))
+ 1218              	 .loc 1 389 0
+ 1219 000c 7B68     	 ldr r3,[r7,#4]
+ 1220 000e 5B69     	 ldr r3,[r3,#20]
+ 1221 0010 03F00203 	 and r3,r3,#2
+ 1222 0014 002B     	 cmp r3,#0
+ 1223 0016 01D1     	 bne .L37
+ 390:.././hal/sam3u1c/uart.c **** 		return 1;
+ 1224              	 .loc 1 390 0
+ 1225 0018 0123     	 movs r3,#1
+ 1226 001a 03E0     	 b .L38
+ 1227              	.L37:
+ 391:.././hal/sam3u1c/uart.c **** 
+ 392:.././hal/sam3u1c/uart.c **** 	/* Send character */
+ 393:.././hal/sam3u1c/uart.c **** 	p_uart->UART_THR = uc_data;
+ 1228              	 .loc 1 393 0
+ 1229 001c FA78     	 ldrb r2,[r7,#3]
+ 1230 001e 7B68     	 ldr r3,[r7,#4]
+ 1231 0020 DA61     	 str r2,[r3,#28]
+ 394:.././hal/sam3u1c/uart.c **** 	return 0;
+ 1232              	 .loc 1 394 0
+ 1233 0022 0023     	 movs r3,#0
+ 1234              	.L38:
+ 395:.././hal/sam3u1c/uart.c **** }
+ 1235              	 .loc 1 395 0
+ 1236 0024 1846     	 mov r0,r3
+ 1237 0026 0C37     	 adds r7,r7,#12
+ 1238              	.LCFI141:
+ 1239              	 .cfi_def_cfa_offset 4
+ 1240 0028 BD46     	 mov sp,r7
+ 1241              	.LCFI142:
+ 1242              	 .cfi_def_cfa_register 13
+ 1243              	 
+ 1244 002a 80BC     	 pop {r7}
+ 1245              	.LCFI143:
+ 1246              	 .cfi_restore 7
+ 1247              	 .cfi_def_cfa_offset 0
+ 1248 002c 7047     	 bx lr
+ 1249              	 .cfi_endproc
+ 1250              	.LFE90:
+ 1252              	 .section .text.uart_read,"ax",%progbits
+ 1253              	 .align 1
+ 1254              	 .global uart_read
+ 1255              	 .syntax unified
+ 1256              	 .thumb
+ 1257              	 .thumb_func
+ 1258              	 .fpu softvfp
+ 1260              	uart_read:
+ 1261              	.LFB91:
+ 396:.././hal/sam3u1c/uart.c **** 
+ 397:.././hal/sam3u1c/uart.c **** /**
+ 398:.././hal/sam3u1c/uart.c ****  * \brief Read from UART Receive Holding Register.
+ 399:.././hal/sam3u1c/uart.c ****  * Before reading user should check if rx is ready.
+ 400:.././hal/sam3u1c/uart.c ****  *
+ 401:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 402:.././hal/sam3u1c/uart.c ****  *
+ 403:.././hal/sam3u1c/uart.c ****  * \retval 0 Success.
+ 404:.././hal/sam3u1c/uart.c ****  * \retval 1 I/O Failure, UART is not ready.
+ 405:.././hal/sam3u1c/uart.c ****  */
+ 406:.././hal/sam3u1c/uart.c **** uint32_t uart_read(Uart *p_uart, uint8_t *puc_data)
+ 407:.././hal/sam3u1c/uart.c **** {
+ 1262              	 .loc 1 407 0
+ 1263              	 .cfi_startproc
+ 1264              	 
+ 1265              	 
+ 1266              	 
+ 1267 0000 80B4     	 push {r7}
+ 1268              	.LCFI144:
+ 1269              	 .cfi_def_cfa_offset 4
+ 1270              	 .cfi_offset 7,-4
+ 1271 0002 83B0     	 sub sp,sp,#12
+ 1272              	.LCFI145:
+ 1273              	 .cfi_def_cfa_offset 16
+ 1274 0004 00AF     	 add r7,sp,#0
+ 1275              	.LCFI146:
+ 1276              	 .cfi_def_cfa_register 7
+ 1277 0006 7860     	 str r0,[r7,#4]
+ 1278 0008 3960     	 str r1,[r7]
+ 408:.././hal/sam3u1c/uart.c **** 	/* Check if the receiver is ready */
+ 409:.././hal/sam3u1c/uart.c **** 	if ((p_uart->UART_SR & UART_SR_RXRDY) == 0)
+ 1279              	 .loc 1 409 0
+ 1280 000a 7B68     	 ldr r3,[r7,#4]
+ 1281 000c 5B69     	 ldr r3,[r3,#20]
+ 1282 000e 03F00103 	 and r3,r3,#1
+ 1283 0012 002B     	 cmp r3,#0
+ 1284 0014 01D1     	 bne .L40
+ 410:.././hal/sam3u1c/uart.c **** 		return 1;
+ 1285              	 .loc 1 410 0
+ 1286 0016 0123     	 movs r3,#1
+ 1287 0018 05E0     	 b .L41
+ 1288              	.L40:
+ 411:.././hal/sam3u1c/uart.c **** 
+ 412:.././hal/sam3u1c/uart.c **** 	/* Read character */
+ 413:.././hal/sam3u1c/uart.c **** 	*puc_data = (uint8_t) p_uart->UART_RHR;
+ 1289              	 .loc 1 413 0
+ 1290 001a 7B68     	 ldr r3,[r7,#4]
+ 1291 001c 9B69     	 ldr r3,[r3,#24]
+ 1292 001e DAB2     	 uxtb r2,r3
+ 1293 0020 3B68     	 ldr r3,[r7]
+ 1294 0022 1A70     	 strb r2,[r3]
+ 414:.././hal/sam3u1c/uart.c **** 	return 0;
+ 1295              	 .loc 1 414 0
+ 1296 0024 0023     	 movs r3,#0
+ 1297              	.L41:
+ 415:.././hal/sam3u1c/uart.c **** }
+ 1298              	 .loc 1 415 0
+ 1299 0026 1846     	 mov r0,r3
+ 1300 0028 0C37     	 adds r7,r7,#12
+ 1301              	.LCFI147:
+ 1302              	 .cfi_def_cfa_offset 4
+ 1303 002a BD46     	 mov sp,r7
+ 1304              	.LCFI148:
+ 1305              	 .cfi_def_cfa_register 13
+ 1306              	 
+ 1307 002c 80BC     	 pop {r7}
+ 1308              	.LCFI149:
+ 1309              	 .cfi_restore 7
+ 1310              	 .cfi_def_cfa_offset 0
+ 1311 002e 7047     	 bx lr
+ 1312              	 .cfi_endproc
+ 1313              	.LFE91:
+ 1315              	 .section .text.uart_get_pdc_base,"ax",%progbits
+ 1316              	 .align 1
+ 1317              	 .global uart_get_pdc_base
+ 1318              	 .syntax unified
+ 1319              	 .thumb
+ 1320              	 .thumb_func
+ 1321              	 .fpu softvfp
+ 1323              	uart_get_pdc_base:
+ 1324              	.LFB92:
+ 416:.././hal/sam3u1c/uart.c **** 
+ 417:.././hal/sam3u1c/uart.c **** /**
+ 418:.././hal/sam3u1c/uart.c ****  * \brief Get UART PDC base address.
+ 419:.././hal/sam3u1c/uart.c ****  *
+ 420:.././hal/sam3u1c/uart.c ****  * \param p_uart Pointer to a UART instance.
+ 421:.././hal/sam3u1c/uart.c ****  *
+ 422:.././hal/sam3u1c/uart.c ****  * \return UART PDC registers base for PDC driver to access.
+ 423:.././hal/sam3u1c/uart.c ****  */
+ 424:.././hal/sam3u1c/uart.c **** Pdc *uart_get_pdc_base(Uart *p_uart)
+ 425:.././hal/sam3u1c/uart.c **** {
+ 1325              	 .loc 1 425 0
+ 1326              	 .cfi_startproc
+ 1327              	 
+ 1328              	 
+ 1329              	 
+ 1330 0000 80B4     	 push {r7}
+ 1331              	.LCFI150:
+ 1332              	 .cfi_def_cfa_offset 4
+ 1333              	 .cfi_offset 7,-4
+ 1334 0002 85B0     	 sub sp,sp,#20
+ 1335              	.LCFI151:
+ 1336              	 .cfi_def_cfa_offset 24
+ 1337 0004 00AF     	 add r7,sp,#0
+ 1338              	.LCFI152:
+ 1339              	 .cfi_def_cfa_register 7
+ 1340 0006 7860     	 str r0,[r7,#4]
+ 426:.././hal/sam3u1c/uart.c **** 	Pdc *p_pdc_base;
+ 427:.././hal/sam3u1c/uart.c **** 
+ 428:.././hal/sam3u1c/uart.c **** #if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+ 429:.././hal/sam3u1c/uart.c **** 	if (p_uart == UART0)
+ 430:.././hal/sam3u1c/uart.c **** 		p_pdc_base = PDC_UART0;
+ 431:.././hal/sam3u1c/uart.c **** #elif (SAM3XA || SAM3U)
+ 432:.././hal/sam3u1c/uart.c **** 	if (p_uart == UART)
+ 1341              	 .loc 1 432 0
+ 1342 0008 7B68     	 ldr r3,[r7,#4]
+ 1343 000a 054A     	 ldr r2,.L45
+ 1344 000c 9342     	 cmp r3,r2
+ 1345 000e 01D1     	 bne .L43
+ 433:.././hal/sam3u1c/uart.c **** 		p_pdc_base = PDC_UART;
+ 1346              	 .loc 1 433 0
+ 1347 0010 044B     	 ldr r3,.L45+4
+ 1348 0012 FB60     	 str r3,[r7,#12]
+ 1349              	.L43:
+ 434:.././hal/sam3u1c/uart.c **** #else
+ 435:.././hal/sam3u1c/uart.c **** #error "Unsupported device"
+ 436:.././hal/sam3u1c/uart.c **** #endif
+ 437:.././hal/sam3u1c/uart.c **** 
+ 438:.././hal/sam3u1c/uart.c **** #if (SAM3S || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+ 439:.././hal/sam3u1c/uart.c **** 	if (p_uart == UART1)
+ 440:.././hal/sam3u1c/uart.c **** 		p_pdc_base = PDC_UART1;
+ 441:.././hal/sam3u1c/uart.c **** #endif
+ 442:.././hal/sam3u1c/uart.c **** 
+ 443:.././hal/sam3u1c/uart.c **** #if (SAM4N)
+ 444:.././hal/sam3u1c/uart.c **** 	if (p_uart == UART2)
+ 445:.././hal/sam3u1c/uart.c **** 		p_pdc_base = PDC_UART2;
+ 446:.././hal/sam3u1c/uart.c **** #endif
+ 447:.././hal/sam3u1c/uart.c **** 
+ 448:.././hal/sam3u1c/uart.c **** 	return p_pdc_base;
+ 1350              	 .loc 1 448 0
+ 1351 0014 FB68     	 ldr r3,[r7,#12]
+ 449:.././hal/sam3u1c/uart.c **** }
+ 1352              	 .loc 1 449 0
+ 1353 0016 1846     	 mov r0,r3
+ 1354 0018 1437     	 adds r7,r7,#20
+ 1355              	.LCFI153:
+ 1356              	 .cfi_def_cfa_offset 4
+ 1357 001a BD46     	 mov sp,r7
+ 1358              	.LCFI154:
+ 1359              	 .cfi_def_cfa_register 13
+ 1360              	 
+ 1361 001c 80BC     	 pop {r7}
+ 1362              	.LCFI155:
+ 1363              	 .cfi_restore 7
+ 1364              	 .cfi_def_cfa_offset 0
+ 1365 001e 7047     	 bx lr
+ 1366              	.L46:
+ 1367              	 .align 2
+ 1368              	.L45:
+ 1369 0020 00060E40 	 .word 1074660864
+ 1370 0024 00070E40 	 .word 1074661120
+ 1371              	 .cfi_endproc
+ 1372              	.LFE92:
+ 1374              	 .text
+ 1375              	.Letext0:
+ 1376              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1377              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1378              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 1379              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
+ 1380              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 1381              	 .file 7 ".././hal/sam3u1c/inc/component/component_pdc.h"
+ 1382              	 .file 8 ".././hal/sam3u1c/inc/component/component_uart.h"
+ 1383              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1384              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1385              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 1386              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1387              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1388              	 .file 14 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 1389              	 .file 15 ".././hal/sam3u1c/inc/uart.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart.c
+    {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
+    {standard input}:19     .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
+    {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
+    {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
+    {standard input}:27     .text.uart_init:00000000 $t
+    {standard input}:34     .text.uart_init:00000000 uart_init
+    {standard input}:120    .text.uart_enable_tx:00000000 $t
+    {standard input}:127    .text.uart_enable_tx:00000000 uart_enable_tx
+    {standard input}:167    .text.uart_disable_tx:00000000 $t
+    {standard input}:174    .text.uart_disable_tx:00000000 uart_disable_tx
+    {standard input}:214    .text.uart_reset_tx:00000000 $t
+    {standard input}:221    .text.uart_reset_tx:00000000 uart_reset_tx
+    {standard input}:261    .text.uart_enable_rx:00000000 $t
+    {standard input}:268    .text.uart_enable_rx:00000000 uart_enable_rx
+    {standard input}:308    .text.uart_disable_rx:00000000 $t
+    {standard input}:315    .text.uart_disable_rx:00000000 uart_disable_rx
+    {standard input}:355    .text.uart_reset_rx:00000000 $t
+    {standard input}:362    .text.uart_reset_rx:00000000 uart_reset_rx
+    {standard input}:402    .text.uart_enable:00000000 $t
+    {standard input}:409    .text.uart_enable:00000000 uart_enable
+    {standard input}:449    .text.uart_disable:00000000 $t
+    {standard input}:456    .text.uart_disable:00000000 uart_disable
+    {standard input}:496    .text.uart_reset:00000000 $t
+    {standard input}:503    .text.uart_reset:00000000 uart_reset
+    {standard input}:543    .text.uart_enable_interrupt:00000000 $t
+    {standard input}:550    .text.uart_enable_interrupt:00000000 uart_enable_interrupt
+    {standard input}:591    .text.uart_disable_interrupt:00000000 $t
+    {standard input}:598    .text.uart_disable_interrupt:00000000 uart_disable_interrupt
+    {standard input}:639    .text.uart_get_interrupt_mask:00000000 $t
+    {standard input}:646    .text.uart_get_interrupt_mask:00000000 uart_get_interrupt_mask
+    {standard input}:685    .text.uart_get_status:00000000 $t
+    {standard input}:692    .text.uart_get_status:00000000 uart_get_status
+    {standard input}:731    .text.uart_reset_status:00000000 $t
+    {standard input}:738    .text.uart_reset_status:00000000 uart_reset_status
+    {standard input}:778    .text.uart_is_tx_ready:00000000 $t
+    {standard input}:785    .text.uart_is_tx_ready:00000000 uart_is_tx_ready
+    {standard input}:830    .text.uart_is_tx_empty:00000000 $t
+    {standard input}:837    .text.uart_is_tx_empty:00000000 uart_is_tx_empty
+    {standard input}:882    .text.uart_is_rx_ready:00000000 $t
+    {standard input}:889    .text.uart_is_rx_ready:00000000 uart_is_rx_ready
+    {standard input}:934    .text.uart_is_rx_buf_end:00000000 $t
+    {standard input}:941    .text.uart_is_rx_buf_end:00000000 uart_is_rx_buf_end
+    {standard input}:986    .text.uart_is_tx_buf_end:00000000 $t
+    {standard input}:993    .text.uart_is_tx_buf_end:00000000 uart_is_tx_buf_end
+    {standard input}:1038   .text.uart_is_rx_buf_full:00000000 $t
+    {standard input}:1045   .text.uart_is_rx_buf_full:00000000 uart_is_rx_buf_full
+    {standard input}:1090   .text.uart_is_tx_buf_empty:00000000 $t
+    {standard input}:1097   .text.uart_is_tx_buf_empty:00000000 uart_is_tx_buf_empty
+    {standard input}:1142   .text.uart_set_clock_divisor:00000000 $t
+    {standard input}:1149   .text.uart_set_clock_divisor:00000000 uart_set_clock_divisor
+    {standard input}:1191   .text.uart_write:00000000 $t
+    {standard input}:1198   .text.uart_write:00000000 uart_write
+    {standard input}:1253   .text.uart_read:00000000 $t
+    {standard input}:1260   .text.uart_read:00000000 uart_read
+    {standard input}:1316   .text.uart_get_pdc_base:00000000 $t
+    {standard input}:1323   .text.uart_get_pdc_base:00000000 uart_get_pdc_base
+    {standard input}:1369   .text.uart_get_pdc_base:00000020 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
+                           .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
+                           .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
+                           .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.sam3u1c.h.220.c0b54b5a55bc87791749ae17b1487779
+                           .group:00000000 wm4.core_cm3.h.32.5c59c312db585622d253fdb887b0afb1
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm3.h.127.b561404f2a159dc517b409bc244d16c1
+                           .group:00000000 wm4.component_adc.h.43.d49887380d07d1cd08cc4e37b3485e31
+                           .group:00000000 wm4.component_adc12b.h.43.eadc09f1073923fb91f1f393cc397dcb
+                           .group:00000000 wm4.component_chipid.h.43.15825c969b1cc9eeea3d9416499874c8
+                           .group:00000000 wm4.component_dmac.h.43.cc8187b1cf6bfeadc91b14fdd28b9e8b
+                           .group:00000000 wm4.component_efc.h.43.cb1b3997ad9ea3733ad421ecbfd02fdd
+                           .group:00000000 wm4.component_gpbr.h.43.49b7e13894fe38b29f2243bbbe530227
+                           .group:00000000 wm4.component_hsmci.h.43.7b7194c92e1480c038f3342f7cec440a
+                           .group:00000000 wm4.component_matrix.h.43.1d209838fb75b4827119203a357141ee
+                           .group:00000000 wm4.component_pdc.h.43.19528a5f9ef5a348234ea06f89069c55
+                           .group:00000000 wm4.component_pio.h.43.163b46c3683ccf92e8de39a5554f50e8
+                           .group:00000000 wm4.component_pmc.h.43.ee4f030602866917aeed15fb2b948de8
+                           .group:00000000 wm4.component_pwm.h.43.ab6262a86f0aea354b43fe6dce7e7eb3
+                           .group:00000000 wm4.component_rstc.h.43.4eb59dc2ddcf585fabf251d0c329fcdd
+                           .group:00000000 wm4.component_rtc.h.43.ba8ccafc772b11d562a3cceab8b95072
+                           .group:00000000 wm4.component_rtt.h.43.3206ef8f067e5e747c3c4c7e719c1429
+                           .group:00000000 wm4.component_smc.h.43.907847915f1a5616734199d7e34424fa
+                           .group:00000000 wm4.component_spi.h.43.a2a09df64ab768c0a32be55285c74ded
+                           .group:00000000 wm4.component_ssc.h.43.d7c78f990c13fc511671b64798c4bcd0
+                           .group:00000000 wm4.component_supc.h.43.7d17f8e5ed3ba815e84381152735062f
+                           .group:00000000 wm4.component_tc.h.43.662eac8137408372b4f9d26c0b5f8621
+                           .group:00000000 wm4.component_twi.h.43.eda18625bd851fc4605861f5b3240c0b
+                           .group:00000000 wm4.component_uart.h.43.2d92735c5ea05c973661e1ba99a2f37c
+                           .group:00000000 wm4.component_udphs.h.43.21cecd26a4e44df0013037f29f2716e4
+                           .group:00000000 wm4.component_usart.h.43.7872f8f455adb38b67b9fbdb15657fbe
+                           .group:00000000 wm4.component_wdt.h.43.e31e10a5469b62c3660b49ab250f802f
+                           .group:00000000 wm4.instance_hsmci.h.43.e233236cc7fd5a805539a7ecc0e1d8d2
+                           .group:00000000 wm4.instance_ssc.h.43.c0cfabc3b9f3bb60745c913111bce965
+                           .group:00000000 wm4.instance_spi.h.43.570ae46af19e4179d9796872b9a8b9bc
+                           .group:00000000 wm4.instance_tc0.h.43.049b3a82387d2961594190609e896a29
+                           .group:00000000 wm4.instance_twi0.h.43.255dc0afa9e0d45eaea0a935eca2f103
+                           .group:00000000 wm4.instance_twi1.h.43.652d1d407893f259f2a817544ba662c2
+                           .group:00000000 wm4.instance_pwm.h.43.88294acec3ca56d6fc521038521a1567
+                           .group:00000000 wm4.instance_usart0.h.43.e26677512aee3dd3bedd71d394410000
+                           .group:00000000 wm4.instance_usart1.h.43.1ba97dbc6610d9fb3132b9d845688201
+                           .group:00000000 wm4.instance_usart2.h.43.baa1bf30b3c5acdee90c4a1f50fe9ebd
+                           .group:00000000 wm4.instance_udphs.h.43.b1ce94181e0d1f22877b81c6040a4363
+                           .group:00000000 wm4.instance_adc12b.h.43.d73ed59e867ccdfdb846d9ef32a50c0c
+                           .group:00000000 wm4.instance_adc.h.43.2b7611a00afeb4c555339b844d4b8456
+                           .group:00000000 wm4.instance_dmac.h.43.ee72691d84889c8f285932be4a075ddb
+                           .group:00000000 wm4.instance_smc.h.43.29610fd00979caaaa65821ad40e9da06
+                           .group:00000000 wm4.instance_matrix.h.43.01ee474141594385374c41a29daeeefe
+                           .group:00000000 wm4.instance_pmc.h.43.37430325ed7b8b24c3fe640c41c29ef5
+                           .group:00000000 wm4.instance_uart.h.43.bd378395ba022bc8670c82ebe656fbbd
+                           .group:00000000 wm4.instance_chipid.h.43.29cd8fb600f149aa58830fcc78fe36f9
+                           .group:00000000 wm4.instance_efc0.h.43.6b85dba20721a7e9fc4350e78d193680
+                           .group:00000000 wm4.instance_efc1.h.43.2c5e94fc4d2742678318d73450d08d57
+                           .group:00000000 wm4.instance_pioa.h.43.eeb46cc3bfe01a1f28e67aa3a6851ed8
+                           .group:00000000 wm4.instance_piob.h.43.652ce26b6c37ac56f9ed42a9216d9aca
+                           .group:00000000 wm4.instance_rstc.h.43.c5de224364a50a85f237c0b864aa4c8f
+                           .group:00000000 wm4.instance_supc.h.43.a5f1a5ca08f468ccf34ed3653e045f1f
+                           .group:00000000 wm4.instance_rtt.h.43.8622b192c23334996132415e3095df7f
+                           .group:00000000 wm4.instance_wdt.h.43.407ea53e133eacf09acf2c7fcb6b7524
+                           .group:00000000 wm4.instance_rtc.h.43.f70b77f9180401c8d9d920cb4a1cd166
+                           .group:00000000 wm4.instance_gpbr.h.43.9066cb40d557f6755101368854272348
+                           .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
+                           .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
+                           .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
+                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
+                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
+                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
+                           .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
+                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:00000000 wm4.stdlib.h.56.d4493cd3736e51e9d56335045f26df45
+                           .group:00000000 wm4.compiler.h.88.0e6ad966134fa012ce9a34053d3f48aa
+                           .group:00000000 wm4.interrupt_sam_nvic.h.45.4876da6c127868305d66389e87e0876f
+                           .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
+                           .group:00000000 wm4.uart.h.58.c2480b4064fc026be7bec7ab6ac9f462
+
+NO UNDEFINED SYMBOLS

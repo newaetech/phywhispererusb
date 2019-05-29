@@ -1,0 +1,2016 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "tc.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
+  16              	 .align 2
+  19              	cpu_irq_critical_section_counter:
+  20 0000 00000000 	 .space 4
+  21              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
+  24              	cpu_irq_prev_interrupt_state:
+  25 0000 00       	 .space 1
+  26              	 .section .text.tc_init,"ax",%progbits
+  27              	 .align 1
+  28              	 .global tc_init
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	tc_init:
+  35              	.LFB67:
+  36              	 .file 1 ".././hal/sam3u1c/tc.c"
+   1:.././hal/sam3u1c/tc.c **** /**
+   2:.././hal/sam3u1c/tc.c ****  * \file
+   3:.././hal/sam3u1c/tc.c ****  *
+   4:.././hal/sam3u1c/tc.c ****  * \brief SAM Timer Counter (TC) driver.
+   5:.././hal/sam3u1c/tc.c ****  *
+   6:.././hal/sam3u1c/tc.c ****  * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/tc.c ****  *
+   8:.././hal/sam3u1c/tc.c ****  * \asf_license_start
+   9:.././hal/sam3u1c/tc.c ****  *
+  10:.././hal/sam3u1c/tc.c ****  * \page License
+  11:.././hal/sam3u1c/tc.c ****  *
+  12:.././hal/sam3u1c/tc.c ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/tc.c ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/tc.c ****  *
+  15:.././hal/sam3u1c/tc.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/tc.c ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/tc.c ****  *
+  18:.././hal/sam3u1c/tc.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/tc.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/tc.c ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/tc.c ****  *
+  22:.././hal/sam3u1c/tc.c ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/tc.c ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/tc.c ****  *
+  25:.././hal/sam3u1c/tc.c ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/tc.c ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/tc.c ****  *
+  28:.././hal/sam3u1c/tc.c ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/tc.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/tc.c ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/tc.c ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/tc.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/tc.c ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/tc.c ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/tc.c ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/tc.c ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/tc.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/tc.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/tc.c ****  *
+  40:.././hal/sam3u1c/tc.c ****  * \asf_license_stop
+  41:.././hal/sam3u1c/tc.c ****  *
+  42:.././hal/sam3u1c/tc.c ****  */
+  43:.././hal/sam3u1c/tc.c **** 
+  44:.././hal/sam3u1c/tc.c **** #include <assert.h>
+  45:.././hal/sam3u1c/tc.c **** #include "tc.h"
+  46:.././hal/sam3u1c/tc.c **** 
+  47:.././hal/sam3u1c/tc.c **** /// @cond
+  48:.././hal/sam3u1c/tc.c **** /**INDENT-OFF**/
+  49:.././hal/sam3u1c/tc.c **** #ifdef __cplusplus
+  50:.././hal/sam3u1c/tc.c **** extern "C" {
+  51:.././hal/sam3u1c/tc.c **** #endif
+  52:.././hal/sam3u1c/tc.c **** /**INDENT-ON**/
+  53:.././hal/sam3u1c/tc.c **** /// @endcond
+  54:.././hal/sam3u1c/tc.c **** 
+  55:.././hal/sam3u1c/tc.c **** #ifndef TC_WPMR_WPKEY_PASSWD
+  56:.././hal/sam3u1c/tc.c **** #define TC_WPMR_WPKEY_PASSWD TC_WPMR_WPKEY((uint32_t)0x54494D)
+  57:.././hal/sam3u1c/tc.c **** #endif
+  58:.././hal/sam3u1c/tc.c **** 
+  59:.././hal/sam3u1c/tc.c **** /**
+  60:.././hal/sam3u1c/tc.c ****  * \brief Configure TC for timer, waveform generation, or capture.
+  61:.././hal/sam3u1c/tc.c ****  *
+  62:.././hal/sam3u1c/tc.c ****  * \param[in,out] p_tc   Module hardware register base address pointer
+  63:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to configure
+  64:.././hal/sam3u1c/tc.c ****  * \param[in] ul_mode    Control mode register bitmask value to set
+  65:.././hal/sam3u1c/tc.c ****  *
+  66:.././hal/sam3u1c/tc.c ****  * \note For more information regarding <i>ul_mode</i> configuration refer to
+  67:.././hal/sam3u1c/tc.c ****  * the section  entitled "Channel Mode Register: Capture Mode" and.or section
+  68:.././hal/sam3u1c/tc.c ****  * "Waveform Operating Mode" in the device-specific datasheet.
+  69:.././hal/sam3u1c/tc.c ****  *
+  70:.././hal/sam3u1c/tc.c ****  * \note If the TC is configured for waveform generation then the external event
+  71:.././hal/sam3u1c/tc.c ****  * selection (EEVT) should only be set to TC_CMR_EEVT_TIOB, or the
+  72:.././hal/sam3u1c/tc.c ****  * equivalent value of 0, if it really is the intention to use TIOB as an
+  73:.././hal/sam3u1c/tc.c ****  * external event trigger. This is because this setting forces TIOB to be
+  74:.././hal/sam3u1c/tc.c ****  * an input, even if the external event trigger has not been enabled with
+  75:.././hal/sam3u1c/tc.c ****  * TC_CMR_ENETRG, and thus prevents normal operation of TIOB.
+  76:.././hal/sam3u1c/tc.c ****  */
+  77:.././hal/sam3u1c/tc.c **** void tc_init(
+  78:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+  79:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
+  80:.././hal/sam3u1c/tc.c **** 		uint32_t ul_mode)
+  81:.././hal/sam3u1c/tc.c **** {
+  37              	 .loc 1 81 0
+  38              	 .cfi_startproc
+  39              	 
+  40              	 
+  41              	 
+  42 0000 80B4     	 push {r7}
+  43              	.LCFI0:
+  44              	 .cfi_def_cfa_offset 4
+  45              	 .cfi_offset 7,-4
+  46 0002 87B0     	 sub sp,sp,#28
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 32
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52 0006 F860     	 str r0,[r7,#12]
+  53 0008 B960     	 str r1,[r7,#8]
+  54 000a 7A60     	 str r2,[r7,#4]
+  82:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
+  83:.././hal/sam3u1c/tc.c **** 
+  84:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+  85:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+  86:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+  87:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+  88:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
+  55              	 .loc 1 88 0
+  56 000c FA68     	 ldr r2,[r7,#12]
+  57 000e BB68     	 ldr r3,[r7,#8]
+  58 0010 9B01     	 lsls r3,r3,#6
+  59 0012 1344     	 add r3,r3,r2
+  60 0014 7B61     	 str r3,[r7,#20]
+  89:.././hal/sam3u1c/tc.c **** 
+  90:.././hal/sam3u1c/tc.c **** 	/*  Disable TC clock. */
+  91:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_CCR = TC_CCR_CLKDIS;
+  61              	 .loc 1 91 0
+  62 0016 7B69     	 ldr r3,[r7,#20]
+  63 0018 0222     	 movs r2,#2
+  64 001a 1A60     	 str r2,[r3]
+  92:.././hal/sam3u1c/tc.c **** 
+  93:.././hal/sam3u1c/tc.c **** 	/*  Disable interrupts. */
+  94:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_IDR = 0xFFFFFFFF;
+  65              	 .loc 1 94 0
+  66 001c 7B69     	 ldr r3,[r7,#20]
+  67 001e 4FF0FF32 	 mov r2,#-1
+  68 0022 9A62     	 str r2,[r3,#40]
+  95:.././hal/sam3u1c/tc.c **** 
+  96:.././hal/sam3u1c/tc.c **** 	/*  Clear status register. */
+  97:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_SR;
+  69              	 .loc 1 97 0
+  70 0024 7B69     	 ldr r3,[r7,#20]
+  71 0026 1B6A     	 ldr r3,[r3,#32]
+  98:.././hal/sam3u1c/tc.c **** 
+  99:.././hal/sam3u1c/tc.c **** 	/*  Set mode. */
+ 100:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_CMR = ul_mode;
+  72              	 .loc 1 100 0
+  73 0028 7B69     	 ldr r3,[r7,#20]
+  74 002a 7A68     	 ldr r2,[r7,#4]
+  75 002c 5A60     	 str r2,[r3,#4]
+ 101:.././hal/sam3u1c/tc.c **** }
+  76              	 .loc 1 101 0
+  77 002e 00BF     	 nop
+  78 0030 1C37     	 adds r7,r7,#28
+  79              	.LCFI3:
+  80              	 .cfi_def_cfa_offset 4
+  81 0032 BD46     	 mov sp,r7
+  82              	.LCFI4:
+  83              	 .cfi_def_cfa_register 13
+  84              	 
+  85 0034 80BC     	 pop {r7}
+  86              	.LCFI5:
+  87              	 .cfi_restore 7
+  88              	 .cfi_def_cfa_offset 0
+  89 0036 7047     	 bx lr
+  90              	 .cfi_endproc
+  91              	.LFE67:
+  93              	 .section .text.tc_sync_trigger,"ax",%progbits
+  94              	 .align 1
+  95              	 .global tc_sync_trigger
+  96              	 .syntax unified
+  97              	 .thumb
+  98              	 .thumb_func
+  99              	 .fpu softvfp
+ 101              	tc_sync_trigger:
+ 102              	.LFB68:
+ 102:.././hal/sam3u1c/tc.c **** 
+ 103:.././hal/sam3u1c/tc.c **** /**
+ 104:.././hal/sam3u1c/tc.c ****  * \brief Asserts a SYNC signal to generate a software trigger on
+ 105:.././hal/sam3u1c/tc.c ****  * all channels.
+ 106:.././hal/sam3u1c/tc.c ****  *
+ 107:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc Module hardware register base address pointer
+ 108:.././hal/sam3u1c/tc.c ****  *
+ 109:.././hal/sam3u1c/tc.c ****  */
+ 110:.././hal/sam3u1c/tc.c **** void tc_sync_trigger(
+ 111:.././hal/sam3u1c/tc.c **** 		Tc *p_tc)
+ 112:.././hal/sam3u1c/tc.c **** {
+ 103              	 .loc 1 112 0
+ 104              	 .cfi_startproc
+ 105              	 
+ 106              	 
+ 107              	 
+ 108 0000 80B4     	 push {r7}
+ 109              	.LCFI6:
+ 110              	 .cfi_def_cfa_offset 4
+ 111              	 .cfi_offset 7,-4
+ 112 0002 83B0     	 sub sp,sp,#12
+ 113              	.LCFI7:
+ 114              	 .cfi_def_cfa_offset 16
+ 115 0004 00AF     	 add r7,sp,#0
+ 116              	.LCFI8:
+ 117              	 .cfi_def_cfa_register 7
+ 118 0006 7860     	 str r0,[r7,#4]
+ 113:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 114:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 115:.././hal/sam3u1c/tc.c **** 	
+ 116:.././hal/sam3u1c/tc.c **** 	p_tc->TC_BCR = TC_BCR_SYNC;
+ 119              	 .loc 1 116 0
+ 120 0008 7B68     	 ldr r3,[r7,#4]
+ 121 000a 0122     	 movs r2,#1
+ 122 000c C3F8C020 	 str r2,[r3,#192]
+ 117:.././hal/sam3u1c/tc.c **** }
+ 123              	 .loc 1 117 0
+ 124 0010 00BF     	 nop
+ 125 0012 0C37     	 adds r7,r7,#12
+ 126              	.LCFI9:
+ 127              	 .cfi_def_cfa_offset 4
+ 128 0014 BD46     	 mov sp,r7
+ 129              	.LCFI10:
+ 130              	 .cfi_def_cfa_register 13
+ 131              	 
+ 132 0016 80BC     	 pop {r7}
+ 133              	.LCFI11:
+ 134              	 .cfi_restore 7
+ 135              	 .cfi_def_cfa_offset 0
+ 136 0018 7047     	 bx lr
+ 137              	 .cfi_endproc
+ 138              	.LFE68:
+ 140              	 .section .text.tc_set_block_mode,"ax",%progbits
+ 141              	 .align 1
+ 142              	 .global tc_set_block_mode
+ 143              	 .syntax unified
+ 144              	 .thumb
+ 145              	 .thumb_func
+ 146              	 .fpu softvfp
+ 148              	tc_set_block_mode:
+ 149              	.LFB69:
+ 118:.././hal/sam3u1c/tc.c **** 
+ 119:.././hal/sam3u1c/tc.c **** /**
+ 120:.././hal/sam3u1c/tc.c ****  * \brief Configure the TC Block mode.
+ 121:.././hal/sam3u1c/tc.c ****  *
+ 122:.././hal/sam3u1c/tc.c ****  * \note The function tc_init() must be called prior to this one.
+ 123:.././hal/sam3u1c/tc.c ****  *
+ 124:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc        Module hardware register base address pointer
+ 125:.././hal/sam3u1c/tc.c ****  * \param[in] ul_blockmode Block mode register value to set
+ 126:.././hal/sam3u1c/tc.c ****  *
+ 127:.././hal/sam3u1c/tc.c ****  * \note For more information regarding <i>ul_blockmode</i> configuration refer to
+ 128:.././hal/sam3u1c/tc.c ****  * the section  entitled "TC Block Mode Register" in the device-specific datasheet.
+ 129:.././hal/sam3u1c/tc.c ****  */
+ 130:.././hal/sam3u1c/tc.c **** void tc_set_block_mode(
+ 131:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 132:.././hal/sam3u1c/tc.c **** 		uint32_t ul_blockmode)
+ 133:.././hal/sam3u1c/tc.c **** {
+ 150              	 .loc 1 133 0
+ 151              	 .cfi_startproc
+ 152              	 
+ 153              	 
+ 154              	 
+ 155 0000 80B4     	 push {r7}
+ 156              	.LCFI12:
+ 157              	 .cfi_def_cfa_offset 4
+ 158              	 .cfi_offset 7,-4
+ 159 0002 83B0     	 sub sp,sp,#12
+ 160              	.LCFI13:
+ 161              	 .cfi_def_cfa_offset 16
+ 162 0004 00AF     	 add r7,sp,#0
+ 163              	.LCFI14:
+ 164              	 .cfi_def_cfa_register 7
+ 165 0006 7860     	 str r0,[r7,#4]
+ 166 0008 3960     	 str r1,[r7]
+ 134:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 135:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 136:.././hal/sam3u1c/tc.c **** 	
+ 137:.././hal/sam3u1c/tc.c **** 	p_tc->TC_BMR = ul_blockmode;
+ 167              	 .loc 1 137 0
+ 168 000a 7B68     	 ldr r3,[r7,#4]
+ 169 000c 3A68     	 ldr r2,[r7]
+ 170 000e C3F8C420 	 str r2,[r3,#196]
+ 138:.././hal/sam3u1c/tc.c **** }
+ 171              	 .loc 1 138 0
+ 172 0012 00BF     	 nop
+ 173 0014 0C37     	 adds r7,r7,#12
+ 174              	.LCFI15:
+ 175              	 .cfi_def_cfa_offset 4
+ 176 0016 BD46     	 mov sp,r7
+ 177              	.LCFI16:
+ 178              	 .cfi_def_cfa_register 13
+ 179              	 
+ 180 0018 80BC     	 pop {r7}
+ 181              	.LCFI17:
+ 182              	 .cfi_restore 7
+ 183              	 .cfi_def_cfa_offset 0
+ 184 001a 7047     	 bx lr
+ 185              	 .cfi_endproc
+ 186              	.LFE69:
+ 188              	 .section .text.tc_start,"ax",%progbits
+ 189              	 .align 1
+ 190              	 .global tc_start
+ 191              	 .syntax unified
+ 192              	 .thumb
+ 193              	 .thumb_func
+ 194              	 .fpu softvfp
+ 196              	tc_start:
+ 197              	.LFB70:
+ 139:.././hal/sam3u1c/tc.c **** 
+ 140:.././hal/sam3u1c/tc.c **** #if (!SAM3U) || defined(__DOXYGEN__)
+ 141:.././hal/sam3u1c/tc.c **** 
+ 142:.././hal/sam3u1c/tc.c **** /**
+ 143:.././hal/sam3u1c/tc.c ****  * \brief Configure TC for 2-bit Gray Counter for Stepper Motor.
+ 144:.././hal/sam3u1c/tc.c ****  * \note The function tc_init() must be called prior to this one.
+ 145:.././hal/sam3u1c/tc.c ****  *
+ 146:.././hal/sam3u1c/tc.c ****  * \note This function is not available on SAM3U devices.
+ 147:.././hal/sam3u1c/tc.c ****  *
+ 148:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc          Module hardware register base address pointer
+ 149:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel     Channel to configure
+ 150:.././hal/sam3u1c/tc.c ****  * \param[in] ul_steppermode Stepper motor mode register value to set
+ 151:.././hal/sam3u1c/tc.c ****  *
+ 152:.././hal/sam3u1c/tc.c ****  * \return 0 for OK.
+ 153:.././hal/sam3u1c/tc.c ****  */
+ 154:.././hal/sam3u1c/tc.c **** uint32_t tc_init_2bit_gray(
+ 155:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 156:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
+ 157:.././hal/sam3u1c/tc.c **** 		uint32_t ul_steppermode)
+ 158:.././hal/sam3u1c/tc.c **** {
+ 159:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 160:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 161:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 162:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 163:.././hal/sam3u1c/tc.c **** 
+ 164:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_SMMR = ul_steppermode;
+ 165:.././hal/sam3u1c/tc.c **** 	return 0;
+ 166:.././hal/sam3u1c/tc.c **** }
+ 167:.././hal/sam3u1c/tc.c **** 
+ 168:.././hal/sam3u1c/tc.c **** #endif /* (!SAM3U) || defined(__DOXYGEN__) */
+ 169:.././hal/sam3u1c/tc.c **** 
+ 170:.././hal/sam3u1c/tc.c **** /**
+ 171:.././hal/sam3u1c/tc.c ****  * \brief Start the TC clock on the specified channel.
+ 172:.././hal/sam3u1c/tc.c ****  *
+ 173:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc      Module hardware register base address pointer
+ 174:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to configure
+ 175:.././hal/sam3u1c/tc.c ****  */
+ 176:.././hal/sam3u1c/tc.c **** void tc_start(
+ 177:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 178:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 179:.././hal/sam3u1c/tc.c **** {
+ 198              	 .loc 1 179 0
+ 199              	 .cfi_startproc
+ 200              	 
+ 201              	 
+ 202              	 
+ 203 0000 80B4     	 push {r7}
+ 204              	.LCFI18:
+ 205              	 .cfi_def_cfa_offset 4
+ 206              	 .cfi_offset 7,-4
+ 207 0002 83B0     	 sub sp,sp,#12
+ 208              	.LCFI19:
+ 209              	 .cfi_def_cfa_offset 16
+ 210 0004 00AF     	 add r7,sp,#0
+ 211              	.LCFI20:
+ 212              	 .cfi_def_cfa_register 7
+ 213 0006 7860     	 str r0,[r7,#4]
+ 214 0008 3960     	 str r1,[r7]
+ 180:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 181:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 182:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 183:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 184:.././hal/sam3u1c/tc.c **** 
+ 185:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
+ 215              	 .loc 1 185 0
+ 216 000a 7A68     	 ldr r2,[r7,#4]
+ 217 000c 3B68     	 ldr r3,[r7]
+ 218 000e 9B01     	 lsls r3,r3,#6
+ 219 0010 1344     	 add r3,r3,r2
+ 220 0012 0522     	 movs r2,#5
+ 221 0014 1A60     	 str r2,[r3]
+ 186:.././hal/sam3u1c/tc.c **** }
+ 222              	 .loc 1 186 0
+ 223 0016 00BF     	 nop
+ 224 0018 0C37     	 adds r7,r7,#12
+ 225              	.LCFI21:
+ 226              	 .cfi_def_cfa_offset 4
+ 227 001a BD46     	 mov sp,r7
+ 228              	.LCFI22:
+ 229              	 .cfi_def_cfa_register 13
+ 230              	 
+ 231 001c 80BC     	 pop {r7}
+ 232              	.LCFI23:
+ 233              	 .cfi_restore 7
+ 234              	 .cfi_def_cfa_offset 0
+ 235 001e 7047     	 bx lr
+ 236              	 .cfi_endproc
+ 237              	.LFE70:
+ 239              	 .section .text.tc_stop,"ax",%progbits
+ 240              	 .align 1
+ 241              	 .global tc_stop
+ 242              	 .syntax unified
+ 243              	 .thumb
+ 244              	 .thumb_func
+ 245              	 .fpu softvfp
+ 247              	tc_stop:
+ 248              	.LFB71:
+ 187:.././hal/sam3u1c/tc.c **** 
+ 188:.././hal/sam3u1c/tc.c **** /**
+ 189:.././hal/sam3u1c/tc.c ****  * \brief Stop the TC clock on the specified channel.
+ 190:.././hal/sam3u1c/tc.c ****  *
+ 191:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc      Module hardware register base address pointer
+ 192:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to configure
+ 193:.././hal/sam3u1c/tc.c ****  */
+ 194:.././hal/sam3u1c/tc.c **** void tc_stop(
+ 195:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 196:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 197:.././hal/sam3u1c/tc.c **** {
+ 249              	 .loc 1 197 0
+ 250              	 .cfi_startproc
+ 251              	 
+ 252              	 
+ 253              	 
+ 254 0000 80B4     	 push {r7}
+ 255              	.LCFI24:
+ 256              	 .cfi_def_cfa_offset 4
+ 257              	 .cfi_offset 7,-4
+ 258 0002 83B0     	 sub sp,sp,#12
+ 259              	.LCFI25:
+ 260              	 .cfi_def_cfa_offset 16
+ 261 0004 00AF     	 add r7,sp,#0
+ 262              	.LCFI26:
+ 263              	 .cfi_def_cfa_register 7
+ 264 0006 7860     	 str r0,[r7,#4]
+ 265 0008 3960     	 str r1,[r7]
+ 198:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 199:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 200:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 201:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 202:.././hal/sam3u1c/tc.c **** 
+ 203:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_CCR = TC_CCR_CLKDIS;
+ 266              	 .loc 1 203 0
+ 267 000a 7A68     	 ldr r2,[r7,#4]
+ 268 000c 3B68     	 ldr r3,[r7]
+ 269 000e 9B01     	 lsls r3,r3,#6
+ 270 0010 1344     	 add r3,r3,r2
+ 271 0012 0222     	 movs r2,#2
+ 272 0014 1A60     	 str r2,[r3]
+ 204:.././hal/sam3u1c/tc.c **** }
+ 273              	 .loc 1 204 0
+ 274 0016 00BF     	 nop
+ 275 0018 0C37     	 adds r7,r7,#12
+ 276              	.LCFI27:
+ 277              	 .cfi_def_cfa_offset 4
+ 278 001a BD46     	 mov sp,r7
+ 279              	.LCFI28:
+ 280              	 .cfi_def_cfa_register 13
+ 281              	 
+ 282 001c 80BC     	 pop {r7}
+ 283              	.LCFI29:
+ 284              	 .cfi_restore 7
+ 285              	 .cfi_def_cfa_offset 0
+ 286 001e 7047     	 bx lr
+ 287              	 .cfi_endproc
+ 288              	.LFE71:
+ 290              	 .section .text.tc_read_cv,"ax",%progbits
+ 291              	 .align 1
+ 292              	 .global tc_read_cv
+ 293              	 .syntax unified
+ 294              	 .thumb
+ 295              	 .thumb_func
+ 296              	 .fpu softvfp
+ 298              	tc_read_cv:
+ 299              	.LFB72:
+ 205:.././hal/sam3u1c/tc.c **** 
+ 206:.././hal/sam3u1c/tc.c **** /**
+ 207:.././hal/sam3u1c/tc.c ****  * \brief Read the counter value on the specified channel.
+ 208:.././hal/sam3u1c/tc.c ****  *
+ 209:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc       Module hardware register base address pointer
+ 210:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to read
+ 211:.././hal/sam3u1c/tc.c ****  *
+ 212:.././hal/sam3u1c/tc.c ****  * \return The counter value.
+ 213:.././hal/sam3u1c/tc.c ****  */
+ 214:.././hal/sam3u1c/tc.c **** uint32_t tc_read_cv(
+ 215:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 216:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 217:.././hal/sam3u1c/tc.c **** {
+ 300              	 .loc 1 217 0
+ 301              	 .cfi_startproc
+ 302              	 
+ 303              	 
+ 304              	 
+ 305 0000 80B4     	 push {r7}
+ 306              	.LCFI30:
+ 307              	 .cfi_def_cfa_offset 4
+ 308              	 .cfi_offset 7,-4
+ 309 0002 83B0     	 sub sp,sp,#12
+ 310              	.LCFI31:
+ 311              	 .cfi_def_cfa_offset 16
+ 312 0004 00AF     	 add r7,sp,#0
+ 313              	.LCFI32:
+ 314              	 .cfi_def_cfa_register 7
+ 315 0006 7860     	 str r0,[r7,#4]
+ 316 0008 3960     	 str r1,[r7]
+ 218:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 219:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 220:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 221:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 222:.././hal/sam3u1c/tc.c **** 
+ 223:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_CV;
+ 317              	 .loc 1 223 0
+ 318 000a 7A68     	 ldr r2,[r7,#4]
+ 319 000c 3B68     	 ldr r3,[r7]
+ 320 000e 9B01     	 lsls r3,r3,#6
+ 321 0010 1344     	 add r3,r3,r2
+ 322 0012 1033     	 adds r3,r3,#16
+ 323 0014 1B68     	 ldr r3,[r3]
+ 224:.././hal/sam3u1c/tc.c **** }
+ 324              	 .loc 1 224 0
+ 325 0016 1846     	 mov r0,r3
+ 326 0018 0C37     	 adds r7,r7,#12
+ 327              	.LCFI33:
+ 328              	 .cfi_def_cfa_offset 4
+ 329 001a BD46     	 mov sp,r7
+ 330              	.LCFI34:
+ 331              	 .cfi_def_cfa_register 13
+ 332              	 
+ 333 001c 80BC     	 pop {r7}
+ 334              	.LCFI35:
+ 335              	 .cfi_restore 7
+ 336              	 .cfi_def_cfa_offset 0
+ 337 001e 7047     	 bx lr
+ 338              	 .cfi_endproc
+ 339              	.LFE72:
+ 341              	 .section .text.tc_read_ra,"ax",%progbits
+ 342              	 .align 1
+ 343              	 .global tc_read_ra
+ 344              	 .syntax unified
+ 345              	 .thumb
+ 346              	 .thumb_func
+ 347              	 .fpu softvfp
+ 349              	tc_read_ra:
+ 350              	.LFB73:
+ 225:.././hal/sam3u1c/tc.c **** 
+ 226:.././hal/sam3u1c/tc.c **** /**
+ 227:.././hal/sam3u1c/tc.c ****  * \brief Read TC Register A (RA) on the specified channel.
+ 228:.././hal/sam3u1c/tc.c ****  *
+ 229:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc       Module hardware register base address pointer
+ 230:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to read
+ 231:.././hal/sam3u1c/tc.c ****  *
+ 232:.././hal/sam3u1c/tc.c ****  * \return The TC Register A (RA) value.
+ 233:.././hal/sam3u1c/tc.c ****  */
+ 234:.././hal/sam3u1c/tc.c **** uint32_t tc_read_ra(
+ 235:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 236:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 237:.././hal/sam3u1c/tc.c **** {
+ 351              	 .loc 1 237 0
+ 352              	 .cfi_startproc
+ 353              	 
+ 354              	 
+ 355              	 
+ 356 0000 80B4     	 push {r7}
+ 357              	.LCFI36:
+ 358              	 .cfi_def_cfa_offset 4
+ 359              	 .cfi_offset 7,-4
+ 360 0002 83B0     	 sub sp,sp,#12
+ 361              	.LCFI37:
+ 362              	 .cfi_def_cfa_offset 16
+ 363 0004 00AF     	 add r7,sp,#0
+ 364              	.LCFI38:
+ 365              	 .cfi_def_cfa_register 7
+ 366 0006 7860     	 str r0,[r7,#4]
+ 367 0008 3960     	 str r1,[r7]
+ 238:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 239:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 240:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 241:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 242:.././hal/sam3u1c/tc.c **** 
+ 243:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_RA;
+ 368              	 .loc 1 243 0
+ 369 000a 7A68     	 ldr r2,[r7,#4]
+ 370 000c 3B68     	 ldr r3,[r7]
+ 371 000e 9B01     	 lsls r3,r3,#6
+ 372 0010 1344     	 add r3,r3,r2
+ 373 0012 1433     	 adds r3,r3,#20
+ 374 0014 1B68     	 ldr r3,[r3]
+ 244:.././hal/sam3u1c/tc.c **** }
+ 375              	 .loc 1 244 0
+ 376 0016 1846     	 mov r0,r3
+ 377 0018 0C37     	 adds r7,r7,#12
+ 378              	.LCFI39:
+ 379              	 .cfi_def_cfa_offset 4
+ 380 001a BD46     	 mov sp,r7
+ 381              	.LCFI40:
+ 382              	 .cfi_def_cfa_register 13
+ 383              	 
+ 384 001c 80BC     	 pop {r7}
+ 385              	.LCFI41:
+ 386              	 .cfi_restore 7
+ 387              	 .cfi_def_cfa_offset 0
+ 388 001e 7047     	 bx lr
+ 389              	 .cfi_endproc
+ 390              	.LFE73:
+ 392              	 .section .text.tc_read_rb,"ax",%progbits
+ 393              	 .align 1
+ 394              	 .global tc_read_rb
+ 395              	 .syntax unified
+ 396              	 .thumb
+ 397              	 .thumb_func
+ 398              	 .fpu softvfp
+ 400              	tc_read_rb:
+ 401              	.LFB74:
+ 245:.././hal/sam3u1c/tc.c **** 
+ 246:.././hal/sam3u1c/tc.c **** /**
+ 247:.././hal/sam3u1c/tc.c ****  * \brief Read TC Register B (RB) on the specified channel.
+ 248:.././hal/sam3u1c/tc.c ****  *
+ 249:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc       Module hardware register base address pointer
+ 250:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to read
+ 251:.././hal/sam3u1c/tc.c ****  *
+ 252:.././hal/sam3u1c/tc.c ****  * \return The TC Register B (RB) value.
+ 253:.././hal/sam3u1c/tc.c ****  */
+ 254:.././hal/sam3u1c/tc.c **** uint32_t tc_read_rb(
+ 255:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 256:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 257:.././hal/sam3u1c/tc.c **** {
+ 402              	 .loc 1 257 0
+ 403              	 .cfi_startproc
+ 404              	 
+ 405              	 
+ 406              	 
+ 407 0000 80B4     	 push {r7}
+ 408              	.LCFI42:
+ 409              	 .cfi_def_cfa_offset 4
+ 410              	 .cfi_offset 7,-4
+ 411 0002 83B0     	 sub sp,sp,#12
+ 412              	.LCFI43:
+ 413              	 .cfi_def_cfa_offset 16
+ 414 0004 00AF     	 add r7,sp,#0
+ 415              	.LCFI44:
+ 416              	 .cfi_def_cfa_register 7
+ 417 0006 7860     	 str r0,[r7,#4]
+ 418 0008 3960     	 str r1,[r7]
+ 258:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 259:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 260:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 261:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 262:.././hal/sam3u1c/tc.c **** 
+ 263:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_RB;
+ 419              	 .loc 1 263 0
+ 420 000a 7A68     	 ldr r2,[r7,#4]
+ 421 000c 3B68     	 ldr r3,[r7]
+ 422 000e 9B01     	 lsls r3,r3,#6
+ 423 0010 1344     	 add r3,r3,r2
+ 424 0012 1833     	 adds r3,r3,#24
+ 425 0014 1B68     	 ldr r3,[r3]
+ 264:.././hal/sam3u1c/tc.c **** }
+ 426              	 .loc 1 264 0
+ 427 0016 1846     	 mov r0,r3
+ 428 0018 0C37     	 adds r7,r7,#12
+ 429              	.LCFI45:
+ 430              	 .cfi_def_cfa_offset 4
+ 431 001a BD46     	 mov sp,r7
+ 432              	.LCFI46:
+ 433              	 .cfi_def_cfa_register 13
+ 434              	 
+ 435 001c 80BC     	 pop {r7}
+ 436              	.LCFI47:
+ 437              	 .cfi_restore 7
+ 438              	 .cfi_def_cfa_offset 0
+ 439 001e 7047     	 bx lr
+ 440              	 .cfi_endproc
+ 441              	.LFE74:
+ 443              	 .section .text.tc_read_rc,"ax",%progbits
+ 444              	 .align 1
+ 445              	 .global tc_read_rc
+ 446              	 .syntax unified
+ 447              	 .thumb
+ 448              	 .thumb_func
+ 449              	 .fpu softvfp
+ 451              	tc_read_rc:
+ 452              	.LFB75:
+ 265:.././hal/sam3u1c/tc.c **** 
+ 266:.././hal/sam3u1c/tc.c **** /**
+ 267:.././hal/sam3u1c/tc.c ****  * \brief Read TC Register C (RC) on the specified channel.
+ 268:.././hal/sam3u1c/tc.c ****  *
+ 269:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc       Module hardware register base address pointer
+ 270:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to read
+ 271:.././hal/sam3u1c/tc.c ****  *
+ 272:.././hal/sam3u1c/tc.c ****  * \return The Register C (RC) value.
+ 273:.././hal/sam3u1c/tc.c ****  */
+ 274:.././hal/sam3u1c/tc.c **** uint32_t tc_read_rc(
+ 275:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 276:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 277:.././hal/sam3u1c/tc.c **** {
+ 453              	 .loc 1 277 0
+ 454              	 .cfi_startproc
+ 455              	 
+ 456              	 
+ 457              	 
+ 458 0000 80B4     	 push {r7}
+ 459              	.LCFI48:
+ 460              	 .cfi_def_cfa_offset 4
+ 461              	 .cfi_offset 7,-4
+ 462 0002 83B0     	 sub sp,sp,#12
+ 463              	.LCFI49:
+ 464              	 .cfi_def_cfa_offset 16
+ 465 0004 00AF     	 add r7,sp,#0
+ 466              	.LCFI50:
+ 467              	 .cfi_def_cfa_register 7
+ 468 0006 7860     	 str r0,[r7,#4]
+ 469 0008 3960     	 str r1,[r7]
+ 278:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 279:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 280:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 281:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 282:.././hal/sam3u1c/tc.c **** 
+ 283:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_RC;
+ 470              	 .loc 1 283 0
+ 471 000a 7A68     	 ldr r2,[r7,#4]
+ 472 000c 3B68     	 ldr r3,[r7]
+ 473 000e 9B01     	 lsls r3,r3,#6
+ 474 0010 1344     	 add r3,r3,r2
+ 475 0012 1C33     	 adds r3,r3,#28
+ 476 0014 1B68     	 ldr r3,[r3]
+ 284:.././hal/sam3u1c/tc.c **** }
+ 477              	 .loc 1 284 0
+ 478 0016 1846     	 mov r0,r3
+ 479 0018 0C37     	 adds r7,r7,#12
+ 480              	.LCFI51:
+ 481              	 .cfi_def_cfa_offset 4
+ 482 001a BD46     	 mov sp,r7
+ 483              	.LCFI52:
+ 484              	 .cfi_def_cfa_register 13
+ 485              	 
+ 486 001c 80BC     	 pop {r7}
+ 487              	.LCFI53:
+ 488              	 .cfi_restore 7
+ 489              	 .cfi_def_cfa_offset 0
+ 490 001e 7047     	 bx lr
+ 491              	 .cfi_endproc
+ 492              	.LFE75:
+ 494              	 .section .text.tc_write_ra,"ax",%progbits
+ 495              	 .align 1
+ 496              	 .global tc_write_ra
+ 497              	 .syntax unified
+ 498              	 .thumb
+ 499              	 .thumb_func
+ 500              	 .fpu softvfp
+ 502              	tc_write_ra:
+ 503              	.LFB76:
+ 285:.././hal/sam3u1c/tc.c **** 
+ 286:.././hal/sam3u1c/tc.c **** /**
+ 287:.././hal/sam3u1c/tc.c ****  * \brief Write to TC Register A (RA) on the specified channel.
+ 288:.././hal/sam3u1c/tc.c ****  *
+ 289:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc      Module hardware register base address pointer
+ 290:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to write
+ 291:.././hal/sam3u1c/tc.c ****  * \param[in] ul_value   Value to write
+ 292:.././hal/sam3u1c/tc.c ****  */
+ 293:.././hal/sam3u1c/tc.c **** void tc_write_ra(
+ 294:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 295:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
+ 296:.././hal/sam3u1c/tc.c **** 		uint32_t ul_value)
+ 297:.././hal/sam3u1c/tc.c **** {
+ 504              	 .loc 1 297 0
+ 505              	 .cfi_startproc
+ 506              	 
+ 507              	 
+ 508              	 
+ 509 0000 80B4     	 push {r7}
+ 510              	.LCFI54:
+ 511              	 .cfi_def_cfa_offset 4
+ 512              	 .cfi_offset 7,-4
+ 513 0002 85B0     	 sub sp,sp,#20
+ 514              	.LCFI55:
+ 515              	 .cfi_def_cfa_offset 24
+ 516 0004 00AF     	 add r7,sp,#0
+ 517              	.LCFI56:
+ 518              	 .cfi_def_cfa_register 7
+ 519 0006 F860     	 str r0,[r7,#12]
+ 520 0008 B960     	 str r1,[r7,#8]
+ 521 000a 7A60     	 str r2,[r7,#4]
+ 298:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 299:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 300:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 301:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 302:.././hal/sam3u1c/tc.c **** 
+ 303:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_RA = ul_value;
+ 522              	 .loc 1 303 0
+ 523 000c FA68     	 ldr r2,[r7,#12]
+ 524 000e BB68     	 ldr r3,[r7,#8]
+ 525 0010 9B01     	 lsls r3,r3,#6
+ 526 0012 1344     	 add r3,r3,r2
+ 527 0014 1433     	 adds r3,r3,#20
+ 528 0016 7A68     	 ldr r2,[r7,#4]
+ 529 0018 1A60     	 str r2,[r3]
+ 304:.././hal/sam3u1c/tc.c **** }
+ 530              	 .loc 1 304 0
+ 531 001a 00BF     	 nop
+ 532 001c 1437     	 adds r7,r7,#20
+ 533              	.LCFI57:
+ 534              	 .cfi_def_cfa_offset 4
+ 535 001e BD46     	 mov sp,r7
+ 536              	.LCFI58:
+ 537              	 .cfi_def_cfa_register 13
+ 538              	 
+ 539 0020 80BC     	 pop {r7}
+ 540              	.LCFI59:
+ 541              	 .cfi_restore 7
+ 542              	 .cfi_def_cfa_offset 0
+ 543 0022 7047     	 bx lr
+ 544              	 .cfi_endproc
+ 545              	.LFE76:
+ 547              	 .section .text.tc_write_rb,"ax",%progbits
+ 548              	 .align 1
+ 549              	 .global tc_write_rb
+ 550              	 .syntax unified
+ 551              	 .thumb
+ 552              	 .thumb_func
+ 553              	 .fpu softvfp
+ 555              	tc_write_rb:
+ 556              	.LFB77:
+ 305:.././hal/sam3u1c/tc.c **** 
+ 306:.././hal/sam3u1c/tc.c **** /**
+ 307:.././hal/sam3u1c/tc.c ****  * \brief Write to TC Register B (RB) on the specified channel.
+ 308:.././hal/sam3u1c/tc.c ****  *
+ 309:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc      Module hardware register base address pointer
+ 310:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to write
+ 311:.././hal/sam3u1c/tc.c ****  * \param[in] ul_value   Value to write
+ 312:.././hal/sam3u1c/tc.c ****  */
+ 313:.././hal/sam3u1c/tc.c **** void tc_write_rb(
+ 314:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 315:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
+ 316:.././hal/sam3u1c/tc.c **** 		uint32_t ul_value)
+ 317:.././hal/sam3u1c/tc.c **** {
+ 557              	 .loc 1 317 0
+ 558              	 .cfi_startproc
+ 559              	 
+ 560              	 
+ 561              	 
+ 562 0000 80B4     	 push {r7}
+ 563              	.LCFI60:
+ 564              	 .cfi_def_cfa_offset 4
+ 565              	 .cfi_offset 7,-4
+ 566 0002 85B0     	 sub sp,sp,#20
+ 567              	.LCFI61:
+ 568              	 .cfi_def_cfa_offset 24
+ 569 0004 00AF     	 add r7,sp,#0
+ 570              	.LCFI62:
+ 571              	 .cfi_def_cfa_register 7
+ 572 0006 F860     	 str r0,[r7,#12]
+ 573 0008 B960     	 str r1,[r7,#8]
+ 574 000a 7A60     	 str r2,[r7,#4]
+ 318:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 319:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 320:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 321:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 322:.././hal/sam3u1c/tc.c **** 
+ 323:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_RB = ul_value;
+ 575              	 .loc 1 323 0
+ 576 000c FA68     	 ldr r2,[r7,#12]
+ 577 000e BB68     	 ldr r3,[r7,#8]
+ 578 0010 9B01     	 lsls r3,r3,#6
+ 579 0012 1344     	 add r3,r3,r2
+ 580 0014 1833     	 adds r3,r3,#24
+ 581 0016 7A68     	 ldr r2,[r7,#4]
+ 582 0018 1A60     	 str r2,[r3]
+ 324:.././hal/sam3u1c/tc.c **** }
+ 583              	 .loc 1 324 0
+ 584 001a 00BF     	 nop
+ 585 001c 1437     	 adds r7,r7,#20
+ 586              	.LCFI63:
+ 587              	 .cfi_def_cfa_offset 4
+ 588 001e BD46     	 mov sp,r7
+ 589              	.LCFI64:
+ 590              	 .cfi_def_cfa_register 13
+ 591              	 
+ 592 0020 80BC     	 pop {r7}
+ 593              	.LCFI65:
+ 594              	 .cfi_restore 7
+ 595              	 .cfi_def_cfa_offset 0
+ 596 0022 7047     	 bx lr
+ 597              	 .cfi_endproc
+ 598              	.LFE77:
+ 600              	 .section .text.tc_write_rc,"ax",%progbits
+ 601              	 .align 1
+ 602              	 .global tc_write_rc
+ 603              	 .syntax unified
+ 604              	 .thumb
+ 605              	 .thumb_func
+ 606              	 .fpu softvfp
+ 608              	tc_write_rc:
+ 609              	.LFB78:
+ 325:.././hal/sam3u1c/tc.c **** 
+ 326:.././hal/sam3u1c/tc.c **** /**
+ 327:.././hal/sam3u1c/tc.c ****  * \brief Write to TC Register C (RC) on the selected channel.
+ 328:.././hal/sam3u1c/tc.c ****  *
+ 329:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc      Module hardware register base address pointer
+ 330:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to write
+ 331:.././hal/sam3u1c/tc.c ****  * \param[in] ul_value   Value to write
+ 332:.././hal/sam3u1c/tc.c ****  */
+ 333:.././hal/sam3u1c/tc.c **** void tc_write_rc(
+ 334:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 335:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
+ 336:.././hal/sam3u1c/tc.c **** 		uint32_t ul_value)
+ 337:.././hal/sam3u1c/tc.c **** {
+ 610              	 .loc 1 337 0
+ 611              	 .cfi_startproc
+ 612              	 
+ 613              	 
+ 614              	 
+ 615 0000 80B4     	 push {r7}
+ 616              	.LCFI66:
+ 617              	 .cfi_def_cfa_offset 4
+ 618              	 .cfi_offset 7,-4
+ 619 0002 85B0     	 sub sp,sp,#20
+ 620              	.LCFI67:
+ 621              	 .cfi_def_cfa_offset 24
+ 622 0004 00AF     	 add r7,sp,#0
+ 623              	.LCFI68:
+ 624              	 .cfi_def_cfa_register 7
+ 625 0006 F860     	 str r0,[r7,#12]
+ 626 0008 B960     	 str r1,[r7,#8]
+ 627 000a 7A60     	 str r2,[r7,#4]
+ 338:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 339:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 340:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 341:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 342:.././hal/sam3u1c/tc.c **** 
+ 343:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_RC = ul_value;
+ 628              	 .loc 1 343 0
+ 629 000c FA68     	 ldr r2,[r7,#12]
+ 630 000e BB68     	 ldr r3,[r7,#8]
+ 631 0010 9B01     	 lsls r3,r3,#6
+ 632 0012 1344     	 add r3,r3,r2
+ 633 0014 1C33     	 adds r3,r3,#28
+ 634 0016 7A68     	 ldr r2,[r7,#4]
+ 635 0018 1A60     	 str r2,[r3]
+ 344:.././hal/sam3u1c/tc.c **** }
+ 636              	 .loc 1 344 0
+ 637 001a 00BF     	 nop
+ 638 001c 1437     	 adds r7,r7,#20
+ 639              	.LCFI69:
+ 640              	 .cfi_def_cfa_offset 4
+ 641 001e BD46     	 mov sp,r7
+ 642              	.LCFI70:
+ 643              	 .cfi_def_cfa_register 13
+ 644              	 
+ 645 0020 80BC     	 pop {r7}
+ 646              	.LCFI71:
+ 647              	 .cfi_restore 7
+ 648              	 .cfi_def_cfa_offset 0
+ 649 0022 7047     	 bx lr
+ 650              	 .cfi_endproc
+ 651              	.LFE78:
+ 653              	 .section .text.tc_enable_interrupt,"ax",%progbits
+ 654              	 .align 1
+ 655              	 .global tc_enable_interrupt
+ 656              	 .syntax unified
+ 657              	 .thumb
+ 658              	 .thumb_func
+ 659              	 .fpu softvfp
+ 661              	tc_enable_interrupt:
+ 662              	.LFB79:
+ 345:.././hal/sam3u1c/tc.c **** 
+ 346:.././hal/sam3u1c/tc.c **** /**
+ 347:.././hal/sam3u1c/tc.c ****  * \brief Enable the TC interrupts on the specified channel.
+ 348:.././hal/sam3u1c/tc.c ****  *
+ 349:.././hal/sam3u1c/tc.c ****  * \param[in,out] p_tc   Module hardware register base address pointer
+ 350:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to configure
+ 351:.././hal/sam3u1c/tc.c ****  * \param[in] ul_sources Bitmask of interrupt sources
+ 352:.././hal/sam3u1c/tc.c ****  *
+ 353:.././hal/sam3u1c/tc.c ****  * Where the input parameter <i>ul_sources</i> can be one or more of the following:
+ 354:.././hal/sam3u1c/tc.c ****  * <table>
+ 355:.././hal/sam3u1c/tc.c ****  * <tr>
+ 356:.././hal/sam3u1c/tc.c ****  *    <th>Parameter Value</th>
+ 357:.././hal/sam3u1c/tc.c ****  *    <th>Description</th>
+ 358:.././hal/sam3u1c/tc.c ****  * </tr>
+ 359:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_COVFS</td><td>Enables the Counter Overflow Interrupt</td></tr>
+ 360:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_LOVRS</td><td>Enables the Load Overrun Interrupt</td></tr>
+ 361:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_CPAS</td><td>Enables the RA Compare Interrupt</td></tr>
+ 362:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_CPBS</td><td>Enables the RB Compare Interrupt</td></tr>
+ 363:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_CPCS</td><td>Enables the RC Compare Interrupt</td></tr>
+ 364:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_LDRAS</td><td>Enables the RA Load Interrupt</td></tr>
+ 365:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_LDRBS</td><td>Enables the RB Load Interrupt</td></tr>
+ 366:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IER_ETRGS</td><td>Enables the External Trigger Interrupt</td></tr>
+ 367:.././hal/sam3u1c/tc.c ****  * </table>
+ 368:.././hal/sam3u1c/tc.c ****  */
+ 369:.././hal/sam3u1c/tc.c **** void tc_enable_interrupt(
+ 370:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 371:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
+ 372:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
+ 373:.././hal/sam3u1c/tc.c **** {
+ 663              	 .loc 1 373 0
+ 664              	 .cfi_startproc
+ 665              	 
+ 666              	 
+ 667              	 
+ 668 0000 80B4     	 push {r7}
+ 669              	.LCFI72:
+ 670              	 .cfi_def_cfa_offset 4
+ 671              	 .cfi_offset 7,-4
+ 672 0002 87B0     	 sub sp,sp,#28
+ 673              	.LCFI73:
+ 674              	 .cfi_def_cfa_offset 32
+ 675 0004 00AF     	 add r7,sp,#0
+ 676              	.LCFI74:
+ 677              	 .cfi_def_cfa_register 7
+ 678 0006 F860     	 str r0,[r7,#12]
+ 679 0008 B960     	 str r1,[r7,#8]
+ 680 000a 7A60     	 str r2,[r7,#4]
+ 374:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
+ 375:.././hal/sam3u1c/tc.c **** 
+ 376:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 377:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 378:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 379:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 380:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
+ 681              	 .loc 1 380 0
+ 682 000c FA68     	 ldr r2,[r7,#12]
+ 683 000e BB68     	 ldr r3,[r7,#8]
+ 684 0010 9B01     	 lsls r3,r3,#6
+ 685 0012 1344     	 add r3,r3,r2
+ 686 0014 7B61     	 str r3,[r7,#20]
+ 381:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_IER = ul_sources;
+ 687              	 .loc 1 381 0
+ 688 0016 7B69     	 ldr r3,[r7,#20]
+ 689 0018 7A68     	 ldr r2,[r7,#4]
+ 690 001a 5A62     	 str r2,[r3,#36]
+ 382:.././hal/sam3u1c/tc.c **** }
+ 691              	 .loc 1 382 0
+ 692 001c 00BF     	 nop
+ 693 001e 1C37     	 adds r7,r7,#28
+ 694              	.LCFI75:
+ 695              	 .cfi_def_cfa_offset 4
+ 696 0020 BD46     	 mov sp,r7
+ 697              	.LCFI76:
+ 698              	 .cfi_def_cfa_register 13
+ 699              	 
+ 700 0022 80BC     	 pop {r7}
+ 701              	.LCFI77:
+ 702              	 .cfi_restore 7
+ 703              	 .cfi_def_cfa_offset 0
+ 704 0024 7047     	 bx lr
+ 705              	 .cfi_endproc
+ 706              	.LFE79:
+ 708              	 .section .text.tc_disable_interrupt,"ax",%progbits
+ 709              	 .align 1
+ 710              	 .global tc_disable_interrupt
+ 711              	 .syntax unified
+ 712              	 .thumb
+ 713              	 .thumb_func
+ 714              	 .fpu softvfp
+ 716              	tc_disable_interrupt:
+ 717              	.LFB80:
+ 383:.././hal/sam3u1c/tc.c **** 
+ 384:.././hal/sam3u1c/tc.c **** /**
+ 385:.././hal/sam3u1c/tc.c ****  * \brief Disable TC interrupts on the specified channel.
+ 386:.././hal/sam3u1c/tc.c ****  *
+ 387:.././hal/sam3u1c/tc.c ****  * \param[in,out] p_tc   Module hardware register base address pointer
+ 388:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to configure
+ 389:.././hal/sam3u1c/tc.c ****  * \param[in] ul_sources A bitmask of Interrupt sources
+ 390:.././hal/sam3u1c/tc.c ****  *
+ 391:.././hal/sam3u1c/tc.c ****  * Where the input parameter <i>ul_sources</i> can be one or more of the following:
+ 392:.././hal/sam3u1c/tc.c ****  * <table>
+ 393:.././hal/sam3u1c/tc.c ****  * <tr>
+ 394:.././hal/sam3u1c/tc.c ****  *    <th>Parameter Value</th>
+ 395:.././hal/sam3u1c/tc.c ****  *    <th>Description</th>
+ 396:.././hal/sam3u1c/tc.c ****  * </tr>
+ 397:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_COVFS</td><td>Disables the Counter Overflow Interrupt</td></tr>
+ 398:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_LOVRS</td><td>Disables the Load Overrun Interrupt</td></tr>
+ 399:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_CPAS</td><td>Disables the RA Compare Interrupt</td></tr>
+ 400:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_CPBS</td><td>Disables the RB Compare Interrupt</td></tr>
+ 401:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_CPCS</td><td>Disables the RC Compare Interrupt</td></tr>
+ 402:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_LDRAS</td><td>Disables the RA Load Interrupt</td></tr>
+ 403:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_LDRBS</td><td>Disables the RB Load Interrupt</td></tr>
+ 404:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_IDR_ETRGS</td><td>Disables the External Trigger Interrupt</td></tr>
+ 405:.././hal/sam3u1c/tc.c ****  * </table>
+ 406:.././hal/sam3u1c/tc.c ****  */
+ 407:.././hal/sam3u1c/tc.c **** void tc_disable_interrupt(
+ 408:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 409:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
+ 410:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
+ 411:.././hal/sam3u1c/tc.c **** {
+ 718              	 .loc 1 411 0
+ 719              	 .cfi_startproc
+ 720              	 
+ 721              	 
+ 722              	 
+ 723 0000 80B4     	 push {r7}
+ 724              	.LCFI78:
+ 725              	 .cfi_def_cfa_offset 4
+ 726              	 .cfi_offset 7,-4
+ 727 0002 87B0     	 sub sp,sp,#28
+ 728              	.LCFI79:
+ 729              	 .cfi_def_cfa_offset 32
+ 730 0004 00AF     	 add r7,sp,#0
+ 731              	.LCFI80:
+ 732              	 .cfi_def_cfa_register 7
+ 733 0006 F860     	 str r0,[r7,#12]
+ 734 0008 B960     	 str r1,[r7,#8]
+ 735 000a 7A60     	 str r2,[r7,#4]
+ 412:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
+ 413:.././hal/sam3u1c/tc.c **** 
+ 414:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 415:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 416:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 417:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 418:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
+ 736              	 .loc 1 418 0
+ 737 000c FA68     	 ldr r2,[r7,#12]
+ 738 000e BB68     	 ldr r3,[r7,#8]
+ 739 0010 9B01     	 lsls r3,r3,#6
+ 740 0012 1344     	 add r3,r3,r2
+ 741 0014 7B61     	 str r3,[r7,#20]
+ 419:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_IDR = ul_sources;
+ 742              	 .loc 1 419 0
+ 743 0016 7B69     	 ldr r3,[r7,#20]
+ 744 0018 7A68     	 ldr r2,[r7,#4]
+ 745 001a 9A62     	 str r2,[r3,#40]
+ 420:.././hal/sam3u1c/tc.c **** }
+ 746              	 .loc 1 420 0
+ 747 001c 00BF     	 nop
+ 748 001e 1C37     	 adds r7,r7,#28
+ 749              	.LCFI81:
+ 750              	 .cfi_def_cfa_offset 4
+ 751 0020 BD46     	 mov sp,r7
+ 752              	.LCFI82:
+ 753              	 .cfi_def_cfa_register 13
+ 754              	 
+ 755 0022 80BC     	 pop {r7}
+ 756              	.LCFI83:
+ 757              	 .cfi_restore 7
+ 758              	 .cfi_def_cfa_offset 0
+ 759 0024 7047     	 bx lr
+ 760              	 .cfi_endproc
+ 761              	.LFE80:
+ 763              	 .section .text.tc_get_interrupt_mask,"ax",%progbits
+ 764              	 .align 1
+ 765              	 .global tc_get_interrupt_mask
+ 766              	 .syntax unified
+ 767              	 .thumb
+ 768              	 .thumb_func
+ 769              	 .fpu softvfp
+ 771              	tc_get_interrupt_mask:
+ 772              	.LFB81:
+ 421:.././hal/sam3u1c/tc.c **** 
+ 422:.././hal/sam3u1c/tc.c **** /**
+ 423:.././hal/sam3u1c/tc.c ****  * \brief Read the TC interrupt mask for the specified channel.
+ 424:.././hal/sam3u1c/tc.c ****  *
+ 425:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc       Module hardware register base address pointer
+ 426:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel to read
+ 427:.././hal/sam3u1c/tc.c ****  *
+ 428:.././hal/sam3u1c/tc.c ****  * \return The TC interrupt mask value.
+ 429:.././hal/sam3u1c/tc.c ****  */
+ 430:.././hal/sam3u1c/tc.c **** uint32_t tc_get_interrupt_mask(
+ 431:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 432:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 433:.././hal/sam3u1c/tc.c **** {
+ 773              	 .loc 1 433 0
+ 774              	 .cfi_startproc
+ 775              	 
+ 776              	 
+ 777              	 
+ 778 0000 80B4     	 push {r7}
+ 779              	.LCFI84:
+ 780              	 .cfi_def_cfa_offset 4
+ 781              	 .cfi_offset 7,-4
+ 782 0002 85B0     	 sub sp,sp,#20
+ 783              	.LCFI85:
+ 784              	 .cfi_def_cfa_offset 24
+ 785 0004 00AF     	 add r7,sp,#0
+ 786              	.LCFI86:
+ 787              	 .cfi_def_cfa_register 7
+ 788 0006 7860     	 str r0,[r7,#4]
+ 789 0008 3960     	 str r1,[r7]
+ 434:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
+ 435:.././hal/sam3u1c/tc.c **** 
+ 436:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 437:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 438:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 439:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 440:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
+ 790              	 .loc 1 440 0
+ 791 000a 7A68     	 ldr r2,[r7,#4]
+ 792 000c 3B68     	 ldr r3,[r7]
+ 793 000e 9B01     	 lsls r3,r3,#6
+ 794 0010 1344     	 add r3,r3,r2
+ 795 0012 FB60     	 str r3,[r7,#12]
+ 441:.././hal/sam3u1c/tc.c **** 	return tc_channel->TC_IMR;
+ 796              	 .loc 1 441 0
+ 797 0014 FB68     	 ldr r3,[r7,#12]
+ 798 0016 DB6A     	 ldr r3,[r3,#44]
+ 442:.././hal/sam3u1c/tc.c **** }
+ 799              	 .loc 1 442 0
+ 800 0018 1846     	 mov r0,r3
+ 801 001a 1437     	 adds r7,r7,#20
+ 802              	.LCFI87:
+ 803              	 .cfi_def_cfa_offset 4
+ 804 001c BD46     	 mov sp,r7
+ 805              	.LCFI88:
+ 806              	 .cfi_def_cfa_register 13
+ 807              	 
+ 808 001e 80BC     	 pop {r7}
+ 809              	.LCFI89:
+ 810              	 .cfi_restore 7
+ 811              	 .cfi_def_cfa_offset 0
+ 812 0020 7047     	 bx lr
+ 813              	 .cfi_endproc
+ 814              	.LFE81:
+ 816              	 .section .text.tc_get_status,"ax",%progbits
+ 817              	 .align 1
+ 818              	 .global tc_get_status
+ 819              	 .syntax unified
+ 820              	 .thumb
+ 821              	 .thumb_func
+ 822              	 .fpu softvfp
+ 824              	tc_get_status:
+ 825              	.LFB82:
+ 443:.././hal/sam3u1c/tc.c **** 
+ 444:.././hal/sam3u1c/tc.c **** /**
+ 445:.././hal/sam3u1c/tc.c ****  * \brief Get the current status for the specified TC channel.
+ 446:.././hal/sam3u1c/tc.c ****  *
+ 447:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc       Module hardware register base address pointer
+ 448:.././hal/sam3u1c/tc.c ****  * \param[in] ul_channel Channel number
+ 449:.././hal/sam3u1c/tc.c ****  *
+ 450:.././hal/sam3u1c/tc.c ****  * \return The current TC status.
+ 451:.././hal/sam3u1c/tc.c ****  */
+ 452:.././hal/sam3u1c/tc.c **** uint32_t tc_get_status(
+ 453:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 454:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
+ 455:.././hal/sam3u1c/tc.c **** {
+ 826              	 .loc 1 455 0
+ 827              	 .cfi_startproc
+ 828              	 
+ 829              	 
+ 830              	 
+ 831 0000 80B4     	 push {r7}
+ 832              	.LCFI90:
+ 833              	 .cfi_def_cfa_offset 4
+ 834              	 .cfi_offset 7,-4
+ 835 0002 85B0     	 sub sp,sp,#20
+ 836              	.LCFI91:
+ 837              	 .cfi_def_cfa_offset 24
+ 838 0004 00AF     	 add r7,sp,#0
+ 839              	.LCFI92:
+ 840              	 .cfi_def_cfa_register 7
+ 841 0006 7860     	 str r0,[r7,#4]
+ 842 0008 3960     	 str r1,[r7]
+ 456:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
+ 457:.././hal/sam3u1c/tc.c **** 
+ 458:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 459:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 460:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
+ 461:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
+ 462:.././hal/sam3u1c/tc.c **** 			
+ 463:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
+ 843              	 .loc 1 463 0
+ 844 000a 7A68     	 ldr r2,[r7,#4]
+ 845 000c 3B68     	 ldr r3,[r7]
+ 846 000e 9B01     	 lsls r3,r3,#6
+ 847 0010 1344     	 add r3,r3,r2
+ 848 0012 FB60     	 str r3,[r7,#12]
+ 464:.././hal/sam3u1c/tc.c **** 	return tc_channel->TC_SR;
+ 849              	 .loc 1 464 0
+ 850 0014 FB68     	 ldr r3,[r7,#12]
+ 851 0016 1B6A     	 ldr r3,[r3,#32]
+ 465:.././hal/sam3u1c/tc.c **** }
+ 852              	 .loc 1 465 0
+ 853 0018 1846     	 mov r0,r3
+ 854 001a 1437     	 adds r7,r7,#20
+ 855              	.LCFI93:
+ 856              	 .cfi_def_cfa_offset 4
+ 857 001c BD46     	 mov sp,r7
+ 858              	.LCFI94:
+ 859              	 .cfi_def_cfa_register 13
+ 860              	 
+ 861 001e 80BC     	 pop {r7}
+ 862              	.LCFI95:
+ 863              	 .cfi_restore 7
+ 864              	 .cfi_def_cfa_offset 0
+ 865 0020 7047     	 bx lr
+ 866              	 .cfi_endproc
+ 867              	.LFE82:
+ 869              	 .section .text.tc_find_mck_divisor,"ax",%progbits
+ 870              	 .align 1
+ 871              	 .global tc_find_mck_divisor
+ 872              	 .syntax unified
+ 873              	 .thumb
+ 874              	 .thumb_func
+ 875              	 .fpu softvfp
+ 877              	tc_find_mck_divisor:
+ 878              	.LFB83:
+ 466:.././hal/sam3u1c/tc.c **** 
+ 467:.././hal/sam3u1c/tc.c **** /* TC divisor used to find the lowest acceptable timer frequency */
+ 468:.././hal/sam3u1c/tc.c **** #define TC_DIV_FACTOR 65536
+ 469:.././hal/sam3u1c/tc.c **** 
+ 470:.././hal/sam3u1c/tc.c **** #if (!SAM4L) && !defined(__DOXYGEN__)
+ 471:.././hal/sam3u1c/tc.c **** 
+ 472:.././hal/sam3u1c/tc.c **** #ifndef FREQ_SLOW_CLOCK_EXT
+ 473:.././hal/sam3u1c/tc.c **** #define FREQ_SLOW_CLOCK_EXT 32768 /* External slow clock frequency (hz) */
+ 474:.././hal/sam3u1c/tc.c **** #endif
+ 475:.././hal/sam3u1c/tc.c **** 
+ 476:.././hal/sam3u1c/tc.c **** /**
+ 477:.././hal/sam3u1c/tc.c ****  * \brief Find the best MCK divisor.
+ 478:.././hal/sam3u1c/tc.c ****  *
+ 479:.././hal/sam3u1c/tc.c ****  * Finds the best MCK divisor given the timer frequency and MCK. The result
+ 480:.././hal/sam3u1c/tc.c ****  * is guaranteed to satisfy the following equation:
+ 481:.././hal/sam3u1c/tc.c ****  * \code (MCK / (DIV * 65536)) <= freq <= (MCK / DIV) \endcode
+ 482:.././hal/sam3u1c/tc.c ****  * with DIV being the lowest possible value, to maximize timing adjust resolution.
+ 483:.././hal/sam3u1c/tc.c ****  *
+ 484:.././hal/sam3u1c/tc.c ****  * \param[in] ul_freq     Desired timer frequency
+ 485:.././hal/sam3u1c/tc.c ****  * \param[in] ul_mck      Master clock frequency
+ 486:.././hal/sam3u1c/tc.c ****  * \param[out] p_uldiv    Divisor value
+ 487:.././hal/sam3u1c/tc.c ****  * \param[out] p_ultcclks TCCLKS field value for divisor
+ 488:.././hal/sam3u1c/tc.c ****  * \param[in] ul_boardmck Board clock frequency
+ 489:.././hal/sam3u1c/tc.c ****  *
+ 490:.././hal/sam3u1c/tc.c ****  * \return The divisor found status.
+ 491:.././hal/sam3u1c/tc.c ****  * \retval 0 No suitable divisor was found
+ 492:.././hal/sam3u1c/tc.c ****  * \retval 1 A divisor was found
+ 493:.././hal/sam3u1c/tc.c ****  */
+ 494:.././hal/sam3u1c/tc.c **** uint32_t tc_find_mck_divisor(
+ 495:.././hal/sam3u1c/tc.c **** 		uint32_t ul_freq,
+ 496:.././hal/sam3u1c/tc.c **** 		uint32_t ul_mck,
+ 497:.././hal/sam3u1c/tc.c **** 		uint32_t *p_uldiv,
+ 498:.././hal/sam3u1c/tc.c **** 		uint32_t *p_ultcclks,
+ 499:.././hal/sam3u1c/tc.c **** 		uint32_t ul_boardmck)
+ 500:.././hal/sam3u1c/tc.c **** {
+ 879              	 .loc 1 500 0
+ 880              	 .cfi_startproc
+ 881              	 
+ 882              	 
+ 883              	 
+ 884 0000 80B4     	 push {r7}
+ 885              	.LCFI96:
+ 886              	 .cfi_def_cfa_offset 4
+ 887              	 .cfi_offset 7,-4
+ 888 0002 8DB0     	 sub sp,sp,#52
+ 889              	.LCFI97:
+ 890              	 .cfi_def_cfa_offset 56
+ 891 0004 00AF     	 add r7,sp,#0
+ 892              	.LCFI98:
+ 893              	 .cfi_def_cfa_register 7
+ 894 0006 F860     	 str r0,[r7,#12]
+ 895 0008 B960     	 str r1,[r7,#8]
+ 896 000a 7A60     	 str r2,[r7,#4]
+ 897 000c 3B60     	 str r3,[r7]
+ 501:.././hal/sam3u1c/tc.c **** 	const uint32_t divisors[5] = { 2, 8, 32, 128,
+ 898              	 .loc 1 501 0
+ 899 000e 0223     	 movs r3,#2
+ 900 0010 3B61     	 str r3,[r7,#16]
+ 901 0012 0823     	 movs r3,#8
+ 902 0014 7B61     	 str r3,[r7,#20]
+ 903 0016 2023     	 movs r3,#32
+ 904 0018 BB61     	 str r3,[r7,#24]
+ 905 001a 8023     	 movs r3,#128
+ 906 001c FB61     	 str r3,[r7,#28]
+ 502:.././hal/sam3u1c/tc.c **** 			ul_boardmck / FREQ_SLOW_CLOCK_EXT };
+ 907              	 .loc 1 502 0
+ 908 001e BB6B     	 ldr r3,[r7,#56]
+ 909 0020 DB0B     	 lsrs r3,r3,#15
+ 501:.././hal/sam3u1c/tc.c **** 	const uint32_t divisors[5] = { 2, 8, 32, 128,
+ 910              	 .loc 1 501 0
+ 911 0022 3B62     	 str r3,[r7,#32]
+ 503:.././hal/sam3u1c/tc.c **** 	uint32_t ul_index;
+ 504:.././hal/sam3u1c/tc.c **** 	uint32_t ul_high, ul_low;
+ 505:.././hal/sam3u1c/tc.c **** 
+ 506:.././hal/sam3u1c/tc.c **** 	/*  Satisfy frequency bound. */
+ 507:.././hal/sam3u1c/tc.c **** 	for (ul_index = 0;
+ 912              	 .loc 1 507 0
+ 913 0024 0023     	 movs r3,#0
+ 914 0026 FB62     	 str r3,[r7,#44]
+ 915 0028 1AE0     	 b .L24
+ 916              	.L29:
+ 508:.././hal/sam3u1c/tc.c **** 			ul_index < (sizeof(divisors) / sizeof(divisors[0]));
+ 509:.././hal/sam3u1c/tc.c **** 			ul_index++) {
+ 510:.././hal/sam3u1c/tc.c **** 		ul_high = ul_mck / divisors[ul_index];
+ 917              	 .loc 1 510 0
+ 918 002a FB6A     	 ldr r3,[r7,#44]
+ 919 002c 9B00     	 lsls r3,r3,#2
+ 920 002e 07F13002 	 add r2,r7,#48
+ 921 0032 1344     	 add r3,r3,r2
+ 922 0034 53F8203C 	 ldr r3,[r3,#-32]
+ 923 0038 BA68     	 ldr r2,[r7,#8]
+ 924 003a B2FBF3F3 	 udiv r3,r2,r3
+ 925 003e BB62     	 str r3,[r7,#40]
+ 511:.././hal/sam3u1c/tc.c **** 		ul_low  = ul_high / TC_DIV_FACTOR;
+ 926              	 .loc 1 511 0
+ 927 0040 BB6A     	 ldr r3,[r7,#40]
+ 928 0042 1B0C     	 lsrs r3,r3,#16
+ 929 0044 7B62     	 str r3,[r7,#36]
+ 512:.././hal/sam3u1c/tc.c **** 		if (ul_freq > ul_high) {
+ 930              	 .loc 1 512 0
+ 931 0046 FA68     	 ldr r2,[r7,#12]
+ 932 0048 BB6A     	 ldr r3,[r7,#40]
+ 933 004a 9A42     	 cmp r2,r3
+ 934 004c 01D9     	 bls .L25
+ 513:.././hal/sam3u1c/tc.c **** 			return 0;
+ 935              	 .loc 1 513 0
+ 936 004e 0023     	 movs r3,#0
+ 937 0050 23E0     	 b .L33
+ 938              	.L25:
+ 514:.././hal/sam3u1c/tc.c **** 		} else if (ul_freq >= ul_low) {
+ 939              	 .loc 1 514 0
+ 940 0052 FA68     	 ldr r2,[r7,#12]
+ 941 0054 7B6A     	 ldr r3,[r7,#36]
+ 942 0056 9A42     	 cmp r2,r3
+ 943 0058 06D2     	 bcs .L34
+ 509:.././hal/sam3u1c/tc.c **** 		ul_high = ul_mck / divisors[ul_index];
+ 944              	 .loc 1 509 0
+ 945 005a FB6A     	 ldr r3,[r7,#44]
+ 946 005c 0133     	 adds r3,r3,#1
+ 947 005e FB62     	 str r3,[r7,#44]
+ 948              	.L24:
+ 507:.././hal/sam3u1c/tc.c **** 			ul_index < (sizeof(divisors) / sizeof(divisors[0]));
+ 949              	 .loc 1 507 0 discriminator 1
+ 950 0060 FB6A     	 ldr r3,[r7,#44]
+ 951 0062 042B     	 cmp r3,#4
+ 952 0064 E1D9     	 bls .L29
+ 953 0066 00E0     	 b .L28
+ 954              	.L34:
+ 515:.././hal/sam3u1c/tc.c **** 			break;
+ 955              	 .loc 1 515 0
+ 956 0068 00BF     	 nop
+ 957              	.L28:
+ 516:.././hal/sam3u1c/tc.c **** 		}
+ 517:.././hal/sam3u1c/tc.c **** 	}
+ 518:.././hal/sam3u1c/tc.c **** 	if (ul_index >= (sizeof(divisors) / sizeof(divisors[0]))) {
+ 958              	 .loc 1 518 0
+ 959 006a FB6A     	 ldr r3,[r7,#44]
+ 960 006c 042B     	 cmp r3,#4
+ 961 006e 01D9     	 bls .L30
+ 519:.././hal/sam3u1c/tc.c **** 		return 0;
+ 962              	 .loc 1 519 0
+ 963 0070 0023     	 movs r3,#0
+ 964 0072 12E0     	 b .L33
+ 965              	.L30:
+ 520:.././hal/sam3u1c/tc.c **** 	}
+ 521:.././hal/sam3u1c/tc.c **** 
+ 522:.././hal/sam3u1c/tc.c **** 	/*  Store results. */
+ 523:.././hal/sam3u1c/tc.c **** 	if (p_uldiv) {
+ 966              	 .loc 1 523 0
+ 967 0074 7B68     	 ldr r3,[r7,#4]
+ 968 0076 002B     	 cmp r3,#0
+ 969 0078 08D0     	 beq .L31
+ 524:.././hal/sam3u1c/tc.c **** 		*p_uldiv = divisors[ul_index];
+ 970              	 .loc 1 524 0
+ 971 007a FB6A     	 ldr r3,[r7,#44]
+ 972 007c 9B00     	 lsls r3,r3,#2
+ 973 007e 07F13002 	 add r2,r7,#48
+ 974 0082 1344     	 add r3,r3,r2
+ 975 0084 53F8202C 	 ldr r2,[r3,#-32]
+ 976 0088 7B68     	 ldr r3,[r7,#4]
+ 977 008a 1A60     	 str r2,[r3]
+ 978              	.L31:
+ 525:.././hal/sam3u1c/tc.c **** 	}
+ 526:.././hal/sam3u1c/tc.c **** 
+ 527:.././hal/sam3u1c/tc.c **** 	if (p_ultcclks) {
+ 979              	 .loc 1 527 0
+ 980 008c 3B68     	 ldr r3,[r7]
+ 981 008e 002B     	 cmp r3,#0
+ 982 0090 02D0     	 beq .L32
+ 528:.././hal/sam3u1c/tc.c **** 		*p_ultcclks = ul_index;
+ 983              	 .loc 1 528 0
+ 984 0092 3B68     	 ldr r3,[r7]
+ 985 0094 FA6A     	 ldr r2,[r7,#44]
+ 986 0096 1A60     	 str r2,[r3]
+ 987              	.L32:
+ 529:.././hal/sam3u1c/tc.c **** 	}
+ 530:.././hal/sam3u1c/tc.c **** 
+ 531:.././hal/sam3u1c/tc.c **** 	return 1;
+ 988              	 .loc 1 531 0
+ 989 0098 0123     	 movs r3,#1
+ 990              	.L33:
+ 532:.././hal/sam3u1c/tc.c **** }
+ 991              	 .loc 1 532 0 discriminator 1
+ 992 009a 1846     	 mov r0,r3
+ 993 009c 3437     	 adds r7,r7,#52
+ 994              	.LCFI99:
+ 995              	 .cfi_def_cfa_offset 4
+ 996 009e BD46     	 mov sp,r7
+ 997              	.LCFI100:
+ 998              	 .cfi_def_cfa_register 13
+ 999              	 
+ 1000 00a0 80BC     	 pop {r7}
+ 1001              	.LCFI101:
+ 1002              	 .cfi_restore 7
+ 1003              	 .cfi_def_cfa_offset 0
+ 1004 00a2 7047     	 bx lr
+ 1005              	 .cfi_endproc
+ 1006              	.LFE83:
+ 1008              	 .section .text.tc_enable_qdec_interrupt,"ax",%progbits
+ 1009              	 .align 1
+ 1010              	 .global tc_enable_qdec_interrupt
+ 1011              	 .syntax unified
+ 1012              	 .thumb
+ 1013              	 .thumb_func
+ 1014              	 .fpu softvfp
+ 1016              	tc_enable_qdec_interrupt:
+ 1017              	.LFB84:
+ 533:.././hal/sam3u1c/tc.c **** 
+ 534:.././hal/sam3u1c/tc.c **** #endif /* (!SAM4L) */
+ 535:.././hal/sam3u1c/tc.c **** 
+ 536:.././hal/sam3u1c/tc.c **** #if (SAM4L) || defined(__DOXYGEN__)
+ 537:.././hal/sam3u1c/tc.c **** /**
+ 538:.././hal/sam3u1c/tc.c ****  * \brief Find the best PBA/MCK divisor.
+ 539:.././hal/sam3u1c/tc.c ****  *
+ 540:.././hal/sam3u1c/tc.c ****  * <b>For SAM4L devices:</b> Finds the best PBA divisor given the timer
+ 541:.././hal/sam3u1c/tc.c ****  * frequency and PBA clock. The result is guaranteed to satisfy the following equation:
+ 542:.././hal/sam3u1c/tc.c ****  * \code  (ul_pbaclk / (2* DIV * 65536)) <= freq <= (ul_pbaclk / (2* DIV)) \endcode
+ 543:.././hal/sam3u1c/tc.c ****  * with DIV being the lowest possible value, to maximize timing adjust resolution.
+ 544:.././hal/sam3u1c/tc.c ****  *
+ 545:.././hal/sam3u1c/tc.c ****  * <b>For non SAM4L devices:</b> Finds the best MCK divisor given the timer frequency
+ 546:.././hal/sam3u1c/tc.c ****  * and MCK. The result is guaranteed to satisfy the following equation:
+ 547:.././hal/sam3u1c/tc.c ****  * \code (MCK / (DIV * 65536)) <= freq <= (MCK / DIV) \endcode
+ 548:.././hal/sam3u1c/tc.c ****  * with DIV being the lowest possible value, to maximize timing adjust resolution.
+ 549:.././hal/sam3u1c/tc.c ****  *
+ 550:.././hal/sam3u1c/tc.c ****  * \param[in] ul_freq     Desired timer frequency
+ 551:.././hal/sam3u1c/tc.c ****  * \param[in] ul_mck      PBA clock frequency
+ 552:.././hal/sam3u1c/tc.c ****  * \param[out] p_uldiv    Divisor value
+ 553:.././hal/sam3u1c/tc.c ****  * \param[out] p_ultcclks TCCLKS field value for divisor
+ 554:.././hal/sam3u1c/tc.c ****  * \param[in] ul_boardmck Board clock frequency (set to 0 for SAM4L devices)
+ 555:.././hal/sam3u1c/tc.c ****  *
+ 556:.././hal/sam3u1c/tc.c ****  * \return The divisor found status.
+ 557:.././hal/sam3u1c/tc.c ****  * \retval 0 No suitable divisor was found
+ 558:.././hal/sam3u1c/tc.c ****  * \retval 1 A divisor was found
+ 559:.././hal/sam3u1c/tc.c ****  */
+ 560:.././hal/sam3u1c/tc.c **** uint32_t tc_find_mck_divisor(
+ 561:.././hal/sam3u1c/tc.c **** 		uint32_t ul_freq,
+ 562:.././hal/sam3u1c/tc.c **** 		uint32_t ul_mck,
+ 563:.././hal/sam3u1c/tc.c **** 		uint32_t *p_uldiv,
+ 564:.././hal/sam3u1c/tc.c **** 		uint32_t *p_ultcclks,
+ 565:.././hal/sam3u1c/tc.c **** 		uint32_t ul_boardmck)
+ 566:.././hal/sam3u1c/tc.c **** {
+ 567:.././hal/sam3u1c/tc.c **** 	const uint32_t divisors[5] = { 0, 2, 8, 32, 128};
+ 568:.././hal/sam3u1c/tc.c **** 	uint32_t ul_index;
+ 569:.././hal/sam3u1c/tc.c **** 	uint32_t ul_high, ul_low;
+ 570:.././hal/sam3u1c/tc.c **** 
+ 571:.././hal/sam3u1c/tc.c **** 	UNUSED(ul_boardmck);
+ 572:.././hal/sam3u1c/tc.c **** 
+ 573:.././hal/sam3u1c/tc.c **** 	/*  Satisfy frequency bound. */
+ 574:.././hal/sam3u1c/tc.c **** 	for (ul_index = 1;
+ 575:.././hal/sam3u1c/tc.c **** 			ul_index < (sizeof(divisors) / sizeof(divisors[0]));
+ 576:.././hal/sam3u1c/tc.c **** 			ul_index++) {
+ 577:.././hal/sam3u1c/tc.c **** 		ul_high = ul_mck / divisors[ul_index];
+ 578:.././hal/sam3u1c/tc.c **** 		ul_low  = ul_high / TC_DIV_FACTOR;
+ 579:.././hal/sam3u1c/tc.c **** 		if (ul_freq > ul_high) {
+ 580:.././hal/sam3u1c/tc.c **** 			return 0;
+ 581:.././hal/sam3u1c/tc.c **** 		} else if (ul_freq >= ul_low) {
+ 582:.././hal/sam3u1c/tc.c **** 			break;
+ 583:.././hal/sam3u1c/tc.c **** 		}
+ 584:.././hal/sam3u1c/tc.c **** 	}
+ 585:.././hal/sam3u1c/tc.c **** 	if (ul_index >= (sizeof(divisors) / sizeof(divisors[0]))) {
+ 586:.././hal/sam3u1c/tc.c **** 		return 0;
+ 587:.././hal/sam3u1c/tc.c **** 	}
+ 588:.././hal/sam3u1c/tc.c **** 
+ 589:.././hal/sam3u1c/tc.c **** 	/*  Store results. */
+ 590:.././hal/sam3u1c/tc.c **** 	if (p_uldiv) {
+ 591:.././hal/sam3u1c/tc.c **** 		*p_uldiv = divisors[ul_index];
+ 592:.././hal/sam3u1c/tc.c **** 	}
+ 593:.././hal/sam3u1c/tc.c **** 
+ 594:.././hal/sam3u1c/tc.c **** 	if (p_ultcclks) {
+ 595:.././hal/sam3u1c/tc.c **** 		*p_ultcclks = ul_index;
+ 596:.././hal/sam3u1c/tc.c **** 	}
+ 597:.././hal/sam3u1c/tc.c **** 
+ 598:.././hal/sam3u1c/tc.c **** 	return 1;
+ 599:.././hal/sam3u1c/tc.c **** }
+ 600:.././hal/sam3u1c/tc.c **** 
+ 601:.././hal/sam3u1c/tc.c **** #endif /* (SAM4L) || defined(__DOXYGEN__) */
+ 602:.././hal/sam3u1c/tc.c **** 
+ 603:.././hal/sam3u1c/tc.c **** #if (!SAM4L && !SAMG) || defined(__DOXYGEN__)
+ 604:.././hal/sam3u1c/tc.c **** 
+ 605:.././hal/sam3u1c/tc.c **** /**
+ 606:.././hal/sam3u1c/tc.c ****  * \brief Enable TC QDEC interrupts.
+ 607:.././hal/sam3u1c/tc.c ****  *
+ 608:.././hal/sam3u1c/tc.c ****  * \note This function is not available on SAM4L or SAMG devices.
+ 609:.././hal/sam3u1c/tc.c ****  *
+ 610:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc      Module hardware register base address pointer
+ 611:.././hal/sam3u1c/tc.c ****  * \param[in] ul_sources A bitmask of QDEC interrupts to be enabled
+ 612:.././hal/sam3u1c/tc.c ****  *
+ 613:.././hal/sam3u1c/tc.c ****  * Where the input parameter <i>ul_sources</i> can be one or more of the following:
+ 614:.././hal/sam3u1c/tc.c ****  * <table>
+ 615:.././hal/sam3u1c/tc.c ****  * <tr>
+ 616:.././hal/sam3u1c/tc.c ****  *    <th>Parameter Value</th>
+ 617:.././hal/sam3u1c/tc.c ****  *    <th>Description</th>
+ 618:.././hal/sam3u1c/tc.c ****  * </tr>
+ 619:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_QIER_IDX</td><td>Enable the rising edge detected on IDX input interrupt</td></tr>
+ 620:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_QIER_DIRCHG</td><td>Enable the change in rotation direction detected interrupt</t
+ 621:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_QIER_QERR</td><td>Enable the quadrature error detected on PHA/PHB interrupt</td><
+ 622:.././hal/sam3u1c/tc.c ****  * </table>
+ 623:.././hal/sam3u1c/tc.c ****  */
+ 624:.././hal/sam3u1c/tc.c **** void tc_enable_qdec_interrupt(
+ 625:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 626:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
+ 627:.././hal/sam3u1c/tc.c **** {
+ 1018              	 .loc 1 627 0
+ 1019              	 .cfi_startproc
+ 1020              	 
+ 1021              	 
+ 1022              	 
+ 1023 0000 80B4     	 push {r7}
+ 1024              	.LCFI102:
+ 1025              	 .cfi_def_cfa_offset 4
+ 1026              	 .cfi_offset 7,-4
+ 1027 0002 83B0     	 sub sp,sp,#12
+ 1028              	.LCFI103:
+ 1029              	 .cfi_def_cfa_offset 16
+ 1030 0004 00AF     	 add r7,sp,#0
+ 1031              	.LCFI104:
+ 1032              	 .cfi_def_cfa_register 7
+ 1033 0006 7860     	 str r0,[r7,#4]
+ 1034 0008 3960     	 str r1,[r7]
+ 628:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 629:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 630:.././hal/sam3u1c/tc.c **** 	
+ 631:.././hal/sam3u1c/tc.c **** 	p_tc->TC_QIER = ul_sources;
+ 1035              	 .loc 1 631 0
+ 1036 000a 7B68     	 ldr r3,[r7,#4]
+ 1037 000c 3A68     	 ldr r2,[r7]
+ 1038 000e C3F8C820 	 str r2,[r3,#200]
+ 632:.././hal/sam3u1c/tc.c **** }
+ 1039              	 .loc 1 632 0
+ 1040 0012 00BF     	 nop
+ 1041 0014 0C37     	 adds r7,r7,#12
+ 1042              	.LCFI105:
+ 1043              	 .cfi_def_cfa_offset 4
+ 1044 0016 BD46     	 mov sp,r7
+ 1045              	.LCFI106:
+ 1046              	 .cfi_def_cfa_register 13
+ 1047              	 
+ 1048 0018 80BC     	 pop {r7}
+ 1049              	.LCFI107:
+ 1050              	 .cfi_restore 7
+ 1051              	 .cfi_def_cfa_offset 0
+ 1052 001a 7047     	 bx lr
+ 1053              	 .cfi_endproc
+ 1054              	.LFE84:
+ 1056              	 .section .text.tc_disable_qdec_interrupt,"ax",%progbits
+ 1057              	 .align 1
+ 1058              	 .global tc_disable_qdec_interrupt
+ 1059              	 .syntax unified
+ 1060              	 .thumb
+ 1061              	 .thumb_func
+ 1062              	 .fpu softvfp
+ 1064              	tc_disable_qdec_interrupt:
+ 1065              	.LFB85:
+ 633:.././hal/sam3u1c/tc.c **** 
+ 634:.././hal/sam3u1c/tc.c **** /**
+ 635:.././hal/sam3u1c/tc.c ****  * \brief Disable TC QDEC interrupts.
+ 636:.././hal/sam3u1c/tc.c ****  *
+ 637:.././hal/sam3u1c/tc.c ****  * \note This function is not available on SAM4L or SAMG devices.
+ 638:.././hal/sam3u1c/tc.c ****  *
+ 639:.././hal/sam3u1c/tc.c ****  * \param[out] p_tc      Module hardware register base address pointer
+ 640:.././hal/sam3u1c/tc.c ****  * \param[in] ul_sources A bitmask of QDEC interrupts to be disabled
+ 641:.././hal/sam3u1c/tc.c ****  *
+ 642:.././hal/sam3u1c/tc.c ****  * Where the input parameter <i>ul_sources</i> can be one or more of the following:
+ 643:.././hal/sam3u1c/tc.c ****  * <table>
+ 644:.././hal/sam3u1c/tc.c ****  * <tr>
+ 645:.././hal/sam3u1c/tc.c ****  *    <th>Parameter Value</th>
+ 646:.././hal/sam3u1c/tc.c ****  *    <th>Description</th>
+ 647:.././hal/sam3u1c/tc.c ****  * </tr>
+ 648:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_QIDR_IDX</td><td>Disable the rising edge detected on IDX input interrupt</td></tr
+ 649:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_QIDR_DIRCHG</td><td>Disable the change in rotation direction detected interrupt</
+ 650:.././hal/sam3u1c/tc.c ****  *     <tr><td>TC_QIDR_QERR</td><td>Disable the quadrature error detected on PHA/PHB interrupt</td>
+ 651:.././hal/sam3u1c/tc.c ****  * </table>
+ 652:.././hal/sam3u1c/tc.c ****  */
+ 653:.././hal/sam3u1c/tc.c **** void tc_disable_qdec_interrupt(
+ 654:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
+ 655:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
+ 656:.././hal/sam3u1c/tc.c **** {
+ 1066              	 .loc 1 656 0
+ 1067              	 .cfi_startproc
+ 1068              	 
+ 1069              	 
+ 1070              	 
+ 1071 0000 80B4     	 push {r7}
+ 1072              	.LCFI108:
+ 1073              	 .cfi_def_cfa_offset 4
+ 1074              	 .cfi_offset 7,-4
+ 1075 0002 83B0     	 sub sp,sp,#12
+ 1076              	.LCFI109:
+ 1077              	 .cfi_def_cfa_offset 16
+ 1078 0004 00AF     	 add r7,sp,#0
+ 1079              	.LCFI110:
+ 1080              	 .cfi_def_cfa_register 7
+ 1081 0006 7860     	 str r0,[r7,#4]
+ 1082 0008 3960     	 str r1,[r7]
+ 657:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 658:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 659:.././hal/sam3u1c/tc.c **** 	
+ 660:.././hal/sam3u1c/tc.c **** 	p_tc->TC_QIDR = ul_sources;
+ 1083              	 .loc 1 660 0
+ 1084 000a 7B68     	 ldr r3,[r7,#4]
+ 1085 000c 3A68     	 ldr r2,[r7]
+ 1086 000e C3F8CC20 	 str r2,[r3,#204]
+ 661:.././hal/sam3u1c/tc.c **** }
+ 1087              	 .loc 1 661 0
+ 1088 0012 00BF     	 nop
+ 1089 0014 0C37     	 adds r7,r7,#12
+ 1090              	.LCFI111:
+ 1091              	 .cfi_def_cfa_offset 4
+ 1092 0016 BD46     	 mov sp,r7
+ 1093              	.LCFI112:
+ 1094              	 .cfi_def_cfa_register 13
+ 1095              	 
+ 1096 0018 80BC     	 pop {r7}
+ 1097              	.LCFI113:
+ 1098              	 .cfi_restore 7
+ 1099              	 .cfi_def_cfa_offset 0
+ 1100 001a 7047     	 bx lr
+ 1101              	 .cfi_endproc
+ 1102              	.LFE85:
+ 1104              	 .section .text.tc_get_qdec_interrupt_mask,"ax",%progbits
+ 1105              	 .align 1
+ 1106              	 .global tc_get_qdec_interrupt_mask
+ 1107              	 .syntax unified
+ 1108              	 .thumb
+ 1109              	 .thumb_func
+ 1110              	 .fpu softvfp
+ 1112              	tc_get_qdec_interrupt_mask:
+ 1113              	.LFB86:
+ 662:.././hal/sam3u1c/tc.c **** 
+ 663:.././hal/sam3u1c/tc.c **** /**
+ 664:.././hal/sam3u1c/tc.c ****  * \brief Read TC QDEC interrupt mask.
+ 665:.././hal/sam3u1c/tc.c ****  *
+ 666:.././hal/sam3u1c/tc.c ****  * \note This function is not available on SAM4L or SAMG devices.
+ 667:.././hal/sam3u1c/tc.c ****  *
+ 668:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc Module hardware register base address pointer
+ 669:.././hal/sam3u1c/tc.c ****  *
+ 670:.././hal/sam3u1c/tc.c ****  * \return The QDEC interrupt mask value.
+ 671:.././hal/sam3u1c/tc.c ****  */
+ 672:.././hal/sam3u1c/tc.c **** uint32_t tc_get_qdec_interrupt_mask(
+ 673:.././hal/sam3u1c/tc.c **** 		Tc *p_tc)
+ 674:.././hal/sam3u1c/tc.c **** {
+ 1114              	 .loc 1 674 0
+ 1115              	 .cfi_startproc
+ 1116              	 
+ 1117              	 
+ 1118              	 
+ 1119 0000 80B4     	 push {r7}
+ 1120              	.LCFI114:
+ 1121              	 .cfi_def_cfa_offset 4
+ 1122              	 .cfi_offset 7,-4
+ 1123 0002 83B0     	 sub sp,sp,#12
+ 1124              	.LCFI115:
+ 1125              	 .cfi_def_cfa_offset 16
+ 1126 0004 00AF     	 add r7,sp,#0
+ 1127              	.LCFI116:
+ 1128              	 .cfi_def_cfa_register 7
+ 1129 0006 7860     	 str r0,[r7,#4]
+ 675:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 676:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 677:.././hal/sam3u1c/tc.c **** 	
+ 678:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_QIMR;
+ 1130              	 .loc 1 678 0
+ 1131 0008 7B68     	 ldr r3,[r7,#4]
+ 1132 000a D3F8D030 	 ldr r3,[r3,#208]
+ 679:.././hal/sam3u1c/tc.c **** }
+ 1133              	 .loc 1 679 0
+ 1134 000e 1846     	 mov r0,r3
+ 1135 0010 0C37     	 adds r7,r7,#12
+ 1136              	.LCFI117:
+ 1137              	 .cfi_def_cfa_offset 4
+ 1138 0012 BD46     	 mov sp,r7
+ 1139              	.LCFI118:
+ 1140              	 .cfi_def_cfa_register 13
+ 1141              	 
+ 1142 0014 80BC     	 pop {r7}
+ 1143              	.LCFI119:
+ 1144              	 .cfi_restore 7
+ 1145              	 .cfi_def_cfa_offset 0
+ 1146 0016 7047     	 bx lr
+ 1147              	 .cfi_endproc
+ 1148              	.LFE86:
+ 1150              	 .section .text.tc_get_qdec_interrupt_status,"ax",%progbits
+ 1151              	 .align 1
+ 1152              	 .global tc_get_qdec_interrupt_status
+ 1153              	 .syntax unified
+ 1154              	 .thumb
+ 1155              	 .thumb_func
+ 1156              	 .fpu softvfp
+ 1158              	tc_get_qdec_interrupt_status:
+ 1159              	.LFB87:
+ 680:.././hal/sam3u1c/tc.c **** 
+ 681:.././hal/sam3u1c/tc.c **** /**
+ 682:.././hal/sam3u1c/tc.c ****  * \brief Get current TC QDEC interrupt status.
+ 683:.././hal/sam3u1c/tc.c ****  *
+ 684:.././hal/sam3u1c/tc.c ****  * \note This function is not available on SAM4L or SAMG devices.
+ 685:.././hal/sam3u1c/tc.c ****  *
+ 686:.././hal/sam3u1c/tc.c ****  * \param[in] p_tc Module hardware register base address pointer
+ 687:.././hal/sam3u1c/tc.c ****  *
+ 688:.././hal/sam3u1c/tc.c ****  * \return The TC QDEC interrupt status.
+ 689:.././hal/sam3u1c/tc.c ****  */
+ 690:.././hal/sam3u1c/tc.c **** uint32_t tc_get_qdec_interrupt_status(
+ 691:.././hal/sam3u1c/tc.c **** 		Tc *p_tc)
+ 692:.././hal/sam3u1c/tc.c **** {
+ 1160              	 .loc 1 692 0
+ 1161              	 .cfi_startproc
+ 1162              	 
+ 1163              	 
+ 1164              	 
+ 1165 0000 80B4     	 push {r7}
+ 1166              	.LCFI120:
+ 1167              	 .cfi_def_cfa_offset 4
+ 1168              	 .cfi_offset 7,-4
+ 1169 0002 83B0     	 sub sp,sp,#12
+ 1170              	.LCFI121:
+ 1171              	 .cfi_def_cfa_offset 16
+ 1172 0004 00AF     	 add r7,sp,#0
+ 1173              	.LCFI122:
+ 1174              	 .cfi_def_cfa_register 7
+ 1175 0006 7860     	 str r0,[r7,#4]
+ 693:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
+ 694:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
+ 695:.././hal/sam3u1c/tc.c **** 	
+ 696:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_QISR;
+ 1176              	 .loc 1 696 0
+ 1177 0008 7B68     	 ldr r3,[r7,#4]
+ 1178 000a D3F8D430 	 ldr r3,[r3,#212]
+ 697:.././hal/sam3u1c/tc.c **** }
+ 1179              	 .loc 1 697 0
+ 1180 000e 1846     	 mov r0,r3
+ 1181 0010 0C37     	 adds r7,r7,#12
+ 1182              	.LCFI123:
+ 1183              	 .cfi_def_cfa_offset 4
+ 1184 0012 BD46     	 mov sp,r7
+ 1185              	.LCFI124:
+ 1186              	 .cfi_def_cfa_register 13
+ 1187              	 
+ 1188 0014 80BC     	 pop {r7}
+ 1189              	.LCFI125:
+ 1190              	 .cfi_restore 7
+ 1191              	 .cfi_def_cfa_offset 0
+ 1192 0016 7047     	 bx lr
+ 1193              	 .cfi_endproc
+ 1194              	.LFE87:
+ 1196              	 .text
+ 1197              	.Letext0:
+ 1198              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1199              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1200              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 1201              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
+ 1202              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 1203              	 .file 7 ".././hal/sam3u1c/inc/component/component_tc.h"
+ 1204              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1205              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1206              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 1207              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1208              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1209              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tc.c
+    {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
+    {standard input}:19     .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
+    {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
+    {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
+    {standard input}:27     .text.tc_init:00000000 $t
+    {standard input}:34     .text.tc_init:00000000 tc_init
+    {standard input}:94     .text.tc_sync_trigger:00000000 $t
+    {standard input}:101    .text.tc_sync_trigger:00000000 tc_sync_trigger
+    {standard input}:141    .text.tc_set_block_mode:00000000 $t
+    {standard input}:148    .text.tc_set_block_mode:00000000 tc_set_block_mode
+    {standard input}:189    .text.tc_start:00000000 $t
+    {standard input}:196    .text.tc_start:00000000 tc_start
+    {standard input}:240    .text.tc_stop:00000000 $t
+    {standard input}:247    .text.tc_stop:00000000 tc_stop
+    {standard input}:291    .text.tc_read_cv:00000000 $t
+    {standard input}:298    .text.tc_read_cv:00000000 tc_read_cv
+    {standard input}:342    .text.tc_read_ra:00000000 $t
+    {standard input}:349    .text.tc_read_ra:00000000 tc_read_ra
+    {standard input}:393    .text.tc_read_rb:00000000 $t
+    {standard input}:400    .text.tc_read_rb:00000000 tc_read_rb
+    {standard input}:444    .text.tc_read_rc:00000000 $t
+    {standard input}:451    .text.tc_read_rc:00000000 tc_read_rc
+    {standard input}:495    .text.tc_write_ra:00000000 $t
+    {standard input}:502    .text.tc_write_ra:00000000 tc_write_ra
+    {standard input}:548    .text.tc_write_rb:00000000 $t
+    {standard input}:555    .text.tc_write_rb:00000000 tc_write_rb
+    {standard input}:601    .text.tc_write_rc:00000000 $t
+    {standard input}:608    .text.tc_write_rc:00000000 tc_write_rc
+    {standard input}:654    .text.tc_enable_interrupt:00000000 $t
+    {standard input}:661    .text.tc_enable_interrupt:00000000 tc_enable_interrupt
+    {standard input}:709    .text.tc_disable_interrupt:00000000 $t
+    {standard input}:716    .text.tc_disable_interrupt:00000000 tc_disable_interrupt
+    {standard input}:764    .text.tc_get_interrupt_mask:00000000 $t
+    {standard input}:771    .text.tc_get_interrupt_mask:00000000 tc_get_interrupt_mask
+    {standard input}:817    .text.tc_get_status:00000000 $t
+    {standard input}:824    .text.tc_get_status:00000000 tc_get_status
+    {standard input}:870    .text.tc_find_mck_divisor:00000000 $t
+    {standard input}:877    .text.tc_find_mck_divisor:00000000 tc_find_mck_divisor
+    {standard input}:1009   .text.tc_enable_qdec_interrupt:00000000 $t
+    {standard input}:1016   .text.tc_enable_qdec_interrupt:00000000 tc_enable_qdec_interrupt
+    {standard input}:1057   .text.tc_disable_qdec_interrupt:00000000 $t
+    {standard input}:1064   .text.tc_disable_qdec_interrupt:00000000 tc_disable_qdec_interrupt
+    {standard input}:1105   .text.tc_get_qdec_interrupt_mask:00000000 $t
+    {standard input}:1112   .text.tc_get_qdec_interrupt_mask:00000000 tc_get_qdec_interrupt_mask
+    {standard input}:1151   .text.tc_get_qdec_interrupt_status:00000000 $t
+    {standard input}:1158   .text.tc_get_qdec_interrupt_status:00000000 tc_get_qdec_interrupt_status
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.newlib.h.21.59901f4bf241ab46c63694665baa7297
+                           .group:00000000 wm4.features.h.22.692cd1f2e947ca7b8fea300222f5f1f2
+                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
+                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+                           .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
+                           .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
+                           .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
+                           .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
+                           .group:00000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
+                           .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.sam3u1c.h.220.c0b54b5a55bc87791749ae17b1487779
+                           .group:00000000 wm4.core_cm3.h.32.5c59c312db585622d253fdb887b0afb1
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm3.h.127.b561404f2a159dc517b409bc244d16c1
+                           .group:00000000 wm4.component_adc.h.43.d49887380d07d1cd08cc4e37b3485e31
+                           .group:00000000 wm4.component_adc12b.h.43.eadc09f1073923fb91f1f393cc397dcb
+                           .group:00000000 wm4.component_chipid.h.43.15825c969b1cc9eeea3d9416499874c8
+                           .group:00000000 wm4.component_dmac.h.43.cc8187b1cf6bfeadc91b14fdd28b9e8b
+                           .group:00000000 wm4.component_efc.h.43.cb1b3997ad9ea3733ad421ecbfd02fdd
+                           .group:00000000 wm4.component_gpbr.h.43.49b7e13894fe38b29f2243bbbe530227
+                           .group:00000000 wm4.component_hsmci.h.43.7b7194c92e1480c038f3342f7cec440a
+                           .group:00000000 wm4.component_matrix.h.43.1d209838fb75b4827119203a357141ee
+                           .group:00000000 wm4.component_pdc.h.43.19528a5f9ef5a348234ea06f89069c55
+                           .group:00000000 wm4.component_pio.h.43.163b46c3683ccf92e8de39a5554f50e8
+                           .group:00000000 wm4.component_pmc.h.43.ee4f030602866917aeed15fb2b948de8
+                           .group:00000000 wm4.component_pwm.h.43.ab6262a86f0aea354b43fe6dce7e7eb3
+                           .group:00000000 wm4.component_rstc.h.43.4eb59dc2ddcf585fabf251d0c329fcdd
+                           .group:00000000 wm4.component_rtc.h.43.ba8ccafc772b11d562a3cceab8b95072
+                           .group:00000000 wm4.component_rtt.h.43.3206ef8f067e5e747c3c4c7e719c1429
+                           .group:00000000 wm4.component_smc.h.43.907847915f1a5616734199d7e34424fa
+                           .group:00000000 wm4.component_spi.h.43.a2a09df64ab768c0a32be55285c74ded
+                           .group:00000000 wm4.component_ssc.h.43.d7c78f990c13fc511671b64798c4bcd0
+                           .group:00000000 wm4.component_supc.h.43.7d17f8e5ed3ba815e84381152735062f
+                           .group:00000000 wm4.component_tc.h.43.662eac8137408372b4f9d26c0b5f8621
+                           .group:00000000 wm4.component_twi.h.43.eda18625bd851fc4605861f5b3240c0b
+                           .group:00000000 wm4.component_uart.h.43.2d92735c5ea05c973661e1ba99a2f37c
+                           .group:00000000 wm4.component_udphs.h.43.21cecd26a4e44df0013037f29f2716e4
+                           .group:00000000 wm4.component_usart.h.43.7872f8f455adb38b67b9fbdb15657fbe
+                           .group:00000000 wm4.component_wdt.h.43.e31e10a5469b62c3660b49ab250f802f
+                           .group:00000000 wm4.instance_hsmci.h.43.e233236cc7fd5a805539a7ecc0e1d8d2
+                           .group:00000000 wm4.instance_ssc.h.43.c0cfabc3b9f3bb60745c913111bce965
+                           .group:00000000 wm4.instance_spi.h.43.570ae46af19e4179d9796872b9a8b9bc
+                           .group:00000000 wm4.instance_tc0.h.43.049b3a82387d2961594190609e896a29
+                           .group:00000000 wm4.instance_twi0.h.43.255dc0afa9e0d45eaea0a935eca2f103
+                           .group:00000000 wm4.instance_twi1.h.43.652d1d407893f259f2a817544ba662c2
+                           .group:00000000 wm4.instance_pwm.h.43.88294acec3ca56d6fc521038521a1567
+                           .group:00000000 wm4.instance_usart0.h.43.e26677512aee3dd3bedd71d394410000
+                           .group:00000000 wm4.instance_usart1.h.43.1ba97dbc6610d9fb3132b9d845688201
+                           .group:00000000 wm4.instance_usart2.h.43.baa1bf30b3c5acdee90c4a1f50fe9ebd
+                           .group:00000000 wm4.instance_udphs.h.43.b1ce94181e0d1f22877b81c6040a4363
+                           .group:00000000 wm4.instance_adc12b.h.43.d73ed59e867ccdfdb846d9ef32a50c0c
+                           .group:00000000 wm4.instance_adc.h.43.2b7611a00afeb4c555339b844d4b8456
+                           .group:00000000 wm4.instance_dmac.h.43.ee72691d84889c8f285932be4a075ddb
+                           .group:00000000 wm4.instance_smc.h.43.29610fd00979caaaa65821ad40e9da06
+                           .group:00000000 wm4.instance_matrix.h.43.01ee474141594385374c41a29daeeefe
+                           .group:00000000 wm4.instance_pmc.h.43.37430325ed7b8b24c3fe640c41c29ef5
+                           .group:00000000 wm4.instance_uart.h.43.bd378395ba022bc8670c82ebe656fbbd
+                           .group:00000000 wm4.instance_chipid.h.43.29cd8fb600f149aa58830fcc78fe36f9
+                           .group:00000000 wm4.instance_efc0.h.43.6b85dba20721a7e9fc4350e78d193680
+                           .group:00000000 wm4.instance_efc1.h.43.2c5e94fc4d2742678318d73450d08d57
+                           .group:00000000 wm4.instance_pioa.h.43.eeb46cc3bfe01a1f28e67aa3a6851ed8
+                           .group:00000000 wm4.instance_piob.h.43.652ce26b6c37ac56f9ed42a9216d9aca
+                           .group:00000000 wm4.instance_rstc.h.43.c5de224364a50a85f237c0b864aa4c8f
+                           .group:00000000 wm4.instance_supc.h.43.a5f1a5ca08f468ccf34ed3653e045f1f
+                           .group:00000000 wm4.instance_rtt.h.43.8622b192c23334996132415e3095df7f
+                           .group:00000000 wm4.instance_wdt.h.43.407ea53e133eacf09acf2c7fcb6b7524
+                           .group:00000000 wm4.instance_rtc.h.43.f70b77f9180401c8d9d920cb4a1cd166
+                           .group:00000000 wm4.instance_gpbr.h.43.9066cb40d557f6755101368854272348
+                           .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
+                           .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
+                           .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
+                           .group:00000000 wm4.stdio.h.27.3fc80220048df77954e38daec3bb9670
+                           .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
+                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:00000000 wm4.stdlib.h.56.d4493cd3736e51e9d56335045f26df45
+                           .group:00000000 wm4.compiler.h.88.0e6ad966134fa012ce9a34053d3f48aa
+                           .group:00000000 wm4.interrupt_sam_nvic.h.45.4876da6c127868305d66389e87e0876f
+                           .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,491 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "ui_cw305.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
+  16              	 .align 2
+  19              	cpu_irq_critical_section_counter:
+  20 0000 00000000 	 .space 4
+  21              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
+  24              	cpu_irq_prev_interrupt_state:
+  25 0000 00       	 .space 1
+  26              	 .section .text.ui_init,"ax",%progbits
+  27              	 .align 1
+  28              	 .global ui_init
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	ui_init:
+  35              	.LFB179:
+  36              	 .file 1 ".././hal/sam3u1c/ui_cw305.c"
+   1:.././hal/sam3u1c/ui_cw305.c **** /**
+   2:.././hal/sam3u1c/ui_cw305.c ****  * \file
+   3:.././hal/sam3u1c/ui_cw305.c ****  *
+   4:.././hal/sam3u1c/ui_cw305.c ****  * \brief User Interface
+   5:.././hal/sam3u1c/ui_cw305.c ****  *
+   6:.././hal/sam3u1c/ui_cw305.c ****  * Copyright (c) 2012 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/ui_cw305.c ****  *
+   8:.././hal/sam3u1c/ui_cw305.c ****  * \asf_license_start
+   9:.././hal/sam3u1c/ui_cw305.c ****  *
+  10:.././hal/sam3u1c/ui_cw305.c ****  * \page License
+  11:.././hal/sam3u1c/ui_cw305.c ****  *
+  12:.././hal/sam3u1c/ui_cw305.c ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/ui_cw305.c ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/ui_cw305.c ****  *
+  15:.././hal/sam3u1c/ui_cw305.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/ui_cw305.c ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/ui_cw305.c ****  *
+  18:.././hal/sam3u1c/ui_cw305.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/ui_cw305.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/ui_cw305.c ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/ui_cw305.c ****  *
+  22:.././hal/sam3u1c/ui_cw305.c ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/ui_cw305.c ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/ui_cw305.c ****  *
+  25:.././hal/sam3u1c/ui_cw305.c ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/ui_cw305.c ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/ui_cw305.c ****  *
+  28:.././hal/sam3u1c/ui_cw305.c ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/ui_cw305.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/ui_cw305.c ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/ui_cw305.c ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/ui_cw305.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/ui_cw305.c ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/ui_cw305.c ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/ui_cw305.c ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/ui_cw305.c ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/ui_cw305.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/ui_cw305.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/ui_cw305.c ****  *
+  40:.././hal/sam3u1c/ui_cw305.c ****  * \asf_license_stop
+  41:.././hal/sam3u1c/ui_cw305.c ****  *
+  42:.././hal/sam3u1c/ui_cw305.c ****  */
+  43:.././hal/sam3u1c/ui_cw305.c **** 
+  44:.././hal/sam3u1c/ui_cw305.c **** #include <asf.h>
+  45:.././hal/sam3u1c/ui_cw305.c **** #include "ui.h"
+  46:.././hal/sam3u1c/ui_cw305.c **** #include "tasks.h"
+  47:.././hal/sam3u1c/ui_cw305.c **** 
+  48:.././hal/sam3u1c/ui_cw305.c **** void ui_init(void)
+  49:.././hal/sam3u1c/ui_cw305.c **** {
+  37              	 .loc 1 49 0
+  38              	 .cfi_startproc
+  39              	 
+  40              	 
+  41 0000 80B5     	 push {r7,lr}
+  42              	.LCFI0:
+  43              	 .cfi_def_cfa_offset 8
+  44              	 .cfi_offset 7,-8
+  45              	 .cfi_offset 14,-4
+  46 0002 00AF     	 add r7,sp,#0
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_register 7
+  50:.././hal/sam3u1c/ui_cw305.c **** 	// Initialize LEDs
+  51:.././hal/sam3u1c/ui_cw305.c **** 	LED_Off(LED0_GPIO);
+  49              	 .loc 1 51 0
+  50 0004 1D20     	 movs r0,#29
+  51 0006 034B     	 ldr r3,.L2
+  52 0008 9847     	 blx r3
+  53              	.LVL0:
+  52:.././hal/sam3u1c/ui_cw305.c **** 	LED_Off(LED1_GPIO);
+  54              	 .loc 1 52 0
+  55 000a 1F20     	 movs r0,#31
+  56 000c 014B     	 ldr r3,.L2
+  57 000e 9847     	 blx r3
+  58              	.LVL1:
+  53:.././hal/sam3u1c/ui_cw305.c **** 	//LED_Off(LED2_GPIO);
+  54:.././hal/sam3u1c/ui_cw305.c **** }
+  59              	 .loc 1 54 0
+  60 0010 00BF     	 nop
+  61 0012 80BD     	 pop {r7,pc}
+  62              	.L3:
+  63              	 .align 2
+  64              	.L2:
+  65 0014 00000000 	 .word LED_Off
+  66              	 .cfi_endproc
+  67              	.LFE179:
+  69              	 .section .text.ui_powerdown,"ax",%progbits
+  70              	 .align 1
+  71              	 .global ui_powerdown
+  72              	 .syntax unified
+  73              	 .thumb
+  74              	 .thumb_func
+  75              	 .fpu softvfp
+  77              	ui_powerdown:
+  78              	.LFB180:
+  55:.././hal/sam3u1c/ui_cw305.c **** 
+  56:.././hal/sam3u1c/ui_cw305.c **** void ui_powerdown(void)
+  57:.././hal/sam3u1c/ui_cw305.c **** {
+  79              	 .loc 1 57 0
+  80              	 .cfi_startproc
+  81              	 
+  82              	 
+  83 0000 80B5     	 push {r7,lr}
+  84              	.LCFI2:
+  85              	 .cfi_def_cfa_offset 8
+  86              	 .cfi_offset 7,-8
+  87              	 .cfi_offset 14,-4
+  88 0002 00AF     	 add r7,sp,#0
+  89              	.LCFI3:
+  90              	 .cfi_def_cfa_register 7
+  58:.././hal/sam3u1c/ui_cw305.c **** 	LED_Off(LED0_GPIO);
+  91              	 .loc 1 58 0
+  92 0004 1D20     	 movs r0,#29
+  93 0006 034B     	 ldr r3,.L5
+  94 0008 9847     	 blx r3
+  95              	.LVL2:
+  59:.././hal/sam3u1c/ui_cw305.c **** 	LED_Off(LED1_GPIO);
+  96              	 .loc 1 59 0
+  97 000a 1F20     	 movs r0,#31
+  98 000c 014B     	 ldr r3,.L5
+  99 000e 9847     	 blx r3
+ 100              	.LVL3:
+  60:.././hal/sam3u1c/ui_cw305.c **** 	//LED_Off(LED2_GPIO);
+  61:.././hal/sam3u1c/ui_cw305.c **** 	
+  62:.././hal/sam3u1c/ui_cw305.c **** 	// Power off FPGA
+  63:.././hal/sam3u1c/ui_cw305.c **** 	//board_sram_pwroff();
+  64:.././hal/sam3u1c/ui_cw305.c **** 		
+  65:.././hal/sam3u1c/ui_cw305.c **** }
+ 101              	 .loc 1 65 0
+ 102 0010 00BF     	 nop
+ 103 0012 80BD     	 pop {r7,pc}
+ 104              	.L6:
+ 105              	 .align 2
+ 106              	.L5:
+ 107 0014 00000000 	 .word LED_Off
+ 108              	 .cfi_endproc
+ 109              	.LFE180:
+ 111              	 .section .text.ui_wakeup,"ax",%progbits
+ 112              	 .align 1
+ 113              	 .global ui_wakeup
+ 114              	 .syntax unified
+ 115              	 .thumb
+ 116              	 .thumb_func
+ 117              	 .fpu softvfp
+ 119              	ui_wakeup:
+ 120              	.LFB181:
+  66:.././hal/sam3u1c/ui_cw305.c **** 
+  67:.././hal/sam3u1c/ui_cw305.c **** void ui_wakeup(void)
+  68:.././hal/sam3u1c/ui_cw305.c **** {
+ 121              	 .loc 1 68 0
+ 122              	 .cfi_startproc
+ 123              	 
+ 124              	 
+ 125 0000 80B5     	 push {r7,lr}
+ 126              	.LCFI4:
+ 127              	 .cfi_def_cfa_offset 8
+ 128              	 .cfi_offset 7,-8
+ 129              	 .cfi_offset 14,-4
+ 130 0002 00AF     	 add r7,sp,#0
+ 131              	.LCFI5:
+ 132              	 .cfi_def_cfa_register 7
+  69:.././hal/sam3u1c/ui_cw305.c **** 	LED_On(LED0_GPIO);
+ 133              	 .loc 1 69 0
+ 134 0004 1D20     	 movs r0,#29
+ 135 0006 024B     	 ldr r3,.L8
+ 136 0008 9847     	 blx r3
+ 137              	.LVL4:
+  70:.././hal/sam3u1c/ui_cw305.c **** 	//board_sram_pwron();
+  71:.././hal/sam3u1c/ui_cw305.c **** }
+ 138              	 .loc 1 71 0
+ 139 000a 00BF     	 nop
+ 140 000c 80BD     	 pop {r7,pc}
+ 141              	.L9:
+ 142 000e 00BF     	 .align 2
+ 143              	.L8:
+ 144 0010 00000000 	 .word LED_On
+ 145              	 .cfi_endproc
+ 146              	.LFE181:
+ 148              	 .section .text.ui_process,"ax",%progbits
+ 149              	 .align 1
+ 150              	 .global ui_process
+ 151              	 .syntax unified
+ 152              	 .thumb
+ 153              	 .thumb_func
+ 154              	 .fpu softvfp
+ 156              	ui_process:
+ 157              	.LFB182:
+  72:.././hal/sam3u1c/ui_cw305.c **** 
+  73:.././hal/sam3u1c/ui_cw305.c **** void ui_process(uint16_t framenumber)
+  74:.././hal/sam3u1c/ui_cw305.c **** {
+ 158              	 .loc 1 74 0
+ 159              	 .cfi_startproc
+ 160              	 
+ 161              	 
+ 162 0000 80B5     	 push {r7,lr}
+ 163              	.LCFI6:
+ 164              	 .cfi_def_cfa_offset 8
+ 165              	 .cfi_offset 7,-8
+ 166              	 .cfi_offset 14,-4
+ 167 0002 82B0     	 sub sp,sp,#8
+ 168              	.LCFI7:
+ 169              	 .cfi_def_cfa_offset 16
+ 170 0004 00AF     	 add r7,sp,#0
+ 171              	.LCFI8:
+ 172              	 .cfi_def_cfa_register 7
+ 173 0006 0346     	 mov r3,r0
+ 174 0008 FB80     	 strh r3,[r7,#6]
+  75:.././hal/sam3u1c/ui_cw305.c **** 	if ((framenumber % 1000) == 0) {
+ 175              	 .loc 1 75 0
+ 176 000a FB88     	 ldrh r3,[r7,#6]
+ 177 000c 164A     	 ldr r2,.L15
+ 178 000e A2FB0312 	 umull r1,r2,r2,r3
+ 179 0012 9209     	 lsrs r2,r2,#6
+ 180 0014 4FF47A71 	 mov r1,#1000
+ 181 0018 01FB02F2 	 mul r2,r1,r2
+ 182 001c 9B1A     	 subs r3,r3,r2
+ 183 001e 9BB2     	 uxth r3,r3
+ 184 0020 002B     	 cmp r3,#0
+ 185 0022 02D1     	 bne .L11
+  76:.././hal/sam3u1c/ui_cw305.c **** 		LED_On(LED0_GPIO);
+ 186              	 .loc 1 76 0
+ 187 0024 1D20     	 movs r0,#29
+ 188 0026 114B     	 ldr r3,.L15+4
+ 189 0028 9847     	 blx r3
+ 190              	.LVL5:
+ 191              	.L11:
+  77:.././hal/sam3u1c/ui_cw305.c **** 	}
+  78:.././hal/sam3u1c/ui_cw305.c **** 	if ((framenumber % 1000) == 500) {
+ 192              	 .loc 1 78 0
+ 193 002a FB88     	 ldrh r3,[r7,#6]
+ 194 002c 0E4A     	 ldr r2,.L15
+ 195 002e A2FB0312 	 umull r1,r2,r2,r3
+ 196 0032 9209     	 lsrs r2,r2,#6
+ 197 0034 4FF47A71 	 mov r1,#1000
+ 198 0038 01FB02F2 	 mul r2,r1,r2
+ 199 003c 9B1A     	 subs r3,r3,r2
+ 200 003e 9BB2     	 uxth r3,r3
+ 201 0040 B3F5FA7F 	 cmp r3,#500
+ 202 0044 02D1     	 bne .L12
+  79:.././hal/sam3u1c/ui_cw305.c **** 		LED_Off(LED0_GPIO);
+ 203              	 .loc 1 79 0
+ 204 0046 1D20     	 movs r0,#29
+ 205 0048 094B     	 ldr r3,.L15+8
+ 206 004a 9847     	 blx r3
+ 207              	.LVL6:
+ 208              	.L12:
+  80:.././hal/sam3u1c/ui_cw305.c **** 	}
+  81:.././hal/sam3u1c/ui_cw305.c **** 	
+  82:.././hal/sam3u1c/ui_cw305.c **** 	if ((framenumber % 512) == 0) {
+ 209              	 .loc 1 82 0
+ 210 004c FB88     	 ldrh r3,[r7,#6]
+ 211 004e C3F30803 	 ubfx r3,r3,#0,#9
+ 212 0052 9BB2     	 uxth r3,r3
+ 213 0054 002B     	 cmp r3,#0
+ 214 0056 02D1     	 bne .L14
+  83:.././hal/sam3u1c/ui_cw305.c **** 		LED_Off(LED1_GPIO);
+ 215              	 .loc 1 83 0
+ 216 0058 1F20     	 movs r0,#31
+ 217 005a 054B     	 ldr r3,.L15+8
+ 218 005c 9847     	 blx r3
+ 219              	.LVL7:
+ 220              	.L14:
+  84:.././hal/sam3u1c/ui_cw305.c **** 		//LED_Off(LED2_GPIO);
+  85:.././hal/sam3u1c/ui_cw305.c **** 	}
+  86:.././hal/sam3u1c/ui_cw305.c **** }
+ 221              	 .loc 1 86 0
+ 222 005e 00BF     	 nop
+ 223 0060 0837     	 adds r7,r7,#8
+ 224              	.LCFI9:
+ 225              	 .cfi_def_cfa_offset 8
+ 226 0062 BD46     	 mov sp,r7
+ 227              	.LCFI10:
+ 228              	 .cfi_def_cfa_register 13
+ 229              	 
+ 230 0064 80BD     	 pop {r7,pc}
+ 231              	.L16:
+ 232 0066 00BF     	 .align 2
+ 233              	.L15:
+ 234 0068 D34D6210 	 .word 274877907
+ 235 006c 00000000 	 .word LED_On
+ 236 0070 00000000 	 .word LED_Off
+ 237              	 .cfi_endproc
+ 238              	.LFE182:
+ 240              	 .text
+ 241              	.Letext0:
+ 242              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 243              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 244              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
+ 245              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 246              	 .file 6 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 247              	 .file 7 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 248              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 249              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 250              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 251              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 252              	 .file 12 ".././hal/sam3u1c/inc/compiler.h"
+ 253              	 .file 13 ".././hal/sam3u1c/inc/sam/sleepmgr.h"
+ 254              	 .file 14 "./conf_usb.h"
+ 255              	 .file 15 ".././hal/sam3u1c/inc/usb_protocol.h"
+ 256              	 .file 16 ".././hal/sam3u1c/inc/udi.h"
+ 257              	 .file 17 ".././hal/sam3u1c/inc/udc_desc.h"
+ 258              	 .file 18 ".././hal/sam3u1c/inc/udd.h"
+ 259              	 .file 19 ".././hal/sam3u1c/inc/udi_vendor.h"
+ 260              	 .file 20 ".././hal/sam3u1c/inc/tasks.h"
+ 261              	 .file 21 ".././hal/sam3u1c/inc/led.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 ui_cw305.c
+    {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
+    {standard input}:19     .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
+    {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
+    {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
+    {standard input}:27     .text.ui_init:00000000 $t
+    {standard input}:34     .text.ui_init:00000000 ui_init
+    {standard input}:65     .text.ui_init:00000014 $d
+    {standard input}:70     .text.ui_powerdown:00000000 $t
+    {standard input}:77     .text.ui_powerdown:00000000 ui_powerdown
+    {standard input}:107    .text.ui_powerdown:00000014 $d
+    {standard input}:112    .text.ui_wakeup:00000000 $t
+    {standard input}:119    .text.ui_wakeup:00000000 ui_wakeup
+    {standard input}:144    .text.ui_wakeup:00000010 $d
+    {standard input}:149    .text.ui_process:00000000 $t
+    {standard input}:156    .text.ui_process:00000000 ui_process
+    {standard input}:234    .text.ui_process:00000068 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
+                           .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
+                           .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
+                           .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.sam3u1c.h.220.c0b54b5a55bc87791749ae17b1487779
+                           .group:00000000 wm4.core_cm3.h.32.5c59c312db585622d253fdb887b0afb1
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm3.h.127.b561404f2a159dc517b409bc244d16c1
+                           .group:00000000 wm4.component_adc.h.43.d49887380d07d1cd08cc4e37b3485e31
+                           .group:00000000 wm4.component_adc12b.h.43.eadc09f1073923fb91f1f393cc397dcb
+                           .group:00000000 wm4.component_chipid.h.43.15825c969b1cc9eeea3d9416499874c8
+                           .group:00000000 wm4.component_dmac.h.43.cc8187b1cf6bfeadc91b14fdd28b9e8b
+                           .group:00000000 wm4.component_efc.h.43.cb1b3997ad9ea3733ad421ecbfd02fdd
+                           .group:00000000 wm4.component_gpbr.h.43.49b7e13894fe38b29f2243bbbe530227
+                           .group:00000000 wm4.component_hsmci.h.43.7b7194c92e1480c038f3342f7cec440a
+                           .group:00000000 wm4.component_matrix.h.43.1d209838fb75b4827119203a357141ee
+                           .group:00000000 wm4.component_pdc.h.43.19528a5f9ef5a348234ea06f89069c55
+                           .group:00000000 wm4.component_pio.h.43.163b46c3683ccf92e8de39a5554f50e8
+                           .group:00000000 wm4.component_pmc.h.43.ee4f030602866917aeed15fb2b948de8
+                           .group:00000000 wm4.component_pwm.h.43.ab6262a86f0aea354b43fe6dce7e7eb3
+                           .group:00000000 wm4.component_rstc.h.43.4eb59dc2ddcf585fabf251d0c329fcdd
+                           .group:00000000 wm4.component_rtc.h.43.ba8ccafc772b11d562a3cceab8b95072
+                           .group:00000000 wm4.component_rtt.h.43.3206ef8f067e5e747c3c4c7e719c1429
+                           .group:00000000 wm4.component_smc.h.43.907847915f1a5616734199d7e34424fa
+                           .group:00000000 wm4.component_spi.h.43.a2a09df64ab768c0a32be55285c74ded
+                           .group:00000000 wm4.component_ssc.h.43.d7c78f990c13fc511671b64798c4bcd0
+                           .group:00000000 wm4.component_supc.h.43.7d17f8e5ed3ba815e84381152735062f
+                           .group:00000000 wm4.component_tc.h.43.662eac8137408372b4f9d26c0b5f8621
+                           .group:00000000 wm4.component_twi.h.43.eda18625bd851fc4605861f5b3240c0b
+                           .group:00000000 wm4.component_uart.h.43.2d92735c5ea05c973661e1ba99a2f37c
+                           .group:00000000 wm4.component_udphs.h.43.21cecd26a4e44df0013037f29f2716e4
+                           .group:00000000 wm4.component_usart.h.43.7872f8f455adb38b67b9fbdb15657fbe
+                           .group:00000000 wm4.component_wdt.h.43.e31e10a5469b62c3660b49ab250f802f
+                           .group:00000000 wm4.instance_hsmci.h.43.e233236cc7fd5a805539a7ecc0e1d8d2
+                           .group:00000000 wm4.instance_ssc.h.43.c0cfabc3b9f3bb60745c913111bce965
+                           .group:00000000 wm4.instance_spi.h.43.570ae46af19e4179d9796872b9a8b9bc
+                           .group:00000000 wm4.instance_tc0.h.43.049b3a82387d2961594190609e896a29
+                           .group:00000000 wm4.instance_twi0.h.43.255dc0afa9e0d45eaea0a935eca2f103
+                           .group:00000000 wm4.instance_twi1.h.43.652d1d407893f259f2a817544ba662c2
+                           .group:00000000 wm4.instance_pwm.h.43.88294acec3ca56d6fc521038521a1567
+                           .group:00000000 wm4.instance_usart0.h.43.e26677512aee3dd3bedd71d394410000
+                           .group:00000000 wm4.instance_usart1.h.43.1ba97dbc6610d9fb3132b9d845688201
+                           .group:00000000 wm4.instance_usart2.h.43.baa1bf30b3c5acdee90c4a1f50fe9ebd
+                           .group:00000000 wm4.instance_udphs.h.43.b1ce94181e0d1f22877b81c6040a4363
+                           .group:00000000 wm4.instance_adc12b.h.43.d73ed59e867ccdfdb846d9ef32a50c0c
+                           .group:00000000 wm4.instance_adc.h.43.2b7611a00afeb4c555339b844d4b8456
+                           .group:00000000 wm4.instance_dmac.h.43.ee72691d84889c8f285932be4a075ddb
+                           .group:00000000 wm4.instance_smc.h.43.29610fd00979caaaa65821ad40e9da06
+                           .group:00000000 wm4.instance_matrix.h.43.01ee474141594385374c41a29daeeefe
+                           .group:00000000 wm4.instance_pmc.h.43.37430325ed7b8b24c3fe640c41c29ef5
+                           .group:00000000 wm4.instance_uart.h.43.bd378395ba022bc8670c82ebe656fbbd
+                           .group:00000000 wm4.instance_chipid.h.43.29cd8fb600f149aa58830fcc78fe36f9
+                           .group:00000000 wm4.instance_efc0.h.43.6b85dba20721a7e9fc4350e78d193680
+                           .group:00000000 wm4.instance_efc1.h.43.2c5e94fc4d2742678318d73450d08d57
+                           .group:00000000 wm4.instance_pioa.h.43.eeb46cc3bfe01a1f28e67aa3a6851ed8
+                           .group:00000000 wm4.instance_piob.h.43.652ce26b6c37ac56f9ed42a9216d9aca
+                           .group:00000000 wm4.instance_rstc.h.43.c5de224364a50a85f237c0b864aa4c8f
+                           .group:00000000 wm4.instance_supc.h.43.a5f1a5ca08f468ccf34ed3653e045f1f
+                           .group:00000000 wm4.instance_rtt.h.43.8622b192c23334996132415e3095df7f
+                           .group:00000000 wm4.instance_wdt.h.43.407ea53e133eacf09acf2c7fcb6b7524
+                           .group:00000000 wm4.instance_rtc.h.43.f70b77f9180401c8d9d920cb4a1cd166
+                           .group:00000000 wm4.instance_gpbr.h.43.9066cb40d557f6755101368854272348
+                           .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
+                           .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
+                           .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
+                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
+                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
+                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
+                           .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
+                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:00000000 wm4.stdlib.h.56.d4493cd3736e51e9d56335045f26df45
+                           .group:00000000 wm4.compiler.h.88.0e6ad966134fa012ce9a34053d3f48aa
+                           .group:00000000 wm4.interrupt_sam_nvic.h.45.4876da6c127868305d66389e87e0876f
+                           .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
+                           .group:00000000 wm4.conf_clock.h.45.5dc276d21b4d793a62f1a9757cc18d5c
+                           .group:00000000 wm4.board.h.48.ce8d06c36cc583d9bf62738411f62e4d
+                           .group:00000000 wm4.cw521.h.62.49e8a34af6a9b815e03b7858792ba391
+                           .group:00000000 wm4.pmc.h.45.bbe1bf97a811e3b283420b2eeadf0b35
+                           .group:00000000 wm4.osc.h.94.b766cddafe899eca01d775f7b2906680
+                           .group:00000000 wm4.pll.h.45.a605c31ca466ae25752a678e8572be48
+                           .group:00000000 wm4.sysclk.h.156.541a142b0016a365728ea1f7c0e3db84
+                           .group:00000000 wm4.cycle_counter.h.44.fde38fb1acfd6555d72e65fae6e86af5
+                           .group:00000000 wm4.delay.h.105.f2a8ab5e71eab0684cf6985b5c2fc9e8
+                           .group:00000000 wm4.efc.h.45.ec5734119c630498df26106bacf9a684
+                           .group:00000000 wm4.flash_efc.h.90.a4a39259055880dc10b861c5fe1b99e7
+                           .group:00000000 wm4.pio.h.45.95f22b0ea02ddc698ec54fc56bf6f38c
+                           .group:00000000 wm4.sam_gpio.h.50.76a45c51855d665134f8211cd601d693
+                           .group:00000000 wm4.ioport_pio.h.44.373b34364b4ef25fac62017cd942a761
+                           .group:00000000 wm4.sleep.h.45.ef10e1aee6f903405be19980a8333b7f
+                           .group:00000000 wm4.smc.h.45.17a94aa976bb62b1109d03e8a314a569
+                           .group:00000000 wm4.spi.h.45.712c66be09ffbac297c2e00923077297
+                           .group:00000000 wm4.conf_sleepmgr.h.44.d825b913294720022fefe7201514fca3
+                           .group:00000000 wm4.twi.h.45.ba70de99d200dafba570ce8f7058737a
+                           .group:00000000 wm4.twi_master.h.90.08c062d0fa8f8aeea342ceeb79263395
+                           .group:00000000 wm4.twi_slave.h.45.8b3d1a3d2e43ebc7d0161f4142989871
+                           .group:00000000 wm4.uart.h.45.a5af743b8064bd84d1a6438457096e18
+                           .group:00000000 wm4.usart.h.46.eae6fe592b7ea0768efef8d312e7f44f
+                           .group:00000000 wm4.conf_uart_serial.h.45.245cdceaa1a3811fd043bf660ce38054
+                           .group:00000000 wm4.conf_usb.h.45.dde1b096e128cb4c70cbe39d63ef79bf
+                           .group:00000000 wm4.udi_vendor_conf.h.56.4348c8e521d040f44df868219dae6785
+                           .group:00000000 wm4.usb_atmel.h.45.c31b525dbe01f8d9e2022a03356ec174
+                           .group:00000000 wm4.usb_protocol.h.63.850c58f3469fce50a9ac9a6854f7594b
+                           .group:00000000 wm4.usb_protocol_vendor.h.45.83dfe073428ff799abc3ed1c7b04c77d
+                           .group:00000000 wm4.udc_desc.h.77.5fec235bd7553e7256e345e020840072
+                           .group:00000000 wm4.udd.h.103.3ccc59b50c14ec70568e6136eeb22d56
+                           .group:00000000 wm4.udi_vendor.h.125.7b9085237d4d4a9757f4c148fba1918d
+
+UNDEFINED SYMBOLS
+LED_Off
+LED_On

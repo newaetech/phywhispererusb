@@ -1,0 +1,2385 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "spi.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
+  16              	 .align 2
+  19              	cpu_irq_critical_section_counter:
+  20 0000 00000000 	 .space 4
+  21              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
+  24              	cpu_irq_prev_interrupt_state:
+  25 0000 00       	 .space 1
+  26              	 .section .text.spi_get_peripheral_select_mode,"ax",%progbits
+  27              	 .align 1
+  28              	 .syntax unified
+  29              	 .thumb
+  30              	 .thumb_func
+  31              	 .fpu softvfp
+  33              	spi_get_peripheral_select_mode:
+  34              	.LFB76:
+  35              	 .file 1 ".././hal/sam3u1c/inc/spi.h"
+   1:.././hal/sam3u1c/inc/spi.h **** /**
+   2:.././hal/sam3u1c/inc/spi.h ****  * \file
+   3:.././hal/sam3u1c/inc/spi.h ****  *
+   4:.././hal/sam3u1c/inc/spi.h ****  * \brief Serial Peripheral Interface (SPI) driver for SAM.
+   5:.././hal/sam3u1c/inc/spi.h ****  *
+   6:.././hal/sam3u1c/inc/spi.h ****  * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/inc/spi.h ****  *
+   8:.././hal/sam3u1c/inc/spi.h ****  * \asf_license_start
+   9:.././hal/sam3u1c/inc/spi.h ****  *
+  10:.././hal/sam3u1c/inc/spi.h ****  * \page License
+  11:.././hal/sam3u1c/inc/spi.h ****  *
+  12:.././hal/sam3u1c/inc/spi.h ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/inc/spi.h ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/inc/spi.h ****  *
+  15:.././hal/sam3u1c/inc/spi.h ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/inc/spi.h ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/inc/spi.h ****  *
+  18:.././hal/sam3u1c/inc/spi.h ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/inc/spi.h ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/inc/spi.h ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/inc/spi.h ****  *
+  22:.././hal/sam3u1c/inc/spi.h ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/inc/spi.h ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/inc/spi.h ****  *
+  25:.././hal/sam3u1c/inc/spi.h ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/inc/spi.h ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/inc/spi.h ****  *
+  28:.././hal/sam3u1c/inc/spi.h ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/inc/spi.h ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/inc/spi.h ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/inc/spi.h ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/inc/spi.h ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/inc/spi.h ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/inc/spi.h ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/inc/spi.h ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/inc/spi.h ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/inc/spi.h ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/inc/spi.h ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/inc/spi.h ****  *
+  40:.././hal/sam3u1c/inc/spi.h ****  * \asf_license_stop
+  41:.././hal/sam3u1c/inc/spi.h ****  *
+  42:.././hal/sam3u1c/inc/spi.h ****  */
+  43:.././hal/sam3u1c/inc/spi.h **** 
+  44:.././hal/sam3u1c/inc/spi.h **** #ifndef SPI_H_INCLUDED
+  45:.././hal/sam3u1c/inc/spi.h **** #define SPI_H_INCLUDED
+  46:.././hal/sam3u1c/inc/spi.h **** 
+  47:.././hal/sam3u1c/inc/spi.h **** #include "compiler.h"
+  48:.././hal/sam3u1c/inc/spi.h **** 
+  49:.././hal/sam3u1c/inc/spi.h **** /// @cond 0
+  50:.././hal/sam3u1c/inc/spi.h **** /**INDENT-OFF**/
+  51:.././hal/sam3u1c/inc/spi.h **** #ifdef __cplusplus
+  52:.././hal/sam3u1c/inc/spi.h **** extern "C" {
+  53:.././hal/sam3u1c/inc/spi.h **** #endif
+  54:.././hal/sam3u1c/inc/spi.h **** /**INDENT-ON**/
+  55:.././hal/sam3u1c/inc/spi.h **** /// @endcond
+  56:.././hal/sam3u1c/inc/spi.h **** 
+  57:.././hal/sam3u1c/inc/spi.h **** /** Time-out value (number of attempts). */
+  58:.././hal/sam3u1c/inc/spi.h **** #define SPI_TIMEOUT       15000
+  59:.././hal/sam3u1c/inc/spi.h **** 
+  60:.././hal/sam3u1c/inc/spi.h **** /** Status codes used by the SPI driver. */
+  61:.././hal/sam3u1c/inc/spi.h **** typedef enum
+  62:.././hal/sam3u1c/inc/spi.h **** {
+  63:.././hal/sam3u1c/inc/spi.h **** 	SPI_ERROR = -1,
+  64:.././hal/sam3u1c/inc/spi.h **** 	SPI_OK = 0,
+  65:.././hal/sam3u1c/inc/spi.h **** 	SPI_ERROR_TIMEOUT = 1,
+  66:.././hal/sam3u1c/inc/spi.h **** 	SPI_ERROR_ARGUMENT,
+  67:.././hal/sam3u1c/inc/spi.h **** 	SPI_ERROR_OVERRUN,
+  68:.././hal/sam3u1c/inc/spi.h **** 	SPI_ERROR_MODE_FAULT,
+  69:.././hal/sam3u1c/inc/spi.h **** 	SPI_ERROR_OVERRUN_AND_MODE_FAULT
+  70:.././hal/sam3u1c/inc/spi.h **** } spi_status_t;
+  71:.././hal/sam3u1c/inc/spi.h **** 
+  72:.././hal/sam3u1c/inc/spi.h **** /** SPI Chip Select behavior modes while transferring. */
+  73:.././hal/sam3u1c/inc/spi.h **** typedef enum spi_cs_behavior {
+  74:.././hal/sam3u1c/inc/spi.h **** 	/** CS does not rise until a new transfer is requested on different chip select. */
+  75:.././hal/sam3u1c/inc/spi.h **** 	SPI_CS_KEEP_LOW = SPI_CSR_CSAAT,
+  76:.././hal/sam3u1c/inc/spi.h **** 	/** CS rises if there is no more data to transfer. */
+  77:.././hal/sam3u1c/inc/spi.h **** 	SPI_CS_RISE_NO_TX = 0,
+  78:.././hal/sam3u1c/inc/spi.h **** 	/** CS is de-asserted systematically during a time DLYBCS. */
+  79:.././hal/sam3u1c/inc/spi.h **** 	SPI_CS_RISE_FORCED = SPI_CSR_CSNAAT
+  80:.././hal/sam3u1c/inc/spi.h **** } spi_cs_behavior_t;
+  81:.././hal/sam3u1c/inc/spi.h **** 
+  82:.././hal/sam3u1c/inc/spi.h **** /**
+  83:.././hal/sam3u1c/inc/spi.h ****  * \brief Generate Peripheral Chip Select Value from Chip Select ID
+  84:.././hal/sam3u1c/inc/spi.h ****  * \note When chip select n is working, PCS bit n is set to low level.
+  85:.././hal/sam3u1c/inc/spi.h ****  *
+  86:.././hal/sam3u1c/inc/spi.h ****  * \param chip_sel_id The chip select number used
+  87:.././hal/sam3u1c/inc/spi.h ****  */
+  88:.././hal/sam3u1c/inc/spi.h **** #define spi_get_pcs(chip_sel_id) ((~(1u<<(chip_sel_id)))&0xF)
+  89:.././hal/sam3u1c/inc/spi.h **** 
+  90:.././hal/sam3u1c/inc/spi.h **** /**
+  91:.././hal/sam3u1c/inc/spi.h ****  * \brief Reset SPI and set it to Slave mode.
+  92:.././hal/sam3u1c/inc/spi.h ****  *
+  93:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+  94:.././hal/sam3u1c/inc/spi.h ****  */
+  95:.././hal/sam3u1c/inc/spi.h **** static inline void spi_reset(Spi *p_spi)
+  96:.././hal/sam3u1c/inc/spi.h **** {
+  97:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_CR = SPI_CR_SWRST;
+  98:.././hal/sam3u1c/inc/spi.h **** }
+  99:.././hal/sam3u1c/inc/spi.h **** 
+ 100:.././hal/sam3u1c/inc/spi.h **** /**
+ 101:.././hal/sam3u1c/inc/spi.h ****  * \brief Enable SPI.
+ 102:.././hal/sam3u1c/inc/spi.h ****  *
+ 103:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 104:.././hal/sam3u1c/inc/spi.h ****  */
+ 105:.././hal/sam3u1c/inc/spi.h **** static inline void spi_enable(Spi *p_spi)
+ 106:.././hal/sam3u1c/inc/spi.h **** {
+ 107:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_CR = SPI_CR_SPIEN;
+ 108:.././hal/sam3u1c/inc/spi.h **** }
+ 109:.././hal/sam3u1c/inc/spi.h **** 
+ 110:.././hal/sam3u1c/inc/spi.h **** /**
+ 111:.././hal/sam3u1c/inc/spi.h ****  * \brief Disable SPI.
+ 112:.././hal/sam3u1c/inc/spi.h ****  *
+ 113:.././hal/sam3u1c/inc/spi.h ****  * \note CS is de-asserted, which indicates that the last data is done, and user
+ 114:.././hal/sam3u1c/inc/spi.h ****  * should check TX_EMPTY before disabling SPI.
+ 115:.././hal/sam3u1c/inc/spi.h ****  *
+ 116:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 117:.././hal/sam3u1c/inc/spi.h ****  */
+ 118:.././hal/sam3u1c/inc/spi.h **** static inline void spi_disable(Spi *p_spi)
+ 119:.././hal/sam3u1c/inc/spi.h **** {
+ 120:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_CR = SPI_CR_SPIDIS;
+ 121:.././hal/sam3u1c/inc/spi.h **** }
+ 122:.././hal/sam3u1c/inc/spi.h **** 
+ 123:.././hal/sam3u1c/inc/spi.h **** /**
+ 124:.././hal/sam3u1c/inc/spi.h ****  * \brief Issue a LASTXFER command.
+ 125:.././hal/sam3u1c/inc/spi.h ****  *  The next transfer is the last transfer and after that CS is de-asserted.
+ 126:.././hal/sam3u1c/inc/spi.h ****  *
+ 127:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 128:.././hal/sam3u1c/inc/spi.h ****  */
+ 129:.././hal/sam3u1c/inc/spi.h **** static inline void spi_set_lastxfer(Spi *p_spi)
+ 130:.././hal/sam3u1c/inc/spi.h **** {
+ 131:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_CR = SPI_CR_LASTXFER;
+ 132:.././hal/sam3u1c/inc/spi.h **** }
+ 133:.././hal/sam3u1c/inc/spi.h **** 
+ 134:.././hal/sam3u1c/inc/spi.h **** /**
+ 135:.././hal/sam3u1c/inc/spi.h ****  * \brief Set SPI to Master mode.
+ 136:.././hal/sam3u1c/inc/spi.h ****  *
+ 137:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 138:.././hal/sam3u1c/inc/spi.h ****  */
+ 139:.././hal/sam3u1c/inc/spi.h **** static inline void spi_set_master_mode(Spi *p_spi)
+ 140:.././hal/sam3u1c/inc/spi.h **** {
+ 141:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_MR |= SPI_MR_MSTR;
+ 142:.././hal/sam3u1c/inc/spi.h **** }
+ 143:.././hal/sam3u1c/inc/spi.h **** 
+ 144:.././hal/sam3u1c/inc/spi.h **** /**
+ 145:.././hal/sam3u1c/inc/spi.h ****  * \brief Set SPI to Slave mode.
+ 146:.././hal/sam3u1c/inc/spi.h ****  *
+ 147:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 148:.././hal/sam3u1c/inc/spi.h ****  */
+ 149:.././hal/sam3u1c/inc/spi.h **** static inline void spi_set_slave_mode(Spi *p_spi)
+ 150:.././hal/sam3u1c/inc/spi.h **** {
+ 151:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_MR &= (~SPI_MR_MSTR);
+ 152:.././hal/sam3u1c/inc/spi.h **** }
+ 153:.././hal/sam3u1c/inc/spi.h **** 
+ 154:.././hal/sam3u1c/inc/spi.h **** /**
+ 155:.././hal/sam3u1c/inc/spi.h ****  * \brief Get SPI work mode.
+ 156:.././hal/sam3u1c/inc/spi.h ****  *
+ 157:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 158:.././hal/sam3u1c/inc/spi.h ****  *
+ 159:.././hal/sam3u1c/inc/spi.h ****  * \return 1 for master mode, 0 for slave mode.
+ 160:.././hal/sam3u1c/inc/spi.h ****  */
+ 161:.././hal/sam3u1c/inc/spi.h **** static inline uint32_t spi_get_mode(Spi *p_spi)
+ 162:.././hal/sam3u1c/inc/spi.h **** {
+ 163:.././hal/sam3u1c/inc/spi.h **** 	if (p_spi->SPI_MR & SPI_MR_MSTR) {
+ 164:.././hal/sam3u1c/inc/spi.h **** 		return 1;
+ 165:.././hal/sam3u1c/inc/spi.h **** 	} else {
+ 166:.././hal/sam3u1c/inc/spi.h **** 		return 0;
+ 167:.././hal/sam3u1c/inc/spi.h **** 	}
+ 168:.././hal/sam3u1c/inc/spi.h **** }
+ 169:.././hal/sam3u1c/inc/spi.h **** 
+ 170:.././hal/sam3u1c/inc/spi.h **** /**
+ 171:.././hal/sam3u1c/inc/spi.h ****  * \brief Set Variable Peripheral Select.
+ 172:.././hal/sam3u1c/inc/spi.h ****  * Peripheral Chip Select can be controlled by SPI_TDR.
+ 173:.././hal/sam3u1c/inc/spi.h ****  *
+ 174:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 175:.././hal/sam3u1c/inc/spi.h ****  */
+ 176:.././hal/sam3u1c/inc/spi.h **** static inline void spi_set_variable_peripheral_select(Spi *p_spi)
+ 177:.././hal/sam3u1c/inc/spi.h **** {
+ 178:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_MR |= SPI_MR_PS;
+ 179:.././hal/sam3u1c/inc/spi.h **** }
+ 180:.././hal/sam3u1c/inc/spi.h **** 
+ 181:.././hal/sam3u1c/inc/spi.h **** /**
+ 182:.././hal/sam3u1c/inc/spi.h ****  * \brief Set Fixed Peripheral Select.
+ 183:.././hal/sam3u1c/inc/spi.h ****  *  Peripheral Chip Select is controlled by SPI_MR.
+ 184:.././hal/sam3u1c/inc/spi.h ****  *
+ 185:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 186:.././hal/sam3u1c/inc/spi.h ****  */
+ 187:.././hal/sam3u1c/inc/spi.h **** static inline void spi_set_fixed_peripheral_select(Spi *p_spi)
+ 188:.././hal/sam3u1c/inc/spi.h **** {
+ 189:.././hal/sam3u1c/inc/spi.h **** 	p_spi->SPI_MR &= (~SPI_MR_PS);
+ 190:.././hal/sam3u1c/inc/spi.h **** }
+ 191:.././hal/sam3u1c/inc/spi.h **** 
+ 192:.././hal/sam3u1c/inc/spi.h **** /**
+ 193:.././hal/sam3u1c/inc/spi.h ****  * \brief Get Peripheral Select mode.
+ 194:.././hal/sam3u1c/inc/spi.h ****  *
+ 195:.././hal/sam3u1c/inc/spi.h ****  * \param p_spi Pointer to an SPI instance.
+ 196:.././hal/sam3u1c/inc/spi.h ****  *
+ 197:.././hal/sam3u1c/inc/spi.h ****  * \return 1 for Variable mode, 0 for fixed mode.
+ 198:.././hal/sam3u1c/inc/spi.h ****  */
+ 199:.././hal/sam3u1c/inc/spi.h **** static inline uint32_t spi_get_peripheral_select_mode(Spi *p_spi)
+ 200:.././hal/sam3u1c/inc/spi.h **** {
+  36              	 .loc 1 200 0
+  37              	 .cfi_startproc
+  38              	 
+  39              	 
+  40              	 
+  41 0000 80B4     	 push {r7}
+  42              	.LCFI0:
+  43              	 .cfi_def_cfa_offset 4
+  44              	 .cfi_offset 7,-4
+  45 0002 83B0     	 sub sp,sp,#12
+  46              	.LCFI1:
+  47              	 .cfi_def_cfa_offset 16
+  48 0004 00AF     	 add r7,sp,#0
+  49              	.LCFI2:
+  50              	 .cfi_def_cfa_register 7
+  51 0006 7860     	 str r0,[r7,#4]
+ 201:.././hal/sam3u1c/inc/spi.h **** 	if (p_spi->SPI_MR & SPI_MR_PS) {
+  52              	 .loc 1 201 0
+  53 0008 7B68     	 ldr r3,[r7,#4]
+  54 000a 5B68     	 ldr r3,[r3,#4]
+  55 000c 03F00203 	 and r3,r3,#2
+  56 0010 002B     	 cmp r3,#0
+  57 0012 01D0     	 beq .L2
+ 202:.././hal/sam3u1c/inc/spi.h **** 		return 1;
+  58              	 .loc 1 202 0
+  59 0014 0123     	 movs r3,#1
+  60 0016 00E0     	 b .L3
+  61              	.L2:
+ 203:.././hal/sam3u1c/inc/spi.h **** 	} else {
+ 204:.././hal/sam3u1c/inc/spi.h **** 		return 0;
+  62              	 .loc 1 204 0
+  63 0018 0023     	 movs r3,#0
+  64              	.L3:
+ 205:.././hal/sam3u1c/inc/spi.h **** 	}
+ 206:.././hal/sam3u1c/inc/spi.h **** }
+  65              	 .loc 1 206 0
+  66 001a 1846     	 mov r0,r3
+  67 001c 0C37     	 adds r7,r7,#12
+  68              	.LCFI3:
+  69              	 .cfi_def_cfa_offset 4
+  70 001e BD46     	 mov sp,r7
+  71              	.LCFI4:
+  72              	 .cfi_def_cfa_register 13
+  73              	 
+  74 0020 80BC     	 pop {r7}
+  75              	.LCFI5:
+  76              	 .cfi_restore 7
+  77              	 .cfi_def_cfa_offset 0
+  78 0022 7047     	 bx lr
+  79              	 .cfi_endproc
+  80              	.LFE76:
+  82              	 .section .text.sysclk_enable_peripheral_clock,"ax",%progbits
+  83              	 .align 1
+  84              	 .syntax unified
+  85              	 .thumb
+  86              	 .thumb_func
+  87              	 .fpu softvfp
+  89              	sysclk_enable_peripheral_clock:
+  90              	.LFB119:
+  91              	 .file 2 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
+   1:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+   2:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \file
+   3:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+   4:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Chip-specific system clock management functions.
+   5:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+   6:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+   8:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \asf_license_start
+   9:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  10:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \page License
+  11:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  12:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  15:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  18:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  22:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  25:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  28:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  40:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \asf_license_stop
+  41:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  42:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+  43:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+  44:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifndef CHIP_SYSCLK_H_INCLUDED
+  45:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define CHIP_SYSCLK_H_INCLUDED
+  46:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+  47:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #include <osc.h>
+  48:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #include <pll.h>
+  49:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+  50:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+  51:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \page sysclk_quickstart Quick Start Guide for the System Clock Management service (SAM3U)
+  52:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  53:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * This is the quick start guide for the \ref sysclk_group "System Clock Management"
+  54:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * service, with step-by-step instructions on how to configure and use the service for
+  55:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * specific use cases.
+  56:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  57:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \section sysclk_quickstart_usecases System Clock Management use cases
+  58:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * - \ref sysclk_quickstart_basic
+  59:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  60:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \section sysclk_quickstart_basic Basic usage of the System Clock Management service
+  61:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * This section will present a basic use case for the System Clock Management service.
+  62:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * This use case will configure the main system clock to 96MHz, using an internal PLL
+  63:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * module to multiply the frequency of a crystal attached to the microcontroller.
+  64:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  65:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \subsection sysclk_quickstart_use_case_1_prereq Prerequisites
+  66:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *  - None
+  67:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  68:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \subsection sysclk_quickstart_use_case_1_setup_steps Initialization code
+  69:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * Add to the application initialization code:
+  70:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \code
+  71:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	sysclk_init();
+  72:.././hal/sam3u1c/inc/sam3u/sysclk.h **** \endcode
+  73:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  74:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \subsection sysclk_quickstart_use_case_1_setup_steps_workflow Workflow
+  75:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * -# Configure the system clocks according to the settings in conf_clock.h:
+  76:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    \code sysclk_init(); \endcode
+  77:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  78:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \subsection sysclk_quickstart_use_case_1_example_code Example code
+  79:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   Add or uncomment the following in your conf_clock.h header file, commenting out all other
+  80:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   definitions of the same symbol(s):
+  81:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   \code
+  82:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	   #define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLLACK
+  83:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+  84:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	   // Fpll0 = (Fclk * PLL_mul) / PLL_div
+  85:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	   #define CONFIG_PLL0_SOURCE          PLL_SRC_MAINCK_XTAL
+  86:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	   #define CONFIG_PLL0_MUL             (96000000UL / BOARD_FREQ_MAINCK_XTAL)
+  87:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	   #define CONFIG_PLL0_DIV             1
+  88:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+  89:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	   // Fbus = Fsys / BUS_div
+  90:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	   #define CONFIG_SYSCLK_PRES          SYSCLK_PRES_1
+  91:.././hal/sam3u1c/inc/sam3u/sysclk.h **** \endcode
+  92:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+  93:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \subsection sysclk_quickstart_use_case_1_example_workflow Workflow
+  94:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *  -# Configure the main system clock to use the output of the PLL module as its source:
+  95:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   \code #define CONFIG_SYSCLK_SOURCE          SYSCLK_SRC_PLLACK \endcode
+  96:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *  -# Configure the PLL module to use the fast external fast crystal oscillator as its source:
+  97:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   \code #define CONFIG_PLL0_SOURCE            PLL_SRC_MAINCK_XTAL \endcode
+  98:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *  -# Configure the PLL module to multiply the external fast crystal oscillator frequency up to 96
+  99:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   \code
+ 100:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	#define CONFIG_PLL0_MUL             (96000000UL / BOARD_FREQ_MAINCK_XTAL)
+ 101:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	#define CONFIG_PLL0_DIV             1
+ 102:.././hal/sam3u1c/inc/sam3u/sysclk.h **** \endcode
+ 103:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   \note For user boards, \c BOARD_FREQ_MAINCK_XTAL should be defined in the board \c conf_board.
+ 104:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *         file as the frequency of the fast crystal attached to the microcontroller.
+ 105:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *  -# Configure the main clock to run at the full 96MHz, disable scaling of the main system clock 
+ 106:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    \code
+ 107:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	#define CONFIG_SYSCLK_PRES         SYSCLK_PRES_1
+ 108:.././hal/sam3u1c/inc/sam3u/sysclk.h **** \endcode
+ 109:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *    \note Some dividers are powers of two, while others are integer division factors. Refer to th
+ 110:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *          formulas in the conf_clock.h template commented above each division define.
+ 111:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 112:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 113:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /// @cond 0
+ 114:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**INDENT-OFF**/
+ 115:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifdef __cplusplus
+ 116:.././hal/sam3u1c/inc/sam3u/sysclk.h **** extern "C" {
+ 117:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 118:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**INDENT-ON**/
+ 119:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /// @endcond
+ 120:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 121:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 122:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \weakgroup sysclk_group
+ 123:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * @{
+ 124:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 125:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 126:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //! \name Configuration Symbols
+ 127:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@{
+ 128:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 129:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \def CONFIG_SYSCLK_SOURCE
+ 130:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Initial/static main system clock source
+ 131:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 132:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * The main system clock will be configured to use this clock during
+ 133:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * initialization.
+ 134:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 135:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifndef CONFIG_SYSCLK_SOURCE
+ 136:.././hal/sam3u1c/inc/sam3u/sysclk.h **** # define CONFIG_SYSCLK_SOURCE   SYSCLK_SRC_MAINCK_4M_RC
+ 137:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 138:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 139:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \def CONFIG_SYSCLK_PRES
+ 140:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Initial CPU clock divider (mck)
+ 141:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 142:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * The MCK will run at
+ 143:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \f[
+ 144:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *   f_{MCK} = \frac{f_{sys}}{\mathrm{CONFIG\_SYSCLK\_PRES}}\,\mbox{Hz}
+ 145:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \f]
+ 146:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * after initialization.
+ 147:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 148:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifndef CONFIG_SYSCLK_PRES
+ 149:.././hal/sam3u1c/inc/sam3u/sysclk.h **** # define CONFIG_SYSCLK_PRES  0
+ 150:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 151:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 152:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@}
+ 153:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 154:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //! \name Master Clock Sources (MCK)
+ 155:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@{
+ 156:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_SLCK_RC              0       //!< Internal 32kHz RC oscillator as master source 
+ 157:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_SLCK_XTAL            1       //!< External 32kHz crystal oscillator as master so
+ 158:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_SLCK_BYPASS          2       //!< External 32kHz bypass oscillator as master sou
+ 159:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_MAINCK_4M_RC         3       //!< Internal 4MHz RC oscillator as master source c
+ 160:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_MAINCK_8M_RC         4       //!< Internal 8MHz RC oscillator as master source c
+ 161:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_MAINCK_12M_RC        5       //!< Internal 12MHz RC oscillator as master source 
+ 162:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_MAINCK_XTAL          6       //!< External crystal oscillator as master source c
+ 163:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_MAINCK_BYPASS        7       //!< External bypass oscillator as master source cl
+ 164:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_PLLACK               8       //!< Use PLLACK as master source clock
+ 165:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_SRC_UPLLCK               9       //!< Use UPLLCK as master source clock
+ 166:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@}
+ 167:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 168:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //! \name Master Clock Prescalers (MCK)
+ 169:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@{
+ 170:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_1           PMC_MCKR_PRES_CLK_1     //!< Set master clock prescaler to 1
+ 171:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_2           PMC_MCKR_PRES_CLK_2     //!< Set master clock prescaler to 2
+ 172:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_4           PMC_MCKR_PRES_CLK_4     //!< Set master clock prescaler to 4
+ 173:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_8           PMC_MCKR_PRES_CLK_8     //!< Set master clock prescaler to 8
+ 174:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_16          PMC_MCKR_PRES_CLK_16    //!< Set master clock prescaler to 16
+ 175:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_32          PMC_MCKR_PRES_CLK_32    //!< Set master clock prescaler to 32
+ 176:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_64          PMC_MCKR_PRES_CLK_64    //!< Set master clock prescaler to 64
+ 177:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #define SYSCLK_PRES_3           PMC_MCKR_PRES_CLK_3     //!< Set master clock prescaler to 3
+ 178:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@}
+ 179:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 180:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 181:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \def CONFIG_USBCLK_SOURCE
+ 182:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Configuration symbol for the USB generic clock source
+ 183:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 184:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * Sets the clock source to use for the USB. The source must also be properly
+ 185:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * configured.
+ 186:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 187:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * Define this to one of the \c USBCLK_SRC_xxx settings. Leave it undefined if
+ 188:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * USB is not required.
+ 189:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 190:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifdef __DOXYGEN__
+ 191:.././hal/sam3u1c/inc/sam3u/sysclk.h **** # define CONFIG_USBCLK_SOURCE
+ 192:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 193:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 194:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 195:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \def CONFIG_USBCLK_DIV
+ 196:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Configuration symbol for the USB generic clock divider setting
+ 197:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 198:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * Sets the clock division for the USB generic clock. If a USB clock source is
+ 199:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * selected with CONFIG_USBCLK_SOURCE, this configuration symbol must also be
+ 200:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * defined.
+ 201:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 202:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifdef __DOXYGEN__
+ 203:.././hal/sam3u1c/inc/sam3u/sysclk.h **** # define CONFIG_USBCLK_DIV
+ 204:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 205:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 206:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 207:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \name Querying the system clock
+ 208:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 209:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * The following functions may be used to query the current frequency of
+ 210:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * the system clock and the CPU and bus clocks derived from it.
+ 211:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * sysclk_get_main_hz() and sysclk_get_cpu_hz() can be assumed to be
+ 212:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * available on all platforms, although some platforms may define
+ 213:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * additional accessors for various chip-internal bus clocks. These are
+ 214:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * usually not intended to be queried directly by generic code.
+ 215:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 216:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@{
+ 217:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 218:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 219:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Return the current rate in Hz of the main system clock
+ 220:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 221:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \todo This function assumes that the main clock source never changes
+ 222:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * once it's been set up, and that PLL0 always runs at the compile-time
+ 223:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * configured default rate. While this is probably the most common
+ 224:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * configuration, which we want to support as a special case for
+ 225:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * performance reasons, we will at some point need to support more
+ 226:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * dynamic setups as well.
+ 227:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 228:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #if (defined CONFIG_SYSCLK_DEFAULT_RETURNS_SLOW_OSC)
+ 229:.././hal/sam3u1c/inc/sam3u/sysclk.h **** extern uint32_t sysclk_initialized;
+ 230:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 231:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_main_hz(void)
+ 232:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
+ 233:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #if (defined CONFIG_SYSCLK_DEFAULT_RETURNS_SLOW_OSC)
+ 234:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	if (!sysclk_initialized ) {
+ 235:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_4M_RC_HZ;
+ 236:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
+ 237:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 238:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 239:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* Config system clock setting */
+ 240:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_SLCK_RC) {
+ 241:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_SLCK_32K_RC_HZ;
+ 242:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	} else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_SLCK_XTAL) {
+ 243:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_SLCK_32K_XTAL_HZ;
+ 244:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	} else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_SLCK_BYPASS) {
+ 245:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_SLCK_32K_BYPASS_HZ;
+ 246:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	} else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_MAINCK_4M_RC) {
+ 247:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_4M_RC_HZ;
+ 248:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	} else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_MAINCK_8M_RC) {
+ 249:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_8M_RC_HZ;
+ 250:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	} else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_MAINCK_12M_RC) {
+ 251:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_12M_RC_HZ;
+ 252:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	} else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_MAINCK_XTAL) {
+ 253:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_XTAL_HZ;
+ 254:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	} else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_MAINCK_BYPASS) {
+ 255:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_BYPASS_HZ;
+ 256:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
+ 257:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifdef CONFIG_PLL0_SOURCE
+ 258:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_PLLACK) {
+ 259:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return pll_get_default_rate(0);
+ 260:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
+ 261:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 262:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 263:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifdef CONFIG_PLL1_SOURCE
+ 264:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_UPLLCK) {
+ 265:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return PLL_UPLL_HZ;
+ 266:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
+ 267:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
+ 268:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	else {
+ 269:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		/* unhandled_case(CONFIG_SYSCLK_SOURCE); */
+ 270:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return 0;
+ 271:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
+ 272:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
+ 273:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 274:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 275:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Return the current rate in Hz of the CPU clock
+ 276:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 277:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \todo This function assumes that the CPU always runs at the system
+ 278:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * clock frequency. We want to support at least two more scenarios:
+ 279:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * Fixed CPU/bus clock dividers (config symbols) and dynamic CPU/bus
+ 280:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * clock dividers (which may change at run time). Ditto for all the bus
+ 281:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * clocks.
+ 282:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 283:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \return Frequency of the CPU clock, in Hz.
+ 284:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 285:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_cpu_hz(void)
+ 286:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
+ 287:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* CONFIG_SYSCLK_PRES is the register value for setting the expected */
+ 288:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* prescaler, not an immediate value. */
+ 289:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	return sysclk_get_main_hz() /
+ 290:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		((CONFIG_SYSCLK_PRES == SYSCLK_PRES_3) ? 3 :
+ 291:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 			(1 << (CONFIG_SYSCLK_PRES >> PMC_MCKR_PRES_Pos)));
+ 292:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
+ 293:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 294:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 295:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Retrieves the current rate in Hz of the peripheral clocks.
+ 296:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 297:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \return Frequency of the peripheral clocks, in Hz.
+ 298:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 299:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_peripheral_hz(void)
+ 300:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
+ 301:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* CONFIG_SYSCLK_PRES is the register value for setting the expected */
+ 302:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* prescaler, not an immediate value. */
+ 303:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	return sysclk_get_main_hz() /
+ 304:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		((CONFIG_SYSCLK_PRES == SYSCLK_PRES_3) ? 3 :
+ 305:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 			(1 << (CONFIG_SYSCLK_PRES >> PMC_MCKR_PRES_Pos)));
+ 306:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
+ 307:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 308:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 309:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Retrieves the current rate in Hz of the Peripheral Bus clock attached
+ 310:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *        to the specified peripheral.
+ 311:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 312:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \param module Pointer to the module's base address.
+ 313:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 314:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \return Frequency of the bus attached to the specified peripheral, in Hz.
+ 315:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 316:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_peripheral_bus_hz(const volatile void *module)
+ 317:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
+ 318:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	UNUSED(module);
+ 319:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	return sysclk_get_peripheral_hz();
+ 320:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
+ 321:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@}
+ 322:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 323:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //! \name Enabling and disabling synchronous clocks
+ 324:.././hal/sam3u1c/inc/sam3u/sysclk.h **** //@{
+ 325:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 326:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 327:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Enable a peripheral's clock.
+ 328:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 329:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \param ul_id Id (number) of the peripheral clock.
+ 330:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 331:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline void sysclk_enable_peripheral_clock(uint32_t ul_id)
+ 332:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
+  92              	 .loc 2 332 0
+  93              	 .cfi_startproc
+  94              	 
+  95              	 
+  96 0000 80B5     	 push {r7,lr}
+  97              	.LCFI6:
+  98              	 .cfi_def_cfa_offset 8
+  99              	 .cfi_offset 7,-8
+ 100              	 .cfi_offset 14,-4
+ 101 0002 82B0     	 sub sp,sp,#8
+ 102              	.LCFI7:
+ 103              	 .cfi_def_cfa_offset 16
+ 104 0004 00AF     	 add r7,sp,#0
+ 105              	.LCFI8:
+ 106              	 .cfi_def_cfa_register 7
+ 107 0006 7860     	 str r0,[r7,#4]
+ 333:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	pmc_enable_periph_clk(ul_id);
+ 108              	 .loc 2 333 0
+ 109 0008 7868     	 ldr r0,[r7,#4]
+ 110 000a 034B     	 ldr r3,.L5
+ 111 000c 9847     	 blx r3
+ 112              	.LVL0:
+ 334:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
+ 113              	 .loc 2 334 0
+ 114 000e 00BF     	 nop
+ 115 0010 0837     	 adds r7,r7,#8
+ 116              	.LCFI9:
+ 117              	 .cfi_def_cfa_offset 8
+ 118 0012 BD46     	 mov sp,r7
+ 119              	.LCFI10:
+ 120              	 .cfi_def_cfa_register 13
+ 121              	 
+ 122 0014 80BD     	 pop {r7,pc}
+ 123              	.L6:
+ 124 0016 00BF     	 .align 2
+ 125              	.L5:
+ 126 0018 00000000 	 .word pmc_enable_periph_clk
+ 127              	 .cfi_endproc
+ 128              	.LFE119:
+ 130              	 .section .text.sysclk_disable_peripheral_clock,"ax",%progbits
+ 131              	 .align 1
+ 132              	 .syntax unified
+ 133              	 .thumb
+ 134              	 .thumb_func
+ 135              	 .fpu softvfp
+ 137              	sysclk_disable_peripheral_clock:
+ 138              	.LFB120:
+ 335:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
+ 336:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
+ 337:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Disable a peripheral's clock.
+ 338:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
+ 339:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \param ul_id Id (number) of the peripheral clock.
+ 340:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
+ 341:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline void sysclk_disable_peripheral_clock(uint32_t ul_id)
+ 342:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
+ 139              	 .loc 2 342 0
+ 140              	 .cfi_startproc
+ 141              	 
+ 142              	 
+ 143 0000 80B5     	 push {r7,lr}
+ 144              	.LCFI11:
+ 145              	 .cfi_def_cfa_offset 8
+ 146              	 .cfi_offset 7,-8
+ 147              	 .cfi_offset 14,-4
+ 148 0002 82B0     	 sub sp,sp,#8
+ 149              	.LCFI12:
+ 150              	 .cfi_def_cfa_offset 16
+ 151 0004 00AF     	 add r7,sp,#0
+ 152              	.LCFI13:
+ 153              	 .cfi_def_cfa_register 7
+ 154 0006 7860     	 str r0,[r7,#4]
+ 343:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	pmc_disable_periph_clk(ul_id);
+ 155              	 .loc 2 343 0
+ 156 0008 7868     	 ldr r0,[r7,#4]
+ 157 000a 034B     	 ldr r3,.L8
+ 158 000c 9847     	 blx r3
+ 159              	.LVL1:
+ 344:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
+ 160              	 .loc 2 344 0
+ 161 000e 00BF     	 nop
+ 162 0010 0837     	 adds r7,r7,#8
+ 163              	.LCFI14:
+ 164              	 .cfi_def_cfa_offset 8
+ 165 0012 BD46     	 mov sp,r7
+ 166              	.LCFI15:
+ 167              	 .cfi_def_cfa_register 13
+ 168              	 
+ 169 0014 80BD     	 pop {r7,pc}
+ 170              	.L9:
+ 171 0016 00BF     	 .align 2
+ 172              	.L8:
+ 173 0018 00000000 	 .word pmc_disable_periph_clk
+ 174              	 .cfi_endproc
+ 175              	.LFE120:
+ 177              	 .section .text.spi_enable_clock,"ax",%progbits
+ 178              	 .align 1
+ 179              	 .global spi_enable_clock
+ 180              	 .syntax unified
+ 181              	 .thumb
+ 182              	 .thumb_func
+ 183              	 .fpu softvfp
+ 185              	spi_enable_clock:
+ 186              	.LFB121:
+ 187              	 .file 3 ".././hal/sam3u1c/spi.c"
+   1:.././hal/sam3u1c/spi.c **** /**
+   2:.././hal/sam3u1c/spi.c ****  * \file
+   3:.././hal/sam3u1c/spi.c ****  *
+   4:.././hal/sam3u1c/spi.c ****  * \brief Serial Peripheral Interface (SPI) driver for SAM.
+   5:.././hal/sam3u1c/spi.c ****  *
+   6:.././hal/sam3u1c/spi.c ****  * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
+   7:.././hal/sam3u1c/spi.c ****  *
+   8:.././hal/sam3u1c/spi.c ****  * \asf_license_start
+   9:.././hal/sam3u1c/spi.c ****  *
+  10:.././hal/sam3u1c/spi.c ****  * \page License
+  11:.././hal/sam3u1c/spi.c ****  *
+  12:.././hal/sam3u1c/spi.c ****  * Redistribution and use in source and binary forms, with or without
+  13:.././hal/sam3u1c/spi.c ****  * modification, are permitted provided that the following conditions are met:
+  14:.././hal/sam3u1c/spi.c ****  *
+  15:.././hal/sam3u1c/spi.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:.././hal/sam3u1c/spi.c ****  *    this list of conditions and the following disclaimer.
+  17:.././hal/sam3u1c/spi.c ****  *
+  18:.././hal/sam3u1c/spi.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:.././hal/sam3u1c/spi.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:.././hal/sam3u1c/spi.c ****  *    and/or other materials provided with the distribution.
+  21:.././hal/sam3u1c/spi.c ****  *
+  22:.././hal/sam3u1c/spi.c ****  * 3. The name of Atmel may not be used to endorse or promote products derived
+  23:.././hal/sam3u1c/spi.c ****  *    from this software without specific prior written permission.
+  24:.././hal/sam3u1c/spi.c ****  *
+  25:.././hal/sam3u1c/spi.c ****  * 4. This software may only be redistributed and used in connection with an
+  26:.././hal/sam3u1c/spi.c ****  *    Atmel microcontroller product.
+  27:.././hal/sam3u1c/spi.c ****  *
+  28:.././hal/sam3u1c/spi.c ****  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+  29:.././hal/sam3u1c/spi.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:.././hal/sam3u1c/spi.c ****  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+  31:.././hal/sam3u1c/spi.c ****  * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+  32:.././hal/sam3u1c/spi.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  33:.././hal/sam3u1c/spi.c ****  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  34:.././hal/sam3u1c/spi.c ****  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  35:.././hal/sam3u1c/spi.c ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  36:.././hal/sam3u1c/spi.c ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  37:.././hal/sam3u1c/spi.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  38:.././hal/sam3u1c/spi.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  39:.././hal/sam3u1c/spi.c ****  *
+  40:.././hal/sam3u1c/spi.c ****  * \asf_license_stop
+  41:.././hal/sam3u1c/spi.c ****  *
+  42:.././hal/sam3u1c/spi.c ****  */
+  43:.././hal/sam3u1c/spi.c **** 
+  44:.././hal/sam3u1c/spi.c **** #include "spi.h"
+  45:.././hal/sam3u1c/spi.c **** #include "sysclk.h"
+  46:.././hal/sam3u1c/spi.c **** 
+  47:.././hal/sam3u1c/spi.c **** /**
+  48:.././hal/sam3u1c/spi.c ****  * \defgroup sam_drivers_spi_group Serial Peripheral Interface (SPI)
+  49:.././hal/sam3u1c/spi.c ****  *
+  50:.././hal/sam3u1c/spi.c ****  * See \ref sam_spi_quickstart.
+  51:.././hal/sam3u1c/spi.c ****  *
+  52:.././hal/sam3u1c/spi.c ****  * The SPI circuit is a synchronous serial data link that provides communication
+  53:.././hal/sam3u1c/spi.c ****  * with external devices in Master or Slave mode. Connection to Peripheral DMA
+  54:.././hal/sam3u1c/spi.c ****  * Controller channel capabilities optimizes data transfers.
+  55:.././hal/sam3u1c/spi.c ****  *
+  56:.././hal/sam3u1c/spi.c ****  * @{
+  57:.././hal/sam3u1c/spi.c ****  */
+  58:.././hal/sam3u1c/spi.c **** #ifndef SPI_WPMR_WPKEY_PASSWD
+  59:.././hal/sam3u1c/spi.c **** #define SPI_WPMR_WPKEY_PASSWD SPI_WPMR_WPKEY((uint32_t) 0x535049)
+  60:.././hal/sam3u1c/spi.c **** #endif
+  61:.././hal/sam3u1c/spi.c **** 
+  62:.././hal/sam3u1c/spi.c **** /**
+  63:.././hal/sam3u1c/spi.c ****  * \brief Enable SPI clock.
+  64:.././hal/sam3u1c/spi.c ****  *
+  65:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+  66:.././hal/sam3u1c/spi.c ****  */
+  67:.././hal/sam3u1c/spi.c **** void spi_enable_clock(Spi *p_spi)
+  68:.././hal/sam3u1c/spi.c **** {
+ 188              	 .loc 3 68 0
+ 189              	 .cfi_startproc
+ 190              	 
+ 191              	 
+ 192 0000 80B5     	 push {r7,lr}
+ 193              	.LCFI16:
+ 194              	 .cfi_def_cfa_offset 8
+ 195              	 .cfi_offset 7,-8
+ 196              	 .cfi_offset 14,-4
+ 197 0002 82B0     	 sub sp,sp,#8
+ 198              	.LCFI17:
+ 199              	 .cfi_def_cfa_offset 16
+ 200 0004 00AF     	 add r7,sp,#0
+ 201              	.LCFI18:
+ 202              	 .cfi_def_cfa_register 7
+ 203 0006 7860     	 str r0,[r7,#4]
+  69:.././hal/sam3u1c/spi.c **** #if (SAM4S || SAM3S || SAM3N || SAM3U || SAM4E || SAM4N || SAMG51|| SAMG53|| SAMG54)
+  70:.././hal/sam3u1c/spi.c **** 	UNUSED(p_spi);
+  71:.././hal/sam3u1c/spi.c **** 	sysclk_enable_peripheral_clock(ID_SPI);
+ 204              	 .loc 3 71 0
+ 205 0008 1420     	 movs r0,#20
+ 206 000a 034B     	 ldr r3,.L11
+ 207 000c 9847     	 blx r3
+ 208              	.LVL2:
+  72:.././hal/sam3u1c/spi.c **** #elif (SAM3XA || SAM4C || SAM4CP || SAM4CM|| SAMG55)
+  73:.././hal/sam3u1c/spi.c **** 	if (p_spi == SPI0) {
+  74:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI0);
+  75:.././hal/sam3u1c/spi.c **** 	}
+  76:.././hal/sam3u1c/spi.c **** 	#ifdef SPI1
+  77:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI1) {
+  78:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI1);
+  79:.././hal/sam3u1c/spi.c **** 	}
+  80:.././hal/sam3u1c/spi.c **** 	#endif
+  81:.././hal/sam3u1c/spi.c **** 	#ifdef SPI2
+  82:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI2) {
+  83:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI2);
+  84:.././hal/sam3u1c/spi.c **** 	}
+  85:.././hal/sam3u1c/spi.c **** 	#endif
+  86:.././hal/sam3u1c/spi.c **** 	#ifdef SPI3
+  87:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI3) {
+  88:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI3);
+  89:.././hal/sam3u1c/spi.c **** 	}
+  90:.././hal/sam3u1c/spi.c **** 	#endif
+  91:.././hal/sam3u1c/spi.c **** 	#ifdef SPI4
+  92:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI4) {
+  93:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI4);
+  94:.././hal/sam3u1c/spi.c **** 	}
+  95:.././hal/sam3u1c/spi.c **** 	#endif
+  96:.././hal/sam3u1c/spi.c **** 	#ifdef SPI5
+  97:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI5) {
+  98:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI5);
+  99:.././hal/sam3u1c/spi.c **** 	}
+ 100:.././hal/sam3u1c/spi.c **** 	#endif
+ 101:.././hal/sam3u1c/spi.c **** 	#ifdef SPI6
+ 102:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI6) {
+ 103:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI6);
+ 104:.././hal/sam3u1c/spi.c **** 	}
+ 105:.././hal/sam3u1c/spi.c **** 	#endif
+ 106:.././hal/sam3u1c/spi.c **** 	#ifdef SPI7
+ 107:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI7) {
+ 108:.././hal/sam3u1c/spi.c **** 		sysclk_enable_peripheral_clock(ID_SPI7);
+ 109:.././hal/sam3u1c/spi.c **** 	}
+ 110:.././hal/sam3u1c/spi.c **** 	#endif
+ 111:.././hal/sam3u1c/spi.c **** #elif SAM4L
+ 112:.././hal/sam3u1c/spi.c **** 	sysclk_enable_peripheral_clock(p_spi);
+ 113:.././hal/sam3u1c/spi.c **** #endif
+ 114:.././hal/sam3u1c/spi.c **** }
+ 209              	 .loc 3 114 0
+ 210 000e 00BF     	 nop
+ 211 0010 0837     	 adds r7,r7,#8
+ 212              	.LCFI19:
+ 213              	 .cfi_def_cfa_offset 8
+ 214 0012 BD46     	 mov sp,r7
+ 215              	.LCFI20:
+ 216              	 .cfi_def_cfa_register 13
+ 217              	 
+ 218 0014 80BD     	 pop {r7,pc}
+ 219              	.L12:
+ 220 0016 00BF     	 .align 2
+ 221              	.L11:
+ 222 0018 00000000 	 .word sysclk_enable_peripheral_clock
+ 223              	 .cfi_endproc
+ 224              	.LFE121:
+ 226              	 .section .text.spi_disable_clock,"ax",%progbits
+ 227              	 .align 1
+ 228              	 .global spi_disable_clock
+ 229              	 .syntax unified
+ 230              	 .thumb
+ 231              	 .thumb_func
+ 232              	 .fpu softvfp
+ 234              	spi_disable_clock:
+ 235              	.LFB122:
+ 115:.././hal/sam3u1c/spi.c **** 
+ 116:.././hal/sam3u1c/spi.c **** /**
+ 117:.././hal/sam3u1c/spi.c ****  * \brief Disable SPI clock.
+ 118:.././hal/sam3u1c/spi.c ****  *
+ 119:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 120:.././hal/sam3u1c/spi.c ****  */
+ 121:.././hal/sam3u1c/spi.c **** void spi_disable_clock(Spi *p_spi)
+ 122:.././hal/sam3u1c/spi.c **** {
+ 236              	 .loc 3 122 0
+ 237              	 .cfi_startproc
+ 238              	 
+ 239              	 
+ 240 0000 80B5     	 push {r7,lr}
+ 241              	.LCFI21:
+ 242              	 .cfi_def_cfa_offset 8
+ 243              	 .cfi_offset 7,-8
+ 244              	 .cfi_offset 14,-4
+ 245 0002 82B0     	 sub sp,sp,#8
+ 246              	.LCFI22:
+ 247              	 .cfi_def_cfa_offset 16
+ 248 0004 00AF     	 add r7,sp,#0
+ 249              	.LCFI23:
+ 250              	 .cfi_def_cfa_register 7
+ 251 0006 7860     	 str r0,[r7,#4]
+ 123:.././hal/sam3u1c/spi.c **** #if (SAM4S || SAM3S || SAM3N || SAM3U || SAM4E || SAM4N || SAMG51|| SAMG53|| SAMG54)
+ 124:.././hal/sam3u1c/spi.c **** 	UNUSED(p_spi);
+ 125:.././hal/sam3u1c/spi.c **** 	sysclk_disable_peripheral_clock(ID_SPI);
+ 252              	 .loc 3 125 0
+ 253 0008 1420     	 movs r0,#20
+ 254 000a 034B     	 ldr r3,.L14
+ 255 000c 9847     	 blx r3
+ 256              	.LVL3:
+ 126:.././hal/sam3u1c/spi.c **** #elif (SAM3XA || SAM4C || SAM4CP || SAM4CM || SAMG55)
+ 127:.././hal/sam3u1c/spi.c **** 	if (p_spi == SPI0) {
+ 128:.././hal/sam3u1c/spi.c **** 		sysclk_disable_peripheral_clock(ID_SPI0);
+ 129:.././hal/sam3u1c/spi.c **** 	}
+ 130:.././hal/sam3u1c/spi.c **** 	#ifdef SPI1
+ 131:.././hal/sam3u1c/spi.c **** 	else if (p_spi == SPI1) {
+ 132:.././hal/sam3u1c/spi.c **** 		sysclk_disable_peripheral_clock(ID_SPI1);
+ 133:.././hal/sam3u1c/spi.c **** 	}
+ 134:.././hal/sam3u1c/spi.c **** 	#endif
+ 135:.././hal/sam3u1c/spi.c **** 	#ifdef SPI2
+ 136:.././hal/sam3u1c/spi.c **** 		else if (p_spi == SPI2) {
+ 137:.././hal/sam3u1c/spi.c **** 			sysclk_disable_peripheral_clock(ID_SPI2);
+ 138:.././hal/sam3u1c/spi.c **** 		}
+ 139:.././hal/sam3u1c/spi.c **** 	#endif
+ 140:.././hal/sam3u1c/spi.c **** 	#ifdef SPI3
+ 141:.././hal/sam3u1c/spi.c **** 		else if (p_spi == SPI3) {
+ 142:.././hal/sam3u1c/spi.c **** 			sysclk_disable_peripheral_clock(ID_SPI3);
+ 143:.././hal/sam3u1c/spi.c **** 		}
+ 144:.././hal/sam3u1c/spi.c **** 	#endif
+ 145:.././hal/sam3u1c/spi.c **** 	#ifdef SPI4
+ 146:.././hal/sam3u1c/spi.c **** 		else if (p_spi == SPI4) {
+ 147:.././hal/sam3u1c/spi.c **** 			sysclk_disable_peripheral_clock(ID_SPI4);
+ 148:.././hal/sam3u1c/spi.c **** 		}
+ 149:.././hal/sam3u1c/spi.c **** 	#endif
+ 150:.././hal/sam3u1c/spi.c **** 	#ifdef SPI5
+ 151:.././hal/sam3u1c/spi.c **** 		else if (p_spi == SPI5) {
+ 152:.././hal/sam3u1c/spi.c **** 			sysclk_disable_peripheral_clock(ID_SPI5);
+ 153:.././hal/sam3u1c/spi.c **** 		}
+ 154:.././hal/sam3u1c/spi.c **** 	#endif
+ 155:.././hal/sam3u1c/spi.c **** 	#ifdef SPI6
+ 156:.././hal/sam3u1c/spi.c **** 		else if (p_spi == SPI6) {
+ 157:.././hal/sam3u1c/spi.c **** 			sysclk_disable_peripheral_clock(ID_SPI6);
+ 158:.././hal/sam3u1c/spi.c **** 		}
+ 159:.././hal/sam3u1c/spi.c **** 	#endif
+ 160:.././hal/sam3u1c/spi.c **** 	#ifdef SPI7
+ 161:.././hal/sam3u1c/spi.c **** 		else if (p_spi == SPI7) {
+ 162:.././hal/sam3u1c/spi.c **** 			sysclk_disable_peripheral_clock(ID_SPI7);
+ 163:.././hal/sam3u1c/spi.c **** 		}
+ 164:.././hal/sam3u1c/spi.c **** 	#endif
+ 165:.././hal/sam3u1c/spi.c **** #elif SAM4L
+ 166:.././hal/sam3u1c/spi.c **** 	sysclk_disable_peripheral_clock(p_spi);
+ 167:.././hal/sam3u1c/spi.c **** #endif
+ 168:.././hal/sam3u1c/spi.c **** }
+ 257              	 .loc 3 168 0
+ 258 000e 00BF     	 nop
+ 259 0010 0837     	 adds r7,r7,#8
+ 260              	.LCFI24:
+ 261              	 .cfi_def_cfa_offset 8
+ 262 0012 BD46     	 mov sp,r7
+ 263              	.LCFI25:
+ 264              	 .cfi_def_cfa_register 13
+ 265              	 
+ 266 0014 80BD     	 pop {r7,pc}
+ 267              	.L15:
+ 268 0016 00BF     	 .align 2
+ 269              	.L14:
+ 270 0018 00000000 	 .word sysclk_disable_peripheral_clock
+ 271              	 .cfi_endproc
+ 272              	.LFE122:
+ 274              	 .section .text.spi_set_peripheral_chip_select_value,"ax",%progbits
+ 275              	 .align 1
+ 276              	 .global spi_set_peripheral_chip_select_value
+ 277              	 .syntax unified
+ 278              	 .thumb
+ 279              	 .thumb_func
+ 280              	 .fpu softvfp
+ 282              	spi_set_peripheral_chip_select_value:
+ 283              	.LFB123:
+ 169:.././hal/sam3u1c/spi.c **** 
+ 170:.././hal/sam3u1c/spi.c **** /**
+ 171:.././hal/sam3u1c/spi.c ****  * \brief Set Peripheral Chip Select (PCS) value.
+ 172:.././hal/sam3u1c/spi.c ****  *
+ 173:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 174:.././hal/sam3u1c/spi.c ****  * \param ul_value Peripheral Chip Select value.
+ 175:.././hal/sam3u1c/spi.c ****  *                 If PCS decode mode is not used, use \ref spi_get_pcs to build
+ 176:.././hal/sam3u1c/spi.c ****  *                 the value to use.
+ 177:.././hal/sam3u1c/spi.c ****  *                 On reset the decode mode is not enabled.
+ 178:.././hal/sam3u1c/spi.c ****  *                 The decode mode can be enabled/disabled by follow functions:
+ 179:.././hal/sam3u1c/spi.c ****  *                 \ref spi_enable_peripheral_select_decode,
+ 180:.././hal/sam3u1c/spi.c ****  *                 \ref spi_disable_peripheral_select_decode.
+ 181:.././hal/sam3u1c/spi.c ****  */
+ 182:.././hal/sam3u1c/spi.c **** void spi_set_peripheral_chip_select_value(Spi *p_spi, uint32_t ul_value)
+ 183:.././hal/sam3u1c/spi.c **** {
+ 284              	 .loc 3 183 0
+ 285              	 .cfi_startproc
+ 286              	 
+ 287              	 
+ 288              	 
+ 289 0000 80B4     	 push {r7}
+ 290              	.LCFI26:
+ 291              	 .cfi_def_cfa_offset 4
+ 292              	 .cfi_offset 7,-4
+ 293 0002 83B0     	 sub sp,sp,#12
+ 294              	.LCFI27:
+ 295              	 .cfi_def_cfa_offset 16
+ 296 0004 00AF     	 add r7,sp,#0
+ 297              	.LCFI28:
+ 298              	 .cfi_def_cfa_register 7
+ 299 0006 7860     	 str r0,[r7,#4]
+ 300 0008 3960     	 str r1,[r7]
+ 184:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_MR &= (~SPI_MR_PCS_Msk);
+ 301              	 .loc 3 184 0
+ 302 000a 7B68     	 ldr r3,[r7,#4]
+ 303 000c 5B68     	 ldr r3,[r3,#4]
+ 304 000e 23F47022 	 bic r2,r3,#983040
+ 305 0012 7B68     	 ldr r3,[r7,#4]
+ 306 0014 5A60     	 str r2,[r3,#4]
+ 185:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_MR |= SPI_MR_PCS(ul_value);
+ 307              	 .loc 3 185 0
+ 308 0016 7B68     	 ldr r3,[r7,#4]
+ 309 0018 5A68     	 ldr r2,[r3,#4]
+ 310 001a 3B68     	 ldr r3,[r7]
+ 311 001c 1B04     	 lsls r3,r3,#16
+ 312 001e 03F47023 	 and r3,r3,#983040
+ 313 0022 1A43     	 orrs r2,r2,r3
+ 314 0024 7B68     	 ldr r3,[r7,#4]
+ 315 0026 5A60     	 str r2,[r3,#4]
+ 186:.././hal/sam3u1c/spi.c **** }
+ 316              	 .loc 3 186 0
+ 317 0028 00BF     	 nop
+ 318 002a 0C37     	 adds r7,r7,#12
+ 319              	.LCFI29:
+ 320              	 .cfi_def_cfa_offset 4
+ 321 002c BD46     	 mov sp,r7
+ 322              	.LCFI30:
+ 323              	 .cfi_def_cfa_register 13
+ 324              	 
+ 325 002e 80BC     	 pop {r7}
+ 326              	.LCFI31:
+ 327              	 .cfi_restore 7
+ 328              	 .cfi_def_cfa_offset 0
+ 329 0030 7047     	 bx lr
+ 330              	 .cfi_endproc
+ 331              	.LFE123:
+ 333              	 .section .text.spi_set_delay_between_chip_select,"ax",%progbits
+ 334              	 .align 1
+ 335              	 .global spi_set_delay_between_chip_select
+ 336              	 .syntax unified
+ 337              	 .thumb
+ 338              	 .thumb_func
+ 339              	 .fpu softvfp
+ 341              	spi_set_delay_between_chip_select:
+ 342              	.LFB124:
+ 187:.././hal/sam3u1c/spi.c **** 
+ 188:.././hal/sam3u1c/spi.c **** /**
+ 189:.././hal/sam3u1c/spi.c ****  * \brief Set delay between chip selects (in number of MCK clocks).
+ 190:.././hal/sam3u1c/spi.c ****  *  If DLYBCS <= 6, 6 MCK clocks will be inserted by default.
+ 191:.././hal/sam3u1c/spi.c ****  *
+ 192:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 193:.././hal/sam3u1c/spi.c ****  * \param ul_delay Delay between chip selects (in number of MCK clocks).
+ 194:.././hal/sam3u1c/spi.c ****  */
+ 195:.././hal/sam3u1c/spi.c **** void spi_set_delay_between_chip_select(Spi *p_spi, uint32_t ul_delay)
+ 196:.././hal/sam3u1c/spi.c **** {
+ 343              	 .loc 3 196 0
+ 344              	 .cfi_startproc
+ 345              	 
+ 346              	 
+ 347              	 
+ 348 0000 80B4     	 push {r7}
+ 349              	.LCFI32:
+ 350              	 .cfi_def_cfa_offset 4
+ 351              	 .cfi_offset 7,-4
+ 352 0002 83B0     	 sub sp,sp,#12
+ 353              	.LCFI33:
+ 354              	 .cfi_def_cfa_offset 16
+ 355 0004 00AF     	 add r7,sp,#0
+ 356              	.LCFI34:
+ 357              	 .cfi_def_cfa_register 7
+ 358 0006 7860     	 str r0,[r7,#4]
+ 359 0008 3960     	 str r1,[r7]
+ 197:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_MR &= (~SPI_MR_DLYBCS_Msk);
+ 360              	 .loc 3 197 0
+ 361 000a 7B68     	 ldr r3,[r7,#4]
+ 362 000c 5B68     	 ldr r3,[r3,#4]
+ 363 000e 23F07F42 	 bic r2,r3,#-16777216
+ 364 0012 7B68     	 ldr r3,[r7,#4]
+ 365 0014 5A60     	 str r2,[r3,#4]
+ 198:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_MR |= SPI_MR_DLYBCS(ul_delay);
+ 366              	 .loc 3 198 0
+ 367 0016 7B68     	 ldr r3,[r7,#4]
+ 368 0018 5A68     	 ldr r2,[r3,#4]
+ 369 001a 3B68     	 ldr r3,[r7]
+ 370 001c 1B06     	 lsls r3,r3,#24
+ 371 001e 1A43     	 orrs r2,r2,r3
+ 372 0020 7B68     	 ldr r3,[r7,#4]
+ 373 0022 5A60     	 str r2,[r3,#4]
+ 199:.././hal/sam3u1c/spi.c **** }
+ 374              	 .loc 3 199 0
+ 375 0024 00BF     	 nop
+ 376 0026 0C37     	 adds r7,r7,#12
+ 377              	.LCFI35:
+ 378              	 .cfi_def_cfa_offset 4
+ 379 0028 BD46     	 mov sp,r7
+ 380              	.LCFI36:
+ 381              	 .cfi_def_cfa_register 13
+ 382              	 
+ 383 002a 80BC     	 pop {r7}
+ 384              	.LCFI37:
+ 385              	 .cfi_restore 7
+ 386              	 .cfi_def_cfa_offset 0
+ 387 002c 7047     	 bx lr
+ 388              	 .cfi_endproc
+ 389              	.LFE124:
+ 391              	 .section .text.spi_read,"ax",%progbits
+ 392              	 .align 1
+ 393              	 .global spi_read
+ 394              	 .syntax unified
+ 395              	 .thumb
+ 396              	 .thumb_func
+ 397              	 .fpu softvfp
+ 399              	spi_read:
+ 400              	.LFB125:
+ 200:.././hal/sam3u1c/spi.c **** 
+ 201:.././hal/sam3u1c/spi.c **** /**
+ 202:.././hal/sam3u1c/spi.c ****  * \brief Read the received data and it's peripheral chip select value.
+ 203:.././hal/sam3u1c/spi.c ****  * While SPI works in fixed peripheral select mode, the peripheral chip select
+ 204:.././hal/sam3u1c/spi.c ****  * value is meaningless.
+ 205:.././hal/sam3u1c/spi.c ****  *
+ 206:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 207:.././hal/sam3u1c/spi.c ****  * \param data Pointer to the location where to store the received data word.
+ 208:.././hal/sam3u1c/spi.c ****  * \param p_pcs Pointer to fill Peripheral Chip Select Value.
+ 209:.././hal/sam3u1c/spi.c ****  *
+ 210:.././hal/sam3u1c/spi.c ****  * \retval SPI_OK on Success.
+ 211:.././hal/sam3u1c/spi.c ****  * \retval SPI_ERROR_TIMEOUT on Time-out.
+ 212:.././hal/sam3u1c/spi.c ****  */
+ 213:.././hal/sam3u1c/spi.c **** spi_status_t spi_read(Spi *p_spi, uint16_t *us_data, uint8_t *p_pcs)
+ 214:.././hal/sam3u1c/spi.c **** {
+ 401              	 .loc 3 214 0
+ 402              	 .cfi_startproc
+ 403              	 
+ 404              	 
+ 405 0000 80B5     	 push {r7,lr}
+ 406              	.LCFI38:
+ 407              	 .cfi_def_cfa_offset 8
+ 408              	 .cfi_offset 7,-8
+ 409              	 .cfi_offset 14,-4
+ 410 0002 86B0     	 sub sp,sp,#24
+ 411              	.LCFI39:
+ 412              	 .cfi_def_cfa_offset 32
+ 413 0004 00AF     	 add r7,sp,#0
+ 414              	.LCFI40:
+ 415              	 .cfi_def_cfa_register 7
+ 416 0006 F860     	 str r0,[r7,#12]
+ 417 0008 B960     	 str r1,[r7,#8]
+ 418 000a 7A60     	 str r2,[r7,#4]
+ 215:.././hal/sam3u1c/spi.c **** 	uint32_t timeout = SPI_TIMEOUT;
+ 419              	 .loc 3 215 0
+ 420 000c 43F69823 	 movw r3,#15000
+ 421 0010 7B61     	 str r3,[r7,#20]
+ 216:.././hal/sam3u1c/spi.c **** 	static uint32_t reg_value;
+ 217:.././hal/sam3u1c/spi.c **** 
+ 218:.././hal/sam3u1c/spi.c **** 	while (!(p_spi->SPI_SR & SPI_SR_RDRF)) {
+ 422              	 .loc 3 218 0
+ 423 0012 06E0     	 b .L19
+ 424              	.L21:
+ 219:.././hal/sam3u1c/spi.c **** 		if (!timeout--) {
+ 425              	 .loc 3 219 0
+ 426 0014 7B69     	 ldr r3,[r7,#20]
+ 427 0016 5A1E     	 subs r2,r3,#1
+ 428 0018 7A61     	 str r2,[r7,#20]
+ 429 001a 002B     	 cmp r3,#0
+ 430 001c 01D1     	 bne .L19
+ 220:.././hal/sam3u1c/spi.c **** 			return SPI_ERROR_TIMEOUT;
+ 431              	 .loc 3 220 0
+ 432 001e 0123     	 movs r3,#1
+ 433 0020 1EE0     	 b .L20
+ 434              	.L19:
+ 218:.././hal/sam3u1c/spi.c **** 		if (!timeout--) {
+ 435              	 .loc 3 218 0
+ 436 0022 FB68     	 ldr r3,[r7,#12]
+ 437 0024 1B69     	 ldr r3,[r3,#16]
+ 438 0026 03F00103 	 and r3,r3,#1
+ 439 002a 002B     	 cmp r3,#0
+ 440 002c F2D0     	 beq .L21
+ 221:.././hal/sam3u1c/spi.c **** 		}
+ 222:.././hal/sam3u1c/spi.c **** 	}
+ 223:.././hal/sam3u1c/spi.c **** 
+ 224:.././hal/sam3u1c/spi.c **** 	reg_value = p_spi->SPI_RDR;
+ 441              	 .loc 3 224 0
+ 442 002e FB68     	 ldr r3,[r7,#12]
+ 443 0030 9B68     	 ldr r3,[r3,#8]
+ 444 0032 0D4A     	 ldr r2,.L23
+ 445 0034 1360     	 str r3,[r2]
+ 225:.././hal/sam3u1c/spi.c **** 	if (spi_get_peripheral_select_mode(p_spi)) {
+ 446              	 .loc 3 225 0
+ 447 0036 F868     	 ldr r0,[r7,#12]
+ 448 0038 0C4B     	 ldr r3,.L23+4
+ 449 003a 9847     	 blx r3
+ 450              	.LVL4:
+ 451 003c 0346     	 mov r3,r0
+ 452 003e 002B     	 cmp r3,#0
+ 453 0040 08D0     	 beq .L22
+ 226:.././hal/sam3u1c/spi.c **** 		*p_pcs = (uint8_t) ((reg_value & SPI_RDR_PCS_Msk) >> SPI_RDR_PCS_Pos);
+ 454              	 .loc 3 226 0
+ 455 0042 094B     	 ldr r3,.L23
+ 456 0044 1B68     	 ldr r3,[r3]
+ 457 0046 1B0C     	 lsrs r3,r3,#16
+ 458 0048 DBB2     	 uxtb r3,r3
+ 459 004a 03F00F03 	 and r3,r3,#15
+ 460 004e DAB2     	 uxtb r2,r3
+ 461 0050 7B68     	 ldr r3,[r7,#4]
+ 462 0052 1A70     	 strb r2,[r3]
+ 463              	.L22:
+ 227:.././hal/sam3u1c/spi.c **** 	}
+ 228:.././hal/sam3u1c/spi.c **** 	*us_data = (uint16_t) (reg_value & SPI_RDR_RD_Msk);
+ 464              	 .loc 3 228 0
+ 465 0054 044B     	 ldr r3,.L23
+ 466 0056 1B68     	 ldr r3,[r3]
+ 467 0058 9AB2     	 uxth r2,r3
+ 468 005a BB68     	 ldr r3,[r7,#8]
+ 469 005c 1A80     	 strh r2,[r3]
+ 229:.././hal/sam3u1c/spi.c **** 
+ 230:.././hal/sam3u1c/spi.c **** 	return SPI_OK;
+ 470              	 .loc 3 230 0
+ 471 005e 0023     	 movs r3,#0
+ 472              	.L20:
+ 231:.././hal/sam3u1c/spi.c **** }
+ 473              	 .loc 3 231 0
+ 474 0060 1846     	 mov r0,r3
+ 475 0062 1837     	 adds r7,r7,#24
+ 476              	.LCFI41:
+ 477              	 .cfi_def_cfa_offset 8
+ 478 0064 BD46     	 mov sp,r7
+ 479              	.LCFI42:
+ 480              	 .cfi_def_cfa_register 13
+ 481              	 
+ 482 0066 80BD     	 pop {r7,pc}
+ 483              	.L24:
+ 484              	 .align 2
+ 485              	.L23:
+ 486 0068 00000000 	 .word reg_value.7329
+ 487 006c 00000000 	 .word spi_get_peripheral_select_mode
+ 488              	 .cfi_endproc
+ 489              	.LFE125:
+ 491              	 .section .text.spi_write,"ax",%progbits
+ 492              	 .align 1
+ 493              	 .global spi_write
+ 494              	 .syntax unified
+ 495              	 .thumb
+ 496              	 .thumb_func
+ 497              	 .fpu softvfp
+ 499              	spi_write:
+ 500              	.LFB126:
+ 232:.././hal/sam3u1c/spi.c **** 
+ 233:.././hal/sam3u1c/spi.c **** /**
+ 234:.././hal/sam3u1c/spi.c ****  * \brief Write the transmitted data with specified peripheral chip select value.
+ 235:.././hal/sam3u1c/spi.c ****  *
+ 236:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 237:.././hal/sam3u1c/spi.c ****  * \param us_data The data to transmit.
+ 238:.././hal/sam3u1c/spi.c ****  * \param uc_pcs Peripheral Chip Select Value while SPI works in peripheral select
+ 239:.././hal/sam3u1c/spi.c ****  * mode, otherwise it's meaningless.
+ 240:.././hal/sam3u1c/spi.c ****  * \param uc_last Indicate whether this data is the last one while SPI is working
+ 241:.././hal/sam3u1c/spi.c ****  * in variable peripheral select mode.
+ 242:.././hal/sam3u1c/spi.c ****  *
+ 243:.././hal/sam3u1c/spi.c ****  * \retval SPI_OK on Success.
+ 244:.././hal/sam3u1c/spi.c ****  * \retval SPI_ERROR_TIMEOUT on Time-out.
+ 245:.././hal/sam3u1c/spi.c ****  */
+ 246:.././hal/sam3u1c/spi.c **** spi_status_t spi_write(Spi *p_spi, uint16_t us_data,
+ 247:.././hal/sam3u1c/spi.c **** 		uint8_t uc_pcs, uint8_t uc_last)
+ 248:.././hal/sam3u1c/spi.c **** {
+ 501              	 .loc 3 248 0
+ 502              	 .cfi_startproc
+ 503              	 
+ 504              	 
+ 505 0000 80B5     	 push {r7,lr}
+ 506              	.LCFI43:
+ 507              	 .cfi_def_cfa_offset 8
+ 508              	 .cfi_offset 7,-8
+ 509              	 .cfi_offset 14,-4
+ 510 0002 84B0     	 sub sp,sp,#16
+ 511              	.LCFI44:
+ 512              	 .cfi_def_cfa_offset 24
+ 513 0004 00AF     	 add r7,sp,#0
+ 514              	.LCFI45:
+ 515              	 .cfi_def_cfa_register 7
+ 516 0006 7860     	 str r0,[r7,#4]
+ 517 0008 0846     	 mov r0,r1
+ 518 000a 1146     	 mov r1,r2
+ 519 000c 1A46     	 mov r2,r3
+ 520 000e 0346     	 mov r3,r0
+ 521 0010 7B80     	 strh r3,[r7,#2]
+ 522 0012 0B46     	 mov r3,r1
+ 523 0014 7B70     	 strb r3,[r7,#1]
+ 524 0016 1346     	 mov r3,r2
+ 525 0018 3B70     	 strb r3,[r7]
+ 249:.././hal/sam3u1c/spi.c **** 	uint32_t timeout = SPI_TIMEOUT;
+ 526              	 .loc 3 249 0
+ 527 001a 43F69823 	 movw r3,#15000
+ 528 001e FB60     	 str r3,[r7,#12]
+ 250:.././hal/sam3u1c/spi.c **** 	uint32_t value;
+ 251:.././hal/sam3u1c/spi.c **** 
+ 252:.././hal/sam3u1c/spi.c **** 	while (!(p_spi->SPI_SR & SPI_SR_TDRE)) {
+ 529              	 .loc 3 252 0
+ 530 0020 06E0     	 b .L26
+ 531              	.L28:
+ 253:.././hal/sam3u1c/spi.c **** 		if (!timeout--) {
+ 532              	 .loc 3 253 0
+ 533 0022 FB68     	 ldr r3,[r7,#12]
+ 534 0024 5A1E     	 subs r2,r3,#1
+ 535 0026 FA60     	 str r2,[r7,#12]
+ 536 0028 002B     	 cmp r3,#0
+ 537 002a 01D1     	 bne .L26
+ 254:.././hal/sam3u1c/spi.c **** 			return SPI_ERROR_TIMEOUT;
+ 538              	 .loc 3 254 0
+ 539 002c 0123     	 movs r3,#1
+ 540 002e 20E0     	 b .L27
+ 541              	.L26:
+ 252:.././hal/sam3u1c/spi.c **** 		if (!timeout--) {
+ 542              	 .loc 3 252 0
+ 543 0030 7B68     	 ldr r3,[r7,#4]
+ 544 0032 1B69     	 ldr r3,[r3,#16]
+ 545 0034 03F00203 	 and r3,r3,#2
+ 546 0038 002B     	 cmp r3,#0
+ 547 003a F2D0     	 beq .L28
+ 255:.././hal/sam3u1c/spi.c **** 		}
+ 256:.././hal/sam3u1c/spi.c **** 	}
+ 257:.././hal/sam3u1c/spi.c **** 
+ 258:.././hal/sam3u1c/spi.c **** 	if (spi_get_peripheral_select_mode(p_spi)) {
+ 548              	 .loc 3 258 0
+ 549 003c 7868     	 ldr r0,[r7,#4]
+ 550 003e 0F4B     	 ldr r3,.L32
+ 551 0040 9847     	 blx r3
+ 552              	.LVL5:
+ 553 0042 0346     	 mov r3,r0
+ 554 0044 002B     	 cmp r3,#0
+ 555 0046 0ED0     	 beq .L29
+ 259:.././hal/sam3u1c/spi.c **** 		value = SPI_TDR_TD(us_data) | SPI_TDR_PCS(uc_pcs);
+ 556              	 .loc 3 259 0
+ 557 0048 7A88     	 ldrh r2,[r7,#2]
+ 558 004a 7B78     	 ldrb r3,[r7,#1]
+ 559 004c 1B04     	 lsls r3,r3,#16
+ 560 004e 03F47023 	 and r3,r3,#983040
+ 561 0052 1343     	 orrs r3,r3,r2
+ 562 0054 BB60     	 str r3,[r7,#8]
+ 260:.././hal/sam3u1c/spi.c **** 		if (uc_last) {
+ 563              	 .loc 3 260 0
+ 564 0056 3B78     	 ldrb r3,[r7]
+ 565 0058 002B     	 cmp r3,#0
+ 566 005a 06D0     	 beq .L31
+ 261:.././hal/sam3u1c/spi.c **** 			value |= SPI_TDR_LASTXFER;
+ 567              	 .loc 3 261 0
+ 568 005c BB68     	 ldr r3,[r7,#8]
+ 569 005e 43F08073 	 orr r3,r3,#16777216
+ 570 0062 BB60     	 str r3,[r7,#8]
+ 571 0064 01E0     	 b .L31
+ 572              	.L29:
+ 262:.././hal/sam3u1c/spi.c **** 		}
+ 263:.././hal/sam3u1c/spi.c **** 	} else {
+ 264:.././hal/sam3u1c/spi.c **** 		value = SPI_TDR_TD(us_data);
+ 573              	 .loc 3 264 0
+ 574 0066 7B88     	 ldrh r3,[r7,#2]
+ 575 0068 BB60     	 str r3,[r7,#8]
+ 576              	.L31:
+ 265:.././hal/sam3u1c/spi.c **** 	}
+ 266:.././hal/sam3u1c/spi.c **** 
+ 267:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_TDR = value;
+ 577              	 .loc 3 267 0
+ 578 006a 7B68     	 ldr r3,[r7,#4]
+ 579 006c BA68     	 ldr r2,[r7,#8]
+ 580 006e DA60     	 str r2,[r3,#12]
+ 268:.././hal/sam3u1c/spi.c **** 
+ 269:.././hal/sam3u1c/spi.c **** 	return SPI_OK;
+ 581              	 .loc 3 269 0
+ 582 0070 0023     	 movs r3,#0
+ 583              	.L27:
+ 270:.././hal/sam3u1c/spi.c **** }
+ 584              	 .loc 3 270 0
+ 585 0072 1846     	 mov r0,r3
+ 586 0074 1037     	 adds r7,r7,#16
+ 587              	.LCFI46:
+ 588              	 .cfi_def_cfa_offset 8
+ 589 0076 BD46     	 mov sp,r7
+ 590              	.LCFI47:
+ 591              	 .cfi_def_cfa_register 13
+ 592              	 
+ 593 0078 80BD     	 pop {r7,pc}
+ 594              	.L33:
+ 595 007a 00BF     	 .align 2
+ 596              	.L32:
+ 597 007c 00000000 	 .word spi_get_peripheral_select_mode
+ 598              	 .cfi_endproc
+ 599              	.LFE126:
+ 601              	 .section .text.spi_set_clock_polarity,"ax",%progbits
+ 602              	 .align 1
+ 603              	 .global spi_set_clock_polarity
+ 604              	 .syntax unified
+ 605              	 .thumb
+ 606              	 .thumb_func
+ 607              	 .fpu softvfp
+ 609              	spi_set_clock_polarity:
+ 610              	.LFB127:
+ 271:.././hal/sam3u1c/spi.c **** 
+ 272:.././hal/sam3u1c/spi.c **** /**
+ 273:.././hal/sam3u1c/spi.c ****  * \brief Set clock default state.
+ 274:.././hal/sam3u1c/spi.c ****  *
+ 275:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 276:.././hal/sam3u1c/spi.c ****  * \param ul_pcs_ch Peripheral Chip Select channel (0~3).
+ 277:.././hal/sam3u1c/spi.c ****  * \param ul_polarity Default clock state is logical one(high)/zero(low).
+ 278:.././hal/sam3u1c/spi.c ****  */
+ 279:.././hal/sam3u1c/spi.c **** void spi_set_clock_polarity(Spi *p_spi, uint32_t ul_pcs_ch,
+ 280:.././hal/sam3u1c/spi.c **** 		uint32_t ul_polarity)
+ 281:.././hal/sam3u1c/spi.c **** {
+ 611              	 .loc 3 281 0
+ 612              	 .cfi_startproc
+ 613              	 
+ 614              	 
+ 615              	 
+ 616 0000 80B4     	 push {r7}
+ 617              	.LCFI48:
+ 618              	 .cfi_def_cfa_offset 4
+ 619              	 .cfi_offset 7,-4
+ 620 0002 85B0     	 sub sp,sp,#20
+ 621              	.LCFI49:
+ 622              	 .cfi_def_cfa_offset 24
+ 623 0004 00AF     	 add r7,sp,#0
+ 624              	.LCFI50:
+ 625              	 .cfi_def_cfa_register 7
+ 626 0006 F860     	 str r0,[r7,#12]
+ 627 0008 B960     	 str r1,[r7,#8]
+ 628 000a 7A60     	 str r2,[r7,#4]
+ 282:.././hal/sam3u1c/spi.c **** 	if (ul_polarity) {
+ 629              	 .loc 3 282 0
+ 630 000c 7B68     	 ldr r3,[r7,#4]
+ 631 000e 002B     	 cmp r3,#0
+ 632 0010 0CD0     	 beq .L35
+ 283:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_CPOL;
+ 633              	 .loc 3 283 0
+ 634 0012 FB68     	 ldr r3,[r7,#12]
+ 635 0014 BA68     	 ldr r2,[r7,#8]
+ 636 0016 0C32     	 adds r2,r2,#12
+ 637 0018 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 638 001c 43F00101 	 orr r1,r3,#1
+ 639 0020 FB68     	 ldr r3,[r7,#12]
+ 640 0022 BA68     	 ldr r2,[r7,#8]
+ 641 0024 0C32     	 adds r2,r2,#12
+ 642 0026 43F82210 	 str r1,[r3,r2,lsl#2]
+ 284:.././hal/sam3u1c/spi.c **** 	} else {
+ 285:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_CPOL);
+ 286:.././hal/sam3u1c/spi.c **** 	}
+ 287:.././hal/sam3u1c/spi.c **** }
+ 643              	 .loc 3 287 0
+ 644 002a 0BE0     	 b .L37
+ 645              	.L35:
+ 285:.././hal/sam3u1c/spi.c **** 	}
+ 646              	 .loc 3 285 0
+ 647 002c FB68     	 ldr r3,[r7,#12]
+ 648 002e BA68     	 ldr r2,[r7,#8]
+ 649 0030 0C32     	 adds r2,r2,#12
+ 650 0032 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 651 0036 23F00101 	 bic r1,r3,#1
+ 652 003a FB68     	 ldr r3,[r7,#12]
+ 653 003c BA68     	 ldr r2,[r7,#8]
+ 654 003e 0C32     	 adds r2,r2,#12
+ 655 0040 43F82210 	 str r1,[r3,r2,lsl#2]
+ 656              	.L37:
+ 657              	 .loc 3 287 0
+ 658 0044 00BF     	 nop
+ 659 0046 1437     	 adds r7,r7,#20
+ 660              	.LCFI51:
+ 661              	 .cfi_def_cfa_offset 4
+ 662 0048 BD46     	 mov sp,r7
+ 663              	.LCFI52:
+ 664              	 .cfi_def_cfa_register 13
+ 665              	 
+ 666 004a 80BC     	 pop {r7}
+ 667              	.LCFI53:
+ 668              	 .cfi_restore 7
+ 669              	 .cfi_def_cfa_offset 0
+ 670 004c 7047     	 bx lr
+ 671              	 .cfi_endproc
+ 672              	.LFE127:
+ 674              	 .section .text.spi_set_clock_phase,"ax",%progbits
+ 675              	 .align 1
+ 676              	 .global spi_set_clock_phase
+ 677              	 .syntax unified
+ 678              	 .thumb
+ 679              	 .thumb_func
+ 680              	 .fpu softvfp
+ 682              	spi_set_clock_phase:
+ 683              	.LFB128:
+ 288:.././hal/sam3u1c/spi.c **** 
+ 289:.././hal/sam3u1c/spi.c **** /**
+ 290:.././hal/sam3u1c/spi.c ****  * \brief Set Data Capture Phase.
+ 291:.././hal/sam3u1c/spi.c ****  *
+ 292:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 293:.././hal/sam3u1c/spi.c ****  *  \param ul_pcs_ch Peripheral Chip Select channel (0~3).
+ 294:.././hal/sam3u1c/spi.c ****  *  \param ul_phase Data capture on the rising/falling edge of clock.
+ 295:.././hal/sam3u1c/spi.c ****  */
+ 296:.././hal/sam3u1c/spi.c **** void spi_set_clock_phase(Spi *p_spi, uint32_t ul_pcs_ch, uint32_t ul_phase)
+ 297:.././hal/sam3u1c/spi.c **** {
+ 684              	 .loc 3 297 0
+ 685              	 .cfi_startproc
+ 686              	 
+ 687              	 
+ 688              	 
+ 689 0000 80B4     	 push {r7}
+ 690              	.LCFI54:
+ 691              	 .cfi_def_cfa_offset 4
+ 692              	 .cfi_offset 7,-4
+ 693 0002 85B0     	 sub sp,sp,#20
+ 694              	.LCFI55:
+ 695              	 .cfi_def_cfa_offset 24
+ 696 0004 00AF     	 add r7,sp,#0
+ 697              	.LCFI56:
+ 698              	 .cfi_def_cfa_register 7
+ 699 0006 F860     	 str r0,[r7,#12]
+ 700 0008 B960     	 str r1,[r7,#8]
+ 701 000a 7A60     	 str r2,[r7,#4]
+ 298:.././hal/sam3u1c/spi.c **** 	if (ul_phase) {
+ 702              	 .loc 3 298 0
+ 703 000c 7B68     	 ldr r3,[r7,#4]
+ 704 000e 002B     	 cmp r3,#0
+ 705 0010 0CD0     	 beq .L39
+ 299:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_NCPHA;
+ 706              	 .loc 3 299 0
+ 707 0012 FB68     	 ldr r3,[r7,#12]
+ 708 0014 BA68     	 ldr r2,[r7,#8]
+ 709 0016 0C32     	 adds r2,r2,#12
+ 710 0018 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 711 001c 43F00201 	 orr r1,r3,#2
+ 712 0020 FB68     	 ldr r3,[r7,#12]
+ 713 0022 BA68     	 ldr r2,[r7,#8]
+ 714 0024 0C32     	 adds r2,r2,#12
+ 715 0026 43F82210 	 str r1,[r3,r2,lsl#2]
+ 300:.././hal/sam3u1c/spi.c **** 	} else {
+ 301:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_NCPHA);
+ 302:.././hal/sam3u1c/spi.c **** 	}
+ 303:.././hal/sam3u1c/spi.c **** }
+ 716              	 .loc 3 303 0
+ 717 002a 0BE0     	 b .L41
+ 718              	.L39:
+ 301:.././hal/sam3u1c/spi.c **** 	}
+ 719              	 .loc 3 301 0
+ 720 002c FB68     	 ldr r3,[r7,#12]
+ 721 002e BA68     	 ldr r2,[r7,#8]
+ 722 0030 0C32     	 adds r2,r2,#12
+ 723 0032 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 724 0036 23F00201 	 bic r1,r3,#2
+ 725 003a FB68     	 ldr r3,[r7,#12]
+ 726 003c BA68     	 ldr r2,[r7,#8]
+ 727 003e 0C32     	 adds r2,r2,#12
+ 728 0040 43F82210 	 str r1,[r3,r2,lsl#2]
+ 729              	.L41:
+ 730              	 .loc 3 303 0
+ 731 0044 00BF     	 nop
+ 732 0046 1437     	 adds r7,r7,#20
+ 733              	.LCFI57:
+ 734              	 .cfi_def_cfa_offset 4
+ 735 0048 BD46     	 mov sp,r7
+ 736              	.LCFI58:
+ 737              	 .cfi_def_cfa_register 13
+ 738              	 
+ 739 004a 80BC     	 pop {r7}
+ 740              	.LCFI59:
+ 741              	 .cfi_restore 7
+ 742              	 .cfi_def_cfa_offset 0
+ 743 004c 7047     	 bx lr
+ 744              	 .cfi_endproc
+ 745              	.LFE128:
+ 747              	 .section .text.spi_configure_cs_behavior,"ax",%progbits
+ 748              	 .align 1
+ 749              	 .global spi_configure_cs_behavior
+ 750              	 .syntax unified
+ 751              	 .thumb
+ 752              	 .thumb_func
+ 753              	 .fpu softvfp
+ 755              	spi_configure_cs_behavior:
+ 756              	.LFB129:
+ 304:.././hal/sam3u1c/spi.c **** 
+ 305:.././hal/sam3u1c/spi.c **** /**
+ 306:.././hal/sam3u1c/spi.c ****  * \brief Configure CS behavior for SPI transfer (\ref spi_cs_behavior_t).
+ 307:.././hal/sam3u1c/spi.c ****  *
+ 308:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 309:.././hal/sam3u1c/spi.c ****  * \param ul_pcs_ch Peripheral Chip Select channel (0~3).
+ 310:.././hal/sam3u1c/spi.c ****  * \param ul_cs_behavior Behavior of the Chip Select after transfer.
+ 311:.././hal/sam3u1c/spi.c ****  */
+ 312:.././hal/sam3u1c/spi.c **** void spi_configure_cs_behavior(Spi *p_spi, uint32_t ul_pcs_ch,
+ 313:.././hal/sam3u1c/spi.c **** 		uint32_t ul_cs_behavior)
+ 314:.././hal/sam3u1c/spi.c **** {
+ 757              	 .loc 3 314 0
+ 758              	 .cfi_startproc
+ 759              	 
+ 760              	 
+ 761              	 
+ 762 0000 80B4     	 push {r7}
+ 763              	.LCFI60:
+ 764              	 .cfi_def_cfa_offset 4
+ 765              	 .cfi_offset 7,-4
+ 766 0002 85B0     	 sub sp,sp,#20
+ 767              	.LCFI61:
+ 768              	 .cfi_def_cfa_offset 24
+ 769 0004 00AF     	 add r7,sp,#0
+ 770              	.LCFI62:
+ 771              	 .cfi_def_cfa_register 7
+ 772 0006 F860     	 str r0,[r7,#12]
+ 773 0008 B960     	 str r1,[r7,#8]
+ 774 000a 7A60     	 str r2,[r7,#4]
+ 315:.././hal/sam3u1c/spi.c **** 	if (ul_cs_behavior == SPI_CS_RISE_FORCED) {
+ 775              	 .loc 3 315 0
+ 776 000c 7B68     	 ldr r3,[r7,#4]
+ 777 000e 042B     	 cmp r3,#4
+ 778 0010 18D1     	 bne .L43
+ 316:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_CSAAT);
+ 779              	 .loc 3 316 0
+ 780 0012 FB68     	 ldr r3,[r7,#12]
+ 781 0014 BA68     	 ldr r2,[r7,#8]
+ 782 0016 0C32     	 adds r2,r2,#12
+ 783 0018 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 784 001c 23F00801 	 bic r1,r3,#8
+ 785 0020 FB68     	 ldr r3,[r7,#12]
+ 786 0022 BA68     	 ldr r2,[r7,#8]
+ 787 0024 0C32     	 adds r2,r2,#12
+ 788 0026 43F82210 	 str r1,[r3,r2,lsl#2]
+ 317:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_CSNAAT;
+ 789              	 .loc 3 317 0
+ 790 002a FB68     	 ldr r3,[r7,#12]
+ 791 002c BA68     	 ldr r2,[r7,#8]
+ 792 002e 0C32     	 adds r2,r2,#12
+ 793 0030 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 794 0034 43F00401 	 orr r1,r3,#4
+ 795 0038 FB68     	 ldr r3,[r7,#12]
+ 796 003a BA68     	 ldr r2,[r7,#8]
+ 797 003c 0C32     	 adds r2,r2,#12
+ 798 003e 43F82210 	 str r1,[r3,r2,lsl#2]
+ 318:.././hal/sam3u1c/spi.c **** 	} else if (ul_cs_behavior == SPI_CS_RISE_NO_TX) {
+ 319:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_CSAAT);
+ 320:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_CSNAAT);
+ 321:.././hal/sam3u1c/spi.c **** 	} else if (ul_cs_behavior == SPI_CS_KEEP_LOW) {
+ 322:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_CSAAT;
+ 323:.././hal/sam3u1c/spi.c **** 	}
+ 324:.././hal/sam3u1c/spi.c **** }
+ 799              	 .loc 3 324 0
+ 800 0042 2AE0     	 b .L46
+ 801              	.L43:
+ 318:.././hal/sam3u1c/spi.c **** 	} else if (ul_cs_behavior == SPI_CS_RISE_NO_TX) {
+ 802              	 .loc 3 318 0
+ 803 0044 7B68     	 ldr r3,[r7,#4]
+ 804 0046 002B     	 cmp r3,#0
+ 805 0048 18D1     	 bne .L45
+ 319:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_CSNAAT);
+ 806              	 .loc 3 319 0
+ 807 004a FB68     	 ldr r3,[r7,#12]
+ 808 004c BA68     	 ldr r2,[r7,#8]
+ 809 004e 0C32     	 adds r2,r2,#12
+ 810 0050 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 811 0054 23F00801 	 bic r1,r3,#8
+ 812 0058 FB68     	 ldr r3,[r7,#12]
+ 813 005a BA68     	 ldr r2,[r7,#8]
+ 814 005c 0C32     	 adds r2,r2,#12
+ 815 005e 43F82210 	 str r1,[r3,r2,lsl#2]
+ 320:.././hal/sam3u1c/spi.c **** 	} else if (ul_cs_behavior == SPI_CS_KEEP_LOW) {
+ 816              	 .loc 3 320 0
+ 817 0062 FB68     	 ldr r3,[r7,#12]
+ 818 0064 BA68     	 ldr r2,[r7,#8]
+ 819 0066 0C32     	 adds r2,r2,#12
+ 820 0068 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 821 006c 23F00401 	 bic r1,r3,#4
+ 822 0070 FB68     	 ldr r3,[r7,#12]
+ 823 0072 BA68     	 ldr r2,[r7,#8]
+ 824 0074 0C32     	 adds r2,r2,#12
+ 825 0076 43F82210 	 str r1,[r3,r2,lsl#2]
+ 826              	 .loc 3 324 0
+ 827 007a 0EE0     	 b .L46
+ 828              	.L45:
+ 321:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_CSAAT;
+ 829              	 .loc 3 321 0
+ 830 007c 7B68     	 ldr r3,[r7,#4]
+ 831 007e 082B     	 cmp r3,#8
+ 832 0080 0BD1     	 bne .L46
+ 322:.././hal/sam3u1c/spi.c **** 	}
+ 833              	 .loc 3 322 0
+ 834 0082 FB68     	 ldr r3,[r7,#12]
+ 835 0084 BA68     	 ldr r2,[r7,#8]
+ 836 0086 0C32     	 adds r2,r2,#12
+ 837 0088 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 838 008c 43F00801 	 orr r1,r3,#8
+ 839 0090 FB68     	 ldr r3,[r7,#12]
+ 840 0092 BA68     	 ldr r2,[r7,#8]
+ 841 0094 0C32     	 adds r2,r2,#12
+ 842 0096 43F82210 	 str r1,[r3,r2,lsl#2]
+ 843              	.L46:
+ 844              	 .loc 3 324 0
+ 845 009a 00BF     	 nop
+ 846 009c 1437     	 adds r7,r7,#20
+ 847              	.LCFI63:
+ 848              	 .cfi_def_cfa_offset 4
+ 849 009e BD46     	 mov sp,r7
+ 850              	.LCFI64:
+ 851              	 .cfi_def_cfa_register 13
+ 852              	 
+ 853 00a0 80BC     	 pop {r7}
+ 854              	.LCFI65:
+ 855              	 .cfi_restore 7
+ 856              	 .cfi_def_cfa_offset 0
+ 857 00a2 7047     	 bx lr
+ 858              	 .cfi_endproc
+ 859              	.LFE129:
+ 861              	 .section .text.spi_set_bits_per_transfer,"ax",%progbits
+ 862              	 .align 1
+ 863              	 .global spi_set_bits_per_transfer
+ 864              	 .syntax unified
+ 865              	 .thumb
+ 866              	 .thumb_func
+ 867              	 .fpu softvfp
+ 869              	spi_set_bits_per_transfer:
+ 870              	.LFB130:
+ 325:.././hal/sam3u1c/spi.c **** 
+ 326:.././hal/sam3u1c/spi.c **** /**
+ 327:.././hal/sam3u1c/spi.c ****  * \brief Set number of bits per transfer.
+ 328:.././hal/sam3u1c/spi.c ****  *
+ 329:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 330:.././hal/sam3u1c/spi.c ****  * \param ul_pcs_ch Peripheral Chip Select channel (0~3).
+ 331:.././hal/sam3u1c/spi.c ****  * \param ul_bits Number of bits (8~16), use the pattern defined
+ 332:.././hal/sam3u1c/spi.c ****  *        in the device header file.
+ 333:.././hal/sam3u1c/spi.c ****  */
+ 334:.././hal/sam3u1c/spi.c **** void spi_set_bits_per_transfer(Spi *p_spi, uint32_t ul_pcs_ch,
+ 335:.././hal/sam3u1c/spi.c **** 		uint32_t ul_bits)
+ 336:.././hal/sam3u1c/spi.c **** {
+ 871              	 .loc 3 336 0
+ 872              	 .cfi_startproc
+ 873              	 
+ 874              	 
+ 875              	 
+ 876 0000 80B4     	 push {r7}
+ 877              	.LCFI66:
+ 878              	 .cfi_def_cfa_offset 4
+ 879              	 .cfi_offset 7,-4
+ 880 0002 85B0     	 sub sp,sp,#20
+ 881              	.LCFI67:
+ 882              	 .cfi_def_cfa_offset 24
+ 883 0004 00AF     	 add r7,sp,#0
+ 884              	.LCFI68:
+ 885              	 .cfi_def_cfa_register 7
+ 886 0006 F860     	 str r0,[r7,#12]
+ 887 0008 B960     	 str r1,[r7,#8]
+ 888 000a 7A60     	 str r2,[r7,#4]
+ 337:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_BITS_Msk);
+ 889              	 .loc 3 337 0
+ 890 000c FB68     	 ldr r3,[r7,#12]
+ 891 000e BA68     	 ldr r2,[r7,#8]
+ 892 0010 0C32     	 adds r2,r2,#12
+ 893 0012 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 894 0016 23F0F001 	 bic r1,r3,#240
+ 895 001a FB68     	 ldr r3,[r7,#12]
+ 896 001c BA68     	 ldr r2,[r7,#8]
+ 897 001e 0C32     	 adds r2,r2,#12
+ 898 0020 43F82210 	 str r1,[r3,r2,lsl#2]
+ 338:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_CSR[ul_pcs_ch] |= ul_bits;
+ 899              	 .loc 3 338 0
+ 900 0024 FB68     	 ldr r3,[r7,#12]
+ 901 0026 BA68     	 ldr r2,[r7,#8]
+ 902 0028 0C32     	 adds r2,r2,#12
+ 903 002a 53F82220 	 ldr r2,[r3,r2,lsl#2]
+ 904 002e 7B68     	 ldr r3,[r7,#4]
+ 905 0030 42EA0301 	 orr r1,r2,r3
+ 906 0034 FB68     	 ldr r3,[r7,#12]
+ 907 0036 BA68     	 ldr r2,[r7,#8]
+ 908 0038 0C32     	 adds r2,r2,#12
+ 909 003a 43F82210 	 str r1,[r3,r2,lsl#2]
+ 339:.././hal/sam3u1c/spi.c **** }
+ 910              	 .loc 3 339 0
+ 911 003e 00BF     	 nop
+ 912 0040 1437     	 adds r7,r7,#20
+ 913              	.LCFI69:
+ 914              	 .cfi_def_cfa_offset 4
+ 915 0042 BD46     	 mov sp,r7
+ 916              	.LCFI70:
+ 917              	 .cfi_def_cfa_register 13
+ 918              	 
+ 919 0044 80BC     	 pop {r7}
+ 920              	.LCFI71:
+ 921              	 .cfi_restore 7
+ 922              	 .cfi_def_cfa_offset 0
+ 923 0046 7047     	 bx lr
+ 924              	 .cfi_endproc
+ 925              	.LFE130:
+ 927              	 .section .text.spi_calc_baudrate_div,"ax",%progbits
+ 928              	 .align 1
+ 929              	 .global spi_calc_baudrate_div
+ 930              	 .syntax unified
+ 931              	 .thumb
+ 932              	 .thumb_func
+ 933              	 .fpu softvfp
+ 935              	spi_calc_baudrate_div:
+ 936              	.LFB131:
+ 340:.././hal/sam3u1c/spi.c **** 
+ 341:.././hal/sam3u1c/spi.c **** /**
+ 342:.././hal/sam3u1c/spi.c ****  * \brief Calculate the baudrate divider.
+ 343:.././hal/sam3u1c/spi.c ****  *
+ 344:.././hal/sam3u1c/spi.c ****  * \param baudrate Baudrate value.
+ 345:.././hal/sam3u1c/spi.c ****  * \param mck      SPI module input clock frequency (MCK clock, Hz).
+ 346:.././hal/sam3u1c/spi.c ****  *
+ 347:.././hal/sam3u1c/spi.c ****  * \return Divider or error code.
+ 348:.././hal/sam3u1c/spi.c ****  *   \retval > 0  Success.
+ 349:.././hal/sam3u1c/spi.c ****  *   \retval < 0  Error.
+ 350:.././hal/sam3u1c/spi.c ****  */
+ 351:.././hal/sam3u1c/spi.c **** int16_t spi_calc_baudrate_div(const uint32_t baudrate, uint32_t mck)
+ 352:.././hal/sam3u1c/spi.c **** {
+ 937              	 .loc 3 352 0
+ 938              	 .cfi_startproc
+ 939              	 
+ 940              	 
+ 941              	 
+ 942 0000 80B4     	 push {r7}
+ 943              	.LCFI72:
+ 944              	 .cfi_def_cfa_offset 4
+ 945              	 .cfi_offset 7,-4
+ 946 0002 85B0     	 sub sp,sp,#20
+ 947              	.LCFI73:
+ 948              	 .cfi_def_cfa_offset 24
+ 949 0004 00AF     	 add r7,sp,#0
+ 950              	.LCFI74:
+ 951              	 .cfi_def_cfa_register 7
+ 952 0006 7860     	 str r0,[r7,#4]
+ 953 0008 3960     	 str r1,[r7]
+ 353:.././hal/sam3u1c/spi.c **** 	int baud_div = div_ceil(mck, baudrate);
+ 954              	 .loc 3 353 0
+ 955 000a 3A68     	 ldr r2,[r7]
+ 956 000c 7B68     	 ldr r3,[r7,#4]
+ 957 000e 1344     	 add r3,r3,r2
+ 958 0010 5A1E     	 subs r2,r3,#1
+ 959 0012 7B68     	 ldr r3,[r7,#4]
+ 960 0014 B2FBF3F3 	 udiv r3,r2,r3
+ 961 0018 FB60     	 str r3,[r7,#12]
+ 354:.././hal/sam3u1c/spi.c **** 
+ 355:.././hal/sam3u1c/spi.c **** 	/* The value of baud_div is from 1 to 255 in the SCBR field. */
+ 356:.././hal/sam3u1c/spi.c **** 	if (baud_div <= 0 || baud_div > 255) {
+ 962              	 .loc 3 356 0
+ 963 001a FB68     	 ldr r3,[r7,#12]
+ 964 001c 002B     	 cmp r3,#0
+ 965 001e 02DD     	 ble .L49
+ 966              	 .loc 3 356 0 is_stmt 0 discriminator 1
+ 967 0020 FB68     	 ldr r3,[r7,#12]
+ 968 0022 FF2B     	 cmp r3,#255
+ 969 0024 02DD     	 ble .L50
+ 970              	.L49:
+ 357:.././hal/sam3u1c/spi.c **** 		return -1;
+ 971              	 .loc 3 357 0 is_stmt 1
+ 972 0026 4FF0FF33 	 mov r3,#-1
+ 973 002a 01E0     	 b .L51
+ 974              	.L50:
+ 358:.././hal/sam3u1c/spi.c **** 	}
+ 359:.././hal/sam3u1c/spi.c **** 
+ 360:.././hal/sam3u1c/spi.c **** 	return baud_div;
+ 975              	 .loc 3 360 0
+ 976 002c FB68     	 ldr r3,[r7,#12]
+ 977 002e 1BB2     	 sxth r3,r3
+ 978              	.L51:
+ 361:.././hal/sam3u1c/spi.c **** }
+ 979              	 .loc 3 361 0
+ 980 0030 1846     	 mov r0,r3
+ 981 0032 1437     	 adds r7,r7,#20
+ 982              	.LCFI75:
+ 983              	 .cfi_def_cfa_offset 4
+ 984 0034 BD46     	 mov sp,r7
+ 985              	.LCFI76:
+ 986              	 .cfi_def_cfa_register 13
+ 987              	 
+ 988 0036 80BC     	 pop {r7}
+ 989              	.LCFI77:
+ 990              	 .cfi_restore 7
+ 991              	 .cfi_def_cfa_offset 0
+ 992 0038 7047     	 bx lr
+ 993              	 .cfi_endproc
+ 994              	.LFE131:
+ 996              	 .section .text.spi_set_baudrate_div,"ax",%progbits
+ 997              	 .align 1
+ 998              	 .global spi_set_baudrate_div
+ 999              	 .syntax unified
+ 1000              	 .thumb
+ 1001              	 .thumb_func
+ 1002              	 .fpu softvfp
+ 1004              	spi_set_baudrate_div:
+ 1005              	.LFB132:
+ 362:.././hal/sam3u1c/spi.c **** 
+ 363:.././hal/sam3u1c/spi.c **** /**
+ 364:.././hal/sam3u1c/spi.c ****  * \brief Set Serial Clock Baud Rate divider value (SCBR).
+ 365:.././hal/sam3u1c/spi.c ****  *
+ 366:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 367:.././hal/sam3u1c/spi.c ****  * \param ul_pcs_ch Peripheral Chip Select channel (0~3).
+ 368:.././hal/sam3u1c/spi.c ****  * \param uc_baudrate_divider Baudrate divider from MCK.
+ 369:.././hal/sam3u1c/spi.c ****  */
+ 370:.././hal/sam3u1c/spi.c **** void spi_set_baudrate_div(Spi *p_spi, uint32_t ul_pcs_ch,
+ 371:.././hal/sam3u1c/spi.c **** 		uint8_t uc_baudrate_divider)
+ 372:.././hal/sam3u1c/spi.c **** {
+ 1006              	 .loc 3 372 0
+ 1007              	 .cfi_startproc
+ 1008              	 
+ 1009              	 
+ 1010              	 
+ 1011 0000 80B4     	 push {r7}
+ 1012              	.LCFI78:
+ 1013              	 .cfi_def_cfa_offset 4
+ 1014              	 .cfi_offset 7,-4
+ 1015 0002 85B0     	 sub sp,sp,#20
+ 1016              	.LCFI79:
+ 1017              	 .cfi_def_cfa_offset 24
+ 1018 0004 00AF     	 add r7,sp,#0
+ 1019              	.LCFI80:
+ 1020              	 .cfi_def_cfa_register 7
+ 1021 0006 F860     	 str r0,[r7,#12]
+ 1022 0008 B960     	 str r1,[r7,#8]
+ 1023 000a 1346     	 mov r3,r2
+ 1024 000c FB71     	 strb r3,[r7,#7]
+ 373:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_CSR[ul_pcs_ch] &= (~SPI_CSR_SCBR_Msk);
+ 1025              	 .loc 3 373 0
+ 1026 000e FB68     	 ldr r3,[r7,#12]
+ 1027 0010 BA68     	 ldr r2,[r7,#8]
+ 1028 0012 0C32     	 adds r2,r2,#12
+ 1029 0014 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 1030 0018 23F47F41 	 bic r1,r3,#65280
+ 1031 001c FB68     	 ldr r3,[r7,#12]
+ 1032 001e BA68     	 ldr r2,[r7,#8]
+ 1033 0020 0C32     	 adds r2,r2,#12
+ 1034 0022 43F82210 	 str r1,[r3,r2,lsl#2]
+ 374:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_SCBR(uc_baudrate_divider);
+ 1035              	 .loc 3 374 0
+ 1036 0026 FB68     	 ldr r3,[r7,#12]
+ 1037 0028 BA68     	 ldr r2,[r7,#8]
+ 1038 002a 0C32     	 adds r2,r2,#12
+ 1039 002c 53F82220 	 ldr r2,[r3,r2,lsl#2]
+ 1040 0030 FB79     	 ldrb r3,[r7,#7]
+ 1041 0032 1B02     	 lsls r3,r3,#8
+ 1042 0034 9BB2     	 uxth r3,r3
+ 1043 0036 42EA0301 	 orr r1,r2,r3
+ 1044 003a FB68     	 ldr r3,[r7,#12]
+ 1045 003c BA68     	 ldr r2,[r7,#8]
+ 1046 003e 0C32     	 adds r2,r2,#12
+ 1047 0040 43F82210 	 str r1,[r3,r2,lsl#2]
+ 375:.././hal/sam3u1c/spi.c **** }
+ 1048              	 .loc 3 375 0
+ 1049 0044 00BF     	 nop
+ 1050 0046 1437     	 adds r7,r7,#20
+ 1051              	.LCFI81:
+ 1052              	 .cfi_def_cfa_offset 4
+ 1053 0048 BD46     	 mov sp,r7
+ 1054              	.LCFI82:
+ 1055              	 .cfi_def_cfa_register 13
+ 1056              	 
+ 1057 004a 80BC     	 pop {r7}
+ 1058              	.LCFI83:
+ 1059              	 .cfi_restore 7
+ 1060              	 .cfi_def_cfa_offset 0
+ 1061 004c 7047     	 bx lr
+ 1062              	 .cfi_endproc
+ 1063              	.LFE132:
+ 1065              	 .section .text.spi_set_transfer_delay,"ax",%progbits
+ 1066              	 .align 1
+ 1067              	 .global spi_set_transfer_delay
+ 1068              	 .syntax unified
+ 1069              	 .thumb
+ 1070              	 .thumb_func
+ 1071              	 .fpu softvfp
+ 1073              	spi_set_transfer_delay:
+ 1074              	.LFB133:
+ 376:.././hal/sam3u1c/spi.c **** 
+ 377:.././hal/sam3u1c/spi.c **** /**
+ 378:.././hal/sam3u1c/spi.c ****  * \brief Configure timing for SPI transfer.
+ 379:.././hal/sam3u1c/spi.c ****  *
+ 380:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 381:.././hal/sam3u1c/spi.c ****  * \param ul_pcs_ch Peripheral Chip Select channel (0~3).
+ 382:.././hal/sam3u1c/spi.c ****  * \param uc_dlybs Delay before SPCK (in number of MCK clocks).
+ 383:.././hal/sam3u1c/spi.c ****  * \param uc_dlybct Delay between consecutive transfers (in number of MCK clocks).
+ 384:.././hal/sam3u1c/spi.c ****  */
+ 385:.././hal/sam3u1c/spi.c **** void spi_set_transfer_delay(Spi *p_spi, uint32_t ul_pcs_ch,
+ 386:.././hal/sam3u1c/spi.c **** 		uint8_t uc_dlybs, uint8_t uc_dlybct)
+ 387:.././hal/sam3u1c/spi.c **** {
+ 1075              	 .loc 3 387 0
+ 1076              	 .cfi_startproc
+ 1077              	 
+ 1078              	 
+ 1079              	 
+ 1080 0000 80B4     	 push {r7}
+ 1081              	.LCFI84:
+ 1082              	 .cfi_def_cfa_offset 4
+ 1083              	 .cfi_offset 7,-4
+ 1084 0002 85B0     	 sub sp,sp,#20
+ 1085              	.LCFI85:
+ 1086              	 .cfi_def_cfa_offset 24
+ 1087 0004 00AF     	 add r7,sp,#0
+ 1088              	.LCFI86:
+ 1089              	 .cfi_def_cfa_register 7
+ 1090 0006 F860     	 str r0,[r7,#12]
+ 1091 0008 B960     	 str r1,[r7,#8]
+ 1092 000a 1146     	 mov r1,r2
+ 1093 000c 1A46     	 mov r2,r3
+ 1094 000e 0B46     	 mov r3,r1
+ 1095 0010 FB71     	 strb r3,[r7,#7]
+ 1096 0012 1346     	 mov r3,r2
+ 1097 0014 BB71     	 strb r3,[r7,#6]
+ 388:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_CSR[ul_pcs_ch] &= ~(SPI_CSR_DLYBS_Msk | SPI_CSR_DLYBCT_Msk);
+ 1098              	 .loc 3 388 0
+ 1099 0016 FB68     	 ldr r3,[r7,#12]
+ 1100 0018 BA68     	 ldr r2,[r7,#8]
+ 1101 001a 0C32     	 adds r2,r2,#12
+ 1102 001c 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 1103 0020 99B2     	 uxth r1,r3
+ 1104 0022 FB68     	 ldr r3,[r7,#12]
+ 1105 0024 BA68     	 ldr r2,[r7,#8]
+ 1106 0026 0C32     	 adds r2,r2,#12
+ 1107 0028 43F82210 	 str r1,[r3,r2,lsl#2]
+ 389:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_DLYBS(uc_dlybs)
+ 1108              	 .loc 3 389 0
+ 1109 002c FB68     	 ldr r3,[r7,#12]
+ 1110 002e BA68     	 ldr r2,[r7,#8]
+ 1111 0030 0C32     	 adds r2,r2,#12
+ 1112 0032 53F82220 	 ldr r2,[r3,r2,lsl#2]
+ 1113 0036 FB79     	 ldrb r3,[r7,#7]
+ 1114 0038 1B04     	 lsls r3,r3,#16
+ 1115 003a 03F47F03 	 and r3,r3,#16711680
+ 390:.././hal/sam3u1c/spi.c **** 			| SPI_CSR_DLYBCT(uc_dlybct);
+ 1116              	 .loc 3 390 0
+ 1117 003e B979     	 ldrb r1,[r7,#6]
+ 1118 0040 0906     	 lsls r1,r1,#24
+ 1119 0042 0B43     	 orrs r3,r3,r1
+ 389:.././hal/sam3u1c/spi.c **** 	p_spi->SPI_CSR[ul_pcs_ch] |= SPI_CSR_DLYBS(uc_dlybs)
+ 1120              	 .loc 3 389 0
+ 1121 0044 42EA0301 	 orr r1,r2,r3
+ 1122 0048 FB68     	 ldr r3,[r7,#12]
+ 1123 004a BA68     	 ldr r2,[r7,#8]
+ 1124 004c 0C32     	 adds r2,r2,#12
+ 1125 004e 43F82210 	 str r1,[r3,r2,lsl#2]
+ 391:.././hal/sam3u1c/spi.c **** }
+ 1126              	 .loc 3 391 0
+ 1127 0052 00BF     	 nop
+ 1128 0054 1437     	 adds r7,r7,#20
+ 1129              	.LCFI87:
+ 1130              	 .cfi_def_cfa_offset 4
+ 1131 0056 BD46     	 mov sp,r7
+ 1132              	.LCFI88:
+ 1133              	 .cfi_def_cfa_register 13
+ 1134              	 
+ 1135 0058 80BC     	 pop {r7}
+ 1136              	.LCFI89:
+ 1137              	 .cfi_restore 7
+ 1138              	 .cfi_def_cfa_offset 0
+ 1139 005a 7047     	 bx lr
+ 1140              	 .cfi_endproc
+ 1141              	.LFE133:
+ 1143              	 .section .text.spi_set_writeprotect,"ax",%progbits
+ 1144              	 .align 1
+ 1145              	 .global spi_set_writeprotect
+ 1146              	 .syntax unified
+ 1147              	 .thumb
+ 1148              	 .thumb_func
+ 1149              	 .fpu softvfp
+ 1151              	spi_set_writeprotect:
+ 1152              	.LFB134:
+ 392:.././hal/sam3u1c/spi.c **** 
+ 393:.././hal/sam3u1c/spi.c **** 
+ 394:.././hal/sam3u1c/spi.c **** /**
+ 395:.././hal/sam3u1c/spi.c ****  * \brief Enable or disable write protection of SPI registers.
+ 396:.././hal/sam3u1c/spi.c ****  *
+ 397:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 398:.././hal/sam3u1c/spi.c ****  * \param ul_enable 1 to enable, 0 to disable.
+ 399:.././hal/sam3u1c/spi.c ****  */
+ 400:.././hal/sam3u1c/spi.c **** void spi_set_writeprotect(Spi *p_spi, uint32_t ul_enable)
+ 401:.././hal/sam3u1c/spi.c **** {
+ 1153              	 .loc 3 401 0
+ 1154              	 .cfi_startproc
+ 1155              	 
+ 1156              	 
+ 1157              	 
+ 1158 0000 80B4     	 push {r7}
+ 1159              	.LCFI90:
+ 1160              	 .cfi_def_cfa_offset 4
+ 1161              	 .cfi_offset 7,-4
+ 1162 0002 83B0     	 sub sp,sp,#12
+ 1163              	.LCFI91:
+ 1164              	 .cfi_def_cfa_offset 16
+ 1165 0004 00AF     	 add r7,sp,#0
+ 1166              	.LCFI92:
+ 1167              	 .cfi_def_cfa_register 7
+ 1168 0006 7860     	 str r0,[r7,#4]
+ 1169 0008 3960     	 str r1,[r7]
+ 402:.././hal/sam3u1c/spi.c **** #if SAM4L
+ 403:.././hal/sam3u1c/spi.c **** 	if (ul_enable) {
+ 404:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_WPCR = SPI_WPCR_SPIWPKEY_VALUE | SPI_WPCR_SPIWPEN;
+ 405:.././hal/sam3u1c/spi.c **** 	} else {
+ 406:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_WPCR = SPI_WPCR_SPIWPKEY_VALUE;
+ 407:.././hal/sam3u1c/spi.c **** 	}
+ 408:.././hal/sam3u1c/spi.c **** #else
+ 409:.././hal/sam3u1c/spi.c **** 	if (ul_enable) {
+ 1170              	 .loc 3 409 0
+ 1171 000a 3B68     	 ldr r3,[r7]
+ 1172 000c 002B     	 cmp r3,#0
+ 1173 000e 04D0     	 beq .L55
+ 410:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_WPMR = SPI_WPMR_WPKEY_PASSWD | SPI_WPMR_WPEN;
+ 1174              	 .loc 3 410 0
+ 1175 0010 7B68     	 ldr r3,[r7,#4]
+ 1176 0012 064A     	 ldr r2,.L58
+ 1177 0014 C3F8E420 	 str r2,[r3,#228]
+ 411:.././hal/sam3u1c/spi.c **** 	} else {
+ 412:.././hal/sam3u1c/spi.c **** 		p_spi->SPI_WPMR = SPI_WPMR_WPKEY_PASSWD;
+ 413:.././hal/sam3u1c/spi.c **** 	}
+ 414:.././hal/sam3u1c/spi.c **** #endif
+ 415:.././hal/sam3u1c/spi.c **** }
+ 1178              	 .loc 3 415 0
+ 1179 0018 03E0     	 b .L57
+ 1180              	.L55:
+ 412:.././hal/sam3u1c/spi.c **** 	}
+ 1181              	 .loc 3 412 0
+ 1182 001a 7B68     	 ldr r3,[r7,#4]
+ 1183 001c 044A     	 ldr r2,.L58+4
+ 1184 001e C3F8E420 	 str r2,[r3,#228]
+ 1185              	.L57:
+ 1186              	 .loc 3 415 0
+ 1187 0022 00BF     	 nop
+ 1188 0024 0C37     	 adds r7,r7,#12
+ 1189              	.LCFI93:
+ 1190              	 .cfi_def_cfa_offset 4
+ 1191 0026 BD46     	 mov sp,r7
+ 1192              	.LCFI94:
+ 1193              	 .cfi_def_cfa_register 13
+ 1194              	 
+ 1195 0028 80BC     	 pop {r7}
+ 1196              	.LCFI95:
+ 1197              	 .cfi_restore 7
+ 1198              	 .cfi_def_cfa_offset 0
+ 1199 002a 7047     	 bx lr
+ 1200              	.L59:
+ 1201              	 .align 2
+ 1202              	.L58:
+ 1203 002c 01495053 	 .word 1397770497
+ 1204 0030 00495053 	 .word 1397770496
+ 1205              	 .cfi_endproc
+ 1206              	.LFE134:
+ 1208              	 .section .text.spi_get_writeprotect_status,"ax",%progbits
+ 1209              	 .align 1
+ 1210              	 .global spi_get_writeprotect_status
+ 1211              	 .syntax unified
+ 1212              	 .thumb
+ 1213              	 .thumb_func
+ 1214              	 .fpu softvfp
+ 1216              	spi_get_writeprotect_status:
+ 1217              	.LFB135:
+ 416:.././hal/sam3u1c/spi.c **** 
+ 417:.././hal/sam3u1c/spi.c **** /**
+ 418:.././hal/sam3u1c/spi.c ****  * \brief Indicate write protect status.
+ 419:.././hal/sam3u1c/spi.c ****  *
+ 420:.././hal/sam3u1c/spi.c ****  * \param p_spi Pointer to an SPI instance.
+ 421:.././hal/sam3u1c/spi.c ****  *
+ 422:.././hal/sam3u1c/spi.c ****  * \return SPI_WPSR value.
+ 423:.././hal/sam3u1c/spi.c ****  */
+ 424:.././hal/sam3u1c/spi.c **** uint32_t spi_get_writeprotect_status(Spi *p_spi)
+ 425:.././hal/sam3u1c/spi.c **** {
+ 1218              	 .loc 3 425 0
+ 1219              	 .cfi_startproc
+ 1220              	 
+ 1221              	 
+ 1222              	 
+ 1223 0000 80B4     	 push {r7}
+ 1224              	.LCFI96:
+ 1225              	 .cfi_def_cfa_offset 4
+ 1226              	 .cfi_offset 7,-4
+ 1227 0002 83B0     	 sub sp,sp,#12
+ 1228              	.LCFI97:
+ 1229              	 .cfi_def_cfa_offset 16
+ 1230 0004 00AF     	 add r7,sp,#0
+ 1231              	.LCFI98:
+ 1232              	 .cfi_def_cfa_register 7
+ 1233 0006 7860     	 str r0,[r7,#4]
+ 426:.././hal/sam3u1c/spi.c **** 	return p_spi->SPI_WPSR;
+ 1234              	 .loc 3 426 0
+ 1235 0008 7B68     	 ldr r3,[r7,#4]
+ 1236 000a D3F8E830 	 ldr r3,[r3,#232]
+ 427:.././hal/sam3u1c/spi.c **** }
+ 1237              	 .loc 3 427 0
+ 1238 000e 1846     	 mov r0,r3
+ 1239 0010 0C37     	 adds r7,r7,#12
+ 1240              	.LCFI99:
+ 1241              	 .cfi_def_cfa_offset 4
+ 1242 0012 BD46     	 mov sp,r7
+ 1243              	.LCFI100:
+ 1244              	 .cfi_def_cfa_register 13
+ 1245              	 
+ 1246 0014 80BC     	 pop {r7}
+ 1247              	.LCFI101:
+ 1248              	 .cfi_restore 7
+ 1249              	 .cfi_def_cfa_offset 0
+ 1250 0016 7047     	 bx lr
+ 1251              	 .cfi_endproc
+ 1252              	.LFE135:
+ 1254              	 .section .bss.reg_value.7329,"aw",%nobits
+ 1255              	 .align 2
+ 1258              	reg_value.7329:
+ 1259 0000 00000000 	 .space 4
+ 1260              	 .text
+ 1261              	.Letext0:
+ 1262              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1263              	 .file 5 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1264              	 .file 6 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 1265              	 .file 7 ".././hal/sam3u1c/inc/core_cm3.h"
+ 1266              	 .file 8 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 1267              	 .file 9 ".././hal/sam3u1c/inc/component/component_spi.h"
+ 1268              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1269              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1270              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 1271              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1272              	 .file 14 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1273              	 .file 15 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 1274              	 .file 16 ".././hal/sam3u1c/inc/pmc.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 spi.c
+    {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
+    {standard input}:19     .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
+    {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
+    {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
+    {standard input}:27     .text.spi_get_peripheral_select_mode:00000000 $t
+    {standard input}:33     .text.spi_get_peripheral_select_mode:00000000 spi_get_peripheral_select_mode
+    {standard input}:83     .text.sysclk_enable_peripheral_clock:00000000 $t
+    {standard input}:89     .text.sysclk_enable_peripheral_clock:00000000 sysclk_enable_peripheral_clock
+    {standard input}:126    .text.sysclk_enable_peripheral_clock:00000018 $d
+    {standard input}:131    .text.sysclk_disable_peripheral_clock:00000000 $t
+    {standard input}:137    .text.sysclk_disable_peripheral_clock:00000000 sysclk_disable_peripheral_clock
+    {standard input}:173    .text.sysclk_disable_peripheral_clock:00000018 $d
+    {standard input}:178    .text.spi_enable_clock:00000000 $t
+    {standard input}:185    .text.spi_enable_clock:00000000 spi_enable_clock
+    {standard input}:222    .text.spi_enable_clock:00000018 $d
+    {standard input}:227    .text.spi_disable_clock:00000000 $t
+    {standard input}:234    .text.spi_disable_clock:00000000 spi_disable_clock
+    {standard input}:270    .text.spi_disable_clock:00000018 $d
+    {standard input}:275    .text.spi_set_peripheral_chip_select_value:00000000 $t
+    {standard input}:282    .text.spi_set_peripheral_chip_select_value:00000000 spi_set_peripheral_chip_select_value
+    {standard input}:334    .text.spi_set_delay_between_chip_select:00000000 $t
+    {standard input}:341    .text.spi_set_delay_between_chip_select:00000000 spi_set_delay_between_chip_select
+    {standard input}:392    .text.spi_read:00000000 $t
+    {standard input}:399    .text.spi_read:00000000 spi_read
+    {standard input}:486    .text.spi_read:00000068 $d
+    {standard input}:1258   .bss.reg_value.7329:00000000 reg_value.7329
+    {standard input}:492    .text.spi_write:00000000 $t
+    {standard input}:499    .text.spi_write:00000000 spi_write
+    {standard input}:597    .text.spi_write:0000007c $d
+    {standard input}:602    .text.spi_set_clock_polarity:00000000 $t
+    {standard input}:609    .text.spi_set_clock_polarity:00000000 spi_set_clock_polarity
+    {standard input}:675    .text.spi_set_clock_phase:00000000 $t
+    {standard input}:682    .text.spi_set_clock_phase:00000000 spi_set_clock_phase
+    {standard input}:748    .text.spi_configure_cs_behavior:00000000 $t
+    {standard input}:755    .text.spi_configure_cs_behavior:00000000 spi_configure_cs_behavior
+    {standard input}:862    .text.spi_set_bits_per_transfer:00000000 $t
+    {standard input}:869    .text.spi_set_bits_per_transfer:00000000 spi_set_bits_per_transfer
+    {standard input}:928    .text.spi_calc_baudrate_div:00000000 $t
+    {standard input}:935    .text.spi_calc_baudrate_div:00000000 spi_calc_baudrate_div
+    {standard input}:997    .text.spi_set_baudrate_div:00000000 $t
+    {standard input}:1004   .text.spi_set_baudrate_div:00000000 spi_set_baudrate_div
+    {standard input}:1066   .text.spi_set_transfer_delay:00000000 $t
+    {standard input}:1073   .text.spi_set_transfer_delay:00000000 spi_set_transfer_delay
+    {standard input}:1144   .text.spi_set_writeprotect:00000000 $t
+    {standard input}:1151   .text.spi_set_writeprotect:00000000 spi_set_writeprotect
+    {standard input}:1203   .text.spi_set_writeprotect:0000002c $d
+    {standard input}:1209   .text.spi_get_writeprotect_status:00000000 $t
+    {standard input}:1216   .text.spi_get_writeprotect_status:00000000 spi_get_writeprotect_status
+    {standard input}:1255   .bss.reg_value.7329:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
+                           .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
+                           .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
+                           .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.sam3u1c.h.220.c0b54b5a55bc87791749ae17b1487779
+                           .group:00000000 wm4.core_cm3.h.32.5c59c312db585622d253fdb887b0afb1
+                           .group:00000000 wm4.core_cmInstr.h.25.d8165482ef3061013a2fc83e2d85f3d9
+                           .group:00000000 wm4.core_cm3.h.127.b561404f2a159dc517b409bc244d16c1
+                           .group:00000000 wm4.component_adc.h.43.d49887380d07d1cd08cc4e37b3485e31
+                           .group:00000000 wm4.component_adc12b.h.43.eadc09f1073923fb91f1f393cc397dcb
+                           .group:00000000 wm4.component_chipid.h.43.15825c969b1cc9eeea3d9416499874c8
+                           .group:00000000 wm4.component_dmac.h.43.cc8187b1cf6bfeadc91b14fdd28b9e8b
+                           .group:00000000 wm4.component_efc.h.43.cb1b3997ad9ea3733ad421ecbfd02fdd
+                           .group:00000000 wm4.component_gpbr.h.43.49b7e13894fe38b29f2243bbbe530227
+                           .group:00000000 wm4.component_hsmci.h.43.7b7194c92e1480c038f3342f7cec440a
+                           .group:00000000 wm4.component_matrix.h.43.1d209838fb75b4827119203a357141ee
+                           .group:00000000 wm4.component_pdc.h.43.19528a5f9ef5a348234ea06f89069c55
+                           .group:00000000 wm4.component_pio.h.43.163b46c3683ccf92e8de39a5554f50e8
+                           .group:00000000 wm4.component_pmc.h.43.ee4f030602866917aeed15fb2b948de8
+                           .group:00000000 wm4.component_pwm.h.43.ab6262a86f0aea354b43fe6dce7e7eb3
+                           .group:00000000 wm4.component_rstc.h.43.4eb59dc2ddcf585fabf251d0c329fcdd
+                           .group:00000000 wm4.component_rtc.h.43.ba8ccafc772b11d562a3cceab8b95072
+                           .group:00000000 wm4.component_rtt.h.43.3206ef8f067e5e747c3c4c7e719c1429
+                           .group:00000000 wm4.component_smc.h.43.907847915f1a5616734199d7e34424fa
+                           .group:00000000 wm4.component_spi.h.43.a2a09df64ab768c0a32be55285c74ded
+                           .group:00000000 wm4.component_ssc.h.43.d7c78f990c13fc511671b64798c4bcd0
+                           .group:00000000 wm4.component_supc.h.43.7d17f8e5ed3ba815e84381152735062f
+                           .group:00000000 wm4.component_tc.h.43.662eac8137408372b4f9d26c0b5f8621
+                           .group:00000000 wm4.component_twi.h.43.eda18625bd851fc4605861f5b3240c0b
+                           .group:00000000 wm4.component_uart.h.43.2d92735c5ea05c973661e1ba99a2f37c
+                           .group:00000000 wm4.component_udphs.h.43.21cecd26a4e44df0013037f29f2716e4
+                           .group:00000000 wm4.component_usart.h.43.7872f8f455adb38b67b9fbdb15657fbe
+                           .group:00000000 wm4.component_wdt.h.43.e31e10a5469b62c3660b49ab250f802f
+                           .group:00000000 wm4.instance_hsmci.h.43.e233236cc7fd5a805539a7ecc0e1d8d2
+                           .group:00000000 wm4.instance_ssc.h.43.c0cfabc3b9f3bb60745c913111bce965
+                           .group:00000000 wm4.instance_spi.h.43.570ae46af19e4179d9796872b9a8b9bc
+                           .group:00000000 wm4.instance_tc0.h.43.049b3a82387d2961594190609e896a29
+                           .group:00000000 wm4.instance_twi0.h.43.255dc0afa9e0d45eaea0a935eca2f103
+                           .group:00000000 wm4.instance_twi1.h.43.652d1d407893f259f2a817544ba662c2
+                           .group:00000000 wm4.instance_pwm.h.43.88294acec3ca56d6fc521038521a1567
+                           .group:00000000 wm4.instance_usart0.h.43.e26677512aee3dd3bedd71d394410000
+                           .group:00000000 wm4.instance_usart1.h.43.1ba97dbc6610d9fb3132b9d845688201
+                           .group:00000000 wm4.instance_usart2.h.43.baa1bf30b3c5acdee90c4a1f50fe9ebd
+                           .group:00000000 wm4.instance_udphs.h.43.b1ce94181e0d1f22877b81c6040a4363
+                           .group:00000000 wm4.instance_adc12b.h.43.d73ed59e867ccdfdb846d9ef32a50c0c
+                           .group:00000000 wm4.instance_adc.h.43.2b7611a00afeb4c555339b844d4b8456
+                           .group:00000000 wm4.instance_dmac.h.43.ee72691d84889c8f285932be4a075ddb
+                           .group:00000000 wm4.instance_smc.h.43.29610fd00979caaaa65821ad40e9da06
+                           .group:00000000 wm4.instance_matrix.h.43.01ee474141594385374c41a29daeeefe
+                           .group:00000000 wm4.instance_pmc.h.43.37430325ed7b8b24c3fe640c41c29ef5
+                           .group:00000000 wm4.instance_uart.h.43.bd378395ba022bc8670c82ebe656fbbd
+                           .group:00000000 wm4.instance_chipid.h.43.29cd8fb600f149aa58830fcc78fe36f9
+                           .group:00000000 wm4.instance_efc0.h.43.6b85dba20721a7e9fc4350e78d193680
+                           .group:00000000 wm4.instance_efc1.h.43.2c5e94fc4d2742678318d73450d08d57
+                           .group:00000000 wm4.instance_pioa.h.43.eeb46cc3bfe01a1f28e67aa3a6851ed8
+                           .group:00000000 wm4.instance_piob.h.43.652ce26b6c37ac56f9ed42a9216d9aca
+                           .group:00000000 wm4.instance_rstc.h.43.c5de224364a50a85f237c0b864aa4c8f
+                           .group:00000000 wm4.instance_supc.h.43.a5f1a5ca08f468ccf34ed3653e045f1f
+                           .group:00000000 wm4.instance_rtt.h.43.8622b192c23334996132415e3095df7f
+                           .group:00000000 wm4.instance_wdt.h.43.407ea53e133eacf09acf2c7fcb6b7524
+                           .group:00000000 wm4.instance_rtc.h.43.f70b77f9180401c8d9d920cb4a1cd166
+                           .group:00000000 wm4.instance_gpbr.h.43.9066cb40d557f6755101368854272348
+                           .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
+                           .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
+                           .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
+                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
+                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
+                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
+                           .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
+                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:00000000 wm4.stdlib.h.56.d4493cd3736e51e9d56335045f26df45
+                           .group:00000000 wm4.compiler.h.88.0e6ad966134fa012ce9a34053d3f48aa
+                           .group:00000000 wm4.interrupt_sam_nvic.h.45.4876da6c127868305d66389e87e0876f
+                           .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
+                           .group:00000000 wm4.spi.h.58.5ddbc930da62f9cda91a700de5f487b5
+                           .group:00000000 wm4.conf_clock.h.45.5dc276d21b4d793a62f1a9757cc18d5c
+                           .group:00000000 wm4.board.h.48.ce8d06c36cc583d9bf62738411f62e4d
+                           .group:00000000 wm4.cw521.h.62.49e8a34af6a9b815e03b7858792ba391
+                           .group:00000000 wm4.pmc.h.45.bbe1bf97a811e3b283420b2eeadf0b35
+                           .group:00000000 wm4.osc.h.94.b766cddafe899eca01d775f7b2906680
+                           .group:00000000 wm4.pll.h.45.a605c31ca466ae25752a678e8572be48
+                           .group:00000000 wm4.sysclk.h.156.541a142b0016a365728ea1f7c0e3db84
+
+UNDEFINED SYMBOLS
+pmc_enable_periph_clk
+pmc_disable_periph_clk

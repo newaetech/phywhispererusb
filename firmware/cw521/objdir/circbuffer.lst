@@ -1,0 +1,518 @@
+   1              	 .cpu cortex-m3
+   2              	 .eabi_attribute 20,1
+   3              	 .eabi_attribute 21,1
+   4              	 .eabi_attribute 23,3
+   5              	 .eabi_attribute 24,1
+   6              	 .eabi_attribute 25,1
+   7              	 .eabi_attribute 26,1
+   8              	 .eabi_attribute 30,6
+   9              	 .eabi_attribute 34,1
+  10              	 .eabi_attribute 18,4
+  11              	 .file "circbuffer.c"
+  12              	 .text
+  13              	.Ltext0:
+  14              	 .cfi_sections .debug_frame
+  15              	 .section .text.init_circ_buf,"ax",%progbits
+  16              	 .align 1
+  17              	 .global init_circ_buf
+  18              	 .syntax unified
+  19              	 .thumb
+  20              	 .thumb_func
+  21              	 .fpu softvfp
+  23              	init_circ_buf:
+  24              	.LFB0:
+  25              	 .file 1 ".././hal/sam3u1c/circbuffer.c"
+   1:.././hal/sam3u1c/circbuffer.c **** /*
+   2:.././hal/sam3u1c/circbuffer.c ****  * Copyright (c) 2014 NewAE Technology Inc.
+   3:.././hal/sam3u1c/circbuffer.c ****  * All rights reserved.
+   4:.././hal/sam3u1c/circbuffer.c ****  *
+   5:.././hal/sam3u1c/circbuffer.c ****  * Redistribution and use in source and binary forms, with or without modification,
+   6:.././hal/sam3u1c/circbuffer.c ****  * are permitted provided that the following conditions are met:
+   7:.././hal/sam3u1c/circbuffer.c ****  *
+   8:.././hal/sam3u1c/circbuffer.c ****  * * Redistributions of source code must retain the above copyright notice, this list
+   9:.././hal/sam3u1c/circbuffer.c ****  *   of conditions and the following disclaimer.
+  10:.././hal/sam3u1c/circbuffer.c ****  *
+  11:.././hal/sam3u1c/circbuffer.c ****  * * Redistributions in binary form must reproduce the above copyright notice, this
+  12:.././hal/sam3u1c/circbuffer.c ****  *   list of conditions and the following disclaimer in the documentation and/or other
+  13:.././hal/sam3u1c/circbuffer.c ****  *   materials provided with the distribution.
+  14:.././hal/sam3u1c/circbuffer.c ****  *
+  15:.././hal/sam3u1c/circbuffer.c ****  * * Neither the name of the author nor the names of its contributors may be
+  16:.././hal/sam3u1c/circbuffer.c ****  *   used to endorse or promote products derived from this software without specific
+  17:.././hal/sam3u1c/circbuffer.c ****  *   prior written permission.
+  18:.././hal/sam3u1c/circbuffer.c ****  *
+  19:.././hal/sam3u1c/circbuffer.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+  20:.././hal/sam3u1c/circbuffer.c ****  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  21:.././hal/sam3u1c/circbuffer.c ****  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  22:.././hal/sam3u1c/circbuffer.c ****  * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  23:.././hal/sam3u1c/circbuffer.c ****  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+  24:.././hal/sam3u1c/circbuffer.c ****  * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+  25:.././hal/sam3u1c/circbuffer.c ****  * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  26:.././hal/sam3u1c/circbuffer.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  27:.././hal/sam3u1c/circbuffer.c ****  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+  28:.././hal/sam3u1c/circbuffer.c ****  * DAMAGE.
+  29:.././hal/sam3u1c/circbuffer.c ****  */
+  30:.././hal/sam3u1c/circbuffer.c **** #include "circbuffer.h"
+  31:.././hal/sam3u1c/circbuffer.c **** 
+  32:.././hal/sam3u1c/circbuffer.c **** /*
+  33:.././hal/sam3u1c/circbuffer.c ****     @brief Initializes the circular buffer.
+  34:.././hal/sam3u1c/circbuffer.c **** 
+  35:.././hal/sam3u1c/circbuffer.c ****     @param cbuf Points to the structure to be initialized.
+  36:.././hal/sam3u1c/circbuffer.c **** */
+  37:.././hal/sam3u1c/circbuffer.c **** void init_circ_buf(tcirc_buf *cbuf)
+  38:.././hal/sam3u1c/circbuffer.c **** {
+  26              	 .loc 1 38 0
+  27              	 .cfi_startproc
+  28              	 
+  29              	 
+  30              	 
+  31 0000 80B4     	 push {r7}
+  32              	.LCFI0:
+  33              	 .cfi_def_cfa_offset 4
+  34              	 .cfi_offset 7,-4
+  35 0002 83B0     	 sub sp,sp,#12
+  36              	.LCFI1:
+  37              	 .cfi_def_cfa_offset 16
+  38 0004 00AF     	 add r7,sp,#0
+  39              	.LCFI2:
+  40              	 .cfi_def_cfa_register 7
+  41 0006 7860     	 str r0,[r7,#4]
+  39:.././hal/sam3u1c/circbuffer.c ****     cbuf->head = cbuf->tail = 0;
+  42              	 .loc 1 39 0
+  43 0008 0023     	 movs r3,#0
+  44 000a 7A68     	 ldr r2,[r7,#4]
+  45 000c 5360     	 str r3,[r2,#4]
+  46 000e 7A68     	 ldr r2,[r7,#4]
+  47 0010 1360     	 str r3,[r2]
+  40:.././hal/sam3u1c/circbuffer.c ****     cbuf->dropped = 0;
+  48              	 .loc 1 40 0
+  49 0012 7B68     	 ldr r3,[r7,#4]
+  50 0014 0022     	 movs r2,#0
+  51 0016 9A60     	 str r2,[r3,#8]
+  41:.././hal/sam3u1c/circbuffer.c **** }
+  52              	 .loc 1 41 0
+  53 0018 00BF     	 nop
+  54 001a 0C37     	 adds r7,r7,#12
+  55              	.LCFI3:
+  56              	 .cfi_def_cfa_offset 4
+  57 001c BD46     	 mov sp,r7
+  58              	.LCFI4:
+  59              	 .cfi_def_cfa_register 13
+  60              	 
+  61 001e 80BC     	 pop {r7}
+  62              	.LCFI5:
+  63              	 .cfi_restore 7
+  64              	 .cfi_def_cfa_offset 0
+  65 0020 7047     	 bx lr
+  66              	 .cfi_endproc
+  67              	.LFE0:
+  69              	 .section .text.add_to_circ_buf,"ax",%progbits
+  70              	 .align 1
+  71              	 .global add_to_circ_buf
+  72              	 .syntax unified
+  73              	 .thumb
+  74              	 .thumb_func
+  75              	 .fpu softvfp
+  77              	add_to_circ_buf:
+  78              	.LFB1:
+  42:.././hal/sam3u1c/circbuffer.c **** 
+  43:.././hal/sam3u1c/circbuffer.c **** /*
+  44:.././hal/sam3u1c/circbuffer.c ****     @brief This will add a character to the circular buffer.
+  45:.././hal/sam3u1c/circbuffer.c **** 
+  46:.././hal/sam3u1c/circbuffer.c ****     @param cbuf Pointer to structure that contains data.
+  47:.././hal/sam3u1c/circbuffer.c ****     @param ch Character to add to buffer.
+  48:.././hal/sam3u1c/circbuffer.c **** */
+  49:.././hal/sam3u1c/circbuffer.c **** void add_to_circ_buf(tcirc_buf *cbuf, uint8_t ch, bool block)
+  50:.././hal/sam3u1c/circbuffer.c **** {
+  79              	 .loc 1 50 0
+  80              	 .cfi_startproc
+  81              	 
+  82              	 
+  83              	 
+  84 0000 80B4     	 push {r7}
+  85              	.LCFI6:
+  86              	 .cfi_def_cfa_offset 4
+  87              	 .cfi_offset 7,-4
+  88 0002 85B0     	 sub sp,sp,#20
+  89              	.LCFI7:
+  90              	 .cfi_def_cfa_offset 24
+  91 0004 00AF     	 add r7,sp,#0
+  92              	.LCFI8:
+  93              	 .cfi_def_cfa_register 7
+  94 0006 7860     	 str r0,[r7,#4]
+  95 0008 0B46     	 mov r3,r1
+  96 000a FB70     	 strb r3,[r7,#3]
+  97 000c 1346     	 mov r3,r2
+  98 000e BB70     	 strb r3,[r7,#2]
+  51:.././hal/sam3u1c/circbuffer.c ****     // Add char to buffer
+  52:.././hal/sam3u1c/circbuffer.c ****     unsigned int newhead = cbuf->head;
+  99              	 .loc 1 52 0
+ 100 0010 7B68     	 ldr r3,[r7,#4]
+ 101 0012 1B68     	 ldr r3,[r3]
+ 102 0014 FB60     	 str r3,[r7,#12]
+  53:.././hal/sam3u1c/circbuffer.c ****     newhead++;
+ 103              	 .loc 1 53 0
+ 104 0016 FB68     	 ldr r3,[r7,#12]
+ 105 0018 0133     	 adds r3,r3,#1
+ 106 001a FB60     	 str r3,[r7,#12]
+  54:.././hal/sam3u1c/circbuffer.c ****     if (newhead >= CIRCBUFSIZE)
+ 107              	 .loc 1 54 0
+ 108 001c FB68     	 ldr r3,[r7,#12]
+ 109 001e 7F2B     	 cmp r3,#127
+ 110 0020 0ED9     	 bls .L4
+  55:.././hal/sam3u1c/circbuffer.c ****         newhead = 0;
+ 111              	 .loc 1 55 0
+ 112 0022 0023     	 movs r3,#0
+ 113 0024 FB60     	 str r3,[r7,#12]
+  56:.././hal/sam3u1c/circbuffer.c ****     while (newhead == cbuf->tail)
+ 114              	 .loc 1 56 0
+ 115 0026 0BE0     	 b .L4
+ 116              	.L6:
+  57:.././hal/sam3u1c/circbuffer.c ****     {
+  58:.././hal/sam3u1c/circbuffer.c ****         if (!block)
+ 117              	 .loc 1 58 0
+ 118 0028 BB78     	 ldrb r3,[r7,#2]
+ 119 002a 83F00103 	 eor r3,r3,#1
+ 120 002e DBB2     	 uxtb r3,r3
+ 121 0030 002B     	 cmp r3,#0
+ 122 0032 05D0     	 beq .L4
+  59:.././hal/sam3u1c/circbuffer.c ****         {
+  60:.././hal/sam3u1c/circbuffer.c ****             cbuf->dropped++;
+ 123              	 .loc 1 60 0
+ 124 0034 7B68     	 ldr r3,[r7,#4]
+ 125 0036 9B68     	 ldr r3,[r3,#8]
+ 126 0038 5A1C     	 adds r2,r3,#1
+ 127 003a 7B68     	 ldr r3,[r7,#4]
+ 128 003c 9A60     	 str r2,[r3,#8]
+  61:.././hal/sam3u1c/circbuffer.c ****             return;
+ 129              	 .loc 1 61 0
+ 130 003e 0DE0     	 b .L2
+ 131              	.L4:
+  56:.././hal/sam3u1c/circbuffer.c ****     {
+ 132              	 .loc 1 56 0
+ 133 0040 7B68     	 ldr r3,[r7,#4]
+ 134 0042 5A68     	 ldr r2,[r3,#4]
+ 135 0044 FB68     	 ldr r3,[r7,#12]
+ 136 0046 9A42     	 cmp r2,r3
+ 137 0048 EED0     	 beq .L6
+  62:.././hal/sam3u1c/circbuffer.c ****         }
+  63:.././hal/sam3u1c/circbuffer.c ****         
+  64:.././hal/sam3u1c/circbuffer.c ****         //Add processing here?
+  65:.././hal/sam3u1c/circbuffer.c ****         
+  66:.././hal/sam3u1c/circbuffer.c ****     }
+  67:.././hal/sam3u1c/circbuffer.c **** 
+  68:.././hal/sam3u1c/circbuffer.c ****     cbuf->buf[cbuf->head] = ch;
+ 138              	 .loc 1 68 0
+ 139 004a 7B68     	 ldr r3,[r7,#4]
+ 140 004c 1B68     	 ldr r3,[r3]
+ 141 004e 7A68     	 ldr r2,[r7,#4]
+ 142 0050 1344     	 add r3,r3,r2
+ 143 0052 FA78     	 ldrb r2,[r7,#3]
+ 144 0054 1A73     	 strb r2,[r3,#12]
+  69:.././hal/sam3u1c/circbuffer.c ****     cbuf->head = newhead;
+ 145              	 .loc 1 69 0
+ 146 0056 7B68     	 ldr r3,[r7,#4]
+ 147 0058 FA68     	 ldr r2,[r7,#12]
+ 148 005a 1A60     	 str r2,[r3]
+ 149              	.L2:
+  70:.././hal/sam3u1c/circbuffer.c **** }
+ 150              	 .loc 1 70 0
+ 151 005c 1437     	 adds r7,r7,#20
+ 152              	.LCFI9:
+ 153              	 .cfi_def_cfa_offset 4
+ 154 005e BD46     	 mov sp,r7
+ 155              	.LCFI10:
+ 156              	 .cfi_def_cfa_register 13
+ 157              	 
+ 158 0060 80BC     	 pop {r7}
+ 159              	.LCFI11:
+ 160              	 .cfi_restore 7
+ 161              	 .cfi_def_cfa_offset 0
+ 162 0062 7047     	 bx lr
+ 163              	 .cfi_endproc
+ 164              	.LFE1:
+ 166              	 .section .text.get_from_circ_buf,"ax",%progbits
+ 167              	 .align 1
+ 168              	 .global get_from_circ_buf
+ 169              	 .syntax unified
+ 170              	 .thumb
+ 171              	 .thumb_func
+ 172              	 .fpu softvfp
+ 174              	get_from_circ_buf:
+ 175              	.LFB2:
+  71:.././hal/sam3u1c/circbuffer.c **** 
+  72:.././hal/sam3u1c/circbuffer.c **** /*
+  73:.././hal/sam3u1c/circbuffer.c ****     @brief This will get a character out of the circular buffer.
+  74:.././hal/sam3u1c/circbuffer.c **** 
+  75:.././hal/sam3u1c/circbuffer.c ****     @param cbuf Pointer to structure that contains data.
+  76:.././hal/sam3u1c/circbuffer.c **** 
+  77:.././hal/sam3u1c/circbuffer.c ****     @return retval Character to be returned from buffer.  If no char
+  78:.././hal/sam3u1c/circbuffer.c ****     is available, returns SERIAL_ERR.
+  79:.././hal/sam3u1c/circbuffer.c **** */
+  80:.././hal/sam3u1c/circbuffer.c **** uint8_t get_from_circ_buf(tcirc_buf *cbuf)
+  81:.././hal/sam3u1c/circbuffer.c **** {
+ 176              	 .loc 1 81 0
+ 177              	 .cfi_startproc
+ 178              	 
+ 179              	 
+ 180              	 
+ 181 0000 80B4     	 push {r7}
+ 182              	.LCFI12:
+ 183              	 .cfi_def_cfa_offset 4
+ 184              	 .cfi_offset 7,-4
+ 185 0002 85B0     	 sub sp,sp,#20
+ 186              	.LCFI13:
+ 187              	 .cfi_def_cfa_offset 24
+ 188 0004 00AF     	 add r7,sp,#0
+ 189              	.LCFI14:
+ 190              	 .cfi_def_cfa_register 7
+ 191 0006 7860     	 str r0,[r7,#4]
+  82:.././hal/sam3u1c/circbuffer.c ****     // Get char from buffer
+  83:.././hal/sam3u1c/circbuffer.c ****     // Be sure to check first that there is a char in buffer
+  84:.././hal/sam3u1c/circbuffer.c ****     unsigned int newtail = cbuf->tail;
+ 192              	 .loc 1 84 0
+ 193 0008 7B68     	 ldr r3,[r7,#4]
+ 194 000a 5B68     	 ldr r3,[r3,#4]
+ 195 000c FB60     	 str r3,[r7,#12]
+  85:.././hal/sam3u1c/circbuffer.c ****     uint8_t retval = cbuf->buf[newtail];
+ 196              	 .loc 1 85 0
+ 197 000e 7A68     	 ldr r2,[r7,#4]
+ 198 0010 FB68     	 ldr r3,[r7,#12]
+ 199 0012 1344     	 add r3,r3,r2
+ 200 0014 0C33     	 adds r3,r3,#12
+ 201 0016 1B78     	 ldrb r3,[r3]
+ 202 0018 FB72     	 strb r3,[r7,#11]
+  86:.././hal/sam3u1c/circbuffer.c **** 
+  87:.././hal/sam3u1c/circbuffer.c ****     if (newtail == cbuf->head)
+ 203              	 .loc 1 87 0
+ 204 001a 7B68     	 ldr r3,[r7,#4]
+ 205 001c 1A68     	 ldr r2,[r3]
+ 206 001e FB68     	 ldr r3,[r7,#12]
+ 207 0020 9A42     	 cmp r2,r3
+ 208 0022 01D1     	 bne .L8
+  88:.././hal/sam3u1c/circbuffer.c ****         return SERIAL_ERR;
+ 209              	 .loc 1 88 0
+ 210 0024 FF23     	 movs r3,#255
+ 211 0026 0BE0     	 b .L9
+ 212              	.L8:
+  89:.././hal/sam3u1c/circbuffer.c **** 
+  90:.././hal/sam3u1c/circbuffer.c ****     newtail++;
+ 213              	 .loc 1 90 0
+ 214 0028 FB68     	 ldr r3,[r7,#12]
+ 215 002a 0133     	 adds r3,r3,#1
+ 216 002c FB60     	 str r3,[r7,#12]
+  91:.././hal/sam3u1c/circbuffer.c ****     if (newtail >= CIRCBUFSIZE)
+ 217              	 .loc 1 91 0
+ 218 002e FB68     	 ldr r3,[r7,#12]
+ 219 0030 7F2B     	 cmp r3,#127
+ 220 0032 01D9     	 bls .L10
+  92:.././hal/sam3u1c/circbuffer.c ****         // Rollover
+  93:.././hal/sam3u1c/circbuffer.c ****         newtail = 0;
+ 221              	 .loc 1 93 0
+ 222 0034 0023     	 movs r3,#0
+ 223 0036 FB60     	 str r3,[r7,#12]
+ 224              	.L10:
+  94:.././hal/sam3u1c/circbuffer.c ****     cbuf->tail = newtail;
+ 225              	 .loc 1 94 0
+ 226 0038 7B68     	 ldr r3,[r7,#4]
+ 227 003a FA68     	 ldr r2,[r7,#12]
+ 228 003c 5A60     	 str r2,[r3,#4]
+  95:.././hal/sam3u1c/circbuffer.c **** 
+  96:.././hal/sam3u1c/circbuffer.c ****     return retval;
+ 229              	 .loc 1 96 0
+ 230 003e FB7A     	 ldrb r3,[r7,#11]
+ 231              	.L9:
+  97:.././hal/sam3u1c/circbuffer.c **** }
+ 232              	 .loc 1 97 0
+ 233 0040 1846     	 mov r0,r3
+ 234 0042 1437     	 adds r7,r7,#20
+ 235              	.LCFI15:
+ 236              	 .cfi_def_cfa_offset 4
+ 237 0044 BD46     	 mov sp,r7
+ 238              	.LCFI16:
+ 239              	 .cfi_def_cfa_register 13
+ 240              	 
+ 241 0046 80BC     	 pop {r7}
+ 242              	.LCFI17:
+ 243              	 .cfi_restore 7
+ 244              	 .cfi_def_cfa_offset 0
+ 245 0048 7047     	 bx lr
+ 246              	 .cfi_endproc
+ 247              	.LFE2:
+ 249              	 .section .text.circ_buf_has_char,"ax",%progbits
+ 250              	 .align 1
+ 251              	 .global circ_buf_has_char
+ 252              	 .syntax unified
+ 253              	 .thumb
+ 254              	 .thumb_func
+ 255              	 .fpu softvfp
+ 257              	circ_buf_has_char:
+ 258              	.LFB3:
+  98:.././hal/sam3u1c/circbuffer.c **** 
+  99:.././hal/sam3u1c/circbuffer.c **** /*
+ 100:.././hal/sam3u1c/circbuffer.c ****     @brief This will determine if there is a character in the circular buffer.
+ 101:.././hal/sam3u1c/circbuffer.c **** 
+ 102:.././hal/sam3u1c/circbuffer.c ****     @param cbuf Pointer to structure that contains data.
+ 103:.././hal/sam3u1c/circbuffer.c **** 
+ 104:.././hal/sam3u1c/circbuffer.c ****     @retval true if buffer contains data.
+ 105:.././hal/sam3u1c/circbuffer.c ****     @retval false if buffer is empty.
+ 106:.././hal/sam3u1c/circbuffer.c **** */
+ 107:.././hal/sam3u1c/circbuffer.c **** bool circ_buf_has_char(tcirc_buf *cbuf)
+ 108:.././hal/sam3u1c/circbuffer.c **** {
+ 259              	 .loc 1 108 0
+ 260              	 .cfi_startproc
+ 261              	 
+ 262              	 
+ 263              	 
+ 264 0000 80B4     	 push {r7}
+ 265              	.LCFI18:
+ 266              	 .cfi_def_cfa_offset 4
+ 267              	 .cfi_offset 7,-4
+ 268 0002 85B0     	 sub sp,sp,#20
+ 269              	.LCFI19:
+ 270              	 .cfi_def_cfa_offset 24
+ 271 0004 00AF     	 add r7,sp,#0
+ 272              	.LCFI20:
+ 273              	 .cfi_def_cfa_register 7
+ 274 0006 7860     	 str r0,[r7,#4]
+ 109:.././hal/sam3u1c/circbuffer.c ****     // Return true if buffer empty
+ 110:.././hal/sam3u1c/circbuffer.c ****     unsigned int head = cbuf->head;
+ 275              	 .loc 1 110 0
+ 276 0008 7B68     	 ldr r3,[r7,#4]
+ 277 000a 1B68     	 ldr r3,[r3]
+ 278 000c FB60     	 str r3,[r7,#12]
+ 111:.././hal/sam3u1c/circbuffer.c ****     return (head != cbuf->tail);
+ 279              	 .loc 1 111 0
+ 280 000e 7B68     	 ldr r3,[r7,#4]
+ 281 0010 5A68     	 ldr r2,[r3,#4]
+ 282 0012 FB68     	 ldr r3,[r7,#12]
+ 283 0014 9A42     	 cmp r2,r3
+ 284 0016 14BF     	 ite ne
+ 285 0018 0123     	 movne r3,#1
+ 286 001a 0023     	 moveq r3,#0
+ 287 001c DBB2     	 uxtb r3,r3
+ 112:.././hal/sam3u1c/circbuffer.c **** }
+ 288              	 .loc 1 112 0
+ 289 001e 1846     	 mov r0,r3
+ 290 0020 1437     	 adds r7,r7,#20
+ 291              	.LCFI21:
+ 292              	 .cfi_def_cfa_offset 4
+ 293 0022 BD46     	 mov sp,r7
+ 294              	.LCFI22:
+ 295              	 .cfi_def_cfa_register 13
+ 296              	 
+ 297 0024 80BC     	 pop {r7}
+ 298              	.LCFI23:
+ 299              	 .cfi_restore 7
+ 300              	 .cfi_def_cfa_offset 0
+ 301 0026 7047     	 bx lr
+ 302              	 .cfi_endproc
+ 303              	.LFE3:
+ 305              	 .section .text.circ_buf_count,"ax",%progbits
+ 306              	 .align 1
+ 307              	 .global circ_buf_count
+ 308              	 .syntax unified
+ 309              	 .thumb
+ 310              	 .thumb_func
+ 311              	 .fpu softvfp
+ 313              	circ_buf_count:
+ 314              	.LFB4:
+ 113:.././hal/sam3u1c/circbuffer.c **** 
+ 114:.././hal/sam3u1c/circbuffer.c **** /*
+ 115:.././hal/sam3u1c/circbuffer.c ****    @brief Returns the number of stored chars in the circular buffer.
+ 116:.././hal/sam3u1c/circbuffer.c **** 
+ 117:.././hal/sam3u1c/circbuffer.c ****    @param cbuf is the circular buffer to query
+ 118:.././hal/sam3u1c/circbuffer.c **** 
+ 119:.././hal/sam3u1c/circbuffer.c ****    @return count Number of chars in buffer.
+ 120:.././hal/sam3u1c/circbuffer.c ****  */
+ 121:.././hal/sam3u1c/circbuffer.c **** unsigned int circ_buf_count(tcirc_buf *cbuf)
+ 122:.././hal/sam3u1c/circbuffer.c **** {
+ 315              	 .loc 1 122 0
+ 316              	 .cfi_startproc
+ 317              	 
+ 318              	 
+ 319              	 
+ 320 0000 80B4     	 push {r7}
+ 321              	.LCFI24:
+ 322              	 .cfi_def_cfa_offset 4
+ 323              	 .cfi_offset 7,-4
+ 324 0002 85B0     	 sub sp,sp,#20
+ 325              	.LCFI25:
+ 326              	 .cfi_def_cfa_offset 24
+ 327 0004 00AF     	 add r7,sp,#0
+ 328              	.LCFI26:
+ 329              	 .cfi_def_cfa_register 7
+ 330 0006 7860     	 str r0,[r7,#4]
+ 123:.././hal/sam3u1c/circbuffer.c ****     int count;
+ 124:.././hal/sam3u1c/circbuffer.c **** 
+ 125:.././hal/sam3u1c/circbuffer.c ****     count = cbuf->head;
+ 331              	 .loc 1 125 0
+ 332 0008 7B68     	 ldr r3,[r7,#4]
+ 333 000a 1B68     	 ldr r3,[r3]
+ 334 000c FB60     	 str r3,[r7,#12]
+ 126:.././hal/sam3u1c/circbuffer.c ****     count -= cbuf->tail;
+ 335              	 .loc 1 126 0
+ 336 000e 7B68     	 ldr r3,[r7,#4]
+ 337 0010 5B68     	 ldr r3,[r3,#4]
+ 338 0012 FA68     	 ldr r2,[r7,#12]
+ 339 0014 D31A     	 subs r3,r2,r3
+ 340 0016 FB60     	 str r3,[r7,#12]
+ 127:.././hal/sam3u1c/circbuffer.c ****     if (count < 0)
+ 341              	 .loc 1 127 0
+ 342 0018 FB68     	 ldr r3,[r7,#12]
+ 343 001a 002B     	 cmp r3,#0
+ 344 001c 02DA     	 bge .L14
+ 128:.././hal/sam3u1c/circbuffer.c ****         count += CIRCBUFSIZE;
+ 345              	 .loc 1 128 0
+ 346 001e FB68     	 ldr r3,[r7,#12]
+ 347 0020 8033     	 adds r3,r3,#128
+ 348 0022 FB60     	 str r3,[r7,#12]
+ 349              	.L14:
+ 129:.././hal/sam3u1c/circbuffer.c ****     return (unsigned int)count;
+ 350              	 .loc 1 129 0
+ 351 0024 FB68     	 ldr r3,[r7,#12]
+ 130:.././hal/sam3u1c/circbuffer.c **** }
+ 352              	 .loc 1 130 0
+ 353 0026 1846     	 mov r0,r3
+ 354 0028 1437     	 adds r7,r7,#20
+ 355              	.LCFI27:
+ 356              	 .cfi_def_cfa_offset 4
+ 357 002a BD46     	 mov sp,r7
+ 358              	.LCFI28:
+ 359              	 .cfi_def_cfa_register 13
+ 360              	 
+ 361 002c 80BC     	 pop {r7}
+ 362              	.LCFI29:
+ 363              	 .cfi_restore 7
+ 364              	 .cfi_def_cfa_offset 0
+ 365 002e 7047     	 bx lr
+ 366              	 .cfi_endproc
+ 367              	.LFE4:
+ 369              	 .text
+ 370              	.Letext0:
+ 371              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 372              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 373              	 .file 4 ".././hal/sam3u1c/inc/circbuffer.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 circbuffer.c
+    {standard input}:16     .text.init_circ_buf:00000000 $t
+    {standard input}:23     .text.init_circ_buf:00000000 init_circ_buf
+    {standard input}:70     .text.add_to_circ_buf:00000000 $t
+    {standard input}:77     .text.add_to_circ_buf:00000000 add_to_circ_buf
+    {standard input}:167    .text.get_from_circ_buf:00000000 $t
+    {standard input}:174    .text.get_from_circ_buf:00000000 get_from_circ_buf
+    {standard input}:250    .text.circ_buf_has_char:00000000 $t
+    {standard input}:257    .text.circ_buf_has_char:00000000 circ_buf_has_char
+    {standard input}:306    .text.circ_buf_count:00000000 $t
+    {standard input}:313    .text.circ_buf_count:00000000 circ_buf_count
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.circbuffer.h.37.0d38773ce8409187f466a90500c0dcd0
+                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+
+NO UNDEFINED SYMBOLS

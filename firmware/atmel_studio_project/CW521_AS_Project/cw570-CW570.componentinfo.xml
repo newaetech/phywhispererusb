@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Store xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="AtmelPackComponentManagement">
+	<ProjectComponents>
+		<ProjectComponent z:Id="i1" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+			<CApiVersion></CApiVersion>
+			<CBundle></CBundle>
+			<CClass>CMSIS</CClass>
+			<CGroup>CORE</CGroup>
+			<CSub></CSub>
+			<CVariant></CVariant>
+			<CVendor>ARM</CVendor>
+			<CVersion>5.0.1</CVersion>
+			<DefaultRepoPath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs</DefaultRepoPath>
+			<DependentComponents xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+			<Description></Description>
+			<Files xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Documentation\Core\html\index.html</AbsolutePath>
+					<Attribute></Attribute>
+					<Category>doc</Category>
+					<Condition></Condition>
+					<FileContentHash>Cq3aNYyqgx20hdPs+CNSlQ==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>CMSIS/Documentation/Core/html/index.html</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\arm\cmsis\5.0.1\CMSIS\Include\</AbsolutePath>
+					<Attribute></Attribute>
+					<Category>include</Category>
+					<Condition></Condition>
+					<FileContentHash i:nil="true" />
+					<FileVersion></FileVersion>
+					<Name>CMSIS/Include/</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+			</Files>
+			<PackName>CMSIS</PackName>
+			<PackPath>C:/Program Files (x86)/Atmel/Studio/7.0/Packs/arm/cmsis/5.0.1/ARM.CMSIS.pdsc</PackPath>
+			<PackVersion>5.0.1</PackVersion>
+			<PresentInProject>true</PresentInProject>
+			<ReferenceConditionId>ARMv6_7_8-M Device</ReferenceConditionId>
+			<RteComponents xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:string></d4p1:string>
+			</RteComponents>
+			<Status>Resolved</Status>
+			<VersionMode>Fixed</VersionMode>
+			<IsComponentInAtProject>true</IsComponentInAtProject>
+		</ProjectComponent>
+		<ProjectComponent z:Id="i2" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+			<CApiVersion></CApiVersion>
+			<CBundle></CBundle>
+			<CClass>Device</CClass>
+			<CGroup>Startup</CGroup>
+			<CSub></CSub>
+			<CVariant></CVariant>
+			<CVendor>Atmel</CVendor>
+			<CVersion>1.0.0</CVersion>
+			<DefaultRepoPath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs</DefaultRepoPath>
+			<DependentComponents xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:anyType z:Ref="i1" />
+			</DependentComponents>
+			<Description></Description>
+			<Files xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\include</AbsolutePath>
+					<Attribute></Attribute>
+					<Category>include</Category>
+					<Condition>C</Condition>
+					<FileContentHash i:nil="true" />
+					<FileVersion></FileVersion>
+					<Name>include</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\include\sam.h</AbsolutePath>
+					<Attribute></Attribute>
+					<Category>header</Category>
+					<Condition>C</Condition>
+					<FileContentHash>lihBZ3CaecS1NiSV1clVmg==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>include/sam.h</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\templates\main.c</AbsolutePath>
+					<Attribute>template</Attribute>
+					<Category>source</Category>
+					<Condition>C Exe</Condition>
+					<FileContentHash>K0QPuVQ6ejmZOZiNJu3f7w==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>templates/main.c</Name>
+					<SelectString>Main file (.c)</SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\templates\main.cpp</AbsolutePath>
+					<Attribute>template</Attribute>
+					<Category>source</Category>
+					<Condition>C Exe</Condition>
+					<FileContentHash>nU+WlKcYaWh0AWBBS+WVpA==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>templates/main.cpp</Name>
+					<SelectString>Main file (.cpp)</SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\gcc\system_sam3u.c</AbsolutePath>
+					<Attribute>config</Attribute>
+					<Category>source</Category>
+					<Condition>GCC Exe</Condition>
+					<FileContentHash>nXKYpm3aqoqIm1nemmxZag==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>gcc/system_sam3u.c</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\gcc\gcc\startup_sam3u.c</AbsolutePath>
+					<Attribute>config</Attribute>
+					<Category>source</Category>
+					<Condition>GCC Exe</Condition>
+					<FileContentHash>IOYzACkK0wOt54tZMgLpkQ==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>gcc/gcc/startup_sam3u.c</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\gcc\gcc\sam3u4e_flash.ld</AbsolutePath>
+					<Attribute>config</Attribute>
+					<Category>linkerScript</Category>
+					<Condition>GCC Exe</Condition>
+					<FileContentHash>o04I87T1HcmdRbttzpaq3A==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>gcc/gcc/sam3u4e_flash.ld</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\gcc\gcc\sam3u4e_sram.ld</AbsolutePath>
+					<Attribute>config</Attribute>
+					<Category>other</Category>
+					<Condition>GCC Exe</Condition>
+					<FileContentHash>QPLO4iUt7IGoJlejYsn2cw==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>gcc/gcc/sam3u4e_sram.ld</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\gcc\gcc\sam3u_flash.ld</AbsolutePath>
+					<Attribute>config</Attribute>
+					<Category>other</Category>
+					<Condition>GCC Exe</Condition>
+					<FileContentHash>czGbovk6f1LTVnu4XUL9FQ==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>gcc/gcc/sam3u_flash.ld</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+				<d4p1:anyType i:type="FileInfo">
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3U_DFP\1.0.49\gcc\gcc\sam3u_sram.ld</AbsolutePath>
+					<Attribute>config</Attribute>
+					<Category>other</Category>
+					<Condition>GCC Exe</Condition>
+					<FileContentHash>i4E3XYkonwRIB46d42R6Ow==</FileContentHash>
+					<FileVersion></FileVersion>
+					<Name>gcc/gcc/sam3u_sram.ld</Name>
+					<SelectString></SelectString>
+					<SourcePath></SourcePath>
+				</d4p1:anyType>
+			</Files>
+			<PackName>SAM3U_DFP</PackName>
+			<PackPath>C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/SAM3U_DFP/1.0.49/Atmel.SAM3U_DFP.pdsc</PackPath>
+			<PackVersion>1.0.49</PackVersion>
+			<PresentInProject>true</PresentInProject>
+			<ReferenceConditionId>ATSAM3U4E</ReferenceConditionId>
+			<RteComponents xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:string></d4p1:string>
+			</RteComponents>
+			<Status>Resolved</Status>
+			<VersionMode>Fixed</VersionMode>
+			<IsComponentInAtProject>true</IsComponentInAtProject>
+		</ProjectComponent>
+	</ProjectComponents>
+</Store>
