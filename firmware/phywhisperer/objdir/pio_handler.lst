@@ -1287,14 +1287,14 @@
   41 0008 FB71     	 strb r3,[r7,#7]
 1248:.././hal/sam3u1c/inc/core_cm3.h ****   NVIC->ISER[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* enable interrupt */
   42              	 .loc 1 1248 0
-  43 000a 0849     	 ldr r1,.L2
-  44 000c 97F90730 	 ldrsb r3,[r7,#7]
-  45 0010 5B09     	 lsrs r3,r3,#5
-  46 0012 FA79     	 ldrb r2,[r7,#7]
-  47 0014 02F01F02 	 and r2,r2,#31
-  48 0018 0120     	 movs r0,#1
-  49 001a 00FA02F2 	 lsl r2,r0,r2
-  50 001e 41F82320 	 str r2,[r1,r3,lsl#2]
+  43 000a FB79     	 ldrb r3,[r7,#7]
+  44 000c 03F01F03 	 and r3,r3,#31
+  45 0010 0122     	 movs r2,#1
+  46 0012 02FA03F1 	 lsl r1,r2,r3
+  47 0016 054A     	 ldr r2,.L2
+  48 0018 97F90730 	 ldrsb r3,[r7,#7]
+  49 001c 5B09     	 lsrs r3,r3,#5
+  50 001e 42F82310 	 str r1,[r2,r3,lsl#2]
 1249:.././hal/sam3u1c/inc/core_cm3.h **** }
   51              	 .loc 1 1249 0
   52 0022 00BF     	 nop
@@ -1353,15 +1353,15 @@
   97 0008 FB71     	 strb r3,[r7,#7]
 1260:.././hal/sam3u1c/inc/core_cm3.h ****   NVIC->ICER[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* disable interrupt */
   98              	 .loc 1 1260 0
-  99 000a 0949     	 ldr r1,.L5
- 100 000c 97F90730 	 ldrsb r3,[r7,#7]
- 101 0010 5B09     	 lsrs r3,r3,#5
- 102 0012 FA79     	 ldrb r2,[r7,#7]
- 103 0014 02F01F02 	 and r2,r2,#31
- 104 0018 0120     	 movs r0,#1
- 105 001a 00FA02F2 	 lsl r2,r0,r2
+  99 000a FB79     	 ldrb r3,[r7,#7]
+ 100 000c 03F01F03 	 and r3,r3,#31
+ 101 0010 0122     	 movs r2,#1
+ 102 0012 02FA03F1 	 lsl r1,r2,r3
+ 103 0016 064A     	 ldr r2,.L5
+ 104 0018 97F90730 	 ldrsb r3,[r7,#7]
+ 105 001c 5B09     	 lsrs r3,r3,#5
  106 001e 2033     	 adds r3,r3,#32
- 107 0020 41F82320 	 str r2,[r1,r3,lsl#2]
+ 107 0020 42F82310 	 str r1,[r2,r3,lsl#2]
 1261:.././hal/sam3u1c/inc/core_cm3.h **** }
  108              	 .loc 1 1261 0
  109 0024 00BF     	 nop
@@ -1448,15 +1448,15 @@
  154 0008 FB71     	 strb r3,[r7,#7]
 1300:.././hal/sam3u1c/inc/core_cm3.h ****   NVIC->ICPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrup
  155              	 .loc 1 1300 0
- 156 000a 0949     	 ldr r1,.L8
- 157 000c 97F90730 	 ldrsb r3,[r7,#7]
- 158 0010 5B09     	 lsrs r3,r3,#5
- 159 0012 FA79     	 ldrb r2,[r7,#7]
- 160 0014 02F01F02 	 and r2,r2,#31
- 161 0018 0120     	 movs r0,#1
- 162 001a 00FA02F2 	 lsl r2,r0,r2
+ 156 000a FB79     	 ldrb r3,[r7,#7]
+ 157 000c 03F01F03 	 and r3,r3,#31
+ 158 0010 0122     	 movs r2,#1
+ 159 0012 02FA03F1 	 lsl r1,r2,r3
+ 160 0016 064A     	 ldr r2,.L8
+ 161 0018 97F90730 	 ldrsb r3,[r7,#7]
+ 162 001c 5B09     	 lsrs r3,r3,#5
  163 001e 6033     	 adds r3,r3,#96
- 164 0020 41F82320 	 str r2,[r1,r3,lsl#2]
+ 164 0020 42F82310 	 str r1,[r2,r3,lsl#2]
 1301:.././hal/sam3u1c/inc/core_cm3.h **** }
  165              	 .loc 1 1301 0
  166 0024 00BF     	 nop
@@ -1539,12 +1539,12 @@
  216 0012 0BDA     	 bge .L11
 1331:.././hal/sam3u1c/inc/core_cm3.h ****     SCB->SHP[((uint32_t)(IRQn) & 0xF)-4] = ((priority << (8 - __NVIC_PRIO_BITS)) & 0xff); } /* set 
  217              	 .loc 1 1331 0
- 218 0014 0D49     	 ldr r1,.L14
- 219 0016 FB79     	 ldrb r3,[r7,#7]
- 220 0018 03F00F03 	 and r3,r3,#15
- 221 001c 043B     	 subs r3,r3,#4
- 222 001e 3A68     	 ldr r2,[r7]
- 223 0020 D2B2     	 uxtb r2,r2
+ 218 0014 3B68     	 ldr r3,[r7]
+ 219 0016 DAB2     	 uxtb r2,r3
+ 220 0018 0C49     	 ldr r1,.L14
+ 221 001a FB79     	 ldrb r3,[r7,#7]
+ 222 001c 03F00F03 	 and r3,r3,#15
+ 223 0020 043B     	 subs r3,r3,#4
  224 0022 1201     	 lsls r2,r2,#4
  225 0024 D2B2     	 uxtb r2,r2
  226 0026 0B44     	 add r3,r3,r1
@@ -1557,10 +1557,10 @@
  230              	.L11:
 1333:.././hal/sam3u1c/inc/core_cm3.h **** }
  231              	 .loc 1 1333 0
- 232 002c 0849     	 ldr r1,.L14+4
- 233 002e 97F90730 	 ldrsb r3,[r7,#7]
- 234 0032 3A68     	 ldr r2,[r7]
- 235 0034 D2B2     	 uxtb r2,r2
+ 232 002c 3B68     	 ldr r3,[r7]
+ 233 002e DAB2     	 uxtb r2,r3
+ 234 0030 0749     	 ldr r1,.L14+4
+ 235 0032 97F90730 	 ldrsb r3,[r7,#7]
  236 0036 1201     	 lsls r2,r2,#4
  237 0038 D2B2     	 uxtb r2,r2
  238 003a 0B44     	 add r3,r3,r1
@@ -1614,7 +1614,7 @@
  291              	 .thumb_func
  292              	 .fpu softvfp
  294              	pio_handler_process:
- 295              	.LFB67:
+ 295              	.LFB69:
  296              	 .file 2 ".././hal/sam3u1c/pio_handler.c"
    1:.././hal/sam3u1c/pio_handler.c **** /**
    2:.././hal/sam3u1c/pio_handler.c ****  * \file
@@ -1764,8 +1764,8 @@
  341 002e BB68     	 ldr r3,[r7,#8]
  342 0030 1B01     	 lsls r3,r3,#4
  343 0032 1344     	 add r3,r3,r2
- 344 0034 1A68     	 ldr r2,[r3]
- 345 0036 3B68     	 ldr r3,[r7]
+ 344 0034 1B68     	 ldr r3,[r3]
+ 345 0036 3A68     	 ldr r2,[r7]
  346 0038 9A42     	 cmp r2,r3
  347 003a 26D1     	 bne .L19
  102:.././hal/sam3u1c/pio_handler.c **** 				/* Source has PIOs whose statuses have changed */
@@ -1873,7 +1873,7 @@
  425 00ac 00000000 	 .word pio_get_interrupt_mask
  426 00b0 00000000 	 .word gs_interrupt_sources
  427              	 .cfi_endproc
- 428              	.LFE67:
+ 428              	.LFE69:
  430              	 .section .text.pio_handler_set,"ax",%progbits
  431              	 .align 1
  432              	 .global pio_handler_set
@@ -1882,7 +1882,7 @@
  435              	 .thumb_func
  436              	 .fpu softvfp
  438              	pio_handler_set:
- 439              	.LFB68:
+ 439              	.LFB70:
  125:.././hal/sam3u1c/pio_handler.c **** 
  126:.././hal/sam3u1c/pio_handler.c **** /**
  127:.././hal/sam3u1c/pio_handler.c ****  * \brief Set an interrupt handler for the provided pins.
@@ -2002,7 +2002,7 @@
  521 0060 00000000 	 .word gs_interrupt_sources
  522 0064 00000000 	 .word pio_configure_interrupt
  523              	 .cfi_endproc
- 524              	.LFE68:
+ 524              	.LFE70:
  526              	 .section .text.pio_handler_set_pin,"ax",%progbits
  527              	 .align 1
  528              	 .global pio_handler_set_pin
@@ -2011,7 +2011,7 @@
  531              	 .thumb_func
  532              	 .fpu softvfp
  534              	pio_handler_set_pin:
- 535              	.LFB69:
+ 535              	.LFB71:
  160:.././hal/sam3u1c/pio_handler.c **** 
  161:.././hal/sam3u1c/pio_handler.c **** #if (SAM3S || SAM4S || SAM4E)
  162:.././hal/sam3u1c/pio_handler.c **** /**
@@ -2116,7 +2116,7 @@
  599 0048 00000000 	 .word pio_get_pin_group_mask
  600 004c 00000000 	 .word pio_handler_set
  601              	 .cfi_endproc
- 602              	.LFE69:
+ 602              	.LFE71:
  604              	 .section .text.PIOA_Handler,"ax",%progbits
  605              	 .align 1
  606              	 .global PIOA_Handler
@@ -2125,7 +2125,7 @@
  609              	 .thumb_func
  610              	 .fpu softvfp
  612              	PIOA_Handler:
- 613              	.LFB70:
+ 613              	.LFB72:
  198:.././hal/sam3u1c/pio_handler.c **** 
  199:.././hal/sam3u1c/pio_handler.c **** /**
  200:.././hal/sam3u1c/pio_handler.c ****  * \brief Parallel IO Controller A interrupt handler.
@@ -2162,7 +2162,7 @@
  638 0010 000C0E40 	 .word 1074662400
  639 0014 00000000 	 .word pio_handler_process
  640              	 .cfi_endproc
- 641              	.LFE70:
+ 641              	.LFE72:
  643              	 .section .text.PIOB_Handler,"ax",%progbits
  644              	 .align 1
  645              	 .global PIOB_Handler
@@ -2171,7 +2171,7 @@
  648              	 .thumb_func
  649              	 .fpu softvfp
  651              	PIOB_Handler:
- 652              	.LFB71:
+ 652              	.LFB73:
  207:.././hal/sam3u1c/pio_handler.c **** #endif
  208:.././hal/sam3u1c/pio_handler.c **** 
  209:.././hal/sam3u1c/pio_handler.c **** #ifdef ID_PIOB
@@ -2210,7 +2210,7 @@
  677 0010 000E0E40 	 .word 1074662912
  678 0014 00000000 	 .word pio_handler_process
  679              	 .cfi_endproc
- 680              	.LFE71:
+ 680              	.LFE73:
  682              	 .section .text.pio_handler_set_priority,"ax",%progbits
  683              	 .align 1
  684              	 .global pio_handler_set_priority
@@ -2219,7 +2219,7 @@
  687              	 .thumb_func
  688              	 .fpu softvfp
  690              	pio_handler_set_priority:
- 691              	.LFB72:
+ 691              	.LFB74:
  218:.././hal/sam3u1c/pio_handler.c **** #endif
  219:.././hal/sam3u1c/pio_handler.c **** 
  220:.././hal/sam3u1c/pio_handler.c **** #ifdef ID_PIOC
@@ -2378,19 +2378,19 @@
  781 007c 00000000 	 .word NVIC_EnableIRQ
  782 0080 00000000 	 .word pio_enable_interrupt
  783              	 .cfi_endproc
- 784              	.LFE72:
+ 784              	.LFE74:
  786              	 .text
  787              	.Letext0:
- 788              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 789              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 788              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 789              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
  790              	 .file 5 ".././hal/sam3u1c/inc/sam3u1c.h"
  791              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
  792              	 .file 7 ".././hal/sam3u1c/inc/component/component_pio.h"
- 793              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 794              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 795              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 796              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 797              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 793              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 794              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 795              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 796              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 797              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
  798              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
  799              	 .file 14 ".././hal/sam3u1c/inc/pio.h"
 DEFINED SYMBOLS
@@ -2433,15 +2433,14 @@ DEFINED SYMBOLS
     {standard input}:683    .text.pio_handler_set_priority:00000000 $t
     {standard input}:690    .text.pio_handler_set_priority:00000000 pio_handler_set_priority
     {standard input}:775    .text.pio_handler_set_priority:00000064 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -2507,27 +2506,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

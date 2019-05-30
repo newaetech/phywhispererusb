@@ -27,7 +27,7 @@
   31              	 .thumb_func
   32              	 .fpu softvfp
   34              	usart_set_async_baudrate:
-  35              	.LFB67:
+  35              	.LFB69:
   36              	 .file 1 ".././hal/sam3u1c/usart.c"
    1:.././hal/sam3u1c/usart.c **** /**
    2:.././hal/sam3u1c/usart.c ****  * \file
@@ -176,10 +176,10 @@
  127:.././hal/sam3u1c/usart.c **** 	if (ul_mck >= HIGH_FRQ_SAMPLE_DIV * baudrate) {
   55              	 .loc 1 127 0
   56 000c BB68     	 ldr r3,[r7,#8]
-  57 000e 1A01     	 lsls r2,r3,#4
-  58 0010 7B68     	 ldr r3,[r7,#4]
+  57 000e 1B01     	 lsls r3,r3,#4
+  58 0010 7A68     	 ldr r2,[r7,#4]
   59 0012 9A42     	 cmp r2,r3
-  60 0014 02D8     	 bhi .L2
+  60 0014 02D3     	 bcc .L2
  128:.././hal/sam3u1c/usart.c **** 		over = HIGH_FRQ_SAMPLE_DIV;
   61              	 .loc 1 128 0
   62 0016 1023     	 movs r3,#16
@@ -282,7 +282,7 @@
  137              	 .cfi_def_cfa_offset 0
  138 0086 7047     	 bx lr
  139              	 .cfi_endproc
- 140              	.LFE67:
+ 140              	.LFE69:
  142              	 .section .text.usart_set_sync_master_baudrate,"ax",%progbits
  143              	 .align 1
  144              	 .syntax unified
@@ -290,7 +290,7 @@
  146              	 .thumb_func
  147              	 .fpu softvfp
  149              	usart_set_sync_master_baudrate:
- 150              	.LFB68:
+ 150              	.LFB70:
  151:.././hal/sam3u1c/usart.c **** 
  152:.././hal/sam3u1c/usart.c **** /**
  153:.././hal/sam3u1c/usart.c ****  * \brief Calculate a clock divider for the USART synchronous master modes
@@ -396,7 +396,7 @@
  218              	 .cfi_def_cfa_offset 0
  219 004e 7047     	 bx lr
  220              	 .cfi_endproc
- 221              	.LFE68:
+ 221              	.LFE70:
  223              	 .section .text.usart_set_sync_slave_baudrate,"ax",%progbits
  224              	 .align 1
  225              	 .syntax unified
@@ -404,7 +404,7 @@
  227              	 .thumb_func
  228              	 .fpu softvfp
  230              	usart_set_sync_slave_baudrate:
- 231              	.LFB69:
+ 231              	.LFB71:
  185:.././hal/sam3u1c/usart.c **** 
  186:.././hal/sam3u1c/usart.c **** /**
  187:.././hal/sam3u1c/usart.c ****  * \brief Select the SCK pin as the source of baud rate for the USART
@@ -457,7 +457,7 @@
  268              	 .cfi_def_cfa_offset 0
  269 001c 7047     	 bx lr
  270              	 .cfi_endproc
- 271              	.LFE69:
+ 271              	.LFE71:
  273              	 .section .text.usart_set_iso7816_clock,"ax",%progbits
  274              	 .align 1
  275              	 .syntax unified
@@ -465,7 +465,7 @@
  277              	 .thumb_func
  278              	 .fpu softvfp
  280              	usart_set_iso7816_clock:
- 281              	.LFB70:
+ 281              	.LFB72:
  197:.././hal/sam3u1c/usart.c **** 
  198:.././hal/sam3u1c/usart.c **** 
  199:.././hal/sam3u1c/usart.c **** /**
@@ -574,7 +574,7 @@
  350              	 .cfi_def_cfa_offset 0
  351 0052 7047     	 bx lr
  352              	 .cfi_endproc
- 353              	.LFE70:
+ 353              	.LFE72:
  355              	 .section .text.usart_set_spi_master_baudrate,"ax",%progbits
  356              	 .align 1
  357              	 .syntax unified
@@ -582,7 +582,7 @@
  359              	 .thumb_func
  360              	 .fpu softvfp
  362              	usart_set_spi_master_baudrate:
- 363              	.LFB71:
+ 363              	.LFB73:
  233:.././hal/sam3u1c/usart.c **** 
  234:.././hal/sam3u1c/usart.c **** /**
  235:.././hal/sam3u1c/usart.c ****  * \brief Calculate a clock divider (\e CD) for the USART SPI master mode to
@@ -676,7 +676,7 @@
  422              	 .cfi_def_cfa_offset 0
  423 003e 7047     	 bx lr
  424              	 .cfi_endproc
- 425              	.LFE71:
+ 425              	.LFE73:
  427              	 .section .text.usart_set_spi_slave_baudrate,"ax",%progbits
  428              	 .align 1
  429              	 .syntax unified
@@ -684,7 +684,7 @@
  431              	 .thumb_func
  432              	 .fpu softvfp
  434              	usart_set_spi_slave_baudrate:
- 435              	.LFB72:
+ 435              	.LFB74:
  265:.././hal/sam3u1c/usart.c **** 
  266:.././hal/sam3u1c/usart.c **** /**
  267:.././hal/sam3u1c/usart.c ****  * \brief Select the SCK pin as the source of baudrate for the USART SPI slave
@@ -740,7 +740,7 @@
  476              	 .cfi_def_cfa_offset 0
  477 0028 7047     	 bx lr
  478              	 .cfi_endproc
- 479              	.LFE72:
+ 479              	.LFE74:
  481              	 .section .text.usart_reset,"ax",%progbits
  482              	 .align 1
  483              	 .global usart_reset
@@ -749,7 +749,7 @@
  486              	 .thumb_func
  487              	 .fpu softvfp
  489              	usart_reset:
- 490              	.LFB73:
+ 490              	.LFB75:
  277:.././hal/sam3u1c/usart.c **** 
  278:.././hal/sam3u1c/usart.c **** /**
  279:.././hal/sam3u1c/usart.c ****  * \brief Reset the USART and disable TX and RX.
@@ -855,7 +855,7 @@
  566 0058 00000000 	 .word usart_drive_RTS_pin_high
  567 005c 00000000 	 .word usart_drive_DTR_pin_high
  568              	 .cfi_endproc
- 569              	.LFE73:
+ 569              	.LFE75:
  571              	 .section .text.usart_init_rs232,"ax",%progbits
  572              	 .align 1
  573              	 .global usart_init_rs232
@@ -864,7 +864,7 @@
  576              	 .thumb_func
  577              	 .fpu softvfp
  579              	usart_init_rs232:
- 580              	.LFB74:
+ 580              	.LFB76:
  304:.././hal/sam3u1c/usart.c **** 
  305:.././hal/sam3u1c/usart.c **** /**
  306:.././hal/sam3u1c/usart.c ****  * \brief Configure USART to work in RS232 mode.
@@ -1005,10 +1005,10 @@
  677 0076 00BF     	 .align 2
  678              	.L29:
  679 0078 00000000 	 .word usart_reset
- 680 007c 00000000 	 .word ul_reg_val.7092
+ 680 007c 00000000 	 .word ul_reg_val.7114
  681 0080 00000000 	 .word usart_set_async_baudrate
  682              	 .cfi_endproc
- 683              	.LFE74:
+ 683              	.LFE76:
  685              	 .section .text.usart_init_hw_handshaking,"ax",%progbits
  686              	 .align 1
  687              	 .global usart_init_hw_handshaking
@@ -1017,7 +1017,7 @@
  690              	 .thumb_func
  691              	 .fpu softvfp
  693              	usart_init_hw_handshaking:
- 694              	.LFB75:
+ 694              	.LFB77:
  343:.././hal/sam3u1c/usart.c **** 
  344:.././hal/sam3u1c/usart.c **** /**
  345:.././hal/sam3u1c/usart.c ****  * \brief Configure USART to work in hardware handshaking mode.
@@ -1102,7 +1102,7 @@
  749              	.L34:
  750 003c 00000000 	 .word usart_init_rs232
  751              	 .cfi_endproc
- 752              	.LFE75:
+ 752              	.LFE77:
  754              	 .section .text.usart_init_modem,"ax",%progbits
  755              	 .align 1
  756              	 .global usart_init_modem
@@ -1111,7 +1111,7 @@
  759              	 .thumb_func
  760              	 .fpu softvfp
  762              	usart_init_modem:
- 763              	.LFB76:
+ 763              	.LFB78:
  370:.././hal/sam3u1c/usart.c **** 
  371:.././hal/sam3u1c/usart.c **** #if (SAM3S || SAM4S || SAM3U || SAM4L || SAM4E)
  372:.././hal/sam3u1c/usart.c **** 
@@ -1224,7 +1224,7 @@
  828 0048 00000940 	 .word 1074331648
  829 004c 00000000 	 .word usart_init_rs232
  830              	 .cfi_endproc
- 831              	.LFE76:
+ 831              	.LFE78:
  833              	 .section .text.usart_init_sync_master,"ax",%progbits
  834              	 .align 1
  835              	 .global usart_init_sync_master
@@ -1233,7 +1233,7 @@
  838              	 .thumb_func
  839              	 .fpu softvfp
  841              	usart_init_sync_master:
- 842              	.LFB77:
+ 842              	.LFB79:
  415:.././hal/sam3u1c/usart.c **** #endif
  416:.././hal/sam3u1c/usart.c **** 
  417:.././hal/sam3u1c/usart.c **** /**
@@ -1375,10 +1375,10 @@
  940 007a 00BF     	 .align 2
  941              	.L46:
  942 007c 00000000 	 .word usart_reset
- 943 0080 00000000 	 .word ul_reg_val.7108
+ 943 0080 00000000 	 .word ul_reg_val.7130
  944 0084 00000000 	 .word usart_set_sync_master_baudrate
  945              	 .cfi_endproc
- 946              	.LFE77:
+ 946              	.LFE79:
  948              	 .section .text.usart_init_sync_slave,"ax",%progbits
  949              	 .align 1
  950              	 .global usart_init_sync_slave
@@ -1387,7 +1387,7 @@
  953              	 .thumb_func
  954              	 .fpu softvfp
  956              	usart_init_sync_slave:
- 957              	.LFB78:
+ 957              	.LFB80:
  454:.././hal/sam3u1c/usart.c **** 
  455:.././hal/sam3u1c/usart.c **** /**
  456:.././hal/sam3u1c/usart.c ****  * \brief Configure USART to work in SYNC mode and act as a slave.
@@ -1518,10 +1518,10 @@
  1045 0066 00BF     	 .align 2
  1046              	.L51:
  1047 0068 00000000 	 .word usart_reset
- 1048 006c 00000000 	 .word ul_reg_val.7113
+ 1048 006c 00000000 	 .word ul_reg_val.7135
  1049 0070 00000000 	 .word usart_set_sync_slave_baudrate
  1050              	 .cfi_endproc
- 1051              	.LFE78:
+ 1051              	.LFE80:
  1053              	 .section .text.usart_init_rs485,"ax",%progbits
  1054              	 .align 1
  1055              	 .global usart_init_rs485
@@ -1530,7 +1530,7 @@
  1058              	 .thumb_func
  1059              	 .fpu softvfp
  1061              	usart_init_rs485:
- 1062              	.LFB79:
+ 1062              	.LFB81:
  492:.././hal/sam3u1c/usart.c **** 
  493:.././hal/sam3u1c/usart.c **** /**
  494:.././hal/sam3u1c/usart.c ****  * \brief Configure USART to work in RS485 mode.
@@ -1615,7 +1615,7 @@
  1117              	.L56:
  1118 003c 00000000 	 .word usart_init_rs232
  1119              	 .cfi_endproc
- 1120              	.LFE79:
+ 1120              	.LFE81:
  1122              	 .section .text.usart_init_irda,"ax",%progbits
  1123              	 .align 1
  1124              	 .global usart_init_irda
@@ -1624,7 +1624,7 @@
  1127              	 .thumb_func
  1128              	 .fpu softvfp
  1130              	usart_init_irda:
- 1131              	.LFB80:
+ 1131              	.LFB82:
  519:.././hal/sam3u1c/usart.c **** 
  520:.././hal/sam3u1c/usart.c **** #if (!SAMG55)
  521:.././hal/sam3u1c/usart.c **** /**
@@ -1718,7 +1718,7 @@
  1191              	.L61:
  1192 0044 00000000 	 .word usart_init_rs232
  1193              	 .cfi_endproc
- 1194              	.LFE80:
+ 1194              	.LFE82:
  1196              	 .section .text.usart_init_iso7816,"ax",%progbits
  1197              	 .align 1
  1198              	 .global usart_init_iso7816
@@ -1727,7 +1727,7 @@
  1201              	 .thumb_func
  1202              	 .fpu softvfp
  1204              	usart_init_iso7816:
- 1205              	.LFB81:
+ 1205              	.LFB83:
  550:.././hal/sam3u1c/usart.c **** #endif
  551:.././hal/sam3u1c/usart.c **** 
  552:.././hal/sam3u1c/usart.c **** /**
@@ -1991,10 +1991,10 @@
  1390 0106 00BF     	 .align 2
  1391              	.L76:
  1392 0108 00000000 	 .word usart_reset
- 1393 010c 00000000 	 .word ul_reg_val.7129
+ 1393 010c 00000000 	 .word ul_reg_val.7151
  1394 0110 00000000 	 .word usart_set_iso7816_clock
  1395              	 .cfi_endproc
- 1396              	.LFE81:
+ 1396              	.LFE83:
  1398              	 .section .text.usart_init_spi_master,"ax",%progbits
  1399              	 .align 1
  1400              	 .global usart_init_spi_master
@@ -2003,7 +2003,7 @@
  1403              	 .thumb_func
  1404              	 .fpu softvfp
  1406              	usart_init_spi_master:
- 1407              	.LFB82:
+ 1407              	.LFB84:
  624:.././hal/sam3u1c/usart.c **** 
  625:.././hal/sam3u1c/usart.c **** /**
  626:.././hal/sam3u1c/usart.c ****  * \brief Configure USART to work in SPI mode and act as a master.
@@ -2247,10 +2247,10 @@
  1581 0102 00BF     	 .align 2
  1582              	.L90:
  1583 0104 00000000 	 .word usart_reset
- 1584 0108 00000000 	 .word ul_reg_val.7135
+ 1584 0108 00000000 	 .word ul_reg_val.7157
  1585 010c 00000000 	 .word usart_set_spi_master_baudrate
  1586              	 .cfi_endproc
- 1587              	.LFE82:
+ 1587              	.LFE84:
  1589              	 .section .text.usart_init_spi_slave,"ax",%progbits
  1590              	 .align 1
  1591              	 .global usart_init_spi_slave
@@ -2259,7 +2259,7 @@
  1594              	 .thumb_func
  1595              	 .fpu softvfp
  1597              	usart_init_spi_slave:
- 1598              	.LFB83:
+ 1598              	.LFB85:
  689:.././hal/sam3u1c/usart.c **** 
  690:.././hal/sam3u1c/usart.c **** /**
  691:.././hal/sam3u1c/usart.c ****  * \brief Configure USART to work in SPI mode and act as a slave.
@@ -2488,10 +2488,10 @@
  1761 00ee 00BF     	 .align 2
  1762              	.L104:
  1763 00f0 00000000 	 .word usart_reset
- 1764 00f4 00000000 	 .word ul_reg_val.7146
+ 1764 00f4 00000000 	 .word ul_reg_val.7168
  1765 00f8 00000000 	 .word usart_set_spi_slave_baudrate
  1766              	 .cfi_endproc
- 1767              	.LFE83:
+ 1767              	.LFE85:
  1769              	 .section .text.usart_enable_tx,"ax",%progbits
  1770              	 .align 1
  1771              	 .global usart_enable_tx
@@ -2500,7 +2500,7 @@
  1774              	 .thumb_func
  1775              	 .fpu softvfp
  1777              	usart_enable_tx:
- 1778              	.LFB84:
+ 1778              	.LFB86:
  752:.././hal/sam3u1c/usart.c **** 
  753:.././hal/sam3u1c/usart.c **** #if (SAM3XA || SAM4L || SAMG55)
  754:.././hal/sam3u1c/usart.c **** 
@@ -2825,7 +2825,7 @@
  1811              	 .cfi_def_cfa_offset 0
  1812 0016 7047     	 bx lr
  1813              	 .cfi_endproc
- 1814              	.LFE84:
+ 1814              	.LFE86:
  1816              	 .section .text.usart_disable_tx,"ax",%progbits
  1817              	 .align 1
  1818              	 .global usart_disable_tx
@@ -2834,7 +2834,7 @@
  1821              	 .thumb_func
  1822              	 .fpu softvfp
  1824              	usart_disable_tx:
- 1825              	.LFB85:
+ 1825              	.LFB87:
 1041:.././hal/sam3u1c/usart.c **** 
 1042:.././hal/sam3u1c/usart.c **** /**
 1043:.././hal/sam3u1c/usart.c ****  * \brief Disable USART transmitter.
@@ -2880,7 +2880,7 @@
  1858              	 .cfi_def_cfa_offset 0
  1859 0016 7047     	 bx lr
  1860              	 .cfi_endproc
- 1861              	.LFE85:
+ 1861              	.LFE87:
  1863              	 .section .text.usart_reset_tx,"ax",%progbits
  1864              	 .align 1
  1865              	 .global usart_reset_tx
@@ -2889,7 +2889,7 @@
  1868              	 .thumb_func
  1869              	 .fpu softvfp
  1871              	usart_reset_tx:
- 1872              	.LFB86:
+ 1872              	.LFB88:
 1051:.././hal/sam3u1c/usart.c **** 
 1052:.././hal/sam3u1c/usart.c **** /**
 1053:.././hal/sam3u1c/usart.c ****  * \brief Immediately stop and disable USART transmitter.
@@ -2936,7 +2936,7 @@
  1905              	 .cfi_def_cfa_offset 0
  1906 0016 7047     	 bx lr
  1907              	 .cfi_endproc
- 1908              	.LFE86:
+ 1908              	.LFE88:
  1910              	 .section .text.usart_set_tx_timeguard,"ax",%progbits
  1911              	 .align 1
  1912              	 .global usart_set_tx_timeguard
@@ -2945,7 +2945,7 @@
  1915              	 .thumb_func
  1916              	 .fpu softvfp
  1918              	usart_set_tx_timeguard:
- 1919              	.LFB87:
+ 1919              	.LFB89:
 1062:.././hal/sam3u1c/usart.c **** 
 1063:.././hal/sam3u1c/usart.c **** /**
 1064:.././hal/sam3u1c/usart.c ****  * \brief Configure the transmit timeguard register.
@@ -2993,7 +2993,7 @@
  1953              	 .cfi_def_cfa_offset 0
  1954 0018 7047     	 bx lr
  1955              	 .cfi_endproc
- 1956              	.LFE87:
+ 1956              	.LFE89:
  1958              	 .section .text.usart_enable_rx,"ax",%progbits
  1959              	 .align 1
  1960              	 .global usart_enable_rx
@@ -3002,7 +3002,7 @@
  1963              	 .thumb_func
  1964              	 .fpu softvfp
  1966              	usart_enable_rx:
- 1967              	.LFB88:
+ 1967              	.LFB90:
 1073:.././hal/sam3u1c/usart.c **** 
 1074:.././hal/sam3u1c/usart.c **** /**
 1075:.././hal/sam3u1c/usart.c ****  * \brief Enable USART receiver.
@@ -3048,7 +3048,7 @@
  2000              	 .cfi_def_cfa_offset 0
  2001 0016 7047     	 bx lr
  2002              	 .cfi_endproc
- 2003              	.LFE88:
+ 2003              	.LFE90:
  2005              	 .section .text.usart_disable_rx,"ax",%progbits
  2006              	 .align 1
  2007              	 .global usart_disable_rx
@@ -3057,7 +3057,7 @@
  2010              	 .thumb_func
  2011              	 .fpu softvfp
  2013              	usart_disable_rx:
- 2014              	.LFB89:
+ 2014              	.LFB91:
 1083:.././hal/sam3u1c/usart.c **** 
 1084:.././hal/sam3u1c/usart.c **** /**
 1085:.././hal/sam3u1c/usart.c ****  * \brief Disable USART receiver.
@@ -3103,7 +3103,7 @@
  2047              	 .cfi_def_cfa_offset 0
  2048 0016 7047     	 bx lr
  2049              	 .cfi_endproc
- 2050              	.LFE89:
+ 2050              	.LFE91:
  2052              	 .section .text.usart_reset_rx,"ax",%progbits
  2053              	 .align 1
  2054              	 .global usart_reset_rx
@@ -3112,7 +3112,7 @@
  2057              	 .thumb_func
  2058              	 .fpu softvfp
  2060              	usart_reset_rx:
- 2061              	.LFB90:
+ 2061              	.LFB92:
 1093:.././hal/sam3u1c/usart.c **** 
 1094:.././hal/sam3u1c/usart.c **** /**
 1095:.././hal/sam3u1c/usart.c ****  * \brief Immediately stop and disable USART receiver.
@@ -3159,7 +3159,7 @@
  2094              	 .cfi_def_cfa_offset 0
  2095 0016 7047     	 bx lr
  2096              	 .cfi_endproc
- 2097              	.LFE90:
+ 2097              	.LFE92:
  2099              	 .section .text.usart_set_rx_timeout,"ax",%progbits
  2100              	 .align 1
  2101              	 .global usart_set_rx_timeout
@@ -3168,7 +3168,7 @@
  2104              	 .thumb_func
  2105              	 .fpu softvfp
  2107              	usart_set_rx_timeout:
- 2108              	.LFB91:
+ 2108              	.LFB93:
 1104:.././hal/sam3u1c/usart.c **** 
 1105:.././hal/sam3u1c/usart.c **** /**
 1106:.././hal/sam3u1c/usart.c ****  * \brief Configure the receive timeout register.
@@ -3216,7 +3216,7 @@
  2142              	 .cfi_def_cfa_offset 0
  2143 0018 7047     	 bx lr
  2144              	 .cfi_endproc
- 2145              	.LFE91:
+ 2145              	.LFE93:
  2147              	 .section .text.usart_enable_interrupt,"ax",%progbits
  2148              	 .align 1
  2149              	 .global usart_enable_interrupt
@@ -3225,7 +3225,7 @@
  2152              	 .thumb_func
  2153              	 .fpu softvfp
  2155              	usart_enable_interrupt:
- 2156              	.LFB92:
+ 2156              	.LFB94:
 1115:.././hal/sam3u1c/usart.c **** 
 1116:.././hal/sam3u1c/usart.c **** /**
 1117:.././hal/sam3u1c/usart.c ****  * \brief Enable USART interrupts.
@@ -3273,7 +3273,7 @@
  2190              	 .cfi_def_cfa_offset 0
  2191 0018 7047     	 bx lr
  2192              	 .cfi_endproc
- 2193              	.LFE92:
+ 2193              	.LFE94:
  2195              	 .section .text.usart_disable_interrupt,"ax",%progbits
  2196              	 .align 1
  2197              	 .global usart_disable_interrupt
@@ -3282,7 +3282,7 @@
  2200              	 .thumb_func
  2201              	 .fpu softvfp
  2203              	usart_disable_interrupt:
- 2204              	.LFB93:
+ 2204              	.LFB95:
 1126:.././hal/sam3u1c/usart.c **** 
 1127:.././hal/sam3u1c/usart.c **** /**
 1128:.././hal/sam3u1c/usart.c ****  * \brief Disable USART interrupts.
@@ -3330,7 +3330,7 @@
  2238              	 .cfi_def_cfa_offset 0
  2239 0018 7047     	 bx lr
  2240              	 .cfi_endproc
- 2241              	.LFE93:
+ 2241              	.LFE95:
  2243              	 .section .text.usart_get_interrupt_mask,"ax",%progbits
  2244              	 .align 1
  2245              	 .global usart_get_interrupt_mask
@@ -3339,7 +3339,7 @@
  2248              	 .thumb_func
  2249              	 .fpu softvfp
  2251              	usart_get_interrupt_mask:
- 2252              	.LFB94:
+ 2252              	.LFB96:
 1137:.././hal/sam3u1c/usart.c **** 
 1138:.././hal/sam3u1c/usart.c **** /**
 1139:.././hal/sam3u1c/usart.c ****  * \brief Read USART interrupt mask.
@@ -3386,7 +3386,7 @@
  2284              	 .cfi_def_cfa_offset 0
  2285 0014 7047     	 bx lr
  2286              	 .cfi_endproc
- 2287              	.LFE94:
+ 2287              	.LFE96:
  2289              	 .section .text.usart_get_status,"ax",%progbits
  2290              	 .align 1
  2291              	 .global usart_get_status
@@ -3395,7 +3395,7 @@
  2294              	 .thumb_func
  2295              	 .fpu softvfp
  2297              	usart_get_status:
- 2298              	.LFB95:
+ 2298              	.LFB97:
 1149:.././hal/sam3u1c/usart.c **** 
 1150:.././hal/sam3u1c/usart.c **** /**
 1151:.././hal/sam3u1c/usart.c ****  * \brief Get current status.
@@ -3442,7 +3442,7 @@
  2330              	 .cfi_def_cfa_offset 0
  2331 0014 7047     	 bx lr
  2332              	 .cfi_endproc
- 2333              	.LFE95:
+ 2333              	.LFE97:
  2335              	 .section .text.usart_reset_status,"ax",%progbits
  2336              	 .align 1
  2337              	 .global usart_reset_status
@@ -3451,7 +3451,7 @@
  2340              	 .thumb_func
  2341              	 .fpu softvfp
  2343              	usart_reset_status:
- 2344              	.LFB96:
+ 2344              	.LFB98:
 1161:.././hal/sam3u1c/usart.c **** 
 1162:.././hal/sam3u1c/usart.c **** /**
 1163:.././hal/sam3u1c/usart.c ****  * \brief Reset status bits (PARE, OVER, MANERR, UNRE and PXBRK in US_CSR).
@@ -3497,7 +3497,7 @@
  2377              	 .cfi_def_cfa_offset 0
  2378 0018 7047     	 bx lr
  2379              	 .cfi_endproc
- 2380              	.LFE96:
+ 2380              	.LFE98:
  2382              	 .section .text.usart_start_tx_break,"ax",%progbits
  2383              	 .align 1
  2384              	 .global usart_start_tx_break
@@ -3506,7 +3506,7 @@
  2387              	 .thumb_func
  2388              	 .fpu softvfp
  2390              	usart_start_tx_break:
- 2391              	.LFB97:
+ 2391              	.LFB99:
 1171:.././hal/sam3u1c/usart.c **** 
 1172:.././hal/sam3u1c/usart.c **** /**
 1173:.././hal/sam3u1c/usart.c ****  * \brief Start transmission of a break.
@@ -3552,7 +3552,7 @@
  2424              	 .cfi_def_cfa_offset 0
  2425 0018 7047     	 bx lr
  2426              	 .cfi_endproc
- 2427              	.LFE97:
+ 2427              	.LFE99:
  2429              	 .section .text.usart_stop_tx_break,"ax",%progbits
  2430              	 .align 1
  2431              	 .global usart_stop_tx_break
@@ -3561,7 +3561,7 @@
  2434              	 .thumb_func
  2435              	 .fpu softvfp
  2437              	usart_stop_tx_break:
- 2438              	.LFB98:
+ 2438              	.LFB100:
 1181:.././hal/sam3u1c/usart.c **** 
 1182:.././hal/sam3u1c/usart.c **** /**
 1183:.././hal/sam3u1c/usart.c ****  * \brief Stop transmission of a break.
@@ -3607,7 +3607,7 @@
  2471              	 .cfi_def_cfa_offset 0
  2472 0018 7047     	 bx lr
  2473              	 .cfi_endproc
- 2474              	.LFE98:
+ 2474              	.LFE100:
  2476              	 .section .text.usart_start_rx_timeout,"ax",%progbits
  2477              	 .align 1
  2478              	 .global usart_start_rx_timeout
@@ -3616,7 +3616,7 @@
  2481              	 .thumb_func
  2482              	 .fpu softvfp
  2484              	usart_start_rx_timeout:
- 2485              	.LFB99:
+ 2485              	.LFB101:
 1191:.././hal/sam3u1c/usart.c **** 
 1192:.././hal/sam3u1c/usart.c **** /**
 1193:.././hal/sam3u1c/usart.c ****  * \brief Start waiting for a character before clocking the timeout count.
@@ -3663,7 +3663,7 @@
  2518              	 .cfi_def_cfa_offset 0
  2519 0018 7047     	 bx lr
  2520              	 .cfi_endproc
- 2521              	.LFE99:
+ 2521              	.LFE101:
  2523              	 .section .text.usart_send_address,"ax",%progbits
  2524              	 .align 1
  2525              	 .global usart_send_address
@@ -3672,7 +3672,7 @@
  2528              	 .thumb_func
  2529              	 .fpu softvfp
  2531              	usart_send_address:
- 2532              	.LFB100:
+ 2532              	.LFB102:
 1202:.././hal/sam3u1c/usart.c **** 
 1203:.././hal/sam3u1c/usart.c **** /**
 1204:.././hal/sam3u1c/usart.c ****  * \brief In Multidrop mode only, the next character written to the US_THR
@@ -3760,7 +3760,7 @@
  2592              	.L128:
  2593 0040 00000000 	 .word usart_write
  2594              	 .cfi_endproc
- 2595              	.LFE100:
+ 2595              	.LFE102:
  2597              	 .section .text.usart_reset_iterations,"ax",%progbits
  2598              	 .align 1
  2599              	 .global usart_reset_iterations
@@ -3769,7 +3769,7 @@
  2602              	 .thumb_func
  2603              	 .fpu softvfp
  2605              	usart_reset_iterations:
- 2606              	.LFB101:
+ 2606              	.LFB103:
 1227:.././hal/sam3u1c/usart.c **** 
 1228:.././hal/sam3u1c/usart.c **** /**
 1229:.././hal/sam3u1c/usart.c ****  * \brief Reset the ITERATION in US_CSR when the ISO7816 mode is enabled.
@@ -3815,7 +3815,7 @@
  2639              	 .cfi_def_cfa_offset 0
  2640 0018 7047     	 bx lr
  2641              	 .cfi_endproc
- 2642              	.LFE101:
+ 2642              	.LFE103:
  2644              	 .section .text.usart_reset_nack,"ax",%progbits
  2645              	 .align 1
  2646              	 .global usart_reset_nack
@@ -3824,7 +3824,7 @@
  2649              	 .thumb_func
  2650              	 .fpu softvfp
  2652              	usart_reset_nack:
- 2653              	.LFB102:
+ 2653              	.LFB104:
 1237:.././hal/sam3u1c/usart.c **** 
 1238:.././hal/sam3u1c/usart.c **** /**
 1239:.././hal/sam3u1c/usart.c ****  * \brief Reset NACK in US_CSR.
@@ -3870,7 +3870,7 @@
  2686              	 .cfi_def_cfa_offset 0
  2687 0018 7047     	 bx lr
  2688              	 .cfi_endproc
- 2689              	.LFE102:
+ 2689              	.LFE104:
  2691              	 .section .text.usart_restart_rx_timeout,"ax",%progbits
  2692              	 .align 1
  2693              	 .global usart_restart_rx_timeout
@@ -3879,7 +3879,7 @@
  2696              	 .thumb_func
  2697              	 .fpu softvfp
  2699              	usart_restart_rx_timeout:
- 2700              	.LFB103:
+ 2700              	.LFB105:
 1247:.././hal/sam3u1c/usart.c **** 
 1248:.././hal/sam3u1c/usart.c **** /**
 1249:.././hal/sam3u1c/usart.c ****  * \brief Restart the receive timeout.
@@ -3925,7 +3925,7 @@
  2733              	 .cfi_def_cfa_offset 0
  2734 0018 7047     	 bx lr
  2735              	 .cfi_endproc
- 2736              	.LFE103:
+ 2736              	.LFE105:
  2738              	 .section .text.usart_drive_DTR_pin_low,"ax",%progbits
  2739              	 .align 1
  2740              	 .global usart_drive_DTR_pin_low
@@ -3934,7 +3934,7 @@
  2743              	 .thumb_func
  2744              	 .fpu softvfp
  2746              	usart_drive_DTR_pin_low:
- 2747              	.LFB104:
+ 2747              	.LFB106:
 1257:.././hal/sam3u1c/usart.c **** 
 1258:.././hal/sam3u1c/usart.c **** #if (SAM3S || SAM4S || SAM3U || SAM4L || SAM4E)
 1259:.././hal/sam3u1c/usart.c **** 
@@ -3982,7 +3982,7 @@
  2780              	 .cfi_def_cfa_offset 0
  2781 0018 7047     	 bx lr
  2782              	 .cfi_endproc
- 2783              	.LFE104:
+ 2783              	.LFE106:
  2785              	 .section .text.usart_drive_DTR_pin_high,"ax",%progbits
  2786              	 .align 1
  2787              	 .global usart_drive_DTR_pin_high
@@ -3991,7 +3991,7 @@
  2790              	 .thumb_func
  2791              	 .fpu softvfp
  2793              	usart_drive_DTR_pin_high:
- 2794              	.LFB105:
+ 2794              	.LFB107:
 1269:.././hal/sam3u1c/usart.c **** 
 1270:.././hal/sam3u1c/usart.c **** /**
 1271:.././hal/sam3u1c/usart.c ****  * \brief Drive the pin DTR to 1.
@@ -4037,7 +4037,7 @@
  2827              	 .cfi_def_cfa_offset 0
  2828 0018 7047     	 bx lr
  2829              	 .cfi_endproc
- 2830              	.LFE105:
+ 2830              	.LFE107:
  2832              	 .section .text.usart_drive_RTS_pin_low,"ax",%progbits
  2833              	 .align 1
  2834              	 .global usart_drive_RTS_pin_low
@@ -4046,7 +4046,7 @@
  2837              	 .thumb_func
  2838              	 .fpu softvfp
  2840              	usart_drive_RTS_pin_low:
- 2841              	.LFB106:
+ 2841              	.LFB108:
 1279:.././hal/sam3u1c/usart.c **** 
 1280:.././hal/sam3u1c/usart.c **** #endif
 1281:.././hal/sam3u1c/usart.c **** 
@@ -4094,7 +4094,7 @@
  2874              	 .cfi_def_cfa_offset 0
  2875 0018 7047     	 bx lr
  2876              	 .cfi_endproc
- 2877              	.LFE106:
+ 2877              	.LFE108:
  2879              	 .section .text.usart_drive_RTS_pin_high,"ax",%progbits
  2880              	 .align 1
  2881              	 .global usart_drive_RTS_pin_high
@@ -4103,7 +4103,7 @@
  2884              	 .thumb_func
  2885              	 .fpu softvfp
  2887              	usart_drive_RTS_pin_high:
- 2888              	.LFB107:
+ 2888              	.LFB109:
 1291:.././hal/sam3u1c/usart.c **** 
 1292:.././hal/sam3u1c/usart.c **** /**
 1293:.././hal/sam3u1c/usart.c ****  * \brief Drive the pin RTS to 1.
@@ -4149,7 +4149,7 @@
  2921              	 .cfi_def_cfa_offset 0
  2922 0018 7047     	 bx lr
  2923              	 .cfi_endproc
- 2924              	.LFE107:
+ 2924              	.LFE109:
  2926              	 .section .text.usart_spi_force_chip_select,"ax",%progbits
  2927              	 .align 1
  2928              	 .global usart_spi_force_chip_select
@@ -4158,7 +4158,7 @@
  2931              	 .thumb_func
  2932              	 .fpu softvfp
  2934              	usart_spi_force_chip_select:
- 2935              	.LFB108:
+ 2935              	.LFB110:
 1301:.././hal/sam3u1c/usart.c **** 
 1302:.././hal/sam3u1c/usart.c **** /**
 1303:.././hal/sam3u1c/usart.c ****  * \brief Drive the slave select line NSS (RTS pin) to 0 in SPI master mode.
@@ -4204,7 +4204,7 @@
  2968              	 .cfi_def_cfa_offset 0
  2969 0018 7047     	 bx lr
  2970              	 .cfi_endproc
- 2971              	.LFE108:
+ 2971              	.LFE110:
  2973              	 .section .text.usart_spi_release_chip_select,"ax",%progbits
  2974              	 .align 1
  2975              	 .global usart_spi_release_chip_select
@@ -4213,7 +4213,7 @@
  2978              	 .thumb_func
  2979              	 .fpu softvfp
  2981              	usart_spi_release_chip_select:
- 2982              	.LFB109:
+ 2982              	.LFB111:
 1311:.././hal/sam3u1c/usart.c **** 
 1312:.././hal/sam3u1c/usart.c **** /**
 1313:.././hal/sam3u1c/usart.c ****  * \brief Drive the slave select line NSS (RTS pin) to 1 in SPI master mode.
@@ -4259,7 +4259,7 @@
  3015              	 .cfi_def_cfa_offset 0
  3016 0018 7047     	 bx lr
  3017              	 .cfi_endproc
- 3018              	.LFE109:
+ 3018              	.LFE111:
  3020              	 .section .text.usart_is_tx_ready,"ax",%progbits
  3021              	 .align 1
  3022              	 .global usart_is_tx_ready
@@ -4268,7 +4268,7 @@
  3025              	 .thumb_func
  3026              	 .fpu softvfp
  3028              	usart_is_tx_ready:
- 3029              	.LFB110:
+ 3029              	.LFB112:
 1321:.././hal/sam3u1c/usart.c **** 
 1322:.././hal/sam3u1c/usart.c **** /**
 1323:.././hal/sam3u1c/usart.c ****  * \brief Check if Transmit is Ready.
@@ -4324,7 +4324,7 @@
  3067              	 .cfi_def_cfa_offset 0
  3068 0022 7047     	 bx lr
  3069              	 .cfi_endproc
- 3070              	.LFE110:
+ 3070              	.LFE112:
  3072              	 .section .text.usart_is_tx_empty,"ax",%progbits
  3073              	 .align 1
  3074              	 .global usart_is_tx_empty
@@ -4333,7 +4333,7 @@
  3077              	 .thumb_func
  3078              	 .fpu softvfp
  3080              	usart_is_tx_empty:
- 3081              	.LFB111:
+ 3081              	.LFB113:
 1336:.././hal/sam3u1c/usart.c **** 
 1337:.././hal/sam3u1c/usart.c **** /**
 1338:.././hal/sam3u1c/usart.c ****  * \brief Check if Transmit Holding Register is empty.
@@ -4389,7 +4389,7 @@
  3119              	 .cfi_def_cfa_offset 0
  3120 0022 7047     	 bx lr
  3121              	 .cfi_endproc
- 3122              	.LFE111:
+ 3122              	.LFE113:
  3124              	 .section .text.usart_is_rx_ready,"ax",%progbits
  3125              	 .align 1
  3126              	 .global usart_is_rx_ready
@@ -4398,7 +4398,7 @@
  3129              	 .thumb_func
  3130              	 .fpu softvfp
  3132              	usart_is_rx_ready:
- 3133              	.LFB112:
+ 3133              	.LFB114:
 1351:.././hal/sam3u1c/usart.c **** 
 1352:.././hal/sam3u1c/usart.c **** /**
 1353:.././hal/sam3u1c/usart.c ****  * \brief Check if the received data are ready.
@@ -4453,7 +4453,7 @@
  3171              	 .cfi_def_cfa_offset 0
  3172 0022 7047     	 bx lr
  3173              	 .cfi_endproc
- 3174              	.LFE112:
+ 3174              	.LFE114:
  3176              	 .section .text.usart_is_rx_buf_end,"ax",%progbits
  3177              	 .align 1
  3178              	 .global usart_is_rx_buf_end
@@ -4462,7 +4462,7 @@
  3181              	 .thumb_func
  3182              	 .fpu softvfp
  3184              	usart_is_rx_buf_end:
- 3185              	.LFB113:
+ 3185              	.LFB115:
 1365:.././hal/sam3u1c/usart.c **** 
 1366:.././hal/sam3u1c/usart.c **** /**
 1367:.././hal/sam3u1c/usart.c ****  * \brief Check if one receive buffer is filled.
@@ -4516,7 +4516,7 @@
  3223              	 .cfi_def_cfa_offset 0
  3224 0022 7047     	 bx lr
  3225              	 .cfi_endproc
- 3226              	.LFE113:
+ 3226              	.LFE115:
  3228              	 .section .text.usart_is_tx_buf_end,"ax",%progbits
  3229              	 .align 1
  3230              	 .global usart_is_tx_buf_end
@@ -4525,7 +4525,7 @@
  3233              	 .thumb_func
  3234              	 .fpu softvfp
  3236              	usart_is_tx_buf_end:
- 3237              	.LFB114:
+ 3237              	.LFB116:
 1378:.././hal/sam3u1c/usart.c **** 
 1379:.././hal/sam3u1c/usart.c **** /**
 1380:.././hal/sam3u1c/usart.c ****  * \brief Check if one transmit buffer is empty.
@@ -4579,7 +4579,7 @@
  3275              	 .cfi_def_cfa_offset 0
  3276 0022 7047     	 bx lr
  3277              	 .cfi_endproc
- 3278              	.LFE114:
+ 3278              	.LFE116:
  3280              	 .section .text.usart_is_rx_buf_full,"ax",%progbits
  3281              	 .align 1
  3282              	 .global usart_is_rx_buf_full
@@ -4588,7 +4588,7 @@
  3285              	 .thumb_func
  3286              	 .fpu softvfp
  3288              	usart_is_rx_buf_full:
- 3289              	.LFB115:
+ 3289              	.LFB117:
 1391:.././hal/sam3u1c/usart.c **** 
 1392:.././hal/sam3u1c/usart.c **** /**
 1393:.././hal/sam3u1c/usart.c ****  * \brief Check if both receive buffers are full.
@@ -4642,7 +4642,7 @@
  3327              	 .cfi_def_cfa_offset 0
  3328 0022 7047     	 bx lr
  3329              	 .cfi_endproc
- 3330              	.LFE115:
+ 3330              	.LFE117:
  3332              	 .section .text.usart_is_tx_buf_empty,"ax",%progbits
  3333              	 .align 1
  3334              	 .global usart_is_tx_buf_empty
@@ -4651,7 +4651,7 @@
  3337              	 .thumb_func
  3338              	 .fpu softvfp
  3340              	usart_is_tx_buf_empty:
- 3341              	.LFB116:
+ 3341              	.LFB118:
 1404:.././hal/sam3u1c/usart.c **** 
 1405:.././hal/sam3u1c/usart.c **** /**
 1406:.././hal/sam3u1c/usart.c ****  * \brief Check if both transmit buffers are empty.
@@ -4705,7 +4705,7 @@
  3379              	 .cfi_def_cfa_offset 0
  3380 0022 7047     	 bx lr
  3381              	 .cfi_endproc
- 3382              	.LFE116:
+ 3382              	.LFE118:
  3384              	 .section .text.usart_write,"ax",%progbits
  3385              	 .align 1
  3386              	 .global usart_write
@@ -4714,7 +4714,7 @@
  3389              	 .thumb_func
  3390              	 .fpu softvfp
  3392              	usart_write:
- 3393              	.LFB117:
+ 3393              	.LFB119:
 1417:.././hal/sam3u1c/usart.c **** 
 1418:.././hal/sam3u1c/usart.c **** /**
 1419:.././hal/sam3u1c/usart.c ****  * \brief Write to USART Transmit Holding Register.
@@ -4786,7 +4786,7 @@
  3441              	 .cfi_def_cfa_offset 0
  3442 002e 7047     	 bx lr
  3443              	 .cfi_endproc
- 3444              	.LFE117:
+ 3444              	.LFE119:
  3446              	 .section .text.usart_putchar,"ax",%progbits
  3447              	 .align 1
  3448              	 .global usart_putchar
@@ -4795,7 +4795,7 @@
  3451              	 .thumb_func
  3452              	 .fpu softvfp
  3454              	usart_putchar:
- 3455              	.LFB118:
+ 3455              	.LFB120:
 1438:.././hal/sam3u1c/usart.c **** 
 1439:.././hal/sam3u1c/usart.c **** /**
 1440:.././hal/sam3u1c/usart.c ****  * \brief Write to USART Transmit Holding Register.
@@ -4865,7 +4865,7 @@
  3501              	 .cfi_def_cfa_offset 0
  3502 002c 7047     	 bx lr
  3503              	 .cfi_endproc
- 3504              	.LFE118:
+ 3504              	.LFE120:
  3506              	 .section .text.usart_write_line,"ax",%progbits
  3507              	 .align 1
  3508              	 .global usart_write_line
@@ -4874,7 +4874,7 @@
  3511              	 .thumb_func
  3512              	 .fpu softvfp
  3514              	usart_write_line:
- 3515              	.LFB119:
+ 3515              	.LFB121:
 1459:.././hal/sam3u1c/usart.c **** 
 1460:.././hal/sam3u1c/usart.c **** /**
 1461:.././hal/sam3u1c/usart.c ****  * \brief Write one-line string through USART.
@@ -4940,7 +4940,7 @@
  3564              	.L162:
  3565 002c 00000000 	 .word usart_putchar
  3566              	 .cfi_endproc
- 3567              	.LFE119:
+ 3567              	.LFE121:
  3569              	 .section .text.usart_read,"ax",%progbits
  3570              	 .align 1
  3571              	 .global usart_read
@@ -4949,7 +4949,7 @@
  3574              	 .thumb_func
  3575              	 .fpu softvfp
  3577              	usart_read:
- 3578              	.LFB120:
+ 3578              	.LFB122:
 1472:.././hal/sam3u1c/usart.c **** 
 1473:.././hal/sam3u1c/usart.c **** /**
 1474:.././hal/sam3u1c/usart.c ****  * \brief Read from USART Receive Holding Register.
@@ -5024,7 +5024,7 @@
  3627              	 .cfi_def_cfa_offset 0
  3628 0030 7047     	 bx lr
  3629              	 .cfi_endproc
- 3630              	.LFE120:
+ 3630              	.LFE122:
  3632              	 .section .text.usart_getchar,"ax",%progbits
  3633              	 .align 1
  3634              	 .global usart_getchar
@@ -5033,7 +5033,7 @@
  3637              	 .thumb_func
  3638              	 .fpu softvfp
  3640              	usart_getchar:
- 3641              	.LFB121:
+ 3641              	.LFB123:
 1495:.././hal/sam3u1c/usart.c **** 
 1496:.././hal/sam3u1c/usart.c **** /**
 1497:.././hal/sam3u1c/usart.c ****  * \brief Read from USART Receive Holding Register.
@@ -5105,7 +5105,7 @@
  3688              	 .cfi_def_cfa_offset 0
  3689 002e 7047     	 bx lr
  3690              	 .cfi_endproc
- 3691              	.LFE121:
+ 3691              	.LFE123:
  3693              	 .section .text.usart_get_tx_access,"ax",%progbits
  3694              	 .align 1
  3695              	 .global usart_get_tx_access
@@ -5114,7 +5114,7 @@
  3698              	 .thumb_func
  3699              	 .fpu softvfp
  3701              	usart_get_tx_access:
- 3702              	.LFB122:
+ 3702              	.LFB124:
 1517:.././hal/sam3u1c/usart.c **** 
 1518:.././hal/sam3u1c/usart.c **** #if (SAM3XA || SAM3U)
 1519:.././hal/sam3u1c/usart.c **** /**
@@ -5162,7 +5162,7 @@
  3734              	 .cfi_def_cfa_offset 0
  3735 0014 7047     	 bx lr
  3736              	 .cfi_endproc
- 3737              	.LFE122:
+ 3737              	.LFE124:
  3739              	 .section .text.usart_get_rx_access,"ax",%progbits
  3740              	 .align 1
  3741              	 .global usart_get_rx_access
@@ -5171,7 +5171,7 @@
  3744              	 .thumb_func
  3745              	 .fpu softvfp
  3747              	usart_get_rx_access:
- 3748              	.LFB123:
+ 3748              	.LFB125:
 1530:.././hal/sam3u1c/usart.c **** 
 1531:.././hal/sam3u1c/usart.c **** /**
 1532:.././hal/sam3u1c/usart.c ****  * \brief Get Receive address for DMA operation.
@@ -5218,7 +5218,7 @@
  3780              	 .cfi_def_cfa_offset 0
  3781 0014 7047     	 bx lr
  3782              	 .cfi_endproc
- 3783              	.LFE123:
+ 3783              	.LFE125:
  3785              	 .section .text.usart_get_pdc_base,"ax",%progbits
  3786              	 .align 1
  3787              	 .global usart_get_pdc_base
@@ -5227,7 +5227,7 @@
  3790              	 .thumb_func
  3791              	 .fpu softvfp
  3793              	usart_get_pdc_base:
- 3794              	.LFB124:
+ 3794              	.LFB126:
 1542:.././hal/sam3u1c/usart.c **** #endif
 1543:.././hal/sam3u1c/usart.c **** 
 1544:.././hal/sam3u1c/usart.c **** #if (!SAM4L)
@@ -5383,7 +5383,7 @@
  3874 0058 00800940 	 .word 1074364416
  3875 005c 00810940 	 .word 1074364672
  3876              	 .cfi_endproc
- 3877              	.LFE124:
+ 3877              	.LFE126:
  3879              	 .section .text.usart_enable_writeprotect,"ax",%progbits
  3880              	 .align 1
  3881              	 .global usart_enable_writeprotect
@@ -5392,7 +5392,7 @@
  3884              	 .thumb_func
  3885              	 .fpu softvfp
  3887              	usart_enable_writeprotect:
- 3888              	.LFB125:
+ 3888              	.LFB127:
 1615:.././hal/sam3u1c/usart.c **** #endif
 1616:.././hal/sam3u1c/usart.c **** 
 1617:.././hal/sam3u1c/usart.c **** /**
@@ -5443,7 +5443,7 @@
  3925              	.L182:
  3926 001c 01415355 	 .word 1431519489
  3927              	 .cfi_endproc
- 3928              	.LFE125:
+ 3928              	.LFE127:
  3930              	 .section .text.usart_disable_writeprotect,"ax",%progbits
  3931              	 .align 1
  3932              	 .global usart_disable_writeprotect
@@ -5452,7 +5452,7 @@
  3935              	 .thumb_func
  3936              	 .fpu softvfp
  3938              	usart_disable_writeprotect:
- 3939              	.LFB126:
+ 3939              	.LFB128:
 1626:.././hal/sam3u1c/usart.c **** 
 1627:.././hal/sam3u1c/usart.c **** /**
 1628:.././hal/sam3u1c/usart.c ****  * \brief Disable write protect of USART registers.
@@ -5502,7 +5502,7 @@
  3976              	.L185:
  3977 001c 00415355 	 .word 1431519488
  3978              	 .cfi_endproc
- 3979              	.LFE126:
+ 3979              	.LFE128:
  3981              	 .section .text.usart_get_writeprotect_status,"ax",%progbits
  3982              	 .align 1
  3983              	 .global usart_get_writeprotect_status
@@ -5511,7 +5511,7 @@
  3986              	 .thumb_func
  3987              	 .fpu softvfp
  3989              	usart_get_writeprotect_status:
- 3990              	.LFB127:
+ 3990              	.LFB129:
 1636:.././hal/sam3u1c/usart.c **** 
 1637:.././hal/sam3u1c/usart.c **** /**
 1638:.././hal/sam3u1c/usart.c ****  * \brief Get write protect status.
@@ -5581,7 +5581,7 @@
  4037              	 .cfi_def_cfa_offset 0
  4038 002c 7047     	 bx lr
  4039              	 .cfi_endproc
- 4040              	.LFE127:
+ 4040              	.LFE129:
  4042              	 .section .text.usart_get_error_number,"ax",%progbits
  4043              	 .align 1
  4044              	 .global usart_get_error_number
@@ -5590,7 +5590,7 @@
  4047              	 .thumb_func
  4048              	 .fpu softvfp
  4050              	usart_get_error_number:
- 4051              	.LFB128:
+ 4051              	.LFB130:
 1656:.././hal/sam3u1c/usart.c **** 
 1657:.././hal/sam3u1c/usart.c **** /**
 1658:.././hal/sam3u1c/usart.c ****  * \brief Get the total number of errors that occur during an ISO7816 transfer.
@@ -5638,7 +5638,7 @@
  4084              	 .cfi_def_cfa_offset 0
  4085 0016 7047     	 bx lr
  4086              	 .cfi_endproc
- 4087              	.LFE128:
+ 4087              	.LFE130:
  4089              	 .section .text.usart_man_set_tx_pre_len,"ax",%progbits
  4090              	 .align 1
  4091              	 .global usart_man_set_tx_pre_len
@@ -5647,7 +5647,7 @@
  4094              	 .thumb_func
  4095              	 .fpu softvfp
  4097              	usart_man_set_tx_pre_len:
- 4098              	.LFB129:
+ 4098              	.LFB131:
 1668:.././hal/sam3u1c/usart.c **** 
 1669:.././hal/sam3u1c/usart.c **** #if (SAM3S || SAM4S || SAM3U || SAM3XA || SAM4L || SAM4E || SAM4C || SAM4CP || SAM4CM)
 1670:.././hal/sam3u1c/usart.c **** 
@@ -5708,7 +5708,7 @@
  4140              	 .cfi_def_cfa_offset 0
  4141 0028 7047     	 bx lr
  4142              	 .cfi_endproc
- 4143              	.LFE129:
+ 4143              	.LFE131:
  4145              	 .section .text.usart_man_set_tx_pre_pattern,"ax",%progbits
  4146              	 .align 1
  4147              	 .global usart_man_set_tx_pre_pattern
@@ -5717,7 +5717,7 @@
  4150              	 .thumb_func
  4151              	 .fpu softvfp
  4153              	usart_man_set_tx_pre_pattern:
- 4154              	.LFB130:
+ 4154              	.LFB132:
 1683:.././hal/sam3u1c/usart.c **** 
 1684:.././hal/sam3u1c/usart.c **** /**
 1685:.././hal/sam3u1c/usart.c ****  * \brief Configure the transmitter preamble pattern when the Manchester
@@ -5779,7 +5779,7 @@
  4196              	 .cfi_def_cfa_offset 0
  4197 0026 7047     	 bx lr
  4198              	 .cfi_endproc
- 4199              	.LFE130:
+ 4199              	.LFE132:
  4201              	 .section .text.usart_man_set_tx_polarity,"ax",%progbits
  4202              	 .align 1
  4203              	 .global usart_man_set_tx_polarity
@@ -5788,7 +5788,7 @@
  4206              	 .thumb_func
  4207              	 .fpu softvfp
  4209              	usart_man_set_tx_polarity:
- 4210              	.LFB131:
+ 4210              	.LFB133:
 1699:.././hal/sam3u1c/usart.c **** 
 1700:.././hal/sam3u1c/usart.c **** /**
 1701:.././hal/sam3u1c/usart.c ****  * \brief Configure the transmitter Manchester polarity when the Manchester
@@ -5848,7 +5848,7 @@
  4252              	 .cfi_def_cfa_offset 0
  4253 0026 7047     	 bx lr
  4254              	 .cfi_endproc
- 4255              	.LFE131:
+ 4255              	.LFE133:
  4257              	 .section .text.usart_man_set_rx_pre_len,"ax",%progbits
  4258              	 .align 1
  4259              	 .global usart_man_set_rx_pre_len
@@ -5857,7 +5857,7 @@
  4262              	 .thumb_func
  4263              	 .fpu softvfp
  4265              	usart_man_set_rx_pre_len:
- 4266              	.LFB132:
+ 4266              	.LFB134:
 1713:.././hal/sam3u1c/usart.c **** 
 1714:.././hal/sam3u1c/usart.c **** /**
 1715:.././hal/sam3u1c/usart.c ****  * \brief Configure the detected receiver preamble length when the Manchester
@@ -5917,7 +5917,7 @@
  4309              	 .cfi_def_cfa_offset 0
  4310 002a 7047     	 bx lr
  4311              	 .cfi_endproc
- 4312              	.LFE132:
+ 4312              	.LFE134:
  4314              	 .section .text.usart_man_set_rx_pre_pattern,"ax",%progbits
  4315              	 .align 1
  4316              	 .global usart_man_set_rx_pre_pattern
@@ -5926,7 +5926,7 @@
  4319              	 .thumb_func
  4320              	 .fpu softvfp
  4322              	usart_man_set_rx_pre_pattern:
- 4323              	.LFB133:
+ 4323              	.LFB135:
 1726:.././hal/sam3u1c/usart.c **** 
 1727:.././hal/sam3u1c/usart.c **** /**
 1728:.././hal/sam3u1c/usart.c ****  * \brief Configure the detected receiver preamble pattern when the Manchester
@@ -5988,7 +5988,7 @@
  4365              	 .cfi_def_cfa_offset 0
  4366 0026 7047     	 bx lr
  4367              	 .cfi_endproc
- 4368              	.LFE133:
+ 4368              	.LFE135:
  4370              	 .section .text.usart_man_set_rx_polarity,"ax",%progbits
  4371              	 .align 1
  4372              	 .global usart_man_set_rx_polarity
@@ -5997,7 +5997,7 @@
  4375              	 .thumb_func
  4376              	 .fpu softvfp
  4378              	usart_man_set_rx_polarity:
- 4379              	.LFB134:
+ 4379              	.LFB136:
 1742:.././hal/sam3u1c/usart.c **** 
 1743:.././hal/sam3u1c/usart.c **** /**
 1744:.././hal/sam3u1c/usart.c ****  * \brief Configure the receiver Manchester polarity when the Manchester
@@ -6057,7 +6057,7 @@
  4421              	 .cfi_def_cfa_offset 0
  4422 0026 7047     	 bx lr
  4423              	 .cfi_endproc
- 4424              	.LFE134:
+ 4424              	.LFE136:
  4426              	 .section .text.usart_man_enable_drift_compensation,"ax",%progbits
  4427              	 .align 1
  4428              	 .global usart_man_enable_drift_compensation
@@ -6066,7 +6066,7 @@
  4431              	 .thumb_func
  4432              	 .fpu softvfp
  4434              	usart_man_enable_drift_compensation:
- 4435              	.LFB135:
+ 4435              	.LFB137:
 1756:.././hal/sam3u1c/usart.c **** 
 1757:.././hal/sam3u1c/usart.c **** /**
 1758:.././hal/sam3u1c/usart.c ****  * \brief Enable drift compensation.
@@ -6116,7 +6116,7 @@
  4470              	 .cfi_def_cfa_offset 0
  4471 001c 7047     	 bx lr
  4472              	 .cfi_endproc
- 4473              	.LFE135:
+ 4473              	.LFE137:
  4475              	 .section .text.usart_man_disable_drift_compensation,"ax",%progbits
  4476              	 .align 1
  4477              	 .global usart_man_disable_drift_compensation
@@ -6125,7 +6125,7 @@
  4480              	 .thumb_func
  4481              	 .fpu softvfp
  4483              	usart_man_disable_drift_compensation:
- 4484              	.LFB136:
+ 4484              	.LFB138:
 1768:.././hal/sam3u1c/usart.c **** 
 1769:.././hal/sam3u1c/usart.c **** /**
 1770:.././hal/sam3u1c/usart.c ****  * \brief Disable drift compensation.
@@ -6173,45 +6173,45 @@
  4519              	 .cfi_def_cfa_offset 0
  4520 001c 7047     	 bx lr
  4521              	 .cfi_endproc
- 4522              	.LFE136:
- 4524              	 .section .bss.ul_reg_val.7092,"aw",%nobits
+ 4522              	.LFE138:
+ 4524              	 .section .bss.ul_reg_val.7114,"aw",%nobits
  4525              	 .align 2
- 4528              	ul_reg_val.7092:
+ 4528              	ul_reg_val.7114:
  4529 0000 00000000 	 .space 4
- 4530              	 .section .bss.ul_reg_val.7108,"aw",%nobits
+ 4530              	 .section .bss.ul_reg_val.7130,"aw",%nobits
  4531              	 .align 2
- 4534              	ul_reg_val.7108:
+ 4534              	ul_reg_val.7130:
  4535 0000 00000000 	 .space 4
- 4536              	 .section .bss.ul_reg_val.7113,"aw",%nobits
+ 4536              	 .section .bss.ul_reg_val.7135,"aw",%nobits
  4537              	 .align 2
- 4540              	ul_reg_val.7113:
+ 4540              	ul_reg_val.7135:
  4541 0000 00000000 	 .space 4
- 4542              	 .section .bss.ul_reg_val.7129,"aw",%nobits
+ 4542              	 .section .bss.ul_reg_val.7151,"aw",%nobits
  4543              	 .align 2
- 4546              	ul_reg_val.7129:
+ 4546              	ul_reg_val.7151:
  4547 0000 00000000 	 .space 4
- 4548              	 .section .bss.ul_reg_val.7135,"aw",%nobits
+ 4548              	 .section .bss.ul_reg_val.7157,"aw",%nobits
  4549              	 .align 2
- 4552              	ul_reg_val.7135:
+ 4552              	ul_reg_val.7157:
  4553 0000 00000000 	 .space 4
- 4554              	 .section .bss.ul_reg_val.7146,"aw",%nobits
+ 4554              	 .section .bss.ul_reg_val.7168,"aw",%nobits
  4555              	 .align 2
- 4558              	ul_reg_val.7146:
+ 4558              	ul_reg_val.7168:
  4559 0000 00000000 	 .space 4
  4560              	 .text
  4561              	.Letext0:
- 4562              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 4563              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 4562              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 4563              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
  4564              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
  4565              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
  4566              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
  4567              	 .file 7 ".././hal/sam3u1c/inc/component/component_pdc.h"
  4568              	 .file 8 ".././hal/sam3u1c/inc/component/component_usart.h"
- 4569              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 4570              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 4571              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 4572              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 4573              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 4569              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 4570              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 4571              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 4572              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 4573              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
  4574              	 .file 14 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
  4575              	 .file 15 ".././hal/sam3u1c/inc/usart.h"
 DEFINED SYMBOLS
@@ -6244,7 +6244,7 @@ DEFINED SYMBOLS
     {standard input}:572    .text.usart_init_rs232:00000000 $t
     {standard input}:579    .text.usart_init_rs232:00000000 usart_init_rs232
     {standard input}:679    .text.usart_init_rs232:00000078 $d
-    {standard input}:4528   .bss.ul_reg_val.7092:00000000 ul_reg_val.7092
+    {standard input}:4528   .bss.ul_reg_val.7114:00000000 ul_reg_val.7114
     {standard input}:686    .text.usart_init_hw_handshaking:00000000 $t
     {standard input}:693    .text.usart_init_hw_handshaking:00000000 usart_init_hw_handshaking
     {standard input}:750    .text.usart_init_hw_handshaking:0000003c $d
@@ -6254,11 +6254,11 @@ DEFINED SYMBOLS
     {standard input}:834    .text.usart_init_sync_master:00000000 $t
     {standard input}:841    .text.usart_init_sync_master:00000000 usart_init_sync_master
     {standard input}:942    .text.usart_init_sync_master:0000007c $d
-    {standard input}:4534   .bss.ul_reg_val.7108:00000000 ul_reg_val.7108
+    {standard input}:4534   .bss.ul_reg_val.7130:00000000 ul_reg_val.7130
     {standard input}:949    .text.usart_init_sync_slave:00000000 $t
     {standard input}:956    .text.usart_init_sync_slave:00000000 usart_init_sync_slave
     {standard input}:1047   .text.usart_init_sync_slave:00000068 $d
-    {standard input}:4540   .bss.ul_reg_val.7113:00000000 ul_reg_val.7113
+    {standard input}:4540   .bss.ul_reg_val.7135:00000000 ul_reg_val.7135
     {standard input}:1054   .text.usart_init_rs485:00000000 $t
     {standard input}:1061   .text.usart_init_rs485:00000000 usart_init_rs485
     {standard input}:1118   .text.usart_init_rs485:0000003c $d
@@ -6268,19 +6268,19 @@ DEFINED SYMBOLS
     {standard input}:1197   .text.usart_init_iso7816:00000000 $t
     {standard input}:1204   .text.usart_init_iso7816:00000000 usart_init_iso7816
     {standard input}:1392   .text.usart_init_iso7816:00000108 $d
-    {standard input}:4546   .bss.ul_reg_val.7129:00000000 ul_reg_val.7129
+    {standard input}:4546   .bss.ul_reg_val.7151:00000000 ul_reg_val.7151
     {standard input}:1399   .text.usart_init_spi_master:00000000 $t
     {standard input}:1406   .text.usart_init_spi_master:00000000 usart_init_spi_master
     {standard input}:1490   .text.usart_init_spi_master:00000070 $d
     {standard input}:1494   .text.usart_init_spi_master:00000080 $t
     {standard input}:1583   .text.usart_init_spi_master:00000104 $d
-    {standard input}:4552   .bss.ul_reg_val.7135:00000000 ul_reg_val.7135
+    {standard input}:4552   .bss.ul_reg_val.7157:00000000 ul_reg_val.7157
     {standard input}:1590   .text.usart_init_spi_slave:00000000 $t
     {standard input}:1597   .text.usart_init_spi_slave:00000000 usart_init_spi_slave
     {standard input}:1670   .text.usart_init_spi_slave:0000005c $d
     {standard input}:1674   .text.usart_init_spi_slave:0000006c $t
     {standard input}:1763   .text.usart_init_spi_slave:000000f0 $d
-    {standard input}:4558   .bss.ul_reg_val.7146:00000000 ul_reg_val.7146
+    {standard input}:4558   .bss.ul_reg_val.7168:00000000 ul_reg_val.7168
     {standard input}:1770   .text.usart_enable_tx:00000000 $t
     {standard input}:1777   .text.usart_enable_tx:00000000 usart_enable_tx
     {standard input}:1817   .text.usart_disable_tx:00000000 $t
@@ -6386,21 +6386,20 @@ DEFINED SYMBOLS
     {standard input}:4434   .text.usart_man_enable_drift_compensation:00000000 usart_man_enable_drift_compensation
     {standard input}:4476   .text.usart_man_disable_drift_compensation:00000000 $t
     {standard input}:4483   .text.usart_man_disable_drift_compensation:00000000 usart_man_disable_drift_compensation
-    {standard input}:4525   .bss.ul_reg_val.7092:00000000 $d
-    {standard input}:4531   .bss.ul_reg_val.7108:00000000 $d
-    {standard input}:4537   .bss.ul_reg_val.7113:00000000 $d
-    {standard input}:4543   .bss.ul_reg_val.7129:00000000 $d
-    {standard input}:4549   .bss.ul_reg_val.7135:00000000 $d
-    {standard input}:4555   .bss.ul_reg_val.7146:00000000 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+    {standard input}:4525   .bss.ul_reg_val.7114:00000000 $d
+    {standard input}:4531   .bss.ul_reg_val.7130:00000000 $d
+    {standard input}:4537   .bss.ul_reg_val.7135:00000000 $d
+    {standard input}:4543   .bss.ul_reg_val.7151:00000000 $d
+    {standard input}:4549   .bss.ul_reg_val.7157:00000000 $d
+    {standard input}:4555   .bss.ul_reg_val.7168:00000000 $d
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -6466,27 +6465,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

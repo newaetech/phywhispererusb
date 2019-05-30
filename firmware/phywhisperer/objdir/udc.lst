@@ -63,7 +63,7 @@
   73              	 .thumb_func
   74              	 .fpu softvfp
   76              	udc_get_string_serial_name:
-  77              	.LFB71:
+  77              	.LFB73:
   78              	 .file 1 ".././hal/sam3u1c/udc.c"
    1:.././hal/sam3u1c/udc.c **** /**
    2:.././hal/sam3u1c/udc.c ****  * \file
@@ -223,7 +223,7 @@
  106              	.L3:
  107 0010 00000000 	 .word usb_serial_number
  108              	 .cfi_endproc
- 109              	.LFE71:
+ 109              	.LFE73:
  111              	 .section .data.udc_string_desc,"aw",%progbits
  112              	 .align 2
  115              	udc_string_desc:
@@ -242,7 +242,7 @@
  124              	 .thumb_func
  125              	 .fpu softvfp
  127              	udc_get_interface_desc:
- 128              	.LFB72:
+ 128              	.LFB74:
  129:.././hal/sam3u1c/udc.c **** #  define USB_DEVICE_SERIAL_NAME_SIZE \
  130:.././hal/sam3u1c/udc.c **** 	USB_DEVICE_GET_SERIAL_NAME_LENGTH
  131:.././hal/sam3u1c/udc.c **** #elif defined USB_DEVICE_SERIAL_NAME
@@ -306,7 +306,7 @@
  157              	.L7:
  158 0010 00000000 	 .word udc_ptr_iface
  159              	 .cfi_endproc
- 160              	.LFE72:
+ 160              	.LFE74:
  162              	 .section .text.udc_get_eof_conf,"ax",%progbits
  163              	 .align 1
  164              	 .syntax unified
@@ -314,7 +314,7 @@
  166              	 .thumb_func
  167              	 .fpu softvfp
  169              	udc_get_eof_conf:
- 170              	.LFB73:
+ 170              	.LFB75:
  161:.././hal/sam3u1c/udc.c **** 
  162:.././hal/sam3u1c/udc.c **** /**
  163:.././hal/sam3u1c/udc.c ****  * \brief Returns a value to check the end of USB Configuration descriptor
@@ -368,7 +368,7 @@
  208              	.L11:
  209 0020 00000000 	 .word udc_ptr_conf
  210              	 .cfi_endproc
- 211              	.LFE73:
+ 211              	.LFE75:
  213              	 .section .text.udc_next_desc_in_iface,"ax",%progbits
  214              	 .align 1
  215              	 .syntax unified
@@ -376,7 +376,7 @@
  217              	 .thumb_func
  218              	 .fpu softvfp
  220              	udc_next_desc_in_iface:
- 221              	.LFB74:
+ 221              	.LFB76:
  173:.././hal/sam3u1c/udc.c **** 
  174:.././hal/sam3u1c/udc.c **** #if (0!=USB_DEVICE_MAX_EP)
  175:.././hal/sam3u1c/udc.c **** /**
@@ -504,7 +504,7 @@
  305              	.L21:
  306 0058 00000000 	 .word udc_get_eof_conf
  307              	 .cfi_endproc
- 308              	.LFE74:
+ 308              	.LFE76:
  310              	 .section .text.udc_update_iface_desc,"ax",%progbits
  311              	 .align 1
  312              	 .syntax unified
@@ -512,7 +512,7 @@
  314              	 .thumb_func
  315              	 .fpu softvfp
  317              	udc_update_iface_desc:
- 318              	.LFB75:
+ 318              	.LFB77:
  210:.././hal/sam3u1c/udc.c **** #endif
  211:.././hal/sam3u1c/udc.c **** 
  212:.././hal/sam3u1c/udc.c **** /**
@@ -686,7 +686,7 @@
  437 0094 00000000 	 .word udc_ptr_iface
  438 0098 00000000 	 .word udc_get_eof_conf
  439              	 .cfi_endproc
- 440              	.LFE75:
+ 440              	.LFE77:
  442              	 .section .text.udc_iface_disable,"ax",%progbits
  443              	 .align 1
  444              	 .syntax unified
@@ -694,7 +694,7 @@
  446              	 .thumb_func
  447              	 .fpu softvfp
  449              	udc_iface_disable:
- 450              	.LFB76:
+ 450              	.LFB78:
  257:.././hal/sam3u1c/udc.c **** 
  258:.././hal/sam3u1c/udc.c **** /**
  259:.././hal/sam3u1c/udc.c ****  * \brief Disables an usb device interface (UDI)
@@ -868,7 +868,7 @@
  569 0098 00000000 	 .word udc_next_desc_in_iface
  570 009c 00000000 	 .word udd_ep_free
  571              	 .cfi_endproc
- 572              	.LFE76:
+ 572              	.LFE78:
  574              	 .section .text.udc_iface_enable,"ax",%progbits
  575              	 .align 1
  576              	 .syntax unified
@@ -876,7 +876,7 @@
  578              	 .thumb_func
  579              	 .fpu softvfp
  581              	udc_iface_enable:
- 582              	.LFB77:
+ 582              	.LFB79:
  307:.././hal/sam3u1c/udc.c **** 
  308:.././hal/sam3u1c/udc.c **** /**
  309:.././hal/sam3u1c/udc.c ****  * \brief Enables an usb device interface (UDI)
@@ -1029,7 +1029,7 @@
  688 0090 00000000 	 .word udd_ep_alloc
  689 0094 00000000 	 .word udc_ptr_conf
  690              	 .cfi_endproc
- 691              	.LFE77:
+ 691              	.LFE79:
  693              	 .section .text.udc_start,"ax",%progbits
  694              	 .align 1
  695              	 .global udc_start
@@ -1038,7 +1038,7 @@
  698              	 .thumb_func
  699              	 .fpu softvfp
  701              	udc_start:
- 702              	.LFB78:
+ 702              	.LFB80:
  350:.././hal/sam3u1c/udc.c **** 
  351:.././hal/sam3u1c/udc.c **** /*! \brief Start the USB Device stack
  352:.././hal/sam3u1c/udc.c ****  */
@@ -1070,7 +1070,7 @@
  724              	.L55:
  725 000c 00000000 	 .word udd_enable
  726              	 .cfi_endproc
- 727              	.LFE78:
+ 727              	.LFE80:
  729              	 .section .text.udc_stop,"ax",%progbits
  730              	 .align 1
  731              	 .global udc_stop
@@ -1079,7 +1079,7 @@
  734              	 .thumb_func
  735              	 .fpu softvfp
  737              	udc_stop:
- 738              	.LFB79:
+ 738              	.LFB81:
  357:.././hal/sam3u1c/udc.c **** 
  358:.././hal/sam3u1c/udc.c **** /*! \brief Stop the USB Device stack
  359:.././hal/sam3u1c/udc.c ****  */
@@ -1117,7 +1117,7 @@
  765 0010 00000000 	 .word udd_disable
  766 0014 00000000 	 .word udc_reset
  767              	 .cfi_endproc
- 768              	.LFE79:
+ 768              	.LFE81:
  770              	 .section .text.udc_reset,"ax",%progbits
  771              	 .align 1
  772              	 .global udc_reset
@@ -1126,7 +1126,7 @@
  775              	 .thumb_func
  776              	 .fpu softvfp
  778              	udc_reset:
- 779              	.LFB80:
+ 779              	.LFB82:
  365:.././hal/sam3u1c/udc.c **** 
  366:.././hal/sam3u1c/udc.c **** /**
  367:.././hal/sam3u1c/udc.c ****  * \brief Reset the current configuration of the USB device,
@@ -1233,7 +1233,7 @@
  849 004c 00000000 	 .word udc_ptr_conf
  850 0050 00000000 	 .word udc_device_status
  851              	 .cfi_endproc
- 852              	.LFE80:
+ 852              	.LFE82:
  854              	 .section .text.udc_sof_notify,"ax",%progbits
  855              	 .align 1
  856              	 .global udc_sof_notify
@@ -1242,7 +1242,7 @@
  859              	 .thumb_func
  860              	 .fpu softvfp
  862              	udc_sof_notify:
- 863              	.LFB81:
+ 863              	.LFB83:
  396:.././hal/sam3u1c/udc.c **** 
  397:.././hal/sam3u1c/udc.c **** void udc_sof_notify(void)
  398:.././hal/sam3u1c/udc.c **** {
@@ -1340,7 +1340,7 @@
  940 0058 00000000 	 .word udc_num_configuration
  941 005c 00000000 	 .word udc_ptr_conf
  942              	 .cfi_endproc
- 943              	.LFE81:
+ 943              	.LFE83:
  945              	 .section .text.udc_req_std_dev_get_status,"ax",%progbits
  946              	 .align 1
  947              	 .syntax unified
@@ -1348,7 +1348,7 @@
  949              	 .thumb_func
  950              	 .fpu softvfp
  952              	udc_req_std_dev_get_status:
- 953              	.LFB82:
+ 953              	.LFB84:
  411:.././hal/sam3u1c/udc.c **** 
  412:.././hal/sam3u1c/udc.c **** /**
  413:.././hal/sam3u1c/udc.c ****  * \brief Standard device request to get device status
@@ -1405,7 +1405,7 @@
  991 0024 00000000 	 .word udc_device_status
  992 0028 00000000 	 .word udd_set_setup_payload
  993              	 .cfi_endproc
- 994              	.LFE82:
+ 994              	.LFE84:
  996              	 .section .text.udc_req_std_ep_get_status,"ax",%progbits
  997              	 .align 1
  998              	 .syntax unified
@@ -1413,7 +1413,7 @@
  1000              	 .thumb_func
  1001              	 .fpu softvfp
  1003              	udc_req_std_ep_get_status:
- 1004              	.LFB83:
+ 1004              	.LFB85:
  427:.././hal/sam3u1c/udc.c **** 
  428:.././hal/sam3u1c/udc.c **** #if (0!=USB_DEVICE_MAX_EP)
  429:.././hal/sam3u1c/udc.c **** /**
@@ -1489,10 +1489,10 @@
  1054              	.L82:
  1055 0034 00000000 	 .word udd_g_ctrlreq
  1056 0038 00000000 	 .word udd_ep_is_halted
- 1057 003c 00000000 	 .word udc_ep_status.7279
+ 1057 003c 00000000 	 .word udc_ep_status.7301
  1058 0040 00000000 	 .word udd_set_setup_payload
  1059              	 .cfi_endproc
- 1060              	.LFE83:
+ 1060              	.LFE85:
  1062              	 .section .text.udc_req_std_dev_clear_feature,"ax",%progbits
  1063              	 .align 1
  1064              	 .syntax unified
@@ -1500,7 +1500,7 @@
  1066              	 .thumb_func
  1067              	 .fpu softvfp
  1069              	udc_req_std_dev_clear_feature:
- 1070              	.LFB84:
+ 1070              	.LFB86:
  449:.././hal/sam3u1c/udc.c **** #endif
  450:.././hal/sam3u1c/udc.c **** 
  451:.././hal/sam3u1c/udc.c **** /**
@@ -1581,7 +1581,7 @@
  1125 0034 00000000 	 .word udd_g_ctrlreq
  1126 0038 00000000 	 .word udc_device_status
  1127              	 .cfi_endproc
- 1128              	.LFE84:
+ 1128              	.LFE86:
  1130              	 .section .text.udc_req_std_ep_clear_feature,"ax",%progbits
  1131              	 .align 1
  1132              	 .syntax unified
@@ -1589,7 +1589,7 @@
  1134              	 .thumb_func
  1135              	 .fpu softvfp
  1137              	udc_req_std_ep_clear_feature:
- 1138              	.LFB85:
+ 1138              	.LFB87:
  472:.././hal/sam3u1c/udc.c **** 
  473:.././hal/sam3u1c/udc.c **** #if (0!=USB_DEVICE_MAX_EP)
  474:.././hal/sam3u1c/udc.c **** /**
@@ -1657,7 +1657,7 @@
  1185 0030 00000000 	 .word udd_g_ctrlreq
  1186 0034 00000000 	 .word udd_ep_clear_halt
  1187              	 .cfi_endproc
- 1188              	.LFE85:
+ 1188              	.LFE87:
  1190              	 .section .text.udc_req_std_dev_set_feature,"ax",%progbits
  1191              	 .align 1
  1192              	 .syntax unified
@@ -1665,7 +1665,7 @@
  1194              	 .thumb_func
  1195              	 .fpu softvfp
  1197              	udc_req_std_dev_set_feature:
- 1198              	.LFB86:
+ 1198              	.LFB88:
  490:.././hal/sam3u1c/udc.c **** #endif
  491:.././hal/sam3u1c/udc.c **** 
  492:.././hal/sam3u1c/udc.c **** /**
@@ -1880,7 +1880,7 @@
  1330 00b4 00000000 	 .word udd_test_mode_se0_nak
  1331 00b8 00000000 	 .word udd_test_mode_packet
  1332              	 .cfi_endproc
- 1333              	.LFE86:
+ 1333              	.LFE88:
  1335              	 .section .text.udc_req_std_ep_set_feature,"ax",%progbits
  1336              	 .align 1
  1337              	 .syntax unified
@@ -1888,7 +1888,7 @@
  1339              	 .thumb_func
  1340              	 .fpu softvfp
  1342              	udc_req_std_ep_set_feature:
- 1343              	.LFB87:
+ 1343              	.LFB89:
  553:.././hal/sam3u1c/udc.c **** 
  554:.././hal/sam3u1c/udc.c **** /**
  555:.././hal/sam3u1c/udc.c ****  * \brief Standard endpoint request to halt an endpoint
@@ -1965,7 +1965,7 @@
  1399 0040 00000000 	 .word udd_ep_abort
  1400 0044 00000000 	 .word udd_ep_set_halt
  1401              	 .cfi_endproc
- 1402              	.LFE87:
+ 1402              	.LFE89:
  1404              	 .section .text.udc_valid_address,"ax",%progbits
  1405              	 .align 1
  1406              	 .syntax unified
@@ -1973,7 +1973,7 @@
  1408              	 .thumb_func
  1409              	 .fpu softvfp
  1411              	udc_valid_address:
- 1412              	.LFB88:
+ 1412              	.LFB90:
  571:.././hal/sam3u1c/udc.c **** #endif
  572:.././hal/sam3u1c/udc.c **** 
  573:.././hal/sam3u1c/udc.c **** /**
@@ -2015,7 +2015,7 @@
  1441 001c 00000000 	 .word udd_g_ctrlreq
  1442 0020 00000000 	 .word udd_set_address
  1443              	 .cfi_endproc
- 1444              	.LFE88:
+ 1444              	.LFE90:
  1446              	 .section .text.udc_req_std_dev_set_address,"ax",%progbits
  1447              	 .align 1
  1448              	 .syntax unified
@@ -2023,7 +2023,7 @@
  1450              	 .thumb_func
  1451              	 .fpu softvfp
  1453              	udc_req_std_dev_set_address:
- 1454              	.LFB89:
+ 1454              	.LFB91:
  581:.././hal/sam3u1c/udc.c **** 
  582:.././hal/sam3u1c/udc.c **** /**
  583:.././hal/sam3u1c/udc.c ****  * \brief Standard device request to set device address
@@ -2086,7 +2086,7 @@
  1497 0020 00000000 	 .word udd_g_ctrlreq
  1498 0024 00000000 	 .word udc_valid_address
  1499              	 .cfi_endproc
- 1500              	.LFE89:
+ 1500              	.LFE91:
  1502              	 .section .text.udc_req_std_dev_get_str_desc,"ax",%progbits
  1503              	 .align 1
  1504              	 .syntax unified
@@ -2094,7 +2094,7 @@
  1506              	 .thumb_func
  1507              	 .fpu softvfp
  1509              	udc_req_std_dev_get_str_desc:
- 1510              	.LFB90:
+ 1510              	.LFB92:
  598:.././hal/sam3u1c/udc.c **** 
  599:.././hal/sam3u1c/udc.c **** /**
  600:.././hal/sam3u1c/udc.c ****  * \brief Standard device request to get device string descriptor
@@ -2231,10 +2231,10 @@
  646:.././hal/sam3u1c/udc.c **** 			udc_string_desc.string[i] = cpu_to_le16((le16_t)str[i]);
  1596              	 .loc 1 646 0 discriminator 3
  1597 0066 FB7B     	 ldrb r3,[r7,#15]
- 1598 0068 FA7B     	 ldrb r2,[r7,#15]
- 1599 006a B968     	 ldr r1,[r7,#8]
- 1600 006c 0A44     	 add r2,r2,r1
- 1601 006e 1278     	 ldrb r2,[r2]
+ 1598 0068 BA68     	 ldr r2,[r7,#8]
+ 1599 006a 1344     	 add r3,r3,r2
+ 1600 006c 1A78     	 ldrb r2,[r3]
+ 1601 006e FB7B     	 ldrb r3,[r7,#15]
  1602 0070 91B2     	 uxth r1,r2
  1603 0072 154A     	 ldr r2,.L143+24
  1604 0074 5B00     	 lsls r3,r3,#1
@@ -2307,7 +2307,7 @@
  1658 00c4 00000000 	 .word udc_get_string_serial_name
  1659 00c8 00000000 	 .word udc_string_desc
  1660              	 .cfi_endproc
- 1661              	.LFE90:
+ 1661              	.LFE92:
  1663              	 .section .text.udc_req_std_dev_get_descriptor,"ax",%progbits
  1664              	 .align 1
  1665              	 .syntax unified
@@ -2315,7 +2315,7 @@
  1667              	 .thumb_func
  1668              	 .fpu softvfp
  1670              	udc_req_std_dev_get_descriptor:
- 1671              	.LFB91:
+ 1671              	.LFB93:
  657:.././hal/sam3u1c/udc.c **** 
  658:.././hal/sam3u1c/udc.c **** /**
  659:.././hal/sam3u1c/udc.c ****  * \brief Standard device request to get descriptors about USB device
@@ -2800,7 +2800,7 @@
  2025 0214 00000000 	 .word udd_set_setup_payload
  2026 0218 00000000 	 .word udc_req_std_dev_get_str_desc
  2027              	 .cfi_endproc
- 2028              	.LFE91:
+ 2028              	.LFE93:
  2030              	 .section .text.udc_req_std_dev_get_configuration,"ax",%progbits
  2031              	 .align 1
  2032              	 .syntax unified
@@ -2808,7 +2808,7 @@
  2034              	 .thumb_func
  2035              	 .fpu softvfp
  2037              	udc_req_std_dev_get_configuration:
- 2038              	.LFB92:
+ 2038              	.LFB94:
  774:.././hal/sam3u1c/udc.c **** 
  775:.././hal/sam3u1c/udc.c **** /**
  776:.././hal/sam3u1c/udc.c ****  * \brief Standard device request to get configuration number
@@ -2864,7 +2864,7 @@
  2076 0024 00000000 	 .word udc_num_configuration
  2077 0028 00000000 	 .word udd_set_setup_payload
  2078              	 .cfi_endproc
- 2079              	.LFE92:
+ 2079              	.LFE94:
  2081              	 .section .text.udc_req_std_dev_set_configuration,"ax",%progbits
  2082              	 .align 1
  2083              	 .syntax unified
@@ -2872,7 +2872,7 @@
  2085              	 .thumb_func
  2086              	 .fpu softvfp
  2088              	udc_req_std_dev_set_configuration:
- 2089              	.LFB93:
+ 2089              	.LFB95:
  789:.././hal/sam3u1c/udc.c **** 
  790:.././hal/sam3u1c/udc.c **** /**
  791:.././hal/sam3u1c/udc.c ****  * \brief Standard device request to enable a configuration
@@ -3123,7 +3123,7 @@
  2269 00fc 00000000 	 .word udc_ptr_conf
  2270 0100 00000000 	 .word udc_iface_enable
  2271              	 .cfi_endproc
- 2272              	.LFE93:
+ 2272              	.LFE95:
  2274              	 .section .text.udc_req_std_iface_get_setting,"ax",%progbits
  2275              	 .align 1
  2276              	 .syntax unified
@@ -3131,7 +3131,7 @@
  2278              	 .thumb_func
  2279              	 .fpu softvfp
  2281              	udc_req_std_iface_get_setting:
- 2282              	.LFB94:
+ 2282              	.LFB96:
  853:.././hal/sam3u1c/udc.c **** 
  854:.././hal/sam3u1c/udc.c **** /**
  855:.././hal/sam3u1c/udc.c ****  * \brief Standard interface request
@@ -3280,10 +3280,10 @@
  2389 0084 00000000 	 .word udc_num_configuration
  2390 0088 00000000 	 .word udc_ptr_conf
  2391 008c 00000000 	 .word udc_update_iface_desc
- 2392 0090 00000000 	 .word udc_iface_setting.7349
+ 2392 0090 00000000 	 .word udc_iface_setting.7371
  2393 0094 00000000 	 .word udd_set_setup_payload
  2394              	 .cfi_endproc
- 2395              	.LFE94:
+ 2395              	.LFE96:
  2397              	 .section .text.udc_req_std_iface_set_setting,"ax",%progbits
  2398              	 .align 1
  2399              	 .syntax unified
@@ -3291,7 +3291,7 @@
  2401              	 .thumb_func
  2402              	 .fpu softvfp
  2404              	udc_req_std_iface_set_setting:
- 2405              	.LFB95:
+ 2405              	.LFB97:
  892:.././hal/sam3u1c/udc.c **** 
  893:.././hal/sam3u1c/udc.c **** /**
  894:.././hal/sam3u1c/udc.c ****  * \brief Standard interface request
@@ -3405,7 +3405,7 @@
  2487 0060 00000000 	 .word udc_iface_disable
  2488 0064 00000000 	 .word udc_iface_enable
  2489              	 .cfi_endproc
- 2490              	.LFE95:
+ 2490              	.LFE97:
  2492              	 .section .text.udc_reqstd,"ax",%progbits
  2493              	 .align 1
  2494              	 .syntax unified
@@ -3413,7 +3413,7 @@
  2496              	 .thumb_func
  2497              	 .fpu softvfp
  2499              	udc_reqstd:
- 2500              	.LFB96:
+ 2500              	.LFB98:
  921:.././hal/sam3u1c/udc.c **** 
  922:.././hal/sam3u1c/udc.c **** /**
  923:.././hal/sam3u1c/udc.c ****  * \brief Main routine to manage the standard USB SETUP request
@@ -3436,36 +3436,36 @@
  2512              	 .cfi_def_cfa_register 7
  929:.././hal/sam3u1c/udc.c **** 	if (Udd_setup_is_in()) {
  2513              	 .loc 1 929 0
- 2514 0004 4D4B     	 ldr r3,.L237
+ 2514 0004 514B     	 ldr r3,.L243
  2515 0006 1B78     	 ldrb r3,[r3]
  2516 0008 5BB2     	 sxtb r3,r3
  2517 000a 002B     	 cmp r3,#0
- 2518 000c 3EDA     	 bge .L207
+ 2518 000c 40DA     	 bge .L207
  930:.././hal/sam3u1c/udc.c **** 		// GET Standard Requests
  931:.././hal/sam3u1c/udc.c **** 		if (udd_g_ctrlreq.req.wLength == 0) {
  2519              	 .loc 1 931 0
- 2520 000e 4B4B     	 ldr r3,.L237
+ 2520 000e 4F4B     	 ldr r3,.L243
  2521 0010 DB88     	 ldrh r3,[r3,#6]
  2522 0012 002B     	 cmp r3,#0
  2523 0014 01D1     	 bne .L208
  932:.././hal/sam3u1c/udc.c **** 			return false; // Error for USB host
  2524              	 .loc 1 932 0
  2525 0016 0023     	 movs r3,#0
- 2526 0018 8EE0     	 b .L209
+ 2526 0018 96E0     	 b .L209
  2527              	.L208:
  933:.././hal/sam3u1c/udc.c **** 		}
  934:.././hal/sam3u1c/udc.c **** 
  935:.././hal/sam3u1c/udc.c **** 		if (USB_REQ_RECIP_DEVICE == Udd_setup_recipient()) {
  2528              	 .loc 1 935 0
- 2529 001a 484B     	 ldr r3,.L237
+ 2529 001a 4C4B     	 ldr r3,.L243
  2530 001c 1B78     	 ldrb r3,[r3]
  2531 001e 03F01F03 	 and r3,r3,#31
  2532 0022 002B     	 cmp r3,#0
- 2533 0024 14D1     	 bne .L210
+ 2533 0024 14D1     	 bne .L236
  936:.././hal/sam3u1c/udc.c **** 			// Standard Get Device request
  937:.././hal/sam3u1c/udc.c **** 			switch (udd_g_ctrlreq.req.bRequest) {
  2534              	 .loc 1 937 0
- 2535 0026 454B     	 ldr r3,.L237
+ 2535 0026 494B     	 ldr r3,.L243
  2536 0028 5B78     	 ldrb r3,[r3,#1]
  2537 002a 062B     	 cmp r3,#6
  2538 002c 08D0     	 beq .L212
@@ -3482,289 +3482,311 @@
  944:.././hal/sam3u1c/udc.c **** 			default:
  945:.././hal/sam3u1c/udc.c **** 				break;
  2543              	 .loc 1 945 0
- 2544 0036 0BE0     	 b .L210
+ 2544 0036 0CE0     	 b .L210
  2545              	.L214:
  939:.././hal/sam3u1c/udc.c **** 			case USB_REQ_GET_DESCRIPTOR:
  2546              	 .loc 1 939 0
- 2547 0038 414B     	 ldr r3,.L237+4
+ 2547 0038 454B     	 ldr r3,.L243+4
  2548 003a 9847     	 blx r3
  2549              	.LVL52:
  2550 003c 0346     	 mov r3,r0
- 2551 003e 7BE0     	 b .L209
+ 2551 003e 83E0     	 b .L209
  2552              	.L212:
  941:.././hal/sam3u1c/udc.c **** 			case USB_REQ_GET_CONFIGURATION:
  2553              	 .loc 1 941 0
- 2554 0040 404B     	 ldr r3,.L237+8
+ 2554 0040 444B     	 ldr r3,.L243+8
  2555 0042 9847     	 blx r3
  2556              	.LVL53:
  2557 0044 0346     	 mov r3,r0
- 2558 0046 77E0     	 b .L209
+ 2558 0046 7FE0     	 b .L209
  2559              	.L213:
  943:.././hal/sam3u1c/udc.c **** 			default:
  2560              	 .loc 1 943 0
- 2561 0048 3F4B     	 ldr r3,.L237+12
+ 2561 0048 434B     	 ldr r3,.L243+12
  2562 004a 9847     	 blx r3
  2563              	.LVL54:
  2564 004c 0346     	 mov r3,r0
- 2565 004e 73E0     	 b .L209
- 2566              	.L210:
+ 2565 004e 7BE0     	 b .L209
+ 2566              	.L236:
  946:.././hal/sam3u1c/udc.c **** 			}
  947:.././hal/sam3u1c/udc.c **** 		}
+ 2567              	 .loc 1 947 0
+ 2568 0050 00BF     	 nop
+ 2569              	.L210:
  948:.././hal/sam3u1c/udc.c **** 
  949:.././hal/sam3u1c/udc.c **** 		if (USB_REQ_RECIP_INTERFACE == Udd_setup_recipient()) {
- 2567              	 .loc 1 949 0
- 2568 0050 3A4B     	 ldr r3,.L237
- 2569 0052 1B78     	 ldrb r3,[r3]
- 2570 0054 03F01F03 	 and r3,r3,#31
- 2571 0058 012B     	 cmp r3,#1
- 2572 005a 08D1     	 bne .L215
+ 2570              	 .loc 1 949 0
+ 2571 0052 3E4B     	 ldr r3,.L243
+ 2572 0054 1B78     	 ldrb r3,[r3]
+ 2573 0056 03F01F03 	 and r3,r3,#31
+ 2574 005a 012B     	 cmp r3,#1
+ 2575 005c 08D1     	 bne .L237
  950:.././hal/sam3u1c/udc.c **** 			// Standard Get Interface request
  951:.././hal/sam3u1c/udc.c **** 			switch (udd_g_ctrlreq.req.bRequest) {
- 2573              	 .loc 1 951 0
- 2574 005c 374B     	 ldr r3,.L237
- 2575 005e 5B78     	 ldrb r3,[r3,#1]
- 2576 0060 0A2B     	 cmp r3,#10
- 2577 0062 00D0     	 beq .L217
+ 2576              	 .loc 1 951 0
+ 2577 005e 3B4B     	 ldr r3,.L243
+ 2578 0060 5B78     	 ldrb r3,[r3,#1]
+ 2579 0062 0A2B     	 cmp r3,#10
+ 2580 0064 00D0     	 beq .L217
  952:.././hal/sam3u1c/udc.c **** 			case USB_REQ_GET_INTERFACE:
  953:.././hal/sam3u1c/udc.c **** 				return udc_req_std_iface_get_setting();
  954:.././hal/sam3u1c/udc.c **** 			default:
  955:.././hal/sam3u1c/udc.c **** 				break;
- 2578              	 .loc 1 955 0
- 2579 0064 03E0     	 b .L215
- 2580              	.L217:
+ 2581              	 .loc 1 955 0
+ 2582 0066 04E0     	 b .L215
+ 2583              	.L217:
  953:.././hal/sam3u1c/udc.c **** 			default:
- 2581              	 .loc 1 953 0
- 2582 0066 394B     	 ldr r3,.L237+16
- 2583 0068 9847     	 blx r3
- 2584              	.LVL55:
- 2585 006a 0346     	 mov r3,r0
- 2586 006c 64E0     	 b .L209
- 2587              	.L215:
+ 2584              	 .loc 1 953 0
+ 2585 0068 3C4B     	 ldr r3,.L243+16
+ 2586 006a 9847     	 blx r3
+ 2587              	.LVL55:
+ 2588 006c 0346     	 mov r3,r0
+ 2589 006e 6BE0     	 b .L209
+ 2590              	.L237:
  956:.././hal/sam3u1c/udc.c **** 			}
  957:.././hal/sam3u1c/udc.c **** 		}
+ 2591              	 .loc 1 957 0
+ 2592 0070 00BF     	 nop
+ 2593              	.L215:
  958:.././hal/sam3u1c/udc.c **** #if (0!=USB_DEVICE_MAX_EP)
  959:.././hal/sam3u1c/udc.c **** 		if (USB_REQ_RECIP_ENDPOINT == Udd_setup_recipient()) {
- 2588              	 .loc 1 959 0
- 2589 006e 334B     	 ldr r3,.L237
- 2590 0070 1B78     	 ldrb r3,[r3]
- 2591 0072 03F01F03 	 and r3,r3,#31
- 2592 0076 022B     	 cmp r3,#2
- 2593 0078 5DD1     	 bne .L221
+ 2594              	 .loc 1 959 0
+ 2595 0072 364B     	 ldr r3,.L243
+ 2596 0074 1B78     	 ldrb r3,[r3]
+ 2597 0076 03F01F03 	 and r3,r3,#31
+ 2598 007a 022B     	 cmp r3,#2
+ 2599 007c 60D1     	 bne .L238
  960:.././hal/sam3u1c/udc.c **** 			// Standard Get Endpoint request
  961:.././hal/sam3u1c/udc.c **** 			switch (udd_g_ctrlreq.req.bRequest) {
- 2594              	 .loc 1 961 0
- 2595 007a 304B     	 ldr r3,.L237
- 2596 007c 5B78     	 ldrb r3,[r3,#1]
- 2597 007e 002B     	 cmp r3,#0
- 2598 0080 00D0     	 beq .L220
+ 2600              	 .loc 1 961 0
+ 2601 007e 334B     	 ldr r3,.L243
+ 2602 0080 5B78     	 ldrb r3,[r3,#1]
+ 2603 0082 002B     	 cmp r3,#0
+ 2604 0084 00D0     	 beq .L220
  962:.././hal/sam3u1c/udc.c **** 			case USB_REQ_GET_STATUS:
  963:.././hal/sam3u1c/udc.c **** 				return udc_req_std_ep_get_status();
  964:.././hal/sam3u1c/udc.c **** 			default:
  965:.././hal/sam3u1c/udc.c **** 				break;
- 2599              	 .loc 1 965 0
- 2600 0082 58E0     	 b .L221
- 2601              	.L220:
+ 2605              	 .loc 1 965 0
+ 2606 0086 5EE0     	 b .L221
+ 2607              	.L220:
  963:.././hal/sam3u1c/udc.c **** 			default:
- 2602              	 .loc 1 963 0
- 2603 0084 324B     	 ldr r3,.L237+20
- 2604 0086 9847     	 blx r3
- 2605              	.LVL56:
- 2606 0088 0346     	 mov r3,r0
- 2607 008a 55E0     	 b .L209
- 2608              	.L207:
+ 2608              	 .loc 1 963 0
+ 2609 0088 354B     	 ldr r3,.L243+20
+ 2610 008a 9847     	 blx r3
+ 2611              	.LVL56:
+ 2612 008c 0346     	 mov r3,r0
+ 2613 008e 5BE0     	 b .L209
+ 2614              	.L207:
  966:.././hal/sam3u1c/udc.c **** 			}
  967:.././hal/sam3u1c/udc.c **** 		}
  968:.././hal/sam3u1c/udc.c **** #endif
  969:.././hal/sam3u1c/udc.c **** 	} else {
  970:.././hal/sam3u1c/udc.c **** 		// SET Standard Requests
  971:.././hal/sam3u1c/udc.c **** 		if (USB_REQ_RECIP_DEVICE == Udd_setup_recipient()) {
- 2609              	 .loc 1 971 0
- 2610 008c 2B4B     	 ldr r3,.L237
- 2611 008e 1B78     	 ldrb r3,[r3]
- 2612 0090 03F01F03 	 and r3,r3,#31
- 2613 0094 002B     	 cmp r3,#0
- 2614 0096 2AD1     	 bne .L222
+ 2615              	 .loc 1 971 0
+ 2616 0090 2E4B     	 ldr r3,.L243
+ 2617 0092 1B78     	 ldrb r3,[r3]
+ 2618 0094 03F01F03 	 and r3,r3,#31
+ 2619 0098 002B     	 cmp r3,#0
+ 2620 009a 29D1     	 bne .L239
  972:.././hal/sam3u1c/udc.c **** 			// Standard Set Device request
  973:.././hal/sam3u1c/udc.c **** 			switch (udd_g_ctrlreq.req.bRequest) {
- 2615              	 .loc 1 973 0
- 2616 0098 284B     	 ldr r3,.L237
- 2617 009a 5B78     	 ldrb r3,[r3,#1]
- 2618 009c 013B     	 subs r3,r3,#1
- 2619 009e 082B     	 cmp r3,#8
- 2620 00a0 24D8     	 bhi .L236
- 2621 00a2 01A2     	 adr r2,.L225
- 2622 00a4 52F823F0 	 ldr pc,[r2,r3,lsl#2]
- 2623              	 .p2align 2
- 2624              	.L225:
- 2625 00a8 D5000000 	 .word .L224+1
- 2626 00ac ED000000 	 .word .L236+1
- 2627 00b0 DD000000 	 .word .L226+1
- 2628 00b4 ED000000 	 .word .L236+1
- 2629 00b8 CD000000 	 .word .L227+1
- 2630 00bc ED000000 	 .word .L236+1
- 2631 00c0 ED000000 	 .word .L236+1
- 2632 00c4 ED000000 	 .word .L236+1
- 2633 00c8 E5000000 	 .word .L229+1
- 2634              	 .p2align 1
- 2635              	.L227:
+ 2621              	 .loc 1 973 0
+ 2622 009c 2B4B     	 ldr r3,.L243
+ 2623 009e 5B78     	 ldrb r3,[r3,#1]
+ 2624 00a0 013B     	 subs r3,r3,#1
+ 2625 00a2 082B     	 cmp r3,#8
+ 2626 00a4 26D8     	 bhi .L240
+ 2627 00a6 01A2     	 adr r2,.L225
+ 2628 00a8 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+ 2629              	 .p2align 2
+ 2630              	.L225:
+ 2631 00ac D9000000 	 .word .L224+1
+ 2632 00b0 F5000000 	 .word .L240+1
+ 2633 00b4 E1000000 	 .word .L226+1
+ 2634 00b8 F5000000 	 .word .L240+1
+ 2635 00bc D1000000 	 .word .L227+1
+ 2636 00c0 F5000000 	 .word .L240+1
+ 2637 00c4 F5000000 	 .word .L240+1
+ 2638 00c8 F5000000 	 .word .L240+1
+ 2639 00cc E9000000 	 .word .L229+1
+ 2640              	 .p2align 1
+ 2641              	.L227:
  974:.././hal/sam3u1c/udc.c **** 			case USB_REQ_SET_ADDRESS:
  975:.././hal/sam3u1c/udc.c **** 				return udc_req_std_dev_set_address();
- 2636              	 .loc 1 975 0
- 2637 00cc 214B     	 ldr r3,.L237+24
- 2638 00ce 9847     	 blx r3
- 2639              	.LVL57:
- 2640 00d0 0346     	 mov r3,r0
- 2641 00d2 31E0     	 b .L209
- 2642              	.L224:
+ 2642              	 .loc 1 975 0
+ 2643 00d0 244B     	 ldr r3,.L243+24
+ 2644 00d2 9847     	 blx r3
+ 2645              	.LVL57:
+ 2646 00d4 0346     	 mov r3,r0
+ 2647 00d6 37E0     	 b .L209
+ 2648              	.L224:
  976:.././hal/sam3u1c/udc.c **** 			case USB_REQ_CLEAR_FEATURE:
  977:.././hal/sam3u1c/udc.c **** 				return udc_req_std_dev_clear_feature();
- 2643              	 .loc 1 977 0
- 2644 00d4 204B     	 ldr r3,.L237+28
- 2645 00d6 9847     	 blx r3
- 2646              	.LVL58:
- 2647 00d8 0346     	 mov r3,r0
- 2648 00da 2DE0     	 b .L209
- 2649              	.L226:
+ 2649              	 .loc 1 977 0
+ 2650 00d8 234B     	 ldr r3,.L243+28
+ 2651 00da 9847     	 blx r3
+ 2652              	.LVL58:
+ 2653 00dc 0346     	 mov r3,r0
+ 2654 00de 33E0     	 b .L209
+ 2655              	.L226:
  978:.././hal/sam3u1c/udc.c **** 			case USB_REQ_SET_FEATURE:
  979:.././hal/sam3u1c/udc.c **** 				return udc_req_std_dev_set_feature();
- 2650              	 .loc 1 979 0
- 2651 00dc 1F4B     	 ldr r3,.L237+32
- 2652 00de 9847     	 blx r3
- 2653              	.LVL59:
- 2654 00e0 0346     	 mov r3,r0
- 2655 00e2 29E0     	 b .L209
- 2656              	.L229:
+ 2656              	 .loc 1 979 0
+ 2657 00e0 224B     	 ldr r3,.L243+32
+ 2658 00e2 9847     	 blx r3
+ 2659              	.LVL59:
+ 2660 00e4 0346     	 mov r3,r0
+ 2661 00e6 2FE0     	 b .L209
+ 2662              	.L229:
  980:.././hal/sam3u1c/udc.c **** 			case USB_REQ_SET_CONFIGURATION:
  981:.././hal/sam3u1c/udc.c **** 				return udc_req_std_dev_set_configuration();
- 2657              	 .loc 1 981 0
- 2658 00e4 1E4B     	 ldr r3,.L237+36
- 2659 00e6 9847     	 blx r3
- 2660              	.LVL60:
- 2661 00e8 0346     	 mov r3,r0
- 2662 00ea 25E0     	 b .L209
- 2663              	.L236:
+ 2663              	 .loc 1 981 0
+ 2664 00e8 214B     	 ldr r3,.L243+36
+ 2665 00ea 9847     	 blx r3
+ 2666              	.LVL60:
+ 2667 00ec 0346     	 mov r3,r0
+ 2668 00ee 2BE0     	 b .L209
+ 2669              	.L239:
  982:.././hal/sam3u1c/udc.c **** 			case USB_REQ_SET_DESCRIPTOR:
  983:.././hal/sam3u1c/udc.c **** 				/* Not supported (defined as optional by the USB 2.0 spec) */
  984:.././hal/sam3u1c/udc.c **** 				break;
  985:.././hal/sam3u1c/udc.c **** 			default:
  986:.././hal/sam3u1c/udc.c **** 				break;
- 2664              	 .loc 1 986 0
- 2665 00ec 00BF     	 nop
- 2666              	.L222:
  987:.././hal/sam3u1c/udc.c **** 			}
  988:.././hal/sam3u1c/udc.c **** 		}
+ 2670              	 .loc 1 988 0
+ 2671 00f0 00BF     	 nop
+ 2672 00f2 00E0     	 b .L222
+ 2673              	.L240:
+ 986:.././hal/sam3u1c/udc.c **** 			}
+ 2674              	 .loc 1 986 0
+ 2675 00f4 00BF     	 nop
+ 2676              	.L222:
  989:.././hal/sam3u1c/udc.c **** 
  990:.././hal/sam3u1c/udc.c **** 		if (USB_REQ_RECIP_INTERFACE == Udd_setup_recipient()) {
- 2667              	 .loc 1 990 0
- 2668 00ee 134B     	 ldr r3,.L237
- 2669 00f0 1B78     	 ldrb r3,[r3]
- 2670 00f2 03F01F03 	 and r3,r3,#31
- 2671 00f6 012B     	 cmp r3,#1
- 2672 00f8 08D1     	 bne .L230
+ 2677              	 .loc 1 990 0
+ 2678 00f6 154B     	 ldr r3,.L243
+ 2679 00f8 1B78     	 ldrb r3,[r3]
+ 2680 00fa 03F01F03 	 and r3,r3,#31
+ 2681 00fe 012B     	 cmp r3,#1
+ 2682 0100 08D1     	 bne .L241
  991:.././hal/sam3u1c/udc.c **** 			// Standard Set Interface request
  992:.././hal/sam3u1c/udc.c **** 			switch (udd_g_ctrlreq.req.bRequest) {
- 2673              	 .loc 1 992 0
- 2674 00fa 104B     	 ldr r3,.L237
- 2675 00fc 5B78     	 ldrb r3,[r3,#1]
- 2676 00fe 0B2B     	 cmp r3,#11
- 2677 0100 00D0     	 beq .L232
+ 2683              	 .loc 1 992 0
+ 2684 0102 124B     	 ldr r3,.L243
+ 2685 0104 5B78     	 ldrb r3,[r3,#1]
+ 2686 0106 0B2B     	 cmp r3,#11
+ 2687 0108 00D0     	 beq .L232
  993:.././hal/sam3u1c/udc.c **** 			case USB_REQ_SET_INTERFACE:
  994:.././hal/sam3u1c/udc.c **** 				return udc_req_std_iface_set_setting();
  995:.././hal/sam3u1c/udc.c **** 			default:
  996:.././hal/sam3u1c/udc.c **** 				break;
- 2678              	 .loc 1 996 0
- 2679 0102 03E0     	 b .L230
- 2680              	.L232:
+ 2688              	 .loc 1 996 0
+ 2689 010a 04E0     	 b .L230
+ 2690              	.L232:
  994:.././hal/sam3u1c/udc.c **** 			default:
- 2681              	 .loc 1 994 0
- 2682 0104 174B     	 ldr r3,.L237+40
- 2683 0106 9847     	 blx r3
- 2684              	.LVL61:
- 2685 0108 0346     	 mov r3,r0
- 2686 010a 15E0     	 b .L209
- 2687              	.L230:
+ 2691              	 .loc 1 994 0
+ 2692 010c 194B     	 ldr r3,.L243+40
+ 2693 010e 9847     	 blx r3
+ 2694              	.LVL61:
+ 2695 0110 0346     	 mov r3,r0
+ 2696 0112 19E0     	 b .L209
+ 2697              	.L241:
  997:.././hal/sam3u1c/udc.c **** 			}
  998:.././hal/sam3u1c/udc.c **** 		}
+ 2698              	 .loc 1 998 0
+ 2699 0114 00BF     	 nop
+ 2700              	.L230:
  999:.././hal/sam3u1c/udc.c **** #if (0!=USB_DEVICE_MAX_EP)
 1000:.././hal/sam3u1c/udc.c **** 		if (USB_REQ_RECIP_ENDPOINT == Udd_setup_recipient()) {
- 2688              	 .loc 1 1000 0
- 2689 010c 0B4B     	 ldr r3,.L237
- 2690 010e 1B78     	 ldrb r3,[r3]
- 2691 0110 03F01F03 	 and r3,r3,#31
- 2692 0114 022B     	 cmp r3,#2
- 2693 0116 0ED1     	 bne .L221
+ 2701              	 .loc 1 1000 0
+ 2702 0116 0D4B     	 ldr r3,.L243
+ 2703 0118 1B78     	 ldrb r3,[r3]
+ 2704 011a 03F01F03 	 and r3,r3,#31
+ 2705 011e 022B     	 cmp r3,#2
+ 2706 0120 10D1     	 bne .L242
 1001:.././hal/sam3u1c/udc.c **** 			// Standard Set Endpoint request
 1002:.././hal/sam3u1c/udc.c **** 			switch (udd_g_ctrlreq.req.bRequest) {
- 2694              	 .loc 1 1002 0
- 2695 0118 084B     	 ldr r3,.L237
- 2696 011a 5B78     	 ldrb r3,[r3,#1]
- 2697 011c 012B     	 cmp r3,#1
- 2698 011e 02D0     	 beq .L234
- 2699 0120 032B     	 cmp r3,#3
- 2700 0122 04D0     	 beq .L235
+ 2707              	 .loc 1 1002 0
+ 2708 0122 0A4B     	 ldr r3,.L243
+ 2709 0124 5B78     	 ldrb r3,[r3,#1]
+ 2710 0126 012B     	 cmp r3,#1
+ 2711 0128 02D0     	 beq .L234
+ 2712 012a 032B     	 cmp r3,#3
+ 2713 012c 04D0     	 beq .L235
 1003:.././hal/sam3u1c/udc.c **** 			case USB_REQ_CLEAR_FEATURE:
 1004:.././hal/sam3u1c/udc.c **** 				return udc_req_std_ep_clear_feature();
 1005:.././hal/sam3u1c/udc.c **** 			case USB_REQ_SET_FEATURE:
 1006:.././hal/sam3u1c/udc.c **** 				return udc_req_std_ep_set_feature();
 1007:.././hal/sam3u1c/udc.c **** 			default:
 1008:.././hal/sam3u1c/udc.c **** 				break;
- 2701              	 .loc 1 1008 0
- 2702 0124 07E0     	 b .L221
- 2703              	.L234:
+ 2714              	 .loc 1 1008 0
+ 2715 012e 0AE0     	 b .L221
+ 2716              	.L234:
 1004:.././hal/sam3u1c/udc.c **** 			case USB_REQ_SET_FEATURE:
- 2704              	 .loc 1 1004 0
- 2705 0126 104B     	 ldr r3,.L237+44
- 2706 0128 9847     	 blx r3
- 2707              	.LVL62:
- 2708 012a 0346     	 mov r3,r0
- 2709 012c 04E0     	 b .L209
- 2710              	.L235:
+ 2717              	 .loc 1 1004 0
+ 2718 0130 114B     	 ldr r3,.L243+44
+ 2719 0132 9847     	 blx r3
+ 2720              	.LVL62:
+ 2721 0134 0346     	 mov r3,r0
+ 2722 0136 07E0     	 b .L209
+ 2723              	.L235:
 1006:.././hal/sam3u1c/udc.c **** 			default:
- 2711              	 .loc 1 1006 0
- 2712 012e 0F4B     	 ldr r3,.L237+48
- 2713 0130 9847     	 blx r3
- 2714              	.LVL63:
- 2715 0132 0346     	 mov r3,r0
- 2716 0134 00E0     	 b .L209
- 2717              	.L221:
+ 2724              	 .loc 1 1006 0
+ 2725 0138 104B     	 ldr r3,.L243+48
+ 2726 013a 9847     	 blx r3
+ 2727              	.LVL63:
+ 2728 013c 0346     	 mov r3,r0
+ 2729 013e 03E0     	 b .L209
+ 2730              	.L238:
+ 967:.././hal/sam3u1c/udc.c **** #endif
+ 2731              	 .loc 1 967 0
+ 2732 0140 00BF     	 nop
+ 2733 0142 00E0     	 b .L221
+ 2734              	.L242:
 1009:.././hal/sam3u1c/udc.c **** 			}
 1010:.././hal/sam3u1c/udc.c **** 		}
+ 2735              	 .loc 1 1010 0
+ 2736 0144 00BF     	 nop
+ 2737              	.L221:
 1011:.././hal/sam3u1c/udc.c **** #endif
 1012:.././hal/sam3u1c/udc.c **** 	}
 1013:.././hal/sam3u1c/udc.c **** 	return false;
- 2718              	 .loc 1 1013 0
- 2719 0136 0023     	 movs r3,#0
- 2720              	.L209:
+ 2738              	 .loc 1 1013 0
+ 2739 0146 0023     	 movs r3,#0
+ 2740              	.L209:
 1014:.././hal/sam3u1c/udc.c **** }
- 2721              	 .loc 1 1014 0
- 2722 0138 1846     	 mov r0,r3
- 2723 013a 80BD     	 pop {r7,pc}
- 2724              	.L238:
- 2725              	 .align 2
- 2726              	.L237:
- 2727 013c 00000000 	 .word udd_g_ctrlreq
- 2728 0140 00000000 	 .word udc_req_std_dev_get_status
- 2729 0144 00000000 	 .word udc_req_std_dev_get_descriptor
- 2730 0148 00000000 	 .word udc_req_std_dev_get_configuration
- 2731 014c 00000000 	 .word udc_req_std_iface_get_setting
- 2732 0150 00000000 	 .word udc_req_std_ep_get_status
- 2733 0154 00000000 	 .word udc_req_std_dev_set_address
- 2734 0158 00000000 	 .word udc_req_std_dev_clear_feature
- 2735 015c 00000000 	 .word udc_req_std_dev_set_feature
- 2736 0160 00000000 	 .word udc_req_std_dev_set_configuration
- 2737 0164 00000000 	 .word udc_req_std_iface_set_setting
- 2738 0168 00000000 	 .word udc_req_std_ep_clear_feature
- 2739 016c 00000000 	 .word udc_req_std_ep_set_feature
- 2740              	 .cfi_endproc
- 2741              	.LFE96:
- 2743              	 .section .text.udc_req_iface,"ax",%progbits
- 2744              	 .align 1
- 2745              	 .syntax unified
- 2746              	 .thumb
- 2747              	 .thumb_func
- 2748              	 .fpu softvfp
- 2750              	udc_req_iface:
- 2751              	.LFB97:
+ 2741              	 .loc 1 1014 0
+ 2742 0148 1846     	 mov r0,r3
+ 2743 014a 80BD     	 pop {r7,pc}
+ 2744              	.L244:
+ 2745              	 .align 2
+ 2746              	.L243:
+ 2747 014c 00000000 	 .word udd_g_ctrlreq
+ 2748 0150 00000000 	 .word udc_req_std_dev_get_status
+ 2749 0154 00000000 	 .word udc_req_std_dev_get_descriptor
+ 2750 0158 00000000 	 .word udc_req_std_dev_get_configuration
+ 2751 015c 00000000 	 .word udc_req_std_iface_get_setting
+ 2752 0160 00000000 	 .word udc_req_std_ep_get_status
+ 2753 0164 00000000 	 .word udc_req_std_dev_set_address
+ 2754 0168 00000000 	 .word udc_req_std_dev_clear_feature
+ 2755 016c 00000000 	 .word udc_req_std_dev_set_feature
+ 2756 0170 00000000 	 .word udc_req_std_dev_set_configuration
+ 2757 0174 00000000 	 .word udc_req_std_iface_set_setting
+ 2758 0178 00000000 	 .word udc_req_std_ep_clear_feature
+ 2759 017c 00000000 	 .word udc_req_std_ep_set_feature
+ 2760              	 .cfi_endproc
+ 2761              	.LFE98:
+ 2763              	 .section .text.udc_req_iface,"ax",%progbits
+ 2764              	 .align 1
+ 2765              	 .syntax unified
+ 2766              	 .thumb
+ 2767              	 .thumb_func
+ 2768              	 .fpu softvfp
+ 2770              	udc_req_iface:
+ 2771              	.LFB99:
 1015:.././hal/sam3u1c/udc.c **** 
 1016:.././hal/sam3u1c/udc.c **** /**
 1017:.././hal/sam3u1c/udc.c ****  * \brief Send the SETUP interface request to UDI
@@ -3773,154 +3795,154 @@
 1020:.././hal/sam3u1c/udc.c ****  */
 1021:.././hal/sam3u1c/udc.c **** static bool udc_req_iface(void)
 1022:.././hal/sam3u1c/udc.c **** {
- 2752              	 .loc 1 1022 0
- 2753              	 .cfi_startproc
- 2754              	 
- 2755              	 
- 2756 0000 80B5     	 push {r7,lr}
- 2757              	.LCFI95:
- 2758              	 .cfi_def_cfa_offset 8
- 2759              	 .cfi_offset 7,-8
- 2760              	 .cfi_offset 14,-4
- 2761 0002 82B0     	 sub sp,sp,#8
- 2762              	.LCFI96:
- 2763              	 .cfi_def_cfa_offset 16
- 2764 0004 00AF     	 add r7,sp,#0
- 2765              	.LCFI97:
- 2766              	 .cfi_def_cfa_register 7
+ 2772              	 .loc 1 1022 0
+ 2773              	 .cfi_startproc
+ 2774              	 
+ 2775              	 
+ 2776 0000 80B5     	 push {r7,lr}
+ 2777              	.LCFI95:
+ 2778              	 .cfi_def_cfa_offset 8
+ 2779              	 .cfi_offset 7,-8
+ 2780              	 .cfi_offset 14,-4
+ 2781 0002 82B0     	 sub sp,sp,#8
+ 2782              	.LCFI96:
+ 2783              	 .cfi_def_cfa_offset 16
+ 2784 0004 00AF     	 add r7,sp,#0
+ 2785              	.LCFI97:
+ 2786              	 .cfi_def_cfa_register 7
 1023:.././hal/sam3u1c/udc.c **** 	uint8_t iface_num;
 1024:.././hal/sam3u1c/udc.c **** 	udi_api_t UDC_DESC_STORAGE *udi_api;
 1025:.././hal/sam3u1c/udc.c **** 
 1026:.././hal/sam3u1c/udc.c **** 	if (0 == udc_num_configuration) {
- 2767              	 .loc 1 1026 0
- 2768 0006 204B     	 ldr r3,.L245
- 2769 0008 1B78     	 ldrb r3,[r3]
- 2770 000a 002B     	 cmp r3,#0
- 2771 000c 01D1     	 bne .L240
+ 2787              	 .loc 1 1026 0
+ 2788 0006 204B     	 ldr r3,.L251
+ 2789 0008 1B78     	 ldrb r3,[r3]
+ 2790 000a 002B     	 cmp r3,#0
+ 2791 000c 01D1     	 bne .L246
 1027:.././hal/sam3u1c/udc.c **** 		return false; // The device is not is configured state yet
- 2772              	 .loc 1 1027 0
- 2773 000e 0023     	 movs r3,#0
- 2774 0010 36E0     	 b .L241
- 2775              	.L240:
+ 2792              	 .loc 1 1027 0
+ 2793 000e 0023     	 movs r3,#0
+ 2794 0010 36E0     	 b .L247
+ 2795              	.L246:
 1028:.././hal/sam3u1c/udc.c **** 	}
 1029:.././hal/sam3u1c/udc.c **** 	// Check interface number
 1030:.././hal/sam3u1c/udc.c **** 	iface_num = udd_g_ctrlreq.req.wIndex & 0xFF;
- 2776              	 .loc 1 1030 0
- 2777 0012 1E4B     	 ldr r3,.L245+4
- 2778 0014 9B88     	 ldrh r3,[r3,#4]
- 2779 0016 FB71     	 strb r3,[r7,#7]
+ 2796              	 .loc 1 1030 0
+ 2797 0012 1E4B     	 ldr r3,.L251+4
+ 2798 0014 9B88     	 ldrh r3,[r3,#4]
+ 2799 0016 FB71     	 strb r3,[r7,#7]
 1031:.././hal/sam3u1c/udc.c **** 	if (iface_num >= udc_ptr_conf->desc->bNumInterfaces) {
- 2780              	 .loc 1 1031 0
- 2781 0018 1D4B     	 ldr r3,.L245+8
- 2782 001a 1B68     	 ldr r3,[r3]
- 2783 001c 1B68     	 ldr r3,[r3]
- 2784 001e 1B79     	 ldrb r3,[r3,#4]
- 2785 0020 FA79     	 ldrb r2,[r7,#7]
- 2786 0022 9A42     	 cmp r2,r3
- 2787 0024 01D3     	 bcc .L242
+ 2800              	 .loc 1 1031 0
+ 2801 0018 1D4B     	 ldr r3,.L251+8
+ 2802 001a 1B68     	 ldr r3,[r3]
+ 2803 001c 1B68     	 ldr r3,[r3]
+ 2804 001e 1B79     	 ldrb r3,[r3,#4]
+ 2805 0020 FA79     	 ldrb r2,[r7,#7]
+ 2806 0022 9A42     	 cmp r2,r3
+ 2807 0024 01D3     	 bcc .L248
 1032:.././hal/sam3u1c/udc.c **** 		return false;
- 2788              	 .loc 1 1032 0
- 2789 0026 0023     	 movs r3,#0
- 2790 0028 2AE0     	 b .L241
- 2791              	.L242:
+ 2808              	 .loc 1 1032 0
+ 2809 0026 0023     	 movs r3,#0
+ 2810 0028 2AE0     	 b .L247
+ 2811              	.L248:
 1033:.././hal/sam3u1c/udc.c **** 	}
 1034:.././hal/sam3u1c/udc.c **** 
 1035:.././hal/sam3u1c/udc.c **** 	//* To update udc_ptr_iface with the selected interface in request
 1036:.././hal/sam3u1c/udc.c **** 	// Select first alternate setting of interface to update udc_ptr_iface
 1037:.././hal/sam3u1c/udc.c **** 	// before calling udi_api->getsetting()
 1038:.././hal/sam3u1c/udc.c **** 	if (!udc_update_iface_desc(iface_num, 0)) {
- 2792              	 .loc 1 1038 0
- 2793 002a FB79     	 ldrb r3,[r7,#7]
- 2794 002c 0021     	 movs r1,#0
- 2795 002e 1846     	 mov r0,r3
- 2796 0030 184B     	 ldr r3,.L245+12
- 2797 0032 9847     	 blx r3
- 2798              	.LVL64:
- 2799 0034 0346     	 mov r3,r0
- 2800 0036 83F00103 	 eor r3,r3,#1
- 2801 003a DBB2     	 uxtb r3,r3
- 2802 003c 002B     	 cmp r3,#0
- 2803 003e 01D0     	 beq .L243
+ 2812              	 .loc 1 1038 0
+ 2813 002a FB79     	 ldrb r3,[r7,#7]
+ 2814 002c 0021     	 movs r1,#0
+ 2815 002e 1846     	 mov r0,r3
+ 2816 0030 184B     	 ldr r3,.L251+12
+ 2817 0032 9847     	 blx r3
+ 2818              	.LVL64:
+ 2819 0034 0346     	 mov r3,r0
+ 2820 0036 83F00103 	 eor r3,r3,#1
+ 2821 003a DBB2     	 uxtb r3,r3
+ 2822 003c 002B     	 cmp r3,#0
+ 2823 003e 01D0     	 beq .L249
 1039:.././hal/sam3u1c/udc.c **** 		return false;
- 2804              	 .loc 1 1039 0
- 2805 0040 0023     	 movs r3,#0
- 2806 0042 1DE0     	 b .L241
- 2807              	.L243:
+ 2824              	 .loc 1 1039 0
+ 2825 0040 0023     	 movs r3,#0
+ 2826 0042 1DE0     	 b .L247
+ 2827              	.L249:
 1040:.././hal/sam3u1c/udc.c **** 	}
 1041:.././hal/sam3u1c/udc.c **** 	// Select the interface with the current alternate setting
 1042:.././hal/sam3u1c/udc.c **** 	udi_api = udc_ptr_conf->udi_apis[iface_num];
- 2808              	 .loc 1 1042 0
- 2809 0044 124B     	 ldr r3,.L245+8
- 2810 0046 1B68     	 ldr r3,[r3]
- 2811 0048 5A68     	 ldr r2,[r3,#4]
- 2812 004a FB79     	 ldrb r3,[r7,#7]
- 2813 004c 9B00     	 lsls r3,r3,#2
- 2814 004e 1344     	 add r3,r3,r2
- 2815 0050 1B68     	 ldr r3,[r3]
- 2816 0052 3B60     	 str r3,[r7]
+ 2828              	 .loc 1 1042 0
+ 2829 0044 124B     	 ldr r3,.L251+8
+ 2830 0046 1B68     	 ldr r3,[r3]
+ 2831 0048 5A68     	 ldr r2,[r3,#4]
+ 2832 004a FB79     	 ldrb r3,[r7,#7]
+ 2833 004c 9B00     	 lsls r3,r3,#2
+ 2834 004e 1344     	 add r3,r3,r2
+ 2835 0050 1B68     	 ldr r3,[r3]
+ 2836 0052 3B60     	 str r3,[r7]
 1043:.././hal/sam3u1c/udc.c **** 	if (!udc_update_iface_desc(iface_num, udi_api->getsetting())) {
- 2817              	 .loc 1 1043 0
- 2818 0054 3B68     	 ldr r3,[r7]
- 2819 0056 DB68     	 ldr r3,[r3,#12]
- 2820 0058 9847     	 blx r3
- 2821              	.LVL65:
- 2822 005a 0346     	 mov r3,r0
- 2823 005c 1A46     	 mov r2,r3
- 2824 005e FB79     	 ldrb r3,[r7,#7]
- 2825 0060 1146     	 mov r1,r2
- 2826 0062 1846     	 mov r0,r3
- 2827 0064 0B4B     	 ldr r3,.L245+12
- 2828 0066 9847     	 blx r3
- 2829              	.LVL66:
- 2830 0068 0346     	 mov r3,r0
- 2831 006a 83F00103 	 eor r3,r3,#1
- 2832 006e DBB2     	 uxtb r3,r3
- 2833 0070 002B     	 cmp r3,#0
- 2834 0072 01D0     	 beq .L244
+ 2837              	 .loc 1 1043 0
+ 2838 0054 3B68     	 ldr r3,[r7]
+ 2839 0056 DB68     	 ldr r3,[r3,#12]
+ 2840 0058 9847     	 blx r3
+ 2841              	.LVL65:
+ 2842 005a 0346     	 mov r3,r0
+ 2843 005c 1A46     	 mov r2,r3
+ 2844 005e FB79     	 ldrb r3,[r7,#7]
+ 2845 0060 1146     	 mov r1,r2
+ 2846 0062 1846     	 mov r0,r3
+ 2847 0064 0B4B     	 ldr r3,.L251+12
+ 2848 0066 9847     	 blx r3
+ 2849              	.LVL66:
+ 2850 0068 0346     	 mov r3,r0
+ 2851 006a 83F00103 	 eor r3,r3,#1
+ 2852 006e DBB2     	 uxtb r3,r3
+ 2853 0070 002B     	 cmp r3,#0
+ 2854 0072 01D0     	 beq .L250
 1044:.././hal/sam3u1c/udc.c **** 		return false;
- 2835              	 .loc 1 1044 0
- 2836 0074 0023     	 movs r3,#0
- 2837 0076 03E0     	 b .L241
- 2838              	.L244:
+ 2855              	 .loc 1 1044 0
+ 2856 0074 0023     	 movs r3,#0
+ 2857 0076 03E0     	 b .L247
+ 2858              	.L250:
 1045:.././hal/sam3u1c/udc.c **** 	}
 1046:.././hal/sam3u1c/udc.c **** 
 1047:.././hal/sam3u1c/udc.c **** 	// Send the SETUP request to the UDI corresponding to the interface number
 1048:.././hal/sam3u1c/udc.c **** 	return udi_api->setup();
- 2839              	 .loc 1 1048 0
- 2840 0078 3B68     	 ldr r3,[r7]
- 2841 007a 9B68     	 ldr r3,[r3,#8]
- 2842 007c 9847     	 blx r3
- 2843              	.LVL67:
- 2844 007e 0346     	 mov r3,r0
- 2845              	.L241:
+ 2859              	 .loc 1 1048 0
+ 2860 0078 3B68     	 ldr r3,[r7]
+ 2861 007a 9B68     	 ldr r3,[r3,#8]
+ 2862 007c 9847     	 blx r3
+ 2863              	.LVL67:
+ 2864 007e 0346     	 mov r3,r0
+ 2865              	.L247:
 1049:.././hal/sam3u1c/udc.c **** }
- 2846              	 .loc 1 1049 0
- 2847 0080 1846     	 mov r0,r3
- 2848 0082 0837     	 adds r7,r7,#8
- 2849              	.LCFI98:
- 2850              	 .cfi_def_cfa_offset 8
- 2851 0084 BD46     	 mov sp,r7
- 2852              	.LCFI99:
- 2853              	 .cfi_def_cfa_register 13
- 2854              	 
- 2855 0086 80BD     	 pop {r7,pc}
- 2856              	.L246:
- 2857              	 .align 2
- 2858              	.L245:
- 2859 0088 00000000 	 .word udc_num_configuration
- 2860 008c 00000000 	 .word udd_g_ctrlreq
- 2861 0090 00000000 	 .word udc_ptr_conf
- 2862 0094 00000000 	 .word udc_update_iface_desc
- 2863              	 .cfi_endproc
- 2864              	.LFE97:
- 2866              	 .section .text.udc_req_ep,"ax",%progbits
- 2867              	 .align 1
- 2868              	 .syntax unified
- 2869              	 .thumb
- 2870              	 .thumb_func
- 2871              	 .fpu softvfp
- 2873              	udc_req_ep:
- 2874              	.LFB98:
+ 2866              	 .loc 1 1049 0
+ 2867 0080 1846     	 mov r0,r3
+ 2868 0082 0837     	 adds r7,r7,#8
+ 2869              	.LCFI98:
+ 2870              	 .cfi_def_cfa_offset 8
+ 2871 0084 BD46     	 mov sp,r7
+ 2872              	.LCFI99:
+ 2873              	 .cfi_def_cfa_register 13
+ 2874              	 
+ 2875 0086 80BD     	 pop {r7,pc}
+ 2876              	.L252:
+ 2877              	 .align 2
+ 2878              	.L251:
+ 2879 0088 00000000 	 .word udc_num_configuration
+ 2880 008c 00000000 	 .word udd_g_ctrlreq
+ 2881 0090 00000000 	 .word udc_ptr_conf
+ 2882 0094 00000000 	 .word udc_update_iface_desc
+ 2883              	 .cfi_endproc
+ 2884              	.LFE99:
+ 2886              	 .section .text.udc_req_ep,"ax",%progbits
+ 2887              	 .align 1
+ 2888              	 .syntax unified
+ 2889              	 .thumb
+ 2890              	 .thumb_func
+ 2891              	 .fpu softvfp
+ 2893              	udc_req_ep:
+ 2894              	.LFB100:
 1050:.././hal/sam3u1c/udc.c **** 
 1051:.././hal/sam3u1c/udc.c **** /**
 1052:.././hal/sam3u1c/udc.c ****  * \brief Send the SETUP interface request to UDI
@@ -3929,151 +3951,151 @@
 1055:.././hal/sam3u1c/udc.c ****  */
 1056:.././hal/sam3u1c/udc.c **** static bool udc_req_ep(void)
 1057:.././hal/sam3u1c/udc.c **** {
- 2875              	 .loc 1 1057 0
- 2876              	 .cfi_startproc
- 2877              	 
- 2878              	 
- 2879 0000 80B5     	 push {r7,lr}
- 2880              	.LCFI100:
- 2881              	 .cfi_def_cfa_offset 8
- 2882              	 .cfi_offset 7,-8
- 2883              	 .cfi_offset 14,-4
- 2884 0002 82B0     	 sub sp,sp,#8
- 2885              	.LCFI101:
- 2886              	 .cfi_def_cfa_offset 16
- 2887 0004 00AF     	 add r7,sp,#0
- 2888              	.LCFI102:
- 2889              	 .cfi_def_cfa_register 7
+ 2895              	 .loc 1 1057 0
+ 2896              	 .cfi_startproc
+ 2897              	 
+ 2898              	 
+ 2899 0000 80B5     	 push {r7,lr}
+ 2900              	.LCFI100:
+ 2901              	 .cfi_def_cfa_offset 8
+ 2902              	 .cfi_offset 7,-8
+ 2903              	 .cfi_offset 14,-4
+ 2904 0002 82B0     	 sub sp,sp,#8
+ 2905              	.LCFI101:
+ 2906              	 .cfi_def_cfa_offset 16
+ 2907 0004 00AF     	 add r7,sp,#0
+ 2908              	.LCFI102:
+ 2909              	 .cfi_def_cfa_register 7
 1058:.././hal/sam3u1c/udc.c **** 	uint8_t iface_num;
 1059:.././hal/sam3u1c/udc.c **** 	udi_api_t UDC_DESC_STORAGE *udi_api;
 1060:.././hal/sam3u1c/udc.c **** 
 1061:.././hal/sam3u1c/udc.c **** 	if (0 == udc_num_configuration) {
- 2890              	 .loc 1 1061 0
- 2891 0006 1E4B     	 ldr r3,.L254
- 2892 0008 1B78     	 ldrb r3,[r3]
- 2893 000a 002B     	 cmp r3,#0
- 2894 000c 01D1     	 bne .L248
+ 2910              	 .loc 1 1061 0
+ 2911 0006 1E4B     	 ldr r3,.L260
+ 2912 0008 1B78     	 ldrb r3,[r3]
+ 2913 000a 002B     	 cmp r3,#0
+ 2914 000c 01D1     	 bne .L254
 1062:.././hal/sam3u1c/udc.c **** 		return false; // The device is not is configured state yet
- 2895              	 .loc 1 1062 0
- 2896 000e 0023     	 movs r3,#0
- 2897 0010 32E0     	 b .L249
- 2898              	.L248:
+ 2915              	 .loc 1 1062 0
+ 2916 000e 0023     	 movs r3,#0
+ 2917 0010 32E0     	 b .L255
+ 2918              	.L254:
 1063:.././hal/sam3u1c/udc.c **** 	}
 1064:.././hal/sam3u1c/udc.c **** 	// Send this request on all enabled interfaces
 1065:.././hal/sam3u1c/udc.c **** 	iface_num = udd_g_ctrlreq.req.wIndex & 0xFF;
- 2899              	 .loc 1 1065 0
- 2900 0012 1C4B     	 ldr r3,.L254+4
- 2901 0014 9B88     	 ldrh r3,[r3,#4]
- 2902 0016 FB71     	 strb r3,[r7,#7]
+ 2919              	 .loc 1 1065 0
+ 2920 0012 1C4B     	 ldr r3,.L260+4
+ 2921 0014 9B88     	 ldrh r3,[r3,#4]
+ 2922 0016 FB71     	 strb r3,[r7,#7]
 1066:.././hal/sam3u1c/udc.c **** 	for (iface_num = 0; iface_num < udc_ptr_conf->desc->bNumInterfaces;
- 2903              	 .loc 1 1066 0
- 2904 0018 0023     	 movs r3,#0
- 2905 001a FB71     	 strb r3,[r7,#7]
- 2906 001c 24E0     	 b .L250
- 2907              	.L253:
+ 2923              	 .loc 1 1066 0
+ 2924 0018 0023     	 movs r3,#0
+ 2925 001a FB71     	 strb r3,[r7,#7]
+ 2926 001c 24E0     	 b .L256
+ 2927              	.L259:
 1067:.././hal/sam3u1c/udc.c **** 			iface_num++) {
 1068:.././hal/sam3u1c/udc.c **** 		// Select the interface with the current alternate setting
 1069:.././hal/sam3u1c/udc.c **** 		udi_api = udc_ptr_conf->udi_apis[iface_num];
- 2908              	 .loc 1 1069 0
- 2909 001e 1A4B     	 ldr r3,.L254+8
- 2910 0020 1B68     	 ldr r3,[r3]
- 2911 0022 5A68     	 ldr r2,[r3,#4]
- 2912 0024 FB79     	 ldrb r3,[r7,#7]
- 2913 0026 9B00     	 lsls r3,r3,#2
- 2914 0028 1344     	 add r3,r3,r2
- 2915 002a 1B68     	 ldr r3,[r3]
- 2916 002c 3B60     	 str r3,[r7]
+ 2928              	 .loc 1 1069 0
+ 2929 001e 1A4B     	 ldr r3,.L260+8
+ 2930 0020 1B68     	 ldr r3,[r3]
+ 2931 0022 5A68     	 ldr r2,[r3,#4]
+ 2932 0024 FB79     	 ldrb r3,[r7,#7]
+ 2933 0026 9B00     	 lsls r3,r3,#2
+ 2934 0028 1344     	 add r3,r3,r2
+ 2935 002a 1B68     	 ldr r3,[r3]
+ 2936 002c 3B60     	 str r3,[r7]
 1070:.././hal/sam3u1c/udc.c **** 		if (!udc_update_iface_desc(iface_num, udi_api->getsetting())) {
- 2917              	 .loc 1 1070 0
- 2918 002e 3B68     	 ldr r3,[r7]
- 2919 0030 DB68     	 ldr r3,[r3,#12]
- 2920 0032 9847     	 blx r3
- 2921              	.LVL68:
- 2922 0034 0346     	 mov r3,r0
- 2923 0036 1A46     	 mov r2,r3
- 2924 0038 FB79     	 ldrb r3,[r7,#7]
- 2925 003a 1146     	 mov r1,r2
- 2926 003c 1846     	 mov r0,r3
- 2927 003e 134B     	 ldr r3,.L254+12
- 2928 0040 9847     	 blx r3
- 2929              	.LVL69:
- 2930 0042 0346     	 mov r3,r0
- 2931 0044 83F00103 	 eor r3,r3,#1
- 2932 0048 DBB2     	 uxtb r3,r3
- 2933 004a 002B     	 cmp r3,#0
- 2934 004c 01D0     	 beq .L251
+ 2937              	 .loc 1 1070 0
+ 2938 002e 3B68     	 ldr r3,[r7]
+ 2939 0030 DB68     	 ldr r3,[r3,#12]
+ 2940 0032 9847     	 blx r3
+ 2941              	.LVL68:
+ 2942 0034 0346     	 mov r3,r0
+ 2943 0036 1A46     	 mov r2,r3
+ 2944 0038 FB79     	 ldrb r3,[r7,#7]
+ 2945 003a 1146     	 mov r1,r2
+ 2946 003c 1846     	 mov r0,r3
+ 2947 003e 134B     	 ldr r3,.L260+12
+ 2948 0040 9847     	 blx r3
+ 2949              	.LVL69:
+ 2950 0042 0346     	 mov r3,r0
+ 2951 0044 83F00103 	 eor r3,r3,#1
+ 2952 0048 DBB2     	 uxtb r3,r3
+ 2953 004a 002B     	 cmp r3,#0
+ 2954 004c 01D0     	 beq .L257
 1071:.././hal/sam3u1c/udc.c **** 			return false;
- 2935              	 .loc 1 1071 0
- 2936 004e 0023     	 movs r3,#0
- 2937 0050 12E0     	 b .L249
- 2938              	.L251:
+ 2955              	 .loc 1 1071 0
+ 2956 004e 0023     	 movs r3,#0
+ 2957 0050 12E0     	 b .L255
+ 2958              	.L257:
 1072:.././hal/sam3u1c/udc.c **** 		}
 1073:.././hal/sam3u1c/udc.c **** 
 1074:.././hal/sam3u1c/udc.c **** 		// Send the SETUP request to the UDI
 1075:.././hal/sam3u1c/udc.c **** 		if (udi_api->setup()) {
- 2939              	 .loc 1 1075 0
- 2940 0052 3B68     	 ldr r3,[r7]
- 2941 0054 9B68     	 ldr r3,[r3,#8]
- 2942 0056 9847     	 blx r3
- 2943              	.LVL70:
- 2944 0058 0346     	 mov r3,r0
- 2945 005a 002B     	 cmp r3,#0
- 2946 005c 01D0     	 beq .L252
+ 2959              	 .loc 1 1075 0
+ 2960 0052 3B68     	 ldr r3,[r7]
+ 2961 0054 9B68     	 ldr r3,[r3,#8]
+ 2962 0056 9847     	 blx r3
+ 2963              	.LVL70:
+ 2964 0058 0346     	 mov r3,r0
+ 2965 005a 002B     	 cmp r3,#0
+ 2966 005c 01D0     	 beq .L258
 1076:.././hal/sam3u1c/udc.c **** 			return true;
- 2947              	 .loc 1 1076 0
- 2948 005e 0123     	 movs r3,#1
- 2949 0060 0AE0     	 b .L249
- 2950              	.L252:
+ 2967              	 .loc 1 1076 0
+ 2968 005e 0123     	 movs r3,#1
+ 2969 0060 0AE0     	 b .L255
+ 2970              	.L258:
 1067:.././hal/sam3u1c/udc.c **** 		// Select the interface with the current alternate setting
- 2951              	 .loc 1 1067 0
- 2952 0062 FB79     	 ldrb r3,[r7,#7]
- 2953 0064 0133     	 adds r3,r3,#1
- 2954 0066 FB71     	 strb r3,[r7,#7]
- 2955              	.L250:
+ 2971              	 .loc 1 1067 0
+ 2972 0062 FB79     	 ldrb r3,[r7,#7]
+ 2973 0064 0133     	 adds r3,r3,#1
+ 2974 0066 FB71     	 strb r3,[r7,#7]
+ 2975              	.L256:
 1066:.././hal/sam3u1c/udc.c **** 			iface_num++) {
- 2956              	 .loc 1 1066 0 discriminator 1
- 2957 0068 074B     	 ldr r3,.L254+8
- 2958 006a 1B68     	 ldr r3,[r3]
- 2959 006c 1B68     	 ldr r3,[r3]
- 2960 006e 1B79     	 ldrb r3,[r3,#4]
- 2961 0070 FA79     	 ldrb r2,[r7,#7]
- 2962 0072 9A42     	 cmp r2,r3
- 2963 0074 D3D3     	 bcc .L253
+ 2976              	 .loc 1 1066 0 discriminator 1
+ 2977 0068 074B     	 ldr r3,.L260+8
+ 2978 006a 1B68     	 ldr r3,[r3]
+ 2979 006c 1B68     	 ldr r3,[r3]
+ 2980 006e 1B79     	 ldrb r3,[r3,#4]
+ 2981 0070 FA79     	 ldrb r2,[r7,#7]
+ 2982 0072 9A42     	 cmp r2,r3
+ 2983 0074 D3D3     	 bcc .L259
 1077:.././hal/sam3u1c/udc.c **** 		}
 1078:.././hal/sam3u1c/udc.c **** 	}
 1079:.././hal/sam3u1c/udc.c **** 	return false;
- 2964              	 .loc 1 1079 0
- 2965 0076 0023     	 movs r3,#0
- 2966              	.L249:
+ 2984              	 .loc 1 1079 0
+ 2985 0076 0023     	 movs r3,#0
+ 2986              	.L255:
 1080:.././hal/sam3u1c/udc.c **** }
- 2967              	 .loc 1 1080 0
- 2968 0078 1846     	 mov r0,r3
- 2969 007a 0837     	 adds r7,r7,#8
- 2970              	.LCFI103:
- 2971              	 .cfi_def_cfa_offset 8
- 2972 007c BD46     	 mov sp,r7
- 2973              	.LCFI104:
- 2974              	 .cfi_def_cfa_register 13
- 2975              	 
- 2976 007e 80BD     	 pop {r7,pc}
- 2977              	.L255:
- 2978              	 .align 2
- 2979              	.L254:
- 2980 0080 00000000 	 .word udc_num_configuration
- 2981 0084 00000000 	 .word udd_g_ctrlreq
- 2982 0088 00000000 	 .word udc_ptr_conf
- 2983 008c 00000000 	 .word udc_update_iface_desc
- 2984              	 .cfi_endproc
- 2985              	.LFE98:
- 2987              	 .section .text.udc_process_setup,"ax",%progbits
- 2988              	 .align 1
- 2989              	 .global udc_process_setup
- 2990              	 .syntax unified
- 2991              	 .thumb
- 2992              	 .thumb_func
- 2993              	 .fpu softvfp
- 2995              	udc_process_setup:
- 2996              	.LFB99:
+ 2987              	 .loc 1 1080 0
+ 2988 0078 1846     	 mov r0,r3
+ 2989 007a 0837     	 adds r7,r7,#8
+ 2990              	.LCFI103:
+ 2991              	 .cfi_def_cfa_offset 8
+ 2992 007c BD46     	 mov sp,r7
+ 2993              	.LCFI104:
+ 2994              	 .cfi_def_cfa_register 13
+ 2995              	 
+ 2996 007e 80BD     	 pop {r7,pc}
+ 2997              	.L261:
+ 2998              	 .align 2
+ 2999              	.L260:
+ 3000 0080 00000000 	 .word udc_num_configuration
+ 3001 0084 00000000 	 .word udd_g_ctrlreq
+ 3002 0088 00000000 	 .word udc_ptr_conf
+ 3003 008c 00000000 	 .word udc_update_iface_desc
+ 3004              	 .cfi_endproc
+ 3005              	.LFE100:
+ 3007              	 .section .text.udc_process_setup,"ax",%progbits
+ 3008              	 .align 1
+ 3009              	 .global udc_process_setup
+ 3010              	 .syntax unified
+ 3011              	 .thumb
+ 3012              	 .thumb_func
+ 3013              	 .fpu softvfp
+ 3015              	udc_process_setup:
+ 3016              	.LFB101:
 1081:.././hal/sam3u1c/udc.c **** 
 1082:.././hal/sam3u1c/udc.c **** /**
 1083:.././hal/sam3u1c/udc.c ****  * \brief Main routine to manage the USB SETUP request.
@@ -4090,125 +4112,125 @@
 1094:.././hal/sam3u1c/udc.c ****  */
 1095:.././hal/sam3u1c/udc.c **** bool udc_process_setup(void)
 1096:.././hal/sam3u1c/udc.c **** {
- 2997              	 .loc 1 1096 0
- 2998              	 .cfi_startproc
- 2999              	 
- 3000              	 
- 3001 0000 80B5     	 push {r7,lr}
- 3002              	.LCFI105:
- 3003              	 .cfi_def_cfa_offset 8
- 3004              	 .cfi_offset 7,-8
- 3005              	 .cfi_offset 14,-4
- 3006 0002 00AF     	 add r7,sp,#0
- 3007              	.LCFI106:
- 3008              	 .cfi_def_cfa_register 7
+ 3017              	 .loc 1 1096 0
+ 3018              	 .cfi_startproc
+ 3019              	 
+ 3020              	 
+ 3021 0000 80B5     	 push {r7,lr}
+ 3022              	.LCFI105:
+ 3023              	 .cfi_def_cfa_offset 8
+ 3024              	 .cfi_offset 7,-8
+ 3025              	 .cfi_offset 14,-4
+ 3026 0002 00AF     	 add r7,sp,#0
+ 3027              	.LCFI106:
+ 3028              	 .cfi_def_cfa_register 7
 1097:.././hal/sam3u1c/udc.c **** 	// By default no data (receive/send) and no callbacks registered
 1098:.././hal/sam3u1c/udc.c **** 	udd_g_ctrlreq.payload_size = 0;
- 3009              	 .loc 1 1098 0
- 3010 0004 1E4B     	 ldr r3,.L262
- 3011 0006 0022     	 movs r2,#0
- 3012 0008 9A81     	 strh r2,[r3,#12]
+ 3029              	 .loc 1 1098 0
+ 3030 0004 1E4B     	 ldr r3,.L268
+ 3031 0006 0022     	 movs r2,#0
+ 3032 0008 9A81     	 strh r2,[r3,#12]
 1099:.././hal/sam3u1c/udc.c **** 	udd_g_ctrlreq.callback = NULL;
- 3013              	 .loc 1 1099 0
- 3014 000a 1D4B     	 ldr r3,.L262
- 3015 000c 0022     	 movs r2,#0
- 3016 000e 1A61     	 str r2,[r3,#16]
+ 3033              	 .loc 1 1099 0
+ 3034 000a 1D4B     	 ldr r3,.L268
+ 3035 000c 0022     	 movs r2,#0
+ 3036 000e 1A61     	 str r2,[r3,#16]
 1100:.././hal/sam3u1c/udc.c **** 	udd_g_ctrlreq.over_under_run = NULL;
- 3017              	 .loc 1 1100 0
- 3018 0010 1B4B     	 ldr r3,.L262
- 3019 0012 0022     	 movs r2,#0
- 3020 0014 5A61     	 str r2,[r3,#20]
+ 3037              	 .loc 1 1100 0
+ 3038 0010 1B4B     	 ldr r3,.L268
+ 3039 0012 0022     	 movs r2,#0
+ 3040 0014 5A61     	 str r2,[r3,#20]
 1101:.././hal/sam3u1c/udc.c **** 
 1102:.././hal/sam3u1c/udc.c **** 	if (Udd_setup_is_in()) {
- 3021              	 .loc 1 1102 0
- 3022 0016 1A4B     	 ldr r3,.L262
- 3023 0018 1B78     	 ldrb r3,[r3]
- 3024 001a 5BB2     	 sxtb r3,r3
- 3025 001c 002B     	 cmp r3,#0
- 3026 001e 05DA     	 bge .L257
+ 3041              	 .loc 1 1102 0
+ 3042 0016 1A4B     	 ldr r3,.L268
+ 3043 0018 1B78     	 ldrb r3,[r3]
+ 3044 001a 5BB2     	 sxtb r3,r3
+ 3045 001c 002B     	 cmp r3,#0
+ 3046 001e 05DA     	 bge .L263
 1103:.././hal/sam3u1c/udc.c **** 		if (udd_g_ctrlreq.req.wLength == 0) {
- 3027              	 .loc 1 1103 0
- 3028 0020 174B     	 ldr r3,.L262
- 3029 0022 DB88     	 ldrh r3,[r3,#6]
- 3030 0024 002B     	 cmp r3,#0
- 3031 0026 01D1     	 bne .L257
+ 3047              	 .loc 1 1103 0
+ 3048 0020 174B     	 ldr r3,.L268
+ 3049 0022 DB88     	 ldrh r3,[r3,#6]
+ 3050 0024 002B     	 cmp r3,#0
+ 3051 0026 01D1     	 bne .L263
 1104:.././hal/sam3u1c/udc.c **** 			return false; // Error from USB host
- 3032              	 .loc 1 1104 0
- 3033 0028 0023     	 movs r3,#0
- 3034 002a 27E0     	 b .L258
- 3035              	.L257:
+ 3052              	 .loc 1 1104 0
+ 3053 0028 0023     	 movs r3,#0
+ 3054 002a 27E0     	 b .L264
+ 3055              	.L263:
 1105:.././hal/sam3u1c/udc.c **** 		}
 1106:.././hal/sam3u1c/udc.c **** 	}
 1107:.././hal/sam3u1c/udc.c **** 
 1108:.././hal/sam3u1c/udc.c **** 	// If standard request then try to decode it in UDC
 1109:.././hal/sam3u1c/udc.c **** 	if (Udd_setup_type() == USB_REQ_TYPE_STANDARD) {
- 3036              	 .loc 1 1109 0
- 3037 002c 144B     	 ldr r3,.L262
- 3038 002e 1B78     	 ldrb r3,[r3]
- 3039 0030 03F06003 	 and r3,r3,#96
- 3040 0034 002B     	 cmp r3,#0
- 3041 0036 06D1     	 bne .L259
+ 3056              	 .loc 1 1109 0
+ 3057 002c 144B     	 ldr r3,.L268
+ 3058 002e 1B78     	 ldrb r3,[r3]
+ 3059 0030 03F06003 	 and r3,r3,#96
+ 3060 0034 002B     	 cmp r3,#0
+ 3061 0036 06D1     	 bne .L265
 1110:.././hal/sam3u1c/udc.c **** 		if (udc_reqstd()) {
- 3042              	 .loc 1 1110 0
- 3043 0038 124B     	 ldr r3,.L262+4
- 3044 003a 9847     	 blx r3
- 3045              	.LVL71:
- 3046 003c 0346     	 mov r3,r0
- 3047 003e 002B     	 cmp r3,#0
- 3048 0040 01D0     	 beq .L259
+ 3062              	 .loc 1 1110 0
+ 3063 0038 124B     	 ldr r3,.L268+4
+ 3064 003a 9847     	 blx r3
+ 3065              	.LVL71:
+ 3066 003c 0346     	 mov r3,r0
+ 3067 003e 002B     	 cmp r3,#0
+ 3068 0040 01D0     	 beq .L265
 1111:.././hal/sam3u1c/udc.c **** 			return true;
- 3049              	 .loc 1 1111 0
- 3050 0042 0123     	 movs r3,#1
- 3051 0044 1AE0     	 b .L258
- 3052              	.L259:
+ 3069              	 .loc 1 1111 0
+ 3070 0042 0123     	 movs r3,#1
+ 3071 0044 1AE0     	 b .L264
+ 3072              	.L265:
 1112:.././hal/sam3u1c/udc.c **** 		}
 1113:.././hal/sam3u1c/udc.c **** 	}
 1114:.././hal/sam3u1c/udc.c **** 
 1115:.././hal/sam3u1c/udc.c **** 	// If interface request then try to decode it in UDI
 1116:.././hal/sam3u1c/udc.c **** 	if (Udd_setup_recipient() == USB_REQ_RECIP_INTERFACE) {
- 3053              	 .loc 1 1116 0
- 3054 0046 0E4B     	 ldr r3,.L262
- 3055 0048 1B78     	 ldrb r3,[r3]
- 3056 004a 03F01F03 	 and r3,r3,#31
- 3057 004e 012B     	 cmp r3,#1
- 3058 0050 06D1     	 bne .L260
+ 3073              	 .loc 1 1116 0
+ 3074 0046 0E4B     	 ldr r3,.L268
+ 3075 0048 1B78     	 ldrb r3,[r3]
+ 3076 004a 03F01F03 	 and r3,r3,#31
+ 3077 004e 012B     	 cmp r3,#1
+ 3078 0050 06D1     	 bne .L266
 1117:.././hal/sam3u1c/udc.c **** 		if (udc_req_iface()) {
- 3059              	 .loc 1 1117 0
- 3060 0052 0D4B     	 ldr r3,.L262+8
- 3061 0054 9847     	 blx r3
- 3062              	.LVL72:
- 3063 0056 0346     	 mov r3,r0
- 3064 0058 002B     	 cmp r3,#0
- 3065 005a 01D0     	 beq .L260
+ 3079              	 .loc 1 1117 0
+ 3080 0052 0D4B     	 ldr r3,.L268+8
+ 3081 0054 9847     	 blx r3
+ 3082              	.LVL72:
+ 3083 0056 0346     	 mov r3,r0
+ 3084 0058 002B     	 cmp r3,#0
+ 3085 005a 01D0     	 beq .L266
 1118:.././hal/sam3u1c/udc.c **** 			return true;
- 3066              	 .loc 1 1118 0
- 3067 005c 0123     	 movs r3,#1
- 3068 005e 0DE0     	 b .L258
- 3069              	.L260:
+ 3086              	 .loc 1 1118 0
+ 3087 005c 0123     	 movs r3,#1
+ 3088 005e 0DE0     	 b .L264
+ 3089              	.L266:
 1119:.././hal/sam3u1c/udc.c **** 		}
 1120:.././hal/sam3u1c/udc.c **** 	}
 1121:.././hal/sam3u1c/udc.c **** 
 1122:.././hal/sam3u1c/udc.c **** 	// If endpoint request then try to decode it in UDI
 1123:.././hal/sam3u1c/udc.c **** 	if (Udd_setup_recipient() == USB_REQ_RECIP_ENDPOINT) {
- 3070              	 .loc 1 1123 0
- 3071 0060 074B     	 ldr r3,.L262
- 3072 0062 1B78     	 ldrb r3,[r3]
- 3073 0064 03F01F03 	 and r3,r3,#31
- 3074 0068 022B     	 cmp r3,#2
- 3075 006a 06D1     	 bne .L261
+ 3090              	 .loc 1 1123 0
+ 3091 0060 074B     	 ldr r3,.L268
+ 3092 0062 1B78     	 ldrb r3,[r3]
+ 3093 0064 03F01F03 	 and r3,r3,#31
+ 3094 0068 022B     	 cmp r3,#2
+ 3095 006a 06D1     	 bne .L267
 1124:.././hal/sam3u1c/udc.c **** 		if (udc_req_ep()) {
- 3076              	 .loc 1 1124 0
- 3077 006c 074B     	 ldr r3,.L262+12
- 3078 006e 9847     	 blx r3
- 3079              	.LVL73:
- 3080 0070 0346     	 mov r3,r0
- 3081 0072 002B     	 cmp r3,#0
- 3082 0074 01D0     	 beq .L261
+ 3096              	 .loc 1 1124 0
+ 3097 006c 074B     	 ldr r3,.L268+12
+ 3098 006e 9847     	 blx r3
+ 3099              	.LVL73:
+ 3100 0070 0346     	 mov r3,r0
+ 3101 0072 002B     	 cmp r3,#0
+ 3102 0074 01D0     	 beq .L267
 1125:.././hal/sam3u1c/udc.c **** 			return true;
- 3083              	 .loc 1 1125 0
- 3084 0076 0123     	 movs r3,#1
- 3085 0078 00E0     	 b .L258
- 3086              	.L261:
+ 3103              	 .loc 1 1125 0
+ 3104 0076 0123     	 movs r3,#1
+ 3105 0078 00E0     	 b .L264
+ 3106              	.L267:
 1126:.././hal/sam3u1c/udc.c **** 		}
 1127:.././hal/sam3u1c/udc.c **** 	}
 1128:.././hal/sam3u1c/udc.c **** 
@@ -4218,49 +4240,49 @@
 1132:.././hal/sam3u1c/udc.c **** 	return USB_DEVICE_SPECIFIC_REQUEST(); // Ex: Vendor request,...
 1133:.././hal/sam3u1c/udc.c **** #else
 1134:.././hal/sam3u1c/udc.c **** 	return false;
- 3087              	 .loc 1 1134 0
- 3088 007a 0023     	 movs r3,#0
- 3089              	.L258:
+ 3107              	 .loc 1 1134 0
+ 3108 007a 0023     	 movs r3,#0
+ 3109              	.L264:
 1135:.././hal/sam3u1c/udc.c **** #endif
 1136:.././hal/sam3u1c/udc.c **** }
- 3090              	 .loc 1 1136 0
- 3091 007c 1846     	 mov r0,r3
- 3092 007e 80BD     	 pop {r7,pc}
- 3093              	.L263:
- 3094              	 .align 2
- 3095              	.L262:
- 3096 0080 00000000 	 .word udd_g_ctrlreq
- 3097 0084 00000000 	 .word udc_reqstd
- 3098 0088 00000000 	 .word udc_req_iface
- 3099 008c 00000000 	 .word udc_req_ep
- 3100              	 .cfi_endproc
- 3101              	.LFE99:
- 3103              	 .section .bss.udc_ep_status.7279,"aw",%nobits
- 3104              	 .align 1
- 3107              	udc_ep_status.7279:
- 3108 0000 0000     	 .space 2
- 3109              	 .section .bss.udc_iface_setting.7349,"aw",%nobits
- 3112              	udc_iface_setting.7349:
- 3113 0000 00       	 .space 1
- 3114              	 .text
- 3115              	.Letext0:
- 3116              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 3117              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
- 3118              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
- 3119              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
- 3120              	 .file 6 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 3121              	 .file 7 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 3122              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 3123              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 3124              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
- 3125              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 3126              	 .file 12 ".././hal/sam3u1c/inc/compiler.h"
- 3127              	 .file 13 "./conf_usb.h"
- 3128              	 .file 14 ".././hal/sam3u1c/inc/usb_protocol.h"
- 3129              	 .file 15 ".././hal/sam3u1c/inc/udi.h"
- 3130              	 .file 16 ".././hal/sam3u1c/inc/udc_desc.h"
- 3131              	 .file 17 ".././hal/sam3u1c/inc/udd.h"
- 3132              	 .file 18 ".././hal/sam3u1c/inc/udi_vendor.h"
+ 3110              	 .loc 1 1136 0
+ 3111 007c 1846     	 mov r0,r3
+ 3112 007e 80BD     	 pop {r7,pc}
+ 3113              	.L269:
+ 3114              	 .align 2
+ 3115              	.L268:
+ 3116 0080 00000000 	 .word udd_g_ctrlreq
+ 3117 0084 00000000 	 .word udc_reqstd
+ 3118 0088 00000000 	 .word udc_req_iface
+ 3119 008c 00000000 	 .word udc_req_ep
+ 3120              	 .cfi_endproc
+ 3121              	.LFE101:
+ 3123              	 .section .bss.udc_ep_status.7301,"aw",%nobits
+ 3124              	 .align 1
+ 3127              	udc_ep_status.7301:
+ 3128 0000 0000     	 .space 2
+ 3129              	 .section .bss.udc_iface_setting.7371,"aw",%nobits
+ 3132              	udc_iface_setting.7371:
+ 3133 0000 00       	 .space 1
+ 3134              	 .text
+ 3135              	.Letext0:
+ 3136              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 3137              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 3138              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
+ 3139              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 3140              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 3141              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 3142              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 3143              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 3144              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 3145              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 3146              	 .file 12 ".././hal/sam3u1c/inc/compiler.h"
+ 3147              	 .file 13 "./conf_usb.h"
+ 3148              	 .file 14 ".././hal/sam3u1c/inc/usb_protocol.h"
+ 3149              	 .file 15 ".././hal/sam3u1c/inc/udi.h"
+ 3150              	 .file 16 ".././hal/sam3u1c/inc/udc_desc.h"
+ 3151              	 .file 17 ".././hal/sam3u1c/inc/udd.h"
+ 3152              	 .file 18 ".././hal/sam3u1c/inc/udi_vendor.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 udc.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -4322,7 +4344,7 @@ DEFINED SYMBOLS
     {standard input}:997    .text.udc_req_std_ep_get_status:00000000 $t
     {standard input}:1003   .text.udc_req_std_ep_get_status:00000000 udc_req_std_ep_get_status
     {standard input}:1055   .text.udc_req_std_ep_get_status:00000034 $d
-    {standard input}:3107   .bss.udc_ep_status.7279:00000000 udc_ep_status.7279
+    {standard input}:3127   .bss.udc_ep_status.7301:00000000 udc_ep_status.7301
     {standard input}:1063   .text.udc_req_std_dev_clear_feature:00000000 $t
     {standard input}:1069   .text.udc_req_std_dev_clear_feature:00000000 udc_req_std_dev_clear_feature
     {standard input}:1125   .text.udc_req_std_dev_clear_feature:00000034 $d
@@ -4362,35 +4384,34 @@ DEFINED SYMBOLS
     {standard input}:2275   .text.udc_req_std_iface_get_setting:00000000 $t
     {standard input}:2281   .text.udc_req_std_iface_get_setting:00000000 udc_req_std_iface_get_setting
     {standard input}:2388   .text.udc_req_std_iface_get_setting:00000080 $d
-    {standard input}:3112   .bss.udc_iface_setting.7349:00000000 udc_iface_setting.7349
+    {standard input}:3132   .bss.udc_iface_setting.7371:00000000 udc_iface_setting.7371
     {standard input}:2398   .text.udc_req_std_iface_set_setting:00000000 $t
     {standard input}:2404   .text.udc_req_std_iface_set_setting:00000000 udc_req_std_iface_set_setting
     {standard input}:2485   .text.udc_req_std_iface_set_setting:00000058 $d
     {standard input}:2493   .text.udc_reqstd:00000000 $t
     {standard input}:2499   .text.udc_reqstd:00000000 udc_reqstd
-    {standard input}:2625   .text.udc_reqstd:000000a8 $d
-    {standard input}:2634   .text.udc_reqstd:000000cc $t
-    {standard input}:2727   .text.udc_reqstd:0000013c $d
-    {standard input}:2744   .text.udc_req_iface:00000000 $t
-    {standard input}:2750   .text.udc_req_iface:00000000 udc_req_iface
-    {standard input}:2859   .text.udc_req_iface:00000088 $d
-    {standard input}:2867   .text.udc_req_ep:00000000 $t
-    {standard input}:2873   .text.udc_req_ep:00000000 udc_req_ep
-    {standard input}:2980   .text.udc_req_ep:00000080 $d
-    {standard input}:2988   .text.udc_process_setup:00000000 $t
-    {standard input}:2995   .text.udc_process_setup:00000000 udc_process_setup
-    {standard input}:3096   .text.udc_process_setup:00000080 $d
-    {standard input}:3104   .bss.udc_ep_status.7279:00000000 $d
-    {standard input}:3113   .bss.udc_iface_setting.7349:00000000 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+    {standard input}:2631   .text.udc_reqstd:000000ac $d
+    {standard input}:2640   .text.udc_reqstd:000000d0 $t
+    {standard input}:2747   .text.udc_reqstd:0000014c $d
+    {standard input}:2764   .text.udc_req_iface:00000000 $t
+    {standard input}:2770   .text.udc_req_iface:00000000 udc_req_iface
+    {standard input}:2879   .text.udc_req_iface:00000088 $d
+    {standard input}:2887   .text.udc_req_ep:00000000 $t
+    {standard input}:2893   .text.udc_req_ep:00000000 udc_req_ep
+    {standard input}:3000   .text.udc_req_ep:00000080 $d
+    {standard input}:3008   .text.udc_process_setup:00000000 $t
+    {standard input}:3015   .text.udc_process_setup:00000000 udc_process_setup
+    {standard input}:3116   .text.udc_process_setup:00000080 $d
+    {standard input}:3124   .bss.udc_ep_status.7301:00000000 $d
+    {standard input}:3133   .bss.udc_iface_setting.7371:00000000 $d
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -4456,27 +4477,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

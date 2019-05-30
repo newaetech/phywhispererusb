@@ -27,7 +27,7 @@
   31              	 .thumb_func
   32              	 .fpu softvfp
   34              	smc_set_setup_timing:
-  35              	.LFB67:
+  35              	.LFB69:
   36              	 .file 1 ".././hal/sam3u1c/smc.c"
    1:.././hal/sam3u1c/smc.c **** /**
    2:.././hal/sam3u1c/smc.c ****  * \file
@@ -150,7 +150,7 @@
   78              	 .cfi_def_cfa_offset 0
   79 0028 7047     	 bx lr
   80              	 .cfi_endproc
-  81              	.LFE67:
+  81              	.LFE69:
   83              	 .section .text.smc_set_pulse_timing,"ax",%progbits
   84              	 .align 1
   85              	 .global smc_set_pulse_timing
@@ -159,7 +159,7 @@
   88              	 .thumb_func
   89              	 .fpu softvfp
   91              	smc_set_pulse_timing:
-  92              	.LFB68:
+  92              	.LFB70:
   78:.././hal/sam3u1c/smc.c **** 
   79:.././hal/sam3u1c/smc.c **** /**
   80:.././hal/sam3u1c/smc.c ****  * \brief Configure the SMC pulse timing for the specified Chip Select.
@@ -217,7 +217,7 @@
  134              	 .cfi_def_cfa_offset 0
  135 0028 7047     	 bx lr
  136              	 .cfi_endproc
- 137              	.LFE68:
+ 137              	.LFE70:
  139              	 .section .text.smc_set_cycle_timing,"ax",%progbits
  140              	 .align 1
  141              	 .global smc_set_cycle_timing
@@ -226,7 +226,7 @@
  144              	 .thumb_func
  145              	 .fpu softvfp
  147              	smc_set_cycle_timing:
- 148              	.LFB69:
+ 148              	.LFB71:
   91:.././hal/sam3u1c/smc.c **** 
   92:.././hal/sam3u1c/smc.c **** /**
   93:.././hal/sam3u1c/smc.c ****  * \brief Configure the SMC cycle timing for the specified Chip Select.
@@ -284,7 +284,7 @@
  190              	 .cfi_def_cfa_offset 0
  191 0028 7047     	 bx lr
  192              	 .cfi_endproc
- 193              	.LFE69:
+ 193              	.LFE71:
  195              	 .section .text.smc_set_mode,"ax",%progbits
  196              	 .align 1
  197              	 .global smc_set_mode
@@ -293,7 +293,7 @@
  200              	 .thumb_func
  201              	 .fpu softvfp
  203              	smc_set_mode:
- 204              	.LFB70:
+ 204              	.LFB72:
  104:.././hal/sam3u1c/smc.c **** 
  105:.././hal/sam3u1c/smc.c **** /**
  106:.././hal/sam3u1c/smc.c ****  * \brief Configure the SMC mode for the specified Chip Select.
@@ -350,7 +350,7 @@
  246              	 .cfi_def_cfa_offset 0
  247 0028 7047     	 bx lr
  248              	 .cfi_endproc
- 249              	.LFE70:
+ 249              	.LFE72:
  251              	 .section .text.smc_get_mode,"ax",%progbits
  252              	 .align 1
  253              	 .global smc_get_mode
@@ -359,7 +359,7 @@
  256              	 .thumb_func
  257              	 .fpu softvfp
  259              	smc_get_mode:
- 260              	.LFB71:
+ 260              	.LFB73:
  116:.././hal/sam3u1c/smc.c **** 
  117:.././hal/sam3u1c/smc.c **** /**
  118:.././hal/sam3u1c/smc.c ****  * \brief Get the SMC mode of the specified Chip Select.
@@ -415,7 +415,7 @@
  300              	 .cfi_def_cfa_offset 0
  301 0024 7047     	 bx lr
  302              	 .cfi_endproc
- 303              	.LFE71:
+ 303              	.LFE73:
  305              	 .section .text.smc_enable_writeprotect,"ax",%progbits
  306              	 .align 1
  307              	 .global smc_enable_writeprotect
@@ -424,7 +424,7 @@
  310              	 .thumb_func
  311              	 .fpu softvfp
  313              	smc_enable_writeprotect:
- 314              	.LFB72:
+ 314              	.LFB74:
  129:.././hal/sam3u1c/smc.c **** 
  130:.././hal/sam3u1c/smc.c **** /**
  131:.././hal/sam3u1c/smc.c ****  * \brief Set write protection of SMC registers.
@@ -505,7 +505,7 @@
  365 002c 01434D53 	 .word 1397572353
  366 0030 00434D53 	 .word 1397572352
  367              	 .cfi_endproc
- 368              	.LFE72:
+ 368              	.LFE74:
  370              	 .section .text.smc_get_writeprotect_status,"ax",%progbits
  371              	 .align 1
  372              	 .global smc_get_writeprotect_status
@@ -514,7 +514,7 @@
  375              	 .thumb_func
  376              	 .fpu softvfp
  378              	smc_get_writeprotect_status:
- 379              	.LFB73:
+ 379              	.LFB75:
  155:.././hal/sam3u1c/smc.c **** 
  156:.././hal/sam3u1c/smc.c **** /**
  157:.././hal/sam3u1c/smc.c ****  * \brief Get the status of SMC write protection register.
@@ -561,7 +561,7 @@
  411              	 .cfi_def_cfa_offset 0
  412 0016 7047     	 bx lr
  413              	 .cfi_endproc
- 414              	.LFE73:
+ 414              	.LFE75:
  416              	 .section .text.smc_set_nand_timing,"ax",%progbits
  417              	 .align 1
  418              	 .global smc_set_nand_timing
@@ -570,7 +570,7 @@
  421              	 .thumb_func
  422              	 .fpu softvfp
  424              	smc_set_nand_timing:
- 425              	.LFB74:
+ 425              	.LFB76:
  167:.././hal/sam3u1c/smc.c **** #endif
  168:.././hal/sam3u1c/smc.c **** 
  169:.././hal/sam3u1c/smc.c **** #if ((SAM3U) || (SAM3XA))
@@ -629,7 +629,7 @@
  467              	 .cfi_def_cfa_offset 0
  468 0028 7047     	 bx lr
  469              	 .cfi_endproc
- 470              	.LFE74:
+ 470              	.LFE76:
  472              	 .section .text.smc_nfc_init,"ax",%progbits
  473              	 .align 1
  474              	 .global smc_nfc_init
@@ -638,7 +638,7 @@
  477              	 .thumb_func
  478              	 .fpu softvfp
  480              	smc_nfc_init:
- 481              	.LFB75:
+ 481              	.LFB77:
  181:.././hal/sam3u1c/smc.c **** 
  182:.././hal/sam3u1c/smc.c **** /**
  183:.././hal/sam3u1c/smc.c ****  * \brief Initialize NFC configuration.
@@ -685,7 +685,7 @@
  515              	 .cfi_def_cfa_offset 0
  516 0018 7047     	 bx lr
  517              	 .cfi_endproc
- 518              	.LFE75:
+ 518              	.LFE77:
  520              	 .section .text.smc_nfc_set_page_size,"ax",%progbits
  521              	 .align 1
  522              	 .global smc_nfc_set_page_size
@@ -694,7 +694,7 @@
  525              	 .thumb_func
  526              	 .fpu softvfp
  528              	smc_nfc_set_page_size:
- 529              	.LFB76:
+ 529              	.LFB78:
  191:.././hal/sam3u1c/smc.c **** 
  192:.././hal/sam3u1c/smc.c **** /**
  193:.././hal/sam3u1c/smc.c ****  * \brief Set NFC page size.
@@ -752,7 +752,7 @@
  572              	 .cfi_def_cfa_offset 0
  573 002a 7047     	 bx lr
  574              	 .cfi_endproc
- 575              	.LFE76:
+ 575              	.LFE78:
  577              	 .section .text.smc_nfc_enable_spare_read,"ax",%progbits
  578              	 .align 1
  579              	 .global smc_nfc_enable_spare_read
@@ -761,7 +761,7 @@
  582              	 .thumb_func
  583              	 .fpu softvfp
  585              	smc_nfc_enable_spare_read:
- 586              	.LFB77:
+ 586              	.LFB79:
  203:.././hal/sam3u1c/smc.c **** 
  204:.././hal/sam3u1c/smc.c **** /**
  205:.././hal/sam3u1c/smc.c ****  * \brief Enable NFC controller to read both main and spare area in read mode.
@@ -809,7 +809,7 @@
  621              	 .cfi_def_cfa_offset 0
  622 001c 7047     	 bx lr
  623              	 .cfi_endproc
- 624              	.LFE77:
+ 624              	.LFE79:
  626              	 .section .text.smc_nfc_disable_spare_read,"ax",%progbits
  627              	 .align 1
  628              	 .global smc_nfc_disable_spare_read
@@ -818,7 +818,7 @@
  631              	 .thumb_func
  632              	 .fpu softvfp
  634              	smc_nfc_disable_spare_read:
- 635              	.LFB78:
+ 635              	.LFB80:
  213:.././hal/sam3u1c/smc.c **** 
  214:.././hal/sam3u1c/smc.c **** /**
  215:.././hal/sam3u1c/smc.c ****  * \brief Prevent NFC controller from reading the spare area in read mode.
@@ -866,7 +866,7 @@
  670              	 .cfi_def_cfa_offset 0
  671 001c 7047     	 bx lr
  672              	 .cfi_endproc
- 673              	.LFE78:
+ 673              	.LFE80:
  675              	 .section .text.smc_nfc_enable_spare_write,"ax",%progbits
  676              	 .align 1
  677              	 .global smc_nfc_enable_spare_write
@@ -875,7 +875,7 @@
  680              	 .thumb_func
  681              	 .fpu softvfp
  683              	smc_nfc_enable_spare_write:
- 684              	.LFB79:
+ 684              	.LFB81:
  223:.././hal/sam3u1c/smc.c **** 
  224:.././hal/sam3u1c/smc.c **** /**
  225:.././hal/sam3u1c/smc.c ****  * \brief Enable NFC controller to write both main and spare area in write mode.
@@ -923,7 +923,7 @@
  719              	 .cfi_def_cfa_offset 0
  720 001c 7047     	 bx lr
  721              	 .cfi_endproc
- 722              	.LFE79:
+ 722              	.LFE81:
  724              	 .section .text.smc_nfc_disable_spare_write,"ax",%progbits
  725              	 .align 1
  726              	 .global smc_nfc_disable_spare_write
@@ -932,7 +932,7 @@
  729              	 .thumb_func
  730              	 .fpu softvfp
  732              	smc_nfc_disable_spare_write:
- 733              	.LFB80:
+ 733              	.LFB82:
  233:.././hal/sam3u1c/smc.c **** 
  234:.././hal/sam3u1c/smc.c **** /**
  235:.././hal/sam3u1c/smc.c ****  * \brief Prevent NFC controller from writing the spare area in read mode.
@@ -980,7 +980,7 @@
  768              	 .cfi_def_cfa_offset 0
  769 001c 7047     	 bx lr
  770              	 .cfi_endproc
- 771              	.LFE80:
+ 771              	.LFE82:
  773              	 .section .text.smc_nfc_enable,"ax",%progbits
  774              	 .align 1
  775              	 .global smc_nfc_enable
@@ -989,7 +989,7 @@
  778              	 .thumb_func
  779              	 .fpu softvfp
  781              	smc_nfc_enable:
- 782              	.LFB81:
+ 782              	.LFB83:
  243:.././hal/sam3u1c/smc.c **** 
  244:.././hal/sam3u1c/smc.c **** /**
  245:.././hal/sam3u1c/smc.c ****  * \brief Enable NFC controller.
@@ -1035,7 +1035,7 @@
  815              	 .cfi_def_cfa_offset 0
  816 0016 7047     	 bx lr
  817              	 .cfi_endproc
- 818              	.LFE81:
+ 818              	.LFE83:
  820              	 .section .text.smc_nfc_disable,"ax",%progbits
  821              	 .align 1
  822              	 .global smc_nfc_disable
@@ -1044,7 +1044,7 @@
  825              	 .thumb_func
  826              	 .fpu softvfp
  828              	smc_nfc_disable:
- 829              	.LFB82:
+ 829              	.LFB84:
  253:.././hal/sam3u1c/smc.c **** 
  254:.././hal/sam3u1c/smc.c **** /**
  255:.././hal/sam3u1c/smc.c ****  * \brief Disable NFC controller.
@@ -1090,7 +1090,7 @@
  862              	 .cfi_def_cfa_offset 0
  863 0016 7047     	 bx lr
  864              	 .cfi_endproc
- 865              	.LFE82:
+ 865              	.LFE84:
  867              	 .section .text.smc_nfc_get_status,"ax",%progbits
  868              	 .align 1
  869              	 .global smc_nfc_get_status
@@ -1099,7 +1099,7 @@
  872              	 .thumb_func
  873              	 .fpu softvfp
  875              	smc_nfc_get_status:
- 876              	.LFB83:
+ 876              	.LFB85:
  263:.././hal/sam3u1c/smc.c **** 
  264:.././hal/sam3u1c/smc.c **** /**
  265:.././hal/sam3u1c/smc.c ****  * \brief Get the NFC Status.
@@ -1148,7 +1148,7 @@
  908              	 .cfi_def_cfa_offset 0
  909 0014 7047     	 bx lr
  910              	 .cfi_endproc
- 911              	.LFE83:
+ 911              	.LFE85:
  913              	 .section .text.smc_nfc_enable_interrupt,"ax",%progbits
  914              	 .align 1
  915              	 .global smc_nfc_enable_interrupt
@@ -1157,7 +1157,7 @@
  918              	 .thumb_func
  919              	 .fpu softvfp
  921              	smc_nfc_enable_interrupt:
- 922              	.LFB84:
+ 922              	.LFB86:
  277:.././hal/sam3u1c/smc.c **** 
  278:.././hal/sam3u1c/smc.c **** /**
  279:.././hal/sam3u1c/smc.c ****  * \brief Enable SMC interrupts.
@@ -1205,7 +1205,7 @@
  956              	 .cfi_def_cfa_offset 0
  957 0018 7047     	 bx lr
  958              	 .cfi_endproc
- 959              	.LFE84:
+ 959              	.LFE86:
  961              	 .section .text.smc_nfc_disable_interrupt,"ax",%progbits
  962              	 .align 1
  963              	 .global smc_nfc_disable_interrupt
@@ -1214,7 +1214,7 @@
  966              	 .thumb_func
  967              	 .fpu softvfp
  969              	smc_nfc_disable_interrupt:
- 970              	.LFB85:
+ 970              	.LFB87:
  288:.././hal/sam3u1c/smc.c **** 
  289:.././hal/sam3u1c/smc.c **** /**
  290:.././hal/sam3u1c/smc.c ****  * \brief Disable SMC interrupts.
@@ -1262,7 +1262,7 @@
  1004              	 .cfi_def_cfa_offset 0
  1005 0018 7047     	 bx lr
  1006              	 .cfi_endproc
- 1007              	.LFE85:
+ 1007              	.LFE87:
  1009              	 .section .text.smc_nfc_get_interrupt_mask,"ax",%progbits
  1010              	 .align 1
  1011              	 .global smc_nfc_get_interrupt_mask
@@ -1271,7 +1271,7 @@
  1014              	 .thumb_func
  1015              	 .fpu softvfp
  1017              	smc_nfc_get_interrupt_mask:
- 1018              	.LFB86:
+ 1018              	.LFB88:
  299:.././hal/sam3u1c/smc.c **** 
  300:.././hal/sam3u1c/smc.c **** /**
  301:.././hal/sam3u1c/smc.c ****  * \brief Get the interrupt mask.
@@ -1318,7 +1318,7 @@
  1050              	 .cfi_def_cfa_offset 0
  1051 0014 7047     	 bx lr
  1052              	 .cfi_endproc
- 1053              	.LFE86:
+ 1053              	.LFE88:
  1055              	 .section .text.smc_nfc_set_address0,"ax",%progbits
  1056              	 .align 1
  1057              	 .global smc_nfc_set_address0
@@ -1327,7 +1327,7 @@
  1060              	 .thumb_func
  1061              	 .fpu softvfp
  1063              	smc_nfc_set_address0:
- 1064              	.LFB87:
+ 1064              	.LFB89:
  311:.././hal/sam3u1c/smc.c **** 
  312:.././hal/sam3u1c/smc.c **** /**
  313:.././hal/sam3u1c/smc.c ****  * \brief Set flash cycle 0 address.
@@ -1376,7 +1376,7 @@
  1099              	 .cfi_def_cfa_offset 0
  1100 001a 7047     	 bx lr
  1101              	 .cfi_endproc
- 1102              	.LFE87:
+ 1102              	.LFE89:
  1104              	 .section .text.smc_nfc_set_bank,"ax",%progbits
  1105              	 .align 1
  1106              	 .global smc_nfc_set_bank
@@ -1385,7 +1385,7 @@
  1109              	 .thumb_func
  1110              	 .fpu softvfp
  1112              	smc_nfc_set_bank:
- 1113              	.LFB88:
+ 1113              	.LFB90:
  322:.././hal/sam3u1c/smc.c **** 
  323:.././hal/sam3u1c/smc.c **** /**
  324:.././hal/sam3u1c/smc.c ****  * \brief Set NFC sram bank.
@@ -1434,7 +1434,7 @@
  1148              	 .cfi_def_cfa_offset 0
  1149 001c 7047     	 bx lr
  1150              	 .cfi_endproc
- 1151              	.LFE88:
+ 1151              	.LFE90:
  1153              	 .section .text.smc_nfc_send_command,"ax",%progbits
  1154              	 .align 1
  1155              	 .global smc_nfc_send_command
@@ -1443,7 +1443,7 @@
  1158              	 .thumb_func
  1159              	 .fpu softvfp
  1161              	smc_nfc_send_command:
- 1162              	.LFB89:
+ 1162              	.LFB91:
  333:.././hal/sam3u1c/smc.c **** 
  334:.././hal/sam3u1c/smc.c **** /**
  335:.././hal/sam3u1c/smc.c ****  * \brief Use the HOST nandflash controller to send a command.
@@ -1536,7 +1536,7 @@
  1226              	 .cfi_def_cfa_offset 0
  1227 004c 7047     	 bx lr
  1228              	 .cfi_endproc
- 1229              	.LFE89:
+ 1229              	.LFE91:
  1231              	 .section .text.smc_ecc_init,"ax",%progbits
  1232              	 .align 1
  1233              	 .global smc_ecc_init
@@ -1545,7 +1545,7 @@
  1236              	 .thumb_func
  1237              	 .fpu softvfp
  1239              	smc_ecc_init:
- 1240              	.LFB90:
+ 1240              	.LFB92:
  358:.././hal/sam3u1c/smc.c **** 
  359:.././hal/sam3u1c/smc.c **** /**
  360:.././hal/sam3u1c/smc.c ****  * \brief Initialize ECC mode.
@@ -1604,7 +1604,7 @@
  1281              	 .cfi_def_cfa_offset 0
  1282 0024 7047     	 bx lr
  1283              	 .cfi_endproc
- 1284              	.LFE90:
+ 1284              	.LFE92:
  1286              	 .section .text.smc_ecc_get_status,"ax",%progbits
  1287              	 .align 1
  1288              	 .global smc_ecc_get_status
@@ -1613,7 +1613,7 @@
  1291              	 .thumb_func
  1292              	 .fpu softvfp
  1294              	smc_ecc_get_status:
- 1295              	.LFB91:
+ 1295              	.LFB93:
  373:.././hal/sam3u1c/smc.c **** 
  374:.././hal/sam3u1c/smc.c **** /**
  375:.././hal/sam3u1c/smc.c ****  * \brief Get ECC status by giving ecc number.
@@ -1693,7 +1693,7 @@
  1350              	 .cfi_def_cfa_offset 0
  1351 003a 7047     	 bx lr
  1352              	 .cfi_endproc
- 1353              	.LFE91:
+ 1353              	.LFE93:
  1355              	 .section .text.smc_ecc_get_value,"ax",%progbits
  1356              	 .align 1
  1357              	 .global smc_ecc_get_value
@@ -1702,7 +1702,7 @@
  1360              	 .thumb_func
  1361              	 .fpu softvfp
  1363              	smc_ecc_get_value:
- 1364              	.LFB92:
+ 1364              	.LFB94:
  395:.././hal/sam3u1c/smc.c **** 
  396:.././hal/sam3u1c/smc.c **** /**
  397:.././hal/sam3u1c/smc.c ****  * \brief Get all ECC parity registers value.
@@ -1856,20 +1856,20 @@
  1489              	 .cfi_def_cfa_offset 0
  1490 00b0 7047     	 bx lr
  1491              	 .cfi_endproc
- 1492              	.LFE92:
+ 1492              	.LFE94:
  1494              	 .text
  1495              	.Letext0:
- 1496              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1497              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1496              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1497              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
  1498              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
  1499              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
  1500              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
  1501              	 .file 7 ".././hal/sam3u1c/inc/component/component_smc.h"
- 1502              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 1503              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 1504              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 1505              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 1506              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1502              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 1503              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 1504              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 1505              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 1506              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
  1507              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 smc.c
@@ -1930,15 +1930,14 @@ DEFINED SYMBOLS
     {standard input}:1294   .text.smc_ecc_get_status:00000000 smc_ecc_get_status
     {standard input}:1356   .text.smc_ecc_get_value:00000000 $t
     {standard input}:1363   .text.smc_ecc_get_value:00000000 smc_ecc_get_value
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -2004,27 +2003,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

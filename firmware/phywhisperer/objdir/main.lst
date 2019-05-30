@@ -26,7 +26,7 @@
   30              	 .thumb_func
   31              	 .fpu softvfp
   33              	osc_enable:
-  34              	.LFB67:
+  34              	.LFB69:
   35              	 .file 1 ".././hal/sam3u1c/inc/sam3u/osc.h"
    1:.././hal/sam3u1c/inc/sam3u/osc.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/osc.h ****  * \file
@@ -293,7 +293,7 @@
  144 007c 00000000 	 .word pmc_osc_enable_main_xtal
  145 0080 00000000 	 .word pmc_osc_bypass_main_xtal
  146              	 .cfi_endproc
- 147              	.LFE67:
+ 147              	.LFE69:
  149              	 .section .text.osc_is_ready,"ax",%progbits
  150              	 .align 1
  151              	 .syntax unified
@@ -301,7 +301,7 @@
  153              	 .thumb_func
  154              	 .fpu softvfp
  156              	osc_is_ready:
- 157              	.LFB69:
+ 157              	.LFB71:
  154:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  155:.././hal/sam3u1c/inc/sam3u/osc.h **** static inline void osc_disable(uint32_t ul_id)
  156:.././hal/sam3u1c/inc/sam3u/osc.h **** {
@@ -443,7 +443,7 @@
  249 007c 00000000 	 .word pmc_osc_is_ready_fastrc
  250 0080 00000000 	 .word pmc_osc_is_ready_main_xtal
  251              	 .cfi_endproc
- 252              	.LFE69:
+ 252              	.LFE71:
  254              	 .section .text.osc_get_rate,"ax",%progbits
  255              	 .align 1
  256              	 .syntax unified
@@ -451,7 +451,7 @@
  258              	 .thumb_func
  259              	 .fpu softvfp
  261              	osc_get_rate:
- 262              	.LFB70:
+ 262              	.LFB72:
  201:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  202:.././hal/sam3u1c/inc/sam3u/osc.h **** static inline uint32_t osc_get_rate(uint32_t ul_id)
  203:.././hal/sam3u1c/inc/sam3u/osc.h **** {
@@ -573,7 +573,7 @@
  350 0068 00127A00 	 .word 8000000
  351 006c 001BB700 	 .word 12000000
  352              	 .cfi_endproc
- 353              	.LFE70:
+ 353              	.LFE72:
  355              	 .section .text.osc_wait_ready,"ax",%progbits
  356              	 .align 1
  357              	 .syntax unified
@@ -581,7 +581,7 @@
  359              	 .thumb_func
  360              	 .fpu softvfp
  362              	osc_wait_ready:
- 363              	.LFB71:
+ 363              	.LFB73:
  364              	 .file 2 ".././hal/sam3u1c/inc/osc.h"
    1:.././hal/sam3u1c/inc/osc.h **** /**
    2:.././hal/sam3u1c/inc/osc.h ****  * \file
@@ -795,7 +795,7 @@
  408              	.L42:
  409 0028 00000000 	 .word osc_is_ready
  410              	 .cfi_endproc
- 411              	.LFE71:
+ 411              	.LFE73:
  413              	 .section .text.pll_config_init,"ax",%progbits
  414              	 .align 1
  415              	 .syntax unified
@@ -803,7 +803,7 @@
  417              	 .thumb_func
  418              	 .fpu softvfp
  420              	pll_config_init:
- 421              	.LFB72:
+ 421              	.LFB74:
  422              	 .file 3 ".././hal/sam3u1c/inc/sam3u/pll.h"
    1:.././hal/sam3u1c/inc/sam3u/pll.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/pll.h ****  * \file
@@ -1026,7 +1026,7 @@
  502 0064 00000000 	 .word osc_get_rate
  503 0068 0000FF07 	 .word 134152192
  504              	 .cfi_endproc
- 505              	.LFE72:
+ 505              	.LFE74:
  507              	 .section .text.pll_enable,"ax",%progbits
  508              	 .align 1
  509              	 .syntax unified
@@ -1034,7 +1034,7 @@
  511              	 .thumb_func
  512              	 .fpu softvfp
  514              	pll_enable:
- 515              	.LFB75:
+ 515              	.LFB77:
  138:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  139:.././hal/sam3u1c/inc/sam3u/pll.h **** #define pll_config_defaults(cfg, pll_id)                                   \
  140:.././hal/sam3u1c/inc/sam3u/pll.h **** 	pll_config_init(cfg,                                               \
@@ -1100,9 +1100,9 @@
  540              	.LVL12:
  176:.././hal/sam3u1c/inc/sam3u/pll.h **** 		PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | p_cfg->ctrl;
  541              	 .loc 3 176 0
- 542 0014 094A     	 ldr r2,.L53+4
- 543 0016 7B68     	 ldr r3,[r7,#4]
- 544 0018 1B68     	 ldr r3,[r3]
+ 542 0014 7B68     	 ldr r3,[r7,#4]
+ 543 0016 1B68     	 ldr r3,[r3]
+ 544 0018 084A     	 ldr r2,.L53+4
  545 001a 43F00053 	 orr r3,r3,#536870912
  546 001e 9362     	 str r3,[r2,#40]
  177:.././hal/sam3u1c/inc/sam3u/pll.h **** 	} else {
@@ -1114,9 +1114,9 @@
  549              	.L50:
  178:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
  550              	 .loc 3 178 0
- 551 0022 064A     	 ldr r2,.L53+4
- 552 0024 7B68     	 ldr r3,[r7,#4]
- 553 0026 1B68     	 ldr r3,[r3]
+ 551 0022 7B68     	 ldr r3,[r7,#4]
+ 552 0024 1B68     	 ldr r3,[r3]
+ 553 0026 054A     	 ldr r2,.L53+4
  554 0028 43F48033 	 orr r3,r3,#65536
  555 002c D361     	 str r3,[r2,#28]
  556              	.L52:
@@ -1136,7 +1136,7 @@
  570 0038 00000000 	 .word pmc_disable_pllack
  571 003c 00040E40 	 .word 1074660352
  572              	 .cfi_endproc
- 573              	.LFE75:
+ 573              	.LFE77:
  575              	 .section .text.pll_is_locked,"ax",%progbits
  576              	 .align 1
  577              	 .syntax unified
@@ -1144,7 +1144,7 @@
  579              	 .thumb_func
  580              	 .fpu softvfp
  582              	pll_is_locked:
- 583              	.LFB77:
+ 583              	.LFB79:
  181:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  182:.././hal/sam3u1c/inc/sam3u/pll.h **** /**
  183:.././hal/sam3u1c/inc/sam3u/pll.h ****  * \note This will only disable the selected PLL, not the underlying oscillator
@@ -1220,7 +1220,7 @@
  630 0024 00000000 	 .word pmc_is_locked_pllack
  631 0028 00000000 	 .word pmc_is_locked_upll
  632              	 .cfi_endproc
- 633              	.LFE77:
+ 633              	.LFE79:
  635              	 .section .text.pll_enable_source,"ax",%progbits
  636              	 .align 1
  637              	 .syntax unified
@@ -1228,7 +1228,7 @@
  639              	 .thumb_func
  640              	 .fpu softvfp
  642              	pll_enable_source:
- 643              	.LFB78:
+ 643              	.LFB80:
  207:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  208:.././hal/sam3u1c/inc/sam3u/pll.h **** static inline void pll_enable_source(enum pll_source e_src)
  209:.././hal/sam3u1c/inc/sam3u/pll.h **** {
@@ -1303,7 +1303,7 @@
  697 0030 00000000 	 .word osc_enable
  698 0034 00000000 	 .word osc_wait_ready
  699              	 .cfi_endproc
- 700              	.LFE78:
+ 700              	.LFE80:
  702              	 .section .text.pll_enable_config_defaults,"ax",%progbits
  703              	 .align 1
  704              	 .syntax unified
@@ -1311,7 +1311,7 @@
  706              	 .thumb_func
  707              	 .fpu softvfp
  709              	pll_enable_config_defaults:
- 710              	.LFB79:
+ 710              	.LFB81:
  225:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  226:.././hal/sam3u1c/inc/sam3u/pll.h **** static inline void pll_enable_config_defaults(unsigned int ul_pll_id)
  227:.././hal/sam3u1c/inc/sam3u/pll.h **** {
@@ -1509,7 +1509,7 @@
  840 00a4 00000000 	 .word pmc_osc_is_bypassed_main_xtal
  841 00a8 00000000 	 .word pll_enable
  842              	 .cfi_endproc
- 843              	.LFE79:
+ 843              	.LFE81:
  845              	 .section .text.ioport_set_pin_mode,"ax",%progbits
  846              	 .align 1
  847              	 .syntax unified
@@ -1517,7 +1517,7 @@
  849              	 .thumb_func
  850              	 .fpu softvfp
  852              	ioport_set_pin_mode:
- 853              	.LFB114:
+ 853              	.LFB116:
  854              	 .file 4 ".././hal/sam3u1c/inc/ioport.h"
    1:.././hal/sam3u1c/inc/ioport.h **** /**
    2:.././hal/sam3u1c/inc/ioport.h ****  * \file
@@ -2151,7 +2151,7 @@
  1030              	 .cfi_def_cfa_offset 0
  1031 00d6 7047     	 bx lr
  1032              	 .cfi_endproc
- 1033              	.LFE114:
+ 1033              	.LFE116:
  1035              	 .section .text.sleepmgr_sleep,"ax",%progbits
  1036              	 .align 1
  1037              	 .syntax unified
@@ -2159,7 +2159,7 @@
  1039              	 .thumb_func
  1040              	 .fpu softvfp
  1042              	sleepmgr_sleep:
- 1043              	.LFB163:
+ 1043              	.LFB165:
  1044              	 .file 6 ".././hal/sam3u1c/inc/sam/sleepmgr.h"
    1:.././hal/sam3u1c/inc/sam/sleepmgr.h **** /**
    2:.././hal/sam3u1c/inc/sam/sleepmgr.h ****  * \file
@@ -3035,7 +3035,7 @@
  1109 0028 00000000 	 .word g_interrupt_enabled
  1110 002c 00000000 	 .word pmc_sleep
  1111              	 .cfi_endproc
- 1112              	.LFE163:
+ 1112              	.LFE165:
  1114              	 .section .text.sleepmgr_init,"ax",%progbits
  1115              	 .align 1
  1116              	 .syntax unified
@@ -3043,7 +3043,7 @@
  1118              	 .thumb_func
  1119              	 .fpu softvfp
  1121              	sleepmgr_init:
- 1122              	.LFB164:
+ 1122              	.LFB166:
  1123              	 .file 9 ".././hal/sam3u1c/inc/sleepmgr.h"
    1:.././hal/sam3u1c/inc/sleepmgr.h **** /**
    2:.././hal/sam3u1c/inc/sleepmgr.h ****  * \file
@@ -3234,7 +3234,7 @@
  1178              	.L101:
  1179 0030 00000000 	 .word sleepmgr_locks
  1180              	 .cfi_endproc
- 1181              	.LFE164:
+ 1181              	.LFE166:
  1183              	 .section .text.sleepmgr_get_sleep_mode,"ax",%progbits
  1184              	 .align 1
  1185              	 .syntax unified
@@ -3242,7 +3242,7 @@
  1187              	 .thumb_func
  1188              	 .fpu softvfp
  1190              	sleepmgr_get_sleep_mode:
- 1191              	.LFB167:
+ 1191              	.LFB169:
  131:.././hal/sam3u1c/inc/sleepmgr.h **** 
  132:.././hal/sam3u1c/inc/sleepmgr.h **** /**
  133:.././hal/sam3u1c/inc/sleepmgr.h ****  * \brief Increase lock count for a sleep mode
@@ -3386,7 +3386,7 @@
  1248              	.L107:
  1249 0030 00000000 	 .word sleepmgr_locks
  1250              	 .cfi_endproc
- 1251              	.LFE167:
+ 1251              	.LFE169:
  1253              	 .section .text.sleepmgr_enter_sleep,"ax",%progbits
  1254              	 .align 1
  1255              	 .syntax unified
@@ -3394,7 +3394,7 @@
  1257              	 .thumb_func
  1258              	 .fpu softvfp
  1260              	sleepmgr_enter_sleep:
- 1261              	.LFB168:
+ 1261              	.LFB170:
  214:.././hal/sam3u1c/inc/sleepmgr.h **** 
  215:.././hal/sam3u1c/inc/sleepmgr.h **** /**
  216:.././hal/sam3u1c/inc/sleepmgr.h ****  * \fn sleepmgr_enter_sleep
@@ -3533,7 +3533,7 @@
  1362 0040 00000000 	 .word sleepmgr_get_sleep_mode
  1363 0044 00000000 	 .word sleepmgr_sleep
  1364              	 .cfi_endproc
- 1365              	.LFE168:
+ 1365              	.LFE170:
  1367              	 .section .text.genclk_config_defaults,"ax",%progbits
  1368              	 .align 1
  1369              	 .syntax unified
@@ -3541,7 +3541,7 @@
  1371              	 .thumb_func
  1372              	 .fpu softvfp
  1374              	genclk_config_defaults:
- 1375              	.LFB180:
+ 1375              	.LFB182:
  1376              	 .file 10 ".././hal/sam3u1c/inc/genclk.h"
    1:.././hal/sam3u1c/inc/genclk.h **** /**
    2:.././hal/sam3u1c/inc/genclk.h ****  * \file
@@ -3692,7 +3692,7 @@
  1410              	 .cfi_def_cfa_offset 0
  1411 0018 7047     	 bx lr
  1412              	 .cfi_endproc
- 1413              	.LFE180:
+ 1413              	.LFE182:
  1415              	 .section .text.genclk_config_set_source,"ax",%progbits
  1416              	 .align 1
  1417              	 .syntax unified
@@ -3700,7 +3700,7 @@
  1419              	 .thumb_func
  1420              	 .fpu softvfp
  1422              	genclk_config_set_source:
- 1423              	.LFB183:
+ 1423              	.LFB185:
  114:.././hal/sam3u1c/inc/genclk.h **** 
  115:.././hal/sam3u1c/inc/genclk.h **** static inline void genclk_config_read(struct genclk_config *p_cfg,
  116:.././hal/sam3u1c/inc/genclk.h **** 		uint32_t ul_id)
@@ -3855,7 +3855,7 @@
  1526              	 .cfi_def_cfa_offset 0
  1527 009a 7047     	 bx lr
  1528              	 .cfi_endproc
- 1529              	.LFE183:
+ 1529              	.LFE185:
  1531              	 .section .text.genclk_config_set_divider,"ax",%progbits
  1532              	 .align 1
  1533              	 .syntax unified
@@ -3863,7 +3863,7 @@
  1535              	 .thumb_func
  1536              	 .fpu softvfp
  1538              	genclk_config_set_divider:
- 1539              	.LFB184:
+ 1539              	.LFB186:
  163:.././hal/sam3u1c/inc/genclk.h **** 
  164:.././hal/sam3u1c/inc/genclk.h **** static inline void genclk_config_set_divider(struct genclk_config *p_cfg,
  165:.././hal/sam3u1c/inc/genclk.h **** 		uint32_t e_divider)
@@ -3916,7 +3916,7 @@
  1582              	 .cfi_def_cfa_offset 0
  1583 002a 7047     	 bx lr
  1584              	 .cfi_endproc
- 1585              	.LFE184:
+ 1585              	.LFE186:
  1587              	 .section .text.genclk_enable,"ax",%progbits
  1588              	 .align 1
  1589              	 .syntax unified
@@ -3924,7 +3924,7 @@
  1591              	 .thumb_func
  1592              	 .fpu softvfp
  1594              	genclk_enable:
- 1595              	.LFB185:
+ 1595              	.LFB187:
  170:.././hal/sam3u1c/inc/genclk.h **** 
  171:.././hal/sam3u1c/inc/genclk.h **** //@}
  172:.././hal/sam3u1c/inc/genclk.h **** 
@@ -3979,7 +3979,7 @@
  1638 0028 00040E40 	 .word 1074660352
  1639 002c 00000000 	 .word pmc_enable_pck
  1640              	 .cfi_endproc
- 1641              	.LFE185:
+ 1641              	.LFE187:
  1643              	 .section .text.genclk_enable_source,"ax",%progbits
  1644              	 .align 1
  1645              	 .syntax unified
@@ -3987,7 +3987,7 @@
  1647              	 .thumb_func
  1648              	 .fpu softvfp
  1650              	genclk_enable_source:
- 1651              	.LFB187:
+ 1651              	.LFB189:
  179:.././hal/sam3u1c/inc/genclk.h **** 
  180:.././hal/sam3u1c/inc/genclk.h **** static inline void genclk_disable(uint32_t ul_id)
  181:.././hal/sam3u1c/inc/genclk.h **** {
@@ -4372,7 +4372,7 @@
  1940 0188 00000000 	 .word osc_wait_ready
  1941 018c 00000000 	 .word pll_enable_config_defaults
  1942              	 .cfi_endproc
- 1943              	.LFE187:
+ 1943              	.LFE189:
  1945              	 .global usb_serial_number
  1946              	 .section .data.usb_serial_number,"aw",%progbits
  1947              	 .align 2
@@ -4393,7 +4393,7 @@
  1958              	 .thumb_func
  1959              	 .fpu softvfp
  1961              	phywhisperer_no_pwr:
- 1962              	.LFB188:
+ 1962              	.LFB190:
  1963              	 .file 11 "main.c"
    1:main.c        **** #include <asf.h>
    2:main.c        **** #include "conf_usb.h"
@@ -4451,7 +4451,7 @@
  1997              	.L163:
  1998 001c 000C0E40 	 .word 1074662400
  1999              	 .cfi_endproc
- 2000              	.LFE188:
+ 2000              	.LFE190:
  2002              	 .section .text.phywhisperer_5V_pwr,"ax",%progbits
  2003              	 .align 1
  2004              	 .global phywhisperer_5V_pwr
@@ -4460,7 +4460,7 @@
  2007              	 .thumb_func
  2008              	 .fpu softvfp
  2010              	phywhisperer_5V_pwr:
- 2011              	.LFB189:
+ 2011              	.LFB191:
   21:main.c        **** 
   22:main.c        **** void phywhisperer_5V_pwr(void)
   23:main.c        **** {
@@ -4503,7 +4503,7 @@
  2045              	.L166:
  2046 001c 000C0E40 	 .word 1074662400
  2047              	 .cfi_endproc
- 2048              	.LFE189:
+ 2048              	.LFE191:
  2050              	 .section .text.phywhisperer_host_pwr,"ax",%progbits
  2051              	 .align 1
  2052              	 .global phywhisperer_host_pwr
@@ -4512,7 +4512,7 @@
  2055              	 .thumb_func
  2056              	 .fpu softvfp
  2058              	phywhisperer_host_pwr:
- 2059              	.LFB190:
+ 2059              	.LFB192:
   27:main.c        **** 
   28:main.c        **** void phywhisperer_host_pwr(void)
   29:main.c        **** {
@@ -4555,7 +4555,7 @@
  2093              	.L169:
  2094 001c 000C0E40 	 .word 1074662400
  2095              	 .cfi_endproc
- 2096              	.LFE190:
+ 2096              	.LFE192:
  2098              	 .section .text.phywhisperer_switch_usb_pwr,"ax",%progbits
  2099              	 .align 1
  2100              	 .global phywhisperer_switch_usb_pwr
@@ -4564,7 +4564,7 @@
  2103              	 .thumb_func
  2104              	 .fpu softvfp
  2106              	phywhisperer_switch_usb_pwr:
- 2107              	.LFB191:
+ 2107              	.LFB193:
   33:main.c        **** 
   34:main.c        **** void phywhisperer_switch_usb_pwr(void)
   35:main.c        **** {
@@ -4617,7 +4617,7 @@
  2145 0024 00000000 	 .word phywhisperer_5V_pwr
  2146 0028 00000000 	 .word phywhisperer_host_pwr
  2147              	 .cfi_endproc
- 2148              	.LFE191:
+ 2148              	.LFE193:
  2150              	 .section .text.pwr_st_from_io,"ax",%progbits
  2151              	 .align 1
  2152              	 .global pwr_st_from_io
@@ -4626,7 +4626,7 @@
  2155              	 .thumb_func
  2156              	 .fpu softvfp
  2158              	pwr_st_from_io:
- 2159              	.LFB192:
+ 2159              	.LFB194:
   44:main.c        **** 
   45:main.c        **** uint8_t pwr_st_from_io(void)
   46:main.c        **** {
@@ -4724,7 +4724,7 @@
  2236              	.L182:
  2237 0064 000C0E40 	 .word 1074662400
  2238              	 .cfi_endproc
- 2239              	.LFE192:
+ 2239              	.LFE194:
  2241              	 .section .text.phywhisperer_setup_pins,"ax",%progbits
  2242              	 .align 1
  2243              	 .global phywhisperer_setup_pins
@@ -4733,7 +4733,7 @@
  2246              	 .thumb_func
  2247              	 .fpu softvfp
  2249              	phywhisperer_setup_pins:
- 2250              	.LFB193:
+ 2250              	.LFB195:
   62:main.c        **** 
   63:main.c        **** void phywhisperer_setup_pins(void)
   64:main.c        **** {
@@ -4937,7 +4937,7 @@
  2411 00f4 00000000 	 .word smc_set_cycle_timing
  2412 00f8 00000000 	 .word smc_set_mode
  2413              	 .cfi_endproc
- 2414              	.LFE193:
+ 2414              	.LFE195:
  2416              	 .section .text.hacky_delay,"ax",%progbits
  2417              	 .align 1
  2418              	 .global hacky_delay
@@ -4946,7 +4946,7 @@
  2421              	 .thumb_func
  2422              	 .fpu softvfp
  2424              	hacky_delay:
- 2425              	.LFB194:
+ 2425              	.LFB196:
  102:main.c        **** 
  103:main.c        **** void hacky_delay(void)
  104:main.c        **** {
@@ -5003,7 +5003,7 @@
  2474              	.L190:
  2475 0024 8FD00300 	 .word 249999
  2476              	 .cfi_endproc
- 2477              	.LFE194:
+ 2477              	.LFE196:
  2479              	 .section .text.genclk_enable_config,"ax",%progbits
  2480              	 .align 1
  2481              	 .syntax unified
@@ -5011,7 +5011,7 @@
  2483              	 .thumb_func
  2484              	 .fpu softvfp
  2486              	genclk_enable_config:
- 2487              	.LFB195:
+ 2487              	.LFB197:
  107:main.c        **** 
  108:main.c        **** static inline void genclk_enable_config(unsigned int id, enum genclk_source src, unsigned int divid
  109:main.c        **** {
@@ -5096,7 +5096,7 @@
  2558 005c 00000000 	 .word genclk_config_set_divider
  2559 0060 00000000 	 .word genclk_enable
  2560              	 .cfi_endproc
- 2561              	.LFE195:
+ 2561              	.LFE197:
  2563              	 .global pwr_list
  2564              	 .section .data.pwr_list,"aw",%progbits
  2565              	 .align 2
@@ -5112,7 +5112,7 @@
  2577              	 .thumb_func
  2578              	 .fpu softvfp
  2580              	main:
- 2581              	.LFB196:
+ 2581              	.LFB198:
  118:main.c        **** 
  119:main.c        **** void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_5V_pwr, phywhisperer_host_pwr};
  120:main.c        **** 
@@ -5344,22 +5344,22 @@
  2763 00ec 00000000 	 .word pwr_st_from_io
  2764 00f0 00000000 	 .word pwr_list
  2765              	 .cfi_endproc
- 2766              	.LFE196:
+ 2766              	.LFE198:
  2768              	 .text
  2769              	.Letext0:
- 2770              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 2771              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2770              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2771              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
  2772              	 .file 14 ".././hal/sam3u1c/inc/sam3u1c.h"
  2773              	 .file 15 ".././hal/sam3u1c/inc/core_cm3.h"
  2774              	 .file 16 ".././hal/sam3u1c/inc/system_sam3u.h"
  2775              	 .file 17 ".././hal/sam3u1c/inc/component/component_pio.h"
  2776              	 .file 18 ".././hal/sam3u1c/inc/component/component_pmc.h"
  2777              	 .file 19 ".././hal/sam3u1c/inc/component/component_smc.h"
- 2778              	 .file 20 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 2779              	 .file 21 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 2780              	 .file 22 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 2781              	 .file 23 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 2782              	 .file 24 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 2778              	 .file 20 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 2779              	 .file 21 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 2780              	 .file 22 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 2781              	 .file 23 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 2782              	 .file 24 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
  2783              	 .file 25 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
  2784              	 .file 26 ".././hal/sam3u1c/inc/compiler.h"
  2785              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
@@ -5481,15 +5481,14 @@ DEFINED SYMBOLS
     {standard input}:2573   .text.main:00000000 $t
     {standard input}:2580   .text.main:00000000 main
     {standard input}:2749   .text.main:000000b4 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -5555,27 +5554,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

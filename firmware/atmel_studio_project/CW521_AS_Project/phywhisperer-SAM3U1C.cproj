@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>CW521_AS_Project</AssemblyName>
-    <Name>phywhisperer</Name>
+    <Name>phywhisperer-SAM3U1C</Name>
     <RootNamespace>CW521_AS_Project</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>

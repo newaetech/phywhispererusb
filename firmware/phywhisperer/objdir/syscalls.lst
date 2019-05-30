@@ -20,7 +20,7 @@
   20              	 .thumb_func
   21              	 .fpu softvfp
   23              	_sbrk:
-  24              	.LFB1:
+  24              	.LFB3:
   25              	 .file 1 ".././hal/sam3u1c/syscalls.c"
    1:.././hal/sam3u1c/syscalls.c **** /**
    2:.././hal/sam3u1c/syscalls.c ****  * \file
@@ -141,10 +141,10 @@
   59              	 .loc 1 83 0
   60 0020 BA68     	 ldr r2,[r7,#8]
   61 0022 7B68     	 ldr r3,[r7,#4]
-  62 0024 1A44     	 add r2,r2,r3
-  63 0026 FB68     	 ldr r3,[r7,#12]
+  62 0024 1344     	 add r3,r3,r2
+  63 0026 FA68     	 ldr r2,[r7,#12]
   64 0028 9A42     	 cmp r2,r3
-  65 002a 02DD     	 ble .L3
+  65 002a 02DA     	 bge .L3
   84:.././hal/sam3u1c/syscalls.c **** 		return (caddr_t) -1;	
   66              	 .loc 1 84 0
   67 002c 4FF0FF33 	 mov r3,#-1
@@ -184,10 +184,10 @@
   95 004a 00BF     	 .align 2
   96              	.L5:
   97 004c 00000000 	 .word __ram_end__
-  98 0050 00000000 	 .word heap.5297
+  98 0050 00000000 	 .word heap.5319
   99 0054 00000000 	 .word _end
  100              	 .cfi_endproc
- 101              	.LFE1:
+ 101              	.LFE3:
  103              	 .section .text.link,"ax",%progbits
  104              	 .align 1
  105              	 .global link
@@ -196,7 +196,7 @@
  108              	 .thumb_func
  109              	 .fpu softvfp
  111              	link:
- 112              	.LFB2:
+ 112              	.LFB4:
   91:.././hal/sam3u1c/syscalls.c **** 
   92:.././hal/sam3u1c/syscalls.c **** extern int link(char *old, char *new)
   93:.././hal/sam3u1c/syscalls.c **** {
@@ -236,7 +236,7 @@
  144              	 .cfi_def_cfa_offset 0
  145 0016 7047     	 bx lr
  146              	 .cfi_endproc
- 147              	.LFE2:
+ 147              	.LFE4:
  149              	 .section .text._close,"ax",%progbits
  150              	 .align 1
  151              	 .global _close
@@ -245,7 +245,7 @@
  154              	 .thumb_func
  155              	 .fpu softvfp
  157              	_close:
- 158              	.LFB3:
+ 158              	.LFB5:
   96:.././hal/sam3u1c/syscalls.c **** 
   97:.././hal/sam3u1c/syscalls.c **** extern int _close(int file)
   98:.././hal/sam3u1c/syscalls.c **** {
@@ -284,7 +284,7 @@
  189              	 .cfi_def_cfa_offset 0
  190 0014 7047     	 bx lr
  191              	 .cfi_endproc
- 192              	.LFE3:
+ 192              	.LFE5:
  194              	 .section .text._fstat,"ax",%progbits
  195              	 .align 1
  196              	 .global _fstat
@@ -293,7 +293,7 @@
  199              	 .thumb_func
  200              	 .fpu softvfp
  202              	_fstat:
- 203              	.LFB4:
+ 203              	.LFB6:
  101:.././hal/sam3u1c/syscalls.c **** 
  102:.././hal/sam3u1c/syscalls.c **** extern int _fstat(int file, struct stat *st)
  103:.././hal/sam3u1c/syscalls.c **** {
@@ -339,7 +339,7 @@
  239              	 .cfi_def_cfa_offset 0
  240 001c 7047     	 bx lr
  241              	 .cfi_endproc
- 242              	.LFE4:
+ 242              	.LFE6:
  244              	 .section .text._isatty,"ax",%progbits
  245              	 .align 1
  246              	 .global _isatty
@@ -348,7 +348,7 @@
  249              	 .thumb_func
  250              	 .fpu softvfp
  252              	_isatty:
- 253              	.LFB5:
+ 253              	.LFB7:
  108:.././hal/sam3u1c/syscalls.c **** 
  109:.././hal/sam3u1c/syscalls.c **** extern int _isatty(int file)
  110:.././hal/sam3u1c/syscalls.c **** {
@@ -387,7 +387,7 @@
  284              	 .cfi_def_cfa_offset 0
  285 0012 7047     	 bx lr
  286              	 .cfi_endproc
- 287              	.LFE5:
+ 287              	.LFE7:
  289              	 .section .text._lseek,"ax",%progbits
  290              	 .align 1
  291              	 .global _lseek
@@ -396,7 +396,7 @@
  294              	 .thumb_func
  295              	 .fpu softvfp
  297              	_lseek:
- 298              	.LFB6:
+ 298              	.LFB8:
  113:.././hal/sam3u1c/syscalls.c **** 
  114:.././hal/sam3u1c/syscalls.c **** extern int _lseek(int file, int ptr, int dir)
  115:.././hal/sam3u1c/syscalls.c **** {
@@ -437,7 +437,7 @@
  331              	 .cfi_def_cfa_offset 0
  332 0016 7047     	 bx lr
  333              	 .cfi_endproc
- 334              	.LFE6:
+ 334              	.LFE8:
  336              	 .section .rodata
  337              	 .align 2
  338              	.LC0:
@@ -454,7 +454,7 @@
  345              	 .thumb_func
  346              	 .fpu softvfp
  348              	_exit:
- 349              	.LFB7:
+ 349              	.LFB9:
  118:.././hal/sam3u1c/syscalls.c **** 
  119:.././hal/sam3u1c/syscalls.c **** extern void _exit(int status)
  120:.././hal/sam3u1c/syscalls.c **** {
@@ -492,7 +492,7 @@
  378 0014 00000000 	 .word .LC0
  379 0018 00000000 	 .word iprintf
  380              	 .cfi_endproc
- 381              	.LFE7:
+ 381              	.LFE9:
  383              	 .section .text._kill,"ax",%progbits
  384              	 .align 1
  385              	 .global _kill
@@ -501,7 +501,7 @@
  388              	 .thumb_func
  389              	 .fpu softvfp
  391              	_kill:
- 392              	.LFB8:
+ 392              	.LFB10:
  124:.././hal/sam3u1c/syscalls.c **** }
  125:.././hal/sam3u1c/syscalls.c **** 
  126:.././hal/sam3u1c/syscalls.c **** extern void _kill(int pid, int sig)
@@ -541,7 +541,7 @@
  423              	 .cfi_def_cfa_offset 0
  424 0012 7047     	 bx lr
  425              	 .cfi_endproc
- 426              	.LFE8:
+ 426              	.LFE10:
  428              	 .section .text._getpid,"ax",%progbits
  429              	 .align 1
  430              	 .global _getpid
@@ -550,7 +550,7 @@
  433              	 .thumb_func
  434              	 .fpu softvfp
  436              	_getpid:
- 437              	.LFB9:
+ 437              	.LFB11:
  130:.././hal/sam3u1c/syscalls.c **** 
  131:.././hal/sam3u1c/syscalls.c **** extern int _getpid(void)
  132:.././hal/sam3u1c/syscalls.c **** {
@@ -582,29 +582,29 @@
  461              	 .cfi_def_cfa_offset 0
  462 000e 7047     	 bx lr
  463              	 .cfi_endproc
- 464              	.LFE9:
- 466              	 .section .bss.heap.5297,"aw",%nobits
+ 464              	.LFE11:
+ 466              	 .section .bss.heap.5319,"aw",%nobits
  467              	 .align 2
- 470              	heap.5297:
+ 470              	heap.5319:
  471 0000 00000000 	 .space 4
  472              	 .text
  473              	.Letext0:
- 474              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 475              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 476              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 477              	 .file 5 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 478              	 .file 6 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 479              	 .file 7 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_timeval.h"
- 480              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\types.h"
- 481              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\time.h"
- 482              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\stat.h"
- 483              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdio.h"
+ 474              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 475              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 476              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 477              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 478              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 479              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_timeval.h"
+ 480              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\types.h"
+ 481              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\time.h"
+ 482              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\stat.h"
+ 483              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdio.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 syscalls.c
     {standard input}:16     .text._sbrk:00000000 $t
     {standard input}:23     .text._sbrk:00000000 _sbrk
     {standard input}:97     .text._sbrk:0000004c $d
-    {standard input}:470    .bss.heap.5297:00000000 heap.5297
+    {standard input}:470    .bss.heap.5319:00000000 heap.5319
     {standard input}:104    .text.link:00000000 $t
     {standard input}:111    .text.link:00000000 link
     {standard input}:150    .text._close:00000000 $t
@@ -623,41 +623,43 @@ DEFINED SYMBOLS
     {standard input}:391    .text._kill:00000000 _kill
     {standard input}:429    .text._getpid:00000000 $t
     {standard input}:436    .text._getpid:00000000 _getpid
-    {standard input}:467    .bss.heap.5297:00000000 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.newlib.h.21.59901f4bf241ab46c63694665baa7297
-                           .group:00000000 wm4.features.h.22.692cd1f2e947ca7b8fea300222f5f1f2
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+    {standard input}:467    .bss.heap.5319:00000000 $d
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.newlib.h.18.5e5ca3429233af402d406a202f1fc1ac
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.features.h.22.026edb2397769f4ae13f35900dbdb560
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
                            .group:00000000 wm4.stddef.h.187.2ff233552538c6ff9b8575ca8ea52cb3
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stddef.h.39.a231a87e043a95babfd62cebe88e50f8
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdarg.h.31.3fa7b8f6daaa31edd1696c08c77f2a73
                            .group:00000000 wm4.time.h.8.db4619001f026d0b4874c029fef0e91f
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
                            .group:00000000 wm4.time.h.2.4581ce0ffb6627cfc02162c94bf846c9
                            .group:00000000 wm4.time.h.25.0e6a0fdbc9955f5707ed54246ed2e089
-                           .group:00000000 wm4.time.h.162.d096f2f5887c52e271c4dc33d795dc64
+                           .group:00000000 wm4.time.h.162.117026b75cfaa0f83901a5f301a8b4f7
                            .group:00000000 wm4.stat.h.71.d65ac61ff88c651e198008cfb38bda9c
 
 UNDEFINED SYMBOLS

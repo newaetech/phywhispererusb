@@ -42,7 +42,7 @@ include $(FIRMWAREPATH)/hal/Makefile.hal
 
 # Add the platform to the output filenames
 ifeq ($(TARGET-PLAT),)
-TARGET-PLAT = $(TARGET)
+TARGET-PLAT = $(TARGET)-$(PLATFORM)
 endif
 
 # Also get target names for all platforms (for make clean)

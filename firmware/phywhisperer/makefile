@@ -39,7 +39,7 @@ SRC += main.c usb.c usb_xmem.c fpga_program.c
 # -----------------------------------------------------------------------------
 OPT=0
 
-PLATFORM=CW570
+PLATFORM=SAM3U1C
 
 FIRMWAREPATH = ../.
 include $(FIRMWAREPATH)/Makefile.inc

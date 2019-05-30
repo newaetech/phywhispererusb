@@ -27,6 +27,7 @@ from .naeusb import packuint32
 import time
 import sys
 import os
+import zipfile
 
 
 

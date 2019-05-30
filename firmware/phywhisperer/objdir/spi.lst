@@ -26,7 +26,7 @@
   30              	 .thumb_func
   31              	 .fpu softvfp
   33              	spi_get_peripheral_select_mode:
-  34              	.LFB76:
+  34              	.LFB78:
   35              	 .file 1 ".././hal/sam3u1c/inc/spi.h"
    1:.././hal/sam3u1c/inc/spi.h **** /**
    2:.././hal/sam3u1c/inc/spi.h ****  * \file
@@ -278,7 +278,7 @@
   77              	 .cfi_def_cfa_offset 0
   78 0022 7047     	 bx lr
   79              	 .cfi_endproc
-  80              	.LFE76:
+  80              	.LFE78:
   82              	 .section .text.sysclk_enable_peripheral_clock,"ax",%progbits
   83              	 .align 1
   84              	 .syntax unified
@@ -286,7 +286,7 @@
   86              	 .thumb_func
   87              	 .fpu softvfp
   89              	sysclk_enable_peripheral_clock:
-  90              	.LFB119:
+  90              	.LFB121:
   91              	 .file 2 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
    1:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \file
@@ -658,7 +658,7 @@
  125              	.L5:
  126 0018 00000000 	 .word pmc_enable_periph_clk
  127              	 .cfi_endproc
- 128              	.LFE119:
+ 128              	.LFE121:
  130              	 .section .text.sysclk_disable_peripheral_clock,"ax",%progbits
  131              	 .align 1
  132              	 .syntax unified
@@ -666,7 +666,7 @@
  134              	 .thumb_func
  135              	 .fpu softvfp
  137              	sysclk_disable_peripheral_clock:
- 138              	.LFB120:
+ 138              	.LFB122:
  335:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
  336:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
  337:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Disable a peripheral's clock.
@@ -713,7 +713,7 @@
  172              	.L8:
  173 0018 00000000 	 .word pmc_disable_periph_clk
  174              	 .cfi_endproc
- 175              	.LFE120:
+ 175              	.LFE122:
  177              	 .section .text.spi_enable_clock,"ax",%progbits
  178              	 .align 1
  179              	 .global spi_enable_clock
@@ -722,7 +722,7 @@
  182              	 .thumb_func
  183              	 .fpu softvfp
  185              	spi_enable_clock:
- 186              	.LFB121:
+ 186              	.LFB123:
  187              	 .file 3 ".././hal/sam3u1c/spi.c"
    1:.././hal/sam3u1c/spi.c **** /**
    2:.././hal/sam3u1c/spi.c ****  * \file
@@ -874,7 +874,7 @@
  221              	.L11:
  222 0018 00000000 	 .word sysclk_enable_peripheral_clock
  223              	 .cfi_endproc
- 224              	.LFE121:
+ 224              	.LFE123:
  226              	 .section .text.spi_disable_clock,"ax",%progbits
  227              	 .align 1
  228              	 .global spi_disable_clock
@@ -883,7 +883,7 @@
  231              	 .thumb_func
  232              	 .fpu softvfp
  234              	spi_disable_clock:
- 235              	.LFB122:
+ 235              	.LFB124:
  115:.././hal/sam3u1c/spi.c **** 
  116:.././hal/sam3u1c/spi.c **** /**
  117:.././hal/sam3u1c/spi.c ****  * \brief Disable SPI clock.
@@ -974,7 +974,7 @@
  269              	.L14:
  270 0018 00000000 	 .word sysclk_disable_peripheral_clock
  271              	 .cfi_endproc
- 272              	.LFE122:
+ 272              	.LFE124:
  274              	 .section .text.spi_set_peripheral_chip_select_value,"ax",%progbits
  275              	 .align 1
  276              	 .global spi_set_peripheral_chip_select_value
@@ -983,7 +983,7 @@
  279              	 .thumb_func
  280              	 .fpu softvfp
  282              	spi_set_peripheral_chip_select_value:
- 283              	.LFB123:
+ 283              	.LFB125:
  169:.././hal/sam3u1c/spi.c **** 
  170:.././hal/sam3u1c/spi.c **** /**
  171:.././hal/sam3u1c/spi.c ****  * \brief Set Peripheral Chip Select (PCS) value.
@@ -1049,7 +1049,7 @@
  328              	 .cfi_def_cfa_offset 0
  329 0030 7047     	 bx lr
  330              	 .cfi_endproc
- 331              	.LFE123:
+ 331              	.LFE125:
  333              	 .section .text.spi_set_delay_between_chip_select,"ax",%progbits
  334              	 .align 1
  335              	 .global spi_set_delay_between_chip_select
@@ -1058,7 +1058,7 @@
  338              	 .thumb_func
  339              	 .fpu softvfp
  341              	spi_set_delay_between_chip_select:
- 342              	.LFB124:
+ 342              	.LFB126:
  187:.././hal/sam3u1c/spi.c **** 
  188:.././hal/sam3u1c/spi.c **** /**
  189:.././hal/sam3u1c/spi.c ****  * \brief Set delay between chip selects (in number of MCK clocks).
@@ -1118,7 +1118,7 @@
  386              	 .cfi_def_cfa_offset 0
  387 002c 7047     	 bx lr
  388              	 .cfi_endproc
- 389              	.LFE124:
+ 389              	.LFE126:
  391              	 .section .text.spi_read,"ax",%progbits
  392              	 .align 1
  393              	 .global spi_read
@@ -1127,7 +1127,7 @@
  396              	 .thumb_func
  397              	 .fpu softvfp
  399              	spi_read:
- 400              	.LFB125:
+ 400              	.LFB127:
  200:.././hal/sam3u1c/spi.c **** 
  201:.././hal/sam3u1c/spi.c **** /**
  202:.././hal/sam3u1c/spi.c ****  * \brief Read the received data and it's peripheral chip select value.
@@ -1246,10 +1246,10 @@
  483              	.L24:
  484              	 .align 2
  485              	.L23:
- 486 0068 00000000 	 .word reg_value.7329
+ 486 0068 00000000 	 .word reg_value.7351
  487 006c 00000000 	 .word spi_get_peripheral_select_mode
  488              	 .cfi_endproc
- 489              	.LFE125:
+ 489              	.LFE127:
  491              	 .section .text.spi_write,"ax",%progbits
  492              	 .align 1
  493              	 .global spi_write
@@ -1258,7 +1258,7 @@
  496              	 .thumb_func
  497              	 .fpu softvfp
  499              	spi_write:
- 500              	.LFB126:
+ 500              	.LFB128:
  232:.././hal/sam3u1c/spi.c **** 
  233:.././hal/sam3u1c/spi.c **** /**
  234:.././hal/sam3u1c/spi.c ****  * \brief Write the transmitted data with specified peripheral chip select value.
@@ -1397,7 +1397,7 @@
  596              	.L32:
  597 007c 00000000 	 .word spi_get_peripheral_select_mode
  598              	 .cfi_endproc
- 599              	.LFE126:
+ 599              	.LFE128:
  601              	 .section .text.spi_set_clock_polarity,"ax",%progbits
  602              	 .align 1
  603              	 .global spi_set_clock_polarity
@@ -1406,7 +1406,7 @@
  606              	 .thumb_func
  607              	 .fpu softvfp
  609              	spi_set_clock_polarity:
- 610              	.LFB127:
+ 610              	.LFB129:
  271:.././hal/sam3u1c/spi.c **** 
  272:.././hal/sam3u1c/spi.c **** /**
  273:.././hal/sam3u1c/spi.c ****  * \brief Set clock default state.
@@ -1486,7 +1486,7 @@
  669              	 .cfi_def_cfa_offset 0
  670 004c 7047     	 bx lr
  671              	 .cfi_endproc
- 672              	.LFE127:
+ 672              	.LFE129:
  674              	 .section .text.spi_set_clock_phase,"ax",%progbits
  675              	 .align 1
  676              	 .global spi_set_clock_phase
@@ -1495,7 +1495,7 @@
  679              	 .thumb_func
  680              	 .fpu softvfp
  682              	spi_set_clock_phase:
- 683              	.LFB128:
+ 683              	.LFB130:
  288:.././hal/sam3u1c/spi.c **** 
  289:.././hal/sam3u1c/spi.c **** /**
  290:.././hal/sam3u1c/spi.c ****  * \brief Set Data Capture Phase.
@@ -1574,7 +1574,7 @@
  742              	 .cfi_def_cfa_offset 0
  743 004c 7047     	 bx lr
  744              	 .cfi_endproc
- 745              	.LFE128:
+ 745              	.LFE130:
  747              	 .section .text.spi_configure_cs_behavior,"ax",%progbits
  748              	 .align 1
  749              	 .global spi_configure_cs_behavior
@@ -1583,7 +1583,7 @@
  752              	 .thumb_func
  753              	 .fpu softvfp
  755              	spi_configure_cs_behavior:
- 756              	.LFB129:
+ 756              	.LFB131:
  304:.././hal/sam3u1c/spi.c **** 
  305:.././hal/sam3u1c/spi.c **** /**
  306:.././hal/sam3u1c/spi.c ****  * \brief Configure CS behavior for SPI transfer (\ref spi_cs_behavior_t).
@@ -1712,7 +1712,7 @@
  856              	 .cfi_def_cfa_offset 0
  857 00a2 7047     	 bx lr
  858              	 .cfi_endproc
- 859              	.LFE129:
+ 859              	.LFE131:
  861              	 .section .text.spi_set_bits_per_transfer,"ax",%progbits
  862              	 .align 1
  863              	 .global spi_set_bits_per_transfer
@@ -1721,7 +1721,7 @@
  866              	 .thumb_func
  867              	 .fpu softvfp
  869              	spi_set_bits_per_transfer:
- 870              	.LFB130:
+ 870              	.LFB132:
  325:.././hal/sam3u1c/spi.c **** 
  326:.././hal/sam3u1c/spi.c **** /**
  327:.././hal/sam3u1c/spi.c ****  * \brief Set number of bits per transfer.
@@ -1791,7 +1791,7 @@
  922              	 .cfi_def_cfa_offset 0
  923 0046 7047     	 bx lr
  924              	 .cfi_endproc
- 925              	.LFE130:
+ 925              	.LFE132:
  927              	 .section .text.spi_calc_baudrate_div,"ax",%progbits
  928              	 .align 1
  929              	 .global spi_calc_baudrate_div
@@ -1800,7 +1800,7 @@
  932              	 .thumb_func
  933              	 .fpu softvfp
  935              	spi_calc_baudrate_div:
- 936              	.LFB131:
+ 936              	.LFB133:
  340:.././hal/sam3u1c/spi.c **** 
  341:.././hal/sam3u1c/spi.c **** /**
  342:.././hal/sam3u1c/spi.c ****  * \brief Calculate the baudrate divider.
@@ -1880,7 +1880,7 @@
  991              	 .cfi_def_cfa_offset 0
  992 0038 7047     	 bx lr
  993              	 .cfi_endproc
- 994              	.LFE131:
+ 994              	.LFE133:
  996              	 .section .text.spi_set_baudrate_div,"ax",%progbits
  997              	 .align 1
  998              	 .global spi_set_baudrate_div
@@ -1889,7 +1889,7 @@
  1001              	 .thumb_func
  1002              	 .fpu softvfp
  1004              	spi_set_baudrate_div:
- 1005              	.LFB132:
+ 1005              	.LFB134:
  362:.././hal/sam3u1c/spi.c **** 
  363:.././hal/sam3u1c/spi.c **** /**
  364:.././hal/sam3u1c/spi.c ****  * \brief Set Serial Clock Baud Rate divider value (SCBR).
@@ -1961,7 +1961,7 @@
  1060              	 .cfi_def_cfa_offset 0
  1061 004c 7047     	 bx lr
  1062              	 .cfi_endproc
- 1063              	.LFE132:
+ 1063              	.LFE134:
  1065              	 .section .text.spi_set_transfer_delay,"ax",%progbits
  1066              	 .align 1
  1067              	 .global spi_set_transfer_delay
@@ -1970,7 +1970,7 @@
  1070              	 .thumb_func
  1071              	 .fpu softvfp
  1073              	spi_set_transfer_delay:
- 1074              	.LFB133:
+ 1074              	.LFB135:
  376:.././hal/sam3u1c/spi.c **** 
  377:.././hal/sam3u1c/spi.c **** /**
  378:.././hal/sam3u1c/spi.c ****  * \brief Configure timing for SPI transfer.
@@ -2054,7 +2054,7 @@
  1138              	 .cfi_def_cfa_offset 0
  1139 005a 7047     	 bx lr
  1140              	 .cfi_endproc
- 1141              	.LFE133:
+ 1141              	.LFE135:
  1143              	 .section .text.spi_set_writeprotect,"ax",%progbits
  1144              	 .align 1
  1145              	 .global spi_set_writeprotect
@@ -2063,7 +2063,7 @@
  1148              	 .thumb_func
  1149              	 .fpu softvfp
  1151              	spi_set_writeprotect:
- 1152              	.LFB134:
+ 1152              	.LFB136:
  392:.././hal/sam3u1c/spi.c **** 
  393:.././hal/sam3u1c/spi.c **** 
  394:.././hal/sam3u1c/spi.c **** /**
@@ -2142,7 +2142,7 @@
  1203 002c 01495053 	 .word 1397770497
  1204 0030 00495053 	 .word 1397770496
  1205              	 .cfi_endproc
- 1206              	.LFE134:
+ 1206              	.LFE136:
  1208              	 .section .text.spi_get_writeprotect_status,"ax",%progbits
  1209              	 .align 1
  1210              	 .global spi_get_writeprotect_status
@@ -2151,7 +2151,7 @@
  1213              	 .thumb_func
  1214              	 .fpu softvfp
  1216              	spi_get_writeprotect_status:
- 1217              	.LFB135:
+ 1217              	.LFB137:
  416:.././hal/sam3u1c/spi.c **** 
  417:.././hal/sam3u1c/spi.c **** /**
  418:.././hal/sam3u1c/spi.c ****  * \brief Indicate write protect status.
@@ -2198,24 +2198,24 @@
  1249              	 .cfi_def_cfa_offset 0
  1250 0016 7047     	 bx lr
  1251              	 .cfi_endproc
- 1252              	.LFE135:
- 1254              	 .section .bss.reg_value.7329,"aw",%nobits
+ 1252              	.LFE137:
+ 1254              	 .section .bss.reg_value.7351,"aw",%nobits
  1255              	 .align 2
- 1258              	reg_value.7329:
+ 1258              	reg_value.7351:
  1259 0000 00000000 	 .space 4
  1260              	 .text
  1261              	.Letext0:
- 1262              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1263              	 .file 5 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1262              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1263              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
  1264              	 .file 6 ".././hal/sam3u1c/inc/sam3u1c.h"
  1265              	 .file 7 ".././hal/sam3u1c/inc/core_cm3.h"
  1266              	 .file 8 ".././hal/sam3u1c/inc/system_sam3u.h"
  1267              	 .file 9 ".././hal/sam3u1c/inc/component/component_spi.h"
- 1268              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 1269              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 1270              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 1271              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 1272              	 .file 14 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1268              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 1269              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 1270              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 1271              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 1272              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
  1273              	 .file 15 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
  1274              	 .file 16 ".././hal/sam3u1c/inc/pmc.h"
 DEFINED SYMBOLS
@@ -2245,7 +2245,7 @@ DEFINED SYMBOLS
     {standard input}:392    .text.spi_read:00000000 $t
     {standard input}:399    .text.spi_read:00000000 spi_read
     {standard input}:486    .text.spi_read:00000068 $d
-    {standard input}:1258   .bss.reg_value.7329:00000000 reg_value.7329
+    {standard input}:1258   .bss.reg_value.7351:00000000 reg_value.7351
     {standard input}:492    .text.spi_write:00000000 $t
     {standard input}:499    .text.spi_write:00000000 spi_write
     {standard input}:597    .text.spi_write:0000007c $d
@@ -2268,16 +2268,15 @@ DEFINED SYMBOLS
     {standard input}:1203   .text.spi_set_writeprotect:0000002c $d
     {standard input}:1209   .text.spi_get_writeprotect_status:00000000 $t
     {standard input}:1216   .text.spi_get_writeprotect_status:00000000 spi_get_writeprotect_status
-    {standard input}:1255   .bss.reg_value.7329:00000000 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+    {standard input}:1255   .bss.reg_value.7351:00000000 $d
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -2343,27 +2342,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

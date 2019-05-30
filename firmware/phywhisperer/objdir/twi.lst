@@ -27,7 +27,7 @@
   31              	 .thumb_func
   32              	 .fpu softvfp
   34              	twi_enable_master_mode:
-  35              	.LFB67:
+  35              	.LFB69:
   36              	 .file 1 ".././hal/sam3u1c/twi.c"
    1:.././hal/sam3u1c/twi.c **** /**
    2:.././hal/sam3u1c/twi.c ****  * \file
@@ -174,7 +174,7 @@
   77              	 .cfi_def_cfa_offset 0
   78 0022 7047     	 bx lr
   79              	 .cfi_endproc
-  80              	.LFE67:
+  80              	.LFE69:
   82              	 .section .text.twi_disable_master_mode,"ax",%progbits
   83              	 .align 1
   84              	 .global twi_disable_master_mode
@@ -183,7 +183,7 @@
   87              	 .thumb_func
   88              	 .fpu softvfp
   90              	twi_disable_master_mode:
-  91              	.LFB68:
+  91              	.LFB70:
  103:.././hal/sam3u1c/twi.c **** 
  104:.././hal/sam3u1c/twi.c **** /**
  105:.././hal/sam3u1c/twi.c ****  * \brief Disable TWI master mode.
@@ -230,7 +230,7 @@
  124              	 .cfi_def_cfa_offset 0
  125 0016 7047     	 bx lr
  126              	 .cfi_endproc
- 127              	.LFE68:
+ 127              	.LFE70:
  129              	 .section .text.twi_master_init,"ax",%progbits
  130              	 .align 1
  131              	 .global twi_master_init
@@ -239,7 +239,7 @@
  134              	 .thumb_func
  135              	 .fpu softvfp
  137              	twi_master_init:
- 138              	.LFB69:
+ 138              	.LFB71:
  114:.././hal/sam3u1c/twi.c **** 
  115:.././hal/sam3u1c/twi.c **** /**
  116:.././hal/sam3u1c/twi.c ****  * \brief Initialize TWI master mode.
@@ -359,7 +359,7 @@
  219 005c 00000000 	 .word twi_enable_master_mode
  220 0060 00000000 	 .word twi_set_speed
  221              	 .cfi_endproc
- 222              	.LFE69:
+ 222              	.LFE71:
  224              	 .section .text.twi_set_speed,"ax",%progbits
  225              	 .align 1
  226              	 .global twi_set_speed
@@ -368,7 +368,7 @@
  229              	 .thumb_func
  230              	 .fpu softvfp
  232              	twi_set_speed:
- 233              	.LFB70:
+ 233              	.LFB72:
  150:.././hal/sam3u1c/twi.c **** 
  151:.././hal/sam3u1c/twi.c **** /**
  152:.././hal/sam3u1c/twi.c ****  * \brief Set the I2C bus speed in conjunction with the clock frequency.
@@ -506,7 +506,7 @@
  327              	.L15:
  328 006c 801A0600 	 .word 400000
  329              	 .cfi_endproc
- 330              	.LFE70:
+ 330              	.LFE72:
  332              	 .section .text.twi_probe,"ax",%progbits
  333              	 .align 1
  334              	 .global twi_probe
@@ -515,7 +515,7 @@
  337              	 .thumb_func
  338              	 .fpu softvfp
  340              	twi_probe:
- 341              	.LFB71:
+ 341              	.LFB73:
  187:.././hal/sam3u1c/twi.c **** 
  188:.././hal/sam3u1c/twi.c **** /**
  189:.././hal/sam3u1c/twi.c ****  * \brief Test if a chip answers a given I2C address.
@@ -603,7 +603,7 @@
  398              	.L19:
  399 003c 00000000 	 .word twi_master_write
  400              	 .cfi_endproc
- 401              	.LFE71:
+ 401              	.LFE73:
  403              	 .section .text.twi_mk_addr,"ax",%progbits
  404              	 .align 1
  405              	 .syntax unified
@@ -611,7 +611,7 @@
  407              	 .thumb_func
  408              	 .fpu softvfp
  410              	twi_mk_addr:
- 411              	.LFB72:
+ 411              	.LFB74:
  215:.././hal/sam3u1c/twi.c **** 
  216:.././hal/sam3u1c/twi.c **** 
  217:.././hal/sam3u1c/twi.c **** /**
@@ -722,7 +722,7 @@
  490              	 .cfi_def_cfa_offset 0
  491 0058 7047     	 bx lr
  492              	 .cfi_endproc
- 493              	.LFE72:
+ 493              	.LFE74:
  495              	 .section .text.twi_master_read,"ax",%progbits
  496              	 .align 1
  497              	 .global twi_master_read
@@ -731,7 +731,7 @@
  500              	 .thumb_func
  501              	 .fpu softvfp
  503              	twi_master_read:
- 504              	.LFB73:
+ 504              	.LFB75:
  244:.././hal/sam3u1c/twi.c **** 
  245:.././hal/sam3u1c/twi.c **** /**
  246:.././hal/sam3u1c/twi.c ****  * \brief Read multiple bytes from a TWI compatible slave device.
@@ -941,12 +941,12 @@
  305:.././hal/sam3u1c/twi.c **** 		}
  306:.././hal/sam3u1c/twi.c **** 		*buffer++ = p_twi->TWI_RHR;
  649              	 .loc 1 306 0
- 650 00ca BB69     	 ldr r3,[r7,#24]
- 651 00cc 5A1C     	 adds r2,r3,#1
- 652 00ce BA61     	 str r2,[r7,#24]
- 653 00d0 7A68     	 ldr r2,[r7,#4]
- 654 00d2 126B     	 ldr r2,[r2,#48]
- 655 00d4 D2B2     	 uxtb r2,r2
+ 650 00ca 7B68     	 ldr r3,[r7,#4]
+ 651 00cc 196B     	 ldr r1,[r3,#48]
+ 652 00ce BB69     	 ldr r3,[r7,#24]
+ 653 00d0 5A1C     	 adds r2,r3,#1
+ 654 00d2 BA61     	 str r2,[r7,#24]
+ 655 00d4 CAB2     	 uxtb r2,r1
  656 00d6 1A70     	 strb r2,[r3]
  307:.././hal/sam3u1c/twi.c **** 
  308:.././hal/sam3u1c/twi.c **** 		cnt--;
@@ -1003,7 +1003,7 @@
  696              	.L38:
  697 0108 00000000 	 .word twi_mk_addr
  698              	 .cfi_endproc
- 699              	.LFE73:
+ 699              	.LFE75:
  701              	 .section .text.twi_master_write,"ax",%progbits
  702              	 .align 1
  703              	 .global twi_master_write
@@ -1012,7 +1012,7 @@
  706              	 .thumb_func
  707              	 .fpu softvfp
  709              	twi_master_write:
- 710              	.LFB74:
+ 710              	.LFB76:
  319:.././hal/sam3u1c/twi.c **** 
  320:.././hal/sam3u1c/twi.c **** /**
  321:.././hal/sam3u1c/twi.c ****  * \brief Write multiple bytes to a TWI compatible slave device.
@@ -1244,7 +1244,7 @@
  871              	.L54:
  872 00d8 00000000 	 .word twi_mk_addr
  873              	 .cfi_endproc
- 874              	.LFE74:
+ 874              	.LFE76:
  876              	 .section .text.twi_enable_interrupt,"ax",%progbits
  877              	 .align 1
  878              	 .global twi_enable_interrupt
@@ -1253,7 +1253,7 @@
  881              	 .thumb_func
  882              	 .fpu softvfp
  884              	twi_enable_interrupt:
- 885              	.LFB75:
+ 885              	.LFB77:
  384:.././hal/sam3u1c/twi.c **** 
  385:.././hal/sam3u1c/twi.c **** /**
  386:.././hal/sam3u1c/twi.c ****  * \brief Enable TWI interrupts.
@@ -1302,7 +1302,7 @@
  919              	 .cfi_def_cfa_offset 0
  920 0018 7047     	 bx lr
  921              	 .cfi_endproc
- 922              	.LFE75:
+ 922              	.LFE77:
  924              	 .section .text.twi_disable_interrupt,"ax",%progbits
  925              	 .align 1
  926              	 .global twi_disable_interrupt
@@ -1311,7 +1311,7 @@
  929              	 .thumb_func
  930              	 .fpu softvfp
  932              	twi_disable_interrupt:
- 933              	.LFB76:
+ 933              	.LFB78:
  396:.././hal/sam3u1c/twi.c **** 
  397:.././hal/sam3u1c/twi.c **** /**
  398:.././hal/sam3u1c/twi.c ****  * \brief Disable TWI interrupts.
@@ -1365,7 +1365,7 @@
  970              	 .cfi_def_cfa_offset 0
  971 001c 7047     	 bx lr
  972              	 .cfi_endproc
- 973              	.LFE76:
+ 973              	.LFE78:
  975              	 .section .text.twi_get_interrupt_status,"ax",%progbits
  976              	 .align 1
  977              	 .global twi_get_interrupt_status
@@ -1374,7 +1374,7 @@
  980              	 .thumb_func
  981              	 .fpu softvfp
  983              	twi_get_interrupt_status:
- 984              	.LFB77:
+ 984              	.LFB79:
  410:.././hal/sam3u1c/twi.c **** 
  411:.././hal/sam3u1c/twi.c **** /**
  412:.././hal/sam3u1c/twi.c ****  * \brief Get TWI interrupt status.
@@ -1421,7 +1421,7 @@
  1016              	 .cfi_def_cfa_offset 0
  1017 0014 7047     	 bx lr
  1018              	 .cfi_endproc
- 1019              	.LFE77:
+ 1019              	.LFE79:
  1021              	 .section .text.twi_get_interrupt_mask,"ax",%progbits
  1022              	 .align 1
  1023              	 .global twi_get_interrupt_mask
@@ -1430,7 +1430,7 @@
  1026              	 .thumb_func
  1027              	 .fpu softvfp
  1029              	twi_get_interrupt_mask:
- 1030              	.LFB78:
+ 1030              	.LFB80:
  422:.././hal/sam3u1c/twi.c **** 
  423:.././hal/sam3u1c/twi.c **** /**
  424:.././hal/sam3u1c/twi.c ****  * \brief Read TWI interrupt mask.
@@ -1477,7 +1477,7 @@
  1062              	 .cfi_def_cfa_offset 0
  1063 0014 7047     	 bx lr
  1064              	 .cfi_endproc
- 1065              	.LFE78:
+ 1065              	.LFE80:
  1067              	 .section .text.twi_read_byte,"ax",%progbits
  1068              	 .align 1
  1069              	 .global twi_read_byte
@@ -1486,7 +1486,7 @@
  1072              	 .thumb_func
  1073              	 .fpu softvfp
  1075              	twi_read_byte:
- 1076              	.LFB79:
+ 1076              	.LFB81:
  434:.././hal/sam3u1c/twi.c **** 
  435:.././hal/sam3u1c/twi.c **** /**
  436:.././hal/sam3u1c/twi.c ****  * \brief Reads a byte from the TWI bus.
@@ -1534,7 +1534,7 @@
  1109              	 .cfi_def_cfa_offset 0
  1110 0016 7047     	 bx lr
  1111              	 .cfi_endproc
- 1112              	.LFE79:
+ 1112              	.LFE81:
  1114              	 .section .text.twi_write_byte,"ax",%progbits
  1115              	 .align 1
  1116              	 .global twi_write_byte
@@ -1543,7 +1543,7 @@
  1119              	 .thumb_func
  1120              	 .fpu softvfp
  1122              	twi_write_byte:
- 1123              	.LFB80:
+ 1123              	.LFB82:
  446:.././hal/sam3u1c/twi.c **** 
  447:.././hal/sam3u1c/twi.c **** /**
  448:.././hal/sam3u1c/twi.c ****  * \brief Sends a byte of data to one of the TWI slaves on the bus.
@@ -1592,7 +1592,7 @@
  1158              	 .cfi_def_cfa_offset 0
  1159 001a 7047     	 bx lr
  1160              	 .cfi_endproc
- 1161              	.LFE80:
+ 1161              	.LFE82:
  1163              	 .section .text.twi_enable_slave_mode,"ax",%progbits
  1164              	 .align 1
  1165              	 .global twi_enable_slave_mode
@@ -1601,7 +1601,7 @@
  1168              	 .thumb_func
  1169              	 .fpu softvfp
  1171              	twi_enable_slave_mode:
- 1172              	.LFB81:
+ 1172              	.LFB83:
  457:.././hal/sam3u1c/twi.c **** 
  458:.././hal/sam3u1c/twi.c **** /**
  459:.././hal/sam3u1c/twi.c ****  * \brief Enable TWI slave mode.
@@ -1660,7 +1660,7 @@
  1213              	 .cfi_def_cfa_offset 0
  1214 0022 7047     	 bx lr
  1215              	 .cfi_endproc
- 1216              	.LFE81:
+ 1216              	.LFE83:
  1218              	 .section .text.twi_disable_slave_mode,"ax",%progbits
  1219              	 .align 1
  1220              	 .global twi_disable_slave_mode
@@ -1669,7 +1669,7 @@
  1223              	 .thumb_func
  1224              	 .fpu softvfp
  1226              	twi_disable_slave_mode:
- 1227              	.LFB82:
+ 1227              	.LFB84:
  472:.././hal/sam3u1c/twi.c **** 
  473:.././hal/sam3u1c/twi.c **** /**
  474:.././hal/sam3u1c/twi.c ****  * \brief Disable TWI slave mode.
@@ -1716,7 +1716,7 @@
  1260              	 .cfi_def_cfa_offset 0
  1261 0016 7047     	 bx lr
  1262              	 .cfi_endproc
- 1263              	.LFE82:
+ 1263              	.LFE84:
  1265              	 .section .text.twi_slave_init,"ax",%progbits
  1266              	 .align 1
  1267              	 .global twi_slave_init
@@ -1725,7 +1725,7 @@
  1270              	 .thumb_func
  1271              	 .fpu softvfp
  1273              	twi_slave_init:
- 1274              	.LFB83:
+ 1274              	.LFB85:
  483:.././hal/sam3u1c/twi.c **** 
  484:.././hal/sam3u1c/twi.c **** /**
  485:.././hal/sam3u1c/twi.c ****  * \brief Initialize TWI slave mode.
@@ -1804,7 +1804,7 @@
  1328 0038 00000000 	 .word twi_reset
  1329 003c 00000000 	 .word twi_enable_slave_mode
  1330              	 .cfi_endproc
- 1331              	.LFE83:
+ 1331              	.LFE85:
  1333              	 .section .text.twi_set_slave_addr,"ax",%progbits
  1334              	 .align 1
  1335              	 .global twi_set_slave_addr
@@ -1813,7 +1813,7 @@
  1338              	 .thumb_func
  1339              	 .fpu softvfp
  1341              	twi_set_slave_addr:
- 1342              	.LFB84:
+ 1342              	.LFB86:
  505:.././hal/sam3u1c/twi.c **** 
  506:.././hal/sam3u1c/twi.c **** /**
  507:.././hal/sam3u1c/twi.c ****  * \brief Set TWI slave address.
@@ -1864,7 +1864,7 @@
  1378              	 .cfi_def_cfa_offset 0
  1379 001e 7047     	 bx lr
  1380              	 .cfi_endproc
- 1381              	.LFE84:
+ 1381              	.LFE86:
  1383              	 .section .text.twi_slave_read,"ax",%progbits
  1384              	 .align 1
  1385              	 .global twi_slave_read
@@ -1873,7 +1873,7 @@
  1388              	 .thumb_func
  1389              	 .fpu softvfp
  1391              	twi_slave_read:
- 1392              	.LFB85:
+ 1392              	.LFB87:
  517:.././hal/sam3u1c/twi.c **** 
  518:.././hal/sam3u1c/twi.c **** /**
  519:.././hal/sam3u1c/twi.c ****  * \brief Read data from master.
@@ -1939,12 +1939,12 @@
  537:.././hal/sam3u1c/twi.c **** 				 == (TWI_SR_SVREAD | TWI_SR_RXRDY))) {
  538:.././hal/sam3u1c/twi.c **** 				*p_data++ = (uint8_t) p_twi->TWI_RHR;
  1434              	 .loc 1 538 0
- 1435 0032 3B68     	 ldr r3,[r7]
- 1436 0034 5A1C     	 adds r2,r3,#1
- 1437 0036 3A60     	 str r2,[r7]
- 1438 0038 7A68     	 ldr r2,[r7,#4]
- 1439 003a 126B     	 ldr r2,[r2,#48]
- 1440 003c D2B2     	 uxtb r2,r2
+ 1435 0032 7B68     	 ldr r3,[r7,#4]
+ 1436 0034 196B     	 ldr r1,[r3,#48]
+ 1437 0036 3B68     	 ldr r3,[r7]
+ 1438 0038 5A1C     	 adds r2,r3,#1
+ 1439 003a 3A60     	 str r2,[r7]
+ 1440 003c CAB2     	 uxtb r2,r1
  1441 003e 1A70     	 strb r2,[r3]
  539:.././hal/sam3u1c/twi.c **** 				cnt++;
  1442              	 .loc 1 539 0
@@ -1992,7 +1992,7 @@
  1474              	 .cfi_def_cfa_offset 0
  1475 0066 7047     	 bx lr
  1476              	 .cfi_endproc
- 1477              	.LFE85:
+ 1477              	.LFE87:
  1479              	 .section .text.twi_slave_write,"ax",%progbits
  1480              	 .align 1
  1481              	 .global twi_slave_write
@@ -2001,7 +2001,7 @@
  1484              	 .thumb_func
  1485              	 .fpu softvfp
  1487              	twi_slave_write:
- 1488              	.LFB86:
+ 1488              	.LFB88:
  549:.././hal/sam3u1c/twi.c **** 
  550:.././hal/sam3u1c/twi.c **** /**
  551:.././hal/sam3u1c/twi.c ****  * \brief Write data to TWI bus.
@@ -2119,7 +2119,7 @@
  1570              	 .cfi_def_cfa_offset 0
  1571 0066 7047     	 bx lr
  1572              	 .cfi_endproc
- 1573              	.LFE86:
+ 1573              	.LFE88:
  1575              	 .section .text.twi_reset,"ax",%progbits
  1576              	 .align 1
  1577              	 .global twi_reset
@@ -2128,7 +2128,7 @@
  1580              	 .thumb_func
  1581              	 .fpu softvfp
  1583              	twi_reset:
- 1584              	.LFB87:
+ 1584              	.LFB89:
  580:.././hal/sam3u1c/twi.c **** 
  581:.././hal/sam3u1c/twi.c **** /**
  582:.././hal/sam3u1c/twi.c ****  * \brief Reset TWI.
@@ -2179,7 +2179,7 @@
  1620              	 .cfi_def_cfa_offset 0
  1621 001a 7047     	 bx lr
  1622              	 .cfi_endproc
- 1623              	.LFE87:
+ 1623              	.LFE89:
  1625              	 .section .text.twi_get_pdc_base,"ax",%progbits
  1626              	 .align 1
  1627              	 .global twi_get_pdc_base
@@ -2188,7 +2188,7 @@
  1630              	 .thumb_func
  1631              	 .fpu softvfp
  1633              	twi_get_pdc_base:
- 1634              	.LFB88:
+ 1634              	.LFB90:
  592:.././hal/sam3u1c/twi.c **** 
  593:.././hal/sam3u1c/twi.c **** /**
  594:.././hal/sam3u1c/twi.c ****  * \brief Get TWI PDC base address.
@@ -2283,21 +2283,21 @@
  1694 003c 00800840 	 .word 1074298880
  1695 0040 00810840 	 .word 1074299136
  1696              	 .cfi_endproc
- 1697              	.LFE88:
+ 1697              	.LFE90:
  1699              	 .text
  1700              	.Letext0:
- 1701              	 .file 2 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1702              	 .file 3 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1701              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1702              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
  1703              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
  1704              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
  1705              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
  1706              	 .file 7 ".././hal/sam3u1c/inc/component/component_pdc.h"
  1707              	 .file 8 ".././hal/sam3u1c/inc/component/component_twi.h"
- 1708              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 1709              	 .file 10 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 1710              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 1711              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 1712              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1708              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 1709              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 1710              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 1711              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 1712              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
  1713              	 .file 14 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
  1714              	 .file 15 ".././hal/sam3u1c/inc/twi.h"
 DEFINED SYMBOLS
@@ -2357,15 +2357,14 @@ DEFINED SYMBOLS
     {standard input}:1626   .text.twi_get_pdc_base:00000000 $t
     {standard input}:1633   .text.twi_get_pdc_base:00000000 twi_get_pdc_base
     {standard input}:1692   .text.twi_get_pdc_base:00000034 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -2431,27 +2430,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

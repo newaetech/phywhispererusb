@@ -26,7 +26,7 @@
   30              	 .thumb_func
   31              	 .fpu softvfp
   33              	osc_get_rate:
-  34              	.LFB70:
+  34              	.LFB72:
   35              	 .file 1 ".././hal/sam3u1c/inc/sam3u/osc.h"
    1:.././hal/sam3u1c/inc/sam3u/osc.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/osc.h ****  * \file
@@ -349,7 +349,7 @@
  123 0068 00127A00 	 .word 8000000
  124 006c 001BB700 	 .word 12000000
  125              	 .cfi_endproc
- 126              	.LFE70:
+ 126              	.LFE72:
  128              	 .section .text.sysclk_get_main_hz,"ax",%progbits
  129              	 .align 1
  130              	 .syntax unified
@@ -357,7 +357,7 @@
  132              	 .thumb_func
  133              	 .fpu softvfp
  135              	sysclk_get_main_hz:
- 136              	.LFB81:
+ 136              	.LFB83:
  137              	 .file 2 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
    1:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \file
@@ -658,7 +658,7 @@
  162              	.L17:
  163 0014 00000000 	 .word osc_get_rate
  164              	 .cfi_endproc
- 165              	.LFE81:
+ 165              	.LFE83:
  167              	 .section .text.sysclk_get_cpu_hz,"ax",%progbits
  168              	 .align 1
  169              	 .syntax unified
@@ -666,7 +666,7 @@
  171              	 .thumb_func
  172              	 .fpu softvfp
  174              	sysclk_get_cpu_hz:
- 175              	.LFB82:
+ 175              	.LFB84:
  273:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
  274:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
  275:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Return the current rate in Hz of the CPU clock
@@ -713,7 +713,7 @@
  199              	.L21:
  200 0010 00000000 	 .word sysclk_get_main_hz
  201              	 .cfi_endproc
- 202              	.LFE82:
+ 202              	.LFE84:
  204              	 .section .bss.gs_ul_page_buffer,"aw",%nobits
  205              	 .align 2
  208              	gs_ul_page_buffer:
@@ -729,7 +729,7 @@
  214              	 .thumb_func
  215              	 .fpu softvfp
  217              	translate_address:
- 218              	.LFB87:
+ 218              	.LFB89:
  219              	 .file 3 ".././hal/sam3u1c/flash_efc.c"
    1:.././hal/sam3u1c/flash_efc.c **** /**
    2:.././hal/sam3u1c/flash_efc.c ****  * \file
@@ -1025,7 +1025,7 @@
  295              	.L28:
  296 0054 00080E40 	 .word 1074661376
  297              	 .cfi_endproc
- 298              	.LFE87:
+ 298              	.LFE89:
  300              	 .section .text.compute_address,"ax",%progbits
  301              	 .align 1
  302              	 .syntax unified
@@ -1033,7 +1033,7 @@
  304              	 .thumb_func
  305              	 .fpu softvfp
  307              	compute_address:
- 308              	.LFB88:
+ 308              	.LFB90:
  217:.././hal/sam3u1c/flash_efc.c **** 
  218:.././hal/sam3u1c/flash_efc.c **** /**
  219:.././hal/sam3u1c/flash_efc.c ****  * \brief Compute the address of a flash by the given page and offset.
@@ -1137,7 +1137,7 @@
  358              	 .cfi_def_cfa_offset 0
  359 0034 7047     	 bx lr
  360              	 .cfi_endproc
- 361              	.LFE88:
+ 361              	.LFE90:
  363              	 .section .text.compute_lock_range,"ax",%progbits
  364              	 .align 1
  365              	 .syntax unified
@@ -1145,7 +1145,7 @@
  367              	 .thumb_func
  368              	 .fpu softvfp
  370              	compute_lock_range:
- 371              	.LFB89:
+ 371              	.LFB91:
  268:.././hal/sam3u1c/flash_efc.c **** 
  269:.././hal/sam3u1c/flash_efc.c **** /**
  270:.././hal/sam3u1c/flash_efc.c ****  * \brief Compute the lock range associated with the given address range.
@@ -1236,7 +1236,7 @@
  433              	 .cfi_def_cfa_offset 0
  434 004c 7047     	 bx lr
  435              	 .cfi_endproc
- 436              	.LFE89:
+ 436              	.LFE91:
  438              	 .section .text.flash_init,"ax",%progbits
  439              	 .align 1
  440              	 .global flash_init
@@ -1245,7 +1245,7 @@
  443              	 .thumb_func
  444              	 .fpu softvfp
  446              	flash_init:
- 447              	.LFB90:
+ 447              	.LFB92:
  294:.././hal/sam3u1c/flash_efc.c **** 
  295:.././hal/sam3u1c/flash_efc.c **** /**
  296:.././hal/sam3u1c/flash_efc.c ****  * \brief Initialize the flash service.
@@ -1307,7 +1307,7 @@
  487 0020 00080E40 	 .word 1074661376
  488 0024 00000000 	 .word efc_init
  489              	 .cfi_endproc
- 490              	.LFE90:
+ 490              	.LFE92:
  492              	 .section .text.flash_set_wait_state,"ax",%progbits
  493              	 .align 1
  494              	 .global flash_set_wait_state
@@ -1316,7 +1316,7 @@
  497              	 .thumb_func
  498              	 .fpu softvfp
  500              	flash_set_wait_state:
- 501              	.LFB91:
+ 501              	.LFB93:
  313:.././hal/sam3u1c/flash_efc.c **** 
  314:.././hal/sam3u1c/flash_efc.c **** /**
  315:.././hal/sam3u1c/flash_efc.c ****  * \brief Set flash wait state.
@@ -1386,7 +1386,7 @@
  550 002c 00000000 	 .word translate_address
  551 0030 00000000 	 .word efc_set_wait_state
  552              	 .cfi_endproc
- 553              	.LFE91:
+ 553              	.LFE93:
  555              	 .section .text.flash_set_wait_state_adaptively,"ax",%progbits
  556              	 .align 1
  557              	 .global flash_set_wait_state_adaptively
@@ -1395,7 +1395,7 @@
  560              	 .thumb_func
  561              	 .fpu softvfp
  563              	flash_set_wait_state_adaptively:
- 564              	.LFB92:
+ 564              	.LFB94:
  331:.././hal/sam3u1c/flash_efc.c **** 
  332:.././hal/sam3u1c/flash_efc.c **** /**
  333:.././hal/sam3u1c/flash_efc.c ****  * \brief Set flash wait state.
@@ -1558,7 +1558,7 @@
  679 0094 FFA14A04 	 .word 71999999
  680 0098 FFBC0105 	 .word 83999999
  681              	 .cfi_endproc
- 682              	.LFE92:
+ 682              	.LFE94:
  684              	 .section .text.flash_get_wait_state,"ax",%progbits
  685              	 .align 1
  686              	 .global flash_get_wait_state
@@ -1567,7 +1567,7 @@
  689              	 .thumb_func
  690              	 .fpu softvfp
  692              	flash_get_wait_state:
- 693              	.LFB93:
+ 693              	.LFB95:
  376:.././hal/sam3u1c/flash_efc.c **** 
  377:.././hal/sam3u1c/flash_efc.c **** /**
  378:.././hal/sam3u1c/flash_efc.c ****  * \brief Get flash wait state.
@@ -1631,7 +1631,7 @@
  739 0028 00000000 	 .word translate_address
  740 002c 00000000 	 .word efc_get_wait_state
  741              	 .cfi_endproc
- 742              	.LFE93:
+ 742              	.LFE95:
  744              	 .section .text.flash_get_descriptor,"ax",%progbits
  745              	 .align 1
  746              	 .global flash_get_descriptor
@@ -1640,7 +1640,7 @@
  749              	 .thumb_func
  750              	 .fpu softvfp
  752              	flash_get_descriptor:
- 753              	.LFB94:
+ 753              	.LFB96:
  391:.././hal/sam3u1c/flash_efc.c **** 
  392:.././hal/sam3u1c/flash_efc.c **** /**
  393:.././hal/sam3u1c/flash_efc.c ****  * \brief Get flash descriptor.
@@ -1774,7 +1774,7 @@
  846 006c 00000000 	 .word efc_perform_command
  847 0070 00000000 	 .word efc_get_result
  848              	 .cfi_endproc
- 849              	.LFE94:
+ 849              	.LFE96:
  851              	 .section .text.flash_get_page_count,"ax",%progbits
  852              	 .align 1
  853              	 .global flash_get_page_count
@@ -1783,7 +1783,7 @@
  856              	 .thumb_func
  857              	 .fpu softvfp
  859              	flash_get_page_count:
- 860              	.LFB95:
+ 860              	.LFB97:
  427:.././hal/sam3u1c/flash_efc.c **** 
  428:.././hal/sam3u1c/flash_efc.c **** /**
  429:.././hal/sam3u1c/flash_efc.c ****  * \brief Get flash total page count for the specified bank.
@@ -1838,7 +1838,7 @@
  897              	 .cfi_def_cfa_offset 0
  898 0020 7047     	 bx lr
  899              	 .cfi_endproc
- 900              	.LFE95:
+ 900              	.LFE97:
  902              	 .section .text.flash_get_page_count_per_region,"ax",%progbits
  903              	 .align 1
  904              	 .global flash_get_page_count_per_region
@@ -1847,7 +1847,7 @@
  907              	 .thumb_func
  908              	 .fpu softvfp
  910              	flash_get_page_count_per_region:
- 911              	.LFB96:
+ 911              	.LFB98:
  442:.././hal/sam3u1c/flash_efc.c **** 
  443:.././hal/sam3u1c/flash_efc.c **** /**
  444:.././hal/sam3u1c/flash_efc.c ****  * \brief Get flash page count per region (plane) for the specified bank.
@@ -1902,7 +1902,7 @@
  948              	 .cfi_def_cfa_offset 0
  949 0020 7047     	 bx lr
  950              	 .cfi_endproc
- 951              	.LFE96:
+ 951              	.LFE98:
  953              	 .section .text.flash_get_region_count,"ax",%progbits
  954              	 .align 1
  955              	 .global flash_get_region_count
@@ -1911,7 +1911,7 @@
  958              	 .thumb_func
  959              	 .fpu softvfp
  961              	flash_get_region_count:
- 962              	.LFB97:
+ 962              	.LFB99:
  457:.././hal/sam3u1c/flash_efc.c **** 
  458:.././hal/sam3u1c/flash_efc.c **** /**
  459:.././hal/sam3u1c/flash_efc.c ****  * \brief Get flash region (plane) count for the specified bank.
@@ -1962,7 +1962,7 @@
  995              	 .cfi_def_cfa_offset 0
  996 0016 7047     	 bx lr
  997              	 .cfi_endproc
- 998              	.LFE97:
+ 998              	.LFE99:
  1000              	 .section .text.flash_erase_all,"ax",%progbits
  1001              	 .align 1
  1002              	 .global flash_erase_all
@@ -1971,7 +1971,7 @@
  1005              	 .thumb_func
  1006              	 .fpu softvfp
  1008              	flash_erase_all:
- 1009              	.LFB98:
+ 1009              	.LFB100:
  472:.././hal/sam3u1c/flash_efc.c **** 
  473:.././hal/sam3u1c/flash_efc.c **** /**
  474:.././hal/sam3u1c/flash_efc.c ****  * \brief Erase the entire flash.
@@ -2055,7 +2055,7 @@
  1066 0038 00000000 	 .word translate_address
  1067 003c 00000000 	 .word efc_perform_command
  1068              	 .cfi_endproc
- 1069              	.LFE98:
+ 1069              	.LFE100:
  1071              	 .section .text.flash_write,"ax",%progbits
  1072              	 .align 1
  1073              	 .global flash_write
@@ -2064,7 +2064,7 @@
  1076              	 .thumb_func
  1077              	 .fpu softvfp
  1079              	flash_write:
- 1080              	.LFB99:
+ 1080              	.LFB101:
  496:.././hal/sam3u1c/flash_efc.c **** 
  497:.././hal/sam3u1c/flash_efc.c **** #if SAM3SD8
  498:.././hal/sam3u1c/flash_efc.c **** /**
@@ -2239,8 +2239,8 @@
  619:.././hal/sam3u1c/flash_efc.c **** 		writeSize = Min((uint32_t) IFLASH_PAGE_SIZE - us_offset,
  1129              	 .loc 3 619 0
  1130 003a BB8A     	 ldrh r3,[r7,#20]
- 1131 003c C3F58072 	 rsb r2,r3,#256
- 1132 0040 7B68     	 ldr r3,[r7,#4]
+ 1131 003c C3F58073 	 rsb r3,r3,#256
+ 1132 0040 7A68     	 ldr r2,[r7,#4]
  1133 0042 9342     	 cmp r3,r2
  1134 0044 28BF     	 it cs
  1135 0046 1346     	 movcs r3,r2
@@ -2257,11 +2257,11 @@
  1144              	.LVL22:
  622:.././hal/sam3u1c/flash_efc.c **** 		us_padding = IFLASH_PAGE_SIZE - us_offset - writeSize;
  1145              	 .loc 3 622 0
- 1146 0058 3B6A     	 ldr r3,[r7,#32]
- 1147 005a 9BB2     	 uxth r3,r3
- 1148 005c 5B42     	 negs r3,r3
- 1149 005e 9AB2     	 uxth r2,r3
- 1150 0060 BB8A     	 ldrh r3,[r7,#20]
+ 1146 0058 BB8A     	 ldrh r3,[r7,#20]
+ 1147 005a 5B42     	 negs r3,r3
+ 1148 005c 9AB2     	 uxth r2,r3
+ 1149 005e 3B6A     	 ldr r3,[r7,#32]
+ 1150 0060 9BB2     	 uxth r3,r3
  1151 0062 D31A     	 subs r3,r2,r3
  1152 0064 9BB2     	 uxth r3,r3
  1153 0066 03F58073 	 add r3,r3,#256
@@ -2469,7 +2469,7 @@
  1305 014c 00000000 	 .word memcpy
  1306 0150 00000000 	 .word efc_perform_command
  1307              	 .cfi_endproc
- 1308              	.LFE99:
+ 1308              	.LFE101:
  1310              	 .section .text.flash_lock,"ax",%progbits
  1311              	 .align 1
  1312              	 .global flash_lock
@@ -2478,7 +2478,7 @@
  1315              	 .thumb_func
  1316              	 .fpu softvfp
  1318              	flash_lock:
- 1319              	.LFB100:
+ 1319              	.LFB102:
  669:.././hal/sam3u1c/flash_efc.c **** 
  670:.././hal/sam3u1c/flash_efc.c **** 
  671:.././hal/sam3u1c/flash_efc.c **** /**
@@ -2647,7 +2647,7 @@
  1434 0094 00000000 	 .word translate_address
  1435 0098 00000000 	 .word efc_perform_command
  1436              	 .cfi_endproc
- 1437              	.LFE100:
+ 1437              	.LFE102:
  1439              	 .section .text.flash_unlock,"ax",%progbits
  1440              	 .align 1
  1441              	 .global flash_unlock
@@ -2656,7 +2656,7 @@
  1444              	 .thumb_func
  1445              	 .fpu softvfp
  1447              	flash_unlock:
- 1448              	.LFB101:
+ 1448              	.LFB103:
  719:.././hal/sam3u1c/flash_efc.c **** 
  720:.././hal/sam3u1c/flash_efc.c **** /**
  721:.././hal/sam3u1c/flash_efc.c ****  * \brief Unlock all the regions in the given address range. The actual unlock
@@ -2822,7 +2822,7 @@
  1563 0094 00000000 	 .word translate_address
  1564 0098 00000000 	 .word efc_perform_command
  1565              	 .cfi_endproc
- 1566              	.LFE101:
+ 1566              	.LFE103:
  1568              	 .section .text.flash_is_locked,"ax",%progbits
  1569              	 .align 1
  1570              	 .global flash_is_locked
@@ -2831,7 +2831,7 @@
  1573              	 .thumb_func
  1574              	 .fpu softvfp
  1576              	flash_is_locked:
- 1577              	.LFB102:
+ 1577              	.LFB104:
  766:.././hal/sam3u1c/flash_efc.c **** 
  767:.././hal/sam3u1c/flash_efc.c **** /**
  768:.././hal/sam3u1c/flash_efc.c ****  * \brief Get the number of locked regions inside the given address range.
@@ -2986,10 +2986,10 @@
  1674              	.L113:
  817:.././hal/sam3u1c/flash_efc.c **** 	while (!(ul_count <= uc_start_region &&
  1675              	 .loc 3 817 0
- 1676 0084 7A7D     	 ldrb r2,[r7,#21]
- 1677 0086 FB69     	 ldr r3,[r7,#28]
+ 1676 0084 7B7D     	 ldrb r3,[r7,#21]
+ 1677 0086 FA69     	 ldr r2,[r7,#28]
  1678 0088 9A42     	 cmp r2,r3
- 1679 008a F3D3     	 bcc .L114
+ 1679 008a F3D8     	 bhi .L114
  818:.././hal/sam3u1c/flash_efc.c **** 			uc_start_region < (ul_count + 32))) {
  1680              	 .loc 3 818 0 discriminator 1
  1681 008c 7A7D     	 ldrb r2,[r7,#21]
@@ -3098,7 +3098,7 @@
  1759 00f8 00000000 	 .word efc_perform_command
  1760 00fc 00000000 	 .word efc_get_result
  1761              	 .cfi_endproc
- 1762              	.LFE102:
+ 1762              	.LFE104:
  1764              	 .section .text.flash_set_gpnvm,"ax",%progbits
  1765              	 .align 1
  1766              	 .global flash_set_gpnvm
@@ -3107,7 +3107,7 @@
  1769              	 .thumb_func
  1770              	 .fpu softvfp
  1772              	flash_set_gpnvm:
- 1773              	.LFB103:
+ 1773              	.LFB105:
  844:.././hal/sam3u1c/flash_efc.c **** 
  845:.././hal/sam3u1c/flash_efc.c **** /**
  846:.././hal/sam3u1c/flash_efc.c ****  * \brief Set the given GPNVM bit.
@@ -3202,7 +3202,7 @@
  1841 0044 00080E40 	 .word 1074661376
  1842 0048 00000000 	 .word efc_perform_command
  1843              	 .cfi_endproc
- 1844              	.LFE103:
+ 1844              	.LFE105:
  1846              	 .section .text.flash_clear_gpnvm,"ax",%progbits
  1847              	 .align 1
  1848              	 .global flash_clear_gpnvm
@@ -3211,7 +3211,7 @@
  1851              	 .thumb_func
  1852              	 .fpu softvfp
  1854              	flash_clear_gpnvm:
- 1855              	.LFB104:
+ 1855              	.LFB106:
  868:.././hal/sam3u1c/flash_efc.c **** 
  869:.././hal/sam3u1c/flash_efc.c **** /**
  870:.././hal/sam3u1c/flash_efc.c ****  * \brief Clear the given GPNVM bit.
@@ -3306,7 +3306,7 @@
  1923 0044 00080E40 	 .word 1074661376
  1924 0048 00000000 	 .word efc_perform_command
  1925              	 .cfi_endproc
- 1926              	.LFE104:
+ 1926              	.LFE106:
  1928              	 .section .text.flash_is_gpnvm_set,"ax",%progbits
  1929              	 .align 1
  1930              	 .global flash_is_gpnvm_set
@@ -3315,7 +3315,7 @@
  1933              	 .thumb_func
  1934              	 .fpu softvfp
  1936              	flash_is_gpnvm_set:
- 1937              	.LFB105:
+ 1937              	.LFB107:
  892:.././hal/sam3u1c/flash_efc.c **** 
  893:.././hal/sam3u1c/flash_efc.c **** /**
  894:.././hal/sam3u1c/flash_efc.c ****  * \brief Check if the given GPNVM bit is set or not.
@@ -3422,7 +3422,7 @@
  2012 0054 00000000 	 .word efc_perform_command
  2013 0058 00000000 	 .word efc_get_result
  2014              	 .cfi_endproc
- 2015              	.LFE105:
+ 2015              	.LFE107:
  2017              	 .section .text.flash_enable_security_bit,"ax",%progbits
  2018              	 .align 1
  2019              	 .global flash_enable_security_bit
@@ -3431,7 +3431,7 @@
  2022              	 .thumb_func
  2023              	 .fpu softvfp
  2025              	flash_enable_security_bit:
- 2026              	.LFB106:
+ 2026              	.LFB108:
  921:.././hal/sam3u1c/flash_efc.c **** 
  922:.././hal/sam3u1c/flash_efc.c **** /**
  923:.././hal/sam3u1c/flash_efc.c ****  * \brief Set security bit.
@@ -3468,7 +3468,7 @@
  2050              	.L144:
  2051 0010 00000000 	 .word flash_set_gpnvm
  2052              	 .cfi_endproc
- 2053              	.LFE106:
+ 2053              	.LFE108:
  2055              	 .section .text.flash_is_security_bit_enabled,"ax",%progbits
  2056              	 .align 1
  2057              	 .global flash_is_security_bit_enabled
@@ -3477,7 +3477,7 @@
  2060              	 .thumb_func
  2061              	 .fpu softvfp
  2063              	flash_is_security_bit_enabled:
- 2064              	.LFB107:
+ 2064              	.LFB109:
  931:.././hal/sam3u1c/flash_efc.c **** 
  932:.././hal/sam3u1c/flash_efc.c **** /**
  933:.././hal/sam3u1c/flash_efc.c ****  * \brief Check if the security bit is set or not.
@@ -3516,7 +3516,7 @@
  2088              	.L148:
  2089 0010 00000000 	 .word flash_is_gpnvm_set
  2090              	 .cfi_endproc
- 2091              	.LFE107:
+ 2091              	.LFE109:
  2093              	 .section .text.flash_read_unique_id,"ax",%progbits
  2094              	 .align 1
  2095              	 .global flash_read_unique_id
@@ -3525,7 +3525,7 @@
  2098              	 .thumb_func
  2099              	 .fpu softvfp
  2101              	flash_read_unique_id:
- 2102              	.LFB108:
+ 2102              	.LFB110:
  943:.././hal/sam3u1c/flash_efc.c **** 
  944:.././hal/sam3u1c/flash_efc.c **** /**
  945:.././hal/sam3u1c/flash_efc.c ****  * \brief Read the flash unique ID.
@@ -3647,20 +3647,20 @@
  2189 0068 00080E40 	 .word 1074661376
  2190 006c 00000000 	 .word efc_perform_read_sequence
  2191              	 .cfi_endproc
- 2192              	.LFE108:
+ 2192              	.LFE110:
  2194              	 .text
  2195              	.Letext0:
- 2196              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 2197              	 .file 5 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 2198              	 .file 6 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 2199              	 .file 7 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 2200              	 .file 8 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 2201              	 .file 9 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2196              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2197              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 2198              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 2199              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 2200              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 2201              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
  2202              	 .file 10 ".././hal/sam3u1c/inc/sam3u1c.h"
  2203              	 .file 11 ".././hal/sam3u1c/inc/core_cm3.h"
  2204              	 .file 12 ".././hal/sam3u1c/inc/system_sam3u.h"
  2205              	 .file 13 ".././hal/sam3u1c/inc/component/component_efc.h"
- 2206              	 .file 14 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 2206              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
  2207              	 .file 15 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
  2208              	 .file 16 ".././hal/sam3u1c/inc/efc.h"
  2209              	 .file 17 ".././hal/sam3u1c/inc/flash_efc.h"
@@ -3746,21 +3746,21 @@ DEFINED SYMBOLS
     {standard input}:2094   .text.flash_read_unique_id:00000000 $t
     {standard input}:2101   .text.flash_read_unique_id:00000000 flash_read_unique_id
     {standard input}:2189   .text.flash_read_unique_id:00000068 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.newlib.h.21.59901f4bf241ab46c63694665baa7297
-                           .group:00000000 wm4.features.h.22.692cd1f2e947ca7b8fea300222f5f1f2
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.newlib.h.18.5e5ca3429233af402d406a202f1fc1ac
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.features.h.22.026edb2397769f4ae13f35900dbdb560
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
                            .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
@@ -3839,10 +3839,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

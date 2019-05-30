@@ -34,7 +34,7 @@
   42              	 .thumb_func
   43              	 .fpu softvfp
   45              	pmc_sleep:
-  46              	.LFB69:
+  46              	.LFB71:
   47              	 .file 1 ".././hal/sam3u1c/sleep.c"
    1:.././hal/sam3u1c/sleep.c **** /**
    2:.././hal/sam3u1c/sleep.c ****  * \file
@@ -362,16 +362,16 @@
  290:.././hal/sam3u1c/sleep.c **** #else
  291:.././hal/sam3u1c/sleep.c **** 		PMC->PMC_FSMR &= (uint32_t)~PMC_FSMR_LPM;
   82              	 .loc 1 291 0
-  83 002c 804A     	 ldr r2,.L40
-  84 002e 804B     	 ldr r3,.L40
-  85 0030 1B6F     	 ldr r3,[r3,#112]
+  83 002c 804B     	 ldr r3,.L40
+  84 002e 1B6F     	 ldr r3,[r3,#112]
+  85 0030 7F4A     	 ldr r2,.L40
   86 0032 23F48013 	 bic r3,r3,#1048576
   87 0036 1367     	 str r3,[r2,#112]
  292:.././hal/sam3u1c/sleep.c **** 		SCB->SCR &= (uint32_t)~SCR_SLEEPDEEP;
   88              	 .loc 1 292 0
-  89 0038 7E4A     	 ldr r2,.L40+4
-  90 003a 7E4B     	 ldr r3,.L40+4
-  91 003c 1B69     	 ldr r3,[r3,#16]
+  89 0038 7E4B     	 ldr r3,.L40+4
+  90 003a 1B69     	 ldr r3,[r3,#16]
+  91 003c 7D4A     	 ldr r2,.L40+4
   92 003e 23F00403 	 bic r3,r3,#4
   93 0042 1361     	 str r3,[r2,#16]
  293:.././hal/sam3u1c/sleep.c **** 		cpu_irq_enable();
@@ -1369,11 +1369,11 @@
  343 0176 F9D0     	 beq .L19
  150:.././hal/sam3u1c/sleep.c **** 			CKGR_MOR_KEY_PASSWD;
  344              	 .loc 1 150 0
- 345 0178 2D4A     	 ldr r2,.L40
- 346 017a 2D4B     	 ldr r3,.L40
- 347 017c 1B6A     	 ldr r3,[r3,#32]
- 348 017e 23F09B73 	 bic r3,r3,#20316160
- 349 0182 23F48033 	 bic r3,r3,#65536
+ 345 0178 2D4B     	 ldr r3,.L40
+ 346 017a 1B6A     	 ldr r3,[r3,#32]
+ 347 017c 23F09B73 	 bic r3,r3,#20316160
+ 348 0180 23F48033 	 bic r3,r3,#65536
+ 349 0184 2A4A     	 ldr r2,.L40
  350 0186 43F45C13 	 orr r3,r3,#3604480
  351 018a 1362     	 str r3,[r2,#32]
  352              	.L20:
@@ -1403,11 +1403,11 @@
  372 01b2 09D0     	 beq .L21
  165:.././hal/sam3u1c/sleep.c **** 				CKGR_MOR_KEY_PASSWD;
  373              	 .loc 1 165 0
- 374 01b4 1E4A     	 ldr r2,.L40
- 375 01b6 1E4B     	 ldr r3,.L40
- 376 01b8 1B6A     	 ldr r3,[r3,#32]
- 377 01ba 23F45C13 	 bic r3,r3,#3604480
- 378 01be 23F00103 	 bic r3,r3,#1
+ 374 01b4 1E4B     	 ldr r3,.L40
+ 375 01b6 1B6A     	 ldr r3,[r3,#32]
+ 376 01b8 23F45C13 	 bic r3,r3,#3604480
+ 377 01bc 23F00103 	 bic r3,r3,#1
+ 378 01c0 1B4A     	 ldr r2,.L40
  379 01c2 43F45C13 	 orr r3,r3,#3604480
  380 01c6 1362     	 str r3,[r2,#32]
  381              	.L21:
@@ -1509,244 +1509,264 @@
  462 0208 28D0     	 beq .L22
  190:.././hal/sam3u1c/sleep.c **** 				CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTBY |
  463              	 .loc 1 190 0
- 464 020a 0949     	 ldr r1,.L40
- 465 020c 084B     	 ldr r3,.L40
- 466 020e 1B6A     	 ldr r3,[r3,#32]
+ 464 020a 094B     	 ldr r3,.L40
+ 465 020c 1B6A     	 ldr r3,[r3,#32]
  191:.././hal/sam3u1c/sleep.c **** 				CKGR_MOR_MOSCSEL;
- 467              	 .loc 1 191 0
- 468 0210 104A     	 ldr r2,.L40+36
- 469 0212 1A40     	 ands r2,r2,r3
- 470 0214 104B     	 ldr r3,.L40+40
- 471 0216 1343     	 orrs r3,r3,r2
+ 466              	 .loc 1 191 0
+ 467 020e 114A     	 ldr r2,.L40+36
+ 468 0210 1A40     	 ands r2,r2,r3
  190:.././hal/sam3u1c/sleep.c **** 				CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTBY |
- 472              	 .loc 1 190 0
- 473 0218 0B62     	 str r3,[r1,#32]
+ 469              	 .loc 1 190 0
+ 470 0212 0749     	 ldr r1,.L40
+ 191:.././hal/sam3u1c/sleep.c **** 				CKGR_MOR_MOSCSEL;
+ 471              	 .loc 1 191 0
+ 472 0214 104B     	 ldr r3,.L40+40
+ 473 0216 1343     	 orrs r3,r3,r2
+ 190:.././hal/sam3u1c/sleep.c **** 				CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTBY |
+ 474              	 .loc 1 190 0
+ 475 0218 0B62     	 str r3,[r1,#32]
  193:.././hal/sam3u1c/sleep.c **** 					~CKGR_MOR_MOSCRCF_Msk)
- 474              	 .loc 1 193 0
- 475 021a 054A     	 ldr r2,.L40
- 476 021c 044B     	 ldr r3,.L40
- 477 021e 1B6A     	 ldr r3,[r3,#32]
+ 476              	 .loc 1 193 0
+ 477 021a 054B     	 ldr r3,.L40
+ 478 021c 1B6A     	 ldr r3,[r3,#32]
  195:.././hal/sam3u1c/sleep.c **** 	} else if (CKGR_MOR_MOSCXTEN == (osc_setting & CKGR_MOR_MOSCXTEN)) {
- 478              	 .loc 1 195 0
- 479 0220 23F45C13 	 bic r3,r3,#3604480
- 480 0224 23F07803 	 bic r3,r3,#120
- 481 0228 43F45C13 	 orr r3,r3,#3604480
+ 479              	 .loc 1 195 0
+ 480 021e 23F45C13 	 bic r3,r3,#3604480
+ 481 0222 23F07803 	 bic r3,r3,#120
  193:.././hal/sam3u1c/sleep.c **** 					~CKGR_MOR_MOSCRCF_Msk)
  482              	 .loc 1 193 0
- 483 022c 1362     	 str r3,[r2,#32]
- 484 022e 50E0     	 b .L23
- 485              	.L41:
- 486              	 .align 2
- 487              	.L40:
- 488 0230 00040E40 	 .word 1074660352
- 489 0234 00ED00E0 	 .word -536810240
- 490 0238 00000000 	 .word g_interrupt_enabled
- 491 023c 00000000 	 .word b_is_sleep_clock_used
- 492 0240 00080E40 	 .word 1074661376
- 493 0244 000A0E40 	 .word 1074661888
- 494 0248 00000000 	 .word pmc_disable_pllack
- 495 024c 00000000 	 .word pmc_disable_upll_clock
- 496 0250 00000000 	 .word pmc_enable_waitmode
- 497 0254 FCFFC8FE 	 .word -20381700
- 498 0258 02003701 	 .word 20381698
- 499              	.L22:
+ 483 0226 024A     	 ldr r2,.L40
+ 195:.././hal/sam3u1c/sleep.c **** 	} else if (CKGR_MOR_MOSCXTEN == (osc_setting & CKGR_MOR_MOSCXTEN)) {
+ 484              	 .loc 1 195 0
+ 485 0228 43F45C13 	 orr r3,r3,#3604480
+ 193:.././hal/sam3u1c/sleep.c **** 					~CKGR_MOR_MOSCRCF_Msk)
+ 486              	 .loc 1 193 0
+ 487 022c 1362     	 str r3,[r2,#32]
+ 488 022e 50E0     	 b .L23
+ 489              	.L41:
+ 490              	 .align 2
+ 491              	.L40:
+ 492 0230 00040E40 	 .word 1074660352
+ 493 0234 00ED00E0 	 .word -536810240
+ 494 0238 00000000 	 .word g_interrupt_enabled
+ 495 023c 00000000 	 .word b_is_sleep_clock_used
+ 496 0240 00080E40 	 .word 1074661376
+ 497 0244 000A0E40 	 .word 1074661888
+ 498 0248 00000000 	 .word pmc_disable_pllack
+ 499 024c 00000000 	 .word pmc_disable_upll_clock
+ 500 0250 00000000 	 .word pmc_enable_waitmode
+ 501 0254 FCFFC8FE 	 .word -20381700
+ 502 0258 02003701 	 .word 20381698
+ 503              	.L22:
  196:.././hal/sam3u1c/sleep.c **** 		/* Enable External XTAL */
- 500              	 .loc 1 196 0
- 501 025c FB6E     	 ldr r3,[r7,#108]
- 502 025e 03F00103 	 and r3,r3,#1
- 503 0262 002B     	 cmp r3,#0
- 504 0264 35D0     	 beq .L23
+ 504              	 .loc 1 196 0
+ 505 025c FB6E     	 ldr r3,[r7,#108]
+ 506 025e 03F00103 	 and r3,r3,#1
+ 507 0262 002B     	 cmp r3,#0
+ 508 0264 35D0     	 beq .L23
  198:.././hal/sam3u1c/sleep.c **** 			PMC->CKGR_MOR = (PMC->CKGR_MOR & ~CKGR_MOR_MOSCXTBY) |
- 505              	 .loc 1 198 0
- 506 0266 594B     	 ldr r3,.L42
- 507 0268 1B6A     	 ldr r3,[r3,#32]
- 508 026a 03F00103 	 and r3,r3,#1
- 509 026e 002B     	 cmp r3,#0
- 510 0270 11D1     	 bne .L24
+ 509              	 .loc 1 198 0
+ 510 0266 594B     	 ldr r3,.L42
+ 511 0268 1B6A     	 ldr r3,[r3,#32]
+ 512 026a 03F00103 	 and r3,r3,#1
+ 513 026e 002B     	 cmp r3,#0
+ 514 0270 11D1     	 bne .L24
  199:.././hal/sam3u1c/sleep.c **** 					CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTEN;
- 511              	 .loc 1 199 0
- 512 0272 564A     	 ldr r2,.L42
- 513 0274 554B     	 ldr r3,.L42
- 514 0276 1B6A     	 ldr r3,[r3,#32]
+ 515              	 .loc 1 199 0
+ 516 0272 564B     	 ldr r3,.L42
+ 517 0274 1B6A     	 ldr r3,[r3,#32]
  200:.././hal/sam3u1c/sleep.c **** 			/* Wait the Xtal to stabilize */
- 515              	 .loc 1 200 0
- 516 0278 23F45C13 	 bic r3,r3,#3604480
- 517 027c 23F00303 	 bic r3,r3,#3
- 518 0280 43F45C13 	 orr r3,r3,#3604480
- 519 0284 43F00103 	 orr r3,r3,#1
+ 518              	 .loc 1 200 0
+ 519 0276 23F45C13 	 bic r3,r3,#3604480
+ 520 027a 23F00303 	 bic r3,r3,#3
  199:.././hal/sam3u1c/sleep.c **** 					CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTEN;
- 520              	 .loc 1 199 0
- 521 0288 1362     	 str r3,[r2,#32]
- 522              	.L25:
+ 521              	 .loc 1 199 0
+ 522 027e 534A     	 ldr r2,.L42
+ 200:.././hal/sam3u1c/sleep.c **** 			/* Wait the Xtal to stabilize */
+ 523              	 .loc 1 200 0
+ 524 0280 43F45C13 	 orr r3,r3,#3604480
+ 525 0284 43F00103 	 orr r3,r3,#1
+ 199:.././hal/sam3u1c/sleep.c **** 					CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCXTEN;
+ 526              	 .loc 1 199 0
+ 527 0288 1362     	 str r3,[r2,#32]
+ 528              	.L25:
  202:.././hal/sam3u1c/sleep.c **** 		}
- 523              	 .loc 1 202 0
- 524 028a 504B     	 ldr r3,.L42
- 525 028c 9B6E     	 ldr r3,[r3,#104]
- 526 028e 03F00103 	 and r3,r3,#1
- 527 0292 002B     	 cmp r3,#0
- 528 0294 F9D0     	 beq .L25
- 529              	.L24:
+ 529              	 .loc 1 202 0
+ 530 028a 504B     	 ldr r3,.L42
+ 531 028c 9B6E     	 ldr r3,[r3,#104]
+ 532 028e 03F00103 	 and r3,r3,#1
+ 533 0292 002B     	 cmp r3,#0
+ 534 0294 F9D0     	 beq .L25
+ 535              	.L24:
  205:.././hal/sam3u1c/sleep.c **** 			PMC->CKGR_MOR |= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCSEL;
- 530              	 .loc 1 205 0
- 531 0296 4D4B     	 ldr r3,.L42
- 532 0298 1B6A     	 ldr r3,[r3,#32]
- 533 029a 03F08073 	 and r3,r3,#16777216
- 534 029e 002B     	 cmp r3,#0
- 535 02a0 0DD1     	 bne .L26
+ 536              	 .loc 1 205 0
+ 537 0296 4D4B     	 ldr r3,.L42
+ 538 0298 1B6A     	 ldr r3,[r3,#32]
+ 539 029a 03F08073 	 and r3,r3,#16777216
+ 540 029e 002B     	 cmp r3,#0
+ 541 02a0 0DD1     	 bne .L26
  206:.././hal/sam3u1c/sleep.c **** 			while (!(PMC->PMC_SR & PMC_SR_MOSCSELS));
- 536              	 .loc 1 206 0
- 537 02a2 4A4A     	 ldr r2,.L42
- 538 02a4 494B     	 ldr r3,.L42
- 539 02a6 1B6A     	 ldr r3,[r3,#32]
- 540 02a8 43F09B73 	 orr r3,r3,#20316160
- 541 02ac 43F48033 	 orr r3,r3,#65536
- 542 02b0 1362     	 str r3,[r2,#32]
- 543              	.L27:
+ 542              	 .loc 1 206 0
+ 543 02a2 4A4B     	 ldr r3,.L42
+ 544 02a4 1B6A     	 ldr r3,[r3,#32]
+ 545 02a6 494A     	 ldr r2,.L42
+ 546 02a8 43F09B73 	 orr r3,r3,#20316160
+ 547 02ac 43F48033 	 orr r3,r3,#65536
+ 548 02b0 1362     	 str r3,[r2,#32]
+ 549              	.L27:
  207:.././hal/sam3u1c/sleep.c **** 		}
- 544              	 .loc 1 207 0
- 545 02b2 464B     	 ldr r3,.L42
- 546 02b4 9B6E     	 ldr r3,[r3,#104]
- 547 02b6 03F48033 	 and r3,r3,#65536
- 548 02ba 002B     	 cmp r3,#0
- 549 02bc F9D0     	 beq .L27
- 550              	.L26:
+ 550              	 .loc 1 207 0
+ 551 02b2 464B     	 ldr r3,.L42
+ 552 02b4 9B6E     	 ldr r3,[r3,#104]
+ 553 02b6 03F48033 	 and r3,r3,#65536
+ 554 02ba 002B     	 cmp r3,#0
+ 555 02bc F9D0     	 beq .L27
+ 556              	.L26:
  210:.././hal/sam3u1c/sleep.c **** 						~CKGR_MOR_MOSCRCF_Msk)
- 551              	 .loc 1 210 0
- 552 02be 434A     	 ldr r2,.L42
- 553 02c0 424B     	 ldr r3,.L42
- 554 02c2 1B6A     	 ldr r3,[r3,#32]
+ 557              	 .loc 1 210 0
+ 558 02be 434B     	 ldr r3,.L42
+ 559 02c0 1B6A     	 ldr r3,[r3,#32]
  212:.././hal/sam3u1c/sleep.c **** 	}
- 555              	 .loc 1 212 0
- 556 02c4 23F45C13 	 bic r3,r3,#3604480
- 557 02c8 23F07803 	 bic r3,r3,#120
- 558 02cc 43F45C13 	 orr r3,r3,#3604480
+ 560              	 .loc 1 212 0
+ 561 02c2 23F45C13 	 bic r3,r3,#3604480
+ 562 02c6 23F07803 	 bic r3,r3,#120
  210:.././hal/sam3u1c/sleep.c **** 						~CKGR_MOR_MOSCRCF_Msk)
- 559              	 .loc 1 210 0
- 560 02d0 1362     	 str r3,[r2,#32]
- 561              	.L23:
+ 563              	 .loc 1 210 0
+ 564 02ca 404A     	 ldr r2,.L42
+ 212:.././hal/sam3u1c/sleep.c **** 	}
+ 565              	 .loc 1 212 0
+ 566 02cc 43F45C13 	 orr r3,r3,#3604480
+ 210:.././hal/sam3u1c/sleep.c **** 						~CKGR_MOR_MOSCRCF_Msk)
+ 567              	 .loc 1 210 0
+ 568 02d0 1362     	 str r3,[r2,#32]
+ 569              	.L23:
  215:.././hal/sam3u1c/sleep.c **** #if (SAM4C || SAM4CM || SAMG || SAM4CP)
- 562              	 .loc 1 215 0
- 563 02d2 BA6E     	 ldr r2,[r7,#104]
- 564 02d4 3E4B     	 ldr r3,.L42+4
- 565 02d6 1340     	 ands r3,r3,r2
- 566 02d8 002B     	 cmp r3,#0
- 567 02da 08D0     	 beq .L28
+ 570              	 .loc 1 215 0
+ 571 02d2 BA6E     	 ldr r2,[r7,#104]
+ 572 02d4 3E4B     	 ldr r3,.L42+4
+ 573 02d6 1340     	 ands r3,r3,r2
+ 574 02d8 002B     	 cmp r3,#0
+ 575 02da 08D0     	 beq .L28
  219:.././hal/sam3u1c/sleep.c **** #endif
- 568              	 .loc 1 219 0
- 569 02dc 3B4A     	 ldr r2,.L42
- 570 02de BB6E     	 ldr r3,[r7,#104]
- 571 02e0 43F00053 	 orr r3,r3,#536870912
- 572 02e4 9362     	 str r3,[r2,#40]
+ 576              	 .loc 1 219 0
+ 577 02dc 3B4A     	 ldr r2,.L42
+ 578 02de BB6E     	 ldr r3,[r7,#104]
+ 579 02e0 43F00053 	 orr r3,r3,#536870912
+ 580 02e4 9362     	 str r3,[r2,#40]
  221:.././hal/sam3u1c/sleep.c **** 	}
- 573              	 .loc 1 221 0
- 574 02e6 7B6D     	 ldr r3,[r7,#84]
- 575 02e8 43F00203 	 orr r3,r3,#2
- 576 02ec 7B65     	 str r3,[r7,#84]
- 577              	.L28:
+ 581              	 .loc 1 221 0
+ 582 02e6 7B6D     	 ldr r3,[r7,#84]
+ 583 02e8 43F00203 	 orr r3,r3,#2
+ 584 02ec 7B65     	 str r3,[r7,#84]
+ 585              	.L28:
  229:.././hal/sam3u1c/sleep.c **** 		PMC->CKGR_UCKR = pll1_setting;
- 578              	 .loc 1 229 0
- 579 02ee 7B6E     	 ldr r3,[r7,#100]
- 580 02f0 03F48033 	 and r3,r3,#65536
- 581 02f4 002B     	 cmp r3,#0
- 582 02f6 06D0     	 beq .L29
+ 586              	 .loc 1 229 0
+ 587 02ee 7B6E     	 ldr r3,[r7,#100]
+ 588 02f0 03F48033 	 and r3,r3,#65536
+ 589 02f4 002B     	 cmp r3,#0
+ 590 02f6 06D0     	 beq .L29
  230:.././hal/sam3u1c/sleep.c **** 		pll_sr |= PMC_SR_LOCKU;
- 583              	 .loc 1 230 0
- 584 02f8 344A     	 ldr r2,.L42
- 585 02fa 7B6E     	 ldr r3,[r7,#100]
- 586 02fc D361     	 str r3,[r2,#28]
+ 591              	 .loc 1 230 0
+ 592 02f8 344A     	 ldr r2,.L42
+ 593 02fa 7B6E     	 ldr r3,[r7,#100]
+ 594 02fc D361     	 str r3,[r2,#28]
  231:.././hal/sam3u1c/sleep.c **** 	}
- 587              	 .loc 1 231 0
- 588 02fe 7B6D     	 ldr r3,[r7,#84]
- 589 0300 43F04003 	 orr r3,r3,#64
- 590 0304 7B65     	 str r3,[r7,#84]
- 591              	.L29:
+ 595              	 .loc 1 231 0
+ 596 02fe 7B6D     	 ldr r3,[r7,#84]
+ 597 0300 43F04003 	 orr r3,r3,#64
+ 598 0304 7B65     	 str r3,[r7,#84]
+ 599              	.L29:
  237:.././hal/sam3u1c/sleep.c **** 	case PMC_MCKR_CSS_PLLA_CLK:
- 592              	 .loc 1 237 0
- 593 0306 3B6E     	 ldr r3,[r7,#96]
- 594 0308 03F00303 	 and r3,r3,#3
- 595 030c 022B     	 cmp r3,#2
- 596 030e 02D0     	 beq .L33
- 597 0310 032B     	 cmp r3,#3
- 598 0312 07D0     	 beq .L34
- 599 0314 0CE0     	 b .L30
- 600              	.L33:
+ 600              	 .loc 1 237 0
+ 601 0306 3B6E     	 ldr r3,[r7,#96]
+ 602 0308 03F00303 	 and r3,r3,#3
+ 603 030c 022B     	 cmp r3,#2
+ 604 030e 02D0     	 beq .L33
+ 605 0310 032B     	 cmp r3,#3
+ 606 0312 07D0     	 beq .L34
+ 607 0314 0CE0     	 b .L30
+ 608              	.L33:
  239:.././hal/sam3u1c/sleep.c **** 		break;
- 601              	 .loc 1 239 0
- 602 0316 2D4B     	 ldr r3,.L42
- 603 0318 9B6E     	 ldr r3,[r3,#104]
- 604 031a 03F00203 	 and r3,r3,#2
- 605 031e 002B     	 cmp r3,#0
- 606 0320 F9D0     	 beq .L33
- 607 0322 05E0     	 b .L30
- 608              	.L34:
+ 609              	 .loc 1 239 0
+ 610 0316 2D4B     	 ldr r3,.L42
+ 611 0318 9B6E     	 ldr r3,[r3,#104]
+ 612 031a 03F00203 	 and r3,r3,#2
+ 613 031e 002B     	 cmp r3,#0
+ 614 0320 F9D0     	 beq .L33
+ 615 0322 05E0     	 b .L30
+ 616              	.L34:
  247:.././hal/sam3u1c/sleep.c **** 		break;
- 609              	 .loc 1 247 0
- 610 0324 294B     	 ldr r3,.L42
- 611 0326 9B6E     	 ldr r3,[r3,#104]
- 612 0328 03F04003 	 and r3,r3,#64
- 613 032c 002B     	 cmp r3,#0
- 614 032e F9D0     	 beq .L34
- 615              	.L30:
+ 617              	 .loc 1 247 0
+ 618 0324 294B     	 ldr r3,.L42
+ 619 0326 9B6E     	 ldr r3,[r3,#104]
+ 620 0328 03F04003 	 and r3,r3,#64
+ 621 032c 002B     	 cmp r3,#0
+ 622 032e F9D0     	 beq .L34
+ 623              	.L30:
  253:.././hal/sam3u1c/sleep.c **** 
- 616              	 .loc 1 253 0
- 617 0330 264B     	 ldr r3,.L42
- 618 0332 1B6B     	 ldr r3,[r3,#48]
- 619 0334 3B65     	 str r3,[r7,#80]
- 256:.././hal/sam3u1c/sleep.c **** 		| (mck_setting & PMC_MCKR_PRES_Msk);
- 620              	 .loc 1 256 0
- 621 0336 2549     	 ldr r1,.L42
- 622 0338 3B6D     	 ldr r3,[r7,#80]
- 623 033a 23F07002 	 bic r2,r3,#112
- 257:.././hal/sam3u1c/sleep.c **** 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY));
- 624              	 .loc 1 257 0
- 625 033e 3B6E     	 ldr r3,[r7,#96]
- 626 0340 03F07003 	 and r3,r3,#112
- 627 0344 1343     	 orrs r3,r3,r2
+ 624              	 .loc 1 253 0
+ 625 0330 264B     	 ldr r3,.L42
+ 626 0332 1B6B     	 ldr r3,[r3,#48]
+ 627 0334 3B65     	 str r3,[r7,#80]
  256:.././hal/sam3u1c/sleep.c **** 		| (mck_setting & PMC_MCKR_PRES_Msk);
  628              	 .loc 1 256 0
- 629 0346 0B63     	 str r3,[r1,#48]
- 630              	.L35:
+ 629 0336 3B6D     	 ldr r3,[r7,#80]
+ 630 0338 23F07002 	 bic r2,r3,#112
+ 257:.././hal/sam3u1c/sleep.c **** 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY));
+ 631              	 .loc 1 257 0
+ 632 033c 3B6E     	 ldr r3,[r7,#96]
+ 633 033e 03F07003 	 and r3,r3,#112
+ 256:.././hal/sam3u1c/sleep.c **** 		| (mck_setting & PMC_MCKR_PRES_Msk);
+ 634              	 .loc 1 256 0
+ 635 0342 2249     	 ldr r1,.L42
+ 257:.././hal/sam3u1c/sleep.c **** 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY));
+ 636              	 .loc 1 257 0
+ 637 0344 1343     	 orrs r3,r3,r2
+ 256:.././hal/sam3u1c/sleep.c **** 		| (mck_setting & PMC_MCKR_PRES_Msk);
+ 638              	 .loc 1 256 0
+ 639 0346 0B63     	 str r3,[r1,#48]
+ 640              	.L35:
  258:.././hal/sam3u1c/sleep.c **** 
- 631              	 .loc 1 258 0
- 632 0348 204B     	 ldr r3,.L42
- 633 034a 9B6E     	 ldr r3,[r3,#104]
- 634 034c 03F00803 	 and r3,r3,#8
- 635 0350 002B     	 cmp r3,#0
- 636 0352 F9D0     	 beq .L35
+ 641              	 .loc 1 258 0
+ 642 0348 204B     	 ldr r3,.L42
+ 643 034a 9B6E     	 ldr r3,[r3,#104]
+ 644 034c 03F00803 	 and r3,r3,#8
+ 645 0350 002B     	 cmp r3,#0
+ 646 0352 F9D0     	 beq .L35
  261:.././hal/sam3u1c/sleep.c **** #if defined(EFC1)
- 637              	 .loc 1 261 0
- 638 0354 1F4A     	 ldr r2,.L42+8
- 639 0356 FB6D     	 ldr r3,[r7,#92]
- 640 0358 1360     	 str r3,[r2]
+ 647              	 .loc 1 261 0
+ 648 0354 1F4A     	 ldr r2,.L42+8
+ 649 0356 FB6D     	 ldr r3,[r7,#92]
+ 650 0358 1360     	 str r3,[r2]
  263:.././hal/sam3u1c/sleep.c **** #endif
- 641              	 .loc 1 263 0
- 642 035a 1F4A     	 ldr r2,.L42+12
- 643 035c BB6D     	 ldr r3,[r7,#88]
- 644 035e 1360     	 str r3,[r2]
+ 651              	 .loc 1 263 0
+ 652 035a 1F4A     	 ldr r2,.L42+12
+ 653 035c BB6D     	 ldr r3,[r7,#88]
+ 654 035e 1360     	 str r3,[r2]
  267:.././hal/sam3u1c/sleep.c **** 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY));
- 645              	 .loc 1 267 0
- 646 0360 1A4A     	 ldr r2,.L42
- 647 0362 3B6E     	 ldr r3,[r7,#96]
- 648 0364 1363     	 str r3,[r2,#48]
- 649              	.L36:
+ 655              	 .loc 1 267 0
+ 656 0360 1A4A     	 ldr r2,.L42
+ 657 0362 3B6E     	 ldr r3,[r7,#96]
+ 658 0364 1363     	 str r3,[r2,#48]
+ 659              	.L36:
  268:.././hal/sam3u1c/sleep.c **** 
- 650              	 .loc 1 268 0
- 651 0366 194B     	 ldr r3,.L42
- 652 0368 9B6E     	 ldr r3,[r3,#104]
- 653 036a 03F00803 	 and r3,r3,#8
- 654 036e 002B     	 cmp r3,#0
- 655 0370 F9D0     	 beq .L36
- 656              	.L37:
+ 660              	 .loc 1 268 0
+ 661 0366 194B     	 ldr r3,.L42
+ 662 0368 9B6E     	 ldr r3,[r3,#104]
+ 663 036a 03F00803 	 and r3,r3,#8
+ 664 036e 002B     	 cmp r3,#0
+ 665 0370 F9D0     	 beq .L36
+ 666              	.L37:
  271:.././hal/sam3u1c/sleep.c **** }
- 657              	 .loc 1 271 0
- 658 0372 164B     	 ldr r3,.L42
- 659 0374 9A6E     	 ldr r2,[r3,#104]
- 660 0376 7B6D     	 ldr r3,[r7,#84]
- 661 0378 1340     	 ands r3,r3,r2
- 662 037a 002B     	 cmp r3,#0
- 663 037c F9D0     	 beq .L37
- 664              	.LBE65:
- 665              	.LBE64:
+ 667              	 .loc 1 271 0
+ 668 0372 164B     	 ldr r3,.L42
+ 669 0374 9A6E     	 ldr r2,[r3,#104]
+ 670 0376 7B6D     	 ldr r3,[r7,#84]
+ 671 0378 1340     	 ands r3,r3,r2
+ 672 037a 002B     	 cmp r3,#0
+ 673 037c F9D0     	 beq .L37
+ 674              	.LBE65:
+ 675              	.LBE64:
  336:.././hal/sam3u1c/sleep.c **** #if defined(EFC1)
  337:.././hal/sam3u1c/sleep.c **** 				, fmr1
  338:.././hal/sam3u1c/sleep.c **** #endif
@@ -1757,329 +1777,329 @@
  343:.././hal/sam3u1c/sleep.c **** 		PMC->PMC_SCER = cpclk_backup | PMC_SCER_CPKEY_PASSWD;
  344:.././hal/sam3u1c/sleep.c **** #endif
  345:.././hal/sam3u1c/sleep.c **** 		b_is_sleep_clock_used = false;
- 666              	 .loc 1 345 0
- 667 037e 174B     	 ldr r3,.L42+16
- 668 0380 0022     	 movs r2,#0
- 669 0382 1A70     	 strb r2,[r3]
+ 676              	 .loc 1 345 0
+ 677 037e 174B     	 ldr r3,.L42+16
+ 678 0380 0022     	 movs r2,#0
+ 679 0382 1A70     	 strb r2,[r3]
  346:.././hal/sam3u1c/sleep.c **** 		if (callback_clocks_restored) {
- 670              	 .loc 1 346 0
- 671 0384 164B     	 ldr r3,.L42+20
- 672 0386 1B68     	 ldr r3,[r3]
- 673 0388 002B     	 cmp r3,#0
- 674 038a 05D0     	 beq .L38
+ 680              	 .loc 1 346 0
+ 681 0384 164B     	 ldr r3,.L42+20
+ 682 0386 1B68     	 ldr r3,[r3]
+ 683 0388 002B     	 cmp r3,#0
+ 684 038a 05D0     	 beq .L38
  347:.././hal/sam3u1c/sleep.c **** 			callback_clocks_restored();
- 675              	 .loc 1 347 0
- 676 038c 144B     	 ldr r3,.L42+20
- 677 038e 1B68     	 ldr r3,[r3]
- 678 0390 9847     	 blx r3
- 679              	.LVL3:
+ 685              	 .loc 1 347 0
+ 686 038c 144B     	 ldr r3,.L42+20
+ 687 038e 1B68     	 ldr r3,[r3]
+ 688 0390 9847     	 blx r3
+ 689              	.LVL3:
  348:.././hal/sam3u1c/sleep.c **** 			callback_clocks_restored = NULL;
- 680              	 .loc 1 348 0
- 681 0392 134B     	 ldr r3,.L42+20
- 682 0394 0022     	 movs r2,#0
- 683 0396 1A60     	 str r2,[r3]
- 684              	.L38:
+ 690              	 .loc 1 348 0
+ 691 0392 134B     	 ldr r3,.L42+20
+ 692 0394 0022     	 movs r2,#0
+ 693 0396 1A60     	 str r2,[r3]
+ 694              	.L38:
  349:.././hal/sam3u1c/sleep.c **** 		}
  350:.././hal/sam3u1c/sleep.c **** 		cpu_irq_enable();
- 685              	 .loc 1 350 0
- 686 0398 124B     	 ldr r3,.L42+24
- 687 039a 0122     	 movs r2,#1
- 688 039c 1A70     	 strb r2,[r3]
- 689              	.LBB66:
- 690              	.LBB67:
- 691              	 .loc 2 354 0
- 692              	 .syntax unified
- 693              	
- 694 039e BFF35F8F 	 dmb
- 695              	
- 696              	 .thumb
- 697              	 .syntax unified
- 698              	.LBE67:
- 699              	.LBE66:
- 700              	.LBB68:
- 701              	.LBB69:
+ 695              	 .loc 1 350 0
+ 696 0398 124B     	 ldr r3,.L42+24
+ 697 039a 0122     	 movs r2,#1
+ 698 039c 1A70     	 strb r2,[r3]
+ 699              	.LBB66:
+ 700              	.LBB67:
+ 701              	 .loc 2 354 0
+ 702              	 .syntax unified
+ 703              	
+ 704 039e BFF35F8F 	 dmb
+ 705              	
+ 706              	 .thumb
+ 707              	 .syntax unified
+ 708              	.LBE67:
+ 709              	.LBE66:
+ 710              	.LBB68:
+ 711              	.LBB69:
  317:.././hal/sam3u1c/inc/core_cmFunc.h **** }
- 702              	 .loc 3 317 0
- 703              	 .syntax unified
- 704              	
- 705 03a2 62B6     	 cpsie i
- 706              	
- 707              	 .thumb
- 708              	 .syntax unified
- 709              	.LBE69:
- 710              	.LBE68:
+ 712              	 .loc 3 317 0
+ 713              	 .syntax unified
+ 714              	
+ 715 03a2 62B6     	 cpsie i
+ 716              	
+ 717              	 .thumb
+ 718              	 .syntax unified
+ 719              	.LBE69:
+ 720              	.LBE68:
  351:.././hal/sam3u1c/sleep.c **** 
  352:.././hal/sam3u1c/sleep.c **** 		break;
- 711              	 .loc 1 352 0
- 712 03a4 00BF     	 nop
- 713 03a6 0DE0     	 b .L2
- 714              	.L6:
- 715              	.LBE49:
+ 721              	 .loc 1 352 0
+ 722 03a4 00BF     	 nop
+ 723 03a6 0DE0     	 b .L2
+ 724              	.L6:
+ 725              	.LBE49:
  353:.././hal/sam3u1c/sleep.c **** 	}
  354:.././hal/sam3u1c/sleep.c **** #if (!(SAMG51 || SAMG53 || SAMG54))
  355:.././hal/sam3u1c/sleep.c **** 	case SAM_PM_SMODE_BACKUP:
  356:.././hal/sam3u1c/sleep.c **** 		SCB->SCR |= SCR_SLEEPDEEP;
- 716              	 .loc 1 356 0
- 717 03a8 0F4A     	 ldr r2,.L42+28
- 718 03aa 0F4B     	 ldr r3,.L42+28
- 719 03ac 1B69     	 ldr r3,[r3,#16]
- 720 03ae 43F00403 	 orr r3,r3,#4
- 721 03b2 1361     	 str r3,[r2,#16]
+ 726              	 .loc 1 356 0
+ 727 03a8 0F4B     	 ldr r3,.L42+28
+ 728 03aa 1B69     	 ldr r3,[r3,#16]
+ 729 03ac 0E4A     	 ldr r2,.L42+28
+ 730 03ae 43F00403 	 orr r3,r3,#4
+ 731 03b2 1361     	 str r3,[r2,#16]
  357:.././hal/sam3u1c/sleep.c **** #if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAM4CP || SAMG55)
  358:.././hal/sam3u1c/sleep.c **** 		SUPC->SUPC_CR = SUPC_CR_KEY_PASSWD | SUPC_CR_VROFF_STOP_VREG;
  359:.././hal/sam3u1c/sleep.c **** 		cpu_irq_enable();
  360:.././hal/sam3u1c/sleep.c **** 		__WFI() ;
  361:.././hal/sam3u1c/sleep.c **** #else
  362:.././hal/sam3u1c/sleep.c **** 		cpu_irq_enable();
- 722              	 .loc 1 362 0
- 723 03b4 0B4B     	 ldr r3,.L42+24
- 724 03b6 0122     	 movs r2,#1
- 725 03b8 1A70     	 strb r2,[r3]
- 726              	.LBB70:
- 727              	.LBB71:
- 728              	 .loc 2 354 0
- 729              	 .syntax unified
- 730              	
- 731 03ba BFF35F8F 	 dmb
- 732              	
- 733              	 .thumb
- 734              	 .syntax unified
- 735              	.LBE71:
- 736              	.LBE70:
- 737              	.LBB72:
- 738              	.LBB73:
+ 732              	 .loc 1 362 0
+ 733 03b4 0B4B     	 ldr r3,.L42+24
+ 734 03b6 0122     	 movs r2,#1
+ 735 03b8 1A70     	 strb r2,[r3]
+ 736              	.LBB70:
+ 737              	.LBB71:
+ 738              	 .loc 2 354 0
+ 739              	 .syntax unified
+ 740              	
+ 741 03ba BFF35F8F 	 dmb
+ 742              	
+ 743              	 .thumb
+ 744              	 .syntax unified
+ 745              	.LBE71:
+ 746              	.LBE70:
+ 747              	.LBB72:
+ 748              	.LBB73:
  317:.././hal/sam3u1c/inc/core_cmFunc.h **** }
- 739              	 .loc 3 317 0
- 740              	 .syntax unified
- 741              	
- 742 03be 62B6     	 cpsie i
- 743              	
- 744              	 .thumb
- 745              	 .syntax unified
- 746              	.LBE73:
- 747              	.LBE72:
- 748              	.LBB74:
- 749              	.LBB75:
+ 749              	 .loc 3 317 0
+ 750              	 .syntax unified
+ 751              	
+ 752 03be 62B6     	 cpsie i
+ 753              	
+ 754              	 .thumb
+ 755              	 .syntax unified
+ 756              	.LBE73:
+ 757              	.LBE72:
+ 758              	.LBB74:
+ 759              	.LBB75:
  310:.././hal/sam3u1c/inc/core_cmInstr.h **** }
- 750              	 .loc 2 310 0
- 751              	 .syntax unified
- 752              	
- 753 03c0 20BF     	 wfe
- 754              	
- 755              	 .thumb
- 756              	 .syntax unified
- 757              	.LBE75:
- 758              	.LBE74:
+ 760              	 .loc 2 310 0
+ 761              	 .syntax unified
+ 762              	
+ 763 03c0 20BF     	 wfe
+ 764              	
+ 765              	 .thumb
+ 766              	 .syntax unified
+ 767              	.LBE75:
+ 768              	.LBE74:
  363:.././hal/sam3u1c/sleep.c **** 		__WFE() ;
  364:.././hal/sam3u1c/sleep.c **** #endif
  365:.././hal/sam3u1c/sleep.c **** 		break;
- 759              	 .loc 1 365 0
- 760 03c2 00BF     	 nop
- 761              	.L2:
- 762              	.L39:
+ 769              	 .loc 1 365 0
+ 770 03c2 00BF     	 nop
+ 771              	.L2:
+ 772              	.L39:
  366:.././hal/sam3u1c/sleep.c **** #endif
  367:.././hal/sam3u1c/sleep.c **** 	}
  368:.././hal/sam3u1c/sleep.c **** }
- 763              	 .loc 1 368 0
- 764 03c4 00BF     	 nop
- 765 03c6 7037     	 adds r7,r7,#112
- 766              	.LCFI3:
- 767              	 .cfi_def_cfa_offset 16
- 768 03c8 BD46     	 mov sp,r7
- 769              	.LCFI4:
- 770              	 .cfi_def_cfa_register 13
- 771              	 
- 772 03ca B0BD     	 pop {r4,r5,r7,pc}
- 773              	.L43:
- 774              	 .align 2
- 775              	.L42:
- 776 03cc 00040E40 	 .word 1074660352
- 777 03d0 0000FF07 	 .word 134152192
- 778 03d4 00080E40 	 .word 1074661376
- 779 03d8 000A0E40 	 .word 1074661888
- 780 03dc 00000000 	 .word b_is_sleep_clock_used
- 781 03e0 00000000 	 .word callback_clocks_restored
- 782 03e4 00000000 	 .word g_interrupt_enabled
- 783 03e8 00ED00E0 	 .word -536810240
- 784              	 .cfi_endproc
- 785              	.LFE69:
- 787              	 .section .text.pmc_is_wakeup_clocks_restored,"ax",%progbits
- 788              	 .align 1
- 789              	 .global pmc_is_wakeup_clocks_restored
- 790              	 .syntax unified
- 791              	 .thumb
- 792              	 .thumb_func
- 793              	 .fpu softvfp
- 795              	pmc_is_wakeup_clocks_restored:
- 796              	.LFB70:
+ 773              	 .loc 1 368 0
+ 774 03c4 00BF     	 nop
+ 775 03c6 7037     	 adds r7,r7,#112
+ 776              	.LCFI3:
+ 777              	 .cfi_def_cfa_offset 16
+ 778 03c8 BD46     	 mov sp,r7
+ 779              	.LCFI4:
+ 780              	 .cfi_def_cfa_register 13
+ 781              	 
+ 782 03ca B0BD     	 pop {r4,r5,r7,pc}
+ 783              	.L43:
+ 784              	 .align 2
+ 785              	.L42:
+ 786 03cc 00040E40 	 .word 1074660352
+ 787 03d0 0000FF07 	 .word 134152192
+ 788 03d4 00080E40 	 .word 1074661376
+ 789 03d8 000A0E40 	 .word 1074661888
+ 790 03dc 00000000 	 .word b_is_sleep_clock_used
+ 791 03e0 00000000 	 .word callback_clocks_restored
+ 792 03e4 00000000 	 .word g_interrupt_enabled
+ 793 03e8 00ED00E0 	 .word -536810240
+ 794              	 .cfi_endproc
+ 795              	.LFE71:
+ 797              	 .section .text.pmc_is_wakeup_clocks_restored,"ax",%progbits
+ 798              	 .align 1
+ 799              	 .global pmc_is_wakeup_clocks_restored
+ 800              	 .syntax unified
+ 801              	 .thumb
+ 802              	 .thumb_func
+ 803              	 .fpu softvfp
+ 805              	pmc_is_wakeup_clocks_restored:
+ 806              	.LFB72:
  369:.././hal/sam3u1c/sleep.c **** 
  370:.././hal/sam3u1c/sleep.c **** bool pmc_is_wakeup_clocks_restored(void)
  371:.././hal/sam3u1c/sleep.c **** {
- 797              	 .loc 1 371 0
- 798              	 .cfi_startproc
- 799              	 
- 800              	 
- 801              	 
- 802 0000 80B4     	 push {r7}
- 803              	.LCFI5:
- 804              	 .cfi_def_cfa_offset 4
- 805              	 .cfi_offset 7,-4
- 806 0002 00AF     	 add r7,sp,#0
- 807              	.LCFI6:
- 808              	 .cfi_def_cfa_register 7
+ 807              	 .loc 1 371 0
+ 808              	 .cfi_startproc
+ 809              	 
+ 810              	 
+ 811              	 
+ 812 0000 80B4     	 push {r7}
+ 813              	.LCFI5:
+ 814              	 .cfi_def_cfa_offset 4
+ 815              	 .cfi_offset 7,-4
+ 816 0002 00AF     	 add r7,sp,#0
+ 817              	.LCFI6:
+ 818              	 .cfi_def_cfa_register 7
  372:.././hal/sam3u1c/sleep.c **** 	return !b_is_sleep_clock_used;
- 809              	 .loc 1 372 0
- 810 0004 084B     	 ldr r3,.L46
- 811 0006 1B78     	 ldrb r3,[r3]
- 812 0008 DBB2     	 uxtb r3,r3
- 813 000a 002B     	 cmp r3,#0
- 814 000c 14BF     	 ite ne
- 815 000e 0123     	 movne r3,#1
- 816 0010 0023     	 moveq r3,#0
- 817 0012 DBB2     	 uxtb r3,r3
- 818 0014 83F00103 	 eor r3,r3,#1
- 819 0018 DBB2     	 uxtb r3,r3
- 820 001a 03F00103 	 and r3,r3,#1
- 821 001e DBB2     	 uxtb r3,r3
+ 819              	 .loc 1 372 0
+ 820 0004 084B     	 ldr r3,.L46
+ 821 0006 1B78     	 ldrb r3,[r3]
+ 822 0008 DBB2     	 uxtb r3,r3
+ 823 000a 002B     	 cmp r3,#0
+ 824 000c 14BF     	 ite ne
+ 825 000e 0123     	 movne r3,#1
+ 826 0010 0023     	 moveq r3,#0
+ 827 0012 DBB2     	 uxtb r3,r3
+ 828 0014 83F00103 	 eor r3,r3,#1
+ 829 0018 DBB2     	 uxtb r3,r3
+ 830 001a 03F00103 	 and r3,r3,#1
+ 831 001e DBB2     	 uxtb r3,r3
  373:.././hal/sam3u1c/sleep.c **** }
- 822              	 .loc 1 373 0
- 823 0020 1846     	 mov r0,r3
- 824 0022 BD46     	 mov sp,r7
- 825              	.LCFI7:
- 826              	 .cfi_def_cfa_register 13
- 827              	 
- 828 0024 80BC     	 pop {r7}
- 829              	.LCFI8:
- 830              	 .cfi_restore 7
- 831              	 .cfi_def_cfa_offset 0
- 832 0026 7047     	 bx lr
- 833              	.L47:
- 834              	 .align 2
- 835              	.L46:
- 836 0028 00000000 	 .word b_is_sleep_clock_used
- 837              	 .cfi_endproc
- 838              	.LFE70:
- 840              	 .section .text.pmc_wait_wakeup_clocks_restore,"ax",%progbits
- 841              	 .align 1
- 842              	 .global pmc_wait_wakeup_clocks_restore
- 843              	 .syntax unified
- 844              	 .thumb
- 845              	 .thumb_func
- 846              	 .fpu softvfp
- 848              	pmc_wait_wakeup_clocks_restore:
- 849              	.LFB71:
+ 832              	 .loc 1 373 0
+ 833 0020 1846     	 mov r0,r3
+ 834 0022 BD46     	 mov sp,r7
+ 835              	.LCFI7:
+ 836              	 .cfi_def_cfa_register 13
+ 837              	 
+ 838 0024 80BC     	 pop {r7}
+ 839              	.LCFI8:
+ 840              	 .cfi_restore 7
+ 841              	 .cfi_def_cfa_offset 0
+ 842 0026 7047     	 bx lr
+ 843              	.L47:
+ 844              	 .align 2
+ 845              	.L46:
+ 846 0028 00000000 	 .word b_is_sleep_clock_used
+ 847              	 .cfi_endproc
+ 848              	.LFE72:
+ 850              	 .section .text.pmc_wait_wakeup_clocks_restore,"ax",%progbits
+ 851              	 .align 1
+ 852              	 .global pmc_wait_wakeup_clocks_restore
+ 853              	 .syntax unified
+ 854              	 .thumb
+ 855              	 .thumb_func
+ 856              	 .fpu softvfp
+ 858              	pmc_wait_wakeup_clocks_restore:
+ 859              	.LFB73:
  374:.././hal/sam3u1c/sleep.c **** 
  375:.././hal/sam3u1c/sleep.c **** void pmc_wait_wakeup_clocks_restore(
  376:.././hal/sam3u1c/sleep.c **** 		pmc_callback_wakeup_clocks_restored_t callback)
  377:.././hal/sam3u1c/sleep.c **** {
- 850              	 .loc 1 377 0
- 851              	 .cfi_startproc
- 852              	 
- 853              	 
- 854 0000 80B5     	 push {r7,lr}
- 855              	.LCFI9:
- 856              	 .cfi_def_cfa_offset 8
- 857              	 .cfi_offset 7,-8
- 858              	 .cfi_offset 14,-4
- 859 0002 82B0     	 sub sp,sp,#8
- 860              	.LCFI10:
- 861              	 .cfi_def_cfa_offset 16
- 862 0004 00AF     	 add r7,sp,#0
- 863              	.LCFI11:
- 864              	 .cfi_def_cfa_register 7
- 865 0006 7860     	 str r0,[r7,#4]
+ 860              	 .loc 1 377 0
+ 861              	 .cfi_startproc
+ 862              	 
+ 863              	 
+ 864 0000 80B5     	 push {r7,lr}
+ 865              	.LCFI9:
+ 866              	 .cfi_def_cfa_offset 8
+ 867              	 .cfi_offset 7,-8
+ 868              	 .cfi_offset 14,-4
+ 869 0002 82B0     	 sub sp,sp,#8
+ 870              	.LCFI10:
+ 871              	 .cfi_def_cfa_offset 16
+ 872 0004 00AF     	 add r7,sp,#0
+ 873              	.LCFI11:
+ 874              	 .cfi_def_cfa_register 7
+ 875 0006 7860     	 str r0,[r7,#4]
  378:.././hal/sam3u1c/sleep.c **** 	if (b_is_sleep_clock_used) {
- 866              	 .loc 1 378 0
- 867 0008 0B4B     	 ldr r3,.L52
- 868 000a 1B78     	 ldrb r3,[r3]
- 869 000c DBB2     	 uxtb r3,r3
- 870 000e 002B     	 cmp r3,#0
- 871 0010 09D0     	 beq .L49
- 872              	.LBB76:
- 873              	.LBB77:
- 874              	 .loc 3 328 0
- 875              	 .syntax unified
- 876              	
- 877 0012 72B6     	 cpsid i
- 878              	
- 879              	 .thumb
- 880              	 .syntax unified
- 881              	.LBE77:
- 882              	.LBE76:
- 883              	.LBB78:
- 884              	.LBB79:
- 885              	 .loc 2 354 0
- 886              	 .syntax unified
- 887              	
- 888 0014 BFF35F8F 	 dmb
- 889              	
- 890              	 .thumb
- 891              	 .syntax unified
- 892              	.LBE79:
- 893              	.LBE78:
+ 876              	 .loc 1 378 0
+ 877 0008 0B4B     	 ldr r3,.L52
+ 878 000a 1B78     	 ldrb r3,[r3]
+ 879 000c DBB2     	 uxtb r3,r3
+ 880 000e 002B     	 cmp r3,#0
+ 881 0010 09D0     	 beq .L49
+ 882              	.LBB76:
+ 883              	.LBB77:
+ 884              	 .loc 3 328 0
+ 885              	 .syntax unified
+ 886              	
+ 887 0012 72B6     	 cpsid i
+ 888              	
+ 889              	 .thumb
+ 890              	 .syntax unified
+ 891              	.LBE77:
+ 892              	.LBE76:
+ 893              	.LBB78:
+ 894              	.LBB79:
+ 895              	 .loc 2 354 0
+ 896              	 .syntax unified
+ 897              	
+ 898 0014 BFF35F8F 	 dmb
+ 899              	
+ 900              	 .thumb
+ 901              	 .syntax unified
+ 902              	.LBE79:
+ 903              	.LBE78:
  379:.././hal/sam3u1c/sleep.c **** 		cpu_irq_disable();
- 894              	 .loc 1 379 0
- 895 0018 084B     	 ldr r3,.L52+4
- 896 001a 0022     	 movs r2,#0
- 897 001c 1A70     	 strb r2,[r3]
+ 904              	 .loc 1 379 0
+ 905 0018 084B     	 ldr r3,.L52+4
+ 906 001a 0022     	 movs r2,#0
+ 907 001c 1A70     	 strb r2,[r3]
  380:.././hal/sam3u1c/sleep.c **** 		callback_clocks_restored = callback;
- 898              	 .loc 1 380 0
- 899 001e 084A     	 ldr r2,.L52+8
- 900 0020 7B68     	 ldr r3,[r7,#4]
- 901 0022 1360     	 str r3,[r2]
+ 908              	 .loc 1 380 0
+ 909 001e 084A     	 ldr r2,.L52+8
+ 910 0020 7B68     	 ldr r3,[r7,#4]
+ 911 0022 1360     	 str r3,[r2]
  381:.././hal/sam3u1c/sleep.c **** 	} else if (callback) {
  382:.././hal/sam3u1c/sleep.c **** 		callback();
  383:.././hal/sam3u1c/sleep.c **** 	}
  384:.././hal/sam3u1c/sleep.c **** }
- 902              	 .loc 1 384 0
- 903 0024 04E0     	 b .L51
- 904              	.L49:
+ 912              	 .loc 1 384 0
+ 913 0024 04E0     	 b .L51
+ 914              	.L49:
  381:.././hal/sam3u1c/sleep.c **** 	} else if (callback) {
- 905              	 .loc 1 381 0
- 906 0026 7B68     	 ldr r3,[r7,#4]
- 907 0028 002B     	 cmp r3,#0
- 908 002a 01D0     	 beq .L51
+ 915              	 .loc 1 381 0
+ 916 0026 7B68     	 ldr r3,[r7,#4]
+ 917 0028 002B     	 cmp r3,#0
+ 918 002a 01D0     	 beq .L51
  382:.././hal/sam3u1c/sleep.c **** 	}
- 909              	 .loc 1 382 0
- 910 002c 7B68     	 ldr r3,[r7,#4]
- 911 002e 9847     	 blx r3
- 912              	.LVL4:
- 913              	.L51:
- 914              	 .loc 1 384 0
- 915 0030 00BF     	 nop
- 916 0032 0837     	 adds r7,r7,#8
- 917              	.LCFI12:
- 918              	 .cfi_def_cfa_offset 8
- 919 0034 BD46     	 mov sp,r7
- 920              	.LCFI13:
- 921              	 .cfi_def_cfa_register 13
- 922              	 
- 923 0036 80BD     	 pop {r7,pc}
- 924              	.L53:
- 925              	 .align 2
- 926              	.L52:
- 927 0038 00000000 	 .word b_is_sleep_clock_used
- 928 003c 00000000 	 .word g_interrupt_enabled
- 929 0040 00000000 	 .word callback_clocks_restored
- 930              	 .cfi_endproc
- 931              	.LFE71:
- 933              	 .text
- 934              	.Letext0:
- 935              	 .file 4 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 936              	 .file 5 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
- 937              	 .file 6 ".././hal/sam3u1c/inc/sam3u1c.h"
- 938              	 .file 7 ".././hal/sam3u1c/inc/core_cm3.h"
- 939              	 .file 8 ".././hal/sam3u1c/inc/system_sam3u.h"
- 940              	 .file 9 ".././hal/sam3u1c/inc/component/component_efc.h"
- 941              	 .file 10 ".././hal/sam3u1c/inc/component/component_pmc.h"
- 942              	 .file 11 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 943              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 944              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 945              	 .file 14 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 946              	 .file 15 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
- 947              	 .file 16 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 948              	 .file 17 ".././hal/sam3u1c/inc/sleep.h"
- 949              	 .file 18 ".././hal/sam3u1c/inc/pmc.h"
+ 919              	 .loc 1 382 0
+ 920 002c 7B68     	 ldr r3,[r7,#4]
+ 921 002e 9847     	 blx r3
+ 922              	.LVL4:
+ 923              	.L51:
+ 924              	 .loc 1 384 0
+ 925 0030 00BF     	 nop
+ 926 0032 0837     	 adds r7,r7,#8
+ 927              	.LCFI12:
+ 928              	 .cfi_def_cfa_offset 8
+ 929 0034 BD46     	 mov sp,r7
+ 930              	.LCFI13:
+ 931              	 .cfi_def_cfa_register 13
+ 932              	 
+ 933 0036 80BD     	 pop {r7,pc}
+ 934              	.L53:
+ 935              	 .align 2
+ 936              	.L52:
+ 937 0038 00000000 	 .word b_is_sleep_clock_used
+ 938 003c 00000000 	 .word g_interrupt_enabled
+ 939 0040 00000000 	 .word callback_clocks_restored
+ 940              	 .cfi_endproc
+ 941              	.LFE73:
+ 943              	 .text
+ 944              	.Letext0:
+ 945              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 946              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 947              	 .file 6 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 948              	 .file 7 ".././hal/sam3u1c/inc/core_cm3.h"
+ 949              	 .file 8 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 950              	 .file 9 ".././hal/sam3u1c/inc/component/component_efc.h"
+ 951              	 .file 10 ".././hal/sam3u1c/inc/component/component_pmc.h"
+ 952              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 953              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 954              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 955              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 956              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 957              	 .file 16 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 958              	 .file 17 ".././hal/sam3u1c/inc/sleep.h"
+ 959              	 .file 18 ".././hal/sam3u1c/inc/pmc.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 sleep.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -2094,24 +2114,23 @@ DEFINED SYMBOLS
     {standard input}:45     .text.pmc_sleep:00000000 pmc_sleep
     {standard input}:75     .text.pmc_sleep:00000018 $d
     {standard input}:80     .text.pmc_sleep:0000002c $t
-    {standard input}:488    .text.pmc_sleep:00000230 $d
-    {standard input}:501    .text.pmc_sleep:0000025c $t
-    {standard input}:776    .text.pmc_sleep:000003cc $d
-    {standard input}:788    .text.pmc_is_wakeup_clocks_restored:00000000 $t
-    {standard input}:795    .text.pmc_is_wakeup_clocks_restored:00000000 pmc_is_wakeup_clocks_restored
-    {standard input}:836    .text.pmc_is_wakeup_clocks_restored:00000028 $d
-    {standard input}:841    .text.pmc_wait_wakeup_clocks_restore:00000000 $t
-    {standard input}:848    .text.pmc_wait_wakeup_clocks_restore:00000000 pmc_wait_wakeup_clocks_restore
-    {standard input}:927    .text.pmc_wait_wakeup_clocks_restore:00000038 $d
-                     .debug_frame:00000010 $d
-                           .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
+    {standard input}:492    .text.pmc_sleep:00000230 $d
+    {standard input}:505    .text.pmc_sleep:0000025c $t
+    {standard input}:786    .text.pmc_sleep:000003cc $d
+    {standard input}:798    .text.pmc_is_wakeup_clocks_restored:00000000 $t
+    {standard input}:805    .text.pmc_is_wakeup_clocks_restored:00000000 pmc_is_wakeup_clocks_restored
+    {standard input}:846    .text.pmc_is_wakeup_clocks_restored:00000028 $d
+    {standard input}:851    .text.pmc_wait_wakeup_clocks_restore:00000000 $t
+    {standard input}:858    .text.pmc_wait_wakeup_clocks_restore:00000000 pmc_wait_wakeup_clocks_restore
+    {standard input}:937    .text.pmc_wait_wakeup_clocks_restore:00000038 $d
+                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
-                           .group:00000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
-                           .group:00000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
                            .group:00000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
                            .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
@@ -2177,27 +2196,30 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.312.ae446d8e874d34ca3df78faf190c678f
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
-                           .group:00000000 wm4.newlib.h.8.5f2124c7e712be65f83b91ff86a0b1c1
-                           .group:00000000 wm4.config.h.219.65a553ab5bef5482f0d7880b0d33015e
-                           .group:00000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
+                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.776a25dae4205bae6cce27d545bc475b
+                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
                            .group:00000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
-                           .group:00000000 wm4._types.h.183.c226d164ceca1f2ecb9ae9360c54a098
-                           .group:00000000 wm4.reent.h.17.23b059516345f8f5abfa01ddc379570f
+                           .group:00000000 wm4._types.h.184.03611d4f6b5bec9997bcf4279eceba07
+                           .group:00000000 wm4.reent.h.17.90c2574d4acdcfce933db5cb09ff35fe
                            .group:00000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
                            .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
                            .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
                            .group:00000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
                            .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
-                           .group:00000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:00000000 wm4.select.h.19.97ca6fd0c752a0f3b6719fd314d361e6
                            .group:00000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
                            .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
-                           .group:00000000 wm4.stdio.h.81.8188691c2279eac7a223caa50f6694b9
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
                            .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d

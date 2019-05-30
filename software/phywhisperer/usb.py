@@ -3,6 +3,10 @@ import phywhisperer.interface.program_fpga as LLINT
 import sys
 import os
 from phywhisperer.interface.bootloader_sam3u import Samba
+from zipfile import ZipFile
+
+#include once implemented
+# from phywhisperer.firmware.phywhisperer import getsome
 
 class usb(object):
     """PhyWhisperer-USB Interface"""
@@ -24,6 +28,10 @@ class usb(object):
         self._llint = LLINT.PhyWhispererUSB(self.usb)
 
         if program_fpga:
+            from phywhisperer.firmware.phywhisperer import getsome
+            with ZipFile(getsome("phywhisperer-firmware.zip")) as myzip:
+                with myzip.open('phywhisperer_top.bit') as bitstream:
+                    self._llint.FPGAProgram(bitstream)
             pass
         pass
 
@@ -62,12 +70,20 @@ class usb(object):
     def erase_sam3u(self):
         self._llint.eraseFW(confirm=True)
 
-    def program_sam3u(self, port, fw_path):
-        if not os.path.isfile(fw_path):
-            raise ValueError("Cannot find specified firmware file {}".format(fw_path))
-        sam = Samba()
+    def program_sam3u(self, port, fw_path=None):
+        fw_data = None
         print("Opening firmware...")
-        fw_data = open(fw_path, "rb").read()
+
+        if fw_path is None:
+            print("Firmware not specified. Using firmware/phywhisperer.py")
+            from phywhisperer.firmware.phywhisperer import getsome
+            fw_data = getsome("phywhisperer-SAM3U1C.bin").read()
+        else:
+            if not os.path.isfile(fw_path):
+                raise ValueError("Cannot find specified firmware file {}".format(fw_path))
+            fw_data = open(fw_path, "rb").read()
+
+        sam = Samba()
         print("Opened!\nConnecting...")
         sam.con(port)
         print("Connected!\nErasing...")

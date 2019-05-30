@@ -12,7 +12,8 @@ setup(
     url = 'http://www.PhyWhisperer.com',
     download_url='',
     packages = ['phywhisperer',
-                'phywhisperer.interface'
+                'phywhisperer.interface',
+                'phywhisperer.firmware'
                 ],
     install_requires = [
 
