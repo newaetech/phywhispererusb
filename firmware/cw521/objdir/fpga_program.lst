@@ -1122,9 +1122,10 @@
  510              	 .file 23 ".././hal/sam3u1c/inc/udc_desc.h"
  511              	 .file 24 ".././hal/sam3u1c/inc/udd.h"
  512              	 .file 25 ".././hal/sam3u1c/inc/udi_vendor.h"
- 513              	 .file 26 ".././hal/sam3u1c/inc/pio.h"
- 514              	 .file 27 ".././hal/sam3u1c/inc/pmc.h"
- 515              	 .file 28 ".././hal/sam3u1c/inc/sam3u/pll.h"
+ 513              	 .file 26 "fpga_program.h"
+ 514              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
+ 515              	 .file 28 ".././hal/sam3u1c/inc/pmc.h"
+ 516              	 .file 29 ".././hal/sam3u1c/inc/sam3u/pll.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 fpga_program.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1291,7 +1292,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.udc_desc.h.77.5fec235bd7553e7256e345e020840072
                            .group:00000000 wm4.udd.h.103.3ccc59b50c14ec70568e6136eeb22d56
                            .group:00000000 wm4.udi_vendor.h.125.7b9085237d4d4a9757f4c148fba1918d
-                           .group:00000000 wm4.fpga_program.h.36.595c50b3111aee41a44bf68f78909aea
+                           .group:00000000 wm4.fpga_program.h.36.51224b537e4ba9936a71e45e1029f6ce
 
 UNDEFINED SYMBOLS
 pmc_enable_periph_clk

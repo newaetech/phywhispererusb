@@ -49649,9 +49649,6 @@ b_shortpacket.8357:
 	.ascii	"BESL_4000_US 9\000"
 .LASF1130:
 	.ascii	"SCB_CCR_UNALIGN_TRP_Pos 3\000"
-.LASF9457:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
 .LASF8416:
 	.ascii	"UDI_VENDOR_EPS_INT_DESC_FS \000"
 .LASF2354:
@@ -49682,6 +49679,9 @@ b_shortpacket.8357:
 	.ascii	"PIO_SODR_P17 (0x1u << 17)\000"
 .LASF7111:
 	.ascii	"REG_PIOA_ODSR (*(RwReg*)0x400E0C38U)\000"
+.LASF9457:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF8172:
 	.ascii	"swap32(u32) ((U32)__builtin_bswap32((U32)(u32)))\000"
 .LASF4602:

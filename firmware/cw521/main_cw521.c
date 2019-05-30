@@ -5,150 +5,161 @@
 #include "genclk.h"
 #include "tasks.h"
 #include "fpga_xmem.h"
+#include "fpga_program.h"
 #include "usb.h"
 #include "sysclk.h"
 #include <string.h>
 
 //Serial Number - will be read by device ID
 char usb_serial_number[33] = "000000000000DEADBEEF";
-#define BUTTON_IN PIO_PA24_IDX
-#define F_VBHOST PIO_PA26_IDX
-#define F_VBSNIFF PIO_PA25_IDX
 
 void phywhisperer_no_pwr(void)
 {
-     PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
-     PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+    PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
+    PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
 }
 
 void phywhisperer_host_pwr(void)
 {
-  PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
-  PIOA->PIO_SODR = (1 << F_VBHOST); //enable host power
+    PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
+    PIOA->PIO_SODR = (1 << F_VBHOST); //enable host power
 }
 
 void phywhisperer_sniff_pwr(void)
 {
-  PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
-  PIOA->PIO_SODR = (1 << F_VBSNIFF); //enable sniff power
+    PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+    PIOA->PIO_SODR = (1 << F_VBSNIFF); //enable sniff power
 }
 
 void phywhisperer_switch_usb_pwr(void)
 {
-     if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF))) {
-          //Switch to host power mode
-          phywhisperer_host_pwr();
-     } else {
-          //Switch to sniff power mode
-          phywhisperer_sniff_pwr();
-     }
+    if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF))) {
+        //Switch to host power mode
+        phywhisperer_host_pwr();
+    } else {
+        //Switch to sniff power mode
+        phywhisperer_sniff_pwr();
+    }
+}
+
+uint8_t pwr_st_from_io(void)
+{
+    if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+        //USB off
+        return 0;
+    } else if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && (PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+        //Host power
+        return 1;
+    } else if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+        //Sniffer power
+        return 2;
+    } else {
+        //Everything's on...
+        return 0xFF;
+    }
+
 }
 
 void phywhisperer_setup_pins(void)
 {
-  board_init();
-  ioport_set_pin_mode(BUTTON_IN, IOPORT_MODE_PULLUP); //(1 << 2) = PULL UP
-  PIOA->PIO_ODR = (1 << BUTTON_IN);
-  PIOA->PIO_PUER = (1 << BUTTON_IN); // enable pullup
-  PIOA->PIO_DIFSR = (1 << BUTTON_IN); //enable debounce
+    board_init();
+    ioport_set_pin_mode(BUTTON_IN, IOPORT_MODE_PULLUP); //(1 << 2) = PULL UP
+    PIOA->PIO_ODR = (1 << BUTTON_IN);
+    PIOA->PIO_PUER = (1 << BUTTON_IN); // enable pullup
+    PIOA->PIO_DIFSR = (1 << BUTTON_IN); //enable debounce
 
-  PIOA->PIO_OER = (1 << F_VBHOST) | (1 << F_VBSNIFF); //enable output mode on VBHOST/VBSNIFF pins
+    PIOA->PIO_OER = (1 << F_VBHOST) | (1 << F_VBSNIFF); //enable output mode on VBHOST/VBSNIFF pins
 
-  phywhisperer_sniff_pwr();
+    phywhisperer_sniff_pwr();
 
-  /* Enable SMC */
-  pmc_enable_periph_clk(ID_SMC);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D3, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D4, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D5, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIN_EBI_DATA_BUS_FLAG1);
-  gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
-  gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
-  gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
+    /* Enable SMC */
+    pmc_enable_periph_clk(ID_SMC);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D3, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D4, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D5, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIN_EBI_DATA_BUS_FLAG1);
+    gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
+    gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
+    gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
 
-  smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(0)
-  | SMC_SETUP_NCS_WR_SETUP(1)
-  | SMC_SETUP_NRD_SETUP(1)
-  | SMC_SETUP_NCS_RD_SETUP(1));
-  smc_set_pulse_timing(SMC, 0, SMC_PULSE_NWE_PULSE(1)
-  | SMC_PULSE_NCS_WR_PULSE(1)
-  | SMC_PULSE_NRD_PULSE(3)
-  | SMC_PULSE_NCS_RD_PULSE(1));
-  smc_set_cycle_timing(SMC, 0, SMC_CYCLE_NWE_CYCLE(2)
-  | SMC_CYCLE_NRD_CYCLE(4));
-  smc_set_mode(SMC, 0, SMC_MODE_READ_MODE | SMC_MODE_WRITE_MODE
-  | SMC_MODE_DBW_BIT_8);
+    smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(0)
+                         | SMC_SETUP_NCS_WR_SETUP(1)
+                         | SMC_SETUP_NRD_SETUP(1)
+                         | SMC_SETUP_NCS_RD_SETUP(1));
+    smc_set_pulse_timing(SMC, 0, SMC_PULSE_NWE_PULSE(1)
+                         | SMC_PULSE_NCS_WR_PULSE(1)
+                         | SMC_PULSE_NRD_PULSE(3)
+                         | SMC_PULSE_NCS_RD_PULSE(1));
+    smc_set_cycle_timing(SMC, 0, SMC_CYCLE_NWE_CYCLE(2)
+                         | SMC_CYCLE_NRD_CYCLE(4));
+    smc_set_mode(SMC, 0, SMC_MODE_READ_MODE | SMC_MODE_WRITE_MODE
+                 | SMC_MODE_DBW_BIT_8);
 }
 
 void hacky_delay(void)
 {
-     for (volatile uint32_t i = 0; i < 250000; i++);
+    for (volatile uint32_t i = 0; i < 250000; i++);
 }
 
 static inline void genclk_enable_config(unsigned int id, enum genclk_source src, unsigned int divider)
 {
-     struct genclk_config gcfg;
+    struct genclk_config gcfg;
 
-     genclk_config_defaults(&gcfg, id);
-     genclk_enable_source(src);
-     genclk_config_set_source(&gcfg, src);
-     genclk_config_set_divider(&gcfg, divider);
-     genclk_enable(&gcfg, id);
+    genclk_config_defaults(&gcfg, id);
+    genclk_enable_source(src);
+    genclk_config_set_source(&gcfg, src);
+    genclk_config_set_divider(&gcfg, divider);
+    genclk_enable(&gcfg, id);
 }
 
 void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_host_pwr, phywhisperer_sniff_pwr};
 
 int main(void)
 {
-  uint32_t serial_number[4];
+    uint32_t serial_number[4];
 
-  // Read Device-ID from SAM3U. Do this before enabling interrupts etc.
-  flash_read_unique_id(serial_number, sizeof(serial_number));
+    // Read Device-ID from SAM3U. Do this before enabling interrupts etc.
+    flash_read_unique_id(serial_number, sizeof(serial_number));
 
-  irq_initialize_vectors();
-  cpu_irq_enable();
+    irq_initialize_vectors();
+    cpu_irq_enable();
 
-     // Initialize the sleep manager
-     sleepmgr_init();
+    // Initialize the sleep manager
+    sleepmgr_init();
 #if !SAMD21 && !SAMR21
-     sysclk_init();
-  phywhisperer_setup_pins();
+    sysclk_init();
+    phywhisperer_setup_pins();
 #else
-     system_init();
+    system_init();
 #endif
-     genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
-     udc_start();
-     //LEDS ON
-     gpio_set_pin_high(LED0_GPIO);
-     gpio_set_pin_low(LED1_GPIO);
-     /* LED_Off(LED1_GPIO); */
-     /* LED_On(LED0_GPIO); */
-     uint8_t curr_pwr_setting = 0;
-     while(1) {
-          sleepmgr_enter_sleep();
-          uint8_t button_status = !(PIOA->PIO_PDSR & (1 << BUTTON_IN));
-          if (button_status){
-               curr_pwr_setting++;
-               if (curr_pwr_setting > 2)
-                    curr_pwr_setting = 0;
-               hacky_delay(); //delay to try to debounce
-               while (!(PIOA->PIO_PDSR & (1 << BUTTON_IN))); //wait for trigger to be unpressed
-               pwr_list[curr_pwr_setting]();
-               hacky_delay();
-		  }
-     }
+    genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
+    udc_start();
+    gpio_set_pin_high(LED0_GPIO);
+    gpio_set_pin_low(LED1_GPIO);
 
-     while(1) {
-          uint8_t button_status = !(PIOA->PIO_PDSR & (1 << BUTTON_IN));
-          if (button_status){
-               hacky_delay(); //delay to try to debounce
-               while (!(PIOA->PIO_PDSR & (1 << BUTTON_IN))); //wait for trigger to be unpressed
-               phywhisperer_switch_usb_pwr();
-			   hacky_delay();
-          }
-   }
+    phywhisperer_no_pwr();
+    USB_PWR_STATE = 0;
+
+    uint8_t curr_pwr_setting = 0;
+    while(1) {
+        sleepmgr_enter_sleep();
+        uint8_t button_status = !(PIOA->PIO_PDSR & (1 << BUTTON_IN));
+        if (button_status){
+            hacky_delay(); //delay to try to debounce
+            while (!(PIOA->PIO_PDSR & (1 << BUTTON_IN))); //wait for trigger to be unpressed
+
+            if (USB_PWR_STATE && USB_PWR_STATE <= 2) {
+                if (pwr_st_from_io()) { //currently on
+                    phywhisperer_no_pwr();
+                } else {
+                    pwr_list[USB_PWR_STATE]();
+                }
+            }
+            hacky_delay();
+        }
+    }
 }

@@ -2978,12 +2978,14 @@ circ_buf_count:
 	.ascii	"__DBL_MAX__ ((double)1.7976931348623157e+308L)\000"
 .LASF558:
 	.ascii	"circ_buf_count\000"
+.LASF402:
+	.ascii	"_POSIX_C_SOURCE 200809L\000"
 .LASF196:
 	.ascii	"__USFRACT_MIN__ 0.0UHR\000"
 .LASF516:
 	.ascii	"INT_FAST64_MIN (-__INT_FAST64_MAX__ - 1)\000"
-.LASF385:
-	.ascii	"CIRCBUFSIZE 128\000"
+.LASF78:
+	.ascii	"__WINT_MIN__ 0U\000"
 .LASF512:
 	.ascii	"UINT_FAST16_MAX (__UINT_FAST16_MAX__)\000"
 .LASF6:
@@ -3294,8 +3296,8 @@ circ_buf_count:
 	.ascii	"INT16_C(x) __INT16_C(x)\000"
 .LASF333:
 	.ascii	"__ARM_FEATURE_UNALIGNED 1\000"
-.LASF402:
-	.ascii	"_POSIX_C_SOURCE 200809L\000"
+.LASF385:
+	.ascii	"CIRCBUFSIZE 128\000"
 .LASF20:
 	.ascii	"__SIZEOF_FLOAT__ 4\000"
 .LASF237:
@@ -3366,8 +3368,8 @@ circ_buf_count:
 	.ascii	"__LONG_LONG_MAX__ 0x7fffffffffffffffLL\000"
 .LASF450:
 	.ascii	"__FAST64 \"ll\"\000"
-.LASF44:
-	.ascii	"__INT64_TYPE__ long long int\000"
+.LASF54:
+	.ascii	"__UINT_LEAST16_TYPE__ short unsigned int\000"
 .LASF131:
 	.ascii	"__FLT_MAX_10_EXP__ 38\000"
 .LASF448:
@@ -3552,8 +3554,6 @@ circ_buf_count:
 	.ascii	"__ATOMIC_ACQUIRE 2\000"
 .LASF473:
 	.ascii	"__int_least16_t_defined 1\000"
-.LASF47:
-	.ascii	"__UINT32_TYPE__ long unsigned int\000"
 .LASF494:
 	.ascii	"UINT_LEAST16_MAX (__UINT_LEAST16_MAX__)\000"
 .LASF364:
@@ -3598,8 +3598,8 @@ circ_buf_count:
 	.ascii	"WINT_MAX (__WINT_MAX__)\000"
 .LASF202:
 	.ascii	"__FRACT_MAX__ 0X7FFFP-15R\000"
-.LASF78:
-	.ascii	"__WINT_MIN__ 0U\000"
+.LASF44:
+	.ascii	"__INT64_TYPE__ long long int\000"
 .LASF254:
 	.ascii	"__ULACCUM_FBIT__ 32\000"
 .LASF482:
@@ -3806,9 +3806,8 @@ circ_buf_count:
 	.ascii	"__INT_LEAST64_TYPE__ long long int\000"
 .LASF540:
 	.ascii	"UINTMAX_C(x) __UINTMAX_C(x)\000"
-.LASF570:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
+.LASF47:
+	.ascii	"__UINT32_TYPE__ long unsigned int\000"
 .LASF157:
 	.ascii	"__LDBL_MIN_10_EXP__ (-307)\000"
 .LASF523:
@@ -3995,8 +3994,6 @@ circ_buf_count:
 	.ascii	"INT_FAST8_MIN (-__INT_FAST8_MAX__ - 1)\000"
 .LASF470:
 	.ascii	"_INTPTR_T_DECLARED \000"
-.LASF54:
-	.ascii	"__UINT_LEAST16_TYPE__ short unsigned int\000"
 .LASF508:
 	.ascii	"INT_FAST8_MAX (__INT_FAST8_MAX__)\000"
 .LASF526:
@@ -4018,6 +4015,9 @@ circ_buf_count:
 	.ascii	"_INT64_T_DECLARED \000"
 .LASF382:
 	.ascii	"true 1\000"
+.LASF570:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF120:
 	.ascii	"__UINTPTR_MAX__ 0xffffffffU\000"
 .LASF151:

@@ -31533,6 +31533,9 @@ board_init:
 .LASF711:
 	.ascii	"MREPEAT80(macro,data) MREPEAT79( macro, data) macro"
 	.ascii	"( 79, data)\000"
+.LASF4139:
+	.ascii	"PWM_CLK_DIVA(value) ((PWM_CLK_DIVA_Msk & ((value) <"
+	.ascii	"< PWM_CLK_DIVA_Pos)))\000"
 .LASF5776:
 	.ascii	"TWI_SR_TXBUFE (0x1u << 15)\000"
 .LASF6175:
@@ -31872,8 +31875,8 @@ board_init:
 	.ascii	"PIO_PUSR_P2 (0x1u << 2)\000"
 .LASF5681:
 	.ascii	"TC_IMR_CPCS (0x1u << 4)\000"
-.LASF1534:
-	.ascii	"ADC_SR_OVRE5 (0x1u << 13)\000"
+.LASF6530:
+	.ascii	"REG_SSC_IDR (*(WoReg*)0x40004048U)\000"
 .LASF3902:
 	.ascii	"PMC_PCER0_PID5 (0x1u << 5)\000"
 .LASF3336:
@@ -32445,8 +32448,6 @@ board_init:
 	.ascii	"PIO_PC9B_PWML3 (1u << 9)\000"
 .LASF6387:
 	.ascii	"US_CSR_CTS (0x1u << 23)\000"
-.LASF6530:
-	.ascii	"REG_SSC_IDR (*(WoReg*)0x40004048U)\000"
 .LASF1103:
 	.ascii	"SCB_AIRCR_VECTKEY_Pos 16\000"
 .LASF5441:
@@ -36133,9 +36134,6 @@ board_init:
 	.ascii	"SYSCLK_H_INCLUDED \000"
 .LASF1129:
 	.ascii	"SCB_CCR_UNALIGN_TRP_Pos 3\000"
-.LASF8728:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
 .LASF8512:
 	.ascii	"IOPORT_MODE_MUX_MASK (0x7 << 0)\000"
 .LASF1888:
@@ -36164,6 +36162,9 @@ board_init:
 	.ascii	"PIO_SODR_P17 (0x1u << 17)\000"
 .LASF7110:
 	.ascii	"REG_PIOA_ODSR (*(RwReg*)0x400E0C38U)\000"
+.LASF8728:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF8171:
 	.ascii	"swap32(u32) ((U32)__builtin_bswap32((U32)(u32)))\000"
 .LASF4601:
@@ -41362,9 +41363,8 @@ board_init:
 	.ascii	"REG_TWI0_IER (*(WoReg*)0x40084024U)\000"
 .LASF5297:
 	.ascii	"SUPC_SMMR_SMTH_3_2V (0xDu << 0)\000"
-.LASF4139:
-	.ascii	"PWM_CLK_DIVA(value) ((PWM_CLK_DIVA_Msk & ((value) <"
-	.ascii	"< PWM_CLK_DIVA_Pos)))\000"
+.LASF1877:
+	.ascii	"CHIPID_CIDR_ARCH_SAM3SxB (0x89u << 20)\000"
 .LASF926:
 	.ascii	"___int_least16_t_defined 1\000"
 .LASF5929:
@@ -48937,8 +48937,8 @@ board_init:
 	.ascii	"REG_USART0_IMR (*(RoReg*)0x40090010U)\000"
 .LASF5789:
 	.ascii	"TWI_IER_RXBUFF (0x1u << 14)\000"
-.LASF1877:
-	.ascii	"CHIPID_CIDR_ARCH_SAM3SxB (0x89u << 20)\000"
+.LASF1534:
+	.ascii	"ADC_SR_OVRE5 (0x1u << 13)\000"
 .LASF6704:
 	.ascii	"REG_PWM_CMR1 (*(RwReg*)0x4008C220U)\000"
 .LASF18:

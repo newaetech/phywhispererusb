@@ -1760,10 +1760,10 @@
  875 0010 BB62     	 str r3,[r7,#40]
  876 0012 FB6A     	 ldr r3,[r7,#44]
  877 0014 7B62     	 str r3,[r7,#36]
- 878              	.LBB40:
- 879              	.LBB41:
- 880              	.LBB42:
- 881              	.LBB43:
+ 878              	.LBB39:
+ 879              	.LBB40:
+ 880              	.LBB41:
+ 881              	.LBB42:
  882              	 .file 5 ".././hal/sam3u1c/inc/sam/ioport_pio.h"
    1:.././hal/sam3u1c/inc/sam/ioport_pio.h **** /**
    2:.././hal/sam3u1c/inc/sam/ioport_pio.h ****  * \file
@@ -1876,10 +1876,10 @@
  885 0018 5A09     	 lsrs r2,r3,#5
  886 001a FB6A     	 ldr r3,[r7,#44]
  887 001c 3B62     	 str r3,[r7,#32]
- 888              	.LBE43:
- 889              	.LBE42:
- 890              	.LBB44:
- 891              	.LBB45:
+ 888              	.LBE42:
+ 889              	.LBE41:
+ 890              	.LBB43:
+ 891              	.LBB44:
  107:.././hal/sam3u1c/inc/sam/ioport_pio.h **** }
  108:.././hal/sam3u1c/inc/sam/ioport_pio.h **** 
  109:.././hal/sam3u1c/inc/sam/ioport_pio.h **** __always_inline static Pio *arch_ioport_port_to_base(ioport_port_t port)
@@ -1920,20 +1920,20 @@
  900 0030 7B61     	 str r3,[r7,#20]
  901 0032 FB69     	 ldr r3,[r7,#28]
  902 0034 3B61     	 str r3,[r7,#16]
- 903              	.LBE45:
- 904              	.LBE44:
- 905              	.LBB46:
- 906              	.LBB47:
- 907              	.LBB48:
- 908              	.LBB49:
+ 903              	.LBE44:
+ 904              	.LBE43:
+ 905              	.LBB45:
+ 906              	.LBB46:
+ 907              	.LBB47:
+ 908              	.LBB48:
  123:.././hal/sam3u1c/inc/sam/ioport_pio.h **** 	       (IOPORT_PIO_OFFSET * port));
  909              	 .loc 5 123 0
  910 0036 3B69     	 ldr r3,[r7,#16]
  911 0038 03F50013 	 add r3,r3,#2097152
  912 003c 03F20673 	 addw r3,r3,#1798
  913 0040 5B02     	 lsls r3,r3,#9
- 914              	.LBE49:
- 915              	.LBE48:
+ 914              	.LBE48:
+ 915              	.LBE47:
  136:.././hal/sam3u1c/inc/sam/ioport_pio.h **** }
  137:.././hal/sam3u1c/inc/sam/ioport_pio.h **** 
  138:.././hal/sam3u1c/inc/sam/ioport_pio.h **** __always_inline static void arch_ioport_init(void)
@@ -2108,19 +2108,19 @@
  991 00b8 1A43     	 orrs r2,r2,r3
  992 00ba FB68     	 ldr r3,[r7,#12]
  993 00bc 1A67     	 str r2,[r3,#112]
- 994              	.LBE47:
- 995              	.LBE46:
- 996              	.LBE41:
- 997              	.LBE40:
+ 994              	.LBE46:
+ 995              	.LBE45:
+ 996              	.LBE40:
+ 997              	.LBE39:
  219:.././hal/sam3u1c/inc/ioport.h **** 	arch_ioport_set_pin_mode(pin, mode);
  220:.././hal/sam3u1c/inc/ioport.h **** }
  998              	 .loc 4 220 0
  999 00be 06E0     	 b .L94
  1000              	.L92:
- 1001              	.LBB53:
- 1002              	.LBB52:
- 1003              	.LBB51:
- 1004              	.LBB50:
+ 1001              	.LBB52:
+ 1002              	.LBB51:
+ 1003              	.LBB50:
+ 1004              	.LBB49:
  232:.././hal/sam3u1c/inc/sam/ioport_pio.h **** 	} else {
  233:.././hal/sam3u1c/inc/sam/ioport_pio.h **** 		base->PIO_ABSR &= ~mask;
  1005              	 .loc 5 233 0
@@ -2132,10 +2132,10 @@
  1011 00ca FB68     	 ldr r3,[r7,#12]
  1012 00cc 1A67     	 str r2,[r3,#112]
  1013              	.L94:
- 1014              	.LBE50:
- 1015              	.LBE51:
- 1016              	.LBE52:
- 1017              	.LBE53:
+ 1014              	.LBE49:
+ 1015              	.LBE50:
+ 1016              	.LBE51:
+ 1017              	.LBE52:
  1018              	 .loc 4 220 0
  1019 00ce 00BF     	 nop
  1020 00d0 3437     	 adds r7,r7,#52
@@ -2291,8 +2291,8 @@
  1059              	 .cfi_def_cfa_register 7
  1060 0006 0346     	 mov r3,r0
  1061 0008 FB71     	 strb r3,[r7,#7]
- 1062              	.LBB54:
- 1063              	.LBB55:
+ 1062              	.LBB53:
+ 1063              	.LBB54:
  1064              	 .file 7 ".././hal/sam3u1c/inc/core_cmFunc.h"
    1:.././hal/sam3u1c/inc/core_cmFunc.h **** /**************************************************************************//**
    2:.././hal/sam3u1c/inc/core_cmFunc.h ****  * @file     core_cmFunc.h
@@ -2629,10 +2629,10 @@
  1069              	
  1070              	 .thumb
  1071              	 .syntax unified
- 1072              	.LBE55:
- 1073              	.LBE54:
- 1074              	.LBB56:
- 1075              	.LBB57:
+ 1072              	.LBE54:
+ 1073              	.LBE53:
+ 1074              	.LBB55:
+ 1075              	.LBB56:
  1076              	 .file 8 ".././hal/sam3u1c/inc/core_cmInstr.h"
    1:.././hal/sam3u1c/inc/core_cmInstr.h **** /**************************************************************************//**
    2:.././hal/sam3u1c/inc/core_cmInstr.h ****  * @file     core_cmInstr.h
@@ -2995,8 +2995,8 @@
  1081              	
  1082              	 .thumb
  1083              	 .syntax unified
- 1084              	.LBE57:
- 1085              	.LBE56:
+ 1084              	.LBE56:
+ 1085              	.LBE55:
  114:.././hal/sam3u1c/inc/sam/sleepmgr.h **** 	Assert(sleep_mode != SLEEPMGR_ACTIVE);
  115:.././hal/sam3u1c/inc/sam/sleepmgr.h **** #ifdef CONFIG_SLEEPMGR_ENABLE
  116:.././hal/sam3u1c/inc/sam/sleepmgr.h **** 	cpu_irq_disable();
@@ -3426,8 +3426,8 @@
  1274 0004 00AF     	 add r7,sp,#0
  1275              	.LCFI71:
  1276              	 .cfi_def_cfa_register 7
- 1277              	.LBB58:
- 1278              	.LBB59:
+ 1277              	.LBB57:
+ 1278              	.LBB58:
  1279              	 .loc 7 328 0
  1280              	 .syntax unified
  1281              	
@@ -3435,10 +3435,10 @@
  1283              	
  1284              	 .thumb
  1285              	 .syntax unified
- 1286              	.LBE59:
- 1287              	.LBE58:
- 1288              	.LBB60:
- 1289              	.LBB61:
+ 1286              	.LBE58:
+ 1287              	.LBE57:
+ 1288              	.LBB59:
+ 1289              	.LBB60:
  1290              	 .loc 8 354 0
  1291              	 .syntax unified
  1292              	
@@ -3446,8 +3446,8 @@
  1294              	
  1295              	 .thumb
  1296              	 .syntax unified
- 1297              	.LBE61:
- 1298              	.LBE60:
+ 1297              	.LBE60:
+ 1298              	.LBE59:
  230:.././hal/sam3u1c/inc/sleepmgr.h **** #ifdef CONFIG_SLEEPMGR_ENABLE
  231:.././hal/sam3u1c/inc/sleepmgr.h **** 	enum sleepmgr_mode sleep_mode;
  232:.././hal/sam3u1c/inc/sleepmgr.h **** 
@@ -3476,8 +3476,8 @@
  1314 0020 064B     	 ldr r3,.L112
  1315 0022 0122     	 movs r2,#1
  1316 0024 1A70     	 strb r2,[r3]
- 1317              	.LBB62:
- 1318              	.LBB63:
+ 1317              	.LBB61:
+ 1318              	.LBB62:
  1319              	 .loc 8 354 0
  1320              	 .syntax unified
  1321              	
@@ -3485,10 +3485,10 @@
  1323              	
  1324              	 .thumb
  1325              	 .syntax unified
- 1326              	.LBE63:
- 1327              	.LBE62:
- 1328              	.LBB64:
- 1329              	.LBB65:
+ 1326              	.LBE62:
+ 1327              	.LBE61:
+ 1328              	.LBB63:
+ 1329              	.LBB64:
  317:.././hal/sam3u1c/inc/core_cmFunc.h **** }
  1330              	 .loc 7 317 0
  1331              	 .syntax unified
@@ -3497,8 +3497,8 @@
  1334              	
  1335              	 .thumb
  1336              	 .syntax unified
- 1337              	.LBE65:
- 1338              	.LBE64:
+ 1337              	.LBE64:
+ 1338              	.LBE63:
  240:.././hal/sam3u1c/inc/sleepmgr.h **** 		return;
  1339              	 .loc 9 240 0
  1340 002c 03E0     	 b .L109
@@ -4402,19 +4402,17 @@
    5:main_cw521.c  **** #include "genclk.h"
    6:main_cw521.c  **** #include "tasks.h"
    7:main_cw521.c  **** #include "fpga_xmem.h"
-   8:main_cw521.c  **** #include "usb.h"
-   9:main_cw521.c  **** #include "sysclk.h"
-  10:main_cw521.c  **** #include <string.h>
-  11:main_cw521.c  **** 
-  12:main_cw521.c  **** //Serial Number - will be read by device ID
-  13:main_cw521.c  **** char usb_serial_number[33] = "000000000000DEADBEEF";
-  14:main_cw521.c  **** #define BUTTON_IN PIO_PA24_IDX
-  15:main_cw521.c  **** #define F_VBHOST PIO_PA26_IDX
-  16:main_cw521.c  **** #define F_VBSNIFF PIO_PA25_IDX
-  17:main_cw521.c  **** 
-  18:main_cw521.c  **** void phywhisperer_no_pwr(void)
-  19:main_cw521.c  **** {
- 1964              	 .loc 11 19 0
+   8:main_cw521.c  **** #include "fpga_program.h"
+   9:main_cw521.c  **** #include "usb.h"
+  10:main_cw521.c  **** #include "sysclk.h"
+  11:main_cw521.c  **** #include <string.h>
+  12:main_cw521.c  **** 
+  13:main_cw521.c  **** //Serial Number - will be read by device ID
+  14:main_cw521.c  **** char usb_serial_number[33] = "000000000000DEADBEEF";
+  15:main_cw521.c  **** 
+  16:main_cw521.c  **** void phywhisperer_no_pwr(void)
+  17:main_cw521.c  **** {
+ 1964              	 .loc 11 17 0
  1965              	 .cfi_startproc
  1966              	 
  1967              	 
@@ -4426,18 +4424,18 @@
  1973 0002 00AF     	 add r7,sp,#0
  1974              	.LCFI103:
  1975              	 .cfi_def_cfa_register 7
-  20:main_cw521.c  ****      PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
- 1976              	 .loc 11 20 0
+  18:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
+ 1976              	 .loc 11 18 0
  1977 0004 054B     	 ldr r3,.L163
  1978 0006 4FF00072 	 mov r2,#33554432
  1979 000a 5A63     	 str r2,[r3,#52]
-  21:main_cw521.c  ****      PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
- 1980              	 .loc 11 21 0
+  19:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+ 1980              	 .loc 11 19 0
  1981 000c 034B     	 ldr r3,.L163
  1982 000e 4FF08062 	 mov r2,#67108864
  1983 0012 5A63     	 str r2,[r3,#52]
-  22:main_cw521.c  **** }
- 1984              	 .loc 11 22 0
+  20:main_cw521.c  **** }
+ 1984              	 .loc 11 20 0
  1985 0014 00BF     	 nop
  1986 0016 BD46     	 mov sp,r7
  1987              	.LCFI104:
@@ -4463,10 +4461,10 @@
  2008              	 .fpu softvfp
  2010              	phywhisperer_host_pwr:
  2011              	.LFB189:
-  23:main_cw521.c  **** 
-  24:main_cw521.c  **** void phywhisperer_host_pwr(void)
-  25:main_cw521.c  **** {
- 2012              	 .loc 11 25 0
+  21:main_cw521.c  **** 
+  22:main_cw521.c  **** void phywhisperer_host_pwr(void)
+  23:main_cw521.c  **** {
+ 2012              	 .loc 11 23 0
  2013              	 .cfi_startproc
  2014              	 
  2015              	 
@@ -4478,18 +4476,18 @@
  2021 0002 00AF     	 add r7,sp,#0
  2022              	.LCFI107:
  2023              	 .cfi_def_cfa_register 7
-  26:main_cw521.c  ****   PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
- 2024              	 .loc 11 26 0
+  24:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
+ 2024              	 .loc 11 24 0
  2025 0004 054B     	 ldr r3,.L166
  2026 0006 4FF00072 	 mov r2,#33554432
  2027 000a 5A63     	 str r2,[r3,#52]
-  27:main_cw521.c  ****   PIOA->PIO_SODR = (1 << F_VBHOST); //enable host power
- 2028              	 .loc 11 27 0
+  25:main_cw521.c  ****     PIOA->PIO_SODR = (1 << F_VBHOST); //enable host power
+ 2028              	 .loc 11 25 0
  2029 000c 034B     	 ldr r3,.L166
  2030 000e 4FF08062 	 mov r2,#67108864
  2031 0012 1A63     	 str r2,[r3,#48]
-  28:main_cw521.c  **** }
- 2032              	 .loc 11 28 0
+  26:main_cw521.c  **** }
+ 2032              	 .loc 11 26 0
  2033 0014 00BF     	 nop
  2034 0016 BD46     	 mov sp,r7
  2035              	.LCFI108:
@@ -4515,10 +4513,10 @@
  2056              	 .fpu softvfp
  2058              	phywhisperer_sniff_pwr:
  2059              	.LFB190:
-  29:main_cw521.c  **** 
-  30:main_cw521.c  **** void phywhisperer_sniff_pwr(void)
-  31:main_cw521.c  **** {
- 2060              	 .loc 11 31 0
+  27:main_cw521.c  **** 
+  28:main_cw521.c  **** void phywhisperer_sniff_pwr(void)
+  29:main_cw521.c  **** {
+ 2060              	 .loc 11 29 0
  2061              	 .cfi_startproc
  2062              	 
  2063              	 
@@ -4530,18 +4528,18 @@
  2069 0002 00AF     	 add r7,sp,#0
  2070              	.LCFI111:
  2071              	 .cfi_def_cfa_register 7
-  32:main_cw521.c  ****   PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
- 2072              	 .loc 11 32 0
+  30:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+ 2072              	 .loc 11 30 0
  2073 0004 054B     	 ldr r3,.L169
  2074 0006 4FF08062 	 mov r2,#67108864
  2075 000a 5A63     	 str r2,[r3,#52]
-  33:main_cw521.c  ****   PIOA->PIO_SODR = (1 << F_VBSNIFF); //enable sniff power
- 2076              	 .loc 11 33 0
+  31:main_cw521.c  ****     PIOA->PIO_SODR = (1 << F_VBSNIFF); //enable sniff power
+ 2076              	 .loc 11 31 0
  2077 000c 034B     	 ldr r3,.L169
  2078 000e 4FF00072 	 mov r2,#33554432
  2079 0012 1A63     	 str r2,[r3,#48]
-  34:main_cw521.c  **** }
- 2080              	 .loc 11 34 0
+  32:main_cw521.c  **** }
+ 2080              	 .loc 11 32 0
  2081 0014 00BF     	 nop
  2082 0016 BD46     	 mov sp,r7
  2083              	.LCFI112:
@@ -4567,10 +4565,10 @@
  2104              	 .fpu softvfp
  2106              	phywhisperer_switch_usb_pwr:
  2107              	.LFB191:
-  35:main_cw521.c  **** 
-  36:main_cw521.c  **** void phywhisperer_switch_usb_pwr(void)
-  37:main_cw521.c  **** {
- 2108              	 .loc 11 37 0
+  33:main_cw521.c  **** 
+  34:main_cw521.c  **** void phywhisperer_switch_usb_pwr(void)
+  35:main_cw521.c  **** {
+ 2108              	 .loc 11 35 0
  2109              	 .cfi_startproc
  2110              	 
  2111              	 
@@ -4582,34 +4580,34 @@
  2117 0002 00AF     	 add r7,sp,#0
  2118              	.LCFI115:
  2119              	 .cfi_def_cfa_register 7
-  38:main_cw521.c  ****      if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF))) {
- 2120              	 .loc 11 38 0
+  36:main_cw521.c  ****     if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF))) {
+ 2120              	 .loc 11 36 0
  2121 0004 064B     	 ldr r3,.L175
  2122 0006 9B6B     	 ldr r3,[r3,#56]
  2123 0008 03F00073 	 and r3,r3,#33554432
  2124 000c 002B     	 cmp r3,#0
  2125 000e 02D0     	 beq .L172
-  39:main_cw521.c  ****           //Switch to host power mode
-  40:main_cw521.c  ****           phywhisperer_host_pwr();
- 2126              	 .loc 11 40 0
+  37:main_cw521.c  ****         //Switch to host power mode
+  38:main_cw521.c  ****         phywhisperer_host_pwr();
+ 2126              	 .loc 11 38 0
  2127 0010 044B     	 ldr r3,.L175+4
  2128 0012 9847     	 blx r3
  2129              	.LVL57:
-  41:main_cw521.c  ****      } else {
-  42:main_cw521.c  ****           //Switch to sniff power mode
-  43:main_cw521.c  ****           phywhisperer_sniff_pwr();
-  44:main_cw521.c  ****      }
-  45:main_cw521.c  **** }
- 2130              	 .loc 11 45 0
+  39:main_cw521.c  ****     } else {
+  40:main_cw521.c  ****         //Switch to sniff power mode
+  41:main_cw521.c  ****         phywhisperer_sniff_pwr();
+  42:main_cw521.c  ****     }
+  43:main_cw521.c  **** }
+ 2130              	 .loc 11 43 0
  2131 0014 01E0     	 b .L174
  2132              	.L172:
-  43:main_cw521.c  ****      }
- 2133              	 .loc 11 43 0
+  41:main_cw521.c  ****     }
+ 2133              	 .loc 11 41 0
  2134 0016 044B     	 ldr r3,.L175+8
  2135 0018 9847     	 blx r3
  2136              	.LVL58:
  2137              	.L174:
- 2138              	 .loc 11 45 0
+ 2138              	 .loc 11 43 0
  2139 001a 00BF     	 nop
  2140 001c 80BD     	 pop {r7,pc}
  2141              	.L176:
@@ -4620,631 +4618,769 @@
  2146 0028 00000000 	 .word phywhisperer_sniff_pwr
  2147              	 .cfi_endproc
  2148              	.LFE191:
- 2150              	 .section .text.phywhisperer_setup_pins,"ax",%progbits
+ 2150              	 .section .text.pwr_st_from_io,"ax",%progbits
  2151              	 .align 1
- 2152              	 .global phywhisperer_setup_pins
+ 2152              	 .global pwr_st_from_io
  2153              	 .syntax unified
  2154              	 .thumb
  2155              	 .thumb_func
  2156              	 .fpu softvfp
- 2158              	phywhisperer_setup_pins:
+ 2158              	pwr_st_from_io:
  2159              	.LFB192:
-  46:main_cw521.c  **** 
-  47:main_cw521.c  **** void phywhisperer_setup_pins(void)
-  48:main_cw521.c  **** {
- 2160              	 .loc 11 48 0
+  44:main_cw521.c  **** 
+  45:main_cw521.c  **** uint8_t pwr_st_from_io(void)
+  46:main_cw521.c  **** {
+ 2160              	 .loc 11 46 0
  2161              	 .cfi_startproc
  2162              	 
  2163              	 
- 2164 0000 80B5     	 push {r7,lr}
- 2165              	.LCFI116:
- 2166              	 .cfi_def_cfa_offset 8
- 2167              	 .cfi_offset 7,-8
- 2168              	 .cfi_offset 14,-4
+ 2164              	 
+ 2165 0000 80B4     	 push {r7}
+ 2166              	.LCFI116:
+ 2167              	 .cfi_def_cfa_offset 4
+ 2168              	 .cfi_offset 7,-4
  2169 0002 00AF     	 add r7,sp,#0
  2170              	.LCFI117:
  2171              	 .cfi_def_cfa_register 7
-  49:main_cw521.c  ****   board_init();
- 2172              	 .loc 11 49 0
- 2173 0004 2E4B     	 ldr r3,.L178
- 2174 0006 9847     	 blx r3
- 2175              	.LVL59:
-  50:main_cw521.c  ****   ioport_set_pin_mode(BUTTON_IN, IOPORT_MODE_PULLUP); //(1 << 2) = PULL UP
- 2176              	 .loc 11 50 0
- 2177 0008 0821     	 movs r1,#8
- 2178 000a 1820     	 movs r0,#24
- 2179 000c 2D4B     	 ldr r3,.L178+4
- 2180 000e 9847     	 blx r3
- 2181              	.LVL60:
-  51:main_cw521.c  ****   PIOA->PIO_ODR = (1 << BUTTON_IN);
- 2182              	 .loc 11 51 0
- 2183 0010 2D4B     	 ldr r3,.L178+8
- 2184 0012 4FF08072 	 mov r2,#16777216
- 2185 0016 5A61     	 str r2,[r3,#20]
-  52:main_cw521.c  ****   PIOA->PIO_PUER = (1 << BUTTON_IN); // enable pullup
- 2186              	 .loc 11 52 0
- 2187 0018 2B4B     	 ldr r3,.L178+8
- 2188 001a 4FF08072 	 mov r2,#16777216
- 2189 001e 5A66     	 str r2,[r3,#100]
-  53:main_cw521.c  ****   PIOA->PIO_DIFSR = (1 << BUTTON_IN); //enable debounce
- 2190              	 .loc 11 53 0
- 2191 0020 294B     	 ldr r3,.L178+8
- 2192 0022 4FF08072 	 mov r2,#16777216
- 2193 0026 C3F88420 	 str r2,[r3,#132]
-  54:main_cw521.c  **** 
-  55:main_cw521.c  ****   PIOA->PIO_OER = (1 << F_VBHOST) | (1 << F_VBSNIFF); //enable output mode on VBHOST/VBSNIFF pins
- 2194              	 .loc 11 55 0
- 2195 002a 274B     	 ldr r3,.L178+8
- 2196 002c 4FF0C062 	 mov r2,#100663296
- 2197 0030 1A61     	 str r2,[r3,#16]
-  56:main_cw521.c  **** 
-  57:main_cw521.c  ****   phywhisperer_sniff_pwr();
- 2198              	 .loc 11 57 0
- 2199 0032 264B     	 ldr r3,.L178+12
- 2200 0034 9847     	 blx r3
- 2201              	.LVL61:
-  58:main_cw521.c  **** 
-  59:main_cw521.c  ****   /* Enable SMC */
-  60:main_cw521.c  ****   pmc_enable_periph_clk(ID_SMC);
- 2202              	 .loc 11 60 0
- 2203 0036 0920     	 movs r0,#9
- 2204 0038 254B     	 ldr r3,.L178+16
- 2205 003a 9847     	 blx r3
- 2206              	.LVL62:
-  61:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIN_EBI_DATA_BUS_FLAG1);
- 2207              	 .loc 11 61 0
- 2208 003c 2549     	 ldr r1,.L178+20
- 2209 003e 2920     	 movs r0,#41
- 2210 0040 254B     	 ldr r3,.L178+24
- 2211 0042 9847     	 blx r3
- 2212              	.LVL63:
-  62:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
- 2213              	 .loc 11 62 0
- 2214 0044 2349     	 ldr r1,.L178+20
- 2215 0046 2A20     	 movs r0,#42
- 2216 0048 234B     	 ldr r3,.L178+24
- 2217 004a 9847     	 blx r3
- 2218              	.LVL64:
-  63:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIN_EBI_DATA_BUS_FLAG1);
- 2219              	 .loc 11 63 0
- 2220 004c 2149     	 ldr r1,.L178+20
- 2221 004e 2B20     	 movs r0,#43
- 2222 0050 214B     	 ldr r3,.L178+24
- 2223 0052 9847     	 blx r3
- 2224              	.LVL65:
-  64:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D3, PIN_EBI_DATA_BUS_FLAG1);
- 2225              	 .loc 11 64 0
- 2226 0054 1F49     	 ldr r1,.L178+20
- 2227 0056 2C20     	 movs r0,#44
- 2228 0058 1F4B     	 ldr r3,.L178+24
- 2229 005a 9847     	 blx r3
- 2230              	.LVL66:
-  65:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D4, PIN_EBI_DATA_BUS_FLAG1);
- 2231              	 .loc 11 65 0
- 2232 005c 1D49     	 ldr r1,.L178+20
- 2233 005e 2D20     	 movs r0,#45
- 2234 0060 1D4B     	 ldr r3,.L178+24
- 2235 0062 9847     	 blx r3
- 2236              	.LVL67:
-  66:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D5, PIN_EBI_DATA_BUS_FLAG1);
- 2237              	 .loc 11 66 0
- 2238 0064 1B49     	 ldr r1,.L178+20
- 2239 0066 2E20     	 movs r0,#46
- 2240 0068 1B4B     	 ldr r3,.L178+24
- 2241 006a 9847     	 blx r3
- 2242              	.LVL68:
-  67:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIN_EBI_DATA_BUS_FLAG1);
- 2243              	 .loc 11 67 0
- 2244 006c 1949     	 ldr r1,.L178+20
- 2245 006e 2F20     	 movs r0,#47
- 2246 0070 194B     	 ldr r3,.L178+24
- 2247 0072 9847     	 blx r3
- 2248              	.LVL69:
-  68:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIN_EBI_DATA_BUS_FLAG1);
- 2249              	 .loc 11 68 0
- 2250 0074 1749     	 ldr r1,.L178+20
- 2251 0076 3020     	 movs r0,#48
- 2252 0078 174B     	 ldr r3,.L178+24
- 2253 007a 9847     	 blx r3
- 2254              	.LVL70:
-  69:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
- 2255              	 .loc 11 69 0
- 2256 007c 1549     	 ldr r1,.L178+20
- 2257 007e 3320     	 movs r0,#51
- 2258 0080 154B     	 ldr r3,.L178+24
- 2259 0082 9847     	 blx r3
- 2260              	.LVL71:
-  70:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
- 2261              	 .loc 11 70 0
- 2262 0084 1349     	 ldr r1,.L178+20
- 2263 0086 3720     	 movs r0,#55
- 2264 0088 134B     	 ldr r3,.L178+24
- 2265 008a 9847     	 blx r3
- 2266              	.LVL72:
-  71:main_cw521.c  ****   gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
- 2267              	 .loc 11 71 0
- 2268 008c 1149     	 ldr r1,.L178+20
- 2269 008e 3420     	 movs r0,#52
- 2270 0090 114B     	 ldr r3,.L178+24
- 2271 0092 9847     	 blx r3
- 2272              	.LVL73:
+  47:main_cw521.c  ****     if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+ 2172              	 .loc 11 47 0
+ 2173 0004 174B     	 ldr r3,.L182
+ 2174 0006 9B6B     	 ldr r3,[r3,#56]
+ 2175 0008 03F00073 	 and r3,r3,#33554432
+ 2176 000c 002B     	 cmp r3,#0
+ 2177 000e 07D1     	 bne .L178
+ 2178              	 .loc 11 47 0 is_stmt 0 discriminator 1
+ 2179 0010 144B     	 ldr r3,.L182
+ 2180 0012 9B6B     	 ldr r3,[r3,#56]
+ 2181 0014 03F08063 	 and r3,r3,#67108864
+ 2182 0018 002B     	 cmp r3,#0
+ 2183 001a 01D1     	 bne .L178
+  48:main_cw521.c  ****         //USB off
+  49:main_cw521.c  ****         return 0;
+ 2184              	 .loc 11 49 0 is_stmt 1
+ 2185 001c 0023     	 movs r3,#0
+ 2186 001e 1CE0     	 b .L179
+ 2187              	.L178:
+  50:main_cw521.c  ****     } else if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && (PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+ 2188              	 .loc 11 50 0
+ 2189 0020 104B     	 ldr r3,.L182
+ 2190 0022 9B6B     	 ldr r3,[r3,#56]
+ 2191 0024 03F00073 	 and r3,r3,#33554432
+ 2192 0028 002B     	 cmp r3,#0
+ 2193 002a 07D1     	 bne .L180
+ 2194              	 .loc 11 50 0 is_stmt 0 discriminator 1
+ 2195 002c 0D4B     	 ldr r3,.L182
+ 2196 002e 9B6B     	 ldr r3,[r3,#56]
+ 2197 0030 03F08063 	 and r3,r3,#67108864
+ 2198 0034 002B     	 cmp r3,#0
+ 2199 0036 01D0     	 beq .L180
+  51:main_cw521.c  ****         //Host power
+  52:main_cw521.c  ****         return 1;
+ 2200              	 .loc 11 52 0 is_stmt 1
+ 2201 0038 0123     	 movs r3,#1
+ 2202 003a 0EE0     	 b .L179
+ 2203              	.L180:
+  53:main_cw521.c  ****     } else if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+ 2204              	 .loc 11 53 0
+ 2205 003c 094B     	 ldr r3,.L182
+ 2206 003e 9B6B     	 ldr r3,[r3,#56]
+ 2207 0040 03F00073 	 and r3,r3,#33554432
+ 2208 0044 002B     	 cmp r3,#0
+ 2209 0046 07D0     	 beq .L181
+ 2210              	 .loc 11 53 0 is_stmt 0 discriminator 1
+ 2211 0048 064B     	 ldr r3,.L182
+ 2212 004a 9B6B     	 ldr r3,[r3,#56]
+ 2213 004c 03F08063 	 and r3,r3,#67108864
+ 2214 0050 002B     	 cmp r3,#0
+ 2215 0052 01D1     	 bne .L181
+  54:main_cw521.c  ****         //Sniffer power
+  55:main_cw521.c  ****         return 2;
+ 2216              	 .loc 11 55 0 is_stmt 1
+ 2217 0054 0223     	 movs r3,#2
+ 2218 0056 00E0     	 b .L179
+ 2219              	.L181:
+  56:main_cw521.c  ****     } else {
+  57:main_cw521.c  ****         //Everything's on...
+  58:main_cw521.c  ****         return 0xFF;
+ 2220              	 .loc 11 58 0
+ 2221 0058 FF23     	 movs r3,#255
+ 2222              	.L179:
+  59:main_cw521.c  ****     }
+  60:main_cw521.c  **** 
+  61:main_cw521.c  **** }
+ 2223              	 .loc 11 61 0
+ 2224 005a 1846     	 mov r0,r3
+ 2225 005c BD46     	 mov sp,r7
+ 2226              	.LCFI118:
+ 2227              	 .cfi_def_cfa_register 13
+ 2228              	 
+ 2229 005e 80BC     	 pop {r7}
+ 2230              	.LCFI119:
+ 2231              	 .cfi_restore 7
+ 2232              	 .cfi_def_cfa_offset 0
+ 2233 0060 7047     	 bx lr
+ 2234              	.L183:
+ 2235 0062 00BF     	 .align 2
+ 2236              	.L182:
+ 2237 0064 000C0E40 	 .word 1074662400
+ 2238              	 .cfi_endproc
+ 2239              	.LFE192:
+ 2241              	 .section .text.phywhisperer_setup_pins,"ax",%progbits
+ 2242              	 .align 1
+ 2243              	 .global phywhisperer_setup_pins
+ 2244              	 .syntax unified
+ 2245              	 .thumb
+ 2246              	 .thumb_func
+ 2247              	 .fpu softvfp
+ 2249              	phywhisperer_setup_pins:
+ 2250              	.LFB193:
+  62:main_cw521.c  **** 
+  63:main_cw521.c  **** void phywhisperer_setup_pins(void)
+  64:main_cw521.c  **** {
+ 2251              	 .loc 11 64 0
+ 2252              	 .cfi_startproc
+ 2253              	 
+ 2254              	 
+ 2255 0000 80B5     	 push {r7,lr}
+ 2256              	.LCFI120:
+ 2257              	 .cfi_def_cfa_offset 8
+ 2258              	 .cfi_offset 7,-8
+ 2259              	 .cfi_offset 14,-4
+ 2260 0002 00AF     	 add r7,sp,#0
+ 2261              	.LCFI121:
+ 2262              	 .cfi_def_cfa_register 7
+  65:main_cw521.c  ****     board_init();
+ 2263              	 .loc 11 65 0
+ 2264 0004 2E4B     	 ldr r3,.L185
+ 2265 0006 9847     	 blx r3
+ 2266              	.LVL59:
+  66:main_cw521.c  ****     ioport_set_pin_mode(BUTTON_IN, IOPORT_MODE_PULLUP); //(1 << 2) = PULL UP
+ 2267              	 .loc 11 66 0
+ 2268 0008 0821     	 movs r1,#8
+ 2269 000a 1820     	 movs r0,#24
+ 2270 000c 2D4B     	 ldr r3,.L185+4
+ 2271 000e 9847     	 blx r3
+ 2272              	.LVL60:
+  67:main_cw521.c  ****     PIOA->PIO_ODR = (1 << BUTTON_IN);
+ 2273              	 .loc 11 67 0
+ 2274 0010 2D4B     	 ldr r3,.L185+8
+ 2275 0012 4FF08072 	 mov r2,#16777216
+ 2276 0016 5A61     	 str r2,[r3,#20]
+  68:main_cw521.c  ****     PIOA->PIO_PUER = (1 << BUTTON_IN); // enable pullup
+ 2277              	 .loc 11 68 0
+ 2278 0018 2B4B     	 ldr r3,.L185+8
+ 2279 001a 4FF08072 	 mov r2,#16777216
+ 2280 001e 5A66     	 str r2,[r3,#100]
+  69:main_cw521.c  ****     PIOA->PIO_DIFSR = (1 << BUTTON_IN); //enable debounce
+ 2281              	 .loc 11 69 0
+ 2282 0020 294B     	 ldr r3,.L185+8
+ 2283 0022 4FF08072 	 mov r2,#16777216
+ 2284 0026 C3F88420 	 str r2,[r3,#132]
+  70:main_cw521.c  **** 
+  71:main_cw521.c  ****     PIOA->PIO_OER = (1 << F_VBHOST) | (1 << F_VBSNIFF); //enable output mode on VBHOST/VBSNIFF pins
+ 2285              	 .loc 11 71 0
+ 2286 002a 274B     	 ldr r3,.L185+8
+ 2287 002c 4FF0C062 	 mov r2,#100663296
+ 2288 0030 1A61     	 str r2,[r3,#16]
   72:main_cw521.c  **** 
-  73:main_cw521.c  ****   smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(0)
- 2273              	 .loc 11 73 0
- 2274 0094 114A     	 ldr r2,.L178+28
- 2275 0096 0021     	 movs r1,#0
- 2276 0098 1148     	 ldr r0,.L178+32
- 2277 009a 124B     	 ldr r3,.L178+36
- 2278 009c 9847     	 blx r3
- 2279              	.LVL74:
-  74:main_cw521.c  ****   | SMC_SETUP_NCS_WR_SETUP(1)
-  75:main_cw521.c  ****   | SMC_SETUP_NRD_SETUP(1)
-  76:main_cw521.c  ****   | SMC_SETUP_NCS_RD_SETUP(1));
-  77:main_cw521.c  ****   smc_set_pulse_timing(SMC, 0, SMC_PULSE_NWE_PULSE(1)
- 2280              	 .loc 11 77 0
- 2281 009e 124A     	 ldr r2,.L178+40
- 2282 00a0 0021     	 movs r1,#0
- 2283 00a2 0F48     	 ldr r0,.L178+32
- 2284 00a4 114B     	 ldr r3,.L178+44
- 2285 00a6 9847     	 blx r3
- 2286              	.LVL75:
-  78:main_cw521.c  ****   | SMC_PULSE_NCS_WR_PULSE(1)
-  79:main_cw521.c  ****   | SMC_PULSE_NRD_PULSE(3)
-  80:main_cw521.c  ****   | SMC_PULSE_NCS_RD_PULSE(1));
-  81:main_cw521.c  ****   smc_set_cycle_timing(SMC, 0, SMC_CYCLE_NWE_CYCLE(2)
- 2287              	 .loc 11 81 0
- 2288 00a8 114A     	 ldr r2,.L178+48
- 2289 00aa 0021     	 movs r1,#0
- 2290 00ac 0C48     	 ldr r0,.L178+32
- 2291 00ae 114B     	 ldr r3,.L178+52
- 2292 00b0 9847     	 blx r3
- 2293              	.LVL76:
-  82:main_cw521.c  ****   | SMC_CYCLE_NRD_CYCLE(4));
-  83:main_cw521.c  ****   smc_set_mode(SMC, 0, SMC_MODE_READ_MODE | SMC_MODE_WRITE_MODE
- 2294              	 .loc 11 83 0
- 2295 00b2 0322     	 movs r2,#3
- 2296 00b4 0021     	 movs r1,#0
- 2297 00b6 0A48     	 ldr r0,.L178+32
- 2298 00b8 0F4B     	 ldr r3,.L178+56
- 2299 00ba 9847     	 blx r3
- 2300              	.LVL77:
-  84:main_cw521.c  ****   | SMC_MODE_DBW_BIT_8);
-  85:main_cw521.c  **** }
- 2301              	 .loc 11 85 0
- 2302 00bc 00BF     	 nop
- 2303 00be 80BD     	 pop {r7,pc}
- 2304              	.L179:
- 2305              	 .align 2
- 2306              	.L178:
- 2307 00c0 00000000 	 .word board_init
- 2308 00c4 00000000 	 .word ioport_set_pin_mode
- 2309 00c8 000C0E40 	 .word 1074662400
- 2310 00cc 00000000 	 .word phywhisperer_sniff_pwr
- 2311 00d0 00000000 	 .word pmc_enable_periph_clk
- 2312 00d4 01000008 	 .word 134217729
- 2313 00d8 00000000 	 .word pio_configure_pin
- 2314 00dc 00010101 	 .word 16843008
- 2315 00e0 00000E40 	 .word 1074659328
- 2316 00e4 00000000 	 .word smc_set_setup_timing
- 2317 00e8 01010301 	 .word 16974081
- 2318 00ec 00000000 	 .word smc_set_pulse_timing
- 2319 00f0 02000400 	 .word 262146
- 2320 00f4 00000000 	 .word smc_set_cycle_timing
- 2321 00f8 00000000 	 .word smc_set_mode
- 2322              	 .cfi_endproc
- 2323              	.LFE192:
- 2325              	 .section .text.hacky_delay,"ax",%progbits
- 2326              	 .align 1
- 2327              	 .global hacky_delay
- 2328              	 .syntax unified
- 2329              	 .thumb
- 2330              	 .thumb_func
- 2331              	 .fpu softvfp
- 2333              	hacky_delay:
- 2334              	.LFB193:
-  86:main_cw521.c  **** 
-  87:main_cw521.c  **** void hacky_delay(void)
-  88:main_cw521.c  **** {
- 2335              	 .loc 11 88 0
- 2336              	 .cfi_startproc
- 2337              	 
- 2338              	 
- 2339              	 
- 2340 0000 80B4     	 push {r7}
- 2341              	.LCFI118:
- 2342              	 .cfi_def_cfa_offset 4
- 2343              	 .cfi_offset 7,-4
- 2344 0002 83B0     	 sub sp,sp,#12
- 2345              	.LCFI119:
- 2346              	 .cfi_def_cfa_offset 16
- 2347 0004 00AF     	 add r7,sp,#0
- 2348              	.LCFI120:
- 2349              	 .cfi_def_cfa_register 7
- 2350              	.LBB66:
-  89:main_cw521.c  ****      for (volatile uint32_t i = 0; i < 250000; i++);
- 2351              	 .loc 11 89 0
- 2352 0006 0023     	 movs r3,#0
- 2353 0008 7B60     	 str r3,[r7,#4]
- 2354 000a 02E0     	 b .L181
- 2355              	.L182:
- 2356              	 .loc 11 89 0 is_stmt 0 discriminator 3
- 2357 000c 7B68     	 ldr r3,[r7,#4]
- 2358 000e 0133     	 adds r3,r3,#1
- 2359 0010 7B60     	 str r3,[r7,#4]
- 2360              	.L181:
- 2361              	 .loc 11 89 0 discriminator 1
- 2362 0012 7B68     	 ldr r3,[r7,#4]
- 2363 0014 034A     	 ldr r2,.L183
- 2364 0016 9342     	 cmp r3,r2
- 2365 0018 F8D9     	 bls .L182
- 2366              	.LBE66:
-  90:main_cw521.c  **** }
- 2367              	 .loc 11 90 0 is_stmt 1
- 2368 001a 00BF     	 nop
- 2369 001c 0C37     	 adds r7,r7,#12
- 2370              	.LCFI121:
- 2371              	 .cfi_def_cfa_offset 4
- 2372 001e BD46     	 mov sp,r7
- 2373              	.LCFI122:
- 2374              	 .cfi_def_cfa_register 13
- 2375              	 
- 2376 0020 80BC     	 pop {r7}
- 2377              	.LCFI123:
- 2378              	 .cfi_restore 7
- 2379              	 .cfi_def_cfa_offset 0
- 2380 0022 7047     	 bx lr
- 2381              	.L184:
- 2382              	 .align 2
- 2383              	.L183:
- 2384 0024 8FD00300 	 .word 249999
- 2385              	 .cfi_endproc
- 2386              	.LFE193:
- 2388              	 .section .text.genclk_enable_config,"ax",%progbits
- 2389              	 .align 1
- 2390              	 .syntax unified
- 2391              	 .thumb
- 2392              	 .thumb_func
- 2393              	 .fpu softvfp
- 2395              	genclk_enable_config:
- 2396              	.LFB194:
-  91:main_cw521.c  **** 
-  92:main_cw521.c  **** static inline void genclk_enable_config(unsigned int id, enum genclk_source src, unsigned int divid
-  93:main_cw521.c  **** {
- 2397              	 .loc 11 93 0
- 2398              	 .cfi_startproc
- 2399              	 
- 2400              	 
- 2401 0000 80B5     	 push {r7,lr}
- 2402              	.LCFI124:
- 2403              	 .cfi_def_cfa_offset 8
- 2404              	 .cfi_offset 7,-8
- 2405              	 .cfi_offset 14,-4
- 2406 0002 86B0     	 sub sp,sp,#24
- 2407              	.LCFI125:
- 2408              	 .cfi_def_cfa_offset 32
- 2409 0004 00AF     	 add r7,sp,#0
- 2410              	.LCFI126:
- 2411              	 .cfi_def_cfa_register 7
- 2412 0006 F860     	 str r0,[r7,#12]
- 2413 0008 0B46     	 mov r3,r1
- 2414 000a 7A60     	 str r2,[r7,#4]
- 2415 000c FB72     	 strb r3,[r7,#11]
-  94:main_cw521.c  ****      struct genclk_config gcfg;
-  95:main_cw521.c  **** 
-  96:main_cw521.c  ****      genclk_config_defaults(&gcfg, id);
- 2416              	 .loc 11 96 0
- 2417 000e 07F11403 	 add r3,r7,#20
- 2418 0012 F968     	 ldr r1,[r7,#12]
- 2419 0014 1846     	 mov r0,r3
- 2420 0016 0E4B     	 ldr r3,.L186
- 2421 0018 9847     	 blx r3
- 2422              	.LVL78:
-  97:main_cw521.c  ****      genclk_enable_source(src);
- 2423              	 .loc 11 97 0
- 2424 001a FB7A     	 ldrb r3,[r7,#11]
- 2425 001c 1846     	 mov r0,r3
- 2426 001e 0D4B     	 ldr r3,.L186+4
- 2427 0020 9847     	 blx r3
- 2428              	.LVL79:
-  98:main_cw521.c  ****      genclk_config_set_source(&gcfg, src);
- 2429              	 .loc 11 98 0
- 2430 0022 FA7A     	 ldrb r2,[r7,#11]
- 2431 0024 07F11403 	 add r3,r7,#20
- 2432 0028 1146     	 mov r1,r2
- 2433 002a 1846     	 mov r0,r3
- 2434 002c 0A4B     	 ldr r3,.L186+8
- 2435 002e 9847     	 blx r3
- 2436              	.LVL80:
-  99:main_cw521.c  ****      genclk_config_set_divider(&gcfg, divider);
- 2437              	 .loc 11 99 0
- 2438 0030 07F11403 	 add r3,r7,#20
- 2439 0034 7968     	 ldr r1,[r7,#4]
- 2440 0036 1846     	 mov r0,r3
- 2441 0038 084B     	 ldr r3,.L186+12
- 2442 003a 9847     	 blx r3
- 2443              	.LVL81:
- 100:main_cw521.c  ****      genclk_enable(&gcfg, id);
- 2444              	 .loc 11 100 0
- 2445 003c 07F11403 	 add r3,r7,#20
- 2446 0040 F968     	 ldr r1,[r7,#12]
- 2447 0042 1846     	 mov r0,r3
- 2448 0044 064B     	 ldr r3,.L186+16
- 2449 0046 9847     	 blx r3
- 2450              	.LVL82:
+  73:main_cw521.c  ****     phywhisperer_sniff_pwr();
+ 2289              	 .loc 11 73 0
+ 2290 0032 264B     	 ldr r3,.L185+12
+ 2291 0034 9847     	 blx r3
+ 2292              	.LVL61:
+  74:main_cw521.c  **** 
+  75:main_cw521.c  ****     /* Enable SMC */
+  76:main_cw521.c  ****     pmc_enable_periph_clk(ID_SMC);
+ 2293              	 .loc 11 76 0
+ 2294 0036 0920     	 movs r0,#9
+ 2295 0038 254B     	 ldr r3,.L185+16
+ 2296 003a 9847     	 blx r3
+ 2297              	.LVL62:
+  77:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIN_EBI_DATA_BUS_FLAG1);
+ 2298              	 .loc 11 77 0
+ 2299 003c 2549     	 ldr r1,.L185+20
+ 2300 003e 2920     	 movs r0,#41
+ 2301 0040 254B     	 ldr r3,.L185+24
+ 2302 0042 9847     	 blx r3
+ 2303              	.LVL63:
+  78:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
+ 2304              	 .loc 11 78 0
+ 2305 0044 2349     	 ldr r1,.L185+20
+ 2306 0046 2A20     	 movs r0,#42
+ 2307 0048 234B     	 ldr r3,.L185+24
+ 2308 004a 9847     	 blx r3
+ 2309              	.LVL64:
+  79:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIN_EBI_DATA_BUS_FLAG1);
+ 2310              	 .loc 11 79 0
+ 2311 004c 2149     	 ldr r1,.L185+20
+ 2312 004e 2B20     	 movs r0,#43
+ 2313 0050 214B     	 ldr r3,.L185+24
+ 2314 0052 9847     	 blx r3
+ 2315              	.LVL65:
+  80:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D3, PIN_EBI_DATA_BUS_FLAG1);
+ 2316              	 .loc 11 80 0
+ 2317 0054 1F49     	 ldr r1,.L185+20
+ 2318 0056 2C20     	 movs r0,#44
+ 2319 0058 1F4B     	 ldr r3,.L185+24
+ 2320 005a 9847     	 blx r3
+ 2321              	.LVL66:
+  81:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D4, PIN_EBI_DATA_BUS_FLAG1);
+ 2322              	 .loc 11 81 0
+ 2323 005c 1D49     	 ldr r1,.L185+20
+ 2324 005e 2D20     	 movs r0,#45
+ 2325 0060 1D4B     	 ldr r3,.L185+24
+ 2326 0062 9847     	 blx r3
+ 2327              	.LVL67:
+  82:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D5, PIN_EBI_DATA_BUS_FLAG1);
+ 2328              	 .loc 11 82 0
+ 2329 0064 1B49     	 ldr r1,.L185+20
+ 2330 0066 2E20     	 movs r0,#46
+ 2331 0068 1B4B     	 ldr r3,.L185+24
+ 2332 006a 9847     	 blx r3
+ 2333              	.LVL68:
+  83:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIN_EBI_DATA_BUS_FLAG1);
+ 2334              	 .loc 11 83 0
+ 2335 006c 1949     	 ldr r1,.L185+20
+ 2336 006e 2F20     	 movs r0,#47
+ 2337 0070 194B     	 ldr r3,.L185+24
+ 2338 0072 9847     	 blx r3
+ 2339              	.LVL69:
+  84:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIN_EBI_DATA_BUS_FLAG1);
+ 2340              	 .loc 11 84 0
+ 2341 0074 1749     	 ldr r1,.L185+20
+ 2342 0076 3020     	 movs r0,#48
+ 2343 0078 174B     	 ldr r3,.L185+24
+ 2344 007a 9847     	 blx r3
+ 2345              	.LVL70:
+  85:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
+ 2346              	 .loc 11 85 0
+ 2347 007c 1549     	 ldr r1,.L185+20
+ 2348 007e 3320     	 movs r0,#51
+ 2349 0080 154B     	 ldr r3,.L185+24
+ 2350 0082 9847     	 blx r3
+ 2351              	.LVL71:
+  86:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
+ 2352              	 .loc 11 86 0
+ 2353 0084 1349     	 ldr r1,.L185+20
+ 2354 0086 3720     	 movs r0,#55
+ 2355 0088 134B     	 ldr r3,.L185+24
+ 2356 008a 9847     	 blx r3
+ 2357              	.LVL72:
+  87:main_cw521.c  ****     gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
+ 2358              	 .loc 11 87 0
+ 2359 008c 1149     	 ldr r1,.L185+20
+ 2360 008e 3420     	 movs r0,#52
+ 2361 0090 114B     	 ldr r3,.L185+24
+ 2362 0092 9847     	 blx r3
+ 2363              	.LVL73:
+  88:main_cw521.c  **** 
+  89:main_cw521.c  ****     smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(0)
+ 2364              	 .loc 11 89 0
+ 2365 0094 114A     	 ldr r2,.L185+28
+ 2366 0096 0021     	 movs r1,#0
+ 2367 0098 1148     	 ldr r0,.L185+32
+ 2368 009a 124B     	 ldr r3,.L185+36
+ 2369 009c 9847     	 blx r3
+ 2370              	.LVL74:
+  90:main_cw521.c  ****                          | SMC_SETUP_NCS_WR_SETUP(1)
+  91:main_cw521.c  ****                          | SMC_SETUP_NRD_SETUP(1)
+  92:main_cw521.c  ****                          | SMC_SETUP_NCS_RD_SETUP(1));
+  93:main_cw521.c  ****     smc_set_pulse_timing(SMC, 0, SMC_PULSE_NWE_PULSE(1)
+ 2371              	 .loc 11 93 0
+ 2372 009e 124A     	 ldr r2,.L185+40
+ 2373 00a0 0021     	 movs r1,#0
+ 2374 00a2 0F48     	 ldr r0,.L185+32
+ 2375 00a4 114B     	 ldr r3,.L185+44
+ 2376 00a6 9847     	 blx r3
+ 2377              	.LVL75:
+  94:main_cw521.c  ****                          | SMC_PULSE_NCS_WR_PULSE(1)
+  95:main_cw521.c  ****                          | SMC_PULSE_NRD_PULSE(3)
+  96:main_cw521.c  ****                          | SMC_PULSE_NCS_RD_PULSE(1));
+  97:main_cw521.c  ****     smc_set_cycle_timing(SMC, 0, SMC_CYCLE_NWE_CYCLE(2)
+ 2378              	 .loc 11 97 0
+ 2379 00a8 114A     	 ldr r2,.L185+48
+ 2380 00aa 0021     	 movs r1,#0
+ 2381 00ac 0C48     	 ldr r0,.L185+32
+ 2382 00ae 114B     	 ldr r3,.L185+52
+ 2383 00b0 9847     	 blx r3
+ 2384              	.LVL76:
+  98:main_cw521.c  ****                          | SMC_CYCLE_NRD_CYCLE(4));
+  99:main_cw521.c  ****     smc_set_mode(SMC, 0, SMC_MODE_READ_MODE | SMC_MODE_WRITE_MODE
+ 2385              	 .loc 11 99 0
+ 2386 00b2 0322     	 movs r2,#3
+ 2387 00b4 0021     	 movs r1,#0
+ 2388 00b6 0A48     	 ldr r0,.L185+32
+ 2389 00b8 0F4B     	 ldr r3,.L185+56
+ 2390 00ba 9847     	 blx r3
+ 2391              	.LVL77:
+ 100:main_cw521.c  ****                  | SMC_MODE_DBW_BIT_8);
  101:main_cw521.c  **** }
- 2451              	 .loc 11 101 0
- 2452 0048 00BF     	 nop
- 2453 004a 1837     	 adds r7,r7,#24
- 2454              	.LCFI127:
- 2455              	 .cfi_def_cfa_offset 8
- 2456 004c BD46     	 mov sp,r7
- 2457              	.LCFI128:
- 2458              	 .cfi_def_cfa_register 13
- 2459              	 
- 2460 004e 80BD     	 pop {r7,pc}
- 2461              	.L187:
- 2462              	 .align 2
- 2463              	.L186:
- 2464 0050 00000000 	 .word genclk_config_defaults
- 2465 0054 00000000 	 .word genclk_enable_source
- 2466 0058 00000000 	 .word genclk_config_set_source
- 2467 005c 00000000 	 .word genclk_config_set_divider
- 2468 0060 00000000 	 .word genclk_enable
- 2469              	 .cfi_endproc
- 2470              	.LFE194:
- 2472              	 .global pwr_list
- 2473              	 .section .data.pwr_list,"aw",%progbits
- 2474              	 .align 2
- 2477              	pwr_list:
- 2478 0000 00000000 	 .word phywhisperer_no_pwr
- 2479 0004 00000000 	 .word phywhisperer_host_pwr
- 2480 0008 00000000 	 .word phywhisperer_sniff_pwr
- 2481              	 .section .text.main,"ax",%progbits
- 2482              	 .align 1
- 2483              	 .global main
- 2484              	 .syntax unified
- 2485              	 .thumb
- 2486              	 .thumb_func
- 2487              	 .fpu softvfp
- 2489              	main:
- 2490              	.LFB195:
+ 2392              	 .loc 11 101 0
+ 2393 00bc 00BF     	 nop
+ 2394 00be 80BD     	 pop {r7,pc}
+ 2395              	.L186:
+ 2396              	 .align 2
+ 2397              	.L185:
+ 2398 00c0 00000000 	 .word board_init
+ 2399 00c4 00000000 	 .word ioport_set_pin_mode
+ 2400 00c8 000C0E40 	 .word 1074662400
+ 2401 00cc 00000000 	 .word phywhisperer_sniff_pwr
+ 2402 00d0 00000000 	 .word pmc_enable_periph_clk
+ 2403 00d4 01000008 	 .word 134217729
+ 2404 00d8 00000000 	 .word pio_configure_pin
+ 2405 00dc 00010101 	 .word 16843008
+ 2406 00e0 00000E40 	 .word 1074659328
+ 2407 00e4 00000000 	 .word smc_set_setup_timing
+ 2408 00e8 01010301 	 .word 16974081
+ 2409 00ec 00000000 	 .word smc_set_pulse_timing
+ 2410 00f0 02000400 	 .word 262146
+ 2411 00f4 00000000 	 .word smc_set_cycle_timing
+ 2412 00f8 00000000 	 .word smc_set_mode
+ 2413              	 .cfi_endproc
+ 2414              	.LFE193:
+ 2416              	 .section .text.hacky_delay,"ax",%progbits
+ 2417              	 .align 1
+ 2418              	 .global hacky_delay
+ 2419              	 .syntax unified
+ 2420              	 .thumb
+ 2421              	 .thumb_func
+ 2422              	 .fpu softvfp
+ 2424              	hacky_delay:
+ 2425              	.LFB194:
  102:main_cw521.c  **** 
- 103:main_cw521.c  **** void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_host_pwr, phywhisperer_sniff_pwr};
- 104:main_cw521.c  **** 
- 105:main_cw521.c  **** int main(void)
- 106:main_cw521.c  **** {
- 2491              	 .loc 11 106 0
- 2492              	 .cfi_startproc
- 2493              	 
- 2494              	 
- 2495 0000 80B5     	 push {r7,lr}
- 2496              	.LCFI129:
- 2497              	 .cfi_def_cfa_offset 8
- 2498              	 .cfi_offset 7,-8
- 2499              	 .cfi_offset 14,-4
- 2500 0002 86B0     	 sub sp,sp,#24
+ 103:main_cw521.c  **** void hacky_delay(void)
+ 104:main_cw521.c  **** {
+ 2426              	 .loc 11 104 0
+ 2427              	 .cfi_startproc
+ 2428              	 
+ 2429              	 
+ 2430              	 
+ 2431 0000 80B4     	 push {r7}
+ 2432              	.LCFI122:
+ 2433              	 .cfi_def_cfa_offset 4
+ 2434              	 .cfi_offset 7,-4
+ 2435 0002 83B0     	 sub sp,sp,#12
+ 2436              	.LCFI123:
+ 2437              	 .cfi_def_cfa_offset 16
+ 2438 0004 00AF     	 add r7,sp,#0
+ 2439              	.LCFI124:
+ 2440              	 .cfi_def_cfa_register 7
+ 2441              	.LBB65:
+ 105:main_cw521.c  ****     for (volatile uint32_t i = 0; i < 250000; i++);
+ 2442              	 .loc 11 105 0
+ 2443 0006 0023     	 movs r3,#0
+ 2444 0008 7B60     	 str r3,[r7,#4]
+ 2445 000a 02E0     	 b .L188
+ 2446              	.L189:
+ 2447              	 .loc 11 105 0 is_stmt 0 discriminator 3
+ 2448 000c 7B68     	 ldr r3,[r7,#4]
+ 2449 000e 0133     	 adds r3,r3,#1
+ 2450 0010 7B60     	 str r3,[r7,#4]
+ 2451              	.L188:
+ 2452              	 .loc 11 105 0 discriminator 1
+ 2453 0012 7B68     	 ldr r3,[r7,#4]
+ 2454 0014 034A     	 ldr r2,.L190
+ 2455 0016 9342     	 cmp r3,r2
+ 2456 0018 F8D9     	 bls .L189
+ 2457              	.LBE65:
+ 106:main_cw521.c  **** }
+ 2458              	 .loc 11 106 0 is_stmt 1
+ 2459 001a 00BF     	 nop
+ 2460 001c 0C37     	 adds r7,r7,#12
+ 2461              	.LCFI125:
+ 2462              	 .cfi_def_cfa_offset 4
+ 2463 001e BD46     	 mov sp,r7
+ 2464              	.LCFI126:
+ 2465              	 .cfi_def_cfa_register 13
+ 2466              	 
+ 2467 0020 80BC     	 pop {r7}
+ 2468              	.LCFI127:
+ 2469              	 .cfi_restore 7
+ 2470              	 .cfi_def_cfa_offset 0
+ 2471 0022 7047     	 bx lr
+ 2472              	.L191:
+ 2473              	 .align 2
+ 2474              	.L190:
+ 2475 0024 8FD00300 	 .word 249999
+ 2476              	 .cfi_endproc
+ 2477              	.LFE194:
+ 2479              	 .section .text.genclk_enable_config,"ax",%progbits
+ 2480              	 .align 1
+ 2481              	 .syntax unified
+ 2482              	 .thumb
+ 2483              	 .thumb_func
+ 2484              	 .fpu softvfp
+ 2486              	genclk_enable_config:
+ 2487              	.LFB195:
+ 107:main_cw521.c  **** 
+ 108:main_cw521.c  **** static inline void genclk_enable_config(unsigned int id, enum genclk_source src, unsigned int divid
+ 109:main_cw521.c  **** {
+ 2488              	 .loc 11 109 0
+ 2489              	 .cfi_startproc
+ 2490              	 
+ 2491              	 
+ 2492 0000 80B5     	 push {r7,lr}
+ 2493              	.LCFI128:
+ 2494              	 .cfi_def_cfa_offset 8
+ 2495              	 .cfi_offset 7,-8
+ 2496              	 .cfi_offset 14,-4
+ 2497 0002 86B0     	 sub sp,sp,#24
+ 2498              	.LCFI129:
+ 2499              	 .cfi_def_cfa_offset 32
+ 2500 0004 00AF     	 add r7,sp,#0
  2501              	.LCFI130:
- 2502              	 .cfi_def_cfa_offset 32
- 2503 0004 00AF     	 add r7,sp,#0
- 2504              	.LCFI131:
- 2505              	 .cfi_def_cfa_register 7
- 107:main_cw521.c  ****   uint32_t serial_number[4];
- 108:main_cw521.c  **** 
- 109:main_cw521.c  ****   // Read Device-ID from SAM3U. Do this before enabling interrupts etc.
- 110:main_cw521.c  ****   flash_read_unique_id(serial_number, sizeof(serial_number));
- 2506              	 .loc 11 110 0
- 2507 0006 3B1D     	 adds r3,r7,#4
- 2508 0008 1021     	 movs r1,#16
- 2509 000a 1846     	 mov r0,r3
- 2510 000c 224B     	 ldr r3,.L193
- 2511 000e 9847     	 blx r3
- 2512              	.LVL83:
+ 2502              	 .cfi_def_cfa_register 7
+ 2503 0006 F860     	 str r0,[r7,#12]
+ 2504 0008 0B46     	 mov r3,r1
+ 2505 000a 7A60     	 str r2,[r7,#4]
+ 2506 000c FB72     	 strb r3,[r7,#11]
+ 110:main_cw521.c  ****     struct genclk_config gcfg;
  111:main_cw521.c  **** 
- 112:main_cw521.c  ****   irq_initialize_vectors();
- 113:main_cw521.c  ****   cpu_irq_enable();
- 2513              	 .loc 11 113 0
- 2514 0010 224B     	 ldr r3,.L193+4
- 2515 0012 0122     	 movs r2,#1
- 2516 0014 1A70     	 strb r2,[r3]
- 2517              	.LBB67:
- 2518              	.LBB68:
- 2519              	 .loc 8 354 0
- 2520              	 .syntax unified
- 2521              	
- 2522 0016 BFF35F8F 	 dmb
- 2523              	
- 2524              	 .thumb
- 2525              	 .syntax unified
- 2526              	.LBE68:
- 2527              	.LBE67:
- 2528              	.LBB69:
- 2529              	.LBB70:
+ 112:main_cw521.c  ****     genclk_config_defaults(&gcfg, id);
+ 2507              	 .loc 11 112 0
+ 2508 000e 07F11403 	 add r3,r7,#20
+ 2509 0012 F968     	 ldr r1,[r7,#12]
+ 2510 0014 1846     	 mov r0,r3
+ 2511 0016 0E4B     	 ldr r3,.L193
+ 2512 0018 9847     	 blx r3
+ 2513              	.LVL78:
+ 113:main_cw521.c  ****     genclk_enable_source(src);
+ 2514              	 .loc 11 113 0
+ 2515 001a FB7A     	 ldrb r3,[r7,#11]
+ 2516 001c 1846     	 mov r0,r3
+ 2517 001e 0D4B     	 ldr r3,.L193+4
+ 2518 0020 9847     	 blx r3
+ 2519              	.LVL79:
+ 114:main_cw521.c  ****     genclk_config_set_source(&gcfg, src);
+ 2520              	 .loc 11 114 0
+ 2521 0022 FA7A     	 ldrb r2,[r7,#11]
+ 2522 0024 07F11403 	 add r3,r7,#20
+ 2523 0028 1146     	 mov r1,r2
+ 2524 002a 1846     	 mov r0,r3
+ 2525 002c 0A4B     	 ldr r3,.L193+8
+ 2526 002e 9847     	 blx r3
+ 2527              	.LVL80:
+ 115:main_cw521.c  ****     genclk_config_set_divider(&gcfg, divider);
+ 2528              	 .loc 11 115 0
+ 2529 0030 07F11403 	 add r3,r7,#20
+ 2530 0034 7968     	 ldr r1,[r7,#4]
+ 2531 0036 1846     	 mov r0,r3
+ 2532 0038 084B     	 ldr r3,.L193+12
+ 2533 003a 9847     	 blx r3
+ 2534              	.LVL81:
+ 116:main_cw521.c  ****     genclk_enable(&gcfg, id);
+ 2535              	 .loc 11 116 0
+ 2536 003c 07F11403 	 add r3,r7,#20
+ 2537 0040 F968     	 ldr r1,[r7,#12]
+ 2538 0042 1846     	 mov r0,r3
+ 2539 0044 064B     	 ldr r3,.L193+16
+ 2540 0046 9847     	 blx r3
+ 2541              	.LVL82:
+ 117:main_cw521.c  **** }
+ 2542              	 .loc 11 117 0
+ 2543 0048 00BF     	 nop
+ 2544 004a 1837     	 adds r7,r7,#24
+ 2545              	.LCFI131:
+ 2546              	 .cfi_def_cfa_offset 8
+ 2547 004c BD46     	 mov sp,r7
+ 2548              	.LCFI132:
+ 2549              	 .cfi_def_cfa_register 13
+ 2550              	 
+ 2551 004e 80BD     	 pop {r7,pc}
+ 2552              	.L194:
+ 2553              	 .align 2
+ 2554              	.L193:
+ 2555 0050 00000000 	 .word genclk_config_defaults
+ 2556 0054 00000000 	 .word genclk_enable_source
+ 2557 0058 00000000 	 .word genclk_config_set_source
+ 2558 005c 00000000 	 .word genclk_config_set_divider
+ 2559 0060 00000000 	 .word genclk_enable
+ 2560              	 .cfi_endproc
+ 2561              	.LFE195:
+ 2563              	 .global pwr_list
+ 2564              	 .section .data.pwr_list,"aw",%progbits
+ 2565              	 .align 2
+ 2568              	pwr_list:
+ 2569 0000 00000000 	 .word phywhisperer_no_pwr
+ 2570 0004 00000000 	 .word phywhisperer_host_pwr
+ 2571 0008 00000000 	 .word phywhisperer_sniff_pwr
+ 2572              	 .section .text.main,"ax",%progbits
+ 2573              	 .align 1
+ 2574              	 .global main
+ 2575              	 .syntax unified
+ 2576              	 .thumb
+ 2577              	 .thumb_func
+ 2578              	 .fpu softvfp
+ 2580              	main:
+ 2581              	.LFB196:
+ 118:main_cw521.c  **** 
+ 119:main_cw521.c  **** void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_host_pwr, phywhisperer_sniff_pwr};
+ 120:main_cw521.c  **** 
+ 121:main_cw521.c  **** int main(void)
+ 122:main_cw521.c  **** {
+ 2582              	 .loc 11 122 0
+ 2583              	 .cfi_startproc
+ 2584              	 
+ 2585              	 
+ 2586 0000 80B5     	 push {r7,lr}
+ 2587              	.LCFI133:
+ 2588              	 .cfi_def_cfa_offset 8
+ 2589              	 .cfi_offset 7,-8
+ 2590              	 .cfi_offset 14,-4
+ 2591 0002 86B0     	 sub sp,sp,#24
+ 2592              	.LCFI134:
+ 2593              	 .cfi_def_cfa_offset 32
+ 2594 0004 00AF     	 add r7,sp,#0
+ 2595              	.LCFI135:
+ 2596              	 .cfi_def_cfa_register 7
+ 123:main_cw521.c  ****     uint32_t serial_number[4];
+ 124:main_cw521.c  **** 
+ 125:main_cw521.c  ****     // Read Device-ID from SAM3U. Do this before enabling interrupts etc.
+ 126:main_cw521.c  ****     flash_read_unique_id(serial_number, sizeof(serial_number));
+ 2597              	 .loc 11 126 0
+ 2598 0006 3B1D     	 adds r3,r7,#4
+ 2599 0008 1021     	 movs r1,#16
+ 2600 000a 1846     	 mov r0,r3
+ 2601 000c 294B     	 ldr r3,.L201
+ 2602 000e 9847     	 blx r3
+ 2603              	.LVL83:
+ 127:main_cw521.c  **** 
+ 128:main_cw521.c  ****     irq_initialize_vectors();
+ 129:main_cw521.c  ****     cpu_irq_enable();
+ 2604              	 .loc 11 129 0
+ 2605 0010 294B     	 ldr r3,.L201+4
+ 2606 0012 0122     	 movs r2,#1
+ 2607 0014 1A70     	 strb r2,[r3]
+ 2608              	.LBB66:
+ 2609              	.LBB67:
+ 2610              	 .loc 8 354 0
+ 2611              	 .syntax unified
+ 2612              	
+ 2613 0016 BFF35F8F 	 dmb
+ 2614              	
+ 2615              	 .thumb
+ 2616              	 .syntax unified
+ 2617              	.LBE67:
+ 2618              	.LBE66:
+ 2619              	.LBB68:
+ 2620              	.LBB69:
  317:.././hal/sam3u1c/inc/core_cmFunc.h **** }
- 2530              	 .loc 7 317 0
- 2531              	 .syntax unified
- 2532              	
- 2533 001a 62B6     	 cpsie i
- 2534              	
- 2535              	 .thumb
- 2536              	 .syntax unified
- 2537              	.LBE70:
- 2538              	.LBE69:
- 114:main_cw521.c  **** 
- 115:main_cw521.c  ****      // Initialize the sleep manager
- 116:main_cw521.c  ****      sleepmgr_init();
- 2539              	 .loc 11 116 0
- 2540 001c 204B     	 ldr r3,.L193+8
- 2541 001e 9847     	 blx r3
- 2542              	.LVL84:
- 117:main_cw521.c  **** #if !SAMD21 && !SAMR21
- 118:main_cw521.c  ****      sysclk_init();
- 2543              	 .loc 11 118 0
- 2544 0020 204B     	 ldr r3,.L193+12
- 2545 0022 9847     	 blx r3
- 2546              	.LVL85:
- 119:main_cw521.c  ****   phywhisperer_setup_pins();
- 2547              	 .loc 11 119 0
- 2548 0024 204B     	 ldr r3,.L193+16
- 2549 0026 9847     	 blx r3
- 2550              	.LVL86:
- 120:main_cw521.c  **** #else
- 121:main_cw521.c  ****      system_init();
- 122:main_cw521.c  **** #endif
- 123:main_cw521.c  ****      genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
- 2551              	 .loc 11 123 0
- 2552 0028 0022     	 movs r2,#0
- 2553 002a 0A21     	 movs r1,#10
- 2554 002c 0020     	 movs r0,#0
- 2555 002e 1F4B     	 ldr r3,.L193+20
- 2556 0030 9847     	 blx r3
- 2557              	.LVL87:
- 124:main_cw521.c  ****      udc_start();
- 2558              	 .loc 11 124 0
- 2559 0032 1F4B     	 ldr r3,.L193+24
- 2560 0034 9847     	 blx r3
- 2561              	.LVL88:
- 125:main_cw521.c  ****      //LEDS ON
- 126:main_cw521.c  ****      gpio_set_pin_high(LED0_GPIO);
- 2562              	 .loc 11 126 0
- 2563 0036 1D20     	 movs r0,#29
- 2564 0038 1E4B     	 ldr r3,.L193+28
- 2565 003a 9847     	 blx r3
- 2566              	.LVL89:
- 127:main_cw521.c  ****      gpio_set_pin_low(LED1_GPIO);
- 2567              	 .loc 11 127 0
- 2568 003c 1F20     	 movs r0,#31
- 2569 003e 1E4B     	 ldr r3,.L193+32
- 2570 0040 9847     	 blx r3
- 2571              	.LVL90:
- 128:main_cw521.c  ****      /* LED_Off(LED1_GPIO); */
- 129:main_cw521.c  ****      /* LED_On(LED0_GPIO); */
- 130:main_cw521.c  ****      uint8_t curr_pwr_setting = 0;
- 2572              	 .loc 11 130 0
- 2573 0042 0023     	 movs r3,#0
- 2574 0044 FB75     	 strb r3,[r7,#23]
- 2575              	.L192:
- 2576              	.LBB71:
- 131:main_cw521.c  ****      while(1) {
- 132:main_cw521.c  ****           sleepmgr_enter_sleep();
- 2577              	 .loc 11 132 0
- 2578 0046 1D4B     	 ldr r3,.L193+36
- 2579 0048 9847     	 blx r3
- 2580              	.LVL91:
- 133:main_cw521.c  ****           uint8_t button_status = !(PIOA->PIO_PDSR & (1 << BUTTON_IN));
- 2581              	 .loc 11 133 0
- 2582 004a 1D4B     	 ldr r3,.L193+40
- 2583 004c DB6B     	 ldr r3,[r3,#60]
- 2584 004e 03F08073 	 and r3,r3,#16777216
- 2585 0052 002B     	 cmp r3,#0
- 2586 0054 0CBF     	 ite eq
- 2587 0056 0123     	 moveq r3,#1
- 2588 0058 0023     	 movne r3,#0
- 2589 005a DBB2     	 uxtb r3,r3
- 2590 005c BB75     	 strb r3,[r7,#22]
- 134:main_cw521.c  ****           if (button_status){
- 2591              	 .loc 11 134 0
- 2592 005e BB7D     	 ldrb r3,[r7,#22]
- 2593 0060 002B     	 cmp r3,#0
- 2594 0062 F0D0     	 beq .L192
- 135:main_cw521.c  ****                curr_pwr_setting++;
- 2595              	 .loc 11 135 0
- 2596 0064 FB7D     	 ldrb r3,[r7,#23]
- 2597 0066 0133     	 adds r3,r3,#1
- 2598 0068 FB75     	 strb r3,[r7,#23]
- 136:main_cw521.c  ****                if (curr_pwr_setting > 2)
- 2599              	 .loc 11 136 0
- 2600 006a FB7D     	 ldrb r3,[r7,#23]
- 2601 006c 022B     	 cmp r3,#2
- 2602 006e 01D9     	 bls .L190
- 137:main_cw521.c  ****                     curr_pwr_setting = 0;
- 2603              	 .loc 11 137 0
- 2604 0070 0023     	 movs r3,#0
- 2605 0072 FB75     	 strb r3,[r7,#23]
- 2606              	.L190:
- 138:main_cw521.c  ****                hacky_delay(); //delay to try to debounce
- 2607              	 .loc 11 138 0
- 2608 0074 134B     	 ldr r3,.L193+44
- 2609 0076 9847     	 blx r3
- 2610              	.LVL92:
- 139:main_cw521.c  ****                while (!(PIOA->PIO_PDSR & (1 << BUTTON_IN))); //wait for trigger to be unpressed
- 2611              	 .loc 11 139 0
- 2612 0078 00BF     	 nop
- 2613              	.L191:
- 2614              	 .loc 11 139 0 is_stmt 0 discriminator 1
- 2615 007a 114B     	 ldr r3,.L193+40
- 2616 007c DB6B     	 ldr r3,[r3,#60]
- 2617 007e 03F08073 	 and r3,r3,#16777216
- 2618 0082 002B     	 cmp r3,#0
- 2619 0084 F9D0     	 beq .L191
- 140:main_cw521.c  ****                pwr_list[curr_pwr_setting]();
- 2620              	 .loc 11 140 0 is_stmt 1
- 2621 0086 FB7D     	 ldrb r3,[r7,#23]
- 2622 0088 0F4A     	 ldr r2,.L193+48
- 2623 008a 52F82330 	 ldr r3,[r2,r3,lsl#2]
- 2624 008e 9847     	 blx r3
- 2625              	.LVL93:
- 141:main_cw521.c  ****                hacky_delay();
- 2626              	 .loc 11 141 0
- 2627 0090 0C4B     	 ldr r3,.L193+44
- 2628 0092 9847     	 blx r3
- 2629              	.LVL94:
- 2630              	.LBE71:
- 131:main_cw521.c  ****           sleepmgr_enter_sleep();
- 2631              	 .loc 11 131 0
- 2632 0094 D7E7     	 b .L192
- 2633              	.L194:
- 2634 0096 00BF     	 .align 2
- 2635              	.L193:
- 2636 0098 00000000 	 .word flash_read_unique_id
- 2637 009c 00000000 	 .word g_interrupt_enabled
- 2638 00a0 00000000 	 .word sleepmgr_init
- 2639 00a4 00000000 	 .word sysclk_init
- 2640 00a8 00000000 	 .word phywhisperer_setup_pins
- 2641 00ac 00000000 	 .word genclk_enable_config
- 2642 00b0 00000000 	 .word udc_start
- 2643 00b4 00000000 	 .word pio_set_pin_high
- 2644 00b8 00000000 	 .word pio_set_pin_low
- 2645 00bc 00000000 	 .word sleepmgr_enter_sleep
- 2646 00c0 000C0E40 	 .word 1074662400
- 2647 00c4 00000000 	 .word hacky_delay
- 2648 00c8 00000000 	 .word pwr_list
- 2649              	 .cfi_endproc
- 2650              	.LFE195:
- 2652              	 .text
- 2653              	.Letext0:
- 2654              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
- 2655              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
- 2656              	 .file 14 ".././hal/sam3u1c/inc/sam3u1c.h"
- 2657              	 .file 15 ".././hal/sam3u1c/inc/core_cm3.h"
- 2658              	 .file 16 ".././hal/sam3u1c/inc/system_sam3u.h"
- 2659              	 .file 17 ".././hal/sam3u1c/inc/component/component_pio.h"
- 2660              	 .file 18 ".././hal/sam3u1c/inc/component/component_pmc.h"
- 2661              	 .file 19 ".././hal/sam3u1c/inc/component/component_smc.h"
- 2662              	 .file 20 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
- 2663              	 .file 21 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
- 2664              	 .file 22 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 2665              	 .file 23 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
- 2666              	 .file 24 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
- 2667              	 .file 25 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 2668              	 .file 26 ".././hal/sam3u1c/inc/compiler.h"
- 2669              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
- 2670              	 .file 28 "./conf_usb.h"
- 2671              	 .file 29 ".././hal/sam3u1c/inc/usb_protocol.h"
- 2672              	 .file 30 ".././hal/sam3u1c/inc/udi.h"
- 2673              	 .file 31 ".././hal/sam3u1c/inc/udc_desc.h"
- 2674              	 .file 32 ".././hal/sam3u1c/inc/udd.h"
- 2675              	 .file 33 ".././hal/sam3u1c/inc/udi_vendor.h"
- 2676              	 .file 34 ".././hal/sam3u1c/inc/stdio_serial.h"
- 2677              	 .file 35 ".././hal/sam3u1c/inc/tasks.h"
- 2678              	 .file 36 ".././hal/sam3u1c/inc/fpga_xmem.h"
- 2679              	 .file 37 ".././hal/sam3u1c/inc/usb.h"
- 2680              	 .file 38 ".././hal/sam3u1c/inc/flash_efc.h"
- 2681              	 .file 39 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
- 2682              	 .file 40 ".././hal/sam3u1c/inc/udc.h"
- 2683              	 .file 41 ".././hal/sam3u1c/inc/board.h"
- 2684              	 .file 42 ".././hal/sam3u1c/inc/pmc.h"
- 2685              	 .file 43 ".././hal/sam3u1c/inc/smc.h"
- 2686              	 .file 44 ".././hal/sam3u1c/inc/sleep.h"
+ 2621              	 .loc 7 317 0
+ 2622              	 .syntax unified
+ 2623              	
+ 2624 001a 62B6     	 cpsie i
+ 2625              	
+ 2626              	 .thumb
+ 2627              	 .syntax unified
+ 2628              	.LBE69:
+ 2629              	.LBE68:
+ 130:main_cw521.c  **** 
+ 131:main_cw521.c  ****     // Initialize the sleep manager
+ 132:main_cw521.c  ****     sleepmgr_init();
+ 2630              	 .loc 11 132 0
+ 2631 001c 274B     	 ldr r3,.L201+8
+ 2632 001e 9847     	 blx r3
+ 2633              	.LVL84:
+ 133:main_cw521.c  **** #if !SAMD21 && !SAMR21
+ 134:main_cw521.c  ****     sysclk_init();
+ 2634              	 .loc 11 134 0
+ 2635 0020 274B     	 ldr r3,.L201+12
+ 2636 0022 9847     	 blx r3
+ 2637              	.LVL85:
+ 135:main_cw521.c  ****     phywhisperer_setup_pins();
+ 2638              	 .loc 11 135 0
+ 2639 0024 274B     	 ldr r3,.L201+16
+ 2640 0026 9847     	 blx r3
+ 2641              	.LVL86:
+ 136:main_cw521.c  **** #else
+ 137:main_cw521.c  ****     system_init();
+ 138:main_cw521.c  **** #endif
+ 139:main_cw521.c  ****     genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
+ 2642              	 .loc 11 139 0
+ 2643 0028 0022     	 movs r2,#0
+ 2644 002a 0A21     	 movs r1,#10
+ 2645 002c 0020     	 movs r0,#0
+ 2646 002e 264B     	 ldr r3,.L201+20
+ 2647 0030 9847     	 blx r3
+ 2648              	.LVL87:
+ 140:main_cw521.c  ****     udc_start();
+ 2649              	 .loc 11 140 0
+ 2650 0032 264B     	 ldr r3,.L201+24
+ 2651 0034 9847     	 blx r3
+ 2652              	.LVL88:
+ 141:main_cw521.c  ****     gpio_set_pin_high(LED0_GPIO);
+ 2653              	 .loc 11 141 0
+ 2654 0036 1D20     	 movs r0,#29
+ 2655 0038 254B     	 ldr r3,.L201+28
+ 2656 003a 9847     	 blx r3
+ 2657              	.LVL89:
+ 142:main_cw521.c  ****     gpio_set_pin_low(LED1_GPIO);
+ 2658              	 .loc 11 142 0
+ 2659 003c 1F20     	 movs r0,#31
+ 2660 003e 254B     	 ldr r3,.L201+32
+ 2661 0040 9847     	 blx r3
+ 2662              	.LVL90:
+ 143:main_cw521.c  **** 
+ 144:main_cw521.c  ****     phywhisperer_no_pwr();
+ 2663              	 .loc 11 144 0
+ 2664 0042 254B     	 ldr r3,.L201+36
+ 2665 0044 9847     	 blx r3
+ 2666              	.LVL91:
+ 145:main_cw521.c  ****     USB_PWR_STATE = 0;
+ 2667              	 .loc 11 145 0
+ 2668 0046 254B     	 ldr r3,.L201+40
+ 2669 0048 0022     	 movs r2,#0
+ 2670 004a 1A70     	 strb r2,[r3]
+ 146:main_cw521.c  **** 
+ 147:main_cw521.c  ****     uint8_t curr_pwr_setting = 0;
+ 2671              	 .loc 11 147 0
+ 2672 004c 0023     	 movs r3,#0
+ 2673 004e FB75     	 strb r3,[r7,#23]
+ 2674              	.L200:
+ 2675              	.LBB70:
+ 148:main_cw521.c  ****     while(1) {
+ 149:main_cw521.c  ****         sleepmgr_enter_sleep();
+ 2676              	 .loc 11 149 0
+ 2677 0050 234B     	 ldr r3,.L201+44
+ 2678 0052 9847     	 blx r3
+ 2679              	.LVL92:
+ 150:main_cw521.c  ****         uint8_t button_status = !(PIOA->PIO_PDSR & (1 << BUTTON_IN));
+ 2680              	 .loc 11 150 0
+ 2681 0054 234B     	 ldr r3,.L201+48
+ 2682 0056 DB6B     	 ldr r3,[r3,#60]
+ 2683 0058 03F08073 	 and r3,r3,#16777216
+ 2684 005c 002B     	 cmp r3,#0
+ 2685 005e 0CBF     	 ite eq
+ 2686 0060 0123     	 moveq r3,#1
+ 2687 0062 0023     	 movne r3,#0
+ 2688 0064 DBB2     	 uxtb r3,r3
+ 2689 0066 BB75     	 strb r3,[r7,#22]
+ 151:main_cw521.c  ****         if (button_status){
+ 2690              	 .loc 11 151 0
+ 2691 0068 BB7D     	 ldrb r3,[r7,#22]
+ 2692 006a 002B     	 cmp r3,#0
+ 2693 006c F0D0     	 beq .L200
+ 152:main_cw521.c  ****             hacky_delay(); //delay to try to debounce
+ 2694              	 .loc 11 152 0
+ 2695 006e 1E4B     	 ldr r3,.L201+52
+ 2696 0070 9847     	 blx r3
+ 2697              	.LVL93:
+ 153:main_cw521.c  ****             while (!(PIOA->PIO_PDSR & (1 << BUTTON_IN))); //wait for trigger to be unpressed
+ 2698              	 .loc 11 153 0
+ 2699 0072 00BF     	 nop
+ 2700              	.L197:
+ 2701              	 .loc 11 153 0 is_stmt 0 discriminator 1
+ 2702 0074 1B4B     	 ldr r3,.L201+48
+ 2703 0076 DB6B     	 ldr r3,[r3,#60]
+ 2704 0078 03F08073 	 and r3,r3,#16777216
+ 2705 007c 002B     	 cmp r3,#0
+ 2706 007e F9D0     	 beq .L197
+ 154:main_cw521.c  **** 
+ 155:main_cw521.c  ****             if (USB_PWR_STATE && USB_PWR_STATE <= 2) {
+ 2707              	 .loc 11 155 0 is_stmt 1
+ 2708 0080 164B     	 ldr r3,.L201+40
+ 2709 0082 1B78     	 ldrb r3,[r3]
+ 2710 0084 002B     	 cmp r3,#0
+ 2711 0086 12D0     	 beq .L198
+ 2712              	 .loc 11 155 0 is_stmt 0 discriminator 1
+ 2713 0088 144B     	 ldr r3,.L201+40
+ 2714 008a 1B78     	 ldrb r3,[r3]
+ 2715 008c 022B     	 cmp r3,#2
+ 2716 008e 0ED8     	 bhi .L198
+ 156:main_cw521.c  ****                 if (pwr_st_from_io()) { //currently on
+ 2717              	 .loc 11 156 0 is_stmt 1
+ 2718 0090 164B     	 ldr r3,.L201+56
+ 2719 0092 9847     	 blx r3
+ 2720              	.LVL94:
+ 2721 0094 0346     	 mov r3,r0
+ 2722 0096 002B     	 cmp r3,#0
+ 2723 0098 02D0     	 beq .L199
+ 157:main_cw521.c  ****                     phywhisperer_no_pwr();
+ 2724              	 .loc 11 157 0
+ 2725 009a 0F4B     	 ldr r3,.L201+36
+ 2726 009c 9847     	 blx r3
+ 2727              	.LVL95:
+ 2728 009e 06E0     	 b .L198
+ 2729              	.L199:
+ 158:main_cw521.c  ****                 } else {
+ 159:main_cw521.c  ****                     pwr_list[USB_PWR_STATE]();
+ 2730              	 .loc 11 159 0
+ 2731 00a0 0E4B     	 ldr r3,.L201+40
+ 2732 00a2 1B78     	 ldrb r3,[r3]
+ 2733 00a4 1A46     	 mov r2,r3
+ 2734 00a6 124B     	 ldr r3,.L201+60
+ 2735 00a8 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 2736 00ac 9847     	 blx r3
+ 2737              	.LVL96:
+ 2738              	.L198:
+ 160:main_cw521.c  ****                 }
+ 161:main_cw521.c  ****             }
+ 162:main_cw521.c  ****             hacky_delay();
+ 2739              	 .loc 11 162 0
+ 2740 00ae 0E4B     	 ldr r3,.L201+52
+ 2741 00b0 9847     	 blx r3
+ 2742              	.LVL97:
+ 2743              	.LBE70:
+ 148:main_cw521.c  ****         sleepmgr_enter_sleep();
+ 2744              	 .loc 11 148 0
+ 2745 00b2 CDE7     	 b .L200
+ 2746              	.L202:
+ 2747              	 .align 2
+ 2748              	.L201:
+ 2749 00b4 00000000 	 .word flash_read_unique_id
+ 2750 00b8 00000000 	 .word g_interrupt_enabled
+ 2751 00bc 00000000 	 .word sleepmgr_init
+ 2752 00c0 00000000 	 .word sysclk_init
+ 2753 00c4 00000000 	 .word phywhisperer_setup_pins
+ 2754 00c8 00000000 	 .word genclk_enable_config
+ 2755 00cc 00000000 	 .word udc_start
+ 2756 00d0 00000000 	 .word pio_set_pin_high
+ 2757 00d4 00000000 	 .word pio_set_pin_low
+ 2758 00d8 00000000 	 .word phywhisperer_no_pwr
+ 2759 00dc 00000000 	 .word USB_PWR_STATE
+ 2760 00e0 00000000 	 .word sleepmgr_enter_sleep
+ 2761 00e4 000C0E40 	 .word 1074662400
+ 2762 00e8 00000000 	 .word hacky_delay
+ 2763 00ec 00000000 	 .word pwr_st_from_io
+ 2764 00f0 00000000 	 .word pwr_list
+ 2765              	 .cfi_endproc
+ 2766              	.LFE196:
+ 2768              	 .text
+ 2769              	.Letext0:
+ 2770              	 .file 12 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2771              	 .file 13 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2772              	 .file 14 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 2773              	 .file 15 ".././hal/sam3u1c/inc/core_cm3.h"
+ 2774              	 .file 16 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 2775              	 .file 17 ".././hal/sam3u1c/inc/component/component_pio.h"
+ 2776              	 .file 18 ".././hal/sam3u1c/inc/component/component_pmc.h"
+ 2777              	 .file 19 ".././hal/sam3u1c/inc/component/component_smc.h"
+ 2778              	 .file 20 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 2779              	 .file 21 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 2780              	 .file 22 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 2781              	 .file 23 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 2782              	 .file 24 "c:\\program files (x86)\\atmel\\studio\\7.0\\toolchain\\arm\\arm-gnu-toolchain\\arm-none-eabi\\include\\stdlib.h"
+ 2783              	 .file 25 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 2784              	 .file 26 ".././hal/sam3u1c/inc/compiler.h"
+ 2785              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
+ 2786              	 .file 28 "./conf_usb.h"
+ 2787              	 .file 29 ".././hal/sam3u1c/inc/usb_protocol.h"
+ 2788              	 .file 30 ".././hal/sam3u1c/inc/udi.h"
+ 2789              	 .file 31 ".././hal/sam3u1c/inc/udc_desc.h"
+ 2790              	 .file 32 ".././hal/sam3u1c/inc/udd.h"
+ 2791              	 .file 33 ".././hal/sam3u1c/inc/udi_vendor.h"
+ 2792              	 .file 34 ".././hal/sam3u1c/inc/stdio_serial.h"
+ 2793              	 .file 35 ".././hal/sam3u1c/inc/tasks.h"
+ 2794              	 .file 36 ".././hal/sam3u1c/inc/fpga_xmem.h"
+ 2795              	 .file 37 "fpga_program.h"
+ 2796              	 .file 38 ".././hal/sam3u1c/inc/usb.h"
+ 2797              	 .file 39 ".././hal/sam3u1c/inc/flash_efc.h"
+ 2798              	 .file 40 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
+ 2799              	 .file 41 ".././hal/sam3u1c/inc/udc.h"
+ 2800              	 .file 42 ".././hal/sam3u1c/inc/board.h"
+ 2801              	 .file 43 ".././hal/sam3u1c/inc/pmc.h"
+ 2802              	 .file 44 ".././hal/sam3u1c/inc/smc.h"
+ 2803              	 .file 45 ".././hal/sam3u1c/inc/sleep.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main_cw521.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -5328,20 +5464,23 @@ DEFINED SYMBOLS
     {standard input}:2099   .text.phywhisperer_switch_usb_pwr:00000000 $t
     {standard input}:2106   .text.phywhisperer_switch_usb_pwr:00000000 phywhisperer_switch_usb_pwr
     {standard input}:2144   .text.phywhisperer_switch_usb_pwr:00000020 $d
-    {standard input}:2151   .text.phywhisperer_setup_pins:00000000 $t
-    {standard input}:2158   .text.phywhisperer_setup_pins:00000000 phywhisperer_setup_pins
-    {standard input}:2307   .text.phywhisperer_setup_pins:000000c0 $d
-    {standard input}:2326   .text.hacky_delay:00000000 $t
-    {standard input}:2333   .text.hacky_delay:00000000 hacky_delay
-    {standard input}:2384   .text.hacky_delay:00000024 $d
-    {standard input}:2389   .text.genclk_enable_config:00000000 $t
-    {standard input}:2395   .text.genclk_enable_config:00000000 genclk_enable_config
-    {standard input}:2464   .text.genclk_enable_config:00000050 $d
-    {standard input}:2477   .data.pwr_list:00000000 pwr_list
-    {standard input}:2474   .data.pwr_list:00000000 $d
-    {standard input}:2482   .text.main:00000000 $t
-    {standard input}:2489   .text.main:00000000 main
-    {standard input}:2636   .text.main:00000098 $d
+    {standard input}:2151   .text.pwr_st_from_io:00000000 $t
+    {standard input}:2158   .text.pwr_st_from_io:00000000 pwr_st_from_io
+    {standard input}:2237   .text.pwr_st_from_io:00000064 $d
+    {standard input}:2242   .text.phywhisperer_setup_pins:00000000 $t
+    {standard input}:2249   .text.phywhisperer_setup_pins:00000000 phywhisperer_setup_pins
+    {standard input}:2398   .text.phywhisperer_setup_pins:000000c0 $d
+    {standard input}:2417   .text.hacky_delay:00000000 $t
+    {standard input}:2424   .text.hacky_delay:00000000 hacky_delay
+    {standard input}:2475   .text.hacky_delay:00000024 $d
+    {standard input}:2480   .text.genclk_enable_config:00000000 $t
+    {standard input}:2486   .text.genclk_enable_config:00000000 genclk_enable_config
+    {standard input}:2555   .text.genclk_enable_config:00000050 $d
+    {standard input}:2568   .data.pwr_list:00000000 pwr_list
+    {standard input}:2565   .data.pwr_list:00000000 $d
+    {standard input}:2573   .text.main:00000000 $t
+    {standard input}:2580   .text.main:00000000 main
+    {standard input}:2749   .text.main:000000b4 $d
                      .debug_frame:00000010 $d
                            .group:00000000 wm4.0.e23d094898ba82b639bd2bf6d23b6497
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
@@ -5478,6 +5617,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.udi_vendor.h.125.7b9085237d4d4a9757f4c148fba1918d
                            .group:00000000 wm4.genclk.h.45.f7865052b40a907e4bab1a8f483a50e2
                            .group:00000000 wm4.fpga_xmem.h.19.554328dd33dcefd66f095f5408b9d9fe
+                           .group:00000000 wm4.fpga_program.h.36.51224b537e4ba9936a71e45e1029f6ce
                            .group:00000000 wm4.usb.h.20.f560de5b472e2e451b5cba954e5d0064
                            .group:00000000 wm4.string.h.8.c4b8571ce60dff2817f43fec8b86aecd
 
@@ -5511,3 +5651,4 @@ sysclk_init
 udc_start
 pio_set_pin_high
 pio_set_pin_low
+USB_PWR_STATE

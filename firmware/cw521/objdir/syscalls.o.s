@@ -7696,6 +7696,9 @@ heap.5297:
 	.ascii	"__ATOMIC_RELEASE 3\000"
 .LASF792:
 	.ascii	"_howmany(x,y) (((x)+((y)-1))/(y))\000"
+.LASF1146:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF126:
 	.ascii	"__FLT_MANT_DIG__ 24\000"
 .LASF93:
@@ -8370,9 +8373,8 @@ heap.5297:
 	.ascii	"__htons(_x) __bswap16(_x)\000"
 .LASF216:
 	.ascii	"__ULFRACT_MIN__ 0.0ULR\000"
-.LASF1146:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
+.LASF916:
+	.ascii	"CLOCK_ALLOWED 1\000"
 .LASF923:
 	.ascii	"_IFBLK 0060000\000"
 .LASF1073:
@@ -8690,8 +8692,6 @@ heap.5297:
 	.ascii	"__WCHAR_T__ \000"
 .LASF828:
 	.ascii	"_TIMER_T_DECLARED \000"
-.LASF916:
-	.ascii	"CLOCK_ALLOWED 1\000"
 .LASF564:
 	.ascii	"__result_use_check __attribute__((__warn_unused_res"
 	.ascii	"ult__))\000"

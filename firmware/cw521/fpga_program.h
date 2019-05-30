@@ -96,6 +96,11 @@
 #define FPGA_USE_USART 0
 #endif
 
+#define BUTTON_IN PIO_PA24_IDX
+#define F_VBHOST PIO_PA26_IDX
+#define F_VBSNIFF PIO_PA25_IDX
+
+extern uint8_t USB_PWR_STATE;
 /**
  * \brief Send a byte to FPGA using CCLK/DO, FPGA must be in programming mode
  *

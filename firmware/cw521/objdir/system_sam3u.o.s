@@ -34754,9 +34754,6 @@ system_init_flash:
 	.ascii	"UDPHS_EPTSTA_CONTROL_DIR_Pos 16\000"
 .LASF1130:
 	.ascii	"SCB_CCR_UNALIGN_TRP_Pos 3\000"
-.LASF8396:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
 .LASF1888:
 	.ascii	"CHIPID_CIDR_ARCH_AT75Cxx (0xF0u << 20)\000"
 .LASF2765:
@@ -34785,6 +34782,9 @@ system_init_flash:
 	.ascii	"REG_PIOA_ODSR (*(RwReg*)0x400E0C38U)\000"
 .LASF8244:
 	.ascii	"PMC_PCER0\000"
+.LASF8396:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF8171:
 	.ascii	"swap32(u32) ((U32)__builtin_bswap32((U32)(u32)))\000"
 .LASF4601:

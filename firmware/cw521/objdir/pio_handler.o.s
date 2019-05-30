@@ -31642,8 +31642,8 @@ pio_handler_set_priority:
 	.ascii	"TWI_SR_TXCOMP (0x1u << 0)\000"
 .LASF5782:
 	.ascii	"TWI_IER_GACC (0x1u << 5)\000"
-.LASF4443:
-	.ascii	"PWM_CMPM_CTR_Pos 4\000"
+.LASF5791:
+	.ascii	"TWI_IER_TXBUFE (0x1u << 15)\000"
 .LASF2314:
 	.ascii	"HSMCI_IDR_RXRDY (0x1u << 1)\000"
 .LASF7010:
@@ -32192,6 +32192,9 @@ pio_handler_set_priority:
 .LASF712:
 	.ascii	"MREPEAT80(macro,data) MREPEAT79( macro, data) macro"
 	.ascii	"( 79, data)\000"
+.LASF4140:
+	.ascii	"PWM_CLK_DIVA(value) ((PWM_CLK_DIVA_Msk & ((value) <"
+	.ascii	"< PWM_CLK_DIVA_Pos)))\000"
 .LASF5777:
 	.ascii	"TWI_SR_TXBUFE (0x1u << 15)\000"
 .LASF6176:
@@ -32527,8 +32530,8 @@ pio_handler_set_priority:
 	.ascii	"PIO_PUSR_P2 (0x1u << 2)\000"
 .LASF5682:
 	.ascii	"TC_IMR_CPCS (0x1u << 4)\000"
-.LASF1535:
-	.ascii	"ADC_SR_OVRE5 (0x1u << 13)\000"
+.LASF6531:
+	.ascii	"REG_SSC_IDR (*(WoReg*)0x40004048U)\000"
 .LASF3903:
 	.ascii	"PMC_PCER0_PID5 (0x1u << 5)\000"
 .LASF1566:
@@ -33086,8 +33089,6 @@ pio_handler_set_priority:
 	.ascii	"PIO_PC9B_PWML3 (1u << 9)\000"
 .LASF6388:
 	.ascii	"US_CSR_CTS (0x1u << 23)\000"
-.LASF6531:
-	.ascii	"REG_SSC_IDR (*(WoReg*)0x40004048U)\000"
 .LASF1104:
 	.ascii	"SCB_AIRCR_VECTKEY_Pos 16\000"
 .LASF5442:
@@ -36672,8 +36673,6 @@ pio_handler_set_priority:
 	.ascii	"( 77, data)\000"
 .LASF2650:
 	.ascii	"PIO_PDR_P18 (0x1u << 18)\000"
-.LASF5791:
-	.ascii	"TWI_IER_TXBUFE (0x1u << 15)\000"
 .LASF3911:
 	.ascii	"PMC_PCER0_PID13 (0x1u << 13)\000"
 .LASF6542:
@@ -36696,9 +36695,6 @@ pio_handler_set_priority:
 	.ascii	"UDPHS_EPTSTA_CONTROL_DIR_Pos 16\000"
 .LASF1130:
 	.ascii	"SCB_CCR_UNALIGN_TRP_Pos 3\000"
-.LASF8539:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
 .LASF2354:
 	.ascii	"HSMCI_IMR_CSTOE (0x1u << 23)\000"
 .LASF1889:
@@ -36727,6 +36723,9 @@ pio_handler_set_priority:
 	.ascii	"PIO_SODR_P17 (0x1u << 17)\000"
 .LASF7111:
 	.ascii	"REG_PIOA_ODSR (*(RwReg*)0x400E0C38U)\000"
+.LASF8539:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF8172:
 	.ascii	"swap32(u32) ((U32)__builtin_bswap32((U32)(u32)))\000"
 .LASF4602:
@@ -41841,9 +41840,8 @@ pio_handler_set_priority:
 	.ascii	"REG_TWI0_IER (*(WoReg*)0x40084024U)\000"
 .LASF5298:
 	.ascii	"SUPC_SMMR_SMTH_3_2V (0xDu << 0)\000"
-.LASF4140:
-	.ascii	"PWM_CLK_DIVA(value) ((PWM_CLK_DIVA_Msk & ((value) <"
-	.ascii	"< PWM_CLK_DIVA_Pos)))\000"
+.LASF1878:
+	.ascii	"CHIPID_CIDR_ARCH_SAM3SxB (0x89u << 20)\000"
 .LASF927:
 	.ascii	"___int_least16_t_defined 1\000"
 .LASF5930:
@@ -43193,6 +43191,8 @@ pio_handler_set_priority:
 	.ascii	"TC_CMR_BEEVT_TOGGLE (0x3u << 28)\000"
 .LASF7577:
 	.ascii	"PIO_PB6_IDX 38\000"
+.LASF4443:
+	.ascii	"PWM_CMPM_CTR_Pos 4\000"
 .LASF4469:
 	.ascii	"PWM_CMR_CPRE_Msk (0xfu << PWM_CMR_CPRE_Pos)\000"
 .LASF4291:
@@ -49208,8 +49208,8 @@ pio_handler_set_priority:
 	.ascii	"REG_USART0_IMR (*(RoReg*)0x40090010U)\000"
 .LASF5790:
 	.ascii	"TWI_IER_RXBUFF (0x1u << 14)\000"
-.LASF1878:
-	.ascii	"CHIPID_CIDR_ARCH_SAM3SxB (0x89u << 20)\000"
+.LASF1535:
+	.ascii	"ADC_SR_OVRE5 (0x1u << 13)\000"
 .LASF6705:
 	.ascii	"REG_PWM_CMR1 (*(RwReg*)0x4008C220U)\000"
 .LASF18:

@@ -28943,6 +28943,8 @@ Reset_Handler:
 	.ascii	"PWM_SCM_PTRM (0x1u << 20)\000"
 .LASF1983:
 	.ascii	"MSB6D(u64) (((U8 *)&(u64))[1])\000"
+.LASF6583:
+	.ascii	"UDPHS_INTSTA_INT_SOF (0x1u << 3)\000"
 .LASF6872:
 	.ascii	"US_MR_NBSTOP_1_5_BIT (0x1u << 12)\000"
 .LASF429:
@@ -31146,8 +31148,8 @@ Reset_Handler:
 	.ascii	"PIO_PB0_IDX 32\000"
 .LASF8011:
 	.ascii	"PIO_PC12A_NCS1 (1u << 12)\000"
-.LASF2829:
-	.ascii	"HSMCI_BLKR_BCNT_BLOCK (0x5u << 0)\000"
+.LASF1031:
+	.ascii	"UC3L3_L4 (UC3L3 || UC3L4)\000"
 .LASF6120:
 	.ascii	"TC_CCR_SWTRG (0x1u << 2)\000"
 .LASF7814:
@@ -31198,8 +31200,6 @@ Reset_Handler:
 	.ascii	"PMC_IMR_PCKRDY2 (0x1u << 10)\000"
 .LASF430:
 	.ascii	"unsigned +0\000"
-.LASF1031:
-	.ascii	"UC3L3_L4 (UC3L3 || UC3L4)\000"
 .LASF1800:
 	.ascii	"_GID_T_DECLARED \000"
 .LASF3161:
@@ -33414,8 +33414,8 @@ Reset_Handler:
 	.ascii	"PWM_IMR1_CHID0 (0x1u << 0)\000"
 .LASF1967:
 	.ascii	"MSW(u64) (((U32 *)&(u64))[1])\000"
-.LASF6583:
-	.ascii	"UDPHS_INTSTA_INT_SOF (0x1u << 3)\000"
+.LASF2829:
+	.ascii	"HSMCI_BLKR_BCNT_BLOCK (0x5u << 0)\000"
 .LASF3798:
 	.ascii	"PIO_MDSR_P0 (0x1u << 0)\000"
 .LASF2114:
@@ -34261,9 +34261,6 @@ Reset_Handler:
 	.ascii	"UDPHS_EPTSTA_CONTROL_DIR_Pos 16\000"
 .LASF620:
 	.ascii	"SCB_CCR_UNALIGN_TRP_Pos 3\000"
-.LASF8383:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
 .LASF2944:
 	.ascii	"HSMCI_IMR_CSTOE (0x1u << 23)\000"
 .LASF2479:
@@ -34292,6 +34289,9 @@ Reset_Handler:
 	.ascii	"PIO_SODR_P17 (0x1u << 17)\000"
 .LASF7701:
 	.ascii	"REG_PIOA_ODSR (*(RwReg*)0x400E0C38U)\000"
+.LASF8383:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF2015:
 	.ascii	"swap32(u32) ((U32)__builtin_bswap32((U32)(u32)))\000"
 .LASF5192:

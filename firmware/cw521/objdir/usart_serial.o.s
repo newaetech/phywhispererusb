@@ -31726,6 +31726,9 @@ usart_serial_read_packet:
 .LASF714:
 	.ascii	"MREPEAT80(macro,data) MREPEAT79( macro, data) macro"
 	.ascii	"( 79, data)\000"
+.LASF4142:
+	.ascii	"PWM_CLK_DIVA(value) ((PWM_CLK_DIVA_Msk & ((value) <"
+	.ascii	"< PWM_CLK_DIVA_Pos)))\000"
 .LASF5779:
 	.ascii	"TWI_SR_TXBUFE (0x1u << 15)\000"
 .LASF6178:
@@ -36304,9 +36307,6 @@ usart_serial_read_packet:
 	.ascii	"SYSCLK_H_INCLUDED \000"
 .LASF1132:
 	.ascii	"SCB_CCR_UNALIGN_TRP_Pos 3\000"
-.LASF8705:
-	.ascii	"C:\\Users\\User\\Code\\term3\\PhyWhisperer_usb\\fir"
-	.ascii	"mware\\cw521\000"
 .LASF1891:
 	.ascii	"CHIPID_CIDR_ARCH_AT75Cxx (0xF0u << 20)\000"
 .LASF2768:
@@ -36333,6 +36333,9 @@ usart_serial_read_packet:
 	.ascii	"PIO_SODR_P17 (0x1u << 17)\000"
 .LASF7113:
 	.ascii	"REG_PIOA_ODSR (*(RwReg*)0x400E0C38U)\000"
+.LASF8705:
+	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
+	.ascii	"firmware\\cw521\000"
 .LASF8174:
 	.ascii	"swap32(u32) ((U32)__builtin_bswap32((U32)(u32)))\000"
 .LASF4604:
@@ -41536,9 +41539,8 @@ usart_serial_read_packet:
 	.ascii	"REG_TWI0_IER (*(WoReg*)0x40084024U)\000"
 .LASF5300:
 	.ascii	"SUPC_SMMR_SMTH_3_2V (0xDu << 0)\000"
-.LASF4142:
-	.ascii	"PWM_CLK_DIVA(value) ((PWM_CLK_DIVA_Msk & ((value) <"
-	.ascii	"< PWM_CLK_DIVA_Pos)))\000"
+.LASF1880:
+	.ascii	"CHIPID_CIDR_ARCH_SAM3SxB (0x89u << 20)\000"
 .LASF929:
 	.ascii	"___int_least16_t_defined 1\000"
 .LASF5932:
@@ -43432,8 +43434,8 @@ usart_serial_read_packet:
 	.ascii	"PIN_EBI_ADDR_BUS_A4 PIO_PB2_IDX\000"
 .LASF1869:
 	.ascii	"CHIPID_CIDR_ARCH_SAM3UxE (0x81u << 20)\000"
-.LASF1537:
-	.ascii	"ADC_SR_OVRE5 (0x1u << 13)\000"
+.LASF34:
+	.ascii	"__WCHAR_TYPE__ unsigned int\000"
 .LASF526:
 	.ascii	"SAMG55 ( SAM_PART_IS_DEFINED(SAMG55G18) || SAM_PART"
 	.ascii	"_IS_DEFINED(SAMG55G19) || SAM_PART_IS_DEFINED(SAMG5"
@@ -45093,8 +45095,6 @@ usart_serial_read_packet:
 	.ascii	"PIO_OER_P19 (0x1u << 19)\000"
 .LASF7630:
 	.ascii	"_WANT_IO_LONG_LONG 1\000"
-.LASF34:
-	.ascii	"__WCHAR_TYPE__ unsigned int\000"
 .LASF7361:
 	.ascii	"PIO_PB4X1_AD12B3 (1u << 4)\000"
 .LASF965:
@@ -49075,8 +49075,8 @@ usart_serial_read_packet:
 	.ascii	"REG_USART0_IMR (*(RoReg*)0x40090010U)\000"
 .LASF5792:
 	.ascii	"TWI_IER_RXBUFF (0x1u << 14)\000"
-.LASF1880:
-	.ascii	"CHIPID_CIDR_ARCH_SAM3SxB (0x89u << 20)\000"
+.LASF1537:
+	.ascii	"ADC_SR_OVRE5 (0x1u << 13)\000"
 .LASF6707:
 	.ascii	"REG_PWM_CMR1 (*(RwReg*)0x4008C220U)\000"
 .LASF18:

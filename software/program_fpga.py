@@ -33,10 +33,15 @@ import os
 import time
 import logging
 
-class FPGA(object):
+class PhyWhispererUSB(object):
 
     CMD_FPGA_STATUS = 0x15
     CMD_FPGA_PROGRAM = 0x16
+    CMD_CHANGE_PWR = 0x24
+
+    PWR_SRC_OFF = 0x00
+    PWR_SRC_HOST = 0x01
+    PWR_SRC_SNIFFER = 0x02
 
     def __init__(self, usb, timeout=200):
         self.sendCtrl = usb.sendCtrl
@@ -130,14 +135,6 @@ class FPGA(object):
                 j += 1
             size += j
 
-            # if j < transactionBytes and j % 64 == 0:
-            #    j += 1
-            # size += j
-
-            # print i,
-            # print " ",
-            # print len(buffer_)
-
         if size < 64 or size % 64 == 0:
             raise ValueError("Invalid file size: " + str(size))
 
@@ -163,17 +160,7 @@ class FPGA(object):
                     for k in range(0, len(buffer_[i])):
                         cs = (cs + (buffer_[i][k] & 0xff)) & 0xff
 
-                # self.getFpgaState()
-                # if not self.fpgaConfigured:
-                #    raise IOError("FPGA configuration failed: DONE pin does not go high (size=" + self.fpgaBytes + " ,  " + (bs - self.fpgaBytes) + " bytes got lost;  checksum=" + self.fpgaChecksum + " , should be " + cs + ";  INIT_B_HIST=" + self.fpgaInitB + ")")
-
-                # if self.enableExtraFpgaConfigurationChecks:
-                #    if self.fpgaBytes != 0 and self.fpgaBytes != bs:
-                #        System.err.println("Warning: Possible FPGA configuration data loss: " + (bs - self.fpgaBytes) + " bytes got lost")
-                #    if self.fpgaInitB != 222:
-                #        System.err.println("Warning: Possible Bitstream CRC error: INIT_B_HIST=" + self.fpgaInitB)
                 tries = 0
-                # t0 += Date().getTime()
             except IOError as e:
                 if tries > 1:
                     print(("Warning: " + str(e) + ": Retrying it ..."))
@@ -183,35 +170,41 @@ class FPGA(object):
         # time.sleep(0.1)
         return t0
 
-        # def detectBitstreamBitOrder(self, buf):
-        #    """ Determine what bit-order bitstream is in by looking for magic bytes """
-        #
-        #    i = 0
-        #    while i < len(buf):
-        #        if ((buf[i] & 255) == 0xaa) and ((buf[i + 1] & 255) == 0x99) and ((buf[i + 2] & 255) == 0x55) and ((buf[i + 3] & 255) == 0x66):
-        #            return 1
-        #        if ((buf[i] & 255) == 0x55) and ((buf[i + 1] & 255) == 0x99) and ((buf[i + 2] & 255) == 0xaa) and ((buf[i + 3] & 255) == 0x66):
-        #            return 0
-        #        i += 1
-        #    print("Warning: Unable to determine bitstream bit order: no signature found")
-        #    return 0
+    def changePowerSource(self, src):
+        self.sendCtrl(self.CMD_CHANGE_PWR, src)
+
+    def eraseFW(self, confirm=False):
+        # may not work, FW copied from CWLite
+        if confirm:
+            self.sendCtrl(0x22, 0x03)
 
 def print_usage():
-    print("Usage: python program_fpga.py bitstream")
+    print("Usage: python program_fpga.py cmd arg")
+    print("Commands:\n\tfpgaprog bitstream.bit\n\tchangepwr src")
     exit()
 
-def main():
-    if len(sys.argv) < 2:
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
         print_usage()
 
-    if not os.path.isfile(sys.argv[1]):
-        print("Bitstream file not found")
-        print_usage()
-
-    bitstream = open(sys.argv[1], "rb")
     usb = NAE.NAEUSB()
     usb.con(idProduct=[0xC521])
-    fpga = FPGA(usb)
-    fpga.FPGAProgram(bitstream)
+    phywhisperer = PhyWhispererUSB(usb)
+    if sys.argv[1] == "fpgaprog":
+        if not os.path.isfile(sys.argv[2]):
+            print("Bitstream file not found")
+            print_usage()
 
-main()
+        bitstream = open(sys.argv[2], "rb")
+        phywhisperer.FPGAProgram(bitstream)
+    elif sys.argv[1] == "changepwr":
+        new_pwr_src = 0
+        try:
+            new_pwr_src = int(sys.argv[2])
+        except ValueError:
+            print("Invalid power source (try 1, 2, or 3)")
+            print_usage()
+        phywhisperer.changePowerSource(new_pwr_src)
+        pass
+    else:
+        print_usage()
