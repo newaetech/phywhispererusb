@@ -1292,7 +1292,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.udc_desc.h.77.5fec235bd7553e7256e345e020840072
                            .group:00000000 wm4.udd.h.103.3ccc59b50c14ec70568e6136eeb22d56
                            .group:00000000 wm4.udi_vendor.h.125.7b9085237d4d4a9757f4c148fba1918d
-                           .group:00000000 wm4.fpga_program.h.36.51224b537e4ba9936a71e45e1029f6ce
+                           .group:00000000 wm4.fpga_program.h.36.ca9933fdd1528ae3419efe9d74ea4ee5
 
 UNDEFINED SYMBOLS
 pmc_enable_periph_clk

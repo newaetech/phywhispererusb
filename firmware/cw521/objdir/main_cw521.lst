@@ -4424,12 +4424,12 @@
  1973 0002 00AF     	 add r7,sp,#0
  1974              	.LCFI103:
  1975              	 .cfi_def_cfa_register 7
-  18:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
+  18:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBHOST); //disable sniff power
  1976              	 .loc 11 18 0
  1977 0004 054B     	 ldr r3,.L163
  1978 0006 4FF00072 	 mov r2,#33554432
  1979 000a 5A63     	 str r2,[r3,#52]
-  19:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+  19:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VB5V); //disable host power
  1980              	 .loc 11 19 0
  1981 000c 034B     	 ldr r3,.L163
  1982 000e 4FF08062 	 mov r2,#67108864
@@ -4452,17 +4452,17 @@
  1998 001c 000C0E40 	 .word 1074662400
  1999              	 .cfi_endproc
  2000              	.LFE188:
- 2002              	 .section .text.phywhisperer_host_pwr,"ax",%progbits
+ 2002              	 .section .text.phywhisperer_5V_pwr,"ax",%progbits
  2003              	 .align 1
- 2004              	 .global phywhisperer_host_pwr
+ 2004              	 .global phywhisperer_5V_pwr
  2005              	 .syntax unified
  2006              	 .thumb
  2007              	 .thumb_func
  2008              	 .fpu softvfp
- 2010              	phywhisperer_host_pwr:
+ 2010              	phywhisperer_5V_pwr:
  2011              	.LFB189:
   21:main_cw521.c  **** 
-  22:main_cw521.c  **** void phywhisperer_host_pwr(void)
+  22:main_cw521.c  **** void phywhisperer_5V_pwr(void)
   23:main_cw521.c  **** {
  2012              	 .loc 11 23 0
  2013              	 .cfi_startproc
@@ -4476,12 +4476,12 @@
  2021 0002 00AF     	 add r7,sp,#0
  2022              	.LCFI107:
  2023              	 .cfi_def_cfa_register 7
-  24:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
+  24:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBHOST); //disable sniff power
  2024              	 .loc 11 24 0
  2025 0004 054B     	 ldr r3,.L166
  2026 0006 4FF00072 	 mov r2,#33554432
  2027 000a 5A63     	 str r2,[r3,#52]
-  25:main_cw521.c  ****     PIOA->PIO_SODR = (1 << F_VBHOST); //enable host power
+  25:main_cw521.c  ****     PIOA->PIO_SODR = (1 << F_VB5V); //enable host power
  2028              	 .loc 11 25 0
  2029 000c 034B     	 ldr r3,.L166
  2030 000e 4FF08062 	 mov r2,#67108864
@@ -4504,17 +4504,17 @@
  2046 001c 000C0E40 	 .word 1074662400
  2047              	 .cfi_endproc
  2048              	.LFE189:
- 2050              	 .section .text.phywhisperer_sniff_pwr,"ax",%progbits
+ 2050              	 .section .text.phywhisperer_host_pwr,"ax",%progbits
  2051              	 .align 1
- 2052              	 .global phywhisperer_sniff_pwr
+ 2052              	 .global phywhisperer_host_pwr
  2053              	 .syntax unified
  2054              	 .thumb
  2055              	 .thumb_func
  2056              	 .fpu softvfp
- 2058              	phywhisperer_sniff_pwr:
+ 2058              	phywhisperer_host_pwr:
  2059              	.LFB190:
   27:main_cw521.c  **** 
-  28:main_cw521.c  **** void phywhisperer_sniff_pwr(void)
+  28:main_cw521.c  **** void phywhisperer_host_pwr(void)
   29:main_cw521.c  **** {
  2060              	 .loc 11 29 0
  2061              	 .cfi_startproc
@@ -4528,12 +4528,12 @@
  2069 0002 00AF     	 add r7,sp,#0
  2070              	.LCFI111:
  2071              	 .cfi_def_cfa_register 7
-  30:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+  30:main_cw521.c  ****     PIOA->PIO_CODR = (1 << F_VB5V); //disable host power
  2072              	 .loc 11 30 0
  2073 0004 054B     	 ldr r3,.L169
  2074 0006 4FF08062 	 mov r2,#67108864
  2075 000a 5A63     	 str r2,[r3,#52]
-  31:main_cw521.c  ****     PIOA->PIO_SODR = (1 << F_VBSNIFF); //enable sniff power
+  31:main_cw521.c  ****     PIOA->PIO_SODR = (1 << F_VBHOST); //enable sniff power
  2076              	 .loc 11 31 0
  2077 000c 034B     	 ldr r3,.L169
  2078 000e 4FF00072 	 mov r2,#33554432
@@ -4580,7 +4580,7 @@
  2117 0002 00AF     	 add r7,sp,#0
  2118              	.LCFI115:
  2119              	 .cfi_def_cfa_register 7
-  36:main_cw521.c  ****     if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF))) {
+  36:main_cw521.c  ****     if ((PIOA->PIO_ODSR & (1 << F_VBHOST))) {
  2120              	 .loc 11 36 0
  2121 0004 064B     	 ldr r3,.L175
  2122 0006 9B6B     	 ldr r3,[r3,#56]
@@ -4588,14 +4588,14 @@
  2124 000c 002B     	 cmp r3,#0
  2125 000e 02D0     	 beq .L172
   37:main_cw521.c  ****         //Switch to host power mode
-  38:main_cw521.c  ****         phywhisperer_host_pwr();
+  38:main_cw521.c  ****         phywhisperer_5V_pwr();
  2126              	 .loc 11 38 0
  2127 0010 044B     	 ldr r3,.L175+4
  2128 0012 9847     	 blx r3
  2129              	.LVL57:
   39:main_cw521.c  ****     } else {
   40:main_cw521.c  ****         //Switch to sniff power mode
-  41:main_cw521.c  ****         phywhisperer_sniff_pwr();
+  41:main_cw521.c  ****         phywhisperer_host_pwr();
   42:main_cw521.c  ****     }
   43:main_cw521.c  **** }
  2130              	 .loc 11 43 0
@@ -4614,8 +4614,8 @@
  2142 001e 00BF     	 .align 2
  2143              	.L175:
  2144 0020 000C0E40 	 .word 1074662400
- 2145 0024 00000000 	 .word phywhisperer_host_pwr
- 2146 0028 00000000 	 .word phywhisperer_sniff_pwr
+ 2145 0024 00000000 	 .word phywhisperer_5V_pwr
+ 2146 0028 00000000 	 .word phywhisperer_host_pwr
  2147              	 .cfi_endproc
  2148              	.LFE191:
  2150              	 .section .text.pwr_st_from_io,"ax",%progbits
@@ -4642,7 +4642,7 @@
  2169 0002 00AF     	 add r7,sp,#0
  2170              	.LCFI117:
  2171              	 .cfi_def_cfa_register 7
-  47:main_cw521.c  ****     if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+  47:main_cw521.c  ****     if (!(PIOA->PIO_ODSR & (1 << F_VBHOST)) && !(PIOA->PIO_ODSR & (1 << F_VB5V))) {
  2172              	 .loc 11 47 0
  2173 0004 174B     	 ldr r3,.L182
  2174 0006 9B6B     	 ldr r3,[r3,#56]
@@ -4661,7 +4661,7 @@
  2185 001c 0023     	 movs r3,#0
  2186 001e 1CE0     	 b .L179
  2187              	.L178:
-  50:main_cw521.c  ****     } else if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && (PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+  50:main_cw521.c  ****     } else if (!(PIOA->PIO_ODSR & (1 << F_VBHOST)) && (PIOA->PIO_ODSR & (1 << F_VB5V))) {
  2188              	 .loc 11 50 0
  2189 0020 104B     	 ldr r3,.L182
  2190 0022 9B6B     	 ldr r3,[r3,#56]
@@ -4680,7 +4680,7 @@
  2201 0038 0123     	 movs r3,#1
  2202 003a 0EE0     	 b .L179
  2203              	.L180:
-  53:main_cw521.c  ****     } else if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+  53:main_cw521.c  ****     } else if ((PIOA->PIO_ODSR & (1 << F_VBHOST)) && !(PIOA->PIO_ODSR & (1 << F_VB5V))) {
  2204              	 .loc 11 53 0
  2205 003c 094B     	 ldr r3,.L182
  2206 003e 9B6B     	 ldr r3,[r3,#56]
@@ -4777,13 +4777,13 @@
  2283 0022 4FF08072 	 mov r2,#16777216
  2284 0026 C3F88420 	 str r2,[r3,#132]
   70:main_cw521.c  **** 
-  71:main_cw521.c  ****     PIOA->PIO_OER = (1 << F_VBHOST) | (1 << F_VBSNIFF); //enable output mode on VBHOST/VBSNIFF pins
+  71:main_cw521.c  ****     PIOA->PIO_OER = (1 << F_VB5V) | (1 << F_VBHOST); //enable output mode on VBHOST/VBSNIFF pins
  2285              	 .loc 11 71 0
  2286 002a 274B     	 ldr r3,.L185+8
  2287 002c 4FF0C062 	 mov r2,#100663296
  2288 0030 1A61     	 str r2,[r3,#16]
   72:main_cw521.c  **** 
-  73:main_cw521.c  ****     phywhisperer_sniff_pwr();
+  73:main_cw521.c  ****     phywhisperer_host_pwr();
  2289              	 .loc 11 73 0
  2290 0032 264B     	 ldr r3,.L185+12
  2291 0034 9847     	 blx r3
@@ -4924,7 +4924,7 @@
  2398 00c0 00000000 	 .word board_init
  2399 00c4 00000000 	 .word ioport_set_pin_mode
  2400 00c8 000C0E40 	 .word 1074662400
- 2401 00cc 00000000 	 .word phywhisperer_sniff_pwr
+ 2401 00cc 00000000 	 .word phywhisperer_host_pwr
  2402 00d0 00000000 	 .word pmc_enable_periph_clk
  2403 00d4 01000008 	 .word 134217729
  2404 00d8 00000000 	 .word pio_configure_pin
@@ -5102,8 +5102,8 @@
  2565              	 .align 2
  2568              	pwr_list:
  2569 0000 00000000 	 .word phywhisperer_no_pwr
- 2570 0004 00000000 	 .word phywhisperer_host_pwr
- 2571 0008 00000000 	 .word phywhisperer_sniff_pwr
+ 2570 0004 00000000 	 .word phywhisperer_5V_pwr
+ 2571 0008 00000000 	 .word phywhisperer_host_pwr
  2572              	 .section .text.main,"ax",%progbits
  2573              	 .align 1
  2574              	 .global main
@@ -5114,7 +5114,7 @@
  2580              	main:
  2581              	.LFB196:
  118:main_cw521.c  **** 
- 119:main_cw521.c  **** void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_host_pwr, phywhisperer_sniff_pwr};
+ 119:main_cw521.c  **** void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_5V_pwr, phywhisperer_host_pwr};
  120:main_cw521.c  **** 
  121:main_cw521.c  **** int main(void)
  122:main_cw521.c  **** {
@@ -5455,12 +5455,12 @@ DEFINED SYMBOLS
     {standard input}:1954   .text.phywhisperer_no_pwr:00000000 $t
     {standard input}:1961   .text.phywhisperer_no_pwr:00000000 phywhisperer_no_pwr
     {standard input}:1998   .text.phywhisperer_no_pwr:0000001c $d
-    {standard input}:2003   .text.phywhisperer_host_pwr:00000000 $t
-    {standard input}:2010   .text.phywhisperer_host_pwr:00000000 phywhisperer_host_pwr
-    {standard input}:2046   .text.phywhisperer_host_pwr:0000001c $d
-    {standard input}:2051   .text.phywhisperer_sniff_pwr:00000000 $t
-    {standard input}:2058   .text.phywhisperer_sniff_pwr:00000000 phywhisperer_sniff_pwr
-    {standard input}:2094   .text.phywhisperer_sniff_pwr:0000001c $d
+    {standard input}:2003   .text.phywhisperer_5V_pwr:00000000 $t
+    {standard input}:2010   .text.phywhisperer_5V_pwr:00000000 phywhisperer_5V_pwr
+    {standard input}:2046   .text.phywhisperer_5V_pwr:0000001c $d
+    {standard input}:2051   .text.phywhisperer_host_pwr:00000000 $t
+    {standard input}:2058   .text.phywhisperer_host_pwr:00000000 phywhisperer_host_pwr
+    {standard input}:2094   .text.phywhisperer_host_pwr:0000001c $d
     {standard input}:2099   .text.phywhisperer_switch_usb_pwr:00000000 $t
     {standard input}:2106   .text.phywhisperer_switch_usb_pwr:00000000 phywhisperer_switch_usb_pwr
     {standard input}:2144   .text.phywhisperer_switch_usb_pwr:00000020 $d
@@ -5617,7 +5617,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.udi_vendor.h.125.7b9085237d4d4a9757f4c148fba1918d
                            .group:00000000 wm4.genclk.h.45.f7865052b40a907e4bab1a8f483a50e2
                            .group:00000000 wm4.fpga_xmem.h.19.554328dd33dcefd66f095f5408b9d9fe
-                           .group:00000000 wm4.fpga_program.h.36.51224b537e4ba9936a71e45e1029f6ce
+                           .group:00000000 wm4.fpga_program.h.36.ca9933fdd1528ae3419efe9d74ea4ee5
                            .group:00000000 wm4.usb.h.20.f560de5b472e2e451b5cba954e5d0064
                            .group:00000000 wm4.string.h.8.c4b8571ce60dff2817f43fec8b86aecd
 

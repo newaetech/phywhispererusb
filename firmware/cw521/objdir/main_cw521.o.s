@@ -1999,15 +1999,15 @@ phywhisperer_no_pwr:
 	.cfi_endproc
 .LFE188:
 	.size	phywhisperer_no_pwr, .-phywhisperer_no_pwr
-	.section	.text.phywhisperer_host_pwr,"ax",%progbits
+	.section	.text.phywhisperer_5V_pwr,"ax",%progbits
 	.align	1
-	.global	phywhisperer_host_pwr
+	.global	phywhisperer_5V_pwr
 	.syntax unified
 	.thumb
 	.thumb_func
 	.fpu softvfp
-	.type	phywhisperer_host_pwr, %function
-phywhisperer_host_pwr:
+	.type	phywhisperer_5V_pwr, %function
+phywhisperer_5V_pwr:
 .LFB189:
 	.loc 11 23 0
 	.cfi_startproc
@@ -2046,16 +2046,16 @@ phywhisperer_host_pwr:
 	.word	1074662400
 	.cfi_endproc
 .LFE189:
-	.size	phywhisperer_host_pwr, .-phywhisperer_host_pwr
-	.section	.text.phywhisperer_sniff_pwr,"ax",%progbits
+	.size	phywhisperer_5V_pwr, .-phywhisperer_5V_pwr
+	.section	.text.phywhisperer_host_pwr,"ax",%progbits
 	.align	1
-	.global	phywhisperer_sniff_pwr
+	.global	phywhisperer_host_pwr
 	.syntax unified
 	.thumb
 	.thumb_func
 	.fpu softvfp
-	.type	phywhisperer_sniff_pwr, %function
-phywhisperer_sniff_pwr:
+	.type	phywhisperer_host_pwr, %function
+phywhisperer_host_pwr:
 .LFB190:
 	.loc 11 29 0
 	.cfi_startproc
@@ -2094,7 +2094,7 @@ phywhisperer_sniff_pwr:
 	.word	1074662400
 	.cfi_endproc
 .LFE190:
-	.size	phywhisperer_sniff_pwr, .-phywhisperer_sniff_pwr
+	.size	phywhisperer_host_pwr, .-phywhisperer_host_pwr
 	.section	.text.phywhisperer_switch_usb_pwr,"ax",%progbits
 	.align	1
 	.global	phywhisperer_switch_usb_pwr
@@ -2142,8 +2142,8 @@ phywhisperer_switch_usb_pwr:
 	.align	2
 .L175:
 	.word	1074662400
+	.word	phywhisperer_5V_pwr
 	.word	phywhisperer_host_pwr
-	.word	phywhisperer_sniff_pwr
 	.cfi_endproc
 .LFE191:
 	.size	phywhisperer_switch_usb_pwr, .-phywhisperer_switch_usb_pwr
@@ -2398,7 +2398,7 @@ phywhisperer_setup_pins:
 	.word	board_init
 	.word	ioport_set_pin_mode
 	.word	1074662400
-	.word	phywhisperer_sniff_pwr
+	.word	phywhisperer_host_pwr
 	.word	pmc_enable_periph_clk
 	.word	134217729
 	.word	pio_configure_pin
@@ -2567,8 +2567,8 @@ genclk_enable_config:
 	.size	pwr_list, 12
 pwr_list:
 	.word	phywhisperer_no_pwr
+	.word	phywhisperer_5V_pwr
 	.word	phywhisperer_host_pwr
-	.word	phywhisperer_sniff_pwr
 	.section	.text.main,"ax",%progbits
 	.align	1
 	.global	main
@@ -38157,7 +38157,7 @@ main:
 	.uleb128 0x1e
 	.4byte	.LASF8854
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.fpga_program.h.36.51224b537e4ba9936a71e45e1029f6ce,comdat
+	.section	.debug_macro,"G",%progbits,wm4.fpga_program.h.36.ca9933fdd1528ae3419efe9d74ea4ee5,comdat
 .Ldebug_macro136:
 	.2byte	0x4
 	.byte	0
@@ -39605,8 +39605,6 @@ main:
 .LASF2155:
 	.ascii	"HSMCI_MR_PWSDIV(value) ((HSMCI_MR_PWSDIV_Msk & ((va"
 	.ascii	"lue) << HSMCI_MR_PWSDIV_Pos)))\000"
-.LASF9094:
-	.ascii	"_locale\000"
 .LASF839:
 	.ascii	"MREPEAT206(macro,data) MREPEAT205(macro, data) macr"
 	.ascii	"o(205, data)\000"
@@ -40561,8 +40559,8 @@ main:
 	.ascii	"ADC12B_CHER_CH7 (0x1u << 7)\000"
 .LASF4823:
 	.ascii	"SMC_ECC_PR3_WORDADDR_W8BIT_Pos 3\000"
-.LASF9273:
-	.ascii	"phywhisperer_sniff_pwr\000"
+.LASF2663:
+	.ascii	"PIO_PDR_P30 (0x1u << 30)\000"
 .LASF3438:
 	.ascii	"PIO_IFDGSR_P5 (0x1u << 5)\000"
 .LASF1983:
@@ -44038,8 +44036,6 @@ main:
 	.ascii	"IFLASH0_NB_OF_PAGES (256u)\000"
 .LASF1564:
 	.ascii	"ADC_IER_RXBUFF (0x1u << 19)\000"
-.LASF8886:
-	.ascii	"F_VBHOST PIO_PA26_IDX\000"
 .LASF2259:
 	.ascii	"HSMCI_RDR_DATA_Pos 0\000"
 .LASF7999:
@@ -45692,6 +45688,8 @@ main:
 .LASF1252:
 	.ascii	"DWT_CTRL_EXCEVTENA_Msk (0x1UL << DWT_CTRL_EXCEVTENA"
 	.ascii	"_Pos)\000"
+.LASF6831:
+	.ascii	"REG_UDPHS_EPTSTA0 (*(RoReg*)0x400A411CU)\000"
 .LASF8637:
 	.ascii	"USB_DEVICE_PRODUCT_NAME \"Ballistic Gel CW521\"\000"
 .LASF1752:
@@ -46051,8 +46049,8 @@ main:
 	.ascii	"PWM_CCNT_CNT_Pos 0\000"
 .LASF7171:
 	.ascii	"REG_PIOB_IFDGSR (*(RoReg*)0x400E0E88U)\000"
-.LASF611:
-	.ascii	"TPASTE4(a,b,c,d) a ##b ##c ##d\000"
+.LASF9094:
+	.ascii	"_locale\000"
 .LASF3408:
 	.ascii	"PIO_DIFSR_P7 (0x1u << 7)\000"
 .LASF199:
@@ -46314,7 +46312,7 @@ main:
 	.ascii	"__LDBL_MAX_EXP__ 1024\000"
 .LASF5732:
 	.ascii	"TWI_CR_STOP (0x1u << 1)\000"
-.LASF9274:
+.LASF9273:
 	.ascii	"phywhisperer_host_pwr\000"
 .LASF3710:
 	.ascii	"PIO_LSR_P18 (0x1u << 18)\000"
@@ -46667,8 +46665,6 @@ main:
 	.ascii	"PWM_SCUPUPD_UPRUPD_Pos 0\000"
 .LASF6842:
 	.ascii	"REG_UDPHS_EPTCTL2 (*(RoReg*)0x400A414CU)\000"
-.LASF8887:
-	.ascii	"F_VBSNIFF PIO_PA25_IDX\000"
 .LASF6758:
 	.ascii	"_SAM3U_USART1_INSTANCE_ \000"
 .LASF7649:
@@ -47713,8 +47709,8 @@ main:
 	.ascii	"REG_UDPHS_DMACONTROL1 (*(RwReg*)0x400A4318U)\000"
 .LASF8273:
 	.ascii	"STK600_RC032X 48\000"
-.LASF6831:
-	.ascii	"REG_UDPHS_EPTSTA0 (*(RoReg*)0x400A411CU)\000"
+.LASF9274:
+	.ascii	"phywhisperer_5V_pwr\000"
 .LASF6833:
 	.ascii	"REG_UDPHS_EPTCTLENB1 (*(WoReg*)0x400A4124U)\000"
 .LASF1152:
@@ -51285,8 +51281,6 @@ main:
 	.ascii	"DWT_LSUCNT_LSUCNT_Pos 0\000"
 .LASF8502:
 	.ascii	"PIO_TYPE_Pos 27\000"
-.LASF2663:
-	.ascii	"PIO_PDR_P30 (0x1u << 30)\000"
 .LASF7851:
 	.ascii	"_N_LISTS 30\000"
 .LASF380:
@@ -51601,8 +51595,8 @@ main:
 	.ascii	"CoreDebug_DEMCR_TRCENA_Pos 24\000"
 .LASF5213:
 	.ascii	"SSC_TFMR_FSEDGE_NEGATIVE (0x1u << 24)\000"
-.LASF3317:
-	.ascii	"PIO_PUSR_P12 (0x1u << 12)\000"
+.LASF3831:
+	.ascii	"PIO_FRLHSR_P11 (0x1u << 11)\000"
 .LASF7187:
 	.ascii	"REG_PIOB_WPSR (*(RoReg*)0x400E0EE8U)\000"
 .LASF8133:
@@ -53902,6 +53896,8 @@ main:
 	.ascii	"EFC_FCMD_SPUI 0x0F\000"
 .LASF594:
 	.ascii	"SAM4N (SAM4N8 || SAM4N16)\000"
+.LASF6605:
+	.ascii	"REG_TWI0_PTCR (*(WoReg*)0x40084120U)\000"
 .LASF3961:
 	.ascii	"PMC_PCSR0_PID8 (0x1u << 8)\000"
 .LASF8735:
@@ -54702,6 +54698,8 @@ main:
 .LASF465:
 	.ascii	"XMEGA_A1U ( AVR8_PART_IS_DEFINED(ATxmega64A1U) || A"
 	.ascii	"VR8_PART_IS_DEFINED(ATxmega128A1U) )\000"
+.LASF611:
+	.ascii	"TPASTE4(a,b,c,d) a ##b ##c ##d\000"
 .LASF5687:
 	.ascii	"TC_BCR_SYNC (0x1u << 0)\000"
 .LASF3549:
@@ -57522,8 +57520,8 @@ main:
 	.ascii	"USB_DEVICE_MINOR_VERSION 0\000"
 .LASF2622:
 	.ascii	"PIO_PER_P21 (0x1u << 21)\000"
-.LASF6605:
-	.ascii	"REG_TWI0_PTCR (*(WoReg*)0x40084120U)\000"
+.LASF3317:
+	.ascii	"PIO_PUSR_P12 (0x1u << 12)\000"
 .LASF4400:
 	.ascii	"PWM_WPCR_WPKEY_Msk (0xffffffu << PWM_WPCR_WPKEY_Pos"
 	.ascii	")\000"
@@ -57783,6 +57781,10 @@ main:
 	.ascii	"ADC12B_IMR_RXBUFF (0x1u << 19)\000"
 .LASF1989:
 	.ascii	"DMAC_CHER_KEEP2 (0x1u << 26)\000"
+.LASF8887:
+	.ascii	"F_VBHOST PIO_PA25_IDX\000"
+.LASF8886:
+	.ascii	"F_VB5V PIO_PA26_IDX\000"
 .LASF137:
 	.ascii	"__FLT_HAS_DENORM__ 1\000"
 .LASF5169:
@@ -58122,8 +58124,6 @@ main:
 	.ascii	"HSMCI_CFG_FIFOMODE (0x1u << 0)\000"
 .LASF3114:
 	.ascii	"PIO_ISR_P1 (0x1u << 1)\000"
-.LASF3831:
-	.ascii	"PIO_FRLHSR_P11 (0x1u << 11)\000"
 .LASF6331:
 	.ascii	"US_IDR_ENDTX (0x1u << 4)\000"
 .LASF7473:

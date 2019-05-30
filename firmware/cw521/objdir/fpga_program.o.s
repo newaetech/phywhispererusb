@@ -32938,7 +32938,7 @@ fpga_program_sendbyte:
 	.uleb128 0xfc
 	.4byte	.LASF8843
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.fpga_program.h.36.51224b537e4ba9936a71e45e1029f6ce,comdat
+	.section	.debug_macro,"G",%progbits,wm4.fpga_program.h.36.ca9933fdd1528ae3419efe9d74ea4ee5,comdat
 .Ldebug_macro134:
 	.2byte	0x4
 	.byte	0
@@ -38641,8 +38641,6 @@ fpga_program_sendbyte:
 	.ascii	"IFLASH0_NB_OF_PAGES (256u)\000"
 .LASF1564:
 	.ascii	"ADC_IER_RXBUFF (0x1u << 19)\000"
-.LASF8878:
-	.ascii	"F_VBHOST PIO_PA26_IDX\000"
 .LASF2259:
 	.ascii	"HSMCI_RDR_DATA_Pos 0\000"
 .LASF7999:
@@ -40756,8 +40754,6 @@ fpga_program_sendbyte:
 .LASF873:
 	.ascii	"MREPEAT240(macro,data) MREPEAT239(macro, data) macr"
 	.ascii	"o(239, data)\000"
-.LASF8879:
-	.ascii	"F_VBSNIFF PIO_PA25_IDX\000"
 .LASF1470:
 	.ascii	"ADC_CR_SWRST (0x1u << 0)\000"
 .LASF6235:
@@ -52261,6 +52257,10 @@ fpga_program_sendbyte:
 	.ascii	"ADC12B_IMR_RXBUFF (0x1u << 19)\000"
 .LASF1989:
 	.ascii	"DMAC_CHER_KEEP2 (0x1u << 26)\000"
+.LASF8879:
+	.ascii	"F_VBHOST PIO_PA25_IDX\000"
+.LASF8878:
+	.ascii	"F_VB5V PIO_PA26_IDX\000"
 .LASF137:
 	.ascii	"__FLT_HAS_DENORM__ 1\000"
 .LASF5169:

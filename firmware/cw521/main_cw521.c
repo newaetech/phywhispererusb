@@ -15,42 +15,42 @@ char usb_serial_number[33] = "000000000000DEADBEEF";
 
 void phywhisperer_no_pwr(void)
 {
-    PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
-    PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+    PIOA->PIO_CODR = (1 << F_VBHOST); //disable sniff power
+    PIOA->PIO_CODR = (1 << F_VB5V); //disable host power
+}
+
+void phywhisperer_5V_pwr(void)
+{
+    PIOA->PIO_CODR = (1 << F_VBHOST); //disable sniff power
+    PIOA->PIO_SODR = (1 << F_VB5V); //enable host power
 }
 
 void phywhisperer_host_pwr(void)
 {
-    PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
-    PIOA->PIO_SODR = (1 << F_VBHOST); //enable host power
-}
-
-void phywhisperer_sniff_pwr(void)
-{
-    PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
-    PIOA->PIO_SODR = (1 << F_VBSNIFF); //enable sniff power
+    PIOA->PIO_CODR = (1 << F_VB5V); //disable host power
+    PIOA->PIO_SODR = (1 << F_VBHOST); //enable sniff power
 }
 
 void phywhisperer_switch_usb_pwr(void)
 {
-    if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF))) {
+    if ((PIOA->PIO_ODSR & (1 << F_VBHOST))) {
         //Switch to host power mode
-        phywhisperer_host_pwr();
+        phywhisperer_5V_pwr();
     } else {
         //Switch to sniff power mode
-        phywhisperer_sniff_pwr();
+        phywhisperer_host_pwr();
     }
 }
 
 uint8_t pwr_st_from_io(void)
 {
-    if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+    if (!(PIOA->PIO_ODSR & (1 << F_VBHOST)) && !(PIOA->PIO_ODSR & (1 << F_VB5V))) {
         //USB off
         return 0;
-    } else if (!(PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && (PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+    } else if (!(PIOA->PIO_ODSR & (1 << F_VBHOST)) && (PIOA->PIO_ODSR & (1 << F_VB5V))) {
         //Host power
         return 1;
-    } else if ((PIOA->PIO_ODSR & (1 << F_VBSNIFF)) && !(PIOA->PIO_ODSR & (1 << F_VBHOST))) {
+    } else if ((PIOA->PIO_ODSR & (1 << F_VBHOST)) && !(PIOA->PIO_ODSR & (1 << F_VB5V))) {
         //Sniffer power
         return 2;
     } else {
@@ -68,9 +68,9 @@ void phywhisperer_setup_pins(void)
     PIOA->PIO_PUER = (1 << BUTTON_IN); // enable pullup
     PIOA->PIO_DIFSR = (1 << BUTTON_IN); //enable debounce
 
-    PIOA->PIO_OER = (1 << F_VBHOST) | (1 << F_VBSNIFF); //enable output mode on VBHOST/VBSNIFF pins
+    PIOA->PIO_OER = (1 << F_VB5V) | (1 << F_VBHOST); //enable output mode on VBHOST/VBSNIFF pins
 
-    phywhisperer_sniff_pwr();
+    phywhisperer_host_pwr();
 
     /* Enable SMC */
     pmc_enable_periph_clk(ID_SMC);
@@ -116,7 +116,7 @@ static inline void genclk_enable_config(unsigned int id, enum genclk_source src,
     genclk_enable(&gcfg, id);
 }
 
-void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_host_pwr, phywhisperer_sniff_pwr};
+void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_5V_pwr, phywhisperer_host_pwr};
 
 int main(void)
 {

@@ -97,8 +97,8 @@
 #endif
 
 #define BUTTON_IN PIO_PA24_IDX
-#define F_VBHOST PIO_PA26_IDX
-#define F_VBSNIFF PIO_PA25_IDX
+#define F_VB5V PIO_PA26_IDX
+#define F_VBHOST PIO_PA25_IDX
 
 extern uint8_t USB_PWR_STATE;
 /**

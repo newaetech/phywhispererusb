@@ -26,10 +26,6 @@
 #define FW_VER_MINOR 10
 #define FW_VER_DEBUG 0
 
-#define BUTTON_IN PIO_PA24_IDX
-#define F_VBHOST PIO_PA26_IDX
-#define F_VBSNIFF PIO_PA25_IDX
-
 #define REQ_MEMREAD_BULK 0x10
 #define REQ_MEMWRITE_BULK 0x11
 #define REQ_MEMREAD_CTRL 0x12
@@ -222,7 +218,7 @@ static void ctrl_sam3ucfg_cb(void)
         /* Jump to ROM-resident bootloader */
     case 0x03:
         /* Turn off connected stuff */
-        board_power(0);
+        //board_power(0);
 
         /* Clear ROM-mapping bit. */
         efc_perform_command(EFC0, EFC_FCMD_CGPB, 1);
@@ -272,18 +268,18 @@ void ctrl_progfpga_bulk(void){
 void ctrl_change_pwr(void) {
     switch(udd_g_ctrlreq.req.wValue) {
     case 0x00: //USB power off
-        PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
-        PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
+        PIOA->PIO_CODR = (1 << F_VBHOST); //disable sniff power
+        PIOA->PIO_CODR = (1 << F_VB5V); //disable host power
         USB_PWR_STATE = 0;
         break;
-    case 0x01: //Use host power
-        PIOA->PIO_CODR = (1 << F_VBSNIFF); //disable sniff power
-        PIOA->PIO_SODR = (1 << F_VBHOST); //enable host power
+    case 0x01: //Use 5V power
+        PIOA->PIO_CODR = (1 << F_VBHOST); //disable sniff power
+        PIOA->PIO_SODR = (1 << F_VB5V); //enable host power
         USB_PWR_STATE = 1;
         break;
-    case 0x02: //Use sniffer power
-        PIOA->PIO_CODR = (1 << F_VBHOST); //disable host power
-        PIOA->PIO_SODR = (1 << F_VBSNIFF); //enable sniff power
+    case 0x02: //Use host power
+        PIOA->PIO_CODR = (1 << F_VB5V); //disable host power
+        PIOA->PIO_SODR = (1 << F_VBHOST); //enable sniff power
         USB_PWR_STATE = 2;
         break;
     }
@@ -331,6 +327,10 @@ bool main_setup_out_received(void)
 
     case REQ_FPGA_PROGRAM:
         udd_g_ctrlreq.callback = ctrl_progfpga_bulk;
+        return true;
+
+    case REQ_SAM3U_CFG:
+        udd_g_ctrlreq.callback = ctrl_sam3ucfg_cb;
         return true;
 
     case REQ_CHANGE_PWR:

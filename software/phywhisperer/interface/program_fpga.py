@@ -22,8 +22,8 @@
 #    along with chipwhisperer.  If not, see <http://www.gnu.org/licenses/>.
 #==========================================================================
 
-import naeusb as NAE
-from naeusb import packuint32
+from . import naeusb as NAE
+from .naeusb import packuint32
 import time
 import sys
 import os
@@ -39,9 +39,9 @@ class PhyWhispererUSB(object):
     CMD_FPGA_PROGRAM = 0x16
     CMD_CHANGE_PWR = 0x24
 
+    PWR_SRC_HOST = 0x02
     PWR_SRC_OFF = 0x00
-    PWR_SRC_HOST = 0x01
-    PWR_SRC_SNIFFER = 0x02
+    PWR_SRC_5V = 0x01
 
     def __init__(self, usb, timeout=200):
         self.sendCtrl = usb.sendCtrl

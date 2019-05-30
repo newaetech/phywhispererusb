@@ -4,14 +4,15 @@ from setuptools import setup
 
 setup(
     name = 'phywhisperer',
-    version = '0.0.0',
+    version = '0.0.1',
     description = "PhyWhisperer USB Hardware Trigger",
     author = "Colin O'Flynn",
     author_email = 'coflynn@newae.com',
     license = 'GPLv3',
     url = 'http://www.PhyWhisperer.com',
     download_url='',
-    packages = ['phywhisperer'
+    packages = ['phywhisperer',
+                'phywhisperer.interface'
                 ],
     install_requires = [
 

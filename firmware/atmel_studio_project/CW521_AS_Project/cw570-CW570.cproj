@@ -160,8 +160,7 @@
     </ToolchainSettings>
     <UsesExternalMakeFile>True</UsesExternalMakeFile>
     <OutputDirectory>C:\Users\User\Code\term3\phy\phywhispererusb\firmware\cw521</OutputDirectory>
-    <BuildTarget>
-    </BuildTarget>
+    <BuildTarget>-j16</BuildTarget>
     <CleanTarget>clean</CleanTarget>
     <ExternalMakeFilePath>C:\Users\User\Code\term3\phy\phywhispererusb\firmware\cw521\makefile</ExternalMakeFilePath>
     <OutputFileName>CW570_AS_Project</OutputFileName>

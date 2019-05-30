@@ -286,6 +286,7 @@ MSG_SIZE_AFTER = Size after:
 MSG_COFF = Converting to AVR COFF:
 MSG_EXTENDED_COFF = Converting to AVR Extended COFF:
 MSG_FLASH = Creating load file for Flash:
+MSG_BIN = Creating binary:
 MSG_EEPROM = Creating load file for EEPROM:
 MSG_EXTENDED_LISTING = Creating Extended Listing:
 MSG_SYMBOL_TABLE = Creating Symbol Table:
@@ -320,7 +321,7 @@ ALL_ASFLAGS = $(MCU_FLAGS) -I. -x assembler-with-cpp $(ASFLAGS)
 all: .dep begin gccversion build sizeafter end
 
 # Change the build target to build a HEX file or a library.
-build: elf hex eep lss sym
+build: elf hex eep lss sym bin
 #build: lib
 
 
@@ -329,6 +330,7 @@ hex: $(TARGET-PLAT).hex
 eep: $(TARGET-PLAT).eep
 lss: $(TARGET-PLAT).lss
 sym: $(TARGET-PLAT).sym
+bin: $(TARGET-PLAT).bin
 LIBNAME=lib$(TARGET-PLAT).a
 lib: $(LIBNAME)
 
@@ -436,6 +438,10 @@ extcoff: $(TARGET-PLAT).elf
 	@echo $(MSG_FLASH) $@
 	$(OBJCOPY) -O ihex -R .eeprom -R .fuse -R .lock -R .signature $< $@
 
+%.bin: %.hex
+	@$(ECHO_BLANK)
+	@echo $(MSG_BIN) $@
+	$(OBJCOPY) --input-target=ihex --output-target=binary $< $@
 
 %.eep: %.elf
 	@$(ECHO_BLANK)

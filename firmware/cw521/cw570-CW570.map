@@ -425,23 +425,13 @@ Discarded input sections
                 0x00000000        0x4 objdir/usb.o
  .bss.cpu_irq_prev_interrupt_state
                 0x00000000        0x1 objdir/usb.o
- .text.osc_enable
-                0x00000000       0x84 objdir/usb.o
- .text.osc_is_ready
-                0x00000000       0x84 objdir/usb.o
- .text.osc_wait_ready
-                0x00000000       0x2c objdir/usb.o
- .text.udc_detach
-                0x00000000       0x10 objdir/usb.o
  .data.g_captureinprogress
                 0x00000000        0x1 objdir/usb.o
  .bss.bulkread_address
                 0x00000000        0x4 objdir/usb.o
  .bss.bulkread_len
                 0x00000000        0x4 objdir/usb.o
- .text.ctrl_sam3ucfg_cb
-                0x00000000       0x94 objdir/usb.o
- .bss.respbuf.9172
+ .bss.respbuf.9170
                 0x00000000       0x80 objdir/usb.o
  .debug_macro   0x00000000      0x8e6 objdir/usb.o
  .debug_macro   0x00000000      0x16d objdir/usb.o
@@ -2880,8 +2870,6 @@ Discarded input sections
                 0x00000000        0xe objdir/udphs_device.o
  .text.udd_disable
                 0x00000000       0x58 objdir/udphs_device.o
- .text.udd_detach
-                0x00000000       0x44 objdir/udphs_device.o
  .text.udd_get_frame_number
                 0x00000000       0x20 objdir/udphs_device.o
  .text.udd_get_micro_frame_number
@@ -4021,8 +4009,6 @@ Discarded input sections
                 0x00000000       0x34 objdir/pmc.o
  .text.pmc_switch_mck_to_sclk
                 0x00000000       0x7c objdir/pmc.o
- .text.pmc_switch_mck_to_mainck
-                0x00000000       0x80 objdir/pmc.o
  .text.pmc_switch_mck_to_upllck
                 0x00000000       0x7c objdir/pmc.o
  .text.pmc_switch_mainck_to_fastrc
@@ -4526,12 +4512,6 @@ Discarded input sections
                 0x00000000        0x4 objdir/efc.o
  .bss.cpu_irq_prev_interrupt_state
                 0x00000000        0x1 objdir/efc.o
- .text.cpu_irq_save
-                0x00000000       0x38 objdir/efc.o
- .text.cpu_irq_is_enabled_flags
-                0x00000000       0x1e objdir/efc.o
- .text.cpu_irq_restore
-                0x00000000       0x30 objdir/efc.o
  .text.efc_init
                 0x00000000       0x30 objdir/efc.o
  .text.efc_enable_frdy_interrupt
@@ -4546,8 +4526,6 @@ Discarded input sections
                 0x00000000       0x34 objdir/efc.o
  .text.efc_get_wait_state
                 0x00000000       0x1c objdir/efc.o
- .text.efc_perform_command
-                0x00000000       0x60 objdir/efc.o
  .text.efc_get_status
                 0x00000000       0x16 objdir/efc.o
  .text.efc_get_result
@@ -9111,7 +9089,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00000400                __stack_size__ = DEFINED (__stack_size__)?__stack_size__:0x400
                 0x20081ffc                __ram_end__ = ((ORIGIN (ram) + LENGTH (ram)) - 0x4)
 
-.text           0x00080000     0x58f4
+.text           0x00080000     0x5c80
                 0x00080000                . = ALIGN (0x4)
                 0x00080000                _sfixed = .
  *(.vectors .vectors.*)
@@ -9161,12 +9139,12 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  .text.phywhisperer_no_pwr
                 0x000808e4       0x20 objdir/main_cw521.o
                 0x000808e4                phywhisperer_no_pwr
- .text.phywhisperer_host_pwr
+ .text.phywhisperer_5V_pwr
                 0x00080904       0x20 objdir/main_cw521.o
-                0x00080904                phywhisperer_host_pwr
- .text.phywhisperer_sniff_pwr
+                0x00080904                phywhisperer_5V_pwr
+ .text.phywhisperer_host_pwr
                 0x00080924       0x20 objdir/main_cw521.o
-                0x00080924                phywhisperer_sniff_pwr
+                0x00080924                phywhisperer_host_pwr
  .text.pwr_st_from_io
                 0x00080944       0x68 objdir/main_cw521.o
                 0x00080944                pwr_st_from_io
@@ -9180,617 +9158,643 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00080ad0       0x64 objdir/main_cw521.o
  .text.main     0x00080b34       0xf4 objdir/main_cw521.o
                 0x00080b34                main
- .text.main_suspend_action
-                0x00080c28        0xc objdir/usb.o
-                0x00080c28                main_suspend_action
- .text.main_resume_action
-                0x00080c34        0xc objdir/usb.o
-                0x00080c34                main_resume_action
- .text.main_sof_action
-                0x00080c40       0x1c objdir/usb.o
-                0x00080c40                main_sof_action
- .text.main_vendor_enable
-                0x00080c5c       0x2c objdir/usb.o
-                0x00080c5c                main_vendor_enable
- .text.main_vendor_disable
-                0x00080c88       0x18 objdir/usb.o
-                0x00080c88                main_vendor_disable
- .text.ctrl_readmem_bulk
-                0x00080ca0       0x58 objdir/usb.o
-                0x00080ca0                ctrl_readmem_bulk
- .text.ctrl_readmem_ctrl
-                0x00080cf8       0x58 objdir/usb.o
-                0x00080cf8                ctrl_readmem_ctrl
- .text.ctrl_writemem_ctrl
-                0x00080d50       0x78 objdir/usb.o
-                0x00080d50                ctrl_writemem_ctrl
- .text.ctrl_writemem_bulk
-                0x00080dc8       0x3c objdir/usb.o
-                0x00080dc8                ctrl_writemem_bulk
- .text.ctrl_progfpga_bulk
-                0x00080e04       0x44 objdir/usb.o
-                0x00080e04                ctrl_progfpga_bulk
- .text.ctrl_change_pwr
-                0x00080e48       0x74 objdir/usb.o
-                0x00080e48                ctrl_change_pwr
- .text.main_setup_out_received
-                0x00080ebc      0x130 objdir/usb.o
-                0x00080ebc                main_setup_out_received
- .text.main_setup_in_received
-                0x00080fec       0xc0 objdir/usb.o
-                0x00080fec                main_setup_in_received
- .text.main_vendor_bulk_in_received
-                0x000810ac       0x38 objdir/usb.o
-                0x000810ac                main_vendor_bulk_in_received
- .text.main_vendor_bulk_out_received
-                0x000810e4       0xc0 objdir/usb.o
-                0x000810e4                main_vendor_bulk_out_received
- .text.FPGA_setlock
-                0x000811a4       0x40 objdir/usb_xmem.o
-                0x000811a4                FPGA_setlock
- .text.FPGA_releaselock
-                0x000811e4       0x18 objdir/usb_xmem.o
-                0x000811e4                FPGA_releaselock
- .text.FPGA_lockstatus
-                0x000811fc       0x18 objdir/usb_xmem.o
-                0x000811fc                FPGA_lockstatus
- .text.FPGA_setaddr
-                0x00081214       0x20 objdir/usb_xmem.o
-                0x00081214                FPGA_setaddr
- .text.osc_get_rate
-                0x00081234       0x70 objdir/fpga_program.o
- .text.sysclk_get_main_hz
-                0x000812a4       0x18 objdir/fpga_program.o
- .text.sysclk_get_cpu_hz
-                0x000812bc       0x14 objdir/fpga_program.o
- .text.sysclk_enable_peripheral_clock
-                0x000812d0       0x1c objdir/fpga_program.o
- .text.fpga_program_setup1
-                0x000812ec       0x80 objdir/fpga_program.o
-                0x000812ec                fpga_program_setup1
- .text.fpga_program_setup2
-                0x0008136c       0x14 objdir/fpga_program.o
-                0x0008136c                fpga_program_setup2
- .text.fpga_program_sendbyte
-                0x00081380       0x24 objdir/fpga_program.o
-                0x00081380                fpga_program_sendbyte
- .text.flash_read_unique_id
-                0x000813a4       0x70 objdir/flash_efc.o
-                0x000813a4                flash_read_unique_id
- .text.usart_set_spi_master_baudrate
-                0x00081414       0x40 objdir/usart.o
- .text.usart_reset
-                0x00081454       0x60 objdir/usart.o
-                0x00081454                usart_reset
- .text.usart_init_spi_master
-                0x000814b4      0x110 objdir/usart.o
-                0x000814b4                usart_init_spi_master
- .text.usart_enable_tx
-                0x000815c4       0x18 objdir/usart.o
-                0x000815c4                usart_enable_tx
- .text.usart_reset_tx
-                0x000815dc       0x18 objdir/usart.o
-                0x000815dc                usart_reset_tx
- .text.usart_reset_rx
-                0x000815f4       0x18 objdir/usart.o
-                0x000815f4                usart_reset_rx
- .text.usart_reset_status
-                0x0008160c       0x1a objdir/usart.o
-                0x0008160c                usart_reset_status
- .text.usart_drive_DTR_pin_high
-                0x00081626       0x1a objdir/usart.o
-                0x00081626                usart_drive_DTR_pin_high
- .text.usart_drive_RTS_pin_high
-                0x00081640       0x1a objdir/usart.o
-                0x00081640                usart_drive_RTS_pin_high
- .text.usart_putchar
-                0x0008165a       0x2e objdir/usart.o
-                0x0008165a                usart_putchar
- .text.usart_disable_writeprotect
-                0x00081688       0x20 objdir/usart.o
-                0x00081688                usart_disable_writeprotect
- .text.smc_set_setup_timing
-                0x000816a8       0x2a objdir/smc.o
-                0x000816a8                smc_set_setup_timing
- .text.smc_set_pulse_timing
-                0x000816d2       0x2a objdir/smc.o
-                0x000816d2                smc_set_pulse_timing
- .text.smc_set_cycle_timing
-                0x000816fc       0x2a objdir/smc.o
-                0x000816fc                smc_set_cycle_timing
- .text.smc_set_mode
-                0x00081726       0x2a objdir/smc.o
-                0x00081726                smc_set_mode
- .text.pio_handler_process
-                0x00081750       0xb4 objdir/pio_handler.o
-                0x00081750                pio_handler_process
- .text.PIOA_Handler
-                0x00081804       0x18 objdir/pio_handler.o
-                0x00081804                PIOA_Handler
- .text.PIOB_Handler
-                0x0008181c       0x18 objdir/pio_handler.o
-                0x0008181c                PIOB_Handler
- .text.NVIC_EnableIRQ
-                0x00081834       0x30 objdir/udphs_device.o
- .text.NVIC_SetPriority
-                0x00081864       0x54 objdir/udphs_device.o
- .text.cpu_irq_save
-                0x000818b8       0x38 objdir/udphs_device.o
- .text.cpu_irq_is_enabled_flags
-                0x000818f0       0x1e objdir/udphs_device.o
- *fill*         0x0008190e        0x2 
- .text.cpu_irq_restore
-                0x00081910       0x30 objdir/udphs_device.o
- .text.sleepmgr_lock_mode
-                0x00081940       0x38 objdir/udphs_device.o
- .text.sleepmgr_unlock_mode
-                0x00081978       0x38 objdir/udphs_device.o
- .text.udd_sleep_mode
-                0x000819b0       0x58 objdir/udphs_device.o
- .text.UDPHS_Handler
-                0x00081a08      0x1c0 objdir/udphs_device.o
-                0x00081a08                UDPHS_Handler
- .text.udd_enable
-                0x00081bc8       0x9c objdir/udphs_device.o
-                0x00081bc8                udd_enable
- .text.udd_attach
-                0x00081c64       0xb8 objdir/udphs_device.o
-                0x00081c64                udd_attach
- .text.udd_is_high_speed
-                0x00081d1c       0x24 objdir/udphs_device.o
-                0x00081d1c                udd_is_high_speed
- .text.udd_set_address
-                0x00081d40       0x44 objdir/udphs_device.o
-                0x00081d40                udd_set_address
- .text.udd_getaddress
-                0x00081d84       0x1c objdir/udphs_device.o
-                0x00081d84                udd_getaddress
- .text.udd_set_setup_payload
-                0x00081da0       0x28 objdir/udphs_device.o
-                0x00081da0                udd_set_setup_payload
- .text.udd_ep_alloc
-                0x00081dc8      0x3b4 objdir/udphs_device.o
-                0x00081dc8                udd_ep_alloc
- .text.udd_ep_free
-                0x0008217c       0x80 objdir/udphs_device.o
-                0x0008217c                udd_ep_free
- .text.udd_ep_is_halted
-                0x000821fc       0x68 objdir/udphs_device.o
-                0x000821fc                udd_ep_is_halted
- .text.udd_ep_set_halt
-                0x00082264      0x114 objdir/udphs_device.o
-                0x00082264                udd_ep_set_halt
- .text.udd_ep_clear_halt
-                0x00082378      0x130 objdir/udphs_device.o
-                0x00082378                udd_ep_clear_halt
- .text.udd_ep_run
-                0x000824a8      0x10c objdir/udphs_device.o
-                0x000824a8                udd_ep_run
- .text.udd_ep_abort
-                0x000825b4       0x88 objdir/udphs_device.o
-                0x000825b4                udd_ep_abort
- .text.udd_test_mode_j
-                0x0008263c       0x34 objdir/udphs_device.o
-                0x0008263c                udd_test_mode_j
- .text.udd_test_mode_k
-                0x00082670       0x34 objdir/udphs_device.o
-                0x00082670                udd_test_mode_k
- .text.udd_test_mode_se0_nak
-                0x000826a4       0x24 objdir/udphs_device.o
-                0x000826a4                udd_test_mode_se0_nak
- .text.udd_test_mode_packet
-                0x000826c8       0xcc objdir/udphs_device.o
-                0x000826c8                udd_test_mode_packet
- .text.udd_reset_ep_ctrl
-                0x00082794       0x80 objdir/udphs_device.o
- .text.udd_ctrl_init
-                0x00082814       0x5c objdir/udphs_device.o
- .text.udd_ctrl_setup_received
-                0x00082870      0x140 objdir/udphs_device.o
- .text.udd_ctrl_in_sent
-                0x000829b0      0x168 objdir/udphs_device.o
- .text.udd_ctrl_out_received
-                0x00082b18      0x1bc objdir/udphs_device.o
- .text.udd_ctrl_underflow
-                0x00082cd4       0x44 objdir/udphs_device.o
- .text.udd_ctrl_overflow
-                0x00082d18       0x34 objdir/udphs_device.o
- .text.udd_ctrl_stall_data
-                0x00082d4c       0x24 objdir/udphs_device.o
- .text.udd_ctrl_send_zlp_in
-                0x00082d70       0x64 objdir/udphs_device.o
- .text.udd_ctrl_send_zlp_out
-                0x00082dd4       0x44 objdir/udphs_device.o
- .text.udd_ctrl_endofrequest
-                0x00082e18       0x1c objdir/udphs_device.o
- .text.udd_ctrl_interrupt
-                0x00082e34       0xe4 objdir/udphs_device.o
- .text.udd_ep_job_table_reset
-                0x00082f18       0x5c objdir/udphs_device.o
- .text.udd_ep_job_table_kill
-                0x00082f74       0x44 objdir/udphs_device.o
- .text.udd_ep_abort_job
-                0x00082fb8       0x3c objdir/udphs_device.o
- .text.udd_ep_finish_job
-                0x00082ff4       0x70 objdir/udphs_device.o
- .text.udd_ep_trans_done
-                0x00083064      0x1e8 objdir/udphs_device.o
- .text.udd_ep_interrupt
-                0x0008324c      0x1f4 objdir/udphs_device.o
- .text.Reset_Handler
-                0x00083440       0xa8 objdir/startup_sam3u.o
-                0x00083440                Reset_Handler
  .text.osc_enable
-                0x000834e8       0x84 objdir/sysclk.o
+                0x00080c28       0x84 objdir/usb.o
  .text.osc_is_ready
-                0x0008356c       0x84 objdir/sysclk.o
- .text.osc_get_rate
-                0x000835f0       0x70 objdir/sysclk.o
+                0x00080cac       0x84 objdir/usb.o
  .text.osc_wait_ready
-                0x00083660       0x2c objdir/sysclk.o
- .text.pll_config_init
-                0x0008368c       0x6c objdir/sysclk.o
- .text.pll_enable
-                0x000836f8       0x40 objdir/sysclk.o
- .text.pll_is_locked
-                0x00083738       0x2c objdir/sysclk.o
- .text.pll_enable_source
-                0x00083764       0x38 objdir/sysclk.o
- .text.pll_wait_for_lock
-                0x0008379c       0x24 objdir/sysclk.o
+                0x00080d30       0x2c objdir/usb.o
+ .text.udc_detach
+                0x00080d5c       0x10 objdir/usb.o
+ .text.main_suspend_action
+                0x00080d6c        0xc objdir/usb.o
+                0x00080d6c                main_suspend_action
+ .text.main_resume_action
+                0x00080d78        0xc objdir/usb.o
+                0x00080d78                main_resume_action
+ .text.main_sof_action
+                0x00080d84       0x1c objdir/usb.o
+                0x00080d84                main_sof_action
+ .text.main_vendor_enable
+                0x00080da0       0x2c objdir/usb.o
+                0x00080da0                main_vendor_enable
+ .text.main_vendor_disable
+                0x00080dcc       0x18 objdir/usb.o
+                0x00080dcc                main_vendor_disable
+ .text.ctrl_readmem_bulk
+                0x00080de4       0x58 objdir/usb.o
+                0x00080de4                ctrl_readmem_bulk
+ .text.ctrl_readmem_ctrl
+                0x00080e3c       0x58 objdir/usb.o
+                0x00080e3c                ctrl_readmem_ctrl
+ .text.ctrl_writemem_ctrl
+                0x00080e94       0x78 objdir/usb.o
+                0x00080e94                ctrl_writemem_ctrl
+ .text.ctrl_writemem_bulk
+                0x00080f0c       0x3c objdir/usb.o
+                0x00080f0c                ctrl_writemem_bulk
+ .text.ctrl_sam3ucfg_cb
+                0x00080f48       0x8c objdir/usb.o
+ .text.ctrl_progfpga_bulk
+                0x00080fd4       0x44 objdir/usb.o
+                0x00080fd4                ctrl_progfpga_bulk
+ .text.ctrl_change_pwr
+                0x00081018       0x74 objdir/usb.o
+                0x00081018                ctrl_change_pwr
+ .text.main_setup_out_received
+                0x0008108c      0x140 objdir/usb.o
+                0x0008108c                main_setup_out_received
+ .text.main_setup_in_received
+                0x000811cc       0xc0 objdir/usb.o
+                0x000811cc                main_setup_in_received
+ .text.main_vendor_bulk_in_received
+                0x0008128c       0x38 objdir/usb.o
+                0x0008128c                main_vendor_bulk_in_received
+ .text.main_vendor_bulk_out_received
+                0x000812c4       0xc0 objdir/usb.o
+                0x000812c4                main_vendor_bulk_out_received
+ .text.FPGA_setlock
+                0x00081384       0x40 objdir/usb_xmem.o
+                0x00081384                FPGA_setlock
+ .text.FPGA_releaselock
+                0x000813c4       0x18 objdir/usb_xmem.o
+                0x000813c4                FPGA_releaselock
+ .text.FPGA_lockstatus
+                0x000813dc       0x18 objdir/usb_xmem.o
+                0x000813dc                FPGA_lockstatus
+ .text.FPGA_setaddr
+                0x000813f4       0x20 objdir/usb_xmem.o
+                0x000813f4                FPGA_setaddr
+ .text.osc_get_rate
+                0x00081414       0x70 objdir/fpga_program.o
  .text.sysclk_get_main_hz
-                0x000837c0       0x18 objdir/sysclk.o
+                0x00081484       0x18 objdir/fpga_program.o
  .text.sysclk_get_cpu_hz
-                0x000837d8       0x14 objdir/sysclk.o
- .text.sysclk_enable_usb
-                0x000837ec       0x40 objdir/sysclk.o
-                0x000837ec                sysclk_enable_usb
- .text.sysclk_init
-                0x0008382c       0x8c objdir/sysclk.o
-                0x0008382c                sysclk_init
- .text.pmc_switch_mck_to_pllack
-                0x000838b8       0x80 objdir/pmc.o
-                0x000838b8                pmc_switch_mck_to_pllack
- .text.pmc_switch_sclk_to_32kxtal
-                0x00083938       0x38 objdir/pmc.o
-                0x00083938                pmc_switch_sclk_to_32kxtal
- .text.pmc_osc_is_ready_32kxtal
-                0x00083970       0x34 objdir/pmc.o
-                0x00083970                pmc_osc_is_ready_32kxtal
- .text.pmc_osc_enable_fastrc
-                0x000839a4       0x5c objdir/pmc.o
-                0x000839a4                pmc_osc_enable_fastrc
- .text.pmc_osc_is_ready_fastrc
-                0x00083a00       0x18 objdir/pmc.o
-                0x00083a00                pmc_osc_is_ready_fastrc
- .text.pmc_osc_enable_main_xtal
-                0x00083a18       0x4c objdir/pmc.o
-                0x00083a18                pmc_osc_enable_main_xtal
- .text.pmc_osc_bypass_main_xtal
-                0x00083a64       0x34 objdir/pmc.o
-                0x00083a64                pmc_osc_bypass_main_xtal
- .text.pmc_osc_is_bypassed_main_xtal
-                0x00083a98       0x18 objdir/pmc.o
-                0x00083a98                pmc_osc_is_bypassed_main_xtal
- .text.pmc_osc_is_ready_main_xtal
-                0x00083ab0       0x18 objdir/pmc.o
-                0x00083ab0                pmc_osc_is_ready_main_xtal
- .text.pmc_osc_is_ready_mainck
-                0x00083ac8       0x18 objdir/pmc.o
-                0x00083ac8                pmc_osc_is_ready_mainck
- .text.pmc_mainck_osc_select
-                0x00083ae0       0x40 objdir/pmc.o
-                0x00083ae0                pmc_mainck_osc_select
- .text.pmc_disable_pllack
-                0x00083b20       0x18 objdir/pmc.o
-                0x00083b20                pmc_disable_pllack
- .text.pmc_is_locked_pllack
-                0x00083b38       0x18 objdir/pmc.o
-                0x00083b38                pmc_is_locked_pllack
- .text.pmc_disable_upll_clock
-                0x00083b50       0x1c objdir/pmc.o
-                0x00083b50                pmc_disable_upll_clock
- .text.pmc_is_locked_upll
-                0x00083b6c       0x18 objdir/pmc.o
-                0x00083b6c                pmc_is_locked_upll
- .text.pmc_enable_periph_clk
-                0x00083b84       0x50 objdir/pmc.o
-                0x00083b84                pmc_enable_periph_clk
- .text.pmc_disable_periph_clk
-                0x00083bd4       0x50 objdir/pmc.o
-                0x00083bd4                pmc_disable_periph_clk
- .text.pmc_enable_pck
-                0x00083c24       0x24 objdir/pmc.o
-                0x00083c24                pmc_enable_pck
- .text.pmc_set_fast_startup_input
-                0x00083c48       0x2c objdir/pmc.o
-                0x00083c48                pmc_set_fast_startup_input
- .text.pmc_enable_waitmode
-                0x00083c74       0x58 objdir/pmc.o
-                0x00083c74                pmc_enable_waitmode
- .text.udi_vendor_enable
-                0x00083ccc       0x40 objdir/udi_vendor.o
-                0x00083ccc                udi_vendor_enable
- .text.udi_vendor_disable
-                0x00083d0c       0x1c objdir/udi_vendor.o
-                0x00083d0c                udi_vendor_disable
- .text.udi_vendor_setup
-                0x00083d28       0x54 objdir/udi_vendor.o
-                0x00083d28                udi_vendor_setup
- .text.udi_vendor_getsetting
-                0x00083d7c       0x14 objdir/udi_vendor.o
-                0x00083d7c                udi_vendor_getsetting
- .text.udi_vendor_bulk_in_run
-                0x00083d90       0x2c objdir/udi_vendor.o
-                0x00083d90                udi_vendor_bulk_in_run
- .text.udi_vendor_bulk_out_run
-                0x00083dbc       0x2c objdir/udi_vendor.o
-                0x00083dbc                udi_vendor_bulk_out_run
- .text.pio_pull_up
-                0x00083de8       0x2a objdir/pio.o
-                0x00083de8                pio_pull_up
- .text.pio_set_peripheral
-                0x00083e12       0x7e objdir/pio.o
-                0x00083e12                pio_set_peripheral
- .text.pio_set_input
-                0x00083e90       0x80 objdir/pio.o
-                0x00083e90                pio_set_input
- .text.pio_set_output
-                0x00083f10       0x64 objdir/pio.o
-                0x00083f10                pio_set_output
- .text.pio_sync_output_write
-                0x00083f74       0x1a objdir/pio.o
-                0x00083f74                pio_sync_output_write
- .text.pio_disable_interrupt
-                0x00083f8e       0x1a objdir/pio.o
-                0x00083f8e                pio_disable_interrupt
- .text.pio_get_interrupt_status
-                0x00083fa8       0x16 objdir/pio.o
-                0x00083fa8                pio_get_interrupt_status
- .text.pio_get_interrupt_mask
-                0x00083fbe       0x16 objdir/pio.o
-                0x00083fbe                pio_get_interrupt_mask
- .text.pio_get_pin_value
-                0x00083fd4       0x30 objdir/pio.o
-                0x00083fd4                pio_get_pin_value
- .text.pio_set_pin_high
-                0x00084004       0x30 objdir/pio.o
-                0x00084004                pio_set_pin_high
- .text.pio_set_pin_low
-                0x00084034       0x30 objdir/pio.o
-                0x00084034                pio_set_pin_low
- .text.pio_configure_pin
-                0x00084064      0x138 objdir/pio.o
-                0x00084064                pio_configure_pin
- .text.pio_configure_pin_group
-                0x0008419c       0xe4 objdir/pio.o
-                0x0008419c                pio_configure_pin_group
- .text.pio_get_pin_group
-                0x00084280       0x24 objdir/pio.o
-                0x00084280                pio_get_pin_group
- .text.Dummy_Handler
-                0x000842a4        0x6 objdir/exceptions.o
-                0x000842a4                DebugMon_Handler
-                0x000842a4                DMAC_Handler
-                0x000842a4                HardFault_Handler
-                0x000842a4                TC2_Handler
-                0x000842a4                SPI_Handler
-                0x000842a4                SysTick_Handler
-                0x000842a4                TWI1_Handler
-                0x000842a4                PendSV_Handler
-                0x000842a4                NMI_Handler
-                0x000842a4                ADC_Handler
-                0x000842a4                SMC_Handler
-                0x000842a4                USART0_Handler
-                0x000842a4                RTT_Handler
-                0x000842a4                EFC1_Handler
-                0x000842a4                ADC12B_Handler
-                0x000842a4                RTC_Handler
-                0x000842a4                UsageFault_Handler
-                0x000842a4                WDT_Handler
-                0x000842a4                TC1_Handler
-                0x000842a4                HSMCI_Handler
-                0x000842a4                Dummy_Handler
-                0x000842a4                TWI0_Handler
-                0x000842a4                USART1_Handler
-                0x000842a4                SSC_Handler
-                0x000842a4                EFC0_Handler
-                0x000842a4                PMC_Handler
-                0x000842a4                PWM_Handler
-                0x000842a4                MemManage_Handler
-                0x000842a4                SUPC_Handler
-                0x000842a4                SVC_Handler
-                0x000842a4                USART2_Handler
-                0x000842a4                UART_Handler
-                0x000842a4                BusFault_Handler
-                0x000842a4                RSTC_Handler
-                0x000842a4                TC0_Handler
- *fill*         0x000842aa        0x2 
- .text.udc_get_string_serial_name
-                0x000842ac       0x14 objdir/udc.o
- .text.udc_get_interface_desc
-                0x000842c0       0x14 objdir/udc.o
-                0x000842c0                udc_get_interface_desc
- .text.udc_get_eof_conf
-                0x000842d4       0x24 objdir/udc.o
- .text.udc_next_desc_in_iface
-                0x000842f8       0x5c objdir/udc.o
- .text.udc_update_iface_desc
-                0x00084354       0x9c objdir/udc.o
- .text.udc_iface_disable
-                0x000843f0       0xa0 objdir/udc.o
- .text.udc_iface_enable
-                0x00084490       0x98 objdir/udc.o
- .text.udc_start
-                0x00084528       0x10 objdir/udc.o
-                0x00084528                udc_start
- .text.udc_reset
-                0x00084538       0x54 objdir/udc.o
-                0x00084538                udc_reset
- .text.udc_sof_notify
-                0x0008458c       0x60 objdir/udc.o
-                0x0008458c                udc_sof_notify
- .text.udc_req_std_dev_get_status
-                0x000845ec       0x2c objdir/udc.o
- .text.udc_req_std_ep_get_status
-                0x00084618       0x44 objdir/udc.o
- .text.udc_req_std_dev_clear_feature
-                0x0008465c       0x3c objdir/udc.o
- .text.udc_req_std_ep_clear_feature
-                0x00084698       0x38 objdir/udc.o
- .text.udc_req_std_dev_set_feature
-                0x000846d0       0xbc objdir/udc.o
- .text.udc_req_std_ep_set_feature
-                0x0008478c       0x48 objdir/udc.o
- .text.udc_valid_address
-                0x000847d4       0x24 objdir/udc.o
- .text.udc_req_std_dev_set_address
-                0x000847f8       0x28 objdir/udc.o
- .text.udc_req_std_dev_get_str_desc
-                0x00084820       0xcc objdir/udc.o
- .text.udc_req_std_dev_get_descriptor
-                0x000848ec      0x21c objdir/udc.o
- .text.udc_req_std_dev_get_configuration
-                0x00084b08       0x2c objdir/udc.o
- .text.udc_req_std_dev_set_configuration
-                0x00084b34      0x104 objdir/udc.o
- .text.udc_req_std_iface_get_setting
-                0x00084c38       0x98 objdir/udc.o
- .text.udc_req_std_iface_set_setting
-                0x00084cd0       0x68 objdir/udc.o
- .text.udc_reqstd
-                0x00084d38      0x170 objdir/udc.o
- .text.udc_req_iface
-                0x00084ea8       0x98 objdir/udc.o
- .text.udc_req_ep
-                0x00084f40       0x90 objdir/udc.o
- .text.udc_process_setup
-                0x00084fd0       0x90 objdir/udc.o
-                0x00084fd0                udc_process_setup
- .text.pmc_sleep
-                0x00085060      0x3ec objdir/sleep.o
-                0x00085060                pmc_sleep
- .text.pmc_is_wakeup_clocks_restored
-                0x0008544c       0x2c objdir/sleep.o
-                0x0008544c                pmc_is_wakeup_clocks_restored
+                0x0008149c       0x14 objdir/fpga_program.o
  .text.sysclk_enable_peripheral_clock
-                0x00085478       0x1c objdir/init.o
+                0x000814b0       0x1c objdir/fpga_program.o
+ .text.fpga_program_setup1
+                0x000814cc       0x80 objdir/fpga_program.o
+                0x000814cc                fpga_program_setup1
+ .text.fpga_program_setup2
+                0x0008154c       0x14 objdir/fpga_program.o
+                0x0008154c                fpga_program_setup2
+ .text.fpga_program_sendbyte
+                0x00081560       0x24 objdir/fpga_program.o
+                0x00081560                fpga_program_sendbyte
+ .text.flash_read_unique_id
+                0x00081584       0x70 objdir/flash_efc.o
+                0x00081584                flash_read_unique_id
+ .text.usart_set_spi_master_baudrate
+                0x000815f4       0x40 objdir/usart.o
+ .text.usart_reset
+                0x00081634       0x60 objdir/usart.o
+                0x00081634                usart_reset
+ .text.usart_init_spi_master
+                0x00081694      0x110 objdir/usart.o
+                0x00081694                usart_init_spi_master
+ .text.usart_enable_tx
+                0x000817a4       0x18 objdir/usart.o
+                0x000817a4                usart_enable_tx
+ .text.usart_reset_tx
+                0x000817bc       0x18 objdir/usart.o
+                0x000817bc                usart_reset_tx
+ .text.usart_reset_rx
+                0x000817d4       0x18 objdir/usart.o
+                0x000817d4                usart_reset_rx
+ .text.usart_reset_status
+                0x000817ec       0x1a objdir/usart.o
+                0x000817ec                usart_reset_status
+ .text.usart_drive_DTR_pin_high
+                0x00081806       0x1a objdir/usart.o
+                0x00081806                usart_drive_DTR_pin_high
+ .text.usart_drive_RTS_pin_high
+                0x00081820       0x1a objdir/usart.o
+                0x00081820                usart_drive_RTS_pin_high
+ .text.usart_putchar
+                0x0008183a       0x2e objdir/usart.o
+                0x0008183a                usart_putchar
+ .text.usart_disable_writeprotect
+                0x00081868       0x20 objdir/usart.o
+                0x00081868                usart_disable_writeprotect
+ .text.smc_set_setup_timing
+                0x00081888       0x2a objdir/smc.o
+                0x00081888                smc_set_setup_timing
+ .text.smc_set_pulse_timing
+                0x000818b2       0x2a objdir/smc.o
+                0x000818b2                smc_set_pulse_timing
+ .text.smc_set_cycle_timing
+                0x000818dc       0x2a objdir/smc.o
+                0x000818dc                smc_set_cycle_timing
+ .text.smc_set_mode
+                0x00081906       0x2a objdir/smc.o
+                0x00081906                smc_set_mode
+ .text.pio_handler_process
+                0x00081930       0xb4 objdir/pio_handler.o
+                0x00081930                pio_handler_process
+ .text.PIOA_Handler
+                0x000819e4       0x18 objdir/pio_handler.o
+                0x000819e4                PIOA_Handler
+ .text.PIOB_Handler
+                0x000819fc       0x18 objdir/pio_handler.o
+                0x000819fc                PIOB_Handler
+ .text.NVIC_EnableIRQ
+                0x00081a14       0x30 objdir/udphs_device.o
+ .text.NVIC_SetPriority
+                0x00081a44       0x54 objdir/udphs_device.o
+ .text.cpu_irq_save
+                0x00081a98       0x38 objdir/udphs_device.o
+ .text.cpu_irq_is_enabled_flags
+                0x00081ad0       0x1e objdir/udphs_device.o
+ *fill*         0x00081aee        0x2 
+ .text.cpu_irq_restore
+                0x00081af0       0x30 objdir/udphs_device.o
+ .text.sleepmgr_lock_mode
+                0x00081b20       0x38 objdir/udphs_device.o
+ .text.sleepmgr_unlock_mode
+                0x00081b58       0x38 objdir/udphs_device.o
+ .text.udd_sleep_mode
+                0x00081b90       0x58 objdir/udphs_device.o
+ .text.UDPHS_Handler
+                0x00081be8      0x1c0 objdir/udphs_device.o
+                0x00081be8                UDPHS_Handler
+ .text.udd_enable
+                0x00081da8       0x9c objdir/udphs_device.o
+                0x00081da8                udd_enable
+ .text.udd_attach
+                0x00081e44       0xb8 objdir/udphs_device.o
+                0x00081e44                udd_attach
+ .text.udd_detach
+                0x00081efc       0x44 objdir/udphs_device.o
+                0x00081efc                udd_detach
+ .text.udd_is_high_speed
+                0x00081f40       0x24 objdir/udphs_device.o
+                0x00081f40                udd_is_high_speed
+ .text.udd_set_address
+                0x00081f64       0x44 objdir/udphs_device.o
+                0x00081f64                udd_set_address
+ .text.udd_getaddress
+                0x00081fa8       0x1c objdir/udphs_device.o
+                0x00081fa8                udd_getaddress
+ .text.udd_set_setup_payload
+                0x00081fc4       0x28 objdir/udphs_device.o
+                0x00081fc4                udd_set_setup_payload
+ .text.udd_ep_alloc
+                0x00081fec      0x3b4 objdir/udphs_device.o
+                0x00081fec                udd_ep_alloc
+ .text.udd_ep_free
+                0x000823a0       0x80 objdir/udphs_device.o
+                0x000823a0                udd_ep_free
+ .text.udd_ep_is_halted
+                0x00082420       0x68 objdir/udphs_device.o
+                0x00082420                udd_ep_is_halted
+ .text.udd_ep_set_halt
+                0x00082488      0x114 objdir/udphs_device.o
+                0x00082488                udd_ep_set_halt
+ .text.udd_ep_clear_halt
+                0x0008259c      0x130 objdir/udphs_device.o
+                0x0008259c                udd_ep_clear_halt
+ .text.udd_ep_run
+                0x000826cc      0x10c objdir/udphs_device.o
+                0x000826cc                udd_ep_run
+ .text.udd_ep_abort
+                0x000827d8       0x88 objdir/udphs_device.o
+                0x000827d8                udd_ep_abort
+ .text.udd_test_mode_j
+                0x00082860       0x34 objdir/udphs_device.o
+                0x00082860                udd_test_mode_j
+ .text.udd_test_mode_k
+                0x00082894       0x34 objdir/udphs_device.o
+                0x00082894                udd_test_mode_k
+ .text.udd_test_mode_se0_nak
+                0x000828c8       0x24 objdir/udphs_device.o
+                0x000828c8                udd_test_mode_se0_nak
+ .text.udd_test_mode_packet
+                0x000828ec       0xcc objdir/udphs_device.o
+                0x000828ec                udd_test_mode_packet
+ .text.udd_reset_ep_ctrl
+                0x000829b8       0x80 objdir/udphs_device.o
+ .text.udd_ctrl_init
+                0x00082a38       0x5c objdir/udphs_device.o
+ .text.udd_ctrl_setup_received
+                0x00082a94      0x140 objdir/udphs_device.o
+ .text.udd_ctrl_in_sent
+                0x00082bd4      0x168 objdir/udphs_device.o
+ .text.udd_ctrl_out_received
+                0x00082d3c      0x1bc objdir/udphs_device.o
+ .text.udd_ctrl_underflow
+                0x00082ef8       0x44 objdir/udphs_device.o
+ .text.udd_ctrl_overflow
+                0x00082f3c       0x34 objdir/udphs_device.o
+ .text.udd_ctrl_stall_data
+                0x00082f70       0x24 objdir/udphs_device.o
+ .text.udd_ctrl_send_zlp_in
+                0x00082f94       0x64 objdir/udphs_device.o
+ .text.udd_ctrl_send_zlp_out
+                0x00082ff8       0x44 objdir/udphs_device.o
+ .text.udd_ctrl_endofrequest
+                0x0008303c       0x1c objdir/udphs_device.o
+ .text.udd_ctrl_interrupt
+                0x00083058       0xe4 objdir/udphs_device.o
+ .text.udd_ep_job_table_reset
+                0x0008313c       0x5c objdir/udphs_device.o
+ .text.udd_ep_job_table_kill
+                0x00083198       0x44 objdir/udphs_device.o
+ .text.udd_ep_abort_job
+                0x000831dc       0x3c objdir/udphs_device.o
+ .text.udd_ep_finish_job
+                0x00083218       0x70 objdir/udphs_device.o
+ .text.udd_ep_trans_done
+                0x00083288      0x1e8 objdir/udphs_device.o
+ .text.udd_ep_interrupt
+                0x00083470      0x1f4 objdir/udphs_device.o
+ .text.Reset_Handler
+                0x00083664       0xa8 objdir/startup_sam3u.o
+                0x00083664                Reset_Handler
+ .text.osc_enable
+                0x0008370c       0x84 objdir/sysclk.o
+ .text.osc_is_ready
+                0x00083790       0x84 objdir/sysclk.o
+ .text.osc_get_rate
+                0x00083814       0x70 objdir/sysclk.o
+ .text.osc_wait_ready
+                0x00083884       0x2c objdir/sysclk.o
+ .text.pll_config_init
+                0x000838b0       0x6c objdir/sysclk.o
+ .text.pll_enable
+                0x0008391c       0x40 objdir/sysclk.o
+ .text.pll_is_locked
+                0x0008395c       0x2c objdir/sysclk.o
+ .text.pll_enable_source
+                0x00083988       0x38 objdir/sysclk.o
+ .text.pll_wait_for_lock
+                0x000839c0       0x24 objdir/sysclk.o
+ .text.sysclk_get_main_hz
+                0x000839e4       0x18 objdir/sysclk.o
+ .text.sysclk_get_cpu_hz
+                0x000839fc       0x14 objdir/sysclk.o
+ .text.sysclk_enable_usb
+                0x00083a10       0x40 objdir/sysclk.o
+                0x00083a10                sysclk_enable_usb
+ .text.sysclk_init
+                0x00083a50       0x8c objdir/sysclk.o
+                0x00083a50                sysclk_init
+ .text.pmc_switch_mck_to_mainck
+                0x00083adc       0x80 objdir/pmc.o
+                0x00083adc                pmc_switch_mck_to_mainck
+ .text.pmc_switch_mck_to_pllack
+                0x00083b5c       0x80 objdir/pmc.o
+                0x00083b5c                pmc_switch_mck_to_pllack
+ .text.pmc_switch_sclk_to_32kxtal
+                0x00083bdc       0x38 objdir/pmc.o
+                0x00083bdc                pmc_switch_sclk_to_32kxtal
+ .text.pmc_osc_is_ready_32kxtal
+                0x00083c14       0x34 objdir/pmc.o
+                0x00083c14                pmc_osc_is_ready_32kxtal
+ .text.pmc_osc_enable_fastrc
+                0x00083c48       0x5c objdir/pmc.o
+                0x00083c48                pmc_osc_enable_fastrc
+ .text.pmc_osc_is_ready_fastrc
+                0x00083ca4       0x18 objdir/pmc.o
+                0x00083ca4                pmc_osc_is_ready_fastrc
+ .text.pmc_osc_enable_main_xtal
+                0x00083cbc       0x4c objdir/pmc.o
+                0x00083cbc                pmc_osc_enable_main_xtal
+ .text.pmc_osc_bypass_main_xtal
+                0x00083d08       0x34 objdir/pmc.o
+                0x00083d08                pmc_osc_bypass_main_xtal
+ .text.pmc_osc_is_bypassed_main_xtal
+                0x00083d3c       0x18 objdir/pmc.o
+                0x00083d3c                pmc_osc_is_bypassed_main_xtal
+ .text.pmc_osc_is_ready_main_xtal
+                0x00083d54       0x18 objdir/pmc.o
+                0x00083d54                pmc_osc_is_ready_main_xtal
+ .text.pmc_osc_is_ready_mainck
+                0x00083d6c       0x18 objdir/pmc.o
+                0x00083d6c                pmc_osc_is_ready_mainck
+ .text.pmc_mainck_osc_select
+                0x00083d84       0x40 objdir/pmc.o
+                0x00083d84                pmc_mainck_osc_select
+ .text.pmc_disable_pllack
+                0x00083dc4       0x18 objdir/pmc.o
+                0x00083dc4                pmc_disable_pllack
+ .text.pmc_is_locked_pllack
+                0x00083ddc       0x18 objdir/pmc.o
+                0x00083ddc                pmc_is_locked_pllack
+ .text.pmc_disable_upll_clock
+                0x00083df4       0x1c objdir/pmc.o
+                0x00083df4                pmc_disable_upll_clock
+ .text.pmc_is_locked_upll
+                0x00083e10       0x18 objdir/pmc.o
+                0x00083e10                pmc_is_locked_upll
+ .text.pmc_enable_periph_clk
+                0x00083e28       0x50 objdir/pmc.o
+                0x00083e28                pmc_enable_periph_clk
+ .text.pmc_disable_periph_clk
+                0x00083e78       0x50 objdir/pmc.o
+                0x00083e78                pmc_disable_periph_clk
+ .text.pmc_enable_pck
+                0x00083ec8       0x24 objdir/pmc.o
+                0x00083ec8                pmc_enable_pck
+ .text.pmc_set_fast_startup_input
+                0x00083eec       0x2c objdir/pmc.o
+                0x00083eec                pmc_set_fast_startup_input
+ .text.pmc_enable_waitmode
+                0x00083f18       0x58 objdir/pmc.o
+                0x00083f18                pmc_enable_waitmode
+ .text.udi_vendor_enable
+                0x00083f70       0x40 objdir/udi_vendor.o
+                0x00083f70                udi_vendor_enable
+ .text.udi_vendor_disable
+                0x00083fb0       0x1c objdir/udi_vendor.o
+                0x00083fb0                udi_vendor_disable
+ .text.udi_vendor_setup
+                0x00083fcc       0x54 objdir/udi_vendor.o
+                0x00083fcc                udi_vendor_setup
+ .text.udi_vendor_getsetting
+                0x00084020       0x14 objdir/udi_vendor.o
+                0x00084020                udi_vendor_getsetting
+ .text.udi_vendor_bulk_in_run
+                0x00084034       0x2c objdir/udi_vendor.o
+                0x00084034                udi_vendor_bulk_in_run
+ .text.udi_vendor_bulk_out_run
+                0x00084060       0x2c objdir/udi_vendor.o
+                0x00084060                udi_vendor_bulk_out_run
+ .text.cpu_irq_save
+                0x0008408c       0x38 objdir/efc.o
+ .text.cpu_irq_is_enabled_flags
+                0x000840c4       0x1e objdir/efc.o
+ *fill*         0x000840e2        0x2 
+ .text.cpu_irq_restore
+                0x000840e4       0x30 objdir/efc.o
+ .text.efc_perform_command
+                0x00084114       0x60 objdir/efc.o
+                0x00084114                efc_perform_command
+ .text.pio_pull_up
+                0x00084174       0x2a objdir/pio.o
+                0x00084174                pio_pull_up
+ .text.pio_set_peripheral
+                0x0008419e       0x7e objdir/pio.o
+                0x0008419e                pio_set_peripheral
+ .text.pio_set_input
+                0x0008421c       0x80 objdir/pio.o
+                0x0008421c                pio_set_input
+ .text.pio_set_output
+                0x0008429c       0x64 objdir/pio.o
+                0x0008429c                pio_set_output
+ .text.pio_sync_output_write
+                0x00084300       0x1a objdir/pio.o
+                0x00084300                pio_sync_output_write
+ .text.pio_disable_interrupt
+                0x0008431a       0x1a objdir/pio.o
+                0x0008431a                pio_disable_interrupt
+ .text.pio_get_interrupt_status
+                0x00084334       0x16 objdir/pio.o
+                0x00084334                pio_get_interrupt_status
+ .text.pio_get_interrupt_mask
+                0x0008434a       0x16 objdir/pio.o
+                0x0008434a                pio_get_interrupt_mask
+ .text.pio_get_pin_value
+                0x00084360       0x30 objdir/pio.o
+                0x00084360                pio_get_pin_value
+ .text.pio_set_pin_high
+                0x00084390       0x30 objdir/pio.o
+                0x00084390                pio_set_pin_high
+ .text.pio_set_pin_low
+                0x000843c0       0x30 objdir/pio.o
+                0x000843c0                pio_set_pin_low
+ .text.pio_configure_pin
+                0x000843f0      0x138 objdir/pio.o
+                0x000843f0                pio_configure_pin
+ .text.pio_configure_pin_group
+                0x00084528       0xe4 objdir/pio.o
+                0x00084528                pio_configure_pin_group
+ .text.pio_get_pin_group
+                0x0008460c       0x24 objdir/pio.o
+                0x0008460c                pio_get_pin_group
+ .text.Dummy_Handler
+                0x00084630        0x6 objdir/exceptions.o
+                0x00084630                DebugMon_Handler
+                0x00084630                DMAC_Handler
+                0x00084630                HardFault_Handler
+                0x00084630                TC2_Handler
+                0x00084630                SPI_Handler
+                0x00084630                SysTick_Handler
+                0x00084630                TWI1_Handler
+                0x00084630                PendSV_Handler
+                0x00084630                NMI_Handler
+                0x00084630                ADC_Handler
+                0x00084630                SMC_Handler
+                0x00084630                USART0_Handler
+                0x00084630                RTT_Handler
+                0x00084630                EFC1_Handler
+                0x00084630                ADC12B_Handler
+                0x00084630                RTC_Handler
+                0x00084630                UsageFault_Handler
+                0x00084630                WDT_Handler
+                0x00084630                TC1_Handler
+                0x00084630                HSMCI_Handler
+                0x00084630                Dummy_Handler
+                0x00084630                TWI0_Handler
+                0x00084630                USART1_Handler
+                0x00084630                SSC_Handler
+                0x00084630                EFC0_Handler
+                0x00084630                PMC_Handler
+                0x00084630                PWM_Handler
+                0x00084630                MemManage_Handler
+                0x00084630                SUPC_Handler
+                0x00084630                SVC_Handler
+                0x00084630                USART2_Handler
+                0x00084630                UART_Handler
+                0x00084630                BusFault_Handler
+                0x00084630                RSTC_Handler
+                0x00084630                TC0_Handler
+ *fill*         0x00084636        0x2 
+ .text.udc_get_string_serial_name
+                0x00084638       0x14 objdir/udc.o
+ .text.udc_get_interface_desc
+                0x0008464c       0x14 objdir/udc.o
+                0x0008464c                udc_get_interface_desc
+ .text.udc_get_eof_conf
+                0x00084660       0x24 objdir/udc.o
+ .text.udc_next_desc_in_iface
+                0x00084684       0x5c objdir/udc.o
+ .text.udc_update_iface_desc
+                0x000846e0       0x9c objdir/udc.o
+ .text.udc_iface_disable
+                0x0008477c       0xa0 objdir/udc.o
+ .text.udc_iface_enable
+                0x0008481c       0x98 objdir/udc.o
+ .text.udc_start
+                0x000848b4       0x10 objdir/udc.o
+                0x000848b4                udc_start
+ .text.udc_reset
+                0x000848c4       0x54 objdir/udc.o
+                0x000848c4                udc_reset
+ .text.udc_sof_notify
+                0x00084918       0x60 objdir/udc.o
+                0x00084918                udc_sof_notify
+ .text.udc_req_std_dev_get_status
+                0x00084978       0x2c objdir/udc.o
+ .text.udc_req_std_ep_get_status
+                0x000849a4       0x44 objdir/udc.o
+ .text.udc_req_std_dev_clear_feature
+                0x000849e8       0x3c objdir/udc.o
+ .text.udc_req_std_ep_clear_feature
+                0x00084a24       0x38 objdir/udc.o
+ .text.udc_req_std_dev_set_feature
+                0x00084a5c       0xbc objdir/udc.o
+ .text.udc_req_std_ep_set_feature
+                0x00084b18       0x48 objdir/udc.o
+ .text.udc_valid_address
+                0x00084b60       0x24 objdir/udc.o
+ .text.udc_req_std_dev_set_address
+                0x00084b84       0x28 objdir/udc.o
+ .text.udc_req_std_dev_get_str_desc
+                0x00084bac       0xcc objdir/udc.o
+ .text.udc_req_std_dev_get_descriptor
+                0x00084c78      0x21c objdir/udc.o
+ .text.udc_req_std_dev_get_configuration
+                0x00084e94       0x2c objdir/udc.o
+ .text.udc_req_std_dev_set_configuration
+                0x00084ec0      0x104 objdir/udc.o
+ .text.udc_req_std_iface_get_setting
+                0x00084fc4       0x98 objdir/udc.o
+ .text.udc_req_std_iface_set_setting
+                0x0008505c       0x68 objdir/udc.o
+ .text.udc_reqstd
+                0x000850c4      0x170 objdir/udc.o
+ .text.udc_req_iface
+                0x00085234       0x98 objdir/udc.o
+ .text.udc_req_ep
+                0x000852cc       0x90 objdir/udc.o
+ .text.udc_process_setup
+                0x0008535c       0x90 objdir/udc.o
+                0x0008535c                udc_process_setup
+ .text.pmc_sleep
+                0x000853ec      0x3ec objdir/sleep.o
+                0x000853ec                pmc_sleep
+ .text.pmc_is_wakeup_clocks_restored
+                0x000857d8       0x2c objdir/sleep.o
+                0x000857d8                pmc_is_wakeup_clocks_restored
+ .text.sysclk_enable_peripheral_clock
+                0x00085804       0x1c objdir/init.o
  .text.ioport_init
-                0x00085494       0x18 objdir/init.o
+                0x00085820       0x18 objdir/init.o
  .text.iopins_normal
-                0x000854ac       0x40 objdir/init.o
-                0x000854ac                iopins_normal
+                0x00085838       0x40 objdir/init.o
+                0x00085838                iopins_normal
  .text.board_init
-                0x000854ec       0x24 objdir/init.o
-                0x000854ec                board_init
+                0x00085878       0x24 objdir/init.o
+                0x00085878                board_init
  .text.cpu_irq_enter_critical
-                0x00085510       0x54 objdir/interrupt_sam_nvic.o
-                0x00085510                cpu_irq_enter_critical
+                0x0008589c       0x54 objdir/interrupt_sam_nvic.o
+                0x0008589c                cpu_irq_enter_critical
  .text.cpu_irq_leave_critical
-                0x00085564       0x40 objdir/interrupt_sam_nvic.o
-                0x00085564                cpu_irq_leave_critical
+                0x000858f0       0x40 objdir/interrupt_sam_nvic.o
+                0x000858f0                cpu_irq_leave_critical
  .text.SystemCoreClockUpdate
-                0x000855a4      0x180 objdir/system_sam3u.o
-                0x000855a4                SystemCoreClockUpdate
+                0x00085930      0x180 objdir/system_sam3u.o
+                0x00085930                SystemCoreClockUpdate
  .text.__libc_init_array
-                0x00085724       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-init.o)
-                0x00085724                __libc_init_array
+                0x00085ab0       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-init.o)
+                0x00085ab0                __libc_init_array
  .text.startup.register_fini
-                0x00085774       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
- .text.atexit   0x00085788        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-atexit.o)
-                0x00085788                atexit
+                0x00085b00       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
+ .text.atexit   0x00085b14        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-atexit.o)
+                0x00085b14                atexit
  .text.__libc_fini_array
-                0x00085794       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-fini.o)
-                0x00085794                __libc_fini_array
+                0x00085b20       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-fini.o)
+                0x00085b20                __libc_fini_array
  .text.__retarget_lock_acquire_recursive
-                0x000857c8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
-                0x000857c8                __retarget_lock_acquire_recursive
+                0x00085b54        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
+                0x00085b54                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x000857cc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
-                0x000857cc                __retarget_lock_release_recursive
+                0x00085b58        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
+                0x00085b58                __retarget_lock_release_recursive
  .text.__register_exitproc
-                0x000857d0       0xc4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__atexit.o)
-                0x000857d0                __register_exitproc
+                0x00085b5c       0xc4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__atexit.o)
+                0x00085b5c                __register_exitproc
  *(.glue_7t)
- .glue_7t       0x00085894        0x0 linker stubs
+ .glue_7t       0x00085c20        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x00085894        0x0 linker stubs
+ .glue_7        0x00085c20        0x0 linker stubs
  *(.rodata .rodata* .gnu.linkonce.r.*)
- .rodata        0x00085894       0x35 objdir/udphs_device.o
- *fill*         0x000858c9        0x3 
+ .rodata        0x00085c20       0x35 objdir/udphs_device.o
+ *fill*         0x00085c55        0x3 
  .rodata._global_impure_ptr
-                0x000858cc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
-                0x000858cc                _global_impure_ptr
+                0x00085c58        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
+                0x00085c58                _global_impure_ptr
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x000858d0                . = ALIGN (0x4)
+                0x00085c5c                . = ALIGN (0x4)
  *(.init)
- .init          0x000858d0        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crti.o
-                0x000858d0                _init
- .init          0x000858d4        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtn.o
-                0x000858dc                . = ALIGN (0x4)
-                0x000858dc                __preinit_array_start = .
+ .init          0x00085c5c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crti.o
+                0x00085c5c                _init
+ .init          0x00085c60        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtn.o
+                0x00085c68                . = ALIGN (0x4)
+                0x00085c68                __preinit_array_start = .
  *(.preinit_array)
-                0x000858dc                __preinit_array_end = .
-                0x000858dc                . = ALIGN (0x4)
-                0x000858dc                __init_array_start = .
+                0x00085c68                __preinit_array_end = .
+                0x00085c68                . = ALIGN (0x4)
+                0x00085c68                __init_array_start = .
  *(SORT(.init_array.*))
  .init_array.00000
-                0x000858dc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
+                0x00085c68        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
  *(.init_array)
- .init_array    0x000858e0        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
-                0x000858e4                __init_array_end = .
-                0x000858e4                . = ALIGN (0x4)
+ .init_array    0x00085c6c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+                0x00085c70                __init_array_end = .
+                0x00085c70                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x000858e4                . = ALIGN (0x4)
+                0x00085c70                . = ALIGN (0x4)
  *(.fini)
- .fini          0x000858e4        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crti.o
-                0x000858e4                _fini
- .fini          0x000858e8        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtn.o
-                0x000858f0                . = ALIGN (0x4)
-                0x000858f0                __fini_array_start = .
+ .fini          0x00085c70        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crti.o
+                0x00085c70                _fini
+ .fini          0x00085c74        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtn.o
+                0x00085c7c                . = ALIGN (0x4)
+                0x00085c7c                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x000858f0        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+ .fini_array    0x00085c7c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x000858f4                __fini_array_end = .
+                0x00085c80                __fini_array_end = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x000858f4                . = ALIGN (0x4)
-                0x000858f4                _efixed = .
+                0x00085c80                . = ALIGN (0x4)
+                0x00085c80                _efixed = .
                 [!provide]                PROVIDE (__exidx_start, .)
 
-.vfp11_veneer   0x000858f4        0x0
- .vfp11_veneer  0x000858f4        0x0 linker stubs
+.vfp11_veneer   0x00085c80        0x0
+ .vfp11_veneer  0x00085c80        0x0 linker stubs
 
-.v4_bx          0x000858f4        0x0
- .v4_bx         0x000858f4        0x0 linker stubs
+.v4_bx          0x00085c80        0x0
+ .v4_bx         0x00085c80        0x0 linker stubs
 
-.iplt           0x000858f4        0x0
- .iplt          0x000858f4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+.iplt           0x00085c80        0x0
+ .iplt          0x00085c80        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
 
-.eh_frame       0x000858f4        0x0
- .eh_frame      0x000858f4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+.eh_frame       0x00085c80        0x0
+ .eh_frame      0x00085c80        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
 
-.rel.dyn        0x000858f4        0x0
- .rel.iplt      0x000858f4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+.rel.dyn        0x00085c80        0x0
+ .rel.iplt      0x00085c80        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
 
-.jcr            0x000858f4        0x0
- .jcr           0x000858f4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+.jcr            0x00085c80        0x0
+ .jcr           0x00085c80        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
 
-.igot.plt       0x000858f4        0x0
- .igot.plt      0x000858f4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+.igot.plt       0x00085c80        0x0
+ .igot.plt      0x00085c80        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
                 [!provide]                PROVIDE (__exidx_end, .)
-                0x000858f4                . = ALIGN (0x4)
-                0x000858f4                _etext = .
+                0x00085c80                . = ALIGN (0x4)
+                0x00085c80                _etext = .
 
-.relocate       0x20000000      0x7dc load address 0x000858f4
+.relocate       0x20000000      0x7dc load address 0x00085c80
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _srelocate = .
  *(.ramfunc .ramfunc.*)
@@ -9868,7 +9872,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x200007dc                . = ALIGN (0x4)
                 0x200007dc                _erelocate = .
 
-.bss            0x200007dc      0x5c0 load address 0x000860d0
+.bss            0x200007dc      0x5c0 load address 0x0008645c
                 0x200007dc                . = ALIGN (0x4)
                 0x200007dc                _sbss = .
                 0x200007dc                _szero = .
@@ -9889,7 +9893,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20000c40        0x4 objdir/usb.o
  .bss.ctrlmemread_size
                 0x20000c44        0x4 objdir/usb.o
- .bss.respbuf.9184
+ .bss.respbuf.9183
                 0x20000c48       0x40 objdir/usb.o
  .bss._fpga_locked
                 0x20000c88        0x1 objdir/usb_xmem.o
@@ -10062,55 +10066,55 @@ OUTPUT(cw570-CW570.elf elf32-littlearm)
  .comment       0x00000059       0x5a objdir/system_sam3u.o
  .comment       0x00000059       0x5a objdir/sleepmgr.o
 
-.debug_info     0x00000000    0x1e9ee
+.debug_info     0x00000000    0x1e9bb
  .debug_info    0x00000000     0x25fb objdir/main_cw521.o
- .debug_info    0x000025fb     0x1be3 objdir/usb.o
- .debug_info    0x000041de     0x19f4 objdir/usb_xmem.o
- .debug_info    0x00005bd2     0x1767 objdir/fpga_program.o
- .debug_info    0x00007339     0x16b8 objdir/flash_efc.o
- .debug_info    0x000089f1     0x1eef objdir/usart.o
- .debug_info    0x0000a8e0     0x1300 objdir/smc.o
- .debug_info    0x0000bbe0     0x1625 objdir/pio_handler.o
- .debug_info    0x0000d205     0x2a4e objdir/udphs_device.o
- .debug_info    0x0000fc53      0xd19 objdir/startup_sam3u.o
- .debug_info    0x0001096c     0x1216 objdir/sysclk.o
- .debug_info    0x00011b82     0x18b4 objdir/pmc.o
- .debug_info    0x00013436     0x110c objdir/udi_vendor.o
- .debug_info    0x00014542      0xfd7 objdir/efc.o
- .debug_info    0x00015519     0x18a9 objdir/pio.o
- .debug_info    0x00016dc2      0xa3a objdir/exceptions.o
- .debug_info    0x000177fc     0x1ae9 objdir/udc.o
- .debug_info    0x000192e5     0x12e8 objdir/sleep.o
- .debug_info    0x0001a5cd      0xf88 objdir/init.o
- .debug_info    0x0001b555      0xb06 objdir/interrupt_sam_nvic.o
- .debug_info    0x0001c05b     0x119c objdir/udi_vendor_desc.o
- .debug_info    0x0001d1f7      0xd69 objdir/system_sam3u.o
- .debug_info    0x0001df60      0xa8e objdir/sleepmgr.o
+ .debug_info    0x000025fb     0x1bb0 objdir/usb.o
+ .debug_info    0x000041ab     0x19f4 objdir/usb_xmem.o
+ .debug_info    0x00005b9f     0x1767 objdir/fpga_program.o
+ .debug_info    0x00007306     0x16b8 objdir/flash_efc.o
+ .debug_info    0x000089be     0x1eef objdir/usart.o
+ .debug_info    0x0000a8ad     0x1300 objdir/smc.o
+ .debug_info    0x0000bbad     0x1625 objdir/pio_handler.o
+ .debug_info    0x0000d1d2     0x2a4e objdir/udphs_device.o
+ .debug_info    0x0000fc20      0xd19 objdir/startup_sam3u.o
+ .debug_info    0x00010939     0x1216 objdir/sysclk.o
+ .debug_info    0x00011b4f     0x18b4 objdir/pmc.o
+ .debug_info    0x00013403     0x110c objdir/udi_vendor.o
+ .debug_info    0x0001450f      0xfd7 objdir/efc.o
+ .debug_info    0x000154e6     0x18a9 objdir/pio.o
+ .debug_info    0x00016d8f      0xa3a objdir/exceptions.o
+ .debug_info    0x000177c9     0x1ae9 objdir/udc.o
+ .debug_info    0x000192b2     0x12e8 objdir/sleep.o
+ .debug_info    0x0001a59a      0xf88 objdir/init.o
+ .debug_info    0x0001b522      0xb06 objdir/interrupt_sam_nvic.o
+ .debug_info    0x0001c028     0x119c objdir/udi_vendor_desc.o
+ .debug_info    0x0001d1c4      0xd69 objdir/system_sam3u.o
+ .debug_info    0x0001df2d      0xa8e objdir/sleepmgr.o
 
-.debug_abbrev   0x00000000     0x3b6b
+.debug_abbrev   0x00000000     0x3b4a
  .debug_abbrev  0x00000000      0x3b5 objdir/main_cw521.o
- .debug_abbrev  0x000003b5      0x38a objdir/usb.o
- .debug_abbrev  0x0000073f      0x289 objdir/usb_xmem.o
- .debug_abbrev  0x000009c8      0x281 objdir/fpga_program.o
- .debug_abbrev  0x00000c49      0x2a0 objdir/flash_efc.o
- .debug_abbrev  0x00000ee9      0x296 objdir/usart.o
- .debug_abbrev  0x0000117f      0x257 objdir/smc.o
- .debug_abbrev  0x000013d6      0x2bc objdir/pio_handler.o
- .debug_abbrev  0x00001692      0x491 objdir/udphs_device.o
- .debug_abbrev  0x00001b23      0x1e3 objdir/startup_sam3u.o
- .debug_abbrev  0x00001d06      0x263 objdir/sysclk.o
- .debug_abbrev  0x00001f69      0x2ab objdir/pmc.o
- .debug_abbrev  0x00002214      0x257 objdir/udi_vendor.o
- .debug_abbrev  0x0000246b      0x2f3 objdir/efc.o
- .debug_abbrev  0x0000275e      0x278 objdir/pio.o
- .debug_abbrev  0x000029d6      0x1a4 objdir/exceptions.o
- .debug_abbrev  0x00002b7a      0x33f objdir/udc.o
- .debug_abbrev  0x00002eb9      0x2c5 objdir/sleep.o
- .debug_abbrev  0x0000317e      0x268 objdir/init.o
- .debug_abbrev  0x000033e6      0x214 objdir/interrupt_sam_nvic.o
- .debug_abbrev  0x000035fa      0x1d8 objdir/udi_vendor_desc.o
- .debug_abbrev  0x000037d2      0x1e7 objdir/system_sam3u.o
- .debug_abbrev  0x000039b9      0x1b2 objdir/sleepmgr.o
+ .debug_abbrev  0x000003b5      0x369 objdir/usb.o
+ .debug_abbrev  0x0000071e      0x289 objdir/usb_xmem.o
+ .debug_abbrev  0x000009a7      0x281 objdir/fpga_program.o
+ .debug_abbrev  0x00000c28      0x2a0 objdir/flash_efc.o
+ .debug_abbrev  0x00000ec8      0x296 objdir/usart.o
+ .debug_abbrev  0x0000115e      0x257 objdir/smc.o
+ .debug_abbrev  0x000013b5      0x2bc objdir/pio_handler.o
+ .debug_abbrev  0x00001671      0x491 objdir/udphs_device.o
+ .debug_abbrev  0x00001b02      0x1e3 objdir/startup_sam3u.o
+ .debug_abbrev  0x00001ce5      0x263 objdir/sysclk.o
+ .debug_abbrev  0x00001f48      0x2ab objdir/pmc.o
+ .debug_abbrev  0x000021f3      0x257 objdir/udi_vendor.o
+ .debug_abbrev  0x0000244a      0x2f3 objdir/efc.o
+ .debug_abbrev  0x0000273d      0x278 objdir/pio.o
+ .debug_abbrev  0x000029b5      0x1a4 objdir/exceptions.o
+ .debug_abbrev  0x00002b59      0x33f objdir/udc.o
+ .debug_abbrev  0x00002e98      0x2c5 objdir/sleep.o
+ .debug_abbrev  0x0000315d      0x268 objdir/init.o
+ .debug_abbrev  0x000033c5      0x214 objdir/interrupt_sam_nvic.o
+ .debug_abbrev  0x000035d9      0x1d8 objdir/udi_vendor_desc.o
+ .debug_abbrev  0x000037b1      0x1e7 objdir/system_sam3u.o
+ .debug_abbrev  0x00003998      0x1b2 objdir/sleepmgr.o
 
 .debug_loc      0x00000000     0x859e
  .debug_loc     0x00000000      0x890 objdir/main_cw521.o
@@ -10206,7 +10210,7 @@ OUTPUT(cw570-CW570.elf elf32-littlearm)
  .debug_ranges  0x00000e08       0x18 objdir/interrupt_sam_nvic.o
  .debug_ranges  0x00000e20       0x20 objdir/system_sam3u.o
 
-.debug_macro    0x00000000    0x17b59
+.debug_macro    0x00000000    0x17b47
  .debug_macro   0x00000000      0x7f2 objdir/main_cw521.o
  .debug_macro   0x000007f2      0x8e6 objdir/main_cw521.o
  .debug_macro   0x000010d8      0x16d objdir/main_cw521.o
@@ -10346,119 +10350,119 @@ OUTPUT(cw570-CW570.elf elf32-littlearm)
  .debug_macro   0x0000f0a7       0xca objdir/main_cw521.o
  .debug_macro   0x0000f171       0x10 objdir/main_cw521.o
  .debug_macro   0x0000f181       0x16 objdir/main_cw521.o
- .debug_macro   0x0000f197      0x8a4 objdir/usb.o
- .debug_macro   0x0000fa3b       0x10 objdir/usb.o
- .debug_macro   0x0000fa4b      0x79a objdir/usb_xmem.o
- .debug_macro   0x000101e5      0x78e objdir/fpga_program.o
- .debug_macro   0x00010973      0x5b8 objdir/flash_efc.o
- .debug_macro   0x00010f2b       0x52 objdir/flash_efc.o
- .debug_macro   0x00010f7d       0x8d objdir/flash_efc.o
- .debug_macro   0x0001100a       0x57 objdir/flash_efc.o
- .debug_macro   0x00011061       0x10 objdir/flash_efc.o
- .debug_macro   0x00011071       0x16 objdir/flash_efc.o
- .debug_macro   0x00011087       0x1c objdir/flash_efc.o
- .debug_macro   0x000110a3      0x521 objdir/usart.o
- .debug_macro   0x000115c4       0x28 objdir/usart.o
- .debug_macro   0x000115ec      0x512 objdir/smc.o
- .debug_macro   0x00011afe       0x76 objdir/smc.o
- .debug_macro   0x00011b74      0x4f5 objdir/pio_handler.o
- .debug_macro   0x00012069       0x8e objdir/pio_handler.o
- .debug_macro   0x000120f7      0x70c objdir/udphs_device.o
- .debug_macro   0x00012803       0xa7 objdir/udphs_device.o
- .debug_macro   0x000128aa      0x23f objdir/udphs_device.o
- .debug_macro   0x00012ae9       0x16 objdir/udphs_device.o
- .debug_macro   0x00012aff      0x65e objdir/udphs_device.o
- .debug_macro   0x0001315d      0x4ff objdir/startup_sam3u.o
- .debug_macro   0x0001365c       0x3f objdir/startup_sam3u.o
- .debug_macro   0x0001369b      0x55e objdir/sysclk.o
- .debug_macro   0x00013bf9      0x4eb objdir/pmc.o
- .debug_macro   0x000140e4       0x58 objdir/pmc.o
- .debug_macro   0x0001413c      0x5a2 objdir/udi_vendor.o
- .debug_macro   0x000146de      0x4fd objdir/efc.o
- .debug_macro   0x00014bdb       0x6a objdir/efc.o
- .debug_macro   0x00014c45      0x4f1 objdir/pio.o
- .debug_macro   0x00015136      0x4ea objdir/exceptions.o
- .debug_macro   0x00015620      0x594 objdir/udc.o
- .debug_macro   0x00015bb4      0x519 objdir/sleep.o
- .debug_macro   0x000160cd      0x5a7 objdir/init.o
- .debug_macro   0x00016674       0x6a objdir/init.o
- .debug_macro   0x000166de      0x4e0 objdir/interrupt_sam_nvic.o
- .debug_macro   0x00016bbe      0x579 objdir/udi_vendor_desc.o
- .debug_macro   0x00017137      0x4fc objdir/system_sam3u.o
- .debug_macro   0x00017633       0x26 objdir/system_sam3u.o
- .debug_macro   0x00017659      0x500 objdir/sleepmgr.o
+ .debug_macro   0x0000f197      0x892 objdir/usb.o
+ .debug_macro   0x0000fa29       0x10 objdir/usb.o
+ .debug_macro   0x0000fa39      0x79a objdir/usb_xmem.o
+ .debug_macro   0x000101d3      0x78e objdir/fpga_program.o
+ .debug_macro   0x00010961      0x5b8 objdir/flash_efc.o
+ .debug_macro   0x00010f19       0x52 objdir/flash_efc.o
+ .debug_macro   0x00010f6b       0x8d objdir/flash_efc.o
+ .debug_macro   0x00010ff8       0x57 objdir/flash_efc.o
+ .debug_macro   0x0001104f       0x10 objdir/flash_efc.o
+ .debug_macro   0x0001105f       0x16 objdir/flash_efc.o
+ .debug_macro   0x00011075       0x1c objdir/flash_efc.o
+ .debug_macro   0x00011091      0x521 objdir/usart.o
+ .debug_macro   0x000115b2       0x28 objdir/usart.o
+ .debug_macro   0x000115da      0x512 objdir/smc.o
+ .debug_macro   0x00011aec       0x76 objdir/smc.o
+ .debug_macro   0x00011b62      0x4f5 objdir/pio_handler.o
+ .debug_macro   0x00012057       0x8e objdir/pio_handler.o
+ .debug_macro   0x000120e5      0x70c objdir/udphs_device.o
+ .debug_macro   0x000127f1       0xa7 objdir/udphs_device.o
+ .debug_macro   0x00012898      0x23f objdir/udphs_device.o
+ .debug_macro   0x00012ad7       0x16 objdir/udphs_device.o
+ .debug_macro   0x00012aed      0x65e objdir/udphs_device.o
+ .debug_macro   0x0001314b      0x4ff objdir/startup_sam3u.o
+ .debug_macro   0x0001364a       0x3f objdir/startup_sam3u.o
+ .debug_macro   0x00013689      0x55e objdir/sysclk.o
+ .debug_macro   0x00013be7      0x4eb objdir/pmc.o
+ .debug_macro   0x000140d2       0x58 objdir/pmc.o
+ .debug_macro   0x0001412a      0x5a2 objdir/udi_vendor.o
+ .debug_macro   0x000146cc      0x4fd objdir/efc.o
+ .debug_macro   0x00014bc9       0x6a objdir/efc.o
+ .debug_macro   0x00014c33      0x4f1 objdir/pio.o
+ .debug_macro   0x00015124      0x4ea objdir/exceptions.o
+ .debug_macro   0x0001560e      0x594 objdir/udc.o
+ .debug_macro   0x00015ba2      0x519 objdir/sleep.o
+ .debug_macro   0x000160bb      0x5a7 objdir/init.o
+ .debug_macro   0x00016662       0x6a objdir/init.o
+ .debug_macro   0x000166cc      0x4e0 objdir/interrupt_sam_nvic.o
+ .debug_macro   0x00016bac      0x579 objdir/udi_vendor_desc.o
+ .debug_macro   0x00017125      0x4fc objdir/system_sam3u.o
+ .debug_macro   0x00017621       0x26 objdir/system_sam3u.o
+ .debug_macro   0x00017647      0x500 objdir/sleepmgr.o
 
-.debug_line     0x00000000    0x1174d
+.debug_line     0x00000000    0x1174e
  .debug_line    0x00000000     0x10bb objdir/main_cw521.o
- .debug_line    0x000010bb      0xf6f objdir/usb.o
- .debug_line    0x0000202a      0xdc6 objdir/usb_xmem.o
- .debug_line    0x00002df0      0xd34 objdir/fpga_program.o
- .debug_line    0x00003b24      0xd11 objdir/flash_efc.o
- .debug_line    0x00004835      0xf38 objdir/usart.o
- .debug_line    0x0000576d      0xb61 objdir/smc.o
- .debug_line    0x000062ce      0xa1c objdir/pio_handler.o
- .debug_line    0x00006cea     0x1304 objdir/udphs_device.o
- .debug_line    0x00007fee      0x956 objdir/startup_sam3u.o
- .debug_line    0x00008944      0xb88 objdir/sysclk.o
- .debug_line    0x000094cc      0xed0 objdir/pmc.o
- .debug_line    0x0000a39c      0xa5a objdir/udi_vendor.o
- .debug_line    0x0000adf6      0xab6 objdir/efc.o
- .debug_line    0x0000b8ac      0xc66 objdir/pio.o
- .debug_line    0x0000c512      0x939 objdir/exceptions.o
- .debug_line    0x0000ce4b      0xd46 objdir/udc.o
- .debug_line    0x0000db91      0xa82 objdir/sleep.o
- .debug_line    0x0000e613      0xab3 objdir/init.o
- .debug_line    0x0000f0c6      0x991 objdir/interrupt_sam_nvic.o
- .debug_line    0x0000fa57      0x9ba objdir/udi_vendor_desc.o
- .debug_line    0x00010411      0x9d5 objdir/system_sam3u.o
- .debug_line    0x00010de6      0x967 objdir/sleepmgr.o
+ .debug_line    0x000010bb      0xf70 objdir/usb.o
+ .debug_line    0x0000202b      0xdc6 objdir/usb_xmem.o
+ .debug_line    0x00002df1      0xd34 objdir/fpga_program.o
+ .debug_line    0x00003b25      0xd11 objdir/flash_efc.o
+ .debug_line    0x00004836      0xf38 objdir/usart.o
+ .debug_line    0x0000576e      0xb61 objdir/smc.o
+ .debug_line    0x000062cf      0xa1c objdir/pio_handler.o
+ .debug_line    0x00006ceb     0x1304 objdir/udphs_device.o
+ .debug_line    0x00007fef      0x956 objdir/startup_sam3u.o
+ .debug_line    0x00008945      0xb88 objdir/sysclk.o
+ .debug_line    0x000094cd      0xed0 objdir/pmc.o
+ .debug_line    0x0000a39d      0xa5a objdir/udi_vendor.o
+ .debug_line    0x0000adf7      0xab6 objdir/efc.o
+ .debug_line    0x0000b8ad      0xc66 objdir/pio.o
+ .debug_line    0x0000c513      0x939 objdir/exceptions.o
+ .debug_line    0x0000ce4c      0xd46 objdir/udc.o
+ .debug_line    0x0000db92      0xa82 objdir/sleep.o
+ .debug_line    0x0000e614      0xab3 objdir/init.o
+ .debug_line    0x0000f0c7      0x991 objdir/interrupt_sam_nvic.o
+ .debug_line    0x0000fa58      0x9ba objdir/udi_vendor_desc.o
+ .debug_line    0x00010412      0x9d5 objdir/system_sam3u.o
+ .debug_line    0x00010de7      0x967 objdir/sleepmgr.o
 
-.debug_str      0x00000000    0x583f5
- .debug_str     0x00000000    0x4e6ba objdir/main_cw521.o
-                              0x4eb57 (size before relaxing)
- .debug_str     0x0004e6ba      0x64b objdir/usb.o
-                              0x4e709 (size before relaxing)
- .debug_str     0x0004ed05      0x15e objdir/usb_xmem.o
+.debug_str      0x00000000    0x583e3
+ .debug_str     0x00000000    0x4e6b4 objdir/main_cw521.o
+                              0x4eb51 (size before relaxing)
+ .debug_str     0x0004e6b4      0x63f objdir/usb.o
+                              0x4e6fa (size before relaxing)
+ .debug_str     0x0004ecf3      0x15e objdir/usb_xmem.o
                               0x4dd49 (size before relaxing)
- .debug_str     0x0004ee63      0x1a8 objdir/fpga_program.o
-                              0x4e1b1 (size before relaxing)
- .debug_str     0x0004f00b      0x5a1 objdir/flash_efc.o
+ .debug_str     0x0004ee51      0x1a8 objdir/fpga_program.o
+                              0x4e1ae (size before relaxing)
+ .debug_str     0x0004eff9      0x5a1 objdir/flash_efc.o
                               0x4a704 (size before relaxing)
- .debug_str     0x0004f5ac      0x85e objdir/usart.o
+ .debug_str     0x0004f59a      0x85e objdir/usart.o
                               0x48ec4 (size before relaxing)
- .debug_str     0x0004fe0a      0x2e2 objdir/smc.o
+ .debug_str     0x0004fdf8      0x2e2 objdir/smc.o
                               0x49caa (size before relaxing)
- .debug_str     0x000500ec      0x47a objdir/pio_handler.o
+ .debug_str     0x000500da      0x47a objdir/pio_handler.o
                               0x48e75 (size before relaxing)
- .debug_str     0x00050566     0x6675 objdir/udphs_device.o
+ .debug_str     0x00050554     0x6675 objdir/udphs_device.o
                               0x53454 (size before relaxing)
- .debug_str     0x00056bdb       0xaf objdir/startup_sam3u.o
+ .debug_str     0x00056bc9       0xaf objdir/startup_sam3u.o
                               0x4856a (size before relaxing)
- .debug_str     0x00056c8a       0xc0 objdir/sysclk.o
+ .debug_str     0x00056c78       0xc0 objdir/sysclk.o
                               0x4a28a (size before relaxing)
- .debug_str     0x00056d4a      0x438 objdir/pmc.o
+ .debug_str     0x00056d38      0x438 objdir/pmc.o
                               0x48de5 (size before relaxing)
- .debug_str     0x00057182       0x9e objdir/udi_vendor.o
+ .debug_str     0x00057170       0x9e objdir/udi_vendor.o
                               0x4aab7 (size before relaxing)
- .debug_str     0x00057220      0x192 objdir/efc.o
+ .debug_str     0x0005720e      0x192 objdir/efc.o
                               0x488d1 (size before relaxing)
- .debug_str     0x000573b2      0x2e6 objdir/pio.o
+ .debug_str     0x000573a0      0x2e6 objdir/pio.o
                               0x48e14 (size before relaxing)
- .debug_str     0x00057698       0x2c objdir/exceptions.o
+ .debug_str     0x00057686       0x2c objdir/exceptions.o
                               0x48472 (size before relaxing)
- .debug_str     0x000576c4      0x936 objdir/udc.o
+ .debug_str     0x000576b2      0x936 objdir/udc.o
                               0x4b342 (size before relaxing)
- .debug_str     0x00057ffa      0x133 objdir/sleep.o
+ .debug_str     0x00057fe8      0x133 objdir/sleep.o
                               0x49b32 (size before relaxing)
- .debug_str     0x0005812d       0x59 objdir/init.o
+ .debug_str     0x0005811b       0x59 objdir/init.o
                               0x4a94a (size before relaxing)
- .debug_str     0x00058186       0x26 objdir/interrupt_sam_nvic.o
+ .debug_str     0x00058174       0x26 objdir/interrupt_sam_nvic.o
                               0x484b9 (size before relaxing)
- .debug_str     0x000581ac       0xd9 objdir/udi_vendor_desc.o
+ .debug_str     0x0005819a       0xd9 objdir/udi_vendor_desc.o
                               0x4abf2 (size before relaxing)
- .debug_str     0x00058285      0x154 objdir/system_sam3u.o
+ .debug_str     0x00058273      0x154 objdir/system_sam3u.o
                               0x4870c (size before relaxing)
- .debug_str     0x000583d9       0x1c objdir/sleepmgr.o
+ .debug_str     0x000583c7       0x1c objdir/sleepmgr.o
                               0x485ef (size before relaxing)
 
 .debug_frame    0x00000000     0x4344
@@ -10857,7 +10861,6 @@ atexit                                            c:/program files (x86)/atmel/s
                                                   c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/crt0.o
 board_init                                        objdir/init.o
                                                   objdir/main_cw521.o
-board_power                                       objdir/usb.o
 chipid_read                                       objdir/chipid.o
 chipid_read_arch                                  objdir/chipid.o
 chipid_read_extchipid                             objdir/chipid.o
@@ -10990,10 +10993,10 @@ memmove                                           c:/program files (x86)/atmel/s
 memset                                            c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memset.o)
                                                   c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-findfp.o)
                                                   c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/crt0.o
+phywhisperer_5V_pwr                               objdir/main_cw521.o
 phywhisperer_host_pwr                             objdir/main_cw521.o
 phywhisperer_no_pwr                               objdir/main_cw521.o
 phywhisperer_setup_pins                           objdir/main_cw521.o
-phywhisperer_sniff_pwr                            objdir/main_cw521.o
 phywhisperer_switch_usb_pwr                       objdir/main_cw521.o
 pio_clear                                         objdir/pio.o
 pio_configure                                     objdir/pio.o
