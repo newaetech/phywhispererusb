@@ -3,3 +3,6 @@
 /hardware/altium_source/phywhisperer_usb_pcb/History/
 /hardware/altium_source/phywhisperer_usb_pcb/Project Logs for cwtrigger_usb
 /hardware/altium_source/phywhisperer_usb_pcb/Project Outputs for cwtrigger_usb/
+/software/phywhisperer.egg-info
+/software/phywhisperer.egg-info
+*.pyc

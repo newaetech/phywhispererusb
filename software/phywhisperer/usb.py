@@ -8,11 +8,11 @@ from zipfile import ZipFile
 #include once implemented
 # from phywhisperer.firmware.phywhisperer import getsome
 
-class usb(object):
+class Usb(object):
     """PhyWhisperer-USB Interface"""
 
 
-    def con(self, PID=123, sn=None, program_fpga=True):
+    def con(self, PID=0xC521, sn=None, program_fpga=True):
         """Connect to PhyWhisperer-USB. Raises error if multiple detected
 
         PID : int
@@ -24,7 +24,7 @@ class usb(object):
         """
 
         self.usb = NAE.NAEUSB()
-        self.usb.con(idProduct=[0xC521], serial_number=sn)
+        self.usb.con(idProduct=[PID], serial_number=sn)
         self._llint = LLINT.PhyWhispererUSB(self.usb)
 
         if program_fpga:
@@ -59,6 +59,7 @@ class usb(object):
 
 
     def load_bitstream(self, bitfile):
+        """Load bitstream onto FPGA"""
         if not os.path.isfile(bitfile):
             raise ValueError("Cannot find specified bitfile {}".format(bitfile))
 
@@ -68,9 +69,11 @@ class usb(object):
 
 
     def erase_sam3u(self):
+        """Erase the SAM3U Firmware, which forces it into bootloader mode"""
         self._llint.eraseFW(confirm=True)
 
     def program_sam3u(self, port, fw_path=None):
+        """Program the SAM3U Firmware assuming device is in bootloader mode"""
         fw_data = None
         print("Opening firmware...")
 
@@ -102,10 +105,13 @@ class usb(object):
 
 
     def set_usb_mode_hs(self, use_hs):
+        """Set USB PHY to High-Speed Mode"""
         pass
 
     def set_usb_mode_fs(self, use_fs):
+        """Set USB PHY to Full-Speed Mode"""
         self.set_usb_mode_hs(False)
 
     def sniff_usb_traffic(self, bytes):
+        """Set USB Sniffer Mode"""
         pass
