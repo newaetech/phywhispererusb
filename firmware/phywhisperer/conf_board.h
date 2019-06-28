@@ -50,4 +50,13 @@
 /** Usart Hw ID used by the console (UART0). */
 #define CONSOLE_UART_ID          ID_UART
 
+#define CONF_BOARD_PCK1
+
+//! PCK1
+#define PIN_PCK1        (PIO_PB24_IDX)
+#define PIN_PCK1_MUX    (IOPORT_MODE_MUX_B)
+#define PIN_PCK1_FLAGS  (PIO_PERIPH_B | PIO_DEFAULT)
+
+#define 
+
 #endif /* CONF_BOARD_H_INCLUDED */

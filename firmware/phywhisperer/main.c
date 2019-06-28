@@ -136,7 +136,7 @@ int main(void)
 #else
     system_init();
 #endif
-    genclk_enable_config(GENCLK_PCK_0, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
+    genclk_enable_config(GENCLK_PCK_1, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
     udc_start();
     gpio_set_pin_high(LED0_GPIO);
     gpio_set_pin_low(LED1_GPIO);
