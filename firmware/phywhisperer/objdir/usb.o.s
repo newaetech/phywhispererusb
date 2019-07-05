@@ -663,6 +663,10 @@ ctrl_readmem_bulk:
 	blx	r3
 .LVL16:
 	.loc 4 139 0
+	ldr	r3, .L48+4
+	blx	r3
+.LVL17:
+	.loc 4 140 0
 	nop
 	adds	r7, r7, #8
 .LCFI38:
@@ -694,7 +698,7 @@ ctrl_readmem_bulk:
 	.type	ctrl_readmem_ctrl, %function
 ctrl_readmem_ctrl:
 .LFB196:
-	.loc 4 141 0
+	.loc 4 142 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -709,43 +713,43 @@ ctrl_readmem_ctrl:
 	add	r7, sp, #0
 .LCFI42:
 	.cfi_def_cfa_register 7
-	.loc 4 142 0
+	.loc 4 143 0
 	ldr	r3, .L52
 	ldr	r3, [r3]
 	str	r3, [r7, #4]
-	.loc 4 143 0
+	.loc 4 144 0
 	ldr	r3, .L52
 	ldr	r3, [r3, #4]
 	str	r3, [r7]
-	.loc 4 145 0
+	.loc 4 146 0
 	ldr	r3, .L52+4
 	blx	r3
-.LVL17:
-	.loc 4 146 0
+.LVL18:
+	.loc 4 147 0
 	nop
 .L51:
-	.loc 4 146 0 is_stmt 0 discriminator 1
+	.loc 4 147 0 is_stmt 0 discriminator 1
 	movs	r0, #5
 	ldr	r3, .L52+8
 	blx	r3
-.LVL18:
+.LVL19:
 	mov	r3, r0
 	cmp	r3, #0
 	beq	.L51
-	.loc 4 149 0 is_stmt 1
+	.loc 4 150 0 is_stmt 1
 	ldr	r0, [r7]
 	ldr	r3, .L52+12
 	blx	r3
-.LVL19:
-	.loc 4 152 0
+.LVL20:
+	.loc 4 153 0
 	ldr	r3, .L52+16
 	mov	r2, #1610612736
 	str	r2, [r3]
-	.loc 4 155 0
+	.loc 4 156 0
 	ldr	r2, .L52+20
 	ldr	r3, [r7, #4]
 	str	r3, [r2]
-	.loc 4 158 0
+	.loc 4 159 0
 	nop
 	adds	r7, r7, #8
 .LCFI43:
@@ -777,7 +781,7 @@ ctrl_readmem_ctrl:
 	.type	ctrl_writemem_ctrl, %function
 ctrl_writemem_ctrl:
 .LFB197:
-	.loc 4 161 0
+	.loc 4 162 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -792,44 +796,44 @@ ctrl_writemem_ctrl:
 	add	r7, sp, #0
 .LCFI47:
 	.cfi_def_cfa_register 7
-	.loc 4 162 0
+	.loc 4 163 0
 	ldr	r3, .L58
 	ldr	r3, [r3]
 	str	r3, [r7, #8]
-	.loc 4 163 0
+	.loc 4 164 0
 	ldr	r3, .L58
 	ldr	r3, [r3, #4]
 	str	r3, [r7, #4]
-	.loc 4 165 0
+	.loc 4 166 0
 	ldr	r3, .L58+4
 	str	r3, [r7]
-	.loc 4 169 0
+	.loc 4 170 0
 	ldr	r3, .L58+8
 	blx	r3
-.LVL20:
-	.loc 4 170 0
+.LVL21:
+	.loc 4 171 0
 	nop
 .L55:
-	.loc 4 170 0 is_stmt 0 discriminator 1
+	.loc 4 171 0 is_stmt 0 discriminator 1
 	movs	r0, #1
 	ldr	r3, .L58+12
 	blx	r3
-.LVL21:
+.LVL22:
 	mov	r3, r0
 	cmp	r3, #0
 	beq	.L55
-	.loc 4 173 0 is_stmt 1
+	.loc 4 174 0 is_stmt 1
 	ldr	r0, [r7, #4]
 	ldr	r3, .L58+16
 	blx	r3
-.LVL22:
+.LVL23:
 .LBB2:
-	.loc 4 178 0
+	.loc 4 179 0
 	movs	r3, #0
 	str	r3, [r7, #12]
 	b	.L56
 .L57:
-	.loc 4 179 0 discriminator 3
+	.loc 4 180 0 discriminator 3
 	ldr	r2, [r7]
 	ldr	r3, [r7, #12]
 	add	r2, r2, r3
@@ -839,22 +843,22 @@ ctrl_writemem_ctrl:
 	add	r3, r3, r1
 	ldrb	r2, [r2]	@ zero_extendqisi2
 	strb	r2, [r3]
-	.loc 4 178 0 discriminator 3
+	.loc 4 179 0 discriminator 3
 	ldr	r3, [r7, #12]
 	adds	r3, r3, #1
 	str	r3, [r7, #12]
 .L56:
-	.loc 4 178 0 is_stmt 0 discriminator 1
+	.loc 4 179 0 is_stmt 0 discriminator 1
 	ldr	r2, [r7, #12]
 	ldr	r3, [r7, #8]
 	cmp	r2, r3
 	bcc	.L57
 .LBE2:
-	.loc 4 182 0 is_stmt 1
+	.loc 4 183 0 is_stmt 1
 	ldr	r3, .L58+8
 	blx	r3
-.LVL23:
-	.loc 4 183 0
+.LVL24:
+	.loc 4 184 0
 	nop
 	adds	r7, r7, #16
 .LCFI48:
@@ -898,7 +902,7 @@ bulkread_len:
 	.type	ctrl_writemem_bulk, %function
 ctrl_writemem_bulk:
 .LFB198:
-	.loc 4 188 0
+	.loc 4 189 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -913,31 +917,31 @@ ctrl_writemem_bulk:
 	add	r7, sp, #0
 .LCFI52:
 	.cfi_def_cfa_register 7
-	.loc 4 190 0
+	.loc 4 191 0
 	ldr	r3, .L62
 	ldr	r3, [r3, #4]
 	str	r3, [r7, #4]
-	.loc 4 193 0
+	.loc 4 194 0
 	ldr	r3, .L62+4
 	blx	r3
-.LVL24:
-	.loc 4 194 0
+.LVL25:
+	.loc 4 195 0
 	nop
 .L61:
-	.loc 4 194 0 is_stmt 0 discriminator 1
+	.loc 4 195 0 is_stmt 0 discriminator 1
 	movs	r0, #4
 	ldr	r3, .L62+8
 	blx	r3
-.LVL25:
+.LVL26:
 	mov	r3, r0
 	cmp	r3, #0
 	beq	.L61
-	.loc 4 197 0 is_stmt 1
+	.loc 4 198 0 is_stmt 1
 	ldr	r0, [r7, #4]
 	ldr	r3, .L62+12
 	blx	r3
-.LVL26:
-	.loc 4 200 0
+.LVL27:
+	.loc 4 201 0
 	nop
 	adds	r7, r7, #8
 .LCFI53:
@@ -966,7 +970,7 @@ ctrl_writemem_bulk:
 	.type	ctrl_sam3ucfg_cb, %function
 ctrl_sam3ucfg_cb:
 .LFB199:
-	.loc 4 203 0
+	.loc 4 204 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -978,7 +982,7 @@ ctrl_sam3ucfg_cb:
 	add	r7, sp, #0
 .LCFI56:
 	.cfi_def_cfa_register 7
-	.loc 4 204 0
+	.loc 4 205 0
 	ldr	r3, .L72
 	ldrh	r3, [r3, #2]
 	uxtb	r3, r3
@@ -988,56 +992,56 @@ ctrl_sam3ucfg_cb:
 	beq	.L67
 	cmp	r3, #1
 	beq	.L68
-	.loc 4 241 0
+	.loc 4 242 0
 	b	.L69
 .L68:
-	.loc 4 208 0
+	.loc 4 209 0
 	movs	r0, #6
 	ldr	r3, .L72+4
 	blx	r3
-.LVL27:
-	.loc 4 209 0
+.LVL28:
+	.loc 4 210 0
 	movs	r0, #6
 	ldr	r3, .L72+8
 	blx	r3
-.LVL28:
-	.loc 4 210 0
+.LVL29:
+	.loc 4 211 0
 	movs	r0, #16
 	ldr	r3, .L72+12
 	blx	r3
-.LVL29:
-	.loc 4 211 0
+.LVL30:
+	.loc 4 212 0
 	b	.L69
 .L66:
-	.loc 4 215 0
+	.loc 4 216 0
 	movs	r0, #16
 	ldr	r3, .L72+16
 	blx	r3
-.LVL30:
-	.loc 4 216 0
+.LVL31:
+	.loc 4 217 0
 	b	.L69
 .L67:
-	.loc 4 224 0
+	.loc 4 225 0
 	movs	r2, #1
 	movs	r1, #12
 	ldr	r0, .L72+20
 	ldr	r3, .L72+24
 	blx	r3
-.LVL31:
-	.loc 4 227 0
+.LVL32:
+	.loc 4 228 0
 	ldr	r3, .L72+28
 	blx	r3
-.LVL32:
-	.loc 4 230 0
+.LVL33:
+	.loc 4 231 0
 	nop
 .L70:
-	.loc 4 230 0 is_stmt 0 discriminator 1
+	.loc 4 231 0 is_stmt 0 discriminator 1
 	ldr	r3, .L72+32
 	ldr	r3, [r3, #4]
 	and	r3, r3, #131072
 	cmp	r3, #0
 	bne	.L70
-	.loc 4 231 0 is_stmt 1
+	.loc 4 232 0 is_stmt 1
 	ldr	r3, .L72+32
 	ldr	r3, [r3]
 	ldr	r2, .L72+32
@@ -1045,10 +1049,10 @@ ctrl_sam3ucfg_cb:
 	orr	r3, r3, #5
 	str	r3, [r2]
 .L71:
-	.loc 4 232 0 discriminator 1
+	.loc 4 233 0 discriminator 1
 	b	.L71
 .L69:
-	.loc 4 243 0
+	.loc 4 244 0
 	nop
 	pop	{r7, pc}
 .L73:
@@ -1076,7 +1080,7 @@ ctrl_sam3ucfg_cb:
 	.type	ctrl_progfpga_bulk, %function
 ctrl_progfpga_bulk:
 .LFB200:
-	.loc 4 245 0
+	.loc 4 246 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -1088,7 +1092,7 @@ ctrl_progfpga_bulk:
 	add	r7, sp, #0
 .LCFI58:
 	.cfi_def_cfa_register 7
-	.loc 4 247 0
+	.loc 4 248 0
 	ldr	r3, .L80
 	ldrh	r3, [r3, #2]
 	cmp	r3, #161
@@ -1097,35 +1101,35 @@ ctrl_progfpga_bulk:
 	beq	.L77
 	cmp	r3, #160
 	beq	.L78
-	.loc 4 264 0
+	.loc 4 265 0
 	b	.L79
 .L78:
-	.loc 4 249 0
+	.loc 4 250 0
 	ldr	r3, .L80+4
 	blx	r3
-.LVL33:
-	.loc 4 250 0
+.LVL34:
+	.loc 4 251 0
 	b	.L79
 .L76:
-	.loc 4 254 0
+	.loc 4 255 0
 	ldr	r3, .L80+8
 	blx	r3
-.LVL34:
-	.loc 4 255 0
+.LVL35:
+	.loc 4 256 0
 	ldr	r3, .L80+12
 	movs	r2, #10
 	strb	r2, [r3]
-	.loc 4 256 0
+	.loc 4 257 0
 	b	.L79
 .L77:
-	.loc 4 260 0
+	.loc 4 261 0
 	ldr	r3, .L80+12
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 4 261 0
+	.loc 4 262 0
 	nop
 .L79:
-	.loc 4 266 0
+	.loc 4 267 0
 	nop
 	pop	{r7, pc}
 .L81:
@@ -1148,7 +1152,7 @@ ctrl_progfpga_bulk:
 	.type	ctrl_change_pwr, %function
 ctrl_change_pwr:
 .LFB201:
-	.loc 4 268 0
+	.loc 4 269 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -1160,7 +1164,7 @@ ctrl_change_pwr:
 	add	r7, sp, #0
 .LCFI60:
 	.cfi_def_cfa_register 7
-	.loc 4 269 0
+	.loc 4 270 0
 	ldr	r3, .L88
 	ldrh	r3, [r3, #2]
 	cmp	r3, #1
@@ -1169,56 +1173,56 @@ ctrl_change_pwr:
 	beq	.L85
 	cmp	r3, #0
 	beq	.L86
-	.loc 4 286 0
+	.loc 4 287 0
 	b	.L87
 .L86:
-	.loc 4 271 0
+	.loc 4 272 0
 	ldr	r3, .L88+4
 	mov	r2, #33554432
 	str	r2, [r3, #52]
-	.loc 4 272 0
+	.loc 4 273 0
 	ldr	r3, .L88+4
 	mov	r2, #67108864
 	str	r2, [r3, #52]
-	.loc 4 273 0
+	.loc 4 274 0
 	ldr	r3, .L88+8
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 4 274 0
+	.loc 4 275 0
 	b	.L83
 .L84:
-	.loc 4 276 0
+	.loc 4 277 0
 	ldr	r3, .L88+4
 	mov	r2, #33554432
 	str	r2, [r3, #52]
-	.loc 4 277 0
+	.loc 4 278 0
 	ldr	r3, .L88+4
 	mov	r2, #67108864
 	str	r2, [r3, #48]
-	.loc 4 278 0
+	.loc 4 279 0
 	ldr	r3, .L88+8
 	movs	r2, #1
 	strb	r2, [r3]
-	.loc 4 279 0
+	.loc 4 280 0
 	b	.L83
 .L85:
-	.loc 4 281 0
+	.loc 4 282 0
 	ldr	r3, .L88+4
 	mov	r2, #67108864
 	str	r2, [r3, #52]
-	.loc 4 282 0
+	.loc 4 283 0
 	ldr	r3, .L88+4
 	mov	r2, #33554432
 	str	r2, [r3, #48]
-	.loc 4 283 0
+	.loc 4 284 0
 	ldr	r3, .L88+8
 	movs	r2, #2
 	strb	r2, [r3]
-	.loc 4 284 0
+	.loc 4 285 0
 	nop
 .L83:
 .L87:
-	.loc 4 286 0
+	.loc 4 287 0
 	nop
 	mov	sp, r7
 .LCFI61:
@@ -1248,7 +1252,7 @@ ctrl_change_pwr:
 	.type	main_setup_out_received, %function
 main_setup_out_received:
 .LFB202:
-	.loc 4 289 0
+	.loc 4 290 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -1260,11 +1264,11 @@ main_setup_out_received:
 	add	r7, sp, #0
 .LCFI64:
 	.cfi_def_cfa_register 7
-	.loc 4 291 0
+	.loc 4 292 0
 	ldr	r3, .L110
 	ldr	r2, .L110+4
 	str	r2, [r3, #8]
-	.loc 4 292 0
+	.loc 4 293 0
 	ldr	r3, .L110
 	ldrh	r3, [r3, #6]
 	cmp	r3, #64
@@ -1273,11 +1277,11 @@ main_setup_out_received:
 	uxth	r2, r3
 	ldr	r3, .L110
 	strh	r2, [r3, #12]	@ movhi
-	.loc 4 294 0
+	.loc 4 295 0
 	ldr	r3, .L110+8
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 4 296 0
+	.loc 4 297 0
 	ldr	r3, .L110
 	ldrb	r3, [r3, #1]	@ zero_extendqisi2
 	subs	r3, r3, #16
@@ -1310,117 +1314,117 @@ main_setup_out_received:
 	.word	.L99+1
 	.p2align 1
 .L92:
-	.loc 4 299 0
-	movs	r0, #6
-	ldr	r3, .L110+12
-	blx	r3
-.LVL35:
-	mov	r3, r0
-	cmp	r3, #0
-	beq	.L106
 	.loc 4 300 0
-	ldr	r3, .L110
-	ldr	r2, .L110+16
-	str	r2, [r3, #16]
-	.loc 4 301 0
-	movs	r3, #1
-	b	.L101
-.L95:
-	.loc 4 305 0
 	movs	r0, #6
 	ldr	r3, .L110+12
 	blx	r3
 .LVL36:
 	mov	r3, r0
 	cmp	r3, #0
-	beq	.L107
-	.loc 4 306 0
+	beq	.L106
+	.loc 4 301 0
 	ldr	r3, .L110
-	ldr	r2, .L110+20
+	ldr	r2, .L110+16
 	str	r2, [r3, #16]
-	.loc 4 307 0
+	.loc 4 302 0
 	movs	r3, #1
 	b	.L101
-.L94:
-	.loc 4 314 0
+.L95:
+	.loc 4 306 0
 	movs	r0, #6
 	ldr	r3, .L110+12
 	blx	r3
 .LVL37:
 	mov	r3, r0
 	cmp	r3, #0
-	beq	.L108
-	.loc 4 315 0
+	beq	.L107
+	.loc 4 307 0
 	ldr	r3, .L110
-	ldr	r2, .L110+24
+	ldr	r2, .L110+20
 	str	r2, [r3, #16]
-	.loc 4 316 0
+	.loc 4 308 0
 	movs	r3, #1
 	b	.L101
-.L96:
-	.loc 4 322 0
+.L94:
+	.loc 4 315 0
 	movs	r0, #6
 	ldr	r3, .L110+12
 	blx	r3
 .LVL38:
 	mov	r3, r0
 	cmp	r3, #0
-	beq	.L109
+	beq	.L108
+	.loc 4 316 0
+	ldr	r3, .L110
+	ldr	r2, .L110+24
+	str	r2, [r3, #16]
+	.loc 4 317 0
+	movs	r3, #1
+	b	.L101
+.L96:
 	.loc 4 323 0
+	movs	r0, #6
+	ldr	r3, .L110+12
+	blx	r3
+.LVL39:
+	mov	r3, r0
+	cmp	r3, #0
+	beq	.L109
+	.loc 4 324 0
 	ldr	r3, .L110
 	ldr	r2, .L110+28
 	str	r2, [r3, #16]
-	.loc 4 324 0
+	.loc 4 325 0
 	movs	r3, #1
 	b	.L101
 .L97:
-	.loc 4 329 0
+	.loc 4 330 0
 	ldr	r3, .L110
 	ldr	r2, .L110+32
 	str	r2, [r3, #16]
-	.loc 4 330 0
+	.loc 4 331 0
 	movs	r3, #1
 	b	.L101
 .L98:
-	.loc 4 333 0
+	.loc 4 334 0
 	ldr	r3, .L110
 	ldr	r2, .L110+36
 	str	r2, [r3, #16]
-	.loc 4 334 0
+	.loc 4 335 0
 	movs	r3, #1
 	b	.L101
 .L99:
-	.loc 4 338 0
+	.loc 4 339 0
 	ldr	r3, .L110
 	ldr	r2, .L110+40
 	str	r2, [r3, #16]
-	.loc 4 339 0
+	.loc 4 340 0
 	movs	r3, #1
 	b	.L101
 .L91:
-	.loc 4 341 0
+	.loc 4 342 0
 	movs	r3, #0
 	b	.L101
 .L106:
-	.loc 4 303 0
+	.loc 4 304 0
 	nop
 	b	.L102
 .L107:
-	.loc 4 309 0
+	.loc 4 310 0
 	nop
 	b	.L102
 .L108:
-	.loc 4 318 0
+	.loc 4 319 0
 	nop
 	b	.L102
 .L109:
-	.loc 4 326 0
+	.loc 4 327 0
 	nop
 .L102:
-	.loc 4 344 0
+	.loc 4 345 0
 	movs	r3, #0
 .L101:
-	.loc 4 345 0
+	.loc 4 346 0
 	mov	r0, r3
 	pop	{r7, pc}
 .L111:
@@ -1450,7 +1454,7 @@ main_setup_out_received:
 	.type	main_setup_in_received, %function
 main_setup_in_received:
 .LFB203:
-	.loc 4 355 0
+	.loc 4 356 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -1462,7 +1466,7 @@ main_setup_in_received:
 	add	r7, sp, #0
 .LCFI66:
 	.cfi_def_cfa_register 7
-	.loc 4 366 0
+	.loc 4 367 0
 	ldr	r3, .L120
 	ldrb	r3, [r3, #1]	@ zero_extendqisi2
 	cmp	r3, #21
@@ -1471,67 +1475,67 @@ main_setup_in_received:
 	beq	.L115
 	cmp	r3, #18
 	bne	.L119
-	.loc 4 368 0
+	.loc 4 369 0
 	ldr	r3, .L120+4
 	ldr	r3, [r3]
 	ldr	r2, .L120
 	str	r3, [r2, #8]
-	.loc 4 369 0
+	.loc 4 370 0
 	ldr	r3, .L120+8
 	ldr	r3, [r3]
 	uxth	r2, r3
 	ldr	r3, .L120
 	strh	r2, [r3, #12]	@ movhi
-	.loc 4 370 0
+	.loc 4 371 0
 	ldr	r3, .L120+8
 	movs	r2, #0
 	str	r2, [r3]
-	.loc 4 372 0
+	.loc 4 373 0
 	ldr	r3, .L120+12
 	blx	r3
-.LVL39:
+.LVL40:
 	mov	r3, r0
 	cmp	r3, #5
 	bne	.L117
-	.loc 4 373 0
+	.loc 4 374 0
 	movs	r0, #0
 	ldr	r3, .L120+16
 	blx	r3
-.LVL40:
+.LVL41:
 .L117:
-	.loc 4 376 0
+	.loc 4 377 0
 	movs	r3, #1
 	b	.L118
 .L115:
-	.loc 4 380 0
+	.loc 4 381 0
 	ldr	r3, .L120+20
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 4 381 0
+	.loc 4 382 0
 	ldr	r3, .L120+20
 	movs	r2, #10
 	strb	r2, [r3, #1]
-	.loc 4 382 0
+	.loc 4 383 0
 	ldr	r3, .L120+20
 	movs	r2, #0
 	strb	r2, [r3, #2]
-	.loc 4 383 0
+	.loc 4 384 0
 	ldr	r3, .L120
 	ldr	r2, .L120+20
 	str	r2, [r3, #8]
-	.loc 4 384 0
+	.loc 4 385 0
 	ldr	r3, .L120
 	movs	r2, #3
 	strh	r2, [r3, #12]	@ movhi
-	.loc 4 385 0
+	.loc 4 386 0
 	movs	r3, #1
 	b	.L118
 .L114:
-	.loc 4 389 0
+	.loc 4 390 0
 	movs	r0, #19
 	ldr	r3, .L120+24
 	blx	r3
-.LVL41:
+.LVL42:
 	mov	r3, r0
 	cmp	r3, #0
 	ite	ne
@@ -1541,34 +1545,34 @@ main_setup_in_received:
 	mov	r2, r3
 	ldr	r3, .L120+20
 	strb	r2, [r3]
-	.loc 4 390 0
-	ldr	r3, .L120+20
-	movs	r2, #0
-	strb	r2, [r3, #1]
 	.loc 4 391 0
 	ldr	r3, .L120+20
 	movs	r2, #0
-	strb	r2, [r3, #2]
+	strb	r2, [r3, #1]
 	.loc 4 392 0
 	ldr	r3, .L120+20
 	movs	r2, #0
-	strb	r2, [r3, #3]
+	strb	r2, [r3, #2]
 	.loc 4 393 0
+	ldr	r3, .L120+20
+	movs	r2, #0
+	strb	r2, [r3, #3]
+	.loc 4 394 0
 	ldr	r3, .L120
 	ldr	r2, .L120+20
 	str	r2, [r3, #8]
-	.loc 4 394 0
+	.loc 4 395 0
 	ldr	r3, .L120
 	movs	r2, #4
 	strh	r2, [r3, #12]	@ movhi
-	.loc 4 395 0
+	.loc 4 396 0
 	movs	r3, #1
 	b	.L118
 .L119:
-	.loc 4 398 0
+	.loc 4 399 0
 	movs	r3, #0
 .L118:
-	.loc 4 401 0
+	.loc 4 402 0
 	mov	r0, r3
 	pop	{r7, pc}
 .L121:
@@ -1594,7 +1598,7 @@ main_setup_in_received:
 	.type	main_vendor_bulk_in_received, %function
 main_vendor_bulk_in_received:
 .LFB204:
-	.loc 4 405 0
+	.loc 4 406 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -1614,28 +1618,28 @@ main_vendor_bulk_in_received:
 	strb	r3, [r7, #7]
 	mov	r3, r2
 	strb	r3, [r7, #6]
-	.loc 4 408 0
+	.loc 4 409 0
 	ldrb	r3, [r7, #7]	@ zero_extendqisi2
 	cmp	r3, #0
 	bne	.L125
-	.loc 4 412 0
+	.loc 4 413 0
 	ldr	r3, .L126
 	blx	r3
-.LVL42:
+.LVL43:
 	mov	r3, r0
 	cmp	r3, #2
 	bne	.L122
-	.loc 4 413 0
+	.loc 4 414 0
 	movs	r0, #0
 	ldr	r3, .L126+4
 	blx	r3
-.LVL43:
+.LVL44:
 	b	.L122
 .L125:
-	.loc 4 409 0
+	.loc 4 410 0
 	nop
 .L122:
-	.loc 4 415 0
+	.loc 4 416 0
 	adds	r7, r7, #8
 .LCFI70:
 	.cfi_def_cfa_offset 8
@@ -1662,7 +1666,7 @@ main_vendor_bulk_in_received:
 	.type	main_vendor_bulk_out_received, %function
 main_vendor_bulk_out_received:
 .LFB205:
-	.loc 4 419 0
+	.loc 4 420 0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 1, uses_anonymous_args = 0
@@ -1682,32 +1686,32 @@ main_vendor_bulk_out_received:
 	strb	r3, [r7, #7]
 	mov	r3, r2
 	strb	r3, [r7, #6]
-	.loc 4 421 0
+	.loc 4 422 0
 	ldrb	r3, [r7, #7]	@ zero_extendqisi2
 	cmp	r3, #0
 	beq	.L129
-	.loc 4 425 0
+	.loc 4 426 0
 	ldr	r2, .L138
 	mov	r1, #1024
 	ldr	r0, .L138+4
 	ldr	r3, .L138+8
 	blx	r3
-.LVL44:
-	.loc 4 430 0
+.LVL45:
+	.loc 4 431 0
 	b	.L128
 .L129:
-	.loc 4 433 0
+	.loc 4 434 0
 	ldr	r3, .L138+12
 	ldrb	r3, [r3]	@ zero_extendqisi2
 	cmp	r3, #0
 	bne	.L131
 .LBB3:
-	.loc 4 434 0
+	.loc 4 435 0
 	movs	r3, #0
 	str	r3, [r7, #12]
 	b	.L132
 .L133:
-	.loc 4 435 0 discriminator 3
+	.loc 4 436 0 discriminator 3
 	ldr	r3, .L138+16
 	ldr	r2, [r3]
 	ldr	r3, [r7, #12]
@@ -1717,42 +1721,42 @@ main_vendor_bulk_out_received:
 	add	r2, r2, r1
 	ldrb	r2, [r2]	@ zero_extendqisi2
 	strb	r2, [r3]
-	.loc 4 434 0 discriminator 3
+	.loc 4 435 0 discriminator 3
 	ldr	r3, [r7, #12]
 	adds	r3, r3, #1
 	str	r3, [r7, #12]
 .L132:
-	.loc 4 434 0 is_stmt 0 discriminator 1
+	.loc 4 435 0 is_stmt 0 discriminator 1
 	ldr	r2, [r7, #12]
 	ldr	r3, [r7]
 	cmp	r2, r3
 	bcc	.L133
 .LBE3:
-	.loc 4 438 0 is_stmt 1
+	.loc 4 439 0 is_stmt 1
 	ldr	r3, .L138+20
 	blx	r3
-.LVL45:
+.LVL46:
 	mov	r3, r0
 	cmp	r3, #4
 	bne	.L135
-	.loc 4 439 0
+	.loc 4 440 0
 	ldr	r3, .L138+24
 	blx	r3
-.LVL46:
+.LVL47:
 	b	.L135
 .L131:
-	.loc 4 441 0
+	.loc 4 442 0
 	ldr	r3, .L138+12
 	ldrb	r3, [r3]	@ zero_extendqisi2
 	cmp	r3, #10
 	bne	.L135
 .LBB4:
-	.loc 4 445 0
+	.loc 4 446 0
 	movs	r3, #0
 	str	r3, [r7, #8]
 	b	.L136
 .L137:
-	.loc 4 446 0 discriminator 3
+	.loc 4 447 0 discriminator 3
 	ldr	r2, .L138+4
 	ldr	r3, [r7, #8]
 	add	r3, r3, r2
@@ -1760,28 +1764,28 @@ main_vendor_bulk_out_received:
 	mov	r0, r3
 	ldr	r3, .L138+28
 	blx	r3
-.LVL47:
-	.loc 4 445 0 discriminator 3
+.LVL48:
+	.loc 4 446 0 discriminator 3
 	ldr	r3, [r7, #8]
 	adds	r3, r3, #1
 	str	r3, [r7, #8]
 .L136:
-	.loc 4 445 0 is_stmt 0 discriminator 1
+	.loc 4 446 0 is_stmt 0 discriminator 1
 	ldr	r2, [r7, #8]
 	ldr	r3, [r7]
 	cmp	r2, r3
 	bcc	.L137
 .L135:
 .LBE4:
-	.loc 4 455 0 is_stmt 1
+	.loc 4 456 0 is_stmt 1
 	ldr	r2, .L138
 	mov	r1, #1024
 	ldr	r0, .L138+4
 	ldr	r3, .L138+8
 	blx	r3
-.LVL48:
+.LVL49:
 .L128:
-	.loc 4 459 0
+	.loc 4 460 0
 	adds	r7, r7, #16
 .LCFI75:
 	.cfi_def_cfa_offset 8
@@ -1849,7 +1853,7 @@ respbuf.9228:
 	.file 33 ".././hal/sam3u1c/inc/efc.h"
 	.section	.debug_info,"",%progbits
 .Ldebug_info0:
-	.4byte	0x1baa
+	.4byte	0x1bb3
 	.2byte	0x2
 	.4byte	.Ldebug_abbrev0
 	.byte	0x4
@@ -4680,7 +4684,7 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9269
 	.byte	0x4
-	.byte	0xb9
+	.byte	0xba
 	.4byte	0xca
 	.byte	0x5
 	.byte	0x3
@@ -4688,7 +4692,7 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9270
 	.byte	0x4
-	.byte	0xba
+	.byte	0xbb
 	.4byte	0xca
 	.byte	0x5
 	.byte	0x3
@@ -4697,7 +4701,7 @@ respbuf.9228:
 	.byte	0x1
 	.4byte	.LASF9273
 	.byte	0x4
-	.2byte	0x1a1
+	.2byte	0x1a2
 	.byte	0x1
 	.4byte	.LFB205
 	.4byte	.LFE205
@@ -4707,7 +4711,7 @@ respbuf.9228:
 	.uleb128 0x2c
 	.4byte	.LASF9271
 	.byte	0x4
-	.2byte	0x1a1
+	.2byte	0x1a2
 	.4byte	0x1310
 	.byte	0x2
 	.byte	0x91
@@ -4715,7 +4719,7 @@ respbuf.9228:
 	.uleb128 0x2c
 	.4byte	.LASF9272
 	.byte	0x4
-	.2byte	0x1a2
+	.2byte	0x1a3
 	.4byte	0xea3
 	.byte	0x2
 	.byte	0x91
@@ -4723,7 +4727,7 @@ respbuf.9228:
 	.uleb128 0x2d
 	.ascii	"ep\000"
 	.byte	0x4
-	.2byte	0x1a2
+	.2byte	0x1a3
 	.4byte	0x12eb
 	.byte	0x2
 	.byte	0x91
@@ -4735,7 +4739,7 @@ respbuf.9228:
 	.uleb128 0x2f
 	.ascii	"i\000"
 	.byte	0x4
-	.2byte	0x1b2
+	.2byte	0x1b3
 	.4byte	0x34
 	.byte	0x2
 	.byte	0x91
@@ -4748,33 +4752,33 @@ respbuf.9228:
 	.uleb128 0x2f
 	.ascii	"i\000"
 	.byte	0x4
-	.2byte	0x1bd
+	.2byte	0x1be
 	.4byte	0x34
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -16
 	.uleb128 0x30
-	.4byte	.LVL47
-	.4byte	0x1a9a
+	.4byte	.LVL48
+	.4byte	0x1aa3
 	.byte	0
 	.uleb128 0x30
-	.4byte	.LVL44
-	.4byte	0x1aa7
-	.uleb128 0x30
 	.4byte	.LVL45
-	.4byte	0x1ab5
+	.4byte	0x1ab0
 	.uleb128 0x30
 	.4byte	.LVL46
-	.4byte	0x1ac2
+	.4byte	0x1abe
 	.uleb128 0x30
-	.4byte	.LVL48
-	.4byte	0x1aa7
+	.4byte	.LVL47
+	.4byte	0x1acb
+	.uleb128 0x30
+	.4byte	.LVL49
+	.4byte	0x1ab0
 	.byte	0
 	.uleb128 0x2b
 	.byte	0x1
 	.4byte	.LASF9274
 	.byte	0x4
-	.2byte	0x193
+	.2byte	0x194
 	.byte	0x1
 	.4byte	.LFB204
 	.4byte	.LFE204
@@ -4784,7 +4788,7 @@ respbuf.9228:
 	.uleb128 0x2c
 	.4byte	.LASF9271
 	.byte	0x4
-	.2byte	0x193
+	.2byte	0x194
 	.4byte	0x1310
 	.byte	0x2
 	.byte	0x91
@@ -4792,7 +4796,7 @@ respbuf.9228:
 	.uleb128 0x2c
 	.4byte	.LASF9272
 	.byte	0x4
-	.2byte	0x194
+	.2byte	0x195
 	.4byte	0xea3
 	.byte	0x2
 	.byte	0x91
@@ -4800,23 +4804,23 @@ respbuf.9228:
 	.uleb128 0x2d
 	.ascii	"ep\000"
 	.byte	0x4
-	.2byte	0x194
+	.2byte	0x195
 	.4byte	0x12eb
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -10
 	.uleb128 0x30
-	.4byte	.LVL42
-	.4byte	0x1ab5
-	.uleb128 0x30
 	.4byte	.LVL43
-	.4byte	0x1acf
+	.4byte	0x1abe
+	.uleb128 0x30
+	.4byte	.LVL44
+	.4byte	0x1ad8
 	.byte	0
 	.uleb128 0x31
 	.byte	0x1
 	.4byte	.LASF9276
 	.byte	0x4
-	.2byte	0x162
+	.2byte	0x163
 	.byte	0x1
 	.4byte	0xe5c
 	.4byte	.LFB203
@@ -4827,7 +4831,7 @@ respbuf.9228:
 	.uleb128 0x32
 	.4byte	.LASF9275
 	.byte	0x4
-	.2byte	0x16b
+	.2byte	0x16c
 	.4byte	0x14b1
 	.byte	0x5
 	.byte	0x3
@@ -4835,23 +4839,23 @@ respbuf.9228:
 	.uleb128 0x33
 	.ascii	"cnt\000"
 	.byte	0x4
-	.2byte	0x16c
+	.2byte	0x16d
 	.4byte	0x34
 	.uleb128 0x30
-	.4byte	.LVL39
-	.4byte	0x1ab5
-	.uleb128 0x30
 	.4byte	.LVL40
-	.4byte	0x1acf
+	.4byte	0x1abe
 	.uleb128 0x30
 	.4byte	.LVL41
-	.4byte	0x1adc
+	.4byte	0x1ad8
+	.uleb128 0x30
+	.4byte	.LVL42
+	.4byte	0x1ae5
 	.byte	0
 	.uleb128 0x31
 	.byte	0x1
 	.4byte	.LASF9277
 	.byte	0x4
-	.2byte	0x120
+	.2byte	0x121
 	.byte	0x1
 	.4byte	0xe5c
 	.4byte	.LFB202
@@ -4862,23 +4866,23 @@ respbuf.9228:
 	.uleb128 0x32
 	.4byte	.LASF9275
 	.byte	0x4
-	.2byte	0x127
+	.2byte	0x128
 	.4byte	0x1701
 	.byte	0x5
 	.byte	0x3
 	.4byte	respbuf.9215
 	.uleb128 0x30
-	.4byte	.LVL35
-	.4byte	0x1acf
-	.uleb128 0x30
 	.4byte	.LVL36
-	.4byte	0x1acf
+	.4byte	0x1ad8
 	.uleb128 0x30
 	.4byte	.LVL37
-	.4byte	0x1acf
+	.4byte	0x1ad8
 	.uleb128 0x30
 	.4byte	.LVL38
-	.4byte	0x1acf
+	.4byte	0x1ad8
+	.uleb128 0x30
+	.4byte	.LVL39
+	.4byte	0x1ad8
 	.byte	0
 	.uleb128 0xa
 	.4byte	0x9f
@@ -4891,7 +4895,7 @@ respbuf.9228:
 	.byte	0x1
 	.4byte	.LASF9286
 	.byte	0x4
-	.2byte	0x10c
+	.2byte	0x10d
 	.byte	0x1
 	.4byte	.LFB201
 	.4byte	.LFE201
@@ -4901,7 +4905,7 @@ respbuf.9228:
 	.byte	0x1
 	.4byte	.LASF9278
 	.byte	0x4
-	.byte	0xf5
+	.byte	0xf6
 	.byte	0x1
 	.4byte	.LFB200
 	.4byte	.LFE200
@@ -4909,16 +4913,16 @@ respbuf.9228:
 	.byte	0x1
 	.4byte	0x1755
 	.uleb128 0x30
-	.4byte	.LVL33
-	.4byte	0x1ae9
-	.uleb128 0x30
 	.4byte	.LVL34
-	.4byte	0x1af6
+	.4byte	0x1af2
+	.uleb128 0x30
+	.4byte	.LVL35
+	.4byte	0x1aff
 	.byte	0
 	.uleb128 0x36
 	.4byte	.LASF9292
 	.byte	0x4
-	.byte	0xca
+	.byte	0xcb
 	.byte	0x1
 	.4byte	.LFB199
 	.4byte	.LFE199
@@ -4926,29 +4930,29 @@ respbuf.9228:
 	.byte	0x1
 	.4byte	0x17a5
 	.uleb128 0x30
-	.4byte	.LVL27
-	.4byte	0x1a33
-	.uleb128 0x30
 	.4byte	.LVL28
-	.4byte	0x19bc
+	.4byte	0x1a3c
 	.uleb128 0x30
 	.4byte	.LVL29
-	.4byte	0x1b03
+	.4byte	0x19c5
 	.uleb128 0x30
 	.4byte	.LVL30
-	.4byte	0x1b10
+	.4byte	0x1b0c
 	.uleb128 0x30
 	.4byte	.LVL31
-	.4byte	0x1b1d
+	.4byte	0x1b19
 	.uleb128 0x30
 	.4byte	.LVL32
-	.4byte	0x1999
+	.4byte	0x1b26
+	.uleb128 0x30
+	.4byte	.LVL33
+	.4byte	0x19a2
 	.byte	0
 	.uleb128 0x35
 	.byte	0x1
 	.4byte	.LASF9279
 	.byte	0x4
-	.byte	0xbc
+	.byte	0xbd
 	.byte	0x1
 	.4byte	.LFB198
 	.4byte	.LFE198
@@ -4958,26 +4962,26 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9280
 	.byte	0x4
-	.byte	0xbe
+	.byte	0xbf
 	.4byte	0xca
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -12
 	.uleb128 0x30
-	.4byte	.LVL24
-	.4byte	0x1ac2
-	.uleb128 0x30
 	.4byte	.LVL25
-	.4byte	0x1acf
+	.4byte	0x1acb
 	.uleb128 0x30
 	.4byte	.LVL26
-	.4byte	0x1b2a
+	.4byte	0x1ad8
+	.uleb128 0x30
+	.4byte	.LVL27
+	.4byte	0x1b33
 	.byte	0
 	.uleb128 0x35
 	.byte	0x1
 	.4byte	.LASF9281
 	.byte	0x4
-	.byte	0xa1
+	.byte	0xa2
 	.byte	0x1
 	.4byte	.LFB197
 	.4byte	.LFE197
@@ -4987,7 +4991,7 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9282
 	.byte	0x4
-	.byte	0xa2
+	.byte	0xa3
 	.4byte	0xca
 	.byte	0x2
 	.byte	0x91
@@ -4995,7 +4999,7 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9280
 	.byte	0x4
-	.byte	0xa3
+	.byte	0xa4
 	.4byte	0xca
 	.byte	0x2
 	.byte	0x91
@@ -5003,7 +5007,7 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9283
 	.byte	0x4
-	.byte	0xa5
+	.byte	0xa6
 	.4byte	0x136a
 	.byte	0x2
 	.byte	0x91
@@ -5015,30 +5019,30 @@ respbuf.9228:
 	.uleb128 0x37
 	.ascii	"i\000"
 	.byte	0x4
-	.byte	0xb2
+	.byte	0xb3
 	.4byte	0x34
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -12
 	.byte	0
 	.uleb128 0x30
-	.4byte	.LVL20
-	.4byte	0x1ac2
-	.uleb128 0x30
 	.4byte	.LVL21
-	.4byte	0x1acf
+	.4byte	0x1acb
 	.uleb128 0x30
 	.4byte	.LVL22
-	.4byte	0x1b2a
+	.4byte	0x1ad8
 	.uleb128 0x30
 	.4byte	.LVL23
-	.4byte	0x1ac2
+	.4byte	0x1b33
+	.uleb128 0x30
+	.4byte	.LVL24
+	.4byte	0x1acb
 	.byte	0
 	.uleb128 0x35
 	.byte	0x1
 	.4byte	.LASF9284
 	.byte	0x4
-	.byte	0x8d
+	.byte	0x8e
 	.byte	0x1
 	.4byte	.LFB196
 	.4byte	.LFE196
@@ -5048,7 +5052,7 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9282
 	.byte	0x4
-	.byte	0x8e
+	.byte	0x8f
 	.4byte	0xca
 	.byte	0x2
 	.byte	0x91
@@ -5056,20 +5060,20 @@ respbuf.9228:
 	.uleb128 0x21
 	.4byte	.LASF9280
 	.byte	0x4
-	.byte	0x8f
+	.byte	0x90
 	.4byte	0xca
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -16
 	.uleb128 0x30
-	.4byte	.LVL17
-	.4byte	0x1ac2
-	.uleb128 0x30
 	.4byte	.LVL18
-	.4byte	0x1acf
+	.4byte	0x1acb
 	.uleb128 0x30
 	.4byte	.LVL19
-	.4byte	0x1b2a
+	.4byte	0x1ad8
+	.uleb128 0x30
+	.4byte	.LVL20
+	.4byte	0x1b33
 	.byte	0
 	.uleb128 0x35
 	.byte	0x1
@@ -5081,7 +5085,7 @@ respbuf.9228:
 	.4byte	.LFE195
 	.4byte	.LLST9
 	.byte	0x1
-	.4byte	0x1919
+	.4byte	0x1922
 	.uleb128 0x21
 	.4byte	.LASF9282
 	.byte	0x4
@@ -5100,16 +5104,19 @@ respbuf.9228:
 	.sleb128 -16
 	.uleb128 0x30
 	.4byte	.LVL13
-	.4byte	0x1ac2
+	.4byte	0x1acb
 	.uleb128 0x30
 	.4byte	.LVL14
-	.4byte	0x1acf
+	.4byte	0x1ad8
 	.uleb128 0x30
 	.4byte	.LVL15
-	.4byte	0x1b2a
+	.4byte	0x1b33
 	.uleb128 0x30
 	.4byte	.LVL16
-	.4byte	0x1b37
+	.4byte	0x1b40
+	.uleb128 0x30
+	.4byte	.LVL17
+	.4byte	0x1acb
 	.byte	0
 	.uleb128 0x38
 	.byte	0x1
@@ -5132,10 +5139,10 @@ respbuf.9228:
 	.4byte	.LFE193
 	.4byte	.LLST7
 	.byte	0x1
-	.4byte	0x1957
+	.4byte	0x1960
 	.uleb128 0x30
 	.4byte	.LVL12
-	.4byte	0x1aa7
+	.4byte	0x1ab0
 	.byte	0
 	.uleb128 0x38
 	.byte	0x1
@@ -5176,10 +5183,10 @@ respbuf.9228:
 	.4byte	.LFE179
 	.4byte	.LLST3
 	.byte	0x1
-	.4byte	0x19bc
+	.4byte	0x19c5
 	.uleb128 0x30
 	.4byte	.LVL11
-	.4byte	0x1b45
+	.4byte	0x1b4e
 	.byte	0
 	.uleb128 0x36
 	.4byte	.LASF9294
@@ -5190,7 +5197,7 @@ respbuf.9228:
 	.4byte	.LFE73
 	.4byte	.LLST2
 	.byte	0x1
-	.4byte	0x19ec
+	.4byte	0x19f5
 	.uleb128 0x3a
 	.ascii	"id\000"
 	.byte	0x2
@@ -5201,7 +5208,7 @@ respbuf.9228:
 	.sleb128 -9
 	.uleb128 0x30
 	.4byte	.LVL10
-	.4byte	0x19ec
+	.4byte	0x19f5
 	.byte	0
 	.uleb128 0x3b
 	.4byte	.LASF9322
@@ -5213,7 +5220,7 @@ respbuf.9228:
 	.4byte	.LFE71
 	.4byte	.LLST1
 	.byte	0x1
-	.4byte	0x1a33
+	.4byte	0x1a3c
 	.uleb128 0x3c
 	.4byte	.LASF9295
 	.byte	0x1
@@ -5224,13 +5231,13 @@ respbuf.9228:
 	.sleb128 -12
 	.uleb128 0x30
 	.4byte	.LVL7
-	.4byte	0x1b52
+	.4byte	0x1b5b
 	.uleb128 0x30
 	.4byte	.LVL8
-	.4byte	0x1b5f
+	.4byte	0x1b68
 	.uleb128 0x30
 	.4byte	.LVL9
-	.4byte	0x1b6c
+	.4byte	0x1b75
 	.byte	0
 	.uleb128 0x36
 	.4byte	.LASF9296
@@ -5241,7 +5248,7 @@ respbuf.9228:
 	.4byte	.LFE69
 	.4byte	.LLST0
 	.byte	0x1
-	.4byte	0x1a9a
+	.4byte	0x1aa3
 	.uleb128 0x3c
 	.4byte	.LASF9295
 	.byte	0x1
@@ -5252,25 +5259,25 @@ respbuf.9228:
 	.sleb128 -12
 	.uleb128 0x30
 	.4byte	.LVL0
-	.4byte	0x1b79
+	.4byte	0x1b82
 	.uleb128 0x30
 	.4byte	.LVL1
-	.4byte	0x1b79
+	.4byte	0x1b82
 	.uleb128 0x30
 	.4byte	.LVL2
-	.4byte	0x1b86
+	.4byte	0x1b8f
 	.uleb128 0x30
 	.4byte	.LVL3
-	.4byte	0x1b86
+	.4byte	0x1b8f
 	.uleb128 0x30
 	.4byte	.LVL4
-	.4byte	0x1b86
+	.4byte	0x1b8f
 	.uleb128 0x30
 	.4byte	.LVL5
-	.4byte	0x1b93
+	.4byte	0x1b9c
 	.uleb128 0x30
 	.4byte	.LVL6
-	.4byte	0x1ba0
+	.4byte	0x1ba9
 	.byte	0
 	.uleb128 0x3d
 	.byte	0x1

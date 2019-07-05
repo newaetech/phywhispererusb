@@ -10655,7 +10655,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.osc.h.94.b766cddafe899eca01d775f7b2906680
                            .group:00000000 wm4.pll.h.45.a605c31ca466ae25752a678e8572be48
                            .group:00000000 wm4.sysclk.h.156.541a142b0016a365728ea1f7c0e3db84
-                           .group:00000000 wm4.conf_board.h.45.be8075430a99c21139d610dc1d1c7799
+                           .group:00000000 wm4.conf_board.h.45.aac520ee9dd7e984e12efac1b366b8fe
                            .group:00000000 wm4.ioport_pio.h.44.373b34364b4ef25fac62017cd942a761
                            .group:00000000 wm4.pio.h.45.95f22b0ea02ddc698ec54fc56bf6f38c
                            .group:00000000 wm4.udphs_device.h.91.605096afd8c16fcd75a5a1c11b74776b

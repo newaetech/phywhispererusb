@@ -230,7 +230,7 @@ static inline void sleepmgr_enter_sleep(void)
 #ifdef CONFIG_SLEEPMGR_ENABLE
 	enum sleepmgr_mode sleep_mode;
 
-	cpu_irq_disable();
+	//cpu_irq_disable();
 
 	// Find the deepest allowable sleep mode
 	sleep_mode = sleepmgr_get_sleep_mode();

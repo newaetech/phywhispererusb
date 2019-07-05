@@ -57,6 +57,6 @@
 #define PIN_PCK1_MUX    (IOPORT_MODE_MUX_B)
 #define PIN_PCK1_FLAGS  (PIO_PERIPH_B | PIO_DEFAULT)
 
-#define 
+//#define
 
 #endif /* CONF_BOARD_H_INCLUDED */

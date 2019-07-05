@@ -861,14 +861,14 @@
  180              	 .loc 4 66 0
  181 0004 4FF06051 	 mov r1,#939524096
  182 0008 1D20     	 movs r0,#29
- 183 000a 0A4B     	 ldr r3,.L9
+ 183 000a 0D4B     	 ldr r3,.L9
  184 000c 9847     	 blx r3
  185              	.LVL3:
   67:.././hal/sam3u1c/init.c **** 	gpio_configure_pin(LED1_GPIO, LED1_FLAGS);
  186              	 .loc 4 67 0
  187 000e 4FF06051 	 mov r1,#939524096
  188 0012 1F20     	 movs r0,#31
- 189 0014 074B     	 ldr r3,.L9
+ 189 0014 0A4B     	 ldr r3,.L9
  190 0016 9847     	 blx r3
  191              	.LVL4:
   68:.././hal/sam3u1c/init.c **** 	//gpio_configure_pin(LED2_GPIO, LED2_FLAGS);
@@ -878,7 +878,7 @@
  192              	 .loc 4 71 0
  193 0018 4FF04051 	 mov r1,#805306368
  194 001c 1820     	 movs r0,#24
- 195 001e 054B     	 ldr r3,.L9
+ 195 001e 084B     	 ldr r3,.L9
  196 0020 9847     	 blx r3
  197              	.LVL5:
   72:.././hal/sam3u1c/init.c **** 	//board_sram_pwron();
@@ -889,8 +889,8 @@
  198              	 .loc 4 76 0
  199 0022 4FF00062 	 mov r2,#134217728
  200 0026 4FF4C051 	 mov r1,#6144
- 201 002a 0348     	 ldr r0,.L9+4
- 202 002c 034B     	 ldr r3,.L9+8
+ 201 002a 0648     	 ldr r0,.L9+4
+ 202 002c 064B     	 ldr r3,.L9+8
  203 002e 9847     	 blx r3
  204              	.LVL6:
   77:.././hal/sam3u1c/init.c **** #endif
@@ -1011,6 +1011,12 @@
  192:.././hal/sam3u1c/init.c **** 
  193:.././hal/sam3u1c/init.c **** #ifdef CONF_BOARD_PCK1
  194:.././hal/sam3u1c/init.c **** gpio_configure_pin(PIN_PCK1, PIN_PCK1_FLAGS);
+ 205              	 .loc 4 194 0
+ 206 0030 4FF08051 	 mov r1,#268435456
+ 207 0034 3820     	 movs r0,#56
+ 208 0036 024B     	 ldr r3,.L9
+ 209 0038 9847     	 blx r3
+ 210              	.LVL7:
  195:.././hal/sam3u1c/init.c **** #endif
  196:.././hal/sam3u1c/init.c **** 
  197:.././hal/sam3u1c/init.c **** #if defined(CONF_BOARD_USB_PORT)
@@ -1019,48 +1025,48 @@
  200:.././hal/sam3u1c/init.c **** #  endif
  201:.././hal/sam3u1c/init.c **** #endif	
  202:.././hal/sam3u1c/init.c **** }
- 205              	 .loc 4 202 0
- 206 0030 00BF     	 nop
- 207 0032 80BD     	 pop {r7,pc}
- 208              	.L10:
- 209              	 .align 2
- 210              	.L9:
- 211 0034 00000000 	 .word pio_configure_pin
- 212 0038 000C0E40 	 .word 1074662400
- 213 003c 00000000 	 .word pio_configure_pin_group
- 214              	 .cfi_endproc
- 215              	.LFE132:
- 217              	 .section .text.board_init,"ax",%progbits
- 218              	 .align 1
- 219              	 .global board_init
- 220              	 .syntax unified
- 221              	 .thumb
- 222              	 .thumb_func
- 223              	 .fpu softvfp
- 225              	board_init:
- 226              	.LFB133:
+ 211              	 .loc 4 202 0
+ 212 003a 00BF     	 nop
+ 213 003c 80BD     	 pop {r7,pc}
+ 214              	.L10:
+ 215 003e 00BF     	 .align 2
+ 216              	.L9:
+ 217 0040 00000000 	 .word pio_configure_pin
+ 218 0044 000C0E40 	 .word 1074662400
+ 219 0048 00000000 	 .word pio_configure_pin_group
+ 220              	 .cfi_endproc
+ 221              	.LFE132:
+ 223              	 .section .text.board_init,"ax",%progbits
+ 224              	 .align 1
+ 225              	 .global board_init
+ 226              	 .syntax unified
+ 227              	 .thumb
+ 228              	 .thumb_func
+ 229              	 .fpu softvfp
+ 231              	board_init:
+ 232              	.LFB133:
  203:.././hal/sam3u1c/init.c **** 
  204:.././hal/sam3u1c/init.c **** void board_init(void)
  205:.././hal/sam3u1c/init.c **** {
- 227              	 .loc 4 205 0
- 228              	 .cfi_startproc
- 229              	 
- 230              	 
- 231 0000 80B5     	 push {r7,lr}
- 232              	.LCFI13:
- 233              	 .cfi_def_cfa_offset 8
- 234              	 .cfi_offset 7,-8
- 235              	 .cfi_offset 14,-4
- 236 0002 00AF     	 add r7,sp,#0
- 237              	.LCFI14:
- 238              	 .cfi_def_cfa_register 7
+ 233              	 .loc 4 205 0
+ 234              	 .cfi_startproc
+ 235              	 
+ 236              	 
+ 237 0000 80B5     	 push {r7,lr}
+ 238              	.LCFI13:
+ 239              	 .cfi_def_cfa_offset 8
+ 240              	 .cfi_offset 7,-8
+ 241              	 .cfi_offset 14,-4
+ 242 0002 00AF     	 add r7,sp,#0
+ 243              	.LCFI14:
+ 244              	 .cfi_def_cfa_register 7
  206:.././hal/sam3u1c/init.c **** #ifndef CONF_BOARD_KEEP_WATCHDOG_AT_INIT
  207:.././hal/sam3u1c/init.c **** 	/* Disable the watchdog */
  208:.././hal/sam3u1c/init.c **** 	WDT->WDT_MR = WDT_MR_WDDIS;
- 239              	 .loc 4 208 0
- 240 0004 044B     	 ldr r3,.L12
- 241 0006 4FF40042 	 mov r2,#32768
- 242 000a 5A60     	 str r2,[r3,#4]
+ 245              	 .loc 4 208 0
+ 246 0004 044B     	 ldr r3,.L12
+ 247 0006 4FF40042 	 mov r2,#32768
+ 248 000a 5A60     	 str r2,[r3,#4]
  209:.././hal/sam3u1c/init.c **** #endif
  210:.././hal/sam3u1c/init.c **** 
  211:.././hal/sam3u1c/init.c **** 	/* GPIO has been deprecated, the old code just keeps it for compatibility.
@@ -1068,46 +1074,46 @@
  213:.././hal/sam3u1c/init.c **** 	 * Here IOPORT must be initialized for others to use before setting up IO.
  214:.././hal/sam3u1c/init.c **** 	 */
  215:.././hal/sam3u1c/init.c **** 	ioport_init();
- 243              	 .loc 4 215 0
- 244 000c 034B     	 ldr r3,.L12+4
- 245 000e 9847     	 blx r3
- 246              	.LVL7:
+ 249              	 .loc 4 215 0
+ 250 000c 034B     	 ldr r3,.L12+4
+ 251 000e 9847     	 blx r3
+ 252              	.LVL8:
  216:.././hal/sam3u1c/init.c **** 
  217:.././hal/sam3u1c/init.c **** 	iopins_normal();
- 247              	 .loc 4 217 0
- 248 0010 034B     	 ldr r3,.L12+8
- 249 0012 9847     	 blx r3
- 250              	.LVL8:
+ 253              	 .loc 4 217 0
+ 254 0010 034B     	 ldr r3,.L12+8
+ 255 0012 9847     	 blx r3
+ 256              	.LVL9:
  218:.././hal/sam3u1c/init.c **** 
  219:.././hal/sam3u1c/init.c **** }
- 251              	 .loc 4 219 0
- 252 0014 00BF     	 nop
- 253 0016 80BD     	 pop {r7,pc}
- 254              	.L13:
- 255              	 .align 2
- 256              	.L12:
- 257 0018 50120E40 	 .word 1074664016
- 258 001c 00000000 	 .word ioport_init
- 259 0020 00000000 	 .word iopins_normal
- 260              	 .cfi_endproc
- 261              	.LFE133:
- 263              	 .text
- 264              	.Letext0:
- 265              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 266              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 267              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
- 268              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
- 269              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
- 270              	 .file 10 ".././hal/sam3u1c/inc/component/component_pio.h"
- 271              	 .file 11 ".././hal/sam3u1c/inc/component/component_wdt.h"
- 272              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 273              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 274              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 275              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 276              	 .file 16 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 277              	 .file 17 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 278              	 .file 18 ".././hal/sam3u1c/inc/pio.h"
- 279              	 .file 19 ".././hal/sam3u1c/inc/pmc.h"
+ 257              	 .loc 4 219 0
+ 258 0014 00BF     	 nop
+ 259 0016 80BD     	 pop {r7,pc}
+ 260              	.L13:
+ 261              	 .align 2
+ 262              	.L12:
+ 263 0018 50120E40 	 .word 1074664016
+ 264 001c 00000000 	 .word ioport_init
+ 265 0020 00000000 	 .word iopins_normal
+ 266              	 .cfi_endproc
+ 267              	.LFE133:
+ 269              	 .text
+ 270              	.Letext0:
+ 271              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 272              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 273              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 274              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
+ 275              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 276              	 .file 10 ".././hal/sam3u1c/inc/component/component_pio.h"
+ 277              	 .file 11 ".././hal/sam3u1c/inc/component/component_wdt.h"
+ 278              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 279              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 280              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 281              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 282              	 .file 16 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 283              	 .file 17 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 284              	 .file 18 ".././hal/sam3u1c/inc/pio.h"
+ 285              	 .file 19 ".././hal/sam3u1c/inc/pmc.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1124,10 +1130,10 @@ DEFINED SYMBOLS
     {standard input}:129    .text.iopins_sleep:00000000 iopins_sleep
     {standard input}:159    .text.iopins_normal:00000000 $t
     {standard input}:166    .text.iopins_normal:00000000 iopins_normal
-    {standard input}:211    .text.iopins_normal:00000034 $d
-    {standard input}:218    .text.board_init:00000000 $t
-    {standard input}:225    .text.board_init:00000000 board_init
-    {standard input}:257    .text.board_init:00000018 $d
+    {standard input}:217    .text.iopins_normal:00000040 $d
+    {standard input}:224    .text.board_init:00000000 $t
+    {standard input}:231    .text.board_init:00000000 board_init
+    {standard input}:263    .text.board_init:00000018 $d
                            .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
@@ -1234,7 +1240,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
                            .group:00000000 wm4.board.h.69.3670053ec9e880dbc2016be2b8dca792
                            .group:00000000 wm4.cw521.h.62.49e8a34af6a9b815e03b7858792ba391
-                           .group:00000000 wm4.conf_board.h.45.be8075430a99c21139d610dc1d1c7799
+                           .group:00000000 wm4.conf_board.h.45.aac520ee9dd7e984e12efac1b366b8fe
                            .group:00000000 wm4.pio.h.45.95f22b0ea02ddc698ec54fc56bf6f38c
                            .group:00000000 wm4.sam_gpio.h.50.76a45c51855d665134f8211cd601d693
                            .group:00000000 wm4.conf_clock.h.45.5dc276d21b4d793a62f1a9757cc18d5c

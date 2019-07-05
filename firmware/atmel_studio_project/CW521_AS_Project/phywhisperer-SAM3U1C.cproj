@@ -46,7 +46,7 @@
     <com_atmel_avrdbg_tool_atmelice>
       <ToolOptions>
         <InterfaceProperties>
-          <JtagDbgClock>7500000</JtagDbgClock>
+          <JtagDbgClock>7400000</JtagDbgClock>
           <SwdClock>2000000</SwdClock>
         </InterfaceProperties>
         <InterfaceName>JTAG</InterfaceName>
@@ -56,7 +56,7 @@
       <ToolName>Atmel-ICE</ToolName>
     </com_atmel_avrdbg_tool_atmelice>
     <avrtoolinterface>JTAG</avrtoolinterface>
-    <avrtoolinterfaceclock>7500000</avrtoolinterfaceclock>
+    <avrtoolinterfaceclock>7400000</avrtoolinterfaceclock>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -160,7 +160,8 @@
     </ToolchainSettings>
     <UsesExternalMakeFile>True</UsesExternalMakeFile>
     <OutputDirectory>C:\Users\User\Code\term3\phy\phywhispererusb\firmware\phywhisperer</OutputDirectory>
-    <BuildTarget>-j16</BuildTarget>
+    <BuildTarget>
+    </BuildTarget>
     <CleanTarget>clean</CleanTarget>
     <ExternalMakeFilePath>C:\Users\User\Code\term3\phy\phywhispererusb\firmware\phywhisperer\makefile</ExternalMakeFilePath>
     <OutputFileName>CW570_AS_Project</OutputFileName>
