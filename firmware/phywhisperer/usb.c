@@ -136,6 +136,7 @@ void ctrl_readmem_bulk(void){
         buflen,
         main_vendor_bulk_in_received
         );
+    FPGA_releaselock();
 }
 
 void ctrl_readmem_ctrl(void){
@@ -155,6 +156,7 @@ void ctrl_readmem_ctrl(void){
     ctrlmemread_size = buflen;
 
     /* Start Transaction */
+    FPGA_releaselock();
 }
 
 
@@ -197,6 +199,7 @@ void ctrl_writemem_bulk(void){
     FPGA_setaddr(address);
 
     /* Transaction done in generic callback */
+    FPGA_releaselock();
 }
 
 static void ctrl_sam3ucfg_cb(void)
