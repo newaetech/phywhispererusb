@@ -12,8 +12,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FPGA_XMEM_H_
-#define FPGA_XMEM_H_
+#ifndef USB_XMEM_H_
+#define USB_XMEM_H_
 
 #include <stdint.h>
 
@@ -53,5 +53,7 @@ void smc_normaltiming(void);
 #define PSRAM_BASE_ADDRESS         (0x60000000)
 extern uint8_t volatile *xram;
 
+#define FPGA_ADDR_PINS (PIO_PB0 | PIO_PB1 | PIO_PB2 | PIO_PB3 | PIO_PB4 | PIO_PB5 | PIO_PB7 | PIO_PB8 )
+#define FPGA_ADDR_PORT PIOB
 
-#endif /* FPGA_XMEM_H_ */
+#endif /* USB_XMEM_H_ */

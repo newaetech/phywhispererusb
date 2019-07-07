@@ -4,11 +4,12 @@
 #include "ui.h"
 #include "genclk.h"
 #include "tasks.h"
-#include "fpga_xmem.h"
+#include "usb_xmem.h"
 #include "fpga_program.h"
 #include "usb.h"
 #include "sysclk.h"
 #include <string.h>
+
 
 //Serial Number - will be read by device ID
 char usb_serial_number[33] = "000000000000DEADBEEF";
@@ -85,6 +86,9 @@ void phywhisperer_setup_pins(void)
     gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
     gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
     gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
+
+    gpio_configure_group(FPGA_ADDR_PORT, FPGA_ADDR_PINS, (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT));
+    pio_enable_output_write(FPGA_ADDR_PORT, FPGA_ADDR_PINS);
 
     smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(0)
                          | SMC_SETUP_NCS_WR_SETUP(1)

@@ -18,9 +18,6 @@
 #include <asf.h>
 #include "usb_xmem.h"
 
-#define FPGA_ADDR_PINS (PIO_PB0 | PIO_PB1 | PIO_PB2 | PIO_PB3 | PIO_PB4 | PIO_PB5 | PIO_PB6 | PIO_PB7 )
-#define FPGA_ADDR_PORT PIOB
-
 /* Access pointer for FPGA Interface */
 uint8_t volatile *xram = (uint8_t *) PSRAM_BASE_ADDRESS;
 
