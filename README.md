@@ -14,7 +14,7 @@ What is PhyWhisperer & why does it exist? Other related solutions:
 
 * TotalPhase Beagle 480 - Closed source but *extremely nice* solution, primarily a USB sniffer/analyzer but can perform hardware triggering.
 
-* OpenVizsla - Open source, USB sniffer w/ FPGA you could easily add trigger logic.
+* OpenVizsla - Open source, USB sniffer w/ FPGA. Could add trigger logic onto this FPGA, but is missing the ability to cycle target power.
 
 * GreatFET w/ GlitchKit - Open source using a micro firmware for USB trigger.
 
@@ -26,5 +26,5 @@ The PhyWhisperer-USB adds features a glitch-master would find useful, such as an
 
 Compared to GreatFET or FaceWhisperer this tool cannot perform tasks such as fuzzing or complex state machines (which are relatively easy with those tools).
 
-The PhyWhisperer hardware could be used as a USB analyzer or logic analyzer, but the software/firmware/fpga does not support this (and no plans to add such functionality but commits are welcome). If you require a USB analyzer the TotalPhase Beagle 480 comes highly recommended by Colin (no connection - he just really likes them).
+The PhyWhisperer hardware could be used as a USB analyzer or logic analyzer, but the software/firmware/fpga does not support this yet. Basic USB sniffing capability will be added for release, as it's useful when deciding on the effect your glitch is having. If you require a more robust USB analyzer the TotalPhase Beagle 480 comes highly recommended by Colin (no connection - he just really likes them).
 
