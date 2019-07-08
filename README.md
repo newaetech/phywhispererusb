@@ -14,7 +14,7 @@ What is PhyWhisperer & why does it exist? Other related solutions:
 
 * TotalPhase Beagle 480 - Closed source but *extremely nice* solution, primarily a USB sniffer/analyzer but can perform hardware triggering.
 
-* OpenVizsla - Open source, USB sniffer w/ FPGA you could add trigger logic too.
+* OpenVizsla - Open source, USB sniffer w/ FPGA. Could add trigger logic onto this FPGA, but is missing the ability to cycle target power.
 
 * GreatFET w/ GlitchKit - Open source using a micro firmware for USB trigger.
 
