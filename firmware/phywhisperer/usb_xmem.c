@@ -67,9 +67,8 @@ void exit_cs(void)
 void FPGA_setaddr(uint32_t addr)
 {
   pio_sync_output_write(FPGA_ADDR_PORT, addr);
-  //maybe needed?
-  /* gpio_set_pin_low(FPGA_ALE_GPIO); */
-  /* gpio_set_pin_high(FPGA_ALE_GPIO); */
+  gpio_set_pin_low(PIN_EBI_USB_SPARE1);
+  gpio_set_pin_high(PIN_EBI_USB_SPARE1);
 }
 
 /*
