@@ -39,6 +39,7 @@ class PhyWhispererUSB(object):
     CMD_FPGA_STATUS = 0x15
     CMD_FPGA_PROGRAM = 0x16
     CMD_CHANGE_PWR = 0x24
+    CMD_FPGA_RESET = 0x25
 
     PWR_SRC_HOST = 0x02
     PWR_SRC_OFF = 0x00
@@ -173,6 +174,9 @@ class PhyWhispererUSB(object):
 
     def changePowerSource(self, src):
         self.sendCtrl(self.CMD_CHANGE_PWR, src)
+
+    def resetFPGA(self):
+        self.sendCtrl(self.CMD_FPGA_RESET, 0x00)
 
     def eraseFW(self, confirm=False):
         # may not work, FW copied from CWLite

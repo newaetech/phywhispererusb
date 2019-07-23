@@ -38813,9 +38813,6 @@ pio_handler_set_priority:
 	.ascii	"SSC_TCMR_START_RF_LOW (0x2u << 8)\000"
 .LASF5303:
 	.ascii	"SSC_SR_TXRDY (0x1u << 0)\000"
-.LASF578:
-	.ascii	"SAM3U2 ( SAM_PART_IS_DEFINED(SAM3U2C) || SAM_PART_I"
-	.ascii	"S_DEFINED(SAM3U2E) )\000"
 .LASF8175:
 	.ascii	"Max(a,b) (((a) > (b)) ? (a) : (b))\000"
 .LASF772:
@@ -40148,6 +40145,8 @@ pio_handler_set_priority:
 	.ascii	"SSC_RCMR_STTDLY_Pos 16\000"
 .LASF2874:
 	.ascii	"PIO_IFER_P11 (0x1u << 11)\000"
+.LASF196:
+	.ascii	"__FLT32_DECIMAL_DIG__ 9\000"
 .LASF5069:
 	.ascii	"SMC_WPSR_WP_VSRC_Msk (0xffffu << SMC_WPSR_WP_VSRC_P"
 	.ascii	"os)\000"
@@ -43396,8 +43395,9 @@ pio_handler_set_priority:
 	.ascii	"UDPHS_INTSTA_DMA_6 (0x1u << 30)\000"
 .LASF1433:
 	.ascii	"TPI_DEVTYPE_SubType_Pos 0\000"
-.LASF196:
-	.ascii	"__FLT32_DECIMAL_DIG__ 9\000"
+.LASF8605:
+	.ascii	"C:\\Users\\jp\\GitHub\\phywhispererusb\\firmware\\p"
+	.ascii	"hywhisperer\000"
 .LASF2198:
 	.ascii	"EEFC_FCR_FCMD(value) ((EEFC_FCR_FCMD_Msk & ((value)"
 	.ascii	" << EEFC_FCR_FCMD_Pos)))\000"
@@ -49023,9 +49023,9 @@ pio_handler_set_priority:
 	.ascii	"__SIZE_TYPE__ unsigned int\000"
 .LASF8578:
 	.ascii	"p_handler\000"
-.LASF8605:
-	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
-	.ascii	"firmware\\phywhisperer\000"
+.LASF578:
+	.ascii	"SAM3U2 ( SAM_PART_IS_DEFINED(SAM3U2C) || SAM_PART_I"
+	.ascii	"S_DEFINED(SAM3U2E) )\000"
 .LASF4779:
 	.ascii	"SMC_IMR_AWB (0x1u << 22)\000"
 .LASF7506:

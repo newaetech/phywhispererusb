@@ -4375,7 +4375,7 @@
    4:main.c        **** #include "ui.h"
    5:main.c        **** #include "genclk.h"
    6:main.c        **** #include "tasks.h"
-   7:main.c        **** #include "fpga_xmem.h"
+   7:main.c        **** #include "usb_xmem.h"
    8:main.c        **** #include "fpga_program.h"
    9:main.c        **** #include "usb.h"
   10:main.c        **** #include "sysclk.h"
@@ -4725,41 +4725,41 @@
  2236              	 .cfi_def_cfa_register 7
   65:main.c        ****     board_init();
  2237              	 .loc 11 65 0
- 2238 0004 2E4B     	 ldr r3,.L185
+ 2238 0004 394B     	 ldr r3,.L185
  2239 0006 9847     	 blx r3
  2240              	.LVL59:
   66:main.c        ****     ioport_set_pin_mode(BUTTON_IN, IOPORT_MODE_PULLUP); //(1 << 2) = PULL UP
  2241              	 .loc 11 66 0
  2242 0008 0821     	 movs r1,#8
  2243 000a 1820     	 movs r0,#24
- 2244 000c 2D4B     	 ldr r3,.L185+4
+ 2244 000c 384B     	 ldr r3,.L185+4
  2245 000e 9847     	 blx r3
  2246              	.LVL60:
   67:main.c        ****     PIOA->PIO_ODR = (1 << BUTTON_IN);
  2247              	 .loc 11 67 0
- 2248 0010 2D4B     	 ldr r3,.L185+8
+ 2248 0010 384B     	 ldr r3,.L185+8
  2249 0012 4FF08072 	 mov r2,#16777216
  2250 0016 5A61     	 str r2,[r3,#20]
   68:main.c        ****     PIOA->PIO_PUER = (1 << BUTTON_IN); // enable pullup
  2251              	 .loc 11 68 0
- 2252 0018 2B4B     	 ldr r3,.L185+8
+ 2252 0018 364B     	 ldr r3,.L185+8
  2253 001a 4FF08072 	 mov r2,#16777216
  2254 001e 5A66     	 str r2,[r3,#100]
   69:main.c        ****     PIOA->PIO_DIFSR = (1 << BUTTON_IN); //enable debounce
  2255              	 .loc 11 69 0
- 2256 0020 294B     	 ldr r3,.L185+8
+ 2256 0020 344B     	 ldr r3,.L185+8
  2257 0022 4FF08072 	 mov r2,#16777216
  2258 0026 C3F88420 	 str r2,[r3,#132]
   70:main.c        **** 
   71:main.c        ****     PIOA->PIO_OER = (1 << F_VB5V) | (1 << F_VBHOST); //enable output mode on VBHOST/VBSNIFF pins
  2259              	 .loc 11 71 0
- 2260 002a 274B     	 ldr r3,.L185+8
+ 2260 002a 324B     	 ldr r3,.L185+8
  2261 002c 4FF0C062 	 mov r2,#100663296
  2262 0030 1A61     	 str r2,[r3,#16]
   72:main.c        **** 
   73:main.c        ****     phywhisperer_host_pwr();
  2263              	 .loc 11 73 0
- 2264 0032 264B     	 ldr r3,.L185+12
+ 2264 0032 314B     	 ldr r3,.L185+12
  2265 0034 9847     	 blx r3
  2266              	.LVL61:
   74:main.c        **** 
@@ -4767,594 +4767,639 @@
   76:main.c        ****     pmc_enable_periph_clk(ID_SMC);
  2267              	 .loc 11 76 0
  2268 0036 0920     	 movs r0,#9
- 2269 0038 254B     	 ldr r3,.L185+16
+ 2269 0038 304B     	 ldr r3,.L185+16
  2270 003a 9847     	 blx r3
  2271              	.LVL62:
   77:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D0, PIN_EBI_DATA_BUS_FLAG1);
  2272              	 .loc 11 77 0
- 2273 003c 2549     	 ldr r1,.L185+20
+ 2273 003c 3049     	 ldr r1,.L185+20
  2274 003e 2920     	 movs r0,#41
- 2275 0040 254B     	 ldr r3,.L185+24
+ 2275 0040 304B     	 ldr r3,.L185+24
  2276 0042 9847     	 blx r3
  2277              	.LVL63:
   78:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D1, PIN_EBI_DATA_BUS_FLAG1);
  2278              	 .loc 11 78 0
- 2279 0044 2349     	 ldr r1,.L185+20
+ 2279 0044 2E49     	 ldr r1,.L185+20
  2280 0046 2A20     	 movs r0,#42
- 2281 0048 234B     	 ldr r3,.L185+24
+ 2281 0048 2E4B     	 ldr r3,.L185+24
  2282 004a 9847     	 blx r3
  2283              	.LVL64:
   79:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D2, PIN_EBI_DATA_BUS_FLAG1);
  2284              	 .loc 11 79 0
- 2285 004c 2149     	 ldr r1,.L185+20
+ 2285 004c 2C49     	 ldr r1,.L185+20
  2286 004e 2B20     	 movs r0,#43
- 2287 0050 214B     	 ldr r3,.L185+24
+ 2287 0050 2C4B     	 ldr r3,.L185+24
  2288 0052 9847     	 blx r3
  2289              	.LVL65:
   80:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D3, PIN_EBI_DATA_BUS_FLAG1);
  2290              	 .loc 11 80 0
- 2291 0054 1F49     	 ldr r1,.L185+20
+ 2291 0054 2A49     	 ldr r1,.L185+20
  2292 0056 2C20     	 movs r0,#44
- 2293 0058 1F4B     	 ldr r3,.L185+24
+ 2293 0058 2A4B     	 ldr r3,.L185+24
  2294 005a 9847     	 blx r3
  2295              	.LVL66:
   81:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D4, PIN_EBI_DATA_BUS_FLAG1);
  2296              	 .loc 11 81 0
- 2297 005c 1D49     	 ldr r1,.L185+20
+ 2297 005c 2849     	 ldr r1,.L185+20
  2298 005e 2D20     	 movs r0,#45
- 2299 0060 1D4B     	 ldr r3,.L185+24
+ 2299 0060 284B     	 ldr r3,.L185+24
  2300 0062 9847     	 blx r3
  2301              	.LVL67:
   82:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D5, PIN_EBI_DATA_BUS_FLAG1);
  2302              	 .loc 11 82 0
- 2303 0064 1B49     	 ldr r1,.L185+20
+ 2303 0064 2649     	 ldr r1,.L185+20
  2304 0066 2E20     	 movs r0,#46
- 2305 0068 1B4B     	 ldr r3,.L185+24
+ 2305 0068 264B     	 ldr r3,.L185+24
  2306 006a 9847     	 blx r3
  2307              	.LVL68:
   83:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D6, PIN_EBI_DATA_BUS_FLAG1);
  2308              	 .loc 11 83 0
- 2309 006c 1949     	 ldr r1,.L185+20
+ 2309 006c 2449     	 ldr r1,.L185+20
  2310 006e 2F20     	 movs r0,#47
- 2311 0070 194B     	 ldr r3,.L185+24
+ 2311 0070 244B     	 ldr r3,.L185+24
  2312 0072 9847     	 blx r3
  2313              	.LVL69:
   84:main.c        ****     gpio_configure_pin(PIN_EBI_DATA_BUS_D7, PIN_EBI_DATA_BUS_FLAG1);
  2314              	 .loc 11 84 0
- 2315 0074 1749     	 ldr r1,.L185+20
+ 2315 0074 2249     	 ldr r1,.L185+20
  2316 0076 3020     	 movs r0,#48
- 2317 0078 174B     	 ldr r3,.L185+24
+ 2317 0078 224B     	 ldr r3,.L185+24
  2318 007a 9847     	 blx r3
  2319              	.LVL70:
   85:main.c        ****     gpio_configure_pin(PIN_EBI_NRD, PIN_EBI_NRD_FLAGS);
  2320              	 .loc 11 85 0
- 2321 007c 1549     	 ldr r1,.L185+20
+ 2321 007c 2049     	 ldr r1,.L185+20
  2322 007e 3320     	 movs r0,#51
- 2323 0080 154B     	 ldr r3,.L185+24
+ 2323 0080 204B     	 ldr r3,.L185+24
  2324 0082 9847     	 blx r3
  2325              	.LVL71:
   86:main.c        ****     gpio_configure_pin(PIN_EBI_NWE, PIN_EBI_NWE_FLAGS);
  2326              	 .loc 11 86 0
- 2327 0084 1349     	 ldr r1,.L185+20
+ 2327 0084 1E49     	 ldr r1,.L185+20
  2328 0086 3720     	 movs r0,#55
- 2329 0088 134B     	 ldr r3,.L185+24
+ 2329 0088 1E4B     	 ldr r3,.L185+24
  2330 008a 9847     	 blx r3
  2331              	.LVL72:
   87:main.c        ****     gpio_configure_pin(PIN_EBI_NCS0, PIN_EBI_NCS0_FLAGS);
  2332              	 .loc 11 87 0
- 2333 008c 1149     	 ldr r1,.L185+20
+ 2333 008c 1C49     	 ldr r1,.L185+20
  2334 008e 3420     	 movs r0,#52
- 2335 0090 114B     	 ldr r3,.L185+24
+ 2335 0090 1C4B     	 ldr r3,.L185+24
  2336 0092 9847     	 blx r3
  2337              	.LVL73:
   88:main.c        **** 
-  89:main.c        ****     smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(0)
+  89:main.c        ****     gpio_configure_group(FPGA_ADDR_PORT, FPGA_ADDR_PINS, (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT));
  2338              	 .loc 11 89 0
- 2339 0094 114A     	 ldr r2,.L185+28
- 2340 0096 0021     	 movs r1,#0
- 2341 0098 1148     	 ldr r0,.L185+32
- 2342 009a 124B     	 ldr r3,.L185+36
- 2343 009c 9847     	 blx r3
+ 2339 0094 4FF04052 	 mov r2,#805306368
+ 2340 0098 40F2BF11 	 movw r1,#447
+ 2341 009c 1A48     	 ldr r0,.L185+28
+ 2342 009e 1B4B     	 ldr r3,.L185+32
+ 2343 00a0 9847     	 blx r3
  2344              	.LVL74:
-  90:main.c        ****                          | SMC_SETUP_NCS_WR_SETUP(1)
-  91:main.c        ****                          | SMC_SETUP_NRD_SETUP(1)
-  92:main.c        ****                          | SMC_SETUP_NCS_RD_SETUP(1));
-  93:main.c        ****     smc_set_pulse_timing(SMC, 0, SMC_PULSE_NWE_PULSE(1)
- 2345              	 .loc 11 93 0
- 2346 009e 124A     	 ldr r2,.L185+40
- 2347 00a0 0021     	 movs r1,#0
- 2348 00a2 0F48     	 ldr r0,.L185+32
- 2349 00a4 114B     	 ldr r3,.L185+44
- 2350 00a6 9847     	 blx r3
- 2351              	.LVL75:
-  94:main.c        ****                          | SMC_PULSE_NCS_WR_PULSE(1)
-  95:main.c        ****                          | SMC_PULSE_NRD_PULSE(3)
-  96:main.c        ****                          | SMC_PULSE_NCS_RD_PULSE(1));
-  97:main.c        ****     smc_set_cycle_timing(SMC, 0, SMC_CYCLE_NWE_CYCLE(2)
- 2352              	 .loc 11 97 0
- 2353 00a8 114A     	 ldr r2,.L185+48
- 2354 00aa 0021     	 movs r1,#0
- 2355 00ac 0C48     	 ldr r0,.L185+32
- 2356 00ae 114B     	 ldr r3,.L185+52
- 2357 00b0 9847     	 blx r3
- 2358              	.LVL76:
-  98:main.c        ****                          | SMC_CYCLE_NRD_CYCLE(4));
-  99:main.c        ****     smc_set_mode(SMC, 0, SMC_MODE_READ_MODE | SMC_MODE_WRITE_MODE
- 2359              	 .loc 11 99 0
- 2360 00b2 0322     	 movs r2,#3
- 2361 00b4 0021     	 movs r1,#0
- 2362 00b6 0A48     	 ldr r0,.L185+32
- 2363 00b8 0F4B     	 ldr r3,.L185+56
- 2364 00ba 9847     	 blx r3
- 2365              	.LVL77:
- 100:main.c        ****                  | SMC_MODE_DBW_BIT_8);
- 101:main.c        **** }
- 2366              	 .loc 11 101 0
- 2367 00bc 00BF     	 nop
- 2368 00be 80BD     	 pop {r7,pc}
- 2369              	.L186:
- 2370              	 .align 2
- 2371              	.L185:
- 2372 00c0 00000000 	 .word board_init
- 2373 00c4 00000000 	 .word ioport_set_pin_mode
- 2374 00c8 000C0E40 	 .word 1074662400
- 2375 00cc 00000000 	 .word phywhisperer_host_pwr
- 2376 00d0 00000000 	 .word pmc_enable_periph_clk
- 2377 00d4 01000008 	 .word 134217729
- 2378 00d8 00000000 	 .word pio_configure_pin
- 2379 00dc 00010101 	 .word 16843008
- 2380 00e0 00000E40 	 .word 1074659328
- 2381 00e4 00000000 	 .word smc_set_setup_timing
- 2382 00e8 01010301 	 .word 16974081
- 2383 00ec 00000000 	 .word smc_set_pulse_timing
- 2384 00f0 02000400 	 .word 262146
- 2385 00f4 00000000 	 .word smc_set_cycle_timing
- 2386 00f8 00000000 	 .word smc_set_mode
- 2387              	 .cfi_endproc
- 2388              	.LFE195:
- 2390              	 .section .text.hacky_delay,"ax",%progbits
- 2391              	 .align 1
- 2392              	 .global hacky_delay
- 2393              	 .syntax unified
- 2394              	 .thumb
- 2395              	 .thumb_func
- 2396              	 .fpu softvfp
- 2398              	hacky_delay:
- 2399              	.LFB196:
+  90:main.c        ****     pio_enable_output_write(FPGA_ADDR_PORT, FPGA_ADDR_PINS);
+ 2345              	 .loc 11 90 0
+ 2346 00a2 40F2BF11 	 movw r1,#447
+ 2347 00a6 1848     	 ldr r0,.L185+28
+ 2348 00a8 194B     	 ldr r3,.L185+36
+ 2349 00aa 9847     	 blx r3
+ 2350              	.LVL75:
+  91:main.c        **** 
+  92:main.c        ****     /*
+  93:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A0, PIN_EBI_ADDR_BUS_FLAG1);
+  94:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A1, PIN_EBI_ADDR_BUS_FLAG1);
+  95:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A2, PIN_EBI_ADDR_BUS_FLAG1);
+  96:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A3, PIN_EBI_ADDR_BUS_FLAG1);
+  97:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A4, PIN_EBI_ADDR_BUS_FLAG1);
+  98:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A5, PIN_EBI_ADDR_BUS_FLAG1);
+  99:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A6, PIN_EBI_ADDR_BUS_FLAG1);
+ 100:main.c        ****     gpio_configure_pin(PIN_EBI_ADDR_BUS_A7, PIN_EBI_ADDR_BUS_FLAG1);
+ 101:main.c        ****     */
  102:main.c        **** 
- 103:main.c        **** void hacky_delay(void)
- 104:main.c        **** {
- 2400              	 .loc 11 104 0
- 2401              	 .cfi_startproc
- 2402              	 
- 2403              	 
- 2404              	 
- 2405 0000 80B4     	 push {r7}
- 2406              	.LCFI122:
- 2407              	 .cfi_def_cfa_offset 4
- 2408              	 .cfi_offset 7,-4
- 2409 0002 83B0     	 sub sp,sp,#12
- 2410              	.LCFI123:
- 2411              	 .cfi_def_cfa_offset 16
- 2412 0004 00AF     	 add r7,sp,#0
- 2413              	.LCFI124:
- 2414              	 .cfi_def_cfa_register 7
- 2415              	.LBB57:
- 105:main.c        ****     for (volatile uint32_t i = 0; i < 250000; i++);
- 2416              	 .loc 11 105 0
- 2417 0006 0023     	 movs r3,#0
- 2418 0008 7B60     	 str r3,[r7,#4]
- 2419 000a 02E0     	 b .L188
- 2420              	.L189:
- 2421              	 .loc 11 105 0 is_stmt 0 discriminator 3
- 2422 000c 7B68     	 ldr r3,[r7,#4]
- 2423 000e 0133     	 adds r3,r3,#1
- 2424 0010 7B60     	 str r3,[r7,#4]
- 2425              	.L188:
- 2426              	 .loc 11 105 0 discriminator 1
- 2427 0012 7B68     	 ldr r3,[r7,#4]
- 2428 0014 034A     	 ldr r2,.L190
- 2429 0016 9342     	 cmp r3,r2
- 2430 0018 F8D9     	 bls .L189
- 2431              	.LBE57:
- 106:main.c        **** }
- 2432              	 .loc 11 106 0 is_stmt 1
- 2433 001a 00BF     	 nop
- 2434 001c 0C37     	 adds r7,r7,#12
- 2435              	.LCFI125:
- 2436              	 .cfi_def_cfa_offset 4
- 2437 001e BD46     	 mov sp,r7
- 2438              	.LCFI126:
- 2439              	 .cfi_def_cfa_register 13
- 2440              	 
- 2441 0020 80BC     	 pop {r7}
- 2442              	.LCFI127:
- 2443              	 .cfi_restore 7
- 2444              	 .cfi_def_cfa_offset 0
- 2445 0022 7047     	 bx lr
- 2446              	.L191:
- 2447              	 .align 2
- 2448              	.L190:
- 2449 0024 8FD00300 	 .word 249999
- 2450              	 .cfi_endproc
- 2451              	.LFE196:
- 2453              	 .section .text.genclk_enable_config,"ax",%progbits
- 2454              	 .align 1
- 2455              	 .syntax unified
- 2456              	 .thumb
- 2457              	 .thumb_func
- 2458              	 .fpu softvfp
- 2460              	genclk_enable_config:
- 2461              	.LFB197:
- 107:main.c        **** 
- 108:main.c        **** static inline void genclk_enable_config(unsigned int id, enum genclk_source src, unsigned int divid
- 109:main.c        **** {
- 2462              	 .loc 11 109 0
- 2463              	 .cfi_startproc
- 2464              	 
- 2465              	 
- 2466 0000 80B5     	 push {r7,lr}
- 2467              	.LCFI128:
- 2468              	 .cfi_def_cfa_offset 8
- 2469              	 .cfi_offset 7,-8
- 2470              	 .cfi_offset 14,-4
- 2471 0002 86B0     	 sub sp,sp,#24
- 2472              	.LCFI129:
- 2473              	 .cfi_def_cfa_offset 32
- 2474 0004 00AF     	 add r7,sp,#0
- 2475              	.LCFI130:
- 2476              	 .cfi_def_cfa_register 7
- 2477 0006 F860     	 str r0,[r7,#12]
- 2478 0008 0B46     	 mov r3,r1
- 2479 000a 7A60     	 str r2,[r7,#4]
- 2480 000c FB72     	 strb r3,[r7,#11]
- 110:main.c        ****     struct genclk_config gcfg;
- 111:main.c        **** 
- 112:main.c        ****     genclk_config_defaults(&gcfg, id);
- 2481              	 .loc 11 112 0
- 2482 000e 07F11403 	 add r3,r7,#20
- 2483 0012 F968     	 ldr r1,[r7,#12]
- 2484 0014 1846     	 mov r0,r3
- 2485 0016 0E4B     	 ldr r3,.L193
- 2486 0018 9847     	 blx r3
- 2487              	.LVL78:
- 113:main.c        ****     genclk_enable_source(src);
- 2488              	 .loc 11 113 0
- 2489 001a FB7A     	 ldrb r3,[r7,#11]
- 2490 001c 1846     	 mov r0,r3
- 2491 001e 0D4B     	 ldr r3,.L193+4
- 2492 0020 9847     	 blx r3
- 2493              	.LVL79:
- 114:main.c        ****     genclk_config_set_source(&gcfg, src);
- 2494              	 .loc 11 114 0
- 2495 0022 FA7A     	 ldrb r2,[r7,#11]
- 2496 0024 07F11403 	 add r3,r7,#20
- 2497 0028 1146     	 mov r1,r2
- 2498 002a 1846     	 mov r0,r3
- 2499 002c 0A4B     	 ldr r3,.L193+8
- 2500 002e 9847     	 blx r3
- 2501              	.LVL80:
- 115:main.c        ****     genclk_config_set_divider(&gcfg, divider);
- 2502              	 .loc 11 115 0
- 2503 0030 07F11403 	 add r3,r7,#20
- 2504 0034 7968     	 ldr r1,[r7,#4]
- 2505 0036 1846     	 mov r0,r3
- 2506 0038 084B     	 ldr r3,.L193+12
- 2507 003a 9847     	 blx r3
- 2508              	.LVL81:
- 116:main.c        ****     genclk_enable(&gcfg, id);
- 2509              	 .loc 11 116 0
- 2510 003c 07F11403 	 add r3,r7,#20
- 2511 0040 F968     	 ldr r1,[r7,#12]
- 2512 0042 1846     	 mov r0,r3
- 2513 0044 064B     	 ldr r3,.L193+16
- 2514 0046 9847     	 blx r3
- 2515              	.LVL82:
- 117:main.c        **** }
- 2516              	 .loc 11 117 0
- 2517 0048 00BF     	 nop
- 2518 004a 1837     	 adds r7,r7,#24
- 2519              	.LCFI131:
- 2520              	 .cfi_def_cfa_offset 8
- 2521 004c BD46     	 mov sp,r7
- 2522              	.LCFI132:
- 2523              	 .cfi_def_cfa_register 13
- 2524              	 
- 2525 004e 80BD     	 pop {r7,pc}
- 2526              	.L194:
- 2527              	 .align 2
- 2528              	.L193:
- 2529 0050 00000000 	 .word genclk_config_defaults
- 2530 0054 00000000 	 .word genclk_enable_source
- 2531 0058 00000000 	 .word genclk_config_set_source
- 2532 005c 00000000 	 .word genclk_config_set_divider
- 2533 0060 00000000 	 .word genclk_enable
- 2534              	 .cfi_endproc
- 2535              	.LFE197:
- 2537              	 .global pwr_list
- 2538              	 .section .data.pwr_list,"aw",%progbits
- 2539              	 .align 2
- 2542              	pwr_list:
- 2543 0000 00000000 	 .word phywhisperer_no_pwr
- 2544 0004 00000000 	 .word phywhisperer_5V_pwr
- 2545 0008 00000000 	 .word phywhisperer_host_pwr
- 2546              	 .section .text.main,"ax",%progbits
- 2547              	 .align 1
- 2548              	 .global main
- 2549              	 .syntax unified
- 2550              	 .thumb
- 2551              	 .thumb_func
- 2552              	 .fpu softvfp
- 2554              	main:
- 2555              	.LFB198:
- 118:main.c        **** 
- 119:main.c        **** void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_5V_pwr, phywhisperer_host_pwr};
- 120:main.c        **** 
- 121:main.c        **** int main(void)
- 122:main.c        **** {
- 2556              	 .loc 11 122 0
- 2557              	 .cfi_startproc
- 2558              	 
- 2559              	 
- 2560 0000 80B5     	 push {r7,lr}
- 2561              	.LCFI133:
- 2562              	 .cfi_def_cfa_offset 8
- 2563              	 .cfi_offset 7,-8
- 2564              	 .cfi_offset 14,-4
- 2565 0002 86B0     	 sub sp,sp,#24
- 2566              	.LCFI134:
- 2567              	 .cfi_def_cfa_offset 32
- 2568 0004 00AF     	 add r7,sp,#0
- 2569              	.LCFI135:
- 2570              	 .cfi_def_cfa_register 7
- 123:main.c        ****     uint32_t serial_number[4];
+ 103:main.c        ****     gpio_configure_pin(PIN_EBI_USB_SPARE0, PIN_EBI_USB_SPARE0_FLAGS);
+ 2351              	 .loc 11 103 0
+ 2352 00ac 4FF04051 	 mov r1,#805306368
+ 2353 00b0 2620     	 movs r0,#38
+ 2354 00b2 144B     	 ldr r3,.L185+24
+ 2355 00b4 9847     	 blx r3
+ 2356              	.LVL76:
+ 104:main.c        ****     gpio_configure_pin(PIN_EBI_USB_SPARE1, PIN_EBI_USB_SPARE1_FLAGS);
+ 2357              	 .loc 11 104 0
+ 2358 00b6 4FF06051 	 mov r1,#939524096
+ 2359 00ba 3120     	 movs r0,#49
+ 2360 00bc 114B     	 ldr r3,.L185+24
+ 2361 00be 9847     	 blx r3
+ 2362              	.LVL77:
+ 105:main.c        **** 
+ 106:main.c        ****     smc_set_setup_timing(SMC, 0, SMC_SETUP_NWE_SETUP(0)
+ 2363              	 .loc 11 106 0
+ 2364 00c0 144A     	 ldr r2,.L185+40
+ 2365 00c2 0021     	 movs r1,#0
+ 2366 00c4 1448     	 ldr r0,.L185+44
+ 2367 00c6 154B     	 ldr r3,.L185+48
+ 2368 00c8 9847     	 blx r3
+ 2369              	.LVL78:
+ 107:main.c        ****                          | SMC_SETUP_NCS_WR_SETUP(1)
+ 108:main.c        ****                          | SMC_SETUP_NRD_SETUP(1)
+ 109:main.c        ****                          | SMC_SETUP_NCS_RD_SETUP(1));
+ 110:main.c        ****     smc_set_pulse_timing(SMC, 0, SMC_PULSE_NWE_PULSE(1)
+ 2370              	 .loc 11 110 0
+ 2371 00ca 154A     	 ldr r2,.L185+52
+ 2372 00cc 0021     	 movs r1,#0
+ 2373 00ce 1248     	 ldr r0,.L185+44
+ 2374 00d0 144B     	 ldr r3,.L185+56
+ 2375 00d2 9847     	 blx r3
+ 2376              	.LVL79:
+ 111:main.c        ****                          | SMC_PULSE_NCS_WR_PULSE(1)
+ 112:main.c        ****                          | SMC_PULSE_NRD_PULSE(3)
+ 113:main.c        ****                          | SMC_PULSE_NCS_RD_PULSE(1));
+ 114:main.c        ****     smc_set_cycle_timing(SMC, 0, SMC_CYCLE_NWE_CYCLE(2)
+ 2377              	 .loc 11 114 0
+ 2378 00d4 144A     	 ldr r2,.L185+60
+ 2379 00d6 0021     	 movs r1,#0
+ 2380 00d8 0F48     	 ldr r0,.L185+44
+ 2381 00da 144B     	 ldr r3,.L185+64
+ 2382 00dc 9847     	 blx r3
+ 2383              	.LVL80:
+ 115:main.c        ****                          | SMC_CYCLE_NRD_CYCLE(4));
+ 116:main.c        ****     smc_set_mode(SMC, 0, SMC_MODE_READ_MODE | SMC_MODE_WRITE_MODE
+ 2384              	 .loc 11 116 0
+ 2385 00de 0322     	 movs r2,#3
+ 2386 00e0 0021     	 movs r1,#0
+ 2387 00e2 0D48     	 ldr r0,.L185+44
+ 2388 00e4 124B     	 ldr r3,.L185+68
+ 2389 00e6 9847     	 blx r3
+ 2390              	.LVL81:
+ 117:main.c        ****                  | SMC_MODE_DBW_BIT_8);
+ 118:main.c        **** }
+ 2391              	 .loc 11 118 0
+ 2392 00e8 00BF     	 nop
+ 2393 00ea 80BD     	 pop {r7,pc}
+ 2394              	.L186:
+ 2395              	 .align 2
+ 2396              	.L185:
+ 2397 00ec 00000000 	 .word board_init
+ 2398 00f0 00000000 	 .word ioport_set_pin_mode
+ 2399 00f4 000C0E40 	 .word 1074662400
+ 2400 00f8 00000000 	 .word phywhisperer_host_pwr
+ 2401 00fc 00000000 	 .word pmc_enable_periph_clk
+ 2402 0100 01000008 	 .word 134217729
+ 2403 0104 00000000 	 .word pio_configure_pin
+ 2404 0108 000E0E40 	 .word 1074662912
+ 2405 010c 00000000 	 .word pio_configure_pin_group
+ 2406 0110 00000000 	 .word pio_enable_output_write
+ 2407 0114 00010101 	 .word 16843008
+ 2408 0118 00000E40 	 .word 1074659328
+ 2409 011c 00000000 	 .word smc_set_setup_timing
+ 2410 0120 01010301 	 .word 16974081
+ 2411 0124 00000000 	 .word smc_set_pulse_timing
+ 2412 0128 02000400 	 .word 262146
+ 2413 012c 00000000 	 .word smc_set_cycle_timing
+ 2414 0130 00000000 	 .word smc_set_mode
+ 2415              	 .cfi_endproc
+ 2416              	.LFE195:
+ 2418              	 .section .text.hacky_delay,"ax",%progbits
+ 2419              	 .align 1
+ 2420              	 .global hacky_delay
+ 2421              	 .syntax unified
+ 2422              	 .thumb
+ 2423              	 .thumb_func
+ 2424              	 .fpu softvfp
+ 2426              	hacky_delay:
+ 2427              	.LFB196:
+ 119:main.c        **** 
+ 120:main.c        **** void hacky_delay(void)
+ 121:main.c        **** {
+ 2428              	 .loc 11 121 0
+ 2429              	 .cfi_startproc
+ 2430              	 
+ 2431              	 
+ 2432              	 
+ 2433 0000 80B4     	 push {r7}
+ 2434              	.LCFI122:
+ 2435              	 .cfi_def_cfa_offset 4
+ 2436              	 .cfi_offset 7,-4
+ 2437 0002 83B0     	 sub sp,sp,#12
+ 2438              	.LCFI123:
+ 2439              	 .cfi_def_cfa_offset 16
+ 2440 0004 00AF     	 add r7,sp,#0
+ 2441              	.LCFI124:
+ 2442              	 .cfi_def_cfa_register 7
+ 2443              	.LBB57:
+ 122:main.c        ****     for (volatile uint32_t i = 0; i < 250000; i++);
+ 2444              	 .loc 11 122 0
+ 2445 0006 0023     	 movs r3,#0
+ 2446 0008 7B60     	 str r3,[r7,#4]
+ 2447 000a 02E0     	 b .L188
+ 2448              	.L189:
+ 2449              	 .loc 11 122 0 is_stmt 0 discriminator 3
+ 2450 000c 7B68     	 ldr r3,[r7,#4]
+ 2451 000e 0133     	 adds r3,r3,#1
+ 2452 0010 7B60     	 str r3,[r7,#4]
+ 2453              	.L188:
+ 2454              	 .loc 11 122 0 discriminator 1
+ 2455 0012 7B68     	 ldr r3,[r7,#4]
+ 2456 0014 034A     	 ldr r2,.L190
+ 2457 0016 9342     	 cmp r3,r2
+ 2458 0018 F8D9     	 bls .L189
+ 2459              	.LBE57:
+ 123:main.c        **** }
+ 2460              	 .loc 11 123 0 is_stmt 1
+ 2461 001a 00BF     	 nop
+ 2462 001c 0C37     	 adds r7,r7,#12
+ 2463              	.LCFI125:
+ 2464              	 .cfi_def_cfa_offset 4
+ 2465 001e BD46     	 mov sp,r7
+ 2466              	.LCFI126:
+ 2467              	 .cfi_def_cfa_register 13
+ 2468              	 
+ 2469 0020 80BC     	 pop {r7}
+ 2470              	.LCFI127:
+ 2471              	 .cfi_restore 7
+ 2472              	 .cfi_def_cfa_offset 0
+ 2473 0022 7047     	 bx lr
+ 2474              	.L191:
+ 2475              	 .align 2
+ 2476              	.L190:
+ 2477 0024 8FD00300 	 .word 249999
+ 2478              	 .cfi_endproc
+ 2479              	.LFE196:
+ 2481              	 .section .text.genclk_enable_config,"ax",%progbits
+ 2482              	 .align 1
+ 2483              	 .syntax unified
+ 2484              	 .thumb
+ 2485              	 .thumb_func
+ 2486              	 .fpu softvfp
+ 2488              	genclk_enable_config:
+ 2489              	.LFB197:
  124:main.c        **** 
- 125:main.c        ****     // Read Device-ID from SAM3U. Do this before enabling interrupts etc.
- 126:main.c        ****     flash_read_unique_id(serial_number, sizeof(serial_number));
- 2571              	 .loc 11 126 0
- 2572 0006 3B1D     	 adds r3,r7,#4
- 2573 0008 1021     	 movs r1,#16
- 2574 000a 1846     	 mov r0,r3
- 2575 000c 294B     	 ldr r3,.L201
- 2576 000e 9847     	 blx r3
- 2577              	.LVL83:
- 127:main.c        **** 
- 128:main.c        ****     irq_initialize_vectors();
- 129:main.c        ****     cpu_irq_enable();
- 2578              	 .loc 11 129 0
- 2579 0010 294B     	 ldr r3,.L201+4
- 2580 0012 0122     	 movs r2,#1
- 2581 0014 1A70     	 strb r2,[r3]
- 2582              	.LBB58:
- 2583              	.LBB59:
- 2584              	 .loc 8 354 0
- 2585              	 .syntax unified
- 2586              	
- 2587 0016 BFF35F8F 	 dmb
- 2588              	
- 2589              	 .thumb
- 2590              	 .syntax unified
- 2591              	.LBE59:
- 2592              	.LBE58:
- 2593              	.LBB60:
- 2594              	.LBB61:
+ 125:main.c        **** static inline void genclk_enable_config(unsigned int id, enum genclk_source src, unsigned int divid
+ 126:main.c        **** {
+ 2490              	 .loc 11 126 0
+ 2491              	 .cfi_startproc
+ 2492              	 
+ 2493              	 
+ 2494 0000 80B5     	 push {r7,lr}
+ 2495              	.LCFI128:
+ 2496              	 .cfi_def_cfa_offset 8
+ 2497              	 .cfi_offset 7,-8
+ 2498              	 .cfi_offset 14,-4
+ 2499 0002 86B0     	 sub sp,sp,#24
+ 2500              	.LCFI129:
+ 2501              	 .cfi_def_cfa_offset 32
+ 2502 0004 00AF     	 add r7,sp,#0
+ 2503              	.LCFI130:
+ 2504              	 .cfi_def_cfa_register 7
+ 2505 0006 F860     	 str r0,[r7,#12]
+ 2506 0008 0B46     	 mov r3,r1
+ 2507 000a 7A60     	 str r2,[r7,#4]
+ 2508 000c FB72     	 strb r3,[r7,#11]
+ 127:main.c        ****     struct genclk_config gcfg;
+ 128:main.c        **** 
+ 129:main.c        ****     genclk_config_defaults(&gcfg, id);
+ 2509              	 .loc 11 129 0
+ 2510 000e 07F11403 	 add r3,r7,#20
+ 2511 0012 F968     	 ldr r1,[r7,#12]
+ 2512 0014 1846     	 mov r0,r3
+ 2513 0016 0E4B     	 ldr r3,.L193
+ 2514 0018 9847     	 blx r3
+ 2515              	.LVL82:
+ 130:main.c        ****     genclk_enable_source(src);
+ 2516              	 .loc 11 130 0
+ 2517 001a FB7A     	 ldrb r3,[r7,#11]
+ 2518 001c 1846     	 mov r0,r3
+ 2519 001e 0D4B     	 ldr r3,.L193+4
+ 2520 0020 9847     	 blx r3
+ 2521              	.LVL83:
+ 131:main.c        ****     genclk_config_set_source(&gcfg, src);
+ 2522              	 .loc 11 131 0
+ 2523 0022 FA7A     	 ldrb r2,[r7,#11]
+ 2524 0024 07F11403 	 add r3,r7,#20
+ 2525 0028 1146     	 mov r1,r2
+ 2526 002a 1846     	 mov r0,r3
+ 2527 002c 0A4B     	 ldr r3,.L193+8
+ 2528 002e 9847     	 blx r3
+ 2529              	.LVL84:
+ 132:main.c        ****     genclk_config_set_divider(&gcfg, divider);
+ 2530              	 .loc 11 132 0
+ 2531 0030 07F11403 	 add r3,r7,#20
+ 2532 0034 7968     	 ldr r1,[r7,#4]
+ 2533 0036 1846     	 mov r0,r3
+ 2534 0038 084B     	 ldr r3,.L193+12
+ 2535 003a 9847     	 blx r3
+ 2536              	.LVL85:
+ 133:main.c        ****     genclk_enable(&gcfg, id);
+ 2537              	 .loc 11 133 0
+ 2538 003c 07F11403 	 add r3,r7,#20
+ 2539 0040 F968     	 ldr r1,[r7,#12]
+ 2540 0042 1846     	 mov r0,r3
+ 2541 0044 064B     	 ldr r3,.L193+16
+ 2542 0046 9847     	 blx r3
+ 2543              	.LVL86:
+ 134:main.c        **** }
+ 2544              	 .loc 11 134 0
+ 2545 0048 00BF     	 nop
+ 2546 004a 1837     	 adds r7,r7,#24
+ 2547              	.LCFI131:
+ 2548              	 .cfi_def_cfa_offset 8
+ 2549 004c BD46     	 mov sp,r7
+ 2550              	.LCFI132:
+ 2551              	 .cfi_def_cfa_register 13
+ 2552              	 
+ 2553 004e 80BD     	 pop {r7,pc}
+ 2554              	.L194:
+ 2555              	 .align 2
+ 2556              	.L193:
+ 2557 0050 00000000 	 .word genclk_config_defaults
+ 2558 0054 00000000 	 .word genclk_enable_source
+ 2559 0058 00000000 	 .word genclk_config_set_source
+ 2560 005c 00000000 	 .word genclk_config_set_divider
+ 2561 0060 00000000 	 .word genclk_enable
+ 2562              	 .cfi_endproc
+ 2563              	.LFE197:
+ 2565              	 .global pwr_list
+ 2566              	 .section .data.pwr_list,"aw",%progbits
+ 2567              	 .align 2
+ 2570              	pwr_list:
+ 2571 0000 00000000 	 .word phywhisperer_no_pwr
+ 2572 0004 00000000 	 .word phywhisperer_5V_pwr
+ 2573 0008 00000000 	 .word phywhisperer_host_pwr
+ 2574              	 .section .text.main,"ax",%progbits
+ 2575              	 .align 1
+ 2576              	 .global main
+ 2577              	 .syntax unified
+ 2578              	 .thumb
+ 2579              	 .thumb_func
+ 2580              	 .fpu softvfp
+ 2582              	main:
+ 2583              	.LFB198:
+ 135:main.c        **** 
+ 136:main.c        **** void (*pwr_list[])(void) = {phywhisperer_no_pwr, phywhisperer_5V_pwr, phywhisperer_host_pwr};
+ 137:main.c        **** 
+ 138:main.c        **** int main(void)
+ 139:main.c        **** {
+ 2584              	 .loc 11 139 0
+ 2585              	 .cfi_startproc
+ 2586              	 
+ 2587              	 
+ 2588 0000 80B5     	 push {r7,lr}
+ 2589              	.LCFI133:
+ 2590              	 .cfi_def_cfa_offset 8
+ 2591              	 .cfi_offset 7,-8
+ 2592              	 .cfi_offset 14,-4
+ 2593 0002 86B0     	 sub sp,sp,#24
+ 2594              	.LCFI134:
+ 2595              	 .cfi_def_cfa_offset 32
+ 2596 0004 00AF     	 add r7,sp,#0
+ 2597              	.LCFI135:
+ 2598              	 .cfi_def_cfa_register 7
+ 140:main.c        ****     uint32_t serial_number[4];
+ 141:main.c        **** 
+ 142:main.c        ****     // Read Device-ID from SAM3U. Do this before enabling interrupts etc.
+ 143:main.c        ****     flash_read_unique_id(serial_number, sizeof(serial_number));
+ 2599              	 .loc 11 143 0
+ 2600 0006 3B1D     	 adds r3,r7,#4
+ 2601 0008 1021     	 movs r1,#16
+ 2602 000a 1846     	 mov r0,r3
+ 2603 000c 294B     	 ldr r3,.L201
+ 2604 000e 9847     	 blx r3
+ 2605              	.LVL87:
+ 144:main.c        **** 
+ 145:main.c        ****     irq_initialize_vectors();
+ 146:main.c        ****     cpu_irq_enable();
+ 2606              	 .loc 11 146 0
+ 2607 0010 294B     	 ldr r3,.L201+4
+ 2608 0012 0122     	 movs r2,#1
+ 2609 0014 1A70     	 strb r2,[r3]
+ 2610              	.LBB58:
+ 2611              	.LBB59:
+ 2612              	 .loc 8 354 0
+ 2613              	 .syntax unified
+ 2614              	
+ 2615 0016 BFF35F8F 	 dmb
+ 2616              	
+ 2617              	 .thumb
+ 2618              	 .syntax unified
+ 2619              	.LBE59:
+ 2620              	.LBE58:
+ 2621              	.LBB60:
+ 2622              	.LBB61:
  317:.././hal/sam3u1c/inc/core_cmFunc.h **** }
- 2595              	 .loc 7 317 0
- 2596              	 .syntax unified
- 2597              	
- 2598 001a 62B6     	 cpsie i
- 2599              	
- 2600              	 .thumb
- 2601              	 .syntax unified
- 2602              	.LBE61:
- 2603              	.LBE60:
- 130:main.c        **** 
- 131:main.c        ****     // Initialize the sleep manager
- 132:main.c        ****     sleepmgr_init();
- 2604              	 .loc 11 132 0
- 2605 001c 274B     	 ldr r3,.L201+8
- 2606 001e 9847     	 blx r3
- 2607              	.LVL84:
- 133:main.c        **** #if !SAMD21 && !SAMR21
- 134:main.c        ****     sysclk_init();
- 2608              	 .loc 11 134 0
- 2609 0020 274B     	 ldr r3,.L201+12
- 2610 0022 9847     	 blx r3
- 2611              	.LVL85:
- 135:main.c        ****     phywhisperer_setup_pins();
- 2612              	 .loc 11 135 0
- 2613 0024 274B     	 ldr r3,.L201+16
- 2614 0026 9847     	 blx r3
- 2615              	.LVL86:
- 136:main.c        **** #else
- 137:main.c        ****     system_init();
- 138:main.c        **** #endif
- 139:main.c        ****     genclk_enable_config(GENCLK_PCK_1, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
- 2616              	 .loc 11 139 0
- 2617 0028 0022     	 movs r2,#0
- 2618 002a 0A21     	 movs r1,#10
- 2619 002c 0120     	 movs r0,#1
- 2620 002e 264B     	 ldr r3,.L201+20
- 2621 0030 9847     	 blx r3
- 2622              	.LVL87:
- 140:main.c        ****     udc_start();
- 2623              	 .loc 11 140 0
- 2624 0032 264B     	 ldr r3,.L201+24
- 2625 0034 9847     	 blx r3
- 2626              	.LVL88:
- 141:main.c        ****     gpio_set_pin_high(LED0_GPIO);
- 2627              	 .loc 11 141 0
- 2628 0036 1D20     	 movs r0,#29
- 2629 0038 254B     	 ldr r3,.L201+28
- 2630 003a 9847     	 blx r3
- 2631              	.LVL89:
- 142:main.c        ****     gpio_set_pin_low(LED1_GPIO);
- 2632              	 .loc 11 142 0
- 2633 003c 1F20     	 movs r0,#31
- 2634 003e 254B     	 ldr r3,.L201+32
- 2635 0040 9847     	 blx r3
- 2636              	.LVL90:
- 143:main.c        **** 
- 144:main.c        ****     phywhisperer_no_pwr();
- 2637              	 .loc 11 144 0
- 2638 0042 254B     	 ldr r3,.L201+36
- 2639 0044 9847     	 blx r3
- 2640              	.LVL91:
- 145:main.c        ****     USB_PWR_STATE = 0;
- 2641              	 .loc 11 145 0
- 2642 0046 254B     	 ldr r3,.L201+40
- 2643 0048 0022     	 movs r2,#0
- 2644 004a 1A70     	 strb r2,[r3]
- 146:main.c        **** 
- 147:main.c        ****     uint8_t curr_pwr_setting = 0;
- 2645              	 .loc 11 147 0
- 2646 004c 0023     	 movs r3,#0
- 2647 004e FB75     	 strb r3,[r7,#23]
- 2648              	.L200:
- 2649              	.LBB62:
- 148:main.c        ****     while(1) {
- 149:main.c        ****         sleepmgr_enter_sleep();
- 2650              	 .loc 11 149 0
- 2651 0050 234B     	 ldr r3,.L201+44
- 2652 0052 9847     	 blx r3
- 2653              	.LVL92:
- 150:main.c        ****         uint8_t button_status = !(PIOA->PIO_PDSR & (1 << BUTTON_IN));
- 2654              	 .loc 11 150 0
- 2655 0054 234B     	 ldr r3,.L201+48
- 2656 0056 DB6B     	 ldr r3,[r3,#60]
- 2657 0058 03F08073 	 and r3,r3,#16777216
- 2658 005c 002B     	 cmp r3,#0
- 2659 005e 0CBF     	 ite eq
- 2660 0060 0123     	 moveq r3,#1
- 2661 0062 0023     	 movne r3,#0
- 2662 0064 DBB2     	 uxtb r3,r3
- 2663 0066 BB75     	 strb r3,[r7,#22]
- 151:main.c        ****         if (button_status){
- 2664              	 .loc 11 151 0
- 2665 0068 BB7D     	 ldrb r3,[r7,#22]
- 2666 006a 002B     	 cmp r3,#0
- 2667 006c F0D0     	 beq .L200
- 152:main.c        ****             hacky_delay(); //delay to try to debounce
- 2668              	 .loc 11 152 0
- 2669 006e 1E4B     	 ldr r3,.L201+52
- 2670 0070 9847     	 blx r3
- 2671              	.LVL93:
- 153:main.c        ****             while (!(PIOA->PIO_PDSR & (1 << BUTTON_IN))); //wait for trigger to be unpressed
- 2672              	 .loc 11 153 0
- 2673 0072 00BF     	 nop
- 2674              	.L197:
- 2675              	 .loc 11 153 0 is_stmt 0 discriminator 1
- 2676 0074 1B4B     	 ldr r3,.L201+48
- 2677 0076 DB6B     	 ldr r3,[r3,#60]
- 2678 0078 03F08073 	 and r3,r3,#16777216
- 2679 007c 002B     	 cmp r3,#0
- 2680 007e F9D0     	 beq .L197
- 154:main.c        **** 
- 155:main.c        ****             if (USB_PWR_STATE && USB_PWR_STATE <= 2) {
- 2681              	 .loc 11 155 0 is_stmt 1
- 2682 0080 164B     	 ldr r3,.L201+40
- 2683 0082 1B78     	 ldrb r3,[r3]
- 2684 0084 002B     	 cmp r3,#0
- 2685 0086 12D0     	 beq .L198
- 2686              	 .loc 11 155 0 is_stmt 0 discriminator 1
- 2687 0088 144B     	 ldr r3,.L201+40
- 2688 008a 1B78     	 ldrb r3,[r3]
- 2689 008c 022B     	 cmp r3,#2
- 2690 008e 0ED8     	 bhi .L198
- 156:main.c        ****                 if (pwr_st_from_io()) { //currently on
- 2691              	 .loc 11 156 0 is_stmt 1
- 2692 0090 164B     	 ldr r3,.L201+56
- 2693 0092 9847     	 blx r3
- 2694              	.LVL94:
- 2695 0094 0346     	 mov r3,r0
- 2696 0096 002B     	 cmp r3,#0
- 2697 0098 02D0     	 beq .L199
- 157:main.c        ****                     phywhisperer_no_pwr();
- 2698              	 .loc 11 157 0
- 2699 009a 0F4B     	 ldr r3,.L201+36
- 2700 009c 9847     	 blx r3
- 2701              	.LVL95:
- 2702 009e 06E0     	 b .L198
- 2703              	.L199:
- 158:main.c        ****                 } else {
- 159:main.c        ****                     pwr_list[USB_PWR_STATE]();
- 2704              	 .loc 11 159 0
- 2705 00a0 0E4B     	 ldr r3,.L201+40
- 2706 00a2 1B78     	 ldrb r3,[r3]
- 2707 00a4 1A46     	 mov r2,r3
- 2708 00a6 124B     	 ldr r3,.L201+60
- 2709 00a8 53F82230 	 ldr r3,[r3,r2,lsl#2]
- 2710 00ac 9847     	 blx r3
- 2711              	.LVL96:
- 2712              	.L198:
- 160:main.c        ****                 }
- 161:main.c        ****             }
- 162:main.c        ****             hacky_delay();
- 2713              	 .loc 11 162 0
- 2714 00ae 0E4B     	 ldr r3,.L201+52
- 2715 00b0 9847     	 blx r3
- 2716              	.LVL97:
- 2717              	.LBE62:
- 148:main.c        ****         sleepmgr_enter_sleep();
- 2718              	 .loc 11 148 0
- 2719 00b2 CDE7     	 b .L200
- 2720              	.L202:
- 2721              	 .align 2
- 2722              	.L201:
- 2723 00b4 00000000 	 .word flash_read_unique_id
- 2724 00b8 00000000 	 .word g_interrupt_enabled
- 2725 00bc 00000000 	 .word sleepmgr_init
- 2726 00c0 00000000 	 .word sysclk_init
- 2727 00c4 00000000 	 .word phywhisperer_setup_pins
- 2728 00c8 00000000 	 .word genclk_enable_config
- 2729 00cc 00000000 	 .word udc_start
- 2730 00d0 00000000 	 .word pio_set_pin_high
- 2731 00d4 00000000 	 .word pio_set_pin_low
- 2732 00d8 00000000 	 .word phywhisperer_no_pwr
- 2733 00dc 00000000 	 .word USB_PWR_STATE
- 2734 00e0 00000000 	 .word sleepmgr_enter_sleep
- 2735 00e4 000C0E40 	 .word 1074662400
- 2736 00e8 00000000 	 .word hacky_delay
- 2737 00ec 00000000 	 .word pwr_st_from_io
- 2738 00f0 00000000 	 .word pwr_list
- 2739              	 .cfi_endproc
- 2740              	.LFE198:
- 2742              	 .text
- 2743              	.Letext0:
- 2744              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 2745              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 2746              	 .file 14 ".././hal/sam3u1c/inc/sam3u1c.h"
- 2747              	 .file 15 ".././hal/sam3u1c/inc/core_cm3.h"
- 2748              	 .file 16 ".././hal/sam3u1c/inc/system_sam3u.h"
- 2749              	 .file 17 ".././hal/sam3u1c/inc/component/component_pio.h"
- 2750              	 .file 18 ".././hal/sam3u1c/inc/component/component_pmc.h"
- 2751              	 .file 19 ".././hal/sam3u1c/inc/component/component_smc.h"
- 2752              	 .file 20 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 2753              	 .file 21 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 2754              	 .file 22 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 2755              	 .file 23 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 2756              	 .file 24 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 2757              	 .file 25 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 2758              	 .file 26 ".././hal/sam3u1c/inc/compiler.h"
- 2759              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
- 2760              	 .file 28 "./conf_usb.h"
- 2761              	 .file 29 ".././hal/sam3u1c/inc/usb_protocol.h"
- 2762              	 .file 30 ".././hal/sam3u1c/inc/udi.h"
- 2763              	 .file 31 ".././hal/sam3u1c/inc/udc_desc.h"
- 2764              	 .file 32 ".././hal/sam3u1c/inc/udd.h"
- 2765              	 .file 33 ".././hal/sam3u1c/inc/udi_vendor.h"
- 2766              	 .file 34 ".././hal/sam3u1c/inc/stdio_serial.h"
- 2767              	 .file 35 ".././hal/sam3u1c/inc/tasks.h"
- 2768              	 .file 36 ".././hal/sam3u1c/inc/fpga_xmem.h"
- 2769              	 .file 37 "fpga_program.h"
- 2770              	 .file 38 ".././hal/sam3u1c/inc/usb.h"
- 2771              	 .file 39 ".././hal/sam3u1c/inc/flash_efc.h"
- 2772              	 .file 40 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
- 2773              	 .file 41 ".././hal/sam3u1c/inc/udc.h"
- 2774              	 .file 42 ".././hal/sam3u1c/inc/board.h"
- 2775              	 .file 43 ".././hal/sam3u1c/inc/pmc.h"
- 2776              	 .file 44 ".././hal/sam3u1c/inc/smc.h"
- 2777              	 .file 45 ".././hal/sam3u1c/inc/sleep.h"
+ 2623              	 .loc 7 317 0
+ 2624              	 .syntax unified
+ 2625              	
+ 2626 001a 62B6     	 cpsie i
+ 2627              	
+ 2628              	 .thumb
+ 2629              	 .syntax unified
+ 2630              	.LBE61:
+ 2631              	.LBE60:
+ 147:main.c        **** 
+ 148:main.c        ****     // Initialize the sleep manager
+ 149:main.c        ****     sleepmgr_init();
+ 2632              	 .loc 11 149 0
+ 2633 001c 274B     	 ldr r3,.L201+8
+ 2634 001e 9847     	 blx r3
+ 2635              	.LVL88:
+ 150:main.c        **** #if !SAMD21 && !SAMR21
+ 151:main.c        ****     sysclk_init();
+ 2636              	 .loc 11 151 0
+ 2637 0020 274B     	 ldr r3,.L201+12
+ 2638 0022 9847     	 blx r3
+ 2639              	.LVL89:
+ 152:main.c        ****     phywhisperer_setup_pins();
+ 2640              	 .loc 11 152 0
+ 2641 0024 274B     	 ldr r3,.L201+16
+ 2642 0026 9847     	 blx r3
+ 2643              	.LVL90:
+ 153:main.c        **** #else
+ 154:main.c        ****     system_init();
+ 155:main.c        **** #endif
+ 156:main.c        ****     genclk_enable_config(GENCLK_PCK_1, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
+ 2644              	 .loc 11 156 0
+ 2645 0028 0022     	 movs r2,#0
+ 2646 002a 0A21     	 movs r1,#10
+ 2647 002c 0120     	 movs r0,#1
+ 2648 002e 264B     	 ldr r3,.L201+20
+ 2649 0030 9847     	 blx r3
+ 2650              	.LVL91:
+ 157:main.c        ****     udc_start();
+ 2651              	 .loc 11 157 0
+ 2652 0032 264B     	 ldr r3,.L201+24
+ 2653 0034 9847     	 blx r3
+ 2654              	.LVL92:
+ 158:main.c        ****     gpio_set_pin_high(LED0_GPIO);
+ 2655              	 .loc 11 158 0
+ 2656 0036 1D20     	 movs r0,#29
+ 2657 0038 254B     	 ldr r3,.L201+28
+ 2658 003a 9847     	 blx r3
+ 2659              	.LVL93:
+ 159:main.c        ****     gpio_set_pin_low(LED1_GPIO);
+ 2660              	 .loc 11 159 0
+ 2661 003c 1F20     	 movs r0,#31
+ 2662 003e 254B     	 ldr r3,.L201+32
+ 2663 0040 9847     	 blx r3
+ 2664              	.LVL94:
+ 160:main.c        **** 
+ 161:main.c        ****     phywhisperer_no_pwr();
+ 2665              	 .loc 11 161 0
+ 2666 0042 254B     	 ldr r3,.L201+36
+ 2667 0044 9847     	 blx r3
+ 2668              	.LVL95:
+ 162:main.c        ****     USB_PWR_STATE = 0;
+ 2669              	 .loc 11 162 0
+ 2670 0046 254B     	 ldr r3,.L201+40
+ 2671 0048 0022     	 movs r2,#0
+ 2672 004a 1A70     	 strb r2,[r3]
+ 163:main.c        **** 
+ 164:main.c        ****     uint8_t curr_pwr_setting = 0;
+ 2673              	 .loc 11 164 0
+ 2674 004c 0023     	 movs r3,#0
+ 2675 004e FB75     	 strb r3,[r7,#23]
+ 2676              	.L200:
+ 2677              	.LBB62:
+ 165:main.c        ****     while(1) {
+ 166:main.c        ****         sleepmgr_enter_sleep();
+ 2678              	 .loc 11 166 0
+ 2679 0050 234B     	 ldr r3,.L201+44
+ 2680 0052 9847     	 blx r3
+ 2681              	.LVL96:
+ 167:main.c        ****         uint8_t button_status = !(PIOA->PIO_PDSR & (1 << BUTTON_IN));
+ 2682              	 .loc 11 167 0
+ 2683 0054 234B     	 ldr r3,.L201+48
+ 2684 0056 DB6B     	 ldr r3,[r3,#60]
+ 2685 0058 03F08073 	 and r3,r3,#16777216
+ 2686 005c 002B     	 cmp r3,#0
+ 2687 005e 0CBF     	 ite eq
+ 2688 0060 0123     	 moveq r3,#1
+ 2689 0062 0023     	 movne r3,#0
+ 2690 0064 DBB2     	 uxtb r3,r3
+ 2691 0066 BB75     	 strb r3,[r7,#22]
+ 168:main.c        ****         if (button_status){
+ 2692              	 .loc 11 168 0
+ 2693 0068 BB7D     	 ldrb r3,[r7,#22]
+ 2694 006a 002B     	 cmp r3,#0
+ 2695 006c F0D0     	 beq .L200
+ 169:main.c        ****             hacky_delay(); //delay to try to debounce
+ 2696              	 .loc 11 169 0
+ 2697 006e 1E4B     	 ldr r3,.L201+52
+ 2698 0070 9847     	 blx r3
+ 2699              	.LVL97:
+ 170:main.c        ****             while (!(PIOA->PIO_PDSR & (1 << BUTTON_IN))); //wait for trigger to be unpressed
+ 2700              	 .loc 11 170 0
+ 2701 0072 00BF     	 nop
+ 2702              	.L197:
+ 2703              	 .loc 11 170 0 is_stmt 0 discriminator 1
+ 2704 0074 1B4B     	 ldr r3,.L201+48
+ 2705 0076 DB6B     	 ldr r3,[r3,#60]
+ 2706 0078 03F08073 	 and r3,r3,#16777216
+ 2707 007c 002B     	 cmp r3,#0
+ 2708 007e F9D0     	 beq .L197
+ 171:main.c        **** 
+ 172:main.c        ****             if (USB_PWR_STATE && USB_PWR_STATE <= 2) {
+ 2709              	 .loc 11 172 0 is_stmt 1
+ 2710 0080 164B     	 ldr r3,.L201+40
+ 2711 0082 1B78     	 ldrb r3,[r3]
+ 2712 0084 002B     	 cmp r3,#0
+ 2713 0086 12D0     	 beq .L198
+ 2714              	 .loc 11 172 0 is_stmt 0 discriminator 1
+ 2715 0088 144B     	 ldr r3,.L201+40
+ 2716 008a 1B78     	 ldrb r3,[r3]
+ 2717 008c 022B     	 cmp r3,#2
+ 2718 008e 0ED8     	 bhi .L198
+ 173:main.c        ****                 if (pwr_st_from_io()) { //currently on
+ 2719              	 .loc 11 173 0 is_stmt 1
+ 2720 0090 164B     	 ldr r3,.L201+56
+ 2721 0092 9847     	 blx r3
+ 2722              	.LVL98:
+ 2723 0094 0346     	 mov r3,r0
+ 2724 0096 002B     	 cmp r3,#0
+ 2725 0098 02D0     	 beq .L199
+ 174:main.c        ****                     phywhisperer_no_pwr();
+ 2726              	 .loc 11 174 0
+ 2727 009a 0F4B     	 ldr r3,.L201+36
+ 2728 009c 9847     	 blx r3
+ 2729              	.LVL99:
+ 2730 009e 06E0     	 b .L198
+ 2731              	.L199:
+ 175:main.c        ****                 } else {
+ 176:main.c        ****                     pwr_list[USB_PWR_STATE]();
+ 2732              	 .loc 11 176 0
+ 2733 00a0 0E4B     	 ldr r3,.L201+40
+ 2734 00a2 1B78     	 ldrb r3,[r3]
+ 2735 00a4 1A46     	 mov r2,r3
+ 2736 00a6 124B     	 ldr r3,.L201+60
+ 2737 00a8 53F82230 	 ldr r3,[r3,r2,lsl#2]
+ 2738 00ac 9847     	 blx r3
+ 2739              	.LVL100:
+ 2740              	.L198:
+ 177:main.c        ****                 }
+ 178:main.c        ****             }
+ 179:main.c        ****             hacky_delay();
+ 2741              	 .loc 11 179 0
+ 2742 00ae 0E4B     	 ldr r3,.L201+52
+ 2743 00b0 9847     	 blx r3
+ 2744              	.LVL101:
+ 2745              	.LBE62:
+ 165:main.c        ****         sleepmgr_enter_sleep();
+ 2746              	 .loc 11 165 0
+ 2747 00b2 CDE7     	 b .L200
+ 2748              	.L202:
+ 2749              	 .align 2
+ 2750              	.L201:
+ 2751 00b4 00000000 	 .word flash_read_unique_id
+ 2752 00b8 00000000 	 .word g_interrupt_enabled
+ 2753 00bc 00000000 	 .word sleepmgr_init
+ 2754 00c0 00000000 	 .word sysclk_init
+ 2755 00c4 00000000 	 .word phywhisperer_setup_pins
+ 2756 00c8 00000000 	 .word genclk_enable_config
+ 2757 00cc 00000000 	 .word udc_start
+ 2758 00d0 00000000 	 .word pio_set_pin_high
+ 2759 00d4 00000000 	 .word pio_set_pin_low
+ 2760 00d8 00000000 	 .word phywhisperer_no_pwr
+ 2761 00dc 00000000 	 .word USB_PWR_STATE
+ 2762 00e0 00000000 	 .word sleepmgr_enter_sleep
+ 2763 00e4 000C0E40 	 .word 1074662400
+ 2764 00e8 00000000 	 .word hacky_delay
+ 2765 00ec 00000000 	 .word pwr_st_from_io
+ 2766 00f0 00000000 	 .word pwr_list
+ 2767              	 .cfi_endproc
+ 2768              	.LFE198:
+ 2770              	 .text
+ 2771              	.Letext0:
+ 2772              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2773              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2774              	 .file 14 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 2775              	 .file 15 ".././hal/sam3u1c/inc/core_cm3.h"
+ 2776              	 .file 16 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 2777              	 .file 17 ".././hal/sam3u1c/inc/component/component_pio.h"
+ 2778              	 .file 18 ".././hal/sam3u1c/inc/component/component_pmc.h"
+ 2779              	 .file 19 ".././hal/sam3u1c/inc/component/component_smc.h"
+ 2780              	 .file 20 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 2781              	 .file 21 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 2782              	 .file 22 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
+ 2783              	 .file 23 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 2784              	 .file 24 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 2785              	 .file 25 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 2786              	 .file 26 ".././hal/sam3u1c/inc/compiler.h"
+ 2787              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
+ 2788              	 .file 28 "./conf_usb.h"
+ 2789              	 .file 29 ".././hal/sam3u1c/inc/usb_protocol.h"
+ 2790              	 .file 30 ".././hal/sam3u1c/inc/udi.h"
+ 2791              	 .file 31 ".././hal/sam3u1c/inc/udc_desc.h"
+ 2792              	 .file 32 ".././hal/sam3u1c/inc/udd.h"
+ 2793              	 .file 33 ".././hal/sam3u1c/inc/udi_vendor.h"
+ 2794              	 .file 34 ".././hal/sam3u1c/inc/stdio_serial.h"
+ 2795              	 .file 35 ".././hal/sam3u1c/inc/tasks.h"
+ 2796              	 .file 36 "usb_xmem.h"
+ 2797              	 .file 37 "fpga_program.h"
+ 2798              	 .file 38 ".././hal/sam3u1c/inc/usb.h"
+ 2799              	 .file 39 ".././hal/sam3u1c/inc/flash_efc.h"
+ 2800              	 .file 40 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
+ 2801              	 .file 41 ".././hal/sam3u1c/inc/udc.h"
+ 2802              	 .file 42 ".././hal/sam3u1c/inc/board.h"
+ 2803              	 .file 43 ".././hal/sam3u1c/inc/pmc.h"
+ 2804              	 .file 44 ".././hal/sam3u1c/inc/smc.h"
+ 2805              	 .file 45 ".././hal/sam3u1c/inc/sleep.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -5443,18 +5488,18 @@ DEFINED SYMBOLS
     {standard input}:2211   .text.pwr_st_from_io:00000064 $d
     {standard input}:2216   .text.phywhisperer_setup_pins:00000000 $t
     {standard input}:2223   .text.phywhisperer_setup_pins:00000000 phywhisperer_setup_pins
-    {standard input}:2372   .text.phywhisperer_setup_pins:000000c0 $d
-    {standard input}:2391   .text.hacky_delay:00000000 $t
-    {standard input}:2398   .text.hacky_delay:00000000 hacky_delay
-    {standard input}:2449   .text.hacky_delay:00000024 $d
-    {standard input}:2454   .text.genclk_enable_config:00000000 $t
-    {standard input}:2460   .text.genclk_enable_config:00000000 genclk_enable_config
-    {standard input}:2529   .text.genclk_enable_config:00000050 $d
-    {standard input}:2542   .data.pwr_list:00000000 pwr_list
-    {standard input}:2539   .data.pwr_list:00000000 $d
-    {standard input}:2547   .text.main:00000000 $t
-    {standard input}:2554   .text.main:00000000 main
-    {standard input}:2723   .text.main:000000b4 $d
+    {standard input}:2397   .text.phywhisperer_setup_pins:000000ec $d
+    {standard input}:2419   .text.hacky_delay:00000000 $t
+    {standard input}:2426   .text.hacky_delay:00000000 hacky_delay
+    {standard input}:2477   .text.hacky_delay:00000024 $d
+    {standard input}:2482   .text.genclk_enable_config:00000000 $t
+    {standard input}:2488   .text.genclk_enable_config:00000000 genclk_enable_config
+    {standard input}:2557   .text.genclk_enable_config:00000050 $d
+    {standard input}:2570   .data.pwr_list:00000000 pwr_list
+    {standard input}:2567   .data.pwr_list:00000000 $d
+    {standard input}:2575   .text.main:00000000 $t
+    {standard input}:2582   .text.main:00000000 main
+    {standard input}:2751   .text.main:000000b4 $d
                            .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
@@ -5561,7 +5606,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.compiler.h.425.66dd29c210af3287ed85ec3553a3e6b1
                            .group:00000000 wm4.conf_clock.h.45.5dc276d21b4d793a62f1a9757cc18d5c
                            .group:00000000 wm4.board.h.48.ce8d06c36cc583d9bf62738411f62e4d
-                           .group:00000000 wm4.cw521.h.62.49e8a34af6a9b815e03b7858792ba391
+                           .group:00000000 wm4.cw521.h.62.d34c289ace4a92d90be8fb389db40479
                            .group:00000000 wm4.pmc.h.45.bbe1bf97a811e3b283420b2eeadf0b35
                            .group:00000000 wm4.osc.h.94.b766cddafe899eca01d775f7b2906680
                            .group:00000000 wm4.pll.h.45.a605c31ca466ae25752a678e8572be48
@@ -5592,7 +5637,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.udd.h.103.3ccc59b50c14ec70568e6136eeb22d56
                            .group:00000000 wm4.udi_vendor.h.125.7b9085237d4d4a9757f4c148fba1918d
                            .group:00000000 wm4.genclk.h.45.f7865052b40a907e4bab1a8f483a50e2
-                           .group:00000000 wm4.fpga_xmem.h.19.554328dd33dcefd66f095f5408b9d9fe
+                           .group:00000000 wm4.usb_xmem.h.16.2bfdefafb315212fe60310212368ffbb
                            .group:00000000 wm4.fpga_program.h.36.ca9933fdd1528ae3419efe9d74ea4ee5
                            .group:00000000 wm4.usb.h.20.f560de5b472e2e451b5cba954e5d0064
                            .group:00000000 wm4.string.h.8.c4b8571ce60dff2817f43fec8b86aecd
@@ -5618,6 +5663,8 @@ pmc_enable_pck
 board_init
 pmc_enable_periph_clk
 pio_configure_pin
+pio_configure_pin_group
+pio_enable_output_write
 smc_set_setup_timing
 smc_set_pulse_timing
 smc_set_cycle_timing

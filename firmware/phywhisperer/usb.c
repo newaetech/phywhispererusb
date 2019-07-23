@@ -45,6 +45,7 @@
 #define REQ_SAM3U_CFG 0x22
 #define REQ_CC_PROGRAM 0x23
 #define REQ_CHANGE_PWR 0x24
+#define REQ_FPGA_RESET 0x25
 
 volatile bool g_captureinprogress = true;
 
@@ -288,6 +289,12 @@ void ctrl_change_pwr(void) {
     }
 }
 
+void ctrl_fpga_reset(void) {
+  gpio_set_pin_high(PIN_EBI_USB_SPARE0);
+  gpio_set_pin_low(PIN_EBI_USB_SPARE0);
+}
+
+
 bool main_setup_out_received(void)
 {
     //Add buffer if used
@@ -340,6 +347,11 @@ bool main_setup_out_received(void)
         //TODO
         udd_g_ctrlreq.callback = ctrl_change_pwr;
         return true;
+
+    case REQ_FPGA_RESET:
+        udd_g_ctrlreq.callback = ctrl_fpga_reset;
+        return true;
+
     default:
         return false;
     }

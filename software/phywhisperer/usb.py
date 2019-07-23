@@ -57,6 +57,10 @@ class Usb(object):
             raise AttributeError("Unknown source %s, valid sources: '5V', 'host', 'off'")
 
 
+    def reset_fpga(self):
+        """ Pulse FPGA reset pin.
+        """
+        self._llint.resetFPGA()
 
     def load_bitstream(self, bitfile):
         """Load bitstream onto FPGA"""

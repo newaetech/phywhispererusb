@@ -3459,8 +3459,9 @@ circ_buf_count:
 	.ascii	"__UFRACT_MAX__ 0XFFFFP-16UR\000"
 .LASF256:
 	.ascii	"__SFRACT_MAX__ 0X7FP-7HR\000"
-.LASF430:
-	.ascii	"__ARM_EABI__ 1\000"
+.LASF640:
+	.ascii	"C:\\Users\\jp\\GitHub\\phywhispererusb\\firmware\\p"
+	.ascii	"hywhisperer\000"
 .LASF459:
 	.ascii	"_SYS_FEATURES_H \000"
 .LASF620:
@@ -3547,9 +3548,8 @@ circ_buf_count:
 	.ascii	"___int64_t_defined 1\000"
 .LASF246:
 	.ascii	"__DEC128_MANT_DIG__ 34\000"
-.LASF640:
-	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
-	.ascii	"firmware\\phywhisperer\000"
+.LASF431:
+	.ascii	"__ARM_ARCH_EXT_IDIV__ 1\000"
 .LASF604:
 	.ascii	"INT16_C(x) __INT16_C(x)\000"
 .LASF397:
@@ -3598,8 +3598,6 @@ circ_buf_count:
 	.ascii	"__SA_FBIT__ 15\000"
 .LASF207:
 	.ascii	"__FLT64_MIN_10_EXP__ (-307)\000"
-.LASF431:
-	.ascii	"__ARM_ARCH_EXT_IDIV__ 1\000"
 .LASF468:
 	.ascii	"_DEFAULT_SOURCE 1\000"
 .LASF297:
@@ -3830,6 +3828,8 @@ circ_buf_count:
 	.ascii	"__ATOMIC_ACQUIRE 2\000"
 .LASF544:
 	.ascii	"__int_least16_t_defined 1\000"
+.LASF596:
+	.ascii	"PTRDIFF_MAX (__PTRDIFF_MAX__)\000"
 .LASF540:
 	.ascii	"_UINTMAX_T_DECLARED \000"
 .LASF434:
@@ -4163,8 +4163,8 @@ circ_buf_count:
 	.ascii	"__HA_IBIT__ 8\000"
 .LASF618:
 	.ascii	"long unsigned int\000"
-.LASF596:
-	.ascii	"PTRDIFF_MAX (__PTRDIFF_MAX__)\000"
+.LASF430:
+	.ascii	"__ARM_EABI__ 1\000"
 .LASF380:
 	.ascii	"__GCC_ATOMIC_CHAR32_T_LOCK_FREE 2\000"
 .LASF1:

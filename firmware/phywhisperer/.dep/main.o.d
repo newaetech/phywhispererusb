@@ -98,9 +98,8 @@ objdir/main.o.s: main.c .././hal/sam3u1c/inc/asf.h \
  .././hal/sam3u1c/inc/usb_protocol_vendor.h \
  .././hal/sam3u1c/inc/pio_handler.h conf_usb.h \
  .././hal/sam3u1c/inc/stdio_serial.h .././hal/sam3u1c/inc/serial.h \
- .././hal/sam3u1c/inc/genclk.h .././hal/sam3u1c/inc/tasks.h \
- .././hal/sam3u1c/inc/fpga_xmem.h fpga_program.h \
- .././hal/sam3u1c/inc/usb.h
+ .././hal/sam3u1c/inc/genclk.h .././hal/sam3u1c/inc/tasks.h usb_xmem.h \
+ fpga_program.h .././hal/sam3u1c/inc/usb.h
 
 .././hal/sam3u1c/inc/asf.h:
 
@@ -386,7 +385,7 @@ conf_usb.h:
 
 .././hal/sam3u1c/inc/tasks.h:
 
-.././hal/sam3u1c/inc/fpga_xmem.h:
+usb_xmem.h:
 
 fpga_program.h:
 

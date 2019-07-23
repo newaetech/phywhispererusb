@@ -32508,8 +32508,6 @@ uart_get_pdc_base:
 .LASF7856:
 	.ascii	"__requires_shared(...) __lock_annotate(shared_locks"
 	.ascii	"_required(__VA_ARGS__))\000"
-.LASF7226:
-	.ascii	"REG_PIOB_ODSR (*(RwReg*)0x400E0E38U)\000"
 .LASF7934:
 	.ascii	"_REENT_MBRLEN_STATE(ptr) ((ptr)->_new._reent._mbrle"
 	.ascii	"n_state)\000"
@@ -32773,8 +32771,8 @@ uart_get_pdc_base:
 	.ascii	"TC_CMR_ETRGEDG_Msk (0x3u << TC_CMR_ETRGEDG_Pos)\000"
 .LASF2012:
 	.ascii	"DMAC_EBCIER_ERR3 (0x1u << 19)\000"
-.LASF6641:
-	.ascii	"REG_TC0_CV2 (*(RoReg*)0x40080090U)\000"
+.LASF7226:
+	.ascii	"REG_PIOB_ODSR (*(RwReg*)0x400E0E38U)\000"
 .LASF3418:
 	.ascii	"PIO_ABSR_P11 (0x1u << 11)\000"
 .LASF3748:
@@ -40556,6 +40554,8 @@ uart_get_pdc_base:
 	.ascii	"SSC_RCMR_STTDLY_Pos 16\000"
 .LASF2874:
 	.ascii	"PIO_IFER_P11 (0x1u << 11)\000"
+.LASF196:
+	.ascii	"__FLT32_DECIMAL_DIG__ 9\000"
 .LASF5069:
 	.ascii	"SMC_WPSR_WP_VSRC_Msk (0xffffu << SMC_WPSR_WP_VSRC_P"
 	.ascii	"os)\000"
@@ -43771,8 +43771,9 @@ uart_get_pdc_base:
 	.ascii	"UDPHS_INTSTA_DMA_6 (0x1u << 30)\000"
 .LASF1433:
 	.ascii	"TPI_DEVTYPE_SubType_Pos 0\000"
-.LASF196:
-	.ascii	"__FLT32_DECIMAL_DIG__ 9\000"
+.LASF8495:
+	.ascii	"C:\\Users\\jp\\GitHub\\phywhispererusb\\firmware\\p"
+	.ascii	"hywhisperer\000"
 .LASF2198:
 	.ascii	"EEFC_FCR_FCMD(value) ((EEFC_FCR_FCMD_Msk & ((value)"
 	.ascii	" << EEFC_FCR_FCMD_Pos)))\000"
@@ -49377,9 +49378,8 @@ uart_get_pdc_base:
 	.ascii	"SSC_IMR_OVRUN (0x1u << 5)\000"
 .LASF32:
 	.ascii	"__SIZE_TYPE__ unsigned int\000"
-.LASF8495:
-	.ascii	"C:\\Users\\User\\Code\\term3\\phy\\phywhispererusb\\"
-	.ascii	"firmware\\phywhisperer\000"
+.LASF6641:
+	.ascii	"REG_TC0_CV2 (*(RoReg*)0x40080090U)\000"
 .LASF4779:
 	.ascii	"SMC_IMR_AWB (0x1u << 22)\000"
 .LASF7506:
