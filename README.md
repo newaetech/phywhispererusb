@@ -2,11 +2,11 @@
 
 What is this thing? This is a hardware trigger for FI or SCA, which triggers on the USB phy.
 
-![](hardware/doc/phywhisperer_00.jpg)
+![](hardware/doc/phywhisperer_03_front.jpg)
 
 ## Status
 
-The current PCB has issues. Suggest to wait for things to be more fixed (see those sweet solder blobs on the PCB?).
+The current PCB (-03) is approaching the final design to be released to manufacture. Issues may still exist however, as final validation isn't done yet.
 
 ## Comparison to Other Projects
 
