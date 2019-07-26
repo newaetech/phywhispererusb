@@ -4,6 +4,8 @@ What is this thing? This is a hardware trigger for FI or SCA, which triggers on 
 
 ![](hardware/doc/phywhisperer_03_front.jpg)
 
+![](hardware/doc/pw_angle.jpg)
+
 ## Status
 
 The current PCB (-03) is approaching the final design to be released to manufacture. Issues may still exist however, as final validation isn't done yet.
