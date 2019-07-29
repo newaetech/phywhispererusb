@@ -1,0 +1,8 @@
+tb_pw.v
+../hdl/usb_reg_main.v 
+../hdl/phywhisperer_top.v 
+../hdl/reg_pw.v 
+../hdl/fe_capture.v
+../hdl/pw_trigger.v
+/home/jp/windows/phywhisperer/pw_fpga/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_sim_netlist.v
+-y/mnt/c/Xilinx/Vivado/2018.3/ids_lite/ISE/verilog/src/unisims/
