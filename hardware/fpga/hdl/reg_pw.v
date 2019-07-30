@@ -41,7 +41,7 @@ module reg_pw #(
 
 // Interface to front end capture:
    input  wire         fe_clk,
-   output wire         O_timestamps_enable,
+   output wire         O_timestamps_disable,
    output wire         O_capture_enable,
    input  wire [pTIMESTAMP_FULL_WIDTH-1:0]   I_fe_capture_time,
    input  wire [7:0]   I_fe_capture_data,
@@ -60,7 +60,7 @@ module reg_pw #(
    // TODO: move defines into other file (which could be more easily parsed by Python)
    `define REG_TEST                     6'h00
    `define REG_SNIFF_FIFO_RD            6'h01
-   `define REG_TIMESTAMPS_ENABLE        6'h02
+   `define REG_TIMESTAMPS_DISABLE       6'h02
    `define REG_CAPTURE_ENABLE           6'h03
    `define REG_FE                       6'h04
    `define REG_FE_SNIFF                 6'h05
@@ -109,7 +109,7 @@ module reg_pw #(
    reg [8*`REG_USB_RD_CNT_LEN-1:0] reg_usb_read_counter;
    reg reg_trigger;
    reg reg_capture_enable;
-   reg reg_timestamps_enable;
+   reg reg_timestamps_disable;
 
    reg usb_read_counter_clear;
    reg fe_write_counter_clear_trig;
@@ -131,7 +131,7 @@ module reg_pw #(
 
    assign O_trigger_match = reg_trigger;
    assign O_capture_enable = reg_capture_enable;
-   assign O_timestamps_enable = reg_timestamps_enable;
+   assign O_timestamps_disable = reg_timestamps_disable;
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -180,7 +180,7 @@ module reg_pw #(
          fe_write_counter_clear_trig <= 1'b0; 
          reg_trigger <= 1'b0;
          reg_capture_enable <= 1'b0;
-         reg_timestamps_enable <= 1'b0;
+         reg_timestamps_disable <= 1'b0;
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -191,7 +191,7 @@ module reg_pw #(
                `FE_WR_CNT_CLR: fe_write_counter_clear_trig <= 1'b1; 
                `REG_TRIG_MATCH: reg_trigger <= write_data[0];
                `REG_CAPTURE_ENABLE: reg_capture_enable <= write_data[0];
-               `REG_TIMESTAMPS_ENABLE: reg_timestamps_enable <= write_data[0];
+               `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
             endcase
          end
          else begin
@@ -220,7 +220,7 @@ module reg_pw #(
             reg_fe <= I_fe_capture_data;
          end
          if (I_fe_sniff_wr) begin
-            reg_fe_sniff[I_fe_sniff_count*8 +: 8] <= I_fe_capture_data;
+            reg_fe_sniff[I_fe_sniff_count*8 +: 8] <= I_fe_sniff_data;
          end
 
          if (fe_write_counter_clear) // TODO: doesn't always work since it gets set in a different clock domain!

@@ -33,9 +33,9 @@ module fe_capture #(
 
     /* REGISTER CONNECTIONS */
     input  wire I_capture_enable,
-    input  wire I_timestamps_enable,
+    input  wire I_timestamps_disable,
     output reg  [1:0] O_command,
-    output wire [pTIMESTAMP_FULL_WIDTH-1:0] O_time,
+    output reg  [pTIMESTAMP_FULL_WIDTH-1:0] O_time,
     output wire [7:0] O_data,
     output reg  O_data_wr,
 
@@ -54,7 +54,7 @@ module fe_capture #(
     `define FE_FIFO_CMD_STAT 2'b01
     `define FE_FIFO_CMD_TIME 2'b10
     
-    reg [1:0] state, next_state, state_r;
+    reg [1:0] state, next_state, state_r, state_r2;
     localparam pS_IDLE = 0;
     localparam pS_DATA = 1;
     localparam pS_TIME = 2;
@@ -65,14 +65,15 @@ module fe_capture #(
     reg  [7:0] fe_data_reg;
     reg  [7:0] fe_data_reg2;
     reg  [7:0] fe_data_reg3;
+    reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_reg;
     reg  ctr_running;
 
     //assign short_timestamp = (timestamp_ctr[pTIMESTAMP_FULL_WIDTH-1:pTIMESTAMP_SHORT_WIDTH] == 0);
     //assign short_timestamp = (timestamp_ctr < 8); // TODO: parameterize
     //assign short_timestamp_pre = (timestamp_ctr < 7); // TODO: parameterize
     // TODO: temporary, prevents TIME packets and their associated bugs:
-    assign short_timestamp = I_timestamps_enable? (timestamp_ctr < 8) : 1'b1;
-    assign short_timestamp_pre = I_timestamps_enable? (timestamp_ctr < 7) : 1'b1;
+    assign short_timestamp = I_timestamps_disable? 1'b1 : (timestamp_ctr < 8);
+    assign short_timestamp_pre = I_timestamps_disable? 1'b1: (timestamp_ctr < 7);
 
     // Delay incoming fe_* signals by one cycle to avoid issuing
     // FE_FIFO_CMD_STAT at the same time as an fe_* data event, which could
@@ -142,42 +143,20 @@ module fe_capture #(
        endcase
     end
 
-
-    /* manage timestamp counter:
-    always @ (posedge fe_clk) begin
-       if (reset_i) begin
-          timestamp_ctr <= 0;
-          ctr_running <= 1'b0;
-          state_r <= 0;
-       end
-       else begin
-          state_r <= state;
-
-          if (I_capture_enable && state == pS_DATA)
-             ctr_running <= 1'b1;
-          else if (!I_capture_enable)
-             ctr_running <= 1'b0;
-
-          if (!ctr_running)
-             timestamp_ctr <= 0;
-          else if ( (state_r == pS_TIME) || (state_r == pS_DATA) )
-             timestamp_ctr <= 0;
-          else if (timestamp_ctr < {pTIMESTAMP_FULL_WIDTH{1'b1}})
-             timestamp_ctr <= timestamp_ctr + 1;
-       end
-    end
-    */
-
-    // better manage timestamp counter:
+    // manage timestamp counter:
     always @ (posedge fe_clk) begin
        if (reset_i) begin
           timestamp <= 0;
+          timestamp_reg <= 0;
           timestamp_ctr <= 0;
           ctr_running <= 1'b0;
           state_r <= 0;
+          state_r2 <= 0;
        end
        else begin
           state_r <= state;
+          state_r2 <= state_r;
+          timestamp_reg <= timestamp;
 
           if (I_capture_enable && fe_rxvalid)
              ctr_running <= 1'b1;
@@ -187,7 +166,9 @@ module fe_capture #(
           if (!ctr_running)
              timestamp_ctr <= 0;
           //else if ( (state == pS_TIME) || (state == pS_DATA) )
-          else if (fe_rxvalid) begin
+          else if (fe_rxvalid_reg) begin
+          //else if (fe_rxvalid_reg || (state_r == pS_TIME)) begin
+          //else if (fe_rxvalid) begin
              timestamp <= timestamp_ctr;
              timestamp_ctr <= 0;
           end
@@ -219,9 +200,16 @@ module fe_capture #(
        end
     end
 
-    // TODO: don't like this wonkiness with timestamp_ctr; consider handling it differently?
-    //assign O_time = (state_r == pS_TIME)? timestamp_ctr + 1 : timestamp_ctr;
-    assign O_time = timestamp;
+    //assign O_time = (state_r == pS_TIME)? timestamp : timestamp_reg;
+    always @(*) begin
+       if (state_r == pS_TIME)
+          O_time = timestamp;
+       else if (state_r2 == pS_TIME)
+          O_time = 0;
+       else
+          O_time = timestamp_reg;
+    end
+
     assign O_data = fe_data_reg3; // TODO: can I tweak the FSM timing to avoid needing 3 sync stages?
 
 

@@ -107,7 +107,7 @@ module phywhisperer_top(
    wire psdone;
    wire trigger_clk_locked;
    wire trigger_match;
-   wire timestamps_enable;
+   wire timestamps_disable;
    wire capture_enable;
 
    `ifdef __ICARUS__
@@ -185,7 +185,7 @@ module phywhisperer_top(
       .I_fe_sniff_count         (fe_capture_sniff_count),
 
       .O_trigger_match          (trigger_match),
-      .O_timestamps_enable      (timestamps_enable),
+      .O_timestamps_disable     (timestamps_disable),
       .O_capture_enable         (capture_enable)
 
    );
@@ -197,7 +197,7 @@ module phywhisperer_top(
    ) U_fe_capture (
       .reset_i                  (reset_i), 
       .fe_clk                   (clk_fe_buf), 
-      .I_timestamps_enable      (timestamps_enable),
+      .I_timestamps_disable     (timestamps_disable),
       .I_capture_enable         (capture_enable),
       .fe_data                  (fe_data),
       .fe_rxvalid               (fe_rxvalid),
