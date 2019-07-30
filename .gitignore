@@ -6,3 +6,6 @@
 /software/phywhisperer.egg-info
 /software/phywhisperer.egg-info
 *.pyc
+*.vcd
+*.gtkw
+a.out
