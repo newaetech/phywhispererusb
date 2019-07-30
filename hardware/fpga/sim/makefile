@@ -5,6 +5,7 @@ MAX_DELAY=20
 LOGFILE=sim.log
 SEED=0
 VERBOSE=0
+WAVEFORMAT=fst
 
 all: compile run
 
@@ -21,7 +22,7 @@ compile:
 	-P tb_pw.pVERBOSE=$(VERBOSE)
 
 run:
-	vvp -l$(LOGFILE) a.out
+	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)
 
 clean:
 	rm -f a.out

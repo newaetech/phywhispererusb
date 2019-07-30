@@ -44,6 +44,13 @@ tests.append(dict(name  = 'corner2_timestamps',
              MIN_DELAY  = 9,
              MAX_DELAY  = 9))
 
+tests.append(dict(name  = 'bursts',
+             NUM_EVENTS = 50,
+             DELAY_MODE = 1,
+             MIN_DELAY  = 0,
+             MAX_DELAY  = 16))
+
+
 """ 
 These testcases are much longer and we don't yet care about the counter
 overflow event that they cover:
@@ -63,6 +70,7 @@ tests.append(dict(name  = 'anything_goes',
 # Run tests:
 logfiles = []
 start_time = int(time.time())
+outfile = open('regress.out', 'w')
 for test in tests:
    for i in range(args.runs):
       # build make command:
@@ -77,7 +85,8 @@ for test in tests:
       makeargs.append("SEED=%d" % seed)
 
       # run:
-      subprocess.run(makeargs)
+      print("Running %s..." % logfile)
+      subprocess.run(makeargs, stdout=outfile, stderr=outfile)
 
       logfiles.append(logfile)
 
@@ -90,7 +99,6 @@ seed_regex = re.compile(r'^Running with pSEED=(\d+)$')
 passed = 0
 failed = 0
 for logfile in logfiles:
-   print("%s: " % logfile, end='')
    log = open(logfile, 'r')
    seed = 0
    for line in log:
@@ -100,14 +108,12 @@ for logfile in logfiles:
       if seed_matches:
          seed = int(seed_matches.group(1))
       elif pass_matches:
-         print("passed. ", end='')
          passed += 1
          break
       elif fail_matches:
          failed += 1
-         print("*** FAILED *** %d errors. " % int(fail_matches.group(1)), end='')
+         print("Test %s failed! %d errors. Seed = %d" % (logfile, int(fail_matches.group(1)), seed))
          break
-   print ('(seed=%d)' % seed)
 
 print('\n*** Totals: %d tests passing, %d tests failing.' % (passed, failed))
 print('Elapsed time: %d seconds' % (int(time.time() - start_time)))
