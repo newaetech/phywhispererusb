@@ -45,6 +45,7 @@ module reg_pw #(
    output wire         O_capture_enable,
    input  wire [pTIMESTAMP_FULL_WIDTH-1:0]   I_fe_capture_time,
    input  wire [7:0]   I_fe_capture_data,
+   input  wire [4:0]   I_fe_capture_stat,
    input  wire [1:0]   I_fe_capture_cmd,
    input  wire         I_fe_capture_data_wr,
 
@@ -90,6 +91,8 @@ module reg_pw #(
    `define FE_FIFO_SHORTTIME_LEN 3
    `define FE_FIFO_FULLTIME_LEN 16
 
+   `define FE_FIFO_STATUS_BITS_START 3
+   `define FE_FIFO_STATUS_BITS_LEN 5
    `define FE_FIFO_RXACTIVE_BIT 3
    `define FE_FIFO_RXERROR_BIT 4
    `define FE_FIFO_SESSVLD_BIT 5
@@ -247,9 +250,12 @@ module reg_pw #(
             `FE_FIFO_CMD_DATA: begin
                sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
                sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= I_fe_capture_data;
+               sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
             end
             `FE_FIFO_CMD_STAT: begin
-               sniff_fifo_din <= 8'haa; // TODO
+               sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
+               sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= 8'd0;
+               sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
             end
             `FE_FIFO_CMD_TIME: begin
                sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN] <= I_fe_capture_time;

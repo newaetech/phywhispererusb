@@ -29,7 +29,9 @@ module tb_pw();
     parameter pMAX_FE_DELAY = 7;
     parameter pDELAY_MODE = 0;
     parameter pVERBOSE = 1;
+    parameter pSHOW_TIME_EVENTS = 0;
     parameter pNUM_EVENTS = 20;
+    parameter pPVALID = 50;
     parameter pSEED = 1;
 
    // FIFO bitfields: (TODO: pull in from external file)
@@ -44,6 +46,8 @@ module tb_pw();
    `define FE_FIFO_SHORTTIME_LEN 3
    `define FE_FIFO_FULLTIME_LEN 16
 
+   `define FE_FIFO_STATUS_BITS_START 3
+   `define FE_FIFO_STATUS_BITS_LEN 5
    `define FE_FIFO_RXACTIVE_BIT 3
    `define FE_FIFO_RXERROR_BIT 4
    `define FE_FIFO_SESSVLD_BIT 5
@@ -85,8 +89,15 @@ module tb_pw();
     reg  userio_clk;
     reg  [23:0] read_data;
     reg  [7:0] data;
+    reg  [7:0] expected_data;
     reg  [1:0] command;
     reg  [`FE_FIFO_FULLTIME_LEN-1:0] timestamp;
+    reg  dut_rxactive;
+    reg  dut_rxerror;
+    reg  dut_sessvld;
+    reg  dut_sessend;
+    reg  dut_vbusvld;
+    reg  [4:0] dut_usbstat;
 
     /* 20-PIN CHIPWHISPERER CONNECTOR */
     wire cw_clk;
@@ -145,33 +156,55 @@ module tb_pw();
       //#(pFE_CLOCK_PERIOD*100) $finish;
    end
 
-   int i,j;
+   int i,j,k;
    int errors;
    int time_counter;
+   string str;
+   reg fe_data_event [0:2047];
    reg [7:0] fe_bytes [0:2047];
+   reg [4:0] fe_stat [0:2047];
    reg [15:0] fe_times [0:2047];
+   reg [7:0] sniff_bytes [0:7];
 
    // FE feeding thread:
    initial begin
       errors = 0;
       #(pFE_CLOCK_PERIOD*100);
-      write_1byte(2, 8'h01); // enable timestamps
+      //write_1byte(2, 8'h01); // disable timestamps
       write_1byte(3, 8'h01); // enable capture
       fe_times[0] = 0; // by definition
 
       if (pVERBOSE) begin
-         $display("------------------------------|-------------------------------");
-         $display("FE testbench sending:         | PhyWhisperer DUT receiving:");
-         $display("------------------------------|-------------------------------");
+         $display("--------------------------------------|-------------------------------");
+         $display("FE testbench sending:                 | PhyWhisperer DUT receiving:");
+         $display("--------------------------------------|-------------------------------");
       end
 
       @(posedge fe_clk);
       for (i = 0; i < pNUM_EVENTS; i = i + 1) begin
          fe_bytes[i] = $urandom;
+         fe_stat[i] = $urandom;
          get_delay(fe_times[i+1]);
-         send_fe_data(fe_bytes[i], fe_times[i+1]);
+         get_valid(fe_data_event[i]);
+         // if rxvalid is low, then stat must change -- otherwise there is no event to pick up
+         if (fe_data_event[i] == 0) begin
+            if (i == 0) begin
+               while (fe_stat[i] == 0)
+                  fe_stat[i] = $urandom;
+            end
+            else begin
+               while (fe_stat[i] == fe_stat[i-1])
+                  fe_stat[i] = $urandom;
+            end
+         end
+
+         // TODO: consider driving fe_stat independently of fe_bytes?
+         send_fe_data(fe_data_event[i], fe_bytes[i], fe_stat[i], fe_times[i+1]);
          if (pVERBOSE)
-            $display("data=%h, delay=%0d", fe_bytes[i], fe_times[i+1]);
+            if (fe_data_event[i])
+               $display("DATA: data=%h, stat=%h, delay=%0d", fe_bytes[i], fe_stat[i], fe_times[i+1]);
+            else
+               $display("STAT:          stat=%h, delay=%0d", fe_stat[i], fe_times[i+1]);
       end
       fe_rxvalid = 1'b0;
       #(pFE_CLOCK_PERIOD*1000);
@@ -201,42 +234,66 @@ module tb_pw();
          read_next_byte(read_data[23:16]);
          command = read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN];
 
-         if (command == `FE_FIFO_CMD_DATA) begin
+         if ( (command == `FE_FIFO_CMD_DATA) || (command == `FE_FIFO_CMD_STAT) ) begin
             data = read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN];
+            dut_rxactive = read_data[`FE_FIFO_RXACTIVE_BIT];
+            dut_rxerror = read_data[`FE_FIFO_RXERROR_BIT];
+            dut_sessvld = read_data[`FE_FIFO_SESSVLD_BIT];
+            dut_sessend = read_data[`FE_FIFO_SESSEND_BIT];
+            dut_vbusvld = read_data[`FE_FIFO_VBUSVLD_BIT];
+            dut_usbstat = read_data[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN];
+
+            if (command == `FE_FIFO_CMD_DATA) begin
+               expected_data = fe_bytes[j];
+               str = "DATA";
+            end
+            else begin
+               expected_data = 8'd0;
+               str = "STAT";
+            end
+
             timestamp = read_data[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN];
             time_counter = time_counter + timestamp;
-            if ( (data == fe_bytes[j]) && (time_counter == fe_times[j]) ) begin
+            if ( (data == expected_data) && (dut_usbstat == fe_stat[j]) && (time_counter == fe_times[j]) ) begin
                if (pVERBOSE)
-                  $display("\t\t\t\tdata=%h, time=%0d, total time=%0d", data, timestamp, time_counter);
+                  //$display("\t\t\t\tdata=%h, rxactive=%0b, rxerror=%0b, sessvld=%0b, sessend=%0b, vbusvld=%0b, time=%0d, total time=%0d", data, dut_rxactive, dut_rxerror, dut_sessvld, dut_sessend, dut_vbusvld, timestamp, time_counter);
+                  $display("\t\t\t\t\t%s: data=%h, stat=%h, time=%0d, total time=%0d", str, data, dut_usbstat, timestamp, time_counter);
             end
             else begin
                errors += 1;
-               if (data == fe_bytes[j])
-                  $display("\t\t\t\t*** MISMATCH on FIFO read #%0d at time %0t: got good data (%h), bad time: expected %0d, got %0d (DATA time=%0d)", j, $time, data, fe_times[j], time_counter, timestamp);
+               if ( (data == expected_data) && (dut_usbstat == fe_stat[j]))
+                  $display("\t\t\t\t\t*** MISMATCH on %s read #%0d at time %0t: got good data (%h) and stat (%h), bad time: expected %0d, got %0d", str, j, $time, data, dut_usbstat, fe_times[j], time_counter);
                else if (time_counter == fe_times[j])
-                  $display("\t\t\t\t*** MISMATCH on FIFO read #%0d at time %0t: got good timestamp (%0d), bad data: got %h, expected %h", j, $time, timestamp, data, fe_bytes[j]);
+                  $display("\t\t\t\t\t*** MISMATCH on %s read #%0d at time %0t: got good timestamp (%0d), bad data (got %h, expected %h) or stat (got %h, expected %h)", str, j, $time, timestamp, data, expected_data, dut_usbstat, fe_stat[j]);
                else
-                  $display("\t\t\t\t*** MISMATCH on FIFO read #%0d at time %0t: bad data (got %h, expected %h) and bad time (got %0d, expecte %0d)", j, $time, data, fe_bytes[j], time_counter, fe_times[j]);
+                  $display("\t\t\t\t\t*** MISMATCH on %s read #%0d at time %0t: bad data (got %h, expected %h), stat (got %h, expected %h) and time (got %0d, expected %0d)", str, j, $time, data, expected_data, dut_usbstat, fe_stat[j], time_counter, fe_times[j]);
             end
             j = j + 1;
             time_counter = 0;
          end
 
-         else if (command == `FE_FIFO_CMD_STAT) begin
-            $display("\t\t\t\t*** ERROR: STAT command not supported yet!");
-         end
 
          else if (command == `FE_FIFO_CMD_TIME) begin
             timestamp = read_data[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN];
             time_counter = time_counter + timestamp;
-            if (pVERBOSE)
-               $display("\t\t\t\ttime=%0d", timestamp);
+            if (pVERBOSE && pSHOW_TIME_EVENTS)
+               $display("\t\t\t\t\ttime=%0d", timestamp);
          end
 
          else begin
             errors += 1;
-            $display("\t\t\t\t*** ERROR: Unknown command!");
+            $display("\t\t\t\t\t*** ERROR: Unknown command!");
          end
+
+         /* check sniff register
+         if (j == pNUM_EVENTS) begin
+            read_lots_bytes(5);
+            for (k = 0; k < 8; k = k + 1) begin
+               read_next_byte(sniff_bytes[k]);
+               $display("Sniff byte: %h", sniff_bytes[k]);
+            end
+         end
+         */
 
       end
    end
@@ -310,10 +367,18 @@ module tb_pw();
 
 
    task send_fe_data;
+      input rxvalid;
       input [7:0] data;
+      input [4:0] stat;
       input [15:0] delay;
-      fe_rxvalid = 1;
+      fe_rxvalid = rxvalid;
       fe_wdata = data;
+      fe_rxactive = stat[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_STATUS_BITS_START];
+      fe_rxerror = stat[`FE_FIFO_RXERROR_BIT - `FE_FIFO_STATUS_BITS_START];
+      fe_sessvld = stat[`FE_FIFO_SESSVLD_BIT - `FE_FIFO_STATUS_BITS_START];
+      fe_sessend = stat[`FE_FIFO_SESSEND_BIT - `FE_FIFO_STATUS_BITS_START];
+      fe_vbusvld = stat[`FE_FIFO_VBUSVLD_BIT - `FE_FIFO_STATUS_BITS_START];
+
       @(posedge fe_clk);
       if (delay > 0) begin
          fe_rxvalid = 0;
@@ -334,6 +399,14 @@ module tb_pw();
       end
    endtask
 
+
+   task get_valid;
+      output valid;
+      if ($urandom_range(0, 100) < pPVALID)
+         valid = 1;
+      else
+         valid = 0;
+   endtask
 
 
    always #(pUSB_CLOCK_PERIOD/2) usb_clk = !usb_clk;

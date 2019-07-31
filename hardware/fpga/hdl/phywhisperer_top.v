@@ -93,6 +93,7 @@ module phywhisperer_top(
    wire usb_clk_copy;
 
    wire [7:0] fe_capture_data;
+   wire [4:0] fe_capture_stat;
    wire [1:0] fe_capture_cmd;
    wire [pTIMESTAMP_FULL_WIDTH-1:0] fe_capture_time;
    wire fe_capture_data_wr;
@@ -176,6 +177,7 @@ module phywhisperer_top(
       // FE:
       .fe_clk                   (clk_fe_buf),
       .I_fe_capture_data        (fe_capture_data),
+      .I_fe_capture_stat        (fe_capture_stat),
       .I_fe_capture_cmd         (fe_capture_cmd),
       .I_fe_capture_time        (fe_capture_time),
       .I_fe_capture_data_wr     (fe_capture_data_wr),
@@ -201,8 +203,14 @@ module phywhisperer_top(
       .I_capture_enable         (capture_enable),
       .fe_data                  (fe_data),
       .fe_rxvalid               (fe_rxvalid),
+      .fe_rxactive              (fe_rxactive),
+      .fe_rxerror               (fe_rxerror ),
+      .fe_sessvld               (fe_sessvld ),
+      .fe_vbusvld               (fe_vbusvld ),
+      .fe_sessend               (fe_sessend ),
       .O_time                   (fe_capture_time),
       .O_data                   (fe_capture_data),
+      .O_status                 (fe_capture_stat),
       .O_command                (fe_capture_cmd),
       .O_data_wr                (fe_capture_data_wr),
       .O_sniff_data             (fe_capture_sniff_data),
