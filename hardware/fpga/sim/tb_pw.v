@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-`default_nettype none
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -20,6 +18,10 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`timescale 1ns / 1ps
+`default_nettype none
+`include "defines.v"
+
 module tb_pw();
    
     parameter pUSB_CLOCK_PERIOD = 10;
@@ -33,30 +35,6 @@ module tb_pw();
     parameter pNUM_EVENTS = 20;
     parameter pPVALID = 50;
     parameter pSEED = 1;
-
-   // FIFO bitfields: (TODO: pull in from external file)
-   `define FE_FIFO_CMD_DATA 2'b00
-   `define FE_FIFO_CMD_STAT 2'b01
-   `define FE_FIFO_CMD_TIME 2'b10
-
-   `define FE_FIFO_CMD_START 16
-   `define FE_FIFO_CMD_BIT_LEN 2
-
-   `define FE_FIFO_TIME_START 0
-   `define FE_FIFO_SHORTTIME_LEN 3
-   `define FE_FIFO_FULLTIME_LEN 16
-
-   `define FE_FIFO_STATUS_BITS_START 3
-   `define FE_FIFO_STATUS_BITS_LEN 5
-   `define FE_FIFO_RXACTIVE_BIT 3
-   `define FE_FIFO_RXERROR_BIT 4
-   `define FE_FIFO_SESSVLD_BIT 5
-   `define FE_FIFO_SESSEND_BIT 6
-   `define FE_FIFO_VBUSVLD_BIT 7
-
-   `define FE_FIFO_DATA_START 8
-   `define FE_FIFO_DATA_LEN 8
-
 
     reg           usb_clk;
     wire [7:0]    USB_Data;

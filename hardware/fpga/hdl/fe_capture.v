@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-`default_nettype none
 //////////////////////////////////////////////////////////////////////////////////
 // Company: NewAE
 // Engineer: Jean-Pierre Thibaut
@@ -20,6 +18,9 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`timescale 1ns / 1ps
+`default_nettype none
+`include "defines.v"
 
 module fe_capture #(
     parameter pTIMESTAMP_FULL_WIDTH = 16,
@@ -55,19 +56,6 @@ module fe_capture #(
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp;
     reg  [3:0] next_sniff_count;
 
-    // TODO: move to separate file which could be more easily parsed by Python:
-    `define FE_FIFO_CMD_DATA 2'b00
-    `define FE_FIFO_CMD_STAT 2'b01
-    `define FE_FIFO_CMD_TIME 2'b10
-
-    `define FE_FIFO_STATUS_BITS_START 3
-    `define FE_FIFO_STATUS_BITS_LEN 5
-    `define FE_FIFO_RXACTIVE_BIT 3
-    `define FE_FIFO_RXERROR_BIT 4
-    `define FE_FIFO_SESSVLD_BIT 5
-    `define FE_FIFO_SESSEND_BIT 6
-    `define FE_FIFO_VBUSVLD_BIT 7
-    
     reg [1:0] state, next_state, state_r, state_r2;
     localparam pS_IDLE = 0;
     localparam pS_DATA = 1;

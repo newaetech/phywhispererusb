@@ -15,6 +15,7 @@ compile:
 	-g2005-sv \
 	-Wportbind \
 	-Wselect-range \
+	-I../hdl \
 	-P tb_pw.pNUM_EVENTS=$(NUM_EVENTS) \
 	-P tb_pw.pDELAY_MODE=$(DELAY_MODE) \
 	-P tb_pw.pMIN_FE_DELAY=$(MIN_DELAY) \
