@@ -69,11 +69,16 @@ module phywhisperer_top(
 
     /* 20-PIN CHIPWHISPERER CONNECTOR */
     output wire cw_clk,
-    output wire cw_trig
+    output wire cw_trig,
+
+    /* LEDs */
+    output wire LED_TRIG,
+    output wire LED_CAP
     );
 
-   parameter pTIMESTAMP_FULL_WIDTH = 16; // TODO: 8 for development/testing; increase to 16 later
+   parameter pTIMESTAMP_FULL_WIDTH = 16;
    parameter pTIMESTAMP_SHORT_WIDTH = 3;
+   parameter pPATTERN_BYTES = 8; // TODO: increase to 64 later
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -107,9 +112,22 @@ module phywhisperer_top(
    wire psincdec;
    wire psdone;
    wire trigger_clk_locked;
+   wire match;
    wire trigger_match;
+   wire capture_match;
    wire timestamps_disable;
-   wire capture_enable;
+   wire [15:0] capture_len;
+   wire fifo_full;
+   wire arm;
+   wire capturing;
+
+   wire [pPATTERN_BYTES*8-1:0] pattern;
+   wire [pPATTERN_BYTES*8-1:0] pattern_mask;
+   wire [1:0] pattern_action;
+   wire [7:0] pattern_bytes;
+
+   assign LED_CAP = arm;
+   assign LED_TRIG = capturing;
 
    `ifdef __ICARUS__
       assign clk_fe_buf = fe_clk;
@@ -162,7 +180,8 @@ module phywhisperer_top(
 
    reg_pw #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
-      .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH)
+      .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
+      .pPATTERN_BYTES           (pPATTERN_BYTES)
    ) U_reg_pw (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -186,9 +205,17 @@ module phywhisperer_top(
       .I_fe_sniff_wr            (fe_capture_sniff_wr),
       .I_fe_sniff_count         (fe_capture_sniff_count),
 
-      .O_trigger_match          (trigger_match),
       .O_timestamps_disable     (timestamps_disable),
-      .O_capture_enable         (capture_enable)
+      .O_capture_len            (capture_len),
+      .O_fifo_full              (fifo_full),
+
+      // PM:
+      .O_arm                    (arm),
+      .O_pattern                (pattern),
+      .O_pattern_mask           (pattern_mask),
+      .O_pattern_action         (pattern_action),
+      .O_pattern_bytes          (pattern_bytes),
+      .I_match                  (match)
 
    );
 
@@ -200,7 +227,9 @@ module phywhisperer_top(
       .reset_i                  (reset_i), 
       .fe_clk                   (clk_fe_buf), 
       .I_timestamps_disable     (timestamps_disable),
-      .I_capture_enable         (capture_enable),
+      .I_capture_enable         (capture_match),
+      .I_capture_len            (capture_len),
+      .I_fifo_full              (fifo_full),
       .fe_data                  (fe_data),
       .fe_rxvalid               (fe_rxvalid),
       .fe_rxactive              (fe_rxactive),
@@ -215,7 +244,8 @@ module phywhisperer_top(
       .O_data_wr                (fe_capture_data_wr),
       .O_sniff_data             (fe_capture_sniff_data),
       .O_sniff_wr               (fe_capture_sniff_wr),
-      .O_sniff_count            (fe_capture_sniff_count)
+      .O_sniff_count            (fe_capture_sniff_count),
+      .O_capturing              (capturing)
    );
 
 
@@ -335,6 +365,25 @@ module phywhisperer_top(
        );
 
     `endif
+
+
+   pw_pattern_matcher U_pattern_matcher (
+      .reset_i          (reset_i),
+      .fe_clk           (clk_fe_buf),
+      .usb_clk          (clk_usb_buf),
+      .I_arm            (arm),
+      .I_pattern        (pattern),
+      .I_mask           (pattern_mask),
+      .I_action         (pattern_action),
+      .I_pattern_bytes  (pattern_bytes),
+      .I_fe_data        (fe_capture_sniff_data),
+      .I_fe_data_valid  (fe_capture_sniff_wr),
+      .I_capturing      (capturing),
+      .O_match          (match),
+      .O_match_capture  (capture_match),
+      .O_match_trigger  (trigger_match)
+   );
+
 
    pw_trigger U_trigger (
       .reset_i          (reset_i),

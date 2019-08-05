@@ -24,7 +24,8 @@
 
 module reg_pw #(
    parameter pTIMESTAMP_FULL_WIDTH = 16,
-   parameter pTIMESTAMP_SHORT_WIDTH = 3
+   parameter pTIMESTAMP_SHORT_WIDTH = 3,
+   parameter pPATTERN_BYTES = 8
 )(
    input  wire         reset_i,
 
@@ -43,7 +44,9 @@ module reg_pw #(
 // Interface to front end capture:
    input  wire         fe_clk,
    output wire         O_timestamps_disable,
-   output wire         O_capture_enable,
+   output wire         O_arm,
+   output wire [15:0]  O_capture_len,
+   output wire         O_fifo_full,
    input  wire [pTIMESTAMP_FULL_WIDTH-1:0]   I_fe_capture_time,
    input  wire [7:0]   I_fe_capture_data,
    input  wire [4:0]   I_fe_capture_stat,
@@ -54,8 +57,12 @@ module reg_pw #(
    input  wire         I_fe_sniff_wr,
    input  wire [3:0]   I_fe_sniff_count,
 
-// Interface to trigger:
-   output wire         O_trigger_match
+// Interface to pattern matcher:
+   output wire [8*pPATTERN_BYTES-1:0] O_pattern,
+   output wire [8*pPATTERN_BYTES-1:0] O_pattern_mask,
+   output wire [1:0] O_pattern_action,
+   output wire [7:0] O_pattern_bytes,
+   input  wire         I_match
 
 );
 
@@ -67,9 +74,13 @@ module reg_pw #(
    reg [8*`REG_FE_SNIFF_LEN-1:0] reg_fe_sniff;
    reg [8*`REG_FE_WR_CNT_LEN-1:0] reg_fe_write_counter;
    reg [8*`REG_USB_RD_CNT_LEN-1:0] reg_usb_read_counter;
-   reg reg_trigger;
-   reg reg_capture_enable;
+   reg reg_arm;
    reg reg_timestamps_disable;
+   reg [8*pPATTERN_BYTES-1:0] reg_pattern;
+   reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
+   reg [1:0] reg_pattern_action;
+   reg [7:0] reg_pattern_bytes;
+   reg [15:0] reg_capture_len;
 
    reg usb_read_counter_clear;
    reg fe_write_counter_clear_trig;
@@ -89,9 +100,13 @@ module reg_pw #(
    reg  [7:0] reg_read_data;
    wire [7:0] sniff_fifo_read_data;
 
-   assign O_trigger_match = reg_trigger;
-   assign O_capture_enable = reg_capture_enable;
+   assign O_arm = reg_arm;
    assign O_timestamps_disable = reg_timestamps_disable;
+   assign O_pattern = reg_pattern;
+   assign O_pattern_mask = reg_pattern_mask;
+   assign O_pattern_action = reg_pattern_action;
+   assign O_pattern_bytes = reg_pattern_bytes;
+   assign O_capture_len = reg_capture_len;
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -99,12 +114,17 @@ module reg_pw #(
       reg_fe_usb_r2 <= reg_fe_usb_r1;
       if (reg_addrvalid && reg_read) begin
          // TODO: protect against overflow on reading registers > 1 byte?
+         // TODO: make all registers readable? or only those that are strictly necessary?
          case (reg_address)
             `REG_TEST: reg_read_data <= reg_a[reg_bytecnt*8 +: 8];
             `REG_FE: reg_read_data <= reg_fe_usb_r2[reg_bytecnt*8 +: 8];
             `REG_FE_SNIFF: reg_read_data <= reg_fe_sniff[reg_bytecnt*8 +: 8];
             `REG_FE_WR_CNT: reg_read_data <= reg_fe_write_counter[reg_bytecnt*8 +: 8];
             `REG_USB_RD_CNT: reg_read_data <= reg_usb_read_counter[reg_bytecnt*8 +: 8];
+            `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
+            `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
+            `REG_PATTERN_ACTION: reg_read_data <= reg_pattern_action[reg_bytecnt*8 +: 8];
+            `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
          endcase
       end
       else
@@ -138,9 +158,13 @@ module reg_pw #(
          reg_a <= 0;
          usb_read_counter_clear <= 1'b0; 
          fe_write_counter_clear_trig <= 1'b0; 
-         reg_trigger <= 1'b0;
-         reg_capture_enable <= 1'b0;
+         reg_arm <= 1'b0;
          reg_timestamps_disable <= 1'b0;
+         reg_pattern <= 0;
+         reg_pattern_mask <= 64'h0;
+         reg_pattern_action <= 0;
+         reg_pattern_bytes <= 8'd0;
+         reg_capture_len <= 0;
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -149,15 +173,22 @@ module reg_pw #(
                `REG_TEST: reg_a[reg_bytecnt*8 +: 8] <= write_data;
                `USB_RD_CNT_CLR: usb_read_counter_clear <= 1'b1; 
                `FE_WR_CNT_CLR: fe_write_counter_clear_trig <= 1'b1; 
-               `REG_TRIG_MATCH: reg_trigger <= write_data[0];
-               `REG_CAPTURE_ENABLE: reg_capture_enable <= write_data[0];
                `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
+               `REG_PATTERN: reg_pattern[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_PATTERN_MASK: reg_pattern_mask[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_PATTERN_ACTION: reg_pattern_action[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_PATTERN_BYTES: reg_pattern_bytes <= write_data;
+               `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
             endcase
          end
          else begin
             usb_read_counter_clear <= 1'b0; 
             fe_write_counter_clear_trig <= 1'b0; 
          end
+         if (reg_addrvalid && reg_write && (reg_address == `REG_ARM))
+            reg_arm <= write_data[0];
+         else if (I_match) // TODO: CDC
+            reg_arm <= 1'b0;
       end
    end
 
@@ -198,29 +229,30 @@ module reg_pw #(
          sniff_fifo_wr_en <= 1'b0;
          sniff_fifo_din <= 0;
       end
-      // TODO: guard against overflow
-      else if (I_fe_capture_data_wr && !sniff_fifo_full) begin
-      //else if (I_fe_capture_data_wr) begin
-         sniff_fifo_wr_en <= 1'b1;
-         sniff_fifo_din[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] <= I_fe_capture_cmd;
-         case (I_fe_capture_cmd)
-            `FE_FIFO_CMD_DATA: begin
-               sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
-               sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= I_fe_capture_data;
-               sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
-            end
-            `FE_FIFO_CMD_STAT: begin
-               sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
-               sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= 8'd0;
-               sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
-            end
-            `FE_FIFO_CMD_TIME: begin
-               sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN] <= I_fe_capture_time;
-            end
-         endcase
+      else begin
+         if (I_fe_capture_data_wr && !sniff_fifo_full) begin
+            sniff_fifo_wr_en <= 1'b1;
+            sniff_fifo_din[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] <= I_fe_capture_cmd;
+            case (I_fe_capture_cmd)
+               `FE_FIFO_CMD_DATA: begin
+                  sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
+                  sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= I_fe_capture_data;
+                  sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
+               end
+               `FE_FIFO_CMD_STAT: begin
+                  sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
+                  sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= 8'd0;
+                  sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
+               end
+               `FE_FIFO_CMD_TIME: begin
+                  sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN] <= I_fe_capture_time;
+               end
+            endcase
+         end
+         else
+            sniff_fifo_wr_en <= 1'b0;
+
       end
-      else
-         sniff_fifo_wr_en <= 1'b0;
    end
 
    // perform a FIFO read on first read access to FIFO register:
@@ -228,6 +260,7 @@ module reg_pw #(
                               (reg_address == `REG_SNIFF_FIFO_RD) &&
                               (reg_bytecnt == 0) );
 
+   // TODO: add a flushing mechanism
    fifo_generator_0 U_sniff_fifo (
      .rst            (reset_i),
 
@@ -245,6 +278,8 @@ module reg_pw #(
      .empty          (sniff_fifo_empty),
      .underflow      (sniff_fifo_underflow)
    );
+
+   assign O_fifo_full = sniff_fifo_full;
 
    `ifdef ILA
        wire [63:0] ila_probe;

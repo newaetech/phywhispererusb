@@ -13,6 +13,7 @@ args = parser.parse_args()
 random.seed()
 
 # Define testcases:
+# TODO: add ability to re-run individual test w/seed
 tests = []
 tests.append(dict(name  = 'short_timestamps',
              NUM_EVENTS = 50,
@@ -87,6 +88,7 @@ for test in tests:
       # run:
       print("Running %s..." % logfile)
       subprocess.run(makeargs, stdout=outfile, stderr=outfile)
+      # TODO: print pass/fail here, rather than after all tests have run
 
       logfiles.append(logfile)
 

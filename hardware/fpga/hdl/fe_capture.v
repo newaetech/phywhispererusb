@@ -38,8 +38,9 @@ module fe_capture #(
     input  wire fe_sessend,
 
     /* REGISTER CONNECTIONS */
-    input  wire I_capture_enable,
     input  wire I_timestamps_disable,
+    input  wire [15:0] I_capture_len,
+    input  wire I_fifo_full,
     output reg  [1:0] O_command,
     output reg  [pTIMESTAMP_FULL_WIDTH-1:0] O_time,
     output wire [7:0] O_data,
@@ -48,9 +49,13 @@ module fe_capture #(
 
     output reg  [7:0] O_sniff_data,
     output reg  O_sniff_wr,
-    output reg  [3:0] O_sniff_count
+    output reg  [3:0] O_sniff_count,
 
-    );
+    /* PATTERN MATCH CONNECTIONS */
+    input  wire I_capture_enable,
+
+    output wire O_capturing
+);
 
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_ctr;
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp;
@@ -78,6 +83,10 @@ module fe_capture #(
 
     wire usb_event; // rxvalid=1 or status bits changed
     reg  usb_event_reg;
+    reg  [15:0] capture_count;
+    wire capture_allowed;
+    reg  capture_enable_r;
+
 
     assign fe_status_bits[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_STATUS_BITS_START] = fe_rxactive;
     assign fe_status_bits[`FE_FIFO_RXERROR_BIT  - `FE_FIFO_STATUS_BITS_START] = fe_rxerror;
@@ -87,12 +96,8 @@ module fe_capture #(
 
     assign usb_event = fe_rxvalid || (fe_status_bits != fe_status_bits_reg);
 
-    //assign short_timestamp = (timestamp_ctr[pTIMESTAMP_FULL_WIDTH-1:pTIMESTAMP_SHORT_WIDTH] == 0);
-    //assign short_timestamp = (timestamp_ctr < 8); // TODO: parameterize
-    //assign short_timestamp_pre = (timestamp_ctr < 7); // TODO: parameterize
-    // TODO: temporary, prevents TIME packets and their associated bugs:
-    assign short_timestamp = I_timestamps_disable? 1'b1 : (timestamp_ctr < 8);
-    assign short_timestamp_pre = I_timestamps_disable? 1'b1: (timestamp_ctr < 7);
+    assign short_timestamp = I_timestamps_disable? 1'b1 : (timestamp_ctr < 8); // TODO: parameterize
+    assign short_timestamp_pre = I_timestamps_disable? 1'b1: (timestamp_ctr < 7); // TODO: parameterize
 
     // Delay incoming fe_* signals by one cycle to avoid issuing
     // FE_FIFO_CMD_STAT at the same time as an fe_* data event, which could
@@ -185,13 +190,15 @@ module fe_capture #(
           state_r2 <= state_r;
           timestamp_reg <= timestamp;
 
-          if (I_capture_enable && usb_event)
+          if (I_capture_enable && usb_event_reg)
              ctr_running <= 1'b1;
           else if (!I_capture_enable)
              ctr_running <= 1'b0;
 
-          if (!ctr_running)
+          if (!ctr_running) begin
              timestamp_ctr <= 0;
+             timestamp <= 0;
+          end
           else if (usb_event_reg) begin
              timestamp <= timestamp_ctr;
              timestamp_ctr <= 0;
@@ -224,7 +231,6 @@ module fe_capture #(
        end
     end
 
-    //assign O_time = (state_r == pS_TIME)? timestamp : timestamp_reg;
     always @(*) begin
        if (state_r == pS_TIME)
           O_time = timestamp;
@@ -239,8 +245,7 @@ module fe_capture #(
     assign O_status = fe_status_bits_reg3;
 
 
-    // TODO: old logic for basic validation of FIFO operation; remove when no longer needed:
-    // (Capture first 8 rxvalid bytes, for basic/sanity testing.)
+    // data output to pattern matcher;
     always @ (posedge fe_clk) begin
        if (reset_i) begin
           O_sniff_data <= 8'd0;
@@ -249,9 +254,13 @@ module fe_capture #(
           next_sniff_count <= 4'b0;
        end
        else begin
-          if (fe_rxvalid && (O_sniff_count < 8)) begin
+          //if (fe_rxvalid && (O_sniff_count < 8)) begin
+          if (fe_rxvalid) begin
              O_sniff_data <= fe_data;
              O_sniff_wr <= 1'b1;
+    // TODO: O_sniff_count is old logic for basic validation of FIFO operation;
+    // remove when no longer needed: (Capture first 8 rxvalid bytes, for
+    // basic/sanity testing.)
              O_sniff_count <= next_sniff_count;
              next_sniff_count <= next_sniff_count + 1;
           end
@@ -260,6 +269,26 @@ module fe_capture #(
           end
        end
     end
+
+    // manage capture mode:
+    always @ (posedge fe_clk) begin
+       if (reset_i) begin
+          capture_count <= 16'd0;
+          capture_enable_r <= 1'b0;
+       end
+       else begin
+          capture_enable_r <= I_capture_enable;
+          if (I_capture_enable & !capture_enable_r)
+             capture_count <= 16'd0;
+          else if (O_data_wr)
+             capture_count <= capture_count + 1;
+       end
+    end
+
+    assign O_capturing = capture_allowed;
+
+    // TODO: CDC on I_capture_len:
+    assign capture_allowed = I_capture_enable & (capture_count < I_capture_len) & !I_fifo_full;
 
     // strictly for easier visualization/debug:
     wire state_idle = (state == pS_IDLE);
