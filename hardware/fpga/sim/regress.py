@@ -7,13 +7,15 @@ import re
 import time
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--runs", type=int, help="Number of iterations.", default=1)
+group = parser.add_mutually_exclusive_group()
+group.add_argument("--runs", type=int, help="Number of iterations.", default=1)
+group.add_argument("--test", help="Testcase to run")
+parser.add_argument("--seed", type=int, help="Seed to use when running a single test with --test.")
 args = parser.parse_args()
 
 random.seed()
 
 # Define testcases:
-# TODO: add ability to re-run individual test w/seed
 tests = []
 tests.append(dict(name  = 'short_timestamps',
              NUM_EVENTS = 50,
@@ -80,6 +82,21 @@ tests.append(dict(name  = 'anything_goes',
              MAX_DELAY  = 2**16+2))
 """
 
+# if running a single testcase:
+if (args.test):
+   found = False
+   for test in tests:
+      if test['name'] == args.test:
+         found = True
+         tests = [test]
+         break
+   if not found:
+      print("Error: test %s undefined." % args.test)
+      print("Available tests:")
+      for test in tests:
+         print("%s" % test['name'])
+      quit()
+
 pass_regex = re.compile(r'^Simulation passed')
 fail_regex = re.compile(r'^SIMULATION FAILED \((\d+) errors\)')
 seed_regex = re.compile(r'^Running with pSEED=(\d+)$')
@@ -100,7 +117,10 @@ for test in tests:
             makeargs.append("LOGFILE=%s" % logfile)
          else:
             makeargs.append("%s=%s" % (key, test[key]))
-      seed = random.randint(0, 2**31-1)
+      if (args.seed):
+         seed = args.seed
+      else:
+         seed = random.randint(0, 2**31-1)
       makeargs.append("SEED=%d" % seed)
 
       # run:
