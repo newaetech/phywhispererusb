@@ -78,7 +78,7 @@ module phywhisperer_top(
 
    parameter pTIMESTAMP_FULL_WIDTH = 16;
    parameter pTIMESTAMP_SHORT_WIDTH = 3;
-   parameter pPATTERN_BYTES = 8; // TODO: increase to 64 later
+   parameter pPATTERN_BYTES = 64;
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -367,7 +367,9 @@ module phywhisperer_top(
     `endif
 
 
-   pw_pattern_matcher U_pattern_matcher (
+   pw_pattern_matcher #(
+      .pPATTERN_BYTES  (pPATTERN_BYTES)
+   ) U_pattern_matcher (
       .reset_i          (reset_i),
       .fe_clk           (clk_fe_buf),
       .usb_clk          (clk_usb_buf),

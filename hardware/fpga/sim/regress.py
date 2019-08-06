@@ -62,11 +62,32 @@ tests.append(dict(name  = 'bursts',
 tests.append(dict(name  = 'rearm',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
+             DELAY_MODE = 0))
+
+tests.append(dict(name  = 'shortpattern',
+             NUM_EVENTS = 10,
+             NUM_REPEATS = 5,
              DELAY_MODE = 0,
-             MIN_DELAY  = 0,
-             MAX_DELAY  = 32))
+             PRETRIG_MAX = 0,
+             PATTERN_MIN = 1,
+             PATTERN_MAX = 3))
+
+tests.append(dict(name  = 'longpattern',
+             NUM_EVENTS = 10,
+             NUM_REPEATS = 5,
+             DELAY_MODE = 0,
+             PATTERN_MIN = 16,
+             PATTERN_MAX = 64))
 
 """ 
+tests.append(dict(name  = 'longcapture',
+             NUM_EVENTS = 4096,
+             NUM_REPEATS = 2,
+             DELAY_MODE = 0,
+             MIN_DELAY=0,
+             MAX_DELAY=5))
+
+
 These testcases are much longer and we don't yet care about the counter
 overflow event that they cover:
 tests.append(dict(name  = 'vlong_timestamps',

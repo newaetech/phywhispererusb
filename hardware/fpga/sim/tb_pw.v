@@ -38,7 +38,7 @@ module tb_pw();
     parameter pPRETRIG_BYTES_MIN = 0;
     parameter pPRETRIG_BYTES_MAX = 200;
     parameter pPATTERN_BYTES_MIN = 2;
-    parameter pPATTERN_BYTES_MAX = 8;
+    parameter pPATTERN_BYTES_MAX = 64;
     parameter pPVALID = 50;
     parameter pSEED = 1;
 
@@ -194,6 +194,9 @@ module tb_pw();
       $display("Tx Iteration %d:", send_iteration);
       write_1byte(`REG_ARM, 8'h01);
       armed = 1;
+      // give some time for the arm process to complete:
+      if (pPRETRIG_BYTES_MIN < 10)
+         repeat (10) @(posedge fe_clk);
 
       @(posedge fe_clk);
       // send pre-trigger data:

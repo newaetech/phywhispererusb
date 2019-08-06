@@ -98,7 +98,9 @@ module reg_pw #(
    wire sniff_fifo_rd_en;
    reg  [17:0] sniff_fifo_din;
    wire [17:0] sniff_fifo_dout;
-   
+   wire sniff_fifo_empty_threshold;
+   wire sniff_fifo_full_threshold;
+
    reg  [7:0] reg_read_data;
    wire [7:0] sniff_fifo_read_data;
    reg  flushing;
@@ -291,26 +293,28 @@ module reg_pw #(
      .din            (sniff_fifo_din),
      .full           (sniff_fifo_full),
      .overflow       (sniff_fifo_overflow),
+     .prog_full      (sniff_fifo_full_threshold),
 
      // Read port:
      .rd_clk         (cwusb_clk),
      .rd_en          (sniff_fifo_rd_en),
      .dout           (sniff_fifo_dout),
      .empty          (sniff_fifo_empty),
-     .underflow      (sniff_fifo_underflow)
+     .underflow      (sniff_fifo_underflow),
+     .prog_empty     (sniff_fifo_empty_threshold)
    );
 
    assign O_fifo_full = sniff_fifo_full;
    assign fifo_status[`FIFO_STAT_EMPTY] = sniff_fifo_empty;
    assign fifo_status[`FIFO_STAT_UNDERFLOW] = sniff_fifo_underflow; // TODO: check how this signals behaves, so it can be usefully captured
-   assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = 1'b0; // TODO
+   assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = sniff_fifo_empty_threshold;
    // TODO: CDC on write side flags:
    assign fifo_status[`FIFO_STAT_FULL] = sniff_fifo_full;
    assign fifo_status[`FIFO_STAT_OVERFLOW] = sniff_fifo_overflow;
-   assign fifo_status[`FIFO_STAT_FULL_THRESHOLD] = 1'b0; // TODO
+   assign fifo_status[`FIFO_STAT_FULL_THRESHOLD] = sniff_fifo_full_threshold;
 
 
-   `ifdef ILA
+   `ifdef ILA_REG
        wire [63:0] ila_probe;
        assign ila_probe[5:0] = reg_address;
        assign ila_probe[21:6] = reg_bytecnt;
@@ -330,7 +334,7 @@ module reg_pw #(
 
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_REG
        ila_3 U_fe_fifo_wr_ila (
           .clk          (fe_clk),
           .probe0       (sniff_fifo_wr_en),
@@ -340,7 +344,7 @@ module reg_pw #(
        );
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_REG
        ila_3 U_fe_fifo_rd_ila (
           .clk          (cwusb_clk),
           .probe0       (sniff_fifo_rd_en),
