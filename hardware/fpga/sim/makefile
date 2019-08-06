@@ -3,6 +3,7 @@ NUM_REPEATS=1
 DELAY_MODE=0
 MIN_DELAY=0
 MAX_DELAY=20
+PRETRIG_MAX=200
 VALID=50
 LOGFILE=sim.log
 SEED=0
@@ -22,6 +23,7 @@ compile:
 	-P tb_pw.pDELAY_MODE=$(DELAY_MODE) \
 	-P tb_pw.pMIN_FE_DELAY=$(MIN_DELAY) \
 	-P tb_pw.pMAX_FE_DELAY=$(MAX_DELAY) \
+	-P tb_pw.pPRETRIG_BYTES_MAX=$(PRETRIG_MAX) \
 	-P tb_pw.pPVALID=$(VALID) \
 	-P tb_pw.pSEED=$(SEED) \
 	-P tb_pw.pVERBOSE=$(VERBOSE)

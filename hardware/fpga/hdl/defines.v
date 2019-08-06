@@ -33,6 +33,7 @@
 `define REG_PATTERN_ACTION           6'h0c
 `define REG_PATTERN_BYTES            6'h0d
 `define REG_CAPTURE_LEN              6'h0e
+`define REG_SNIFF_FIFO_STAT          6'h0f
 
 `define REG_TEST_LEN                 4
 `define REG_FE_LEN                   1
@@ -68,4 +69,12 @@
 `define PM_NOP 0
 `define PM_CAPTURE 1
 `define PM_TRIGGER 2
+
+// FIFO status register bits:
+`define FIFO_STAT_EMPTY 0
+`define FIFO_STAT_UNDERFLOW 1
+`define FIFO_STAT_EMPTY_THRESHOLD 2
+`define FIFO_STAT_FULL 3
+`define FIFO_STAT_OVERFLOW 4
+`define FIFO_STAT_FULL_THRESHOLD 5
 

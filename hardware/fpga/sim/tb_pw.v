@@ -35,7 +35,7 @@ module tb_pw();
     parameter pSHOW_TIME_EVENTS = 0;
     parameter pNUM_EVENTS = 20;
     parameter pNUM_REPEATS = 2;
-    parameter pPRETRIG_BYTES_MIN = 1;
+    parameter pPRETRIG_BYTES_MIN = 0;
     parameter pPRETRIG_BYTES_MAX = 200;
     parameter pPATTERN_BYTES_MIN = 2;
     parameter pPATTERN_BYTES_MAX = 8;
@@ -147,6 +147,8 @@ module tb_pw();
    reg [7:0] match_pattern [0:pPATTERN_BYTES_MAX-1];
    int pattern_bytes;
    int pretrig_bytes;
+   bit armed;
+   bit fifo_empty;
 
 
    // timeout thread:
@@ -188,8 +190,10 @@ module tb_pw();
       end
 
       for (send_iteration = 0; send_iteration < pNUM_REPEATS; send_iteration = send_iteration + 1) begin
+      armed = 0;
       $display("Tx Iteration %d:", send_iteration);
       write_1byte(`REG_ARM, 8'h01);
+      armed = 1;
 
       @(posedge fe_clk);
       // send pre-trigger data:
@@ -304,6 +308,13 @@ module tb_pw();
       time_counter = 0;
       // sync up with transmit block:
       wait(send_iteration == receive_iteration);
+      wait(armed);
+      // ensure FIFO is empty:
+      fifo_empty = 0;
+      while (fifo_empty == 0) begin
+         read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
+      end
+
       for (rx_readindex = 0; rx_readindex < pNUM_EVENTS; rx_readindex = rx_readindex + 1) begin
       //while (rx_dataindex < pNUM_EVENTS) begin
          wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0);

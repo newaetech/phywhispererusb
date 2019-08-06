@@ -75,6 +75,7 @@ module reg_pw #(
    reg [8*`REG_FE_WR_CNT_LEN-1:0] reg_fe_write_counter;
    reg [8*`REG_USB_RD_CNT_LEN-1:0] reg_usb_read_counter;
    reg reg_arm;
+   reg reg_arm_r;
    reg reg_timestamps_disable;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
@@ -82,6 +83,7 @@ module reg_pw #(
    reg [7:0] reg_pattern_bytes;
    reg [15:0] reg_capture_len;
 
+   // TODO: remove these counters
    reg usb_read_counter_clear;
    reg fe_write_counter_clear_trig;
    reg fe_write_counter_clear_r1;
@@ -99,8 +101,10 @@ module reg_pw #(
    
    reg  [7:0] reg_read_data;
    wire [7:0] sniff_fifo_read_data;
+   reg  flushing;
+   wire [5:0] fifo_status;
 
-   assign O_arm = reg_arm;
+   assign O_arm = reg_arm_r & ~flushing;
    assign O_timestamps_disable = reg_timestamps_disable;
    assign O_pattern = reg_pattern;
    assign O_pattern_mask = reg_pattern_mask;
@@ -125,6 +129,7 @@ module reg_pw #(
             `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
             `REG_PATTERN_ACTION: reg_read_data <= reg_pattern_action[reg_bytecnt*8 +: 8];
             `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
+            `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
          endcase
       end
       else
@@ -146,7 +151,6 @@ module reg_pw #(
             2: read_data = {6'b0, sniff_fifo_dout[17:16]}; // TODO: add FIFO flags
             default: read_data = 0;
          endcase
-         //read_data = sniff_fifo_dout[reg_bytecnt*8 +: 8];
       else
          read_data = reg_read_data;
    end
@@ -255,12 +259,29 @@ module reg_pw #(
       end
    end
 
-   // perform a FIFO read on first read access to FIFO register:
+   // FIFO read logic:
+   // perform a FIFO read on first read access to FIFO register, or when flushing:
    assign sniff_fifo_rd_en = ( reg_addrvalid && reg_read &&   // TODO: guard against underflow
                               (reg_address == `REG_SNIFF_FIFO_RD) &&
-                              (reg_bytecnt == 0) );
+                              (reg_bytecnt == 0) ) || (flushing & ~sniff_fifo_empty);
 
-   // TODO: add a flushing mechanism
+   // TODO: add a flushing mechanism; flush when:
+   // - arming (done)
+   // - other scenarios??
+   always @(posedge cwusb_clk) begin
+      if (reset_i) begin
+         flushing <= 1'b0;
+         reg_arm_r <= 1'b0;
+      end
+      else begin
+         reg_arm_r <= reg_arm;
+         if (sniff_fifo_empty)
+            flushing <= 1'b0;
+         else if (reg_arm & ~flushing)
+            flushing <= 1'b1;
+      end
+   end
+
    fifo_generator_0 U_sniff_fifo (
      .rst            (reset_i),
 
@@ -280,6 +301,14 @@ module reg_pw #(
    );
 
    assign O_fifo_full = sniff_fifo_full;
+   assign fifo_status[`FIFO_STAT_EMPTY] = sniff_fifo_empty;
+   assign fifo_status[`FIFO_STAT_UNDERFLOW] = sniff_fifo_underflow; // TODO: check how this signals behaves, so it can be usefully captured
+   assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = 1'b0; // TODO
+   // TODO: CDC on write side flags:
+   assign fifo_status[`FIFO_STAT_FULL] = sniff_fifo_full;
+   assign fifo_status[`FIFO_STAT_OVERFLOW] = sniff_fifo_overflow;
+   assign fifo_status[`FIFO_STAT_FULL_THRESHOLD] = 1'b0; // TODO
+
 
    `ifdef ILA
        wire [63:0] ila_probe;
