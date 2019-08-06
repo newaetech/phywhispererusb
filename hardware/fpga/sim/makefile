@@ -1,4 +1,5 @@
 NUM_EVENTS=20
+NUM_REPEATS=1
 DELAY_MODE=0
 MIN_DELAY=0
 MAX_DELAY=20
@@ -17,6 +18,7 @@ compile:
 	-Wselect-range \
 	-I../hdl \
 	-P tb_pw.pNUM_EVENTS=$(NUM_EVENTS) \
+	-P tb_pw.pNUM_REPEATS=$(NUM_REPEATS) \
 	-P tb_pw.pDELAY_MODE=$(DELAY_MODE) \
 	-P tb_pw.pMIN_FE_DELAY=$(MIN_DELAY) \
 	-P tb_pw.pMAX_FE_DELAY=$(MAX_DELAY) \

@@ -17,40 +17,52 @@ random.seed()
 tests = []
 tests.append(dict(name  = 'short_timestamps',
              NUM_EVENTS = 50,
+             NUM_REPEATS = 1,
              DELAY_MODE = 0,
              MIN_DELAY  = 0,
              MAX_DELAY  = 7))
 
 tests.append(dict(name  = 'long_timestamps',
              NUM_EVENTS = 50,
+             NUM_REPEATS = 1,
              DELAY_MODE = 0,
              MIN_DELAY  = 16,
              MAX_DELAY  = 64))
 
 tests.append(dict(name  = 'shortcorner_timestamps',
              NUM_EVENTS = 50,
+             NUM_REPEATS = 1,
              DELAY_MODE = 0,
              MIN_DELAY  = 0,
              MAX_DELAY  = 12))
 
 tests.append(dict(name  = 'corner1_timestamps',
              NUM_EVENTS = 10,
+             NUM_REPEATS = 1,
              DELAY_MODE = 0,
              MIN_DELAY  = 8,
              MAX_DELAY  = 8))
 
 tests.append(dict(name  = 'corner2_timestamps',
              NUM_EVENTS = 10,
+             NUM_REPEATS = 1,
              DELAY_MODE = 0,
              MIN_DELAY  = 9,
              MAX_DELAY  = 9))
 
 tests.append(dict(name  = 'bursts',
              NUM_EVENTS = 50,
+             NUM_REPEATS = 1,
              DELAY_MODE = 1,
              MIN_DELAY  = 0,
              MAX_DELAY  = 16))
 
+tests.append(dict(name  = 'rearm',
+             NUM_EVENTS = 10,
+             NUM_REPEATS = 5,
+             DELAY_MODE = 0,
+             MIN_DELAY  = 0,
+             MAX_DELAY  = 32))
 
 """ 
 These testcases are much longer and we don't yet care about the counter
@@ -68,8 +80,14 @@ tests.append(dict(name  = 'anything_goes',
              MAX_DELAY  = 2**16+2))
 """
 
+pass_regex = re.compile(r'^Simulation passed')
+fail_regex = re.compile(r'^SIMULATION FAILED \((\d+) errors\)')
+seed_regex = re.compile(r'^Running with pSEED=(\d+)$')
+
+passed = 0
+failed = 0
+
 # Run tests:
-logfiles = []
 start_time = int(time.time())
 outfile = open('regress.out', 'w')
 for test in tests:
@@ -86,37 +104,30 @@ for test in tests:
       makeargs.append("SEED=%d" % seed)
 
       # run:
-      print("Running %s..." % logfile)
+      print("Running %s... " % logfile, end='', flush=True)
       subprocess.run(makeargs, stdout=outfile, stderr=outfile)
-      # TODO: print pass/fail here, rather than after all tests have run
 
-      logfiles.append(logfile)
+      # check pass/fail:
+      log = open(logfile, 'r')
+      seed = 0
+      for line in log:
+         pass_matches = pass_regex.search(line)
+         fail_matches = fail_regex.search(line)
+         seed_matches = seed_regex.search(line)
+         if seed_matches:
+            seed = int(seed_matches.group(1))
+         elif pass_matches:
+            passed += 1
+            print("pass");
+            break
+         elif fail_matches:
+            failed += 1
+            print("FAILED! %d errors, seed = %d" % (int(fail_matches.group(1)), seed))
+            break
 
 
-# Check for pass/fail and summarize results:
+# Summarize results:
 print('\n*** RESULTS SUMMARY ***')
-pass_regex = re.compile(r'^Simulation passed')
-fail_regex = re.compile(r'^SIMULATION FAILED \((\d+) errors\)')
-seed_regex = re.compile(r'^Running with pSEED=(\d+)$')
-passed = 0
-failed = 0
-for logfile in logfiles:
-   log = open(logfile, 'r')
-   seed = 0
-   for line in log:
-      pass_matches = pass_regex.search(line)
-      fail_matches = fail_regex.search(line)
-      seed_matches = seed_regex.search(line)
-      if seed_matches:
-         seed = int(seed_matches.group(1))
-      elif pass_matches:
-         passed += 1
-         break
-      elif fail_matches:
-         failed += 1
-         print("Test %s failed! %d errors. Seed = %d" % (logfile, int(fail_matches.group(1)), seed))
-         break
-
-print('\n*** Totals: %d tests passing, %d tests failing.' % (passed, failed))
+print('%d tests passing, %d tests failing.' % (passed, failed))
 print('Elapsed time: %d seconds' % (int(time.time() - start_time)))
 
