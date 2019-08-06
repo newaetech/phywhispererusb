@@ -91,7 +91,7 @@ module pw_pattern_matcher #(
             match_trigger <= 1'b0;
          end
 
-         else if (I_fe_data_valid && I_arm) begin
+         else if (I_fe_data_valid && I_arm && (match_counter < I_pattern_bytes)) begin
             if (masked_pattern_byte == masked_input_byte)
                match_counter <= match_counter + 1;
             // maybe we thought we were onto a pattern match but actually the pattern match is starting NOW:
