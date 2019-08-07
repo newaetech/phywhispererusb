@@ -10,6 +10,7 @@ VALID=50
 LOGFILE=sim.log
 SEED=0
 VERBOSE=0
+TIMEOUT=50000
 WAVEFORMAT=fst
 
 all: compile run
@@ -30,6 +31,7 @@ compile:
 	-P tb_pw.pPATTERN_BYTES_MAX=$(PATTERN_MAX) \
 	-P tb_pw.pPVALID=$(VALID) \
 	-P tb_pw.pSEED=$(SEED) \
+	-P tb_pw.pTIMEOUT=$(TIMEOUT) \
 	-P tb_pw.pVERBOSE=$(VERBOSE)
 
 run:

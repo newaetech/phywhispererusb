@@ -41,7 +41,8 @@ module tb_pw();
     parameter pPATTERN_BYTES_MAX = 64;
     parameter pPVALID = 50;
     parameter pSEED = 1;
-
+    parameter pFIFO_DEPTH = 8192;
+    parameter pTIMEOUT = 50000;
 
     reg           usb_clk;
     wire [7:0]    USB_Data;
@@ -138,11 +139,11 @@ module tb_pw();
    int errors;
    int time_counter;
    string str;
-   reg fe_data_event [0:2047];
-   reg [7:0] fe_bytes [0:2047];
-   reg [4:0] fe_stat [0:2047];
+   reg fe_data_event [0:pFIFO_DEPTH];
+   reg [7:0] fe_bytes [0:pFIFO_DEPTH];
+   reg [4:0] fe_stat [0:pFIFO_DEPTH];
    reg [4:0] pattern_fe_stat;
-   reg [15:0] fe_times [0:2047];
+   reg [15:0] fe_times [0:pFIFO_DEPTH];
    reg [7:0] sniff_bytes [0:7];
    reg [7:0] match_pattern [0:pPATTERN_BYTES_MAX-1];
    int pattern_bytes;
@@ -153,8 +154,8 @@ module tb_pw();
 
    // timeout thread:
    initial begin
-      //#(pFE_CLOCK_PERIOD*100000);
-      #(pFE_CLOCK_PERIOD*50000);
+      // TODO: check whether this is a good timeout value
+      #(pFE_CLOCK_PERIOD*pTIMEOUT);
       errors += 1;
       $display("ERROR: global timeout");
       $display("SIMULATION FAILED (%0d errors).", errors);
@@ -180,7 +181,11 @@ module tb_pw();
 
       write_1byte(`REG_PATTERN_BYTES, pattern_bytes);
       write_1byte(`REG_PATTERN_ACTION, `PM_CAPTURE);
-      write_1byte(`REG_CAPTURE_LEN, pNUM_EVENTS);
+
+      rw_lots_bytes(`REG_CAPTURE_LEN);
+      write_next_byte(pNUM_EVENTS & 255);
+      write_next_byte(pNUM_EVENTS >> 8);
+      //#(pFE_CLOCK_PERIOD*10) $finish;
 
 
       if (pVERBOSE) begin
@@ -269,9 +274,9 @@ module tb_pw();
          send_fe_data(fe_data_event[txindex], fe_bytes[txindex], fe_stat[txindex], fe_times[txindex+1]);
          if (pVERBOSE)
             if (fe_data_event[txindex])
-               $display("DATA: data=%h, stat=%h, delay=%0d", fe_bytes[txindex], fe_stat[txindex], fe_times[txindex+1]);
+               $display("Write #%0d: DATA: data=%h, stat=%h, delay=%0d", txindex, fe_bytes[txindex], fe_stat[txindex], fe_times[txindex+1]);
             else
-               $display("STAT:          stat=%h, delay=%0d", fe_stat[txindex], fe_times[txindex+1]);
+               $display("Write #%0d: STAT:          stat=%h, delay=%0d", txindex, fe_stat[txindex], fe_times[txindex+1]);
       end
       fe_rxvalid = 1'b0;
 
@@ -349,7 +354,7 @@ module tb_pw();
             time_counter = time_counter + timestamp;
             if ( (data == expected_data) && (dut_usbstat == fe_stat[rx_dataindex]) && (time_counter == fe_times[rx_dataindex]) ) begin
                if (pVERBOSE)
-                  $display("\t\t\t\t\t%s: data=%h, stat=%h, time=%0d, total time=%0d", str, data, dut_usbstat, timestamp, time_counter);
+                  $display("\t\t\t\t\tRead #%0d: %s: data=%h, stat=%h, time=%0d, total time=%0d", rx_dataindex, str, data, dut_usbstat, timestamp, time_counter);
             end
             else begin
                errors += 1;
@@ -424,7 +429,7 @@ module tb_pw();
       USB_Addr = address;
       @(posedge usb_clk);
       USB_SPARE1 = 1;
-      repeat(4) @(posedge usb_clk);
+      repeat(2) @(posedge usb_clk);
       USB_nRD = 0;
       USB_nCS = 0;
       @(posedge usb_clk);
@@ -443,7 +448,7 @@ module tb_pw();
       USB_Addr = address;
       @(posedge usb_clk);
       USB_SPARE1 = 1;
-      repeat(4) @(posedge usb_clk);
+      repeat(2) @(posedge usb_clk);
    endtask
 
    task read_next_byte;

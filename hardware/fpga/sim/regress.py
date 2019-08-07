@@ -18,6 +18,7 @@ random.seed()
 # Define testcases:
 tests = []
 tests.append(dict(name  = 'short_timestamps',
+             frequency = 1,
              NUM_EVENTS = 50,
              NUM_REPEATS = 1,
              DELAY_MODE = 0,
@@ -25,6 +26,7 @@ tests.append(dict(name  = 'short_timestamps',
              MAX_DELAY  = 7))
 
 tests.append(dict(name  = 'long_timestamps',
+             frequency = 1,
              NUM_EVENTS = 50,
              NUM_REPEATS = 1,
              DELAY_MODE = 0,
@@ -32,6 +34,7 @@ tests.append(dict(name  = 'long_timestamps',
              MAX_DELAY  = 64))
 
 tests.append(dict(name  = 'shortcorner_timestamps',
+             frequency = 1,
              NUM_EVENTS = 50,
              NUM_REPEATS = 1,
              DELAY_MODE = 0,
@@ -39,6 +42,7 @@ tests.append(dict(name  = 'shortcorner_timestamps',
              MAX_DELAY  = 12))
 
 tests.append(dict(name  = 'corner1_timestamps',
+             frequency = 5,
              NUM_EVENTS = 10,
              NUM_REPEATS = 1,
              DELAY_MODE = 0,
@@ -46,6 +50,7 @@ tests.append(dict(name  = 'corner1_timestamps',
              MAX_DELAY  = 8))
 
 tests.append(dict(name  = 'corner2_timestamps',
+             frequency = 5,
              NUM_EVENTS = 10,
              NUM_REPEATS = 1,
              DELAY_MODE = 0,
@@ -53,6 +58,7 @@ tests.append(dict(name  = 'corner2_timestamps',
              MAX_DELAY  = 9))
 
 tests.append(dict(name  = 'bursts',
+             frequency = 1,
              NUM_EVENTS = 50,
              NUM_REPEATS = 1,
              DELAY_MODE = 1,
@@ -60,11 +66,13 @@ tests.append(dict(name  = 'bursts',
              MAX_DELAY  = 16))
 
 tests.append(dict(name  = 'rearm',
+             frequency = 1,
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
              DELAY_MODE = 0))
 
 tests.append(dict(name  = 'shortpattern',
+             frequency = 1,
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
              DELAY_MODE = 0,
@@ -73,35 +81,47 @@ tests.append(dict(name  = 'shortpattern',
              PATTERN_MAX = 3))
 
 tests.append(dict(name  = 'longpattern',
+             frequency = 1,
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
              DELAY_MODE = 0,
              PATTERN_MIN = 16,
              PATTERN_MAX = 64))
 
-""" 
 tests.append(dict(name  = 'longcapture',
-             NUM_EVENTS = 4096,
+             frequency = 10,
+             TIMEOUT = 200000,
+             NUM_EVENTS = 8192,
              NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY=0,
-             MAX_DELAY=5))
+             MAX_DELAY=3))
 
 
+""" 
 These testcases are much longer and we don't yet care about the counter
 overflow event that they cover:
+"""
 tests.append(dict(name  = 'vlong_timestamps',
+             frequency = 0,
+             TIMEOUT = 400000,
              NUM_EVENTS = 5,
              DELAY_MODE = 0,
+             PRETRIG_MAX = 2,
+             PATTERN_MAX = 4,
              MIN_DELAY  = 2**16-2,
              MAX_DELAY  = 2**18))
 
 tests.append(dict(name  = 'anything_goes',
+             frequency = 0,
+             TIMEOUT = 800000,
              NUM_EVENTS = 20,
+             PRETRIG_MAX = 10,
+             PATTERN_MAX = 4,
              DELAY_MODE = 0,
              MIN_DELAY  = 0,
              MAX_DELAY  = 2**16+2))
-"""
+
 
 # if running a single testcase:
 if (args.test):
@@ -130,12 +150,18 @@ start_time = int(time.time())
 outfile = open('regress.out', 'w')
 for test in tests:
    for i in range(args.runs):
+      run_test = True
       # build make command:
       makeargs = ['make', 'all', 'VERBOSE=1']
       for key in test.keys():
          if key == 'name':
             logfile = "%s%d.log" % (test[key], i) 
             makeargs.append("LOGFILE=%s" % logfile)
+         elif key == 'frequency':
+            if test[key] == 0:
+               run_test = False
+            elif i % test[key]:
+               run_test = False
          else:
             makeargs.append("%s=%s" % (key, test[key]))
       if (args.seed):
@@ -145,26 +171,27 @@ for test in tests:
       makeargs.append("SEED=%d" % seed)
 
       # run:
-      print("Running %s... " % logfile, end='', flush=True)
-      subprocess.run(makeargs, stdout=outfile, stderr=outfile)
+      if run_test:
+         print("Running %s... " % logfile, end='', flush=True)
+         subprocess.run(makeargs, stdout=outfile, stderr=outfile)
 
-      # check pass/fail:
-      log = open(logfile, 'r')
-      seed = 0
-      for line in log:
-         pass_matches = pass_regex.search(line)
-         fail_matches = fail_regex.search(line)
-         seed_matches = seed_regex.search(line)
-         if seed_matches:
-            seed = int(seed_matches.group(1))
-         elif pass_matches:
-            passed += 1
-            print("pass");
-            break
-         elif fail_matches:
-            failed += 1
-            print("FAILED! %d errors, seed = %d" % (int(fail_matches.group(1)), seed))
-            break
+         # check pass/fail:
+         log = open(logfile, 'r')
+         seed = 0
+         for line in log:
+            pass_matches = pass_regex.search(line)
+            fail_matches = fail_regex.search(line)
+            seed_matches = seed_regex.search(line)
+            if seed_matches:
+               seed = int(seed_matches.group(1))
+            elif pass_matches:
+               passed += 1
+               print("pass")
+               break
+            elif fail_matches:
+               failed += 1
+               print("FAILED! %d errors, seed = %d" % (int(fail_matches.group(1)), seed))
+               break
 
 
 # Summarize results:
