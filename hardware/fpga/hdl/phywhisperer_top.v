@@ -32,6 +32,10 @@ module phywhisperer_top(
     input wire          USB_SPARE0,
     input wire          USB_SPARE1,
 
+    `ifdef __ICARUS__
+    input wire  I_trigger_clk, // for simulation only
+    `endif
+
     /* FRONT END CONNECTIONS */
     output wire fe_xcvrsel0,
     output wire fe_xcvrsel1,
@@ -79,6 +83,8 @@ module phywhisperer_top(
    parameter pTIMESTAMP_FULL_WIDTH = 16;
    parameter pTIMESTAMP_SHORT_WIDTH = 3;
    parameter pPATTERN_BYTES = 64;
+   parameter pTRIGGER_DELAY_WIDTH = 20;
+   parameter pTRIGGER_WIDTH_WIDTH = 17;
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -120,6 +126,9 @@ module phywhisperer_top(
    wire fifo_full;
    wire arm;
    wire capturing;
+
+   wire [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay;
+   wire [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width;
 
    wire [pPATTERN_BYTES*8-1:0] pattern;
    wire [pPATTERN_BYTES*8-1:0] pattern_mask;
@@ -181,7 +190,9 @@ module phywhisperer_top(
    reg_pw #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
-      .pPATTERN_BYTES           (pPATTERN_BYTES)
+      .pPATTERN_BYTES           (pPATTERN_BYTES),
+      .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
+      .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH)
    ) U_reg_pw (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -208,6 +219,10 @@ module phywhisperer_top(
       .O_timestamps_disable     (timestamps_disable),
       .O_capture_len            (capture_len),
       .O_fifo_full              (fifo_full),
+
+      // Trigger:
+      .O_trigger_delay          (trigger_delay),
+      .O_trigger_width          (trigger_width),
 
       // PM:
       .O_arm                    (arm),
@@ -348,22 +363,22 @@ module phywhisperer_top(
     assign psincdec = 1'b0;
 
     `ifndef __ICARUS__
-
         clk_wiz_0 U_trigger_clock (
           .reset        (reset_i),
           .clk_in1      (clk_fe_buf),
           .clk_out1     (trigger_clk),
-
           // Dynamic phase shift ports
           .psclk        (clk_usb_buf),
           .psen         (psen),
           .psincdec     (psincdec),
           .psdone       (psdone),
-
           // Status and control signals
           .locked       (trigger_clk_locked)
        );
-
+    `else
+       assign trigger_clk_locked = 1'b1;
+       assign psdone = 1'b1;
+       assign trigger_clk = I_trigger_clk;
     `endif
 
 
@@ -387,13 +402,16 @@ module phywhisperer_top(
    );
 
 
-   pw_trigger U_trigger (
+   pw_trigger #(
+      .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
+      .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH)
+   ) U_trigger (
       .reset_i          (reset_i),
       .trigger_clk      (trigger_clk),
       .usb_clk          (clk_usb_buf),
       .O_trigger        (cw_trig),
-      //.O_trigger        (),
-      .I_offset         (4'b0),
+      .I_trigger_delay  (trigger_delay),
+      .I_trigger_width  (trigger_width),
       .I_match          (trigger_match)
    );
 

@@ -25,7 +25,9 @@
 module reg_pw #(
    parameter pTIMESTAMP_FULL_WIDTH = 16,
    parameter pTIMESTAMP_SHORT_WIDTH = 3,
-   parameter pPATTERN_BYTES = 8
+   parameter pPATTERN_BYTES = 8,
+   parameter pTRIGGER_DELAY_WIDTH = 20,
+   parameter pTRIGGER_WIDTH_WIDTH = 16
 )(
    input  wire         reset_i,
 
@@ -62,7 +64,11 @@ module reg_pw #(
    output wire [8*pPATTERN_BYTES-1:0] O_pattern_mask,
    output wire [1:0] O_pattern_action,
    output wire [7:0] O_pattern_bytes,
-   input  wire         I_match
+   input  wire         I_match,
+
+// Interface to trigger generator:
+   output wire [pTRIGGER_DELAY_WIDTH-1:0] O_trigger_delay,
+   output wire [pTRIGGER_WIDTH_WIDTH-1:0] O_trigger_width
 
 );
 
@@ -82,6 +88,8 @@ module reg_pw #(
    reg [1:0] reg_pattern_action;
    reg [7:0] reg_pattern_bytes;
    reg [15:0] reg_capture_len;
+   reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
+   reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
 
    // TODO: remove these counters
    reg usb_read_counter_clear;
@@ -113,6 +121,8 @@ module reg_pw #(
    assign O_pattern_action = reg_pattern_action;
    assign O_pattern_bytes = reg_pattern_bytes;
    assign O_capture_len = reg_capture_len;
+   assign O_trigger_delay = reg_trigger_delay;
+   assign O_trigger_width = reg_trigger_width;
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -171,6 +181,8 @@ module reg_pw #(
          reg_pattern_action <= 0;
          reg_pattern_bytes <= 8'd0;
          reg_capture_len <= 0;
+         reg_trigger_delay <= 0;
+         reg_trigger_width <= 0;
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -185,6 +197,8 @@ module reg_pw #(
                `REG_PATTERN_ACTION: reg_pattern_action[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_BYTES: reg_pattern_bytes <= write_data;
                `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data;
             endcase
          end
          else begin

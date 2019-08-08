@@ -112,7 +112,7 @@ module pw_pattern_matcher #(
 
    assign O_match = match_trigger;// & !match_trigger_r;
    assign O_match_capture = O_match & (I_action == `PM_CAPTURE);
-   assign O_match_trigger = O_match & (I_action == `PM_TRIGGER);
+   assign O_match_trigger = match_trigger & !match_trigger_r & (I_action == `PM_TRIGGER);
 
 
 endmodule

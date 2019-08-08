@@ -34,6 +34,8 @@
 `define REG_PATTERN_BYTES            6'h0d
 `define REG_CAPTURE_LEN              6'h0e
 `define REG_SNIFF_FIFO_STAT          6'h0f
+`define REG_TRIGGER_DELAY            6'h10
+`define REG_TRIGGER_WIDTH            6'h11
 
 `define REG_TEST_LEN                 4
 `define REG_FE_LEN                   1
