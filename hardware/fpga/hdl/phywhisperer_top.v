@@ -396,6 +396,7 @@ module phywhisperer_top(
       .I_fe_data        (fe_capture_sniff_data),
       .I_fe_data_valid  (fe_capture_sniff_wr),
       .I_capturing      (capturing),
+      .I_trigger_out    (cw_trig),
       .O_match          (match),
       .O_match_capture  (capture_match),
       .O_match_trigger  (trigger_match)
@@ -408,7 +409,6 @@ module phywhisperer_top(
    ) U_trigger (
       .reset_i          (reset_i),
       .trigger_clk      (trigger_clk),
-      .usb_clk          (clk_usb_buf),
       .O_trigger        (cw_trig),
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),

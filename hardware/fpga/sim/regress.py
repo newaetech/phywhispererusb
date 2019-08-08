@@ -20,23 +20,38 @@ tests = []
 tests.append(dict(name  = 'short_timestamps',
              frequency = 1,
              NUM_EVENTS = 50,
-             NUM_REPEATS = 1,
+             NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY  = 0,
              MAX_DELAY  = 7))
 
 tests.append(dict(name  = 'long_timestamps',
              frequency = 1,
-             NUM_EVENTS = 50,
-             NUM_REPEATS = 1,
+             NUM_EVENTS = 30,
+             NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY  = 16,
              MAX_DELAY  = 64))
 
+tests.append(dict(name  = 'trigger',
+             frequency = 1,
+             NUM_REPEATS = 10,
+             ACTION = 2))
+
+tests.append(dict(name  = 'long_trigger',
+             frequency = 10,
+             TIMEOUT = 500000,
+             TRIGGER_DELAY_MIN = 256,
+             TRIGGER_DELAY_MAX = 2**20-1,
+             TRIGGER_WIDTH_MIN = 256,
+             TRIGGER_WIDTH_MAX = 2**17-1,
+             NUM_REPEATS = 2,
+             ACTION = 2))
+
 tests.append(dict(name  = 'shortcorner_timestamps',
              frequency = 1,
-             NUM_EVENTS = 50,
-             NUM_REPEATS = 1,
+             NUM_EVENTS = 10,
+             NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY  = 0,
              MAX_DELAY  = 12))
@@ -44,7 +59,7 @@ tests.append(dict(name  = 'shortcorner_timestamps',
 tests.append(dict(name  = 'corner1_timestamps',
              frequency = 5,
              NUM_EVENTS = 10,
-             NUM_REPEATS = 1,
+             NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY  = 8,
              MAX_DELAY  = 8))
@@ -52,7 +67,7 @@ tests.append(dict(name  = 'corner1_timestamps',
 tests.append(dict(name  = 'corner2_timestamps',
              frequency = 5,
              NUM_EVENTS = 10,
-             NUM_REPEATS = 1,
+             NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY  = 9,
              MAX_DELAY  = 9))
@@ -60,7 +75,7 @@ tests.append(dict(name  = 'corner2_timestamps',
 tests.append(dict(name  = 'bursts',
              frequency = 1,
              NUM_EVENTS = 50,
-             NUM_REPEATS = 1,
+             NUM_REPEATS = 2,
              DELAY_MODE = 1,
              MIN_DELAY  = 0,
              MAX_DELAY  = 16))
@@ -145,9 +160,16 @@ seed_regex = re.compile(r'^Running with pSEED=(\d+)$')
 passed = 0
 failed = 0
 
+# Check once that compile passes:
+outfile = open('regress.out', 'w')
+makeargs = ['make', 'compile']
+result = subprocess.run(makeargs, stdout=outfile, stderr=outfile)
+if result.returncode:
+   print ("Compilation failed (return code: %d), check regress.out." % result.returncode)
+   quit()
+
 # Run tests:
 start_time = int(time.time())
-outfile = open('regress.out', 'w')
 for test in tests:
    for i in range(args.runs):
       run_test = True
@@ -155,7 +177,7 @@ for test in tests:
       makeargs = ['make', 'all', 'VERBOSE=1']
       for key in test.keys():
          if key == 'name':
-            logfile = "%s%d.log" % (test[key], i) 
+            logfile = "results/%s%d.log" % (test[key], i) 
             makeargs.append("LOGFILE=%s" % logfile)
          elif key == 'frequency':
             if test[key] == 0:

@@ -28,7 +28,6 @@ module pw_trigger #(
 )(
    input  wire         reset_i,
    input  wire         trigger_clk,
-   input  wire         usb_clk,
    output reg          O_trigger,
 
    // from register block:
@@ -43,7 +42,36 @@ module pw_trigger #(
    reg [pTRIGGER_WIDTH_WIDTH-1:0] width_counter;
    reg delay_counter_running;
    reg width_counter_running;
-   reg trigger_r;
+
+   `ifdef ILA_TRIG
+      reg match_r;
+      reg [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay_r;
+      reg [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width_r;
+      always @ (posedge trigger_clk) begin
+         if (reset_i) begin
+            match_r <= 1'b0;
+            trigger_delay_r <= 0;
+            trigger_width_r <= 0;
+         end
+         else begin
+            match_r <= I_match;
+            trigger_delay_r <= I_trigger_delay;
+            trigger_width_r <= I_trigger_width;
+         end
+      end
+      ila_4 I_ila_trigger (
+         .clk          (trigger_clk),           // input wire clk
+         .probe0       (match_r),               // input wire [0:0]  probe0  
+         .probe1       (delay_counter),         // input wire [19:0]  probe1 
+         .probe2       (width_counter),         // input wire [16:0]  probe2 
+         .probe3       (trigger_delay_r),       // input wire [19:0]  probe3 
+         .probe4       (trigger_width_r),       // input wire [16:0]  probe4 
+         .probe5       (delay_counter_running), // input wire [0:0]  probe5 
+         .probe6       (width_counter_running), // input wire [0:0]  probe6 
+         .probe7       (O_trigger)              // input wire [0:0]  probe7 
+      );
+   `endif
+
 
    // TODO: CDC on I_match; ideally getting a single-cycle pulse, will prevent two triggers from being issued
    // within a single 4-cycle I_match pulse
@@ -54,12 +82,9 @@ module pw_trigger #(
          width_counter <= 1;
          width_counter_running <= 1'b0;
          O_trigger <= 1'b0;
-         trigger_r <= 1'b0;
       end
 
       else begin
-         trigger_r <= O_trigger;
-
          if (O_trigger) 
             delay_counter_running <= 1'b0;
          else if (I_match) 

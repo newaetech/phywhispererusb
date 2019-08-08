@@ -40,6 +40,9 @@ module pw_pattern_matcher #(
    input  wire  I_fe_data_valid,
    input  wire  I_capturing,
 
+   // from trigger block:
+   input  wire  I_trigger_out,
+
    // to register block:
    output wire  O_match,
 
@@ -86,7 +89,7 @@ module pw_pattern_matcher #(
          capturing_r <= I_capturing;
 
          // end of capture is a good time to reset these:
-         if (match_trigger && capture_done) begin
+         if (match_trigger && (capture_done || I_trigger_out)) begin
             match_counter <= 0;
             match_trigger <= 1'b0;
          end
