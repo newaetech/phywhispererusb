@@ -96,6 +96,12 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 
 set_property PACKAGE_PIN P2 [get_ports cw_trig]
 set_property PACKAGE_PIN B1 [get_ports cw_clk]
+
+set_property PACKAGE_PIN M13 [get_ports mcx_trig]
+
+set_property PACKAGE_PIN D2 [get_ports LED_TRIG]
+set_property PACKAGE_PIN A2 [get_ports LED_CAP]
+
 #set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 #set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 #set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]

@@ -75,6 +75,9 @@ module phywhisperer_top(
     output wire cw_clk,
     output wire cw_trig,
 
+    /* MCX CONNECTOR */
+    output wire mcx_trig,
+
     /* LEDs */
     output wire LED_TRIG,
     output wire LED_CAP
@@ -137,6 +140,8 @@ module phywhisperer_top(
 
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
+
+   assign mcx_trig = cw_trig;
 
    `ifdef __ICARUS__
       assign clk_fe_buf = fe_clk;
@@ -241,6 +246,7 @@ module phywhisperer_top(
    ) U_fe_capture (
       .reset_i                  (reset_i), 
       .fe_clk                   (clk_fe_buf), 
+      .I_arm                    (arm),
       .I_timestamps_disable     (timestamps_disable),
       .I_capture_enable         (capture_match),
       .I_capture_len            (capture_len),
@@ -296,7 +302,7 @@ module phywhisperer_top(
     //assign userio_d[7:4] = USB_Addr[3:0];
 
 
-    `ifdef ILA
+    `ifdef ILA_FE
        wire [31:0] ila_probe;
 
        assign ila_probe[7:0] = fe_data;
@@ -387,7 +393,6 @@ module phywhisperer_top(
    ) U_pattern_matcher (
       .reset_i          (reset_i),
       .fe_clk           (clk_fe_buf),
-      .usb_clk          (clk_usb_buf),
       .I_arm            (arm),
       .I_pattern        (pattern),
       .I_mask           (pattern_mask),
@@ -409,6 +414,7 @@ module phywhisperer_top(
    ) U_trigger (
       .reset_i          (reset_i),
       .trigger_clk      (trigger_clk),
+      .fe_clk           (clk_fe_buf),
       .O_trigger        (cw_trig),
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),

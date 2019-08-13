@@ -26,7 +26,6 @@ module pw_pattern_matcher #(
 )(
    input  wire  reset_i,
    input  wire  fe_clk,
-   input  wire  usb_clk, // TODO: needed? try to have everything here in fe_clk domain
 
    // from register block:
    input  wire  I_arm,

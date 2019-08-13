@@ -39,6 +39,7 @@ module fe_capture #(
 
     /* REGISTER CONNECTIONS */
     input  wire I_timestamps_disable,
+    input  wire I_arm,
     input  wire [15:0] I_capture_len,
     input  wire I_fifo_full,
     output reg  [1:0] O_command,
@@ -85,7 +86,7 @@ module fe_capture #(
     reg  usb_event_reg;
     reg  [15:0] capture_count;
     wire capture_allowed;
-    reg  capture_enable_r;
+    reg  arm_r;
 
 
     assign fe_status_bits[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_STATUS_BITS_START] = fe_rxactive;
@@ -139,9 +140,14 @@ module fe_capture #(
        case (state)
 
           pS_IDLE: begin
-             if (usb_event_reg && short_timestamp && I_capture_enable)
+             // Note: capture_allowed is what stops capturing when we've captured enough bytes;
+             // there is a bit of a lag here so it's possible to capture one or two more events
+             // than we should. Could be fixed but it's not a problem since the FIFO gets flushed
+             // upon re-arming. And the Xilinx FIFO is actually deeper than the requested 8192 anyway.
+             // And we don't allow overflow writes anyway.
+             if (usb_event_reg && short_timestamp && I_capture_enable && capture_allowed)
                 next_state = pS_DATA;
-             else if (usb_event && !short_timestamp_pre && I_capture_enable)
+             else if (usb_event && !short_timestamp_pre && I_capture_enable && capture_allowed)
                 // do FE_FIFO_CMD_TIME packet one cycle early so we don't get caught behind, 
                 // for the corner case of back-to-back events following a long idle time:
                 next_state = pS_TIME;
@@ -161,7 +167,7 @@ module fe_capture #(
 
 
           pS_TIME: begin
-             if (usb_event_reg)
+             if (usb_event_reg && capture_allowed)
                 next_state = pS_DATA;
              else
                 next_state = pS_IDLE;
@@ -274,11 +280,11 @@ module fe_capture #(
     always @ (posedge fe_clk) begin
        if (reset_i) begin
           capture_count <= 16'd0;
-          capture_enable_r <= 1'b0;
+          arm_r <= 1'b0;
        end
        else begin
-          capture_enable_r <= I_capture_enable;
-          if (I_capture_enable & !capture_enable_r)
+          arm_r <= I_arm;
+          if (I_arm & !arm_r)
              capture_count <= 16'd0;
           else if (O_data_wr)
              capture_count <= capture_count + 1;

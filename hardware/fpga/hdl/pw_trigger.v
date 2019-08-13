@@ -28,6 +28,7 @@ module pw_trigger #(
 )(
    input  wire         reset_i,
    input  wire         trigger_clk,
+   input  wire         fe_clk,
    output reg          O_trigger,
 
    // from register block:
@@ -38,11 +39,10 @@ module pw_trigger #(
    input  wire         I_match
 );
 
-   reg [pTRIGGER_DELAY_WIDTH-1:0] delay_counter;
-   reg [pTRIGGER_WIDTH_WIDTH-1:0] width_counter;
-   reg delay_counter_running;
-   reg width_counter_running;
-
+   reg  [pTRIGGER_DELAY_WIDTH-1:0] delay_counter;
+   reg  [pTRIGGER_WIDTH_WIDTH-1:0] width_counter;
+   reg  delay_counter_running;
+   reg  width_counter_running;
    `ifdef ILA_TRIG
       reg match_r;
       reg [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay_r;
@@ -68,9 +68,11 @@ module pw_trigger #(
          .probe4       (trigger_width_r),       // input wire [16:0]  probe4 
          .probe5       (delay_counter_running), // input wire [0:0]  probe5 
          .probe6       (width_counter_running), // input wire [0:0]  probe6 
-         .probe7       (O_trigger)              // input wire [0:0]  probe7 
+         .probe7       (O_trigger),             // input wire [0:0]  probe7 
+         .probe8       (1'b0)                   // input wire [0:0]  probe8 
       );
    `endif
+
 
 
    // TODO: CDC on I_match; ideally getting a single-cycle pulse, will prevent two triggers from being issued

@@ -99,14 +99,17 @@ module reg_pw #(
    wire fe_write_counter_clear;
 
    wire sniff_fifo_full;
-   wire sniff_fifo_overflow;
    wire sniff_fifo_empty;
+   reg  sniff_fifo_overflow_blocked;
    wire sniff_fifo_underflow;
+   reg  sniff_fifo_underflow_sticky;
    reg  sniff_fifo_wr_en;
    wire sniff_fifo_rd_en;
    reg  [17:0] sniff_fifo_din;
    wire [17:0] sniff_fifo_dout;
+   wire sniff_fifo_empty_threshold_xilinx;
    wire sniff_fifo_empty_threshold;
+   wire sniff_fifo_full_threshold_xilinx;
    wire sniff_fifo_full_threshold;
 
    reg  [7:0] reg_read_data;
@@ -212,7 +215,7 @@ module reg_pw #(
       end
    end
 
-   // extend fe_write_counter_clear_trig because it gets used in a different clock domain:
+   // extend fe_write_counter_clear_trig because it gets used in a different clock domain: (TODO: remove)
    always @(posedge cwusb_clk) begin
       fe_write_counter_clear_r1 <= fe_write_counter_clear_trig;
       fe_write_counter_clear_r2 <= fe_write_counter_clear_r1;
@@ -248,9 +251,11 @@ module reg_pw #(
       if (reset_i) begin
          sniff_fifo_wr_en <= 1'b0;
          sniff_fifo_din <= 0;
+         sniff_fifo_overflow_blocked <= 1'b0;
       end
       else begin
-         if (I_fe_capture_data_wr && !sniff_fifo_full) begin
+         // don't overflow the FIFO:
+         if (I_fe_capture_data_wr & !sniff_fifo_full) begin
             sniff_fifo_wr_en <= 1'b1;
             sniff_fifo_din[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] <= I_fe_capture_cmd;
             case (I_fe_capture_cmd)
@@ -272,6 +277,12 @@ module reg_pw #(
          else
             sniff_fifo_wr_en <= 1'b0;
 
+         // if a write WOULD have overflowed the FIFO, log it:
+         if (I_fe_capture_data_wr & sniff_fifo_full)
+            sniff_fifo_overflow_blocked <= 1'b1;
+         else if (reg_arm) // TODO: CDC
+            sniff_fifo_overflow_blocked <= 1'b0;
+
       end
    end
 
@@ -280,6 +291,19 @@ module reg_pw #(
    assign sniff_fifo_rd_en = ( reg_addrvalid && reg_read &&   // TODO: guard against underflow
                               (reg_address == `REG_SNIFF_FIFO_RD) &&
                               (reg_bytecnt == 0) ) || (flushing & ~sniff_fifo_empty);
+
+   // Xilinx FIFO underflow flag isn't sticky, so create our own:
+   always @(posedge cwusb_clk) begin
+      if (reset_i) begin
+         sniff_fifo_underflow_sticky <= 1'b0;
+      end
+      else begin
+         if (sniff_fifo_underflow)
+            sniff_fifo_underflow_sticky <= 1'b1;
+         else if (reg_arm)
+            sniff_fifo_underflow_sticky <= 1'b0;
+      end
+   end
 
    // TODO: add a flushing mechanism; flush when:
    // - arming (done)
@@ -306,25 +330,28 @@ module reg_pw #(
      .wr_en          (sniff_fifo_wr_en),
      .din            (sniff_fifo_din),
      .full           (sniff_fifo_full),
-     .overflow       (sniff_fifo_overflow),
-     .prog_full      (sniff_fifo_full_threshold),
+     .prog_full      (sniff_fifo_full_threshold_xilinx),
 
      // Read port:
      .rd_clk         (cwusb_clk),
      .rd_en          (sniff_fifo_rd_en),
      .dout           (sniff_fifo_dout),
-     .empty          (sniff_fifo_empty),
      .underflow      (sniff_fifo_underflow),
-     .prog_empty     (sniff_fifo_empty_threshold)
+     .empty          (sniff_fifo_empty),
+     .prog_empty     (sniff_fifo_empty_threshold_xilinx)
    );
+
+   // these definitions are more useful:
+   assign sniff_fifo_empty_threshold = sniff_fifo_empty_threshold_xilinx & !sniff_fifo_empty;
+   assign sniff_fifo_full_threshold = sniff_fifo_full_threshold_xilinx & !sniff_fifo_full;
 
    assign O_fifo_full = sniff_fifo_full;
    assign fifo_status[`FIFO_STAT_EMPTY] = sniff_fifo_empty;
-   assign fifo_status[`FIFO_STAT_UNDERFLOW] = sniff_fifo_underflow; // TODO: check how this signals behaves, so it can be usefully captured
+   assign fifo_status[`FIFO_STAT_UNDERFLOW] = sniff_fifo_underflow_sticky;
    assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = sniff_fifo_empty_threshold;
    // TODO: CDC on write side flags:
    assign fifo_status[`FIFO_STAT_FULL] = sniff_fifo_full;
-   assign fifo_status[`FIFO_STAT_OVERFLOW] = sniff_fifo_overflow;
+   assign fifo_status[`FIFO_STAT_OVERFLOW_BLOCKED] = sniff_fifo_overflow_blocked;
    assign fifo_status[`FIFO_STAT_FULL_THRESHOLD] = sniff_fifo_full_threshold;
 
 
@@ -339,7 +366,7 @@ module reg_pw #(
        assign ila_probe[40] = reg_addrvalid;
        assign ila_probe[41] = sniff_fifo_rd_en;
        assign ila_probe[42] = sniff_fifo_empty;
-       assign ila_probe[43] = sniff_fifo_underflow;
+       assign ila_probe[43] = sniff_fifo_underflow_sticky;
        assign ila_probe[51:44] = sniff_fifo_dout[15:8]; // TODO: upsize
        assign ila_probe[59:52] = reg_read_data;
        assign ila_probe[63:60] = 0;
@@ -348,22 +375,22 @@ module reg_pw #(
 
    `endif
 
-   `ifdef ILA_REG
+   `ifdef ILA
        ila_3 U_fe_fifo_wr_ila (
           .clk          (fe_clk),
           .probe0       (sniff_fifo_wr_en),
           .probe1       (sniff_fifo_full),
-          .probe2       (sniff_fifo_overflow),
+          .probe2       (sniff_fifo_overflow_blocked),
           .probe3       (sniff_fifo_din)
        );
    `endif
 
-   `ifdef ILA_REG
+   `ifdef ILA
        ila_3 U_fe_fifo_rd_ila (
           .clk          (cwusb_clk),
           .probe0       (sniff_fifo_rd_en),
           .probe1       (sniff_fifo_empty),
-          .probe2       (sniff_fifo_underflow),
+          .probe2       (sniff_fifo_underflow_sticky),
           .probe3       (sniff_fifo_dout)
        );
 
