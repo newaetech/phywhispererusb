@@ -43,6 +43,43 @@ module pw_trigger #(
    reg  [pTRIGGER_WIDTH_WIDTH-1:0] width_counter;
    reg  delay_counter_running;
    reg  width_counter_running;
+   wire match_pulse;
+
+   `ifndef __ICARUS__
+
+      // xpm_cdc_pulse: Pulse Transfer
+      // Xilinx Parameterized Macro, version 2018.3
+      // (reference: UG953)
+      xpm_cdc_pulse #(
+         .DEST_SYNC_FF(2),        // DECIMAL; range: 2-10
+         .INIT_SYNC_FF(0),        // DECIMAL; 0=disable simulation init values, 1=enable simulation init values
+         .REG_OUTPUT(0),          // DECIMAL; 0=disable registered output, 1=enable registered output
+         .RST_USED(1),            // DECIMAL; 0=no reset, 1=implement reset
+         .SIM_ASSERT_CHK(0)       // DECIMAL; 0=disable simulation messages, 1=enable simulation messages
+      )
+      xpm_cdc_pulse_inst (
+         .dest_pulse(match_pulse),// 1-bit output: Outputs a pulse the size of one dest_clk period when a pulse
+                                  // transfer is correctly initiated on src_pulse input. This output is
+                                  // combinatorial unless REG_OUTPUT is set to 1.
+         .dest_clk(trigger_clk),  // 1-bit input: Destination clock.
+         .dest_rst(reset_i),      // 1-bit input: optional; required when RST_USED = 1
+         .src_clk(fe_clk),        // 1-bit input: Source clock.
+         .src_pulse(I_match),     // 1-bit input: Rising edge of this signal initiates a pulse transfer to the
+                                  // destination clock domain. The minimum gap between each pulse transfer must be
+                                  // at the minimum 2*(larger(src_clk period, dest_clk period)). This is measured
+                                  // between the falling edge of a src_pulse to the rising edge of the next
+                                  // src_pulse. This minimum gap will guarantee that each rising edge of src_pulse
+                                  // will generate a pulse the size of one dest_clk period in the destination
+                                  // clock domain. When RST_USED = 1, pulse transfers will not be guaranteed while
+                                  // src_rst and/or dest_rst are asserted.
+         .src_rst(reset_i)        // 1-bit input: optional; required when RST_USED = 1
+      );
+      // End of xpm_cdc_pulse_inst instantiation
+   `else
+      assign match_pulse = I_match;
+   `endif
+
+
    `ifdef ILA_TRIG
       reg match_r;
       reg [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay_r;
@@ -69,10 +106,9 @@ module pw_trigger #(
          .probe5       (delay_counter_running), // input wire [0:0]  probe5 
          .probe6       (width_counter_running), // input wire [0:0]  probe6 
          .probe7       (O_trigger),             // input wire [0:0]  probe7 
-         .probe8       (1'b0)                   // input wire [0:0]  probe8 
+         .probe8       (match_pulse)            // input wire [0:0]  probe8 
       );
    `endif
-
 
 
    // TODO: CDC on I_match; ideally getting a single-cycle pulse, will prevent two triggers from being issued
@@ -89,7 +125,7 @@ module pw_trigger #(
       else begin
          if (O_trigger) 
             delay_counter_running <= 1'b0;
-         else if (I_match) 
+         else if (match_pulse) 
             delay_counter_running <= 1'b1;
 
 
