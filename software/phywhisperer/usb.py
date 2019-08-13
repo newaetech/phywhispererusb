@@ -14,6 +14,8 @@ class Usb(object):
 
 
     def __init__ (self):
+        self.short_timestamps = [0] * 2**3
+        self.long_timestamps = [0] * 2**16
         # parse Verilog defines file so we can access registers by name:
         self.registers = []
         self.matches = 0
@@ -157,6 +159,7 @@ class Usb(object):
             if (command == 0): # data
                 data = raw[1]
                 ts = raw[0] & 0x7
+                self.short_timestamps[ts] += 1
                 timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
@@ -166,6 +169,7 @@ class Usb(object):
                 data_times.append(timestep)
             elif (command == 1): # stat
                 ts = raw[0] & 0x7
+                self.short_timestamps[ts] += 1
                 timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
@@ -175,6 +179,7 @@ class Usb(object):
                 stat_times.append(timestep)
             elif (command == 2): # time
                 ts = raw[0] + (raw[1] << 8)
+                self.long_timestamps[ts] += 1
                 timestep += ts
                 time_commands += 1
                 if verbose:
