@@ -48,6 +48,7 @@ module tb_pw();
     parameter pTRIGGER_DELAY_MAX= 2**20-1;
     parameter pTRIGGER_WIDTH_MIN= 1;
     parameter pTRIGGER_WIDTH_MAX= 2**17-1;
+    parameter pREAD_CONCURRENTLY = 1;
 
     reg           usb_clk;
     wire [7:0]    USB_Data;
@@ -373,9 +374,14 @@ module tb_pw();
             while (fifo_empty == 0) begin
                read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
             end
+            if (pREAD_CONCURRENTLY == 0) begin
+               wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0);
+               wait(txindex == pNUM_EVENTS);
+               #(pFE_CLOCK_PERIOD*100);
+            end
 
             for (rx_readindex = 0; rx_readindex < pNUM_EVENTS; rx_readindex = rx_readindex + 1) begin
-            //while (rx_dataindex < pNUM_EVENTS) begin
+               // wait for FIFO data to be available:
                wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0);
                rw_lots_bytes(`REG_SNIFF_FIFO_RD);
                read_next_byte(read_data[7:0]);
