@@ -2,6 +2,7 @@ import phywhisperer.interface.naeusb as NAE
 import phywhisperer.interface.program_fpga as LLINT
 import sys
 import os
+import re
 from phywhisperer.interface.bootloader_sam3u import Samba
 from zipfile import ZipFile
 
@@ -10,6 +11,19 @@ from zipfile import ZipFile
 
 class Usb(object):
     """PhyWhisperer-USB Interface"""
+
+
+    def __init__ (self):
+        # parse Verilog defines file so we can access registers by name:
+        self.registers = []
+        self.matches = 0
+        defines = open('../../hardware/fpga/hdl/defines.v', 'r')
+        define_regex = re.compile(r'`define (\w+?)\s+?\d+?\'h([0-9a-fA-F]+)')
+        for define in defines:
+            match = define_regex.search(define)
+            if match:
+                self.matches += 1
+                self.registers.append(dict(name=match.group(1), address=int(match.group(2),16)))
 
 
     def con(self, PID=0xC521, sn=None, program_fpga=True):
@@ -119,3 +133,134 @@ class Usb(object):
     def sniff_usb_traffic(self, bytes):
         """Set USB Sniffer Mode"""
         pass
+
+
+    def read_from_fifo(self, entries=1, verbose=False):
+        """Read from USB capture memory.
+        entries: integer
+                 values: 1 to 8192
+        verbose: True or False
+        """
+        timestep = 0
+        data_bytes = []
+        data_times = []
+        stat_bytes = []
+        stat_times = []
+        raws = []
+        data_commands = 0
+        stat_commands = 0
+        time_commands = 0
+        for i in range(entries):
+            raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 3)
+            raws.append(raw)
+            command = raw[2] & 0x3
+            if (command == 0): # data
+                data = raw[1]
+                ts = raw[0] & 0x7
+                timestep += ts
+                flags = (raw[0] & 0xf8) >> 3
+                if verbose:
+                   print("%8d   flags=%02x data=%02x"%(timestep, flags, data))
+                data_commands += 1
+                data_bytes.append(data)
+                data_times.append(timestep)
+            elif (command == 1): # stat
+                ts = raw[0] & 0x7
+                timestep += ts
+                flags = (raw[0] & 0xf8) >> 3
+                if verbose:
+                   print("%8d   flags=%02x"%(timestep, flags))
+                stat_commands += 1
+                stat_bytes.append(flags)
+                stat_times.append(timestep)
+            elif (command == 2): # time
+                ts = raw[0] + (raw[1] << 8)
+                timestep += ts
+                time_commands += 1
+                if verbose:
+                   print("%8d" % timestep)
+            else:
+                print ("ERROR: unknown command (%d)" % command) 
+        return (data_times, data_bytes, stat_times, stat_bytes)
+
+
+    def address(self, regname):
+        """Get the address of an FPGA register, referenced by name as slurped from the FPGA defines file.
+        """
+        for register in self.registers:
+            if register['name'] == regname:
+                return register['address']
+        raise ValueError('Cannot find a register named %s' % regname)
+
+
+    def set_capture_size(self, size=8192):
+        """Set how many events to capture (events include data, USB status, and timestamps).
+        size: int
+               range: [1, 8192]
+        """
+        if (size > 8192) or (size < 1):
+            raise ValueError('Illegal size value.')
+        size_bytes = [size & 255, (size >> 8) & 255]
+        self.usb.cmdWriteMem(self.address('REG_CAPTURE_LEN'), size_bytes)
+
+
+    def set_trigger(self, delay, width):
+        """Program the output trigger delay and width. Both are measured in clock cycles of USB-derived 240 MHz clock.
+        delay: int
+               range: [0, 2^20-1]
+        width: int
+               range: [1, 2^17-1]
+        """
+        if (delay >= 2**20) or (delay < 0):
+            raise ValueError('Illegal delay value.')
+        if (width >= 2**17) or (width < 1):
+            raise ValueError('Illegal width value.')
+        delay_bytes = [delay & 255, (delay >> 8) & 255, (delay >> 16) & 255]
+        width_bytes = [width & 255, (width >> 8) & 255, (width >> 16) & 255]
+        self.usb.cmdWriteMem(self.address('REG_TRIGGER_DELAY'), delay_bytes)
+        self.usb.cmdWriteMem(self.address('REG_TRIGGER_WIDTH'), width_bytes)
+
+
+    def set_pattern(self, pattern, mask):
+        """Set the pattern and its bitmask.
+        pattern: list of between 1 and 64 bytes 
+        mask: list of bytes, must have same size as 'pattern'
+        """
+        if len(pattern) != len(mask):
+            raise ValueError('pattern and mask must be of same size.')
+        elif len(pattern) > 64:
+            raise ValueError('pattern and mask cannot be more than 64 bytes.')
+        self.usb.cmdWriteMem(self.address('REG_PATTERN'), pattern)
+        self.usb.cmdWriteMem(self.address('REG_PATTERN_MASK'), mask)
+        self.usb.cmdWriteMem(self.address('REG_PATTERN_BYTES'), [len(pattern)])
+
+
+    def arm(self, action):
+        """Arm PhyWhisperer for capture or trigger.
+        action: string
+                values: 'capture', 'trigger', or 'NOP'
+        """
+        if action == 'capture':
+           self.usb.cmdWriteMem(self.address('REG_PATTERN_ACTION'), [1])
+        elif action == 'trigger':
+           self.usb.cmdWriteMem(self.address('REG_PATTERN_ACTION'), [2])
+        elif action == 'NOP':
+           self.usb.cmdWriteMem(self.address('REG_PATTERN_ACTION'), [0])
+        else:
+            raise ValueError('Invalid action.')
+        self.usb.cmdWriteMem(self.address('REG_ARM'), [1])
+
+
+    def check_fifo_errors(self, underflow=0, overflow_blocked=0):
+        """Check whether an underflow or overflow occured on the capture FIFO.
+        (Overflows are blocked, underflows are not.)
+        underflow: expected status, 0 or 1
+        overflow_blocked: expected status, 0 or 1
+        """
+        status = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_STAT'),1)[0]
+        fifo_underflow = (status & 2) >> 1
+        fifo_overflow_blocked = (status & 16) >> 4
+        assert fifo_underflow == underflow
+        assert fifo_overflow_blocked == overflow_blocked
+
+
