@@ -68,7 +68,10 @@ module reg_pw #(
 
 // Interface to trigger generator:
    output wire [pTRIGGER_DELAY_WIDTH-1:0] O_trigger_delay,
-   output wire [pTRIGGER_WIDTH_WIDTH-1:0] O_trigger_width
+   output wire [pTRIGGER_WIDTH_WIDTH-1:0] O_trigger_width,
+
+// To top-level:
+   output wire [1:0] O_usb_speed
 
 );
 
@@ -90,6 +93,7 @@ module reg_pw #(
    reg [15:0] reg_capture_len;
    reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
    reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
+   reg [1:0] reg_usb_speed;
 
    // TODO: remove these counters
    reg usb_read_counter_clear;
@@ -126,6 +130,7 @@ module reg_pw #(
    assign O_capture_len = reg_capture_len;
    assign O_trigger_delay = reg_trigger_delay;
    assign O_trigger_width = reg_trigger_width;
+   assign O_usb_speed = reg_usb_speed;
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -145,6 +150,7 @@ module reg_pw #(
             `REG_PATTERN_ACTION: reg_read_data <= reg_pattern_action[reg_bytecnt*8 +: 8];
             `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
+            `REG_USB_SPEED: reg_read_data <= {6'b0, reg_usb_speed};
          endcase
       end
       else
@@ -186,6 +192,7 @@ module reg_pw #(
          reg_capture_len <= 0;
          reg_trigger_delay <= 0;
          reg_trigger_width <= 0;
+         reg_usb_speed <= 0;
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -202,6 +209,7 @@ module reg_pw #(
                `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
                `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data;
                `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_USB_SPEED: reg_usb_speed <= write_data;
             endcase
          end
          else begin
@@ -375,7 +383,7 @@ module reg_pw #(
 
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_FIFO
        ila_3 U_fe_fifo_wr_ila (
           .clk          (fe_clk),
           .probe0       (sniff_fifo_wr_en),
@@ -385,7 +393,7 @@ module reg_pw #(
        );
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_FIFO
        ila_3 U_fe_fifo_rd_ila (
           .clk          (cwusb_clk),
           .probe0       (sniff_fifo_rd_en),

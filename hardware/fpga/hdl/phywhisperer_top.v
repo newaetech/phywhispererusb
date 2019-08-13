@@ -1,5 +1,6 @@
-`timescale 1ns / 1ps
 `default_nettype none
+`timescale 1ns / 1ps
+`include "defines.v"
 //////////////////////////////////////////////////////////////////////////////////
 // Company: NewAE
 // Engineer: Colin O'Flynn, Jean-Pierre Thibault
@@ -37,9 +38,9 @@ module phywhisperer_top(
     `endif
 
     /* FRONT END CONNECTIONS */
-    output wire fe_xcvrsel0,
-    output wire fe_xcvrsel1,
-    output wire fe_termsel,
+    output reg  fe_xcvrsel0,
+    output reg  fe_xcvrsel1,
+    output reg  fe_termsel,
     input  wire fe_txrdy,
     output wire fe_suspendn,
     output wire fe_txvalid,
@@ -138,6 +139,8 @@ module phywhisperer_top(
    wire [1:0] pattern_action;
    wire [7:0] pattern_bytes;
 
+   wire [1:0] usb_speed;
+
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
 
@@ -235,7 +238,9 @@ module phywhisperer_top(
       .O_pattern_mask           (pattern_mask),
       .O_pattern_action         (pattern_action),
       .O_pattern_bytes          (pattern_bytes),
-      .I_match                  (match)
+      .I_match                  (match),
+
+      .O_usb_speed              (usb_speed)
 
    );
 
@@ -270,12 +275,20 @@ module phywhisperer_top(
    );
 
 
-    //10 = FS, 00 = HS
-    assign fe_xcvrsel0 = 1;
-    assign fe_xcvrsel1 = 0;
-
-    //1 = FS, 0 = HS
-    assign fe_termsel = 1; 
+    always @(*) begin
+       if (usb_speed == `USB_SPEED_LS) begin
+          {fe_xcvrsel1, fe_xcvrsel0} = 2'b10;
+          fe_termsel = 1; 
+       end
+       else if (usb_speed == `USB_SPEED_HS) begin
+          {fe_xcvrsel1, fe_xcvrsel0} = 2'b00;
+          fe_termsel = 0; 
+       end
+       else begin // default: `USB_SPEED_FS
+          {fe_xcvrsel1, fe_xcvrsel0} = 2'b01;
+          fe_termsel = 1; 
+       end
+    end
 
     assign fe_suspendn = 1;
 
@@ -302,7 +315,7 @@ module phywhisperer_top(
     //assign userio_d[7:4] = USB_Addr[3:0];
 
 
-    `ifdef ILA_FE
+    `ifdef ILA
        wire [31:0] ila_probe;
 
        assign ila_probe[7:0] = fe_data;

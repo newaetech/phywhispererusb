@@ -124,13 +124,21 @@ class Usb(object):
         sam.ser.close()
 
 
-    def set_usb_mode_hs(self, use_hs):
-        """Set USB PHY to High-Speed Mode"""
+    def set_usb_mode_hs(self):
+        """Manually set USB PHY to High-Speed Mode"""
+        self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [1])
         pass
 
-    def set_usb_mode_fs(self, use_fs):
-        """Set USB PHY to Full-Speed Mode"""
-        self.set_usb_mode_hs(False)
+    def set_usb_mode_fs(self):
+        """Manually set USB PHY to Full-Speed Mode"""
+        self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [0])
+        pass
+
+    def set_usb_mode_ls(self):
+        """Manually set USB PHY to Low-Speed Mode"""
+        self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [2])
+        pass
+
 
     def sniff_usb_traffic(self, bytes):
         """Set USB Sniffer Mode"""

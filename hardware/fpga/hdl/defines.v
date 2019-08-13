@@ -36,6 +36,7 @@
 `define REG_SNIFF_FIFO_STAT          6'h0f
 `define REG_TRIGGER_DELAY            6'h10
 `define REG_TRIGGER_WIDTH            6'h11
+`define REG_USB_SPEED                6'h12
 
 `define REG_TEST_LEN                 4
 `define REG_FE_LEN                   1
@@ -79,4 +80,9 @@
 `define FIFO_STAT_FULL 3
 `define FIFO_STAT_OVERFLOW_BLOCKED 4
 `define FIFO_STAT_FULL_THRESHOLD 5
+
+// USB speed definitions
+`define USB_SPEED_FS 0
+`define USB_SPEED_HS 1
+`define USB_SPEED_LS 2
 
