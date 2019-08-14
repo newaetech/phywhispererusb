@@ -26,6 +26,7 @@ class Usb(object):
             if match:
                 self.matches += 1
                 self.registers.append(dict(name=match.group(1), address=int(match.group(2),16)))
+        defines.close()
 
 
     def con(self, PID=0xC521, sn=None, program_fpga=True):
