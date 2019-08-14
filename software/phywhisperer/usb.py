@@ -168,7 +168,9 @@ class Usb(object):
                 data = raw[1]
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
-                timestep += ts
+                #hardware reports the number of cycles between events, so to
+                #obtain elapsed time we add one:
+                timestep += (ts+1)
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
                    print("%8d   flags=%02x data=%02x"%(timestep, flags, data))
@@ -178,7 +180,7 @@ class Usb(object):
             elif (command == 1): # stat
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
-                timestep += ts
+                timestep += (ts+1)
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
                    print("%8d   flags=%02x"%(timestep, flags))
@@ -188,6 +190,11 @@ class Usb(object):
             elif (command == 2): # time
                 ts = raw[0] + (raw[1] << 8)
                 self.long_timestamps[ts] += 1
+                #Unlike stat and data commands, we don't add one here; if we did
+                #we'd be overcounting in the common case where a time command immediately
+                #preceeds a stat or data command. Consequence is that timestep will be off
+                #by one in the case of lone time commands (which is rare, and inconsequential
+                #in practice).
                 timestep += ts
                 time_commands += 1
                 if verbose:
