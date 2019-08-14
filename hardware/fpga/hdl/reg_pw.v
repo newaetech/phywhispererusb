@@ -55,10 +55,6 @@ module reg_pw #(
    input  wire [1:0]   I_fe_capture_cmd,
    input  wire         I_fe_capture_data_wr,
 
-   input  wire [7:0]   I_fe_sniff_data,
-   input  wire         I_fe_sniff_wr,
-   input  wire [3:0]   I_fe_sniff_count,
-
 // Interface to pattern matcher:
    output wire [8*pPATTERN_BYTES-1:0] O_pattern,
    output wire [8*pPATTERN_BYTES-1:0] O_pattern_mask,
@@ -76,13 +72,6 @@ module reg_pw #(
 );
 
 
-   reg [8*`REG_TEST_LEN-1:0] reg_a;
-   reg [8*`REG_FE_LEN-1:0] reg_fe;
-   reg [8*`REG_FE_LEN-1:0] reg_fe_usb_r1; // TODO: unnecessary?
-   reg [8*`REG_FE_LEN-1:0] reg_fe_usb_r2;
-   reg [8*`REG_FE_SNIFF_LEN-1:0] reg_fe_sniff;
-   reg [8*`REG_FE_WR_CNT_LEN-1:0] reg_fe_write_counter;
-   reg [8*`REG_USB_RD_CNT_LEN-1:0] reg_usb_read_counter;
    reg reg_arm;
    reg reg_arm_r;
    reg reg_timestamps_disable;
@@ -94,13 +83,6 @@ module reg_pw #(
    reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
    reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
    reg [1:0] reg_usb_speed;
-
-   // TODO: remove these counters
-   reg usb_read_counter_clear;
-   reg fe_write_counter_clear_trig;
-   reg fe_write_counter_clear_r1;
-   reg fe_write_counter_clear_r2;
-   wire fe_write_counter_clear;
 
    wire sniff_fifo_full;
    wire sniff_fifo_empty;
@@ -117,7 +99,6 @@ module reg_pw #(
    wire sniff_fifo_full_threshold;
 
    reg  [7:0] reg_read_data;
-   wire [7:0] sniff_fifo_read_data;
    reg  flushing;
    wire [5:0] fifo_status;
 
@@ -134,17 +115,9 @@ module reg_pw #(
 
    // read logic:
    always @(posedge cwusb_clk) begin
-      reg_fe_usb_r1 <= reg_fe;
-      reg_fe_usb_r2 <= reg_fe_usb_r1;
       if (reg_addrvalid && reg_read) begin
-         // TODO: protect against overflow on reading registers > 1 byte?
          // TODO: make all registers readable? or only those that are strictly necessary?
          case (reg_address)
-            `REG_TEST: reg_read_data <= reg_a[reg_bytecnt*8 +: 8];
-            `REG_FE: reg_read_data <= reg_fe_usb_r2[reg_bytecnt*8 +: 8];
-            `REG_FE_SNIFF: reg_read_data <= reg_fe_sniff[reg_bytecnt*8 +: 8];
-            `REG_FE_WR_CNT: reg_read_data <= reg_fe_write_counter[reg_bytecnt*8 +: 8];
-            `REG_USB_RD_CNT: reg_read_data <= reg_usb_read_counter[reg_bytecnt*8 +: 8];
             `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
             `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
             `REG_PATTERN_ACTION: reg_read_data <= reg_pattern_action[reg_bytecnt*8 +: 8];
@@ -155,12 +128,6 @@ module reg_pw #(
       end
       else
          reg_read_data <= 8'b0;
-
-      if (usb_read_counter_clear)
-         reg_usb_read_counter <= 0;
-      else if (reg_addrvalid && reg_read && reg_usb_read_counter < {(`REG_USB_RD_CNT_LEN*4){1'b1}})
-         reg_usb_read_counter <= reg_usb_read_counter + 1;
-
    end
 
    // MUX read output between registers and FIFO output:
@@ -180,9 +147,6 @@ module reg_pw #(
    // write logic (USB clock domain):
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
-         reg_a <= 0;
-         usb_read_counter_clear <= 1'b0; 
-         fe_write_counter_clear_trig <= 1'b0; 
          reg_arm <= 1'b0;
          reg_timestamps_disable <= 1'b0;
          reg_pattern <= 0;
@@ -196,11 +160,7 @@ module reg_pw #(
       end
       else begin
          if (reg_addrvalid && reg_write) begin
-            // TODO: protect against overflow on writing registers > 1 byte?
             case (reg_address)
-               `REG_TEST: reg_a[reg_bytecnt*8 +: 8] <= write_data;
-               `USB_RD_CNT_CLR: usb_read_counter_clear <= 1'b1; 
-               `FE_WR_CNT_CLR: fe_write_counter_clear_trig <= 1'b1; 
                `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
                `REG_PATTERN: reg_pattern[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_MASK: reg_pattern_mask[reg_bytecnt*8 +: 8] <= write_data;
@@ -212,10 +172,7 @@ module reg_pw #(
                `REG_USB_SPEED: reg_usb_speed <= write_data;
             endcase
          end
-         else begin
-            usb_read_counter_clear <= 1'b0; 
-            fe_write_counter_clear_trig <= 1'b0; 
-         end
+
          if (reg_addrvalid && reg_write && (reg_address == `REG_ARM))
             reg_arm <= write_data[0];
          else if (I_match) // TODO: CDC
@@ -223,35 +180,6 @@ module reg_pw #(
       end
    end
 
-   // extend fe_write_counter_clear_trig because it gets used in a different clock domain: (TODO: remove)
-   always @(posedge cwusb_clk) begin
-      fe_write_counter_clear_r1 <= fe_write_counter_clear_trig;
-      fe_write_counter_clear_r2 <= fe_write_counter_clear_r1;
-   end
-   assign fe_write_counter_clear = fe_write_counter_clear_r2 | fe_write_counter_clear_r1 | fe_write_counter_clear_trig;
-
-   // write logic for sniff register (FE clock domain): (TODO: remove when no longer needed)
-   always @(posedge fe_clk) begin
-      if (reset_i) begin
-         reg_fe <= 0;
-         reg_fe_sniff <= 0;
-         reg_fe_write_counter <= 0;
-      end
-      else begin
-         if (I_fe_capture_data_wr) begin
-            reg_fe <= I_fe_capture_data;
-         end
-         if (I_fe_sniff_wr) begin
-            reg_fe_sniff[I_fe_sniff_count*8 +: 8] <= I_fe_sniff_data;
-         end
-
-         if (fe_write_counter_clear) // TODO: doesn't always work since it gets set in a different clock domain!
-            reg_fe_write_counter <= 0;
-         else if (I_fe_capture_data_wr && reg_fe_write_counter < {(`REG_FE_WR_CNT_LEN*4){1'b1}})
-            reg_fe_write_counter <= reg_fe_write_counter + 1;
-
-      end
-   end
 
    // FIFO write logic.
    // TODO: could maybe get away with combinatorial logic here? but don't bother unless tight on LUTs.
@@ -296,7 +224,7 @@ module reg_pw #(
 
    // FIFO read logic:
    // perform a FIFO read on first read access to FIFO register, or when flushing:
-   assign sniff_fifo_rd_en = ( reg_addrvalid && reg_read &&   // TODO: guard against underflow
+   assign sniff_fifo_rd_en = ( reg_addrvalid && reg_read &&   // TODO: guard against underflow?
                               (reg_address == `REG_SNIFF_FIFO_RD) &&
                               (reg_bytecnt == 0) ) || (flushing & ~sniff_fifo_empty);
 
@@ -313,9 +241,6 @@ module reg_pw #(
       end
    end
 
-   // TODO: add a flushing mechanism; flush when:
-   // - arming (done)
-   // - other scenarios??
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
          flushing <= 1'b0;

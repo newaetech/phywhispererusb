@@ -48,9 +48,8 @@ module fe_capture #(
     output wire [4:0] O_status,
     output reg  O_data_wr,
 
-    output reg  [7:0] O_sniff_data,
-    output reg  O_sniff_wr,
-    output reg  [3:0] O_sniff_count,
+    output reg  [7:0] O_pm_data,
+    output reg  O_pm_wr,
 
     /* PATTERN MATCH CONNECTIONS */
     input  wire I_capture_enable,
@@ -60,7 +59,6 @@ module fe_capture #(
 
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_ctr;
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp;
-    reg  [3:0] next_sniff_count;
 
     reg [1:0] state, next_state, state_r, state_r2;
     localparam pS_IDLE = 0;
@@ -254,24 +252,16 @@ module fe_capture #(
     // data output to pattern matcher;
     always @ (posedge fe_clk) begin
        if (reset_i) begin
-          O_sniff_data <= 8'd0;
-          O_sniff_wr <= 1'b0;
-          O_sniff_count <= 4'b0;
-          next_sniff_count <= 4'b0;
+          O_pm_data <= 8'd0;
+          O_pm_wr <= 1'b0;
        end
        else begin
-          //if (fe_rxvalid && (O_sniff_count < 8)) begin
           if (fe_rxvalid) begin
-             O_sniff_data <= fe_data;
-             O_sniff_wr <= 1'b1;
-    // TODO: O_sniff_count is old logic for basic validation of FIFO operation;
-    // remove when no longer needed: (Capture first 8 rxvalid bytes, for
-    // basic/sanity testing.)
-             O_sniff_count <= next_sniff_count;
-             next_sniff_count <= next_sniff_count + 1;
+             O_pm_data <= fe_data;
+             O_pm_wr <= 1'b1;
           end
           else begin
-             O_sniff_wr <= 1'b0;
+             O_pm_wr <= 1'b0;
           end
        end
     end
