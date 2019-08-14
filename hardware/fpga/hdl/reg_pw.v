@@ -91,8 +91,8 @@ module reg_pw #(
    reg  sniff_fifo_underflow_sticky;
    reg  sniff_fifo_wr_en;
    wire sniff_fifo_rd_en;
-   reg  [17:0] sniff_fifo_din;
-   wire [17:0] sniff_fifo_dout;
+   reg  [20:0] sniff_fifo_din;
+   wire [20:0] sniff_fifo_dout;
    wire sniff_fifo_empty_threshold_xilinx;
    wire sniff_fifo_empty_threshold;
    wire sniff_fifo_full_threshold_xilinx;
@@ -136,7 +136,8 @@ module reg_pw #(
          case (reg_bytecnt)
             0: read_data = sniff_fifo_dout[7:0];
             1: read_data = sniff_fifo_dout[15:8];
-            2: read_data = {6'b0, sniff_fifo_dout[17:16]}; // TODO: add FIFO flags
+            //2: read_data = {6'b0, sniff_fifo_dout[17:16]}; // TODO: add FIFO flags
+            2: read_data = {3'b0, sniff_fifo_dout[20:16]}; // TODO: add FIFO flags
             default: read_data = 0;
          endcase
       else

@@ -95,8 +95,8 @@ module fe_capture #(
 
     assign usb_event = fe_rxvalid || (fe_status_bits != fe_status_bits_reg);
 
-    assign short_timestamp = I_timestamps_disable? 1'b1 : (timestamp_ctr < 8); // TODO: parameterize
-    assign short_timestamp_pre = I_timestamps_disable? 1'b1: (timestamp_ctr < 7); // TODO: parameterize
+    assign short_timestamp = I_timestamps_disable? 1'b1 : (timestamp_ctr < 2**`FE_FIFO_SHORTTIME_LEN);
+    assign short_timestamp_pre = I_timestamps_disable? 1'b1: (timestamp_ctr < 2**`FE_FIFO_SHORTTIME_LEN-1);
 
     // Delay incoming fe_* signals by one cycle to avoid issuing
     // FE_FIFO_CMD_STAT at the same time as an fe_* data event, which could

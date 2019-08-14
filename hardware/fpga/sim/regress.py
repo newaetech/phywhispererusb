@@ -23,7 +23,7 @@ tests.append(dict(name  = 'short_timestamps',
              NUM_REPEATS = 4,
              DELAY_MODE = 0,
              MIN_DELAY  = 0,
-             MAX_DELAY  = 7))
+             MAX_DELAY  = 63))
 
 tests.append(dict(name  = 'long_timestamps',
              frequency = 1,

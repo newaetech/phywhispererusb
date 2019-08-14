@@ -14,7 +14,7 @@ class Usb(object):
 
 
     def __init__ (self):
-        self.short_timestamps = [0] * 2**3
+        self.short_timestamps = [0] * 2**6
         self.long_timestamps = [0] * 2**16
         # parse Verilog defines file so we can access registers by name:
         self.registers = []
@@ -163,15 +163,17 @@ class Usb(object):
         for i in range(entries):
             raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 3)
             raws.append(raw)
-            command = raw[2] & 0x3
+            #print("Raw: %x" % (raw[0]+ (raw[1] << 8) + (raw[2]<< 16)))
+            command = (raw[2] >> 3) & 0x3
             if (command == 0): # data
-                data = raw[1]
-                ts = raw[0] & 0x7
+                data = (raw[1] >> 3) + ((raw[2] & 0x7) << 5)
+                #data = (raw[2] >> 5) + ((raw[1] & 0x1f) << 3)
+                ts = raw[0] & 0x3f
                 self.short_timestamps[ts] += 1
                 #hardware reports the number of cycles between events, so to
                 #obtain elapsed time we add one:
                 timestep += (ts+1)
-                flags = (raw[0] & 0xf8) >> 3
+                flags = ((raw[0] & 0xc0) >> 5) + ((raw[1] & 0x7) << 2)
                 if verbose:
                    print("%8d   flags=%02x data=%02x"%(timestep, flags, data))
                 data_commands += 1
