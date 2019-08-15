@@ -3,6 +3,7 @@ import phywhisperer.interface.program_fpga as LLINT
 import sys
 import os
 import re
+import logging
 from phywhisperer.interface.bootloader_sam3u import Samba
 from zipfile import ZipFile
 
@@ -161,10 +162,18 @@ class Usb(object):
         data_commands = 0
         stat_commands = 0
         time_commands = 0
+        underflowed = False
+        overflowed = False
         for i in range(entries):
             raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 3)
             raws.append(raw)
             command = raw[2] & 0x3
+            if ((raw[2] & 8) >> 3) and not underflowed:
+                logging.warning("Capture FIFO underflowed!")
+                underflowed = True
+            if ((raw[2] & 32) >> 5) and not overflowed:
+                logging.warning("Capture FIFO overflow blocked!")
+                overflowed = True
             if (command == 0): # data
                 data = raw[1]
                 ts = raw[0] & 0x7

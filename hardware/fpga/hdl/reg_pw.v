@@ -136,7 +136,7 @@ module reg_pw #(
          case (reg_bytecnt)
             0: read_data = sniff_fifo_dout[7:0];
             1: read_data = sniff_fifo_dout[15:8];
-            2: read_data = {6'b0, sniff_fifo_dout[17:16]}; // TODO: add FIFO flags
+            2: read_data = {fifo_status, sniff_fifo_dout[17:16]};
             default: read_data = 0;
          endcase
       else

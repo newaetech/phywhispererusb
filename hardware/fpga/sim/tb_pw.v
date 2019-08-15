@@ -168,6 +168,12 @@ module tb_pw();
    int trigger_delay;
    int trigger_width;
 
+   reg fifo_stat_empty;
+   reg fifo_stat_underflow;
+   reg fifo_stat_empty_threshold;
+   reg fifo_stat_full;
+   reg fifo_stat_overflow_blocked;
+   reg fifo_stat_full_threshold;
 
    // timeout thread:
    initial begin
@@ -388,6 +394,18 @@ module tb_pw();
                read_next_byte(read_data[15:8]);
                read_next_byte(read_data[23:16]);
                command = read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN];
+
+               fifo_stat_empty =           read_data[18+`FIFO_STAT_EMPTY];
+               fifo_stat_underflow =       read_data[18+`FIFO_STAT_UNDERFLOW];
+               fifo_stat_empty_threshold = read_data[18+`FIFO_STAT_EMPTY_THRESHOLD];
+               fifo_stat_full =            read_data[18+`FIFO_STAT_FULL];
+               fifo_stat_overflow_blocked= read_data[18+`FIFO_STAT_OVERFLOW_BLOCKED];
+               fifo_stat_full_threshold =  read_data[18+`FIFO_STAT_FULL_THRESHOLD];
+               if (fifo_stat_underflow | fifo_stat_overflow_blocked) begin
+                  $display("\t\t\t\t\t*** ERROR on read #%0d at time %0t: underflow=%d, overflow=%d", rx_dataindex, $time, fifo_stat_underflow, fifo_stat_overflow_blocked);
+                  errors += 1;
+               end
+
 
                if ( (command == `FE_FIFO_CMD_DATA) || (command == `FE_FIFO_CMD_STAT) ) begin
                   data = read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN];
