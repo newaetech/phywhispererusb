@@ -11,6 +11,7 @@ group = parser.add_mutually_exclusive_group()
 group.add_argument("--runs", type=int, help="Number of iterations.", default=1)
 group.add_argument("--test", help="Testcase to run")
 parser.add_argument("--seed", type=int, help="Seed to use when running a single test with --test.")
+parser.add_argument("--pattern", help="Run all tests whose name contains PATTERN", default='')
 args = parser.parse_args()
 
 random.seed()
@@ -35,6 +36,15 @@ tests.append(dict(name  = 'long_timestamps',
 
 tests.append(dict(name  = 'trigger',
              frequency = 1,
+             NUM_REPEATS = 10,
+             ACTION = 2))
+
+tests.append(dict(name  = 'short_trigger',
+             frequency = 1,
+             TRIGGER_DELAY_MIN = 0,
+             TRIGGER_DELAY_MAX = 16,
+             TRIGGER_WIDTH_MIN = 1,
+             TRIGGER_WIDTH_MAX = 4,
              NUM_REPEATS = 10,
              ACTION = 2))
 
@@ -156,6 +166,7 @@ if (args.test):
 pass_regex = re.compile(r'^Simulation passed')
 fail_regex = re.compile(r'^SIMULATION FAILED \((\d+) errors\)')
 seed_regex = re.compile(r'^Running with pSEED=(\d+)$')
+test_regex = re.compile(args.pattern)
 
 passed = 0
 failed = 0
@@ -171,6 +182,9 @@ if result.returncode:
 # Run tests:
 start_time = int(time.time())
 for test in tests:
+   if args.pattern:
+      if test_regex.search(test['name']) == None:
+          continue
    for i in range(args.runs):
       run_test = True
       # build make command:
