@@ -353,12 +353,12 @@ module tb_pw();
             triggertime = $time;
             wait (cw_trig == 1'b0);
             rx_trigger_delay = (triggertime - matchtime) / (pFE_CLOCK_PERIOD/4);
-            rx_trigger_delay -= 2; // additional 2 cycle delay is inherent to the current design
+            rx_trigger_delay -= 10; // additional 10 cycle delay is inherent to the current design
             rx_trigger_width = ($time - triggertime) / (pFE_CLOCK_PERIOD/4);
             if ( (rx_trigger_delay == trigger_delay) && (rx_trigger_width == trigger_width) )
                $display("\t\t\t\t\tTrigger #%0d: delay=%0d, width=%0d", receive_iteration, rx_trigger_delay, rx_trigger_width);
             else begin
-               $display("\t\t\t\t\t*** ERROR rigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", receive_iteration, rx_trigger_delay, trigger_delay, rx_trigger_width, trigger_width);
+               $display("\t\t\t\t\t*** ERROR trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", receive_iteration, rx_trigger_delay, trigger_delay, rx_trigger_width, trigger_width);
                errors += 1;
             end
          end

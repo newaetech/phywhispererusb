@@ -30,6 +30,7 @@ module pw_trigger #(
    input  wire         trigger_clk,
    input  wire         fe_clk,
    output reg          O_trigger,
+   output wire         O_trigger_pulse,
 
    // from register block:
    input  wire [pTRIGGER_DELAY_WIDTH-1:0] I_trigger_delay,
@@ -44,61 +45,37 @@ module pw_trigger #(
    reg  delay_counter_running;
    reg  width_counter_running;
    wire match_pulse;
+   reg  trigger_r;
+   (* ASYNC_REG = "TRUE" *) reg  [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay_r;
+   (* ASYNC_REG = "TRUE" *) reg  [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width_r;
 
-   `ifndef __ICARUS__
-
-      // xpm_cdc_pulse: Pulse Transfer
-      // Xilinx Parameterized Macro, version 2018.3
-      // (reference: UG953)
-      xpm_cdc_pulse #(
-         .DEST_SYNC_FF(2),        // DECIMAL; range: 2-10
-         .INIT_SYNC_FF(0),        // DECIMAL; 0=disable simulation init values, 1=enable simulation init values
-         .REG_OUTPUT(0),          // DECIMAL; 0=disable registered output, 1=enable registered output
-         .RST_USED(1),            // DECIMAL; 0=no reset, 1=implement reset
-         .SIM_ASSERT_CHK(0)       // DECIMAL; 0=disable simulation messages, 1=enable simulation messages
-      )
-      xpm_cdc_pulse_inst (
-         .dest_pulse(match_pulse),// 1-bit output: Outputs a pulse the size of one dest_clk period when a pulse
-                                  // transfer is correctly initiated on src_pulse input. This output is
-                                  // combinatorial unless REG_OUTPUT is set to 1.
-         .dest_clk(trigger_clk),  // 1-bit input: Destination clock.
-         .dest_rst(reset_i),      // 1-bit input: optional; required when RST_USED = 1
-         .src_clk(fe_clk),        // 1-bit input: Source clock.
-         .src_pulse(I_match),     // 1-bit input: Rising edge of this signal initiates a pulse transfer to the
-                                  // destination clock domain. The minimum gap between each pulse transfer must be
-                                  // at the minimum 2*(larger(src_clk period, dest_clk period)). This is measured
-                                  // between the falling edge of a src_pulse to the rising edge of the next
-                                  // src_pulse. This minimum gap will guarantee that each rising edge of src_pulse
-                                  // will generate a pulse the size of one dest_clk period in the destination
-                                  // clock domain. When RST_USED = 1, pulse transfers will not be guaranteed while
-                                  // src_rst and/or dest_rst are asserted.
-         .src_rst(reset_i)        // 1-bit input: optional; required when RST_USED = 1
-      );
-      // End of xpm_cdc_pulse_inst instantiation
-   `else
-      assign match_pulse = I_match;
-   `endif
-
-
-   `ifdef ILA_TRIG
-      reg match_r;
-      reg [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay_r;
-      reg [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width_r;
-      always @ (posedge trigger_clk) begin
-         if (reset_i) begin
-            match_r <= 1'b0;
-            trigger_delay_r <= 0;
-            trigger_width_r <= 0;
-         end
-         else begin
-            match_r <= I_match;
-            trigger_delay_r <= I_trigger_delay;
-            trigger_width_r <= I_trigger_width;
-         end
+   // CDC for register block inputs: since these signals are quasi-static
+   // and should not be changing while the downstream logic is active, a 
+   // single sync stage is sufficient:
+   always @ (posedge trigger_clk) begin
+      if (reset_i) begin
+         trigger_delay_r <= 0;
+         trigger_width_r <= 0;
       end
+      else begin
+         trigger_delay_r <= I_trigger_delay;
+         trigger_width_r <= I_trigger_width;
+      end
+   end
+
+   cdc_pulse U_match_cdc (
+      .reset_i       (reset_i),
+      .src_clk       (fe_clk),
+      .src_pulse     (I_match),
+      .dst_clk       (trigger_clk),
+      .dst_pulse     (match_pulse)
+   );
+
+   `ifdef ILA
+      // NOTE: this ILA tends to make timing fail on the trigger_clk domain
       ila_4 I_ila_trigger (
          .clk          (trigger_clk),           // input wire clk
-         .probe0       (match_r),               // input wire [0:0]  probe0  
+         .probe0       (1'b0),                  // input wire [0:0]  probe0  
          .probe1       (delay_counter),         // input wire [19:0]  probe1 
          .probe2       (width_counter),         // input wire [16:0]  probe2 
          .probe3       (trigger_delay_r),       // input wire [19:0]  probe3 
@@ -111,8 +88,8 @@ module pw_trigger #(
    `endif
 
 
-   // TODO: CDC on I_match; ideally getting a single-cycle pulse, will prevent two triggers from being issued
-   // within a single 4-cycle I_match pulse
+   assign O_trigger_pulse = O_trigger & ~trigger_r;
+
    always @ (posedge trigger_clk) begin
       if (reset_i) begin
          delay_counter <= 0;
@@ -120,21 +97,23 @@ module pw_trigger #(
          width_counter <= 1;
          width_counter_running <= 1'b0;
          O_trigger <= 1'b0;
+         trigger_r <= 1'b0;
       end
 
       else begin
+         trigger_r <= O_trigger;
          if (O_trigger) 
             delay_counter_running <= 1'b0;
          else if (match_pulse) 
             delay_counter_running <= 1'b1;
 
 
-         if (O_trigger && (width_counter == I_trigger_width)) begin
+         if (O_trigger && (width_counter == trigger_width_r)) begin
             width_counter_running <= 1'b0;
             O_trigger <= 1'b0;
          end
          else if (delay_counter_running) begin
-            if ((delay_counter < I_trigger_delay) & ~O_trigger)
+            if ((delay_counter < trigger_delay_r) & ~O_trigger)
                delay_counter <= delay_counter + 1;
             else begin
                delay_counter <= 0;
@@ -145,7 +124,7 @@ module pw_trigger #(
 
 
          if (width_counter_running) begin
-            if (width_counter < I_trigger_width)
+            if (width_counter < trigger_width_r)
                width_counter <= width_counter + 1;
             else
                width_counter <= 1;

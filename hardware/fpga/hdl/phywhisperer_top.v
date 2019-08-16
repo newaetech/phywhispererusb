@@ -129,6 +129,7 @@ module phywhisperer_top(
    wire fifo_full;
    wire arm;
    wire capturing;
+   wire trig_pulse;
 
    wire [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay;
    wire [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width;
@@ -400,6 +401,7 @@ module phywhisperer_top(
    ) U_pattern_matcher (
       .reset_i          (reset_i),
       .fe_clk           (clk_fe_buf),
+      .trigger_clk      (trigger_clk),
       .I_arm            (arm),
       .I_pattern        (pattern),
       .I_mask           (pattern_mask),
@@ -408,7 +410,7 @@ module phywhisperer_top(
       .I_fe_data        (fe_capture_pm_data),
       .I_fe_data_valid  (fe_capture_pm_wr),
       .I_capturing      (capturing),
-      .I_trigger_out    (cw_trig),
+      .I_trigger_pulse  (trig_pulse),
       .O_match          (match),
       .O_match_capture  (capture_match),
       .O_match_trigger  (trigger_match)
@@ -423,28 +425,26 @@ module phywhisperer_top(
       .trigger_clk      (trigger_clk),
       .fe_clk           (clk_fe_buf),
       .O_trigger        (cw_trig),
+      .O_trigger_pulse  (trig_pulse),
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),
       .I_match          (trigger_match)
    );
 
 
-   reg [7:0] clk_counter;
-   always @ (posedge clk_fe_buf) begin
-      clk_counter <= clk_counter + 1;
-   end
-
 
    `ifndef __ICARUS__
       ODDR U_cw_clk (
          .Q(cw_clk),
-         .C(clk_counter[7]),
+         .C(clk_fe_buf),
          .CE(1'b1),
          .D1(1'b1),
          .D2(1'b0),
          .R(1'b0),
          .S(1'b0)
       );
+   `else
+      assign cw_clk = clk_fe_buf;
    `endif
 
 endmodule

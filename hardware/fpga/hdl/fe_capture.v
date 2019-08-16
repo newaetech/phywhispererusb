@@ -53,7 +53,6 @@ module fe_capture #(
 
     /* PATTERN MATCH CONNECTIONS */
     input  wire I_capture_enable,
-
     output wire O_capturing
 );
 
@@ -84,7 +83,12 @@ module fe_capture #(
     reg  usb_event_reg;
     reg  [15:0] capture_count;
     wire capture_allowed;
+
+    (* ASYNC_REG = "TRUE" *) reg [15:0] capture_len_r;
+    (* ASYNC_REG = "TRUE" *) reg timestamps_disable_r;
+    (* ASYNC_REG = "TRUE" *) reg  [1:0] arm_pipe;
     reg  arm_r;
+    reg  arm_r2;
 
 
     assign fe_status_bits[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_STATUS_BITS_START] = fe_rxactive;
@@ -95,8 +99,8 @@ module fe_capture #(
 
     assign usb_event = fe_rxvalid || (fe_status_bits != fe_status_bits_reg);
 
-    assign short_timestamp = I_timestamps_disable? 1'b1 : (timestamp_ctr < 8); // TODO: parameterize
-    assign short_timestamp_pre = I_timestamps_disable? 1'b1: (timestamp_ctr < 7); // TODO: parameterize
+    assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr < 2**`FE_FIFO_SHORTTIME_LEN);
+    assign short_timestamp_pre = timestamps_disable_r? 1'b1: (timestamp_ctr < 2**`FE_FIFO_SHORTTIME_LEN-1);
 
     // Delay incoming fe_* signals by one cycle to avoid issuing
     // FE_FIFO_CMD_STAT at the same time as an fe_* data event, which could
@@ -270,11 +274,9 @@ module fe_capture #(
     always @ (posedge fe_clk) begin
        if (reset_i) begin
           capture_count <= 16'd0;
-          arm_r <= 1'b0;
        end
        else begin
-          arm_r <= I_arm;
-          if (I_arm & !arm_r)
+          if (arm_r & !arm_r2)
              capture_count <= 16'd0;
           else if (O_data_wr)
              capture_count <= capture_count + 1;
@@ -283,13 +285,28 @@ module fe_capture #(
 
     assign O_capturing = capture_allowed;
 
-    // TODO: CDC on I_capture_len:
-    assign capture_allowed = I_capture_enable & (capture_count < I_capture_len) & !I_fifo_full;
+    assign capture_allowed = I_capture_enable & (capture_count < capture_len_r) & !I_fifo_full;
 
     // strictly for easier visualization/debug:
     wire state_idle = (state == pS_IDLE);
     wire state_data = (state == pS_DATA);
     wire state_time = (state == pS_TIME);
+
+   // CDC:
+   always @ (posedge fe_clk) begin
+      if (reset_i) begin
+         capture_len_r <= 0;
+         timestamps_disable_r <= 0;
+         arm_pipe <= 0;
+         arm_r <= 0;
+         arm_r2 <= 0;
+      end
+      else begin
+         capture_len_r <= I_capture_len;
+         timestamps_disable_r <= I_timestamps_disable;
+         {arm_r2, arm_r, arm_pipe} <= {arm_r, arm_pipe, I_arm};
+      end
+   end
 
 
 endmodule

@@ -26,6 +26,7 @@ module pw_pattern_matcher #(
 )(
    input  wire  reset_i,
    input  wire  fe_clk,
+   input  wire  trigger_clk,
 
    // from register block:
    input  wire  I_arm,
@@ -40,7 +41,7 @@ module pw_pattern_matcher #(
    input  wire  I_capturing,
 
    // from trigger block:
-   input  wire  I_trigger_out,
+   input  wire  I_trigger_pulse,
 
    // to register block:
    output wire  O_match,
@@ -59,6 +60,7 @@ module pw_pattern_matcher #(
    reg  match_trigger;
    reg  match_trigger_r;
    reg  capturing_r;
+   reg  arm_r;
 
    wire [7:0] masked_pattern_byte;
    wire [7:0] masked_pattern_first_byte;
@@ -66,14 +68,18 @@ module pw_pattern_matcher #(
    wire [7:0] masked_input_first_byte;
 
    wire capture_done;
+   wire trigger_pulse;
 
-   assign masked_pattern_byte = I_pattern[8*match_counter +: 8] & I_mask[8*match_counter +: 8];
-   assign masked_input_byte = I_fe_data & I_mask[8*match_counter +: 8];
-   assign masked_pattern_first_byte = I_pattern[7:0] & I_mask[7:0];
-   assign masked_input_first_byte = I_fe_data & I_mask[7:0];
+   (* ASYNC_REG = "TRUE" *) reg  [1:0] arm_pipe;
+   (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] pattern_r;
+   (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] mask_r;
+   (* ASYNC_REG = "TRUE" *) reg  [1:0] action_r;
+   (* ASYNC_REG = "TRUE" *) reg  [7:0] pattern_bytes_r;
 
-   // TODO: need some sort of "enable pattern matcher", to prevent reset values from triggering right away?
-   // or just reset mask to all ones? or just rely on default action being NOP?
+   assign masked_pattern_byte = pattern_r[8*match_counter +: 8] & mask_r[8*match_counter +: 8];
+   assign masked_input_byte = I_fe_data & mask_r[8*match_counter +: 8];
+   assign masked_pattern_first_byte = pattern_r[7:0] & mask_r[7:0];
+   assign masked_input_first_byte = I_fe_data & mask_r[7:0];
 
    assign capture_done = (!I_capturing & capturing_r);
    always @ (posedge fe_clk) begin
@@ -88,12 +94,12 @@ module pw_pattern_matcher #(
          capturing_r <= I_capturing;
 
          // end of capture is a good time to reset these:
-         if (match_trigger && (capture_done || I_trigger_out)) begin
+         if (match_trigger && (capture_done || trigger_pulse)) begin
             match_counter <= 0;
             match_trigger <= 1'b0;
          end
 
-         else if (I_fe_data_valid && I_arm && (match_counter < I_pattern_bytes)) begin
+         else if (I_fe_data_valid && arm_r && (match_counter < pattern_bytes_r)) begin
             if (masked_pattern_byte == masked_input_byte)
                match_counter <= match_counter + 1;
             // maybe we thought we were onto a pattern match but actually the pattern match is starting NOW:
@@ -102,7 +108,7 @@ module pw_pattern_matcher #(
             else
                match_counter <= 0;
 
-            if ( (match_counter == (I_pattern_bytes-1)) && 
+            if ( (match_counter == (pattern_bytes_r-1)) && 
                  ((masked_pattern_byte == masked_input_byte) || (masked_pattern_byte == masked_input_byte)) )
                match_trigger <= 1'b1;
             else
@@ -113,8 +119,37 @@ module pw_pattern_matcher #(
    end
 
    assign O_match = match_trigger;// & !match_trigger_r;
-   assign O_match_capture = O_match & (I_action == `PM_CAPTURE);
-   assign O_match_trigger = match_trigger & !match_trigger_r & (I_action == `PM_TRIGGER);
+   assign O_match_capture = O_match & (action_r == `PM_CAPTURE);
+   assign O_match_trigger = match_trigger & !match_trigger_r & (action_r == `PM_TRIGGER);
+
+   cdc_pulse U_trig_cdc (
+      .reset_i       (reset_i),
+      .src_clk       (trigger_clk),
+      .src_pulse     (I_trigger_pulse),
+      .dst_clk       (fe_clk),
+      .dst_pulse     (trigger_pulse)
+   );
+
+
+   // CDC for inputs from register block. Single flop for quasi-static signals,
+   // more for dynamic control signals.
+   always @ (posedge trigger_clk) begin
+      if (reset_i) begin
+         pattern_r <= 0;
+         mask_r <= 0;
+         action_r <= 0;
+         pattern_bytes_r <= 0;
+         arm_pipe <= 0;
+         arm_r <= 0;
+      end
+      else begin
+         pattern_r <= I_pattern;
+         mask_r <= I_mask;
+         action_r <= I_action;
+         pattern_bytes_r <= I_pattern_bytes;
+         {arm_r, arm_pipe} <= {arm_pipe, I_arm};
+      end
+   end
 
 
 endmodule
