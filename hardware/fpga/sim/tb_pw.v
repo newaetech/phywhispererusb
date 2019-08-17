@@ -83,6 +83,7 @@ module tb_pw();
     reg  [7:0] userio_d;
     reg  userio_clk;
     reg  [23:0] read_data;
+    reg  [7:0] dummy;
     reg  [7:0] data;
     reg  [7:0] expected_data;
     reg  [1:0] command;
@@ -217,8 +218,6 @@ module tb_pw();
       rw_lots_bytes(`REG_CAPTURE_LEN);
       write_next_byte(pNUM_EVENTS & 255);
       write_next_byte(pNUM_EVENTS >> 8);
-      //#(pFE_CLOCK_PERIOD*10) $finish;
-
 
       if (pVERBOSE) begin
          $display("--------------------------------------|-------------------------------");
@@ -386,13 +385,18 @@ module tb_pw();
                #(pFE_CLOCK_PERIOD*100);
             end
 
+            if (pREAD_CONCURRENTLY == 0)
+               rw_lots_bytes(`REG_SNIFF_FIFO_RD);
+
             for (rx_readindex = 0; rx_readindex < pNUM_EVENTS; rx_readindex = rx_readindex + 1) begin
                // wait for FIFO data to be available:
                wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0);
-               rw_lots_bytes(`REG_SNIFF_FIFO_RD);
+               if (pREAD_CONCURRENTLY == 1)
+                  rw_lots_bytes(`REG_SNIFF_FIFO_RD);
                read_next_byte(read_data[7:0]);
                read_next_byte(read_data[15:8]);
                read_next_byte(read_data[23:16]);
+               read_next_byte(dummy);
                command = read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN];
 
                fifo_stat_empty =           read_data[18+`FIFO_STAT_EMPTY];

@@ -34,6 +34,14 @@ tests.append(dict(name  = 'long_timestamps',
              MIN_DELAY  = 16,
              MAX_DELAY  = 64))
 
+tests.append(dict(name  = 'burst_fifo_read',
+             frequency = 2,
+             #NUM_REPEATS = 4,
+             NUM_REPEATS = 1,
+             NUM_EVENTS = 200,
+             READ_CONCURRENTLY = 0,
+             PRETRIG_MAX = 20))
+
 tests.append(dict(name  = 'trigger',
              frequency = 1,
              NUM_REPEATS = 10,
@@ -115,12 +123,24 @@ tests.append(dict(name  = 'longpattern',
 
 tests.append(dict(name  = 'longcapture',
              frequency = 10,
-             TIMEOUT = 200000,
+             TIMEOUT = 250000,
              NUM_EVENTS = 8192,
              NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY=0,
              MAX_DELAY=3))
+
+tests.append(dict(name  = 'longcapture_burst_fifo_read',
+             frequency = 10,
+             TIMEOUT = 250000,
+             NUM_EVENTS = 8192,
+             READ_CONCURRENTLY = 0,
+             #NUM_REPEATS = 2,
+             NUM_REPEATS = 1,
+             DELAY_MODE = 0,
+             MIN_DELAY=0,
+             MAX_DELAY=3))
+
 
 
 """ 

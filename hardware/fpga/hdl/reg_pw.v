@@ -133,7 +133,7 @@ module reg_pw #(
    // MUX read output between registers and FIFO output:
    always @(*) begin
       if (reg_address == `REG_SNIFF_FIFO_RD)
-         case (reg_bytecnt)
+         case (reg_bytecnt % 4)
             0: read_data = sniff_fifo_dout[7:0];
             1: read_data = sniff_fifo_dout[15:8];
             2: read_data = {fifo_status, sniff_fifo_dout[17:16]};
@@ -262,7 +262,7 @@ module reg_pw #(
    // perform a FIFO read on first read access to FIFO register, or when flushing:
    assign sniff_fifo_rd_en = ( reg_addrvalid && reg_read &&   // TODO: guard against underflow?
                               (reg_address == `REG_SNIFF_FIFO_RD) &&
-                              (reg_bytecnt == 0) ) || (flushing & ~sniff_fifo_empty);
+                              ((reg_bytecnt % 4) == 0) ) || (flushing & ~sniff_fifo_empty);
 
    // Xilinx FIFO underflow flag isn't sticky, so create our own:
    always @(posedge cwusb_clk) begin

@@ -147,10 +147,12 @@ class Usb(object):
         pass
 
 
-    def read_from_fifo(self, entries=1, verbose=False):
+    def read_from_fifo(self, entries=1, verbose=False, single_burst=True):
         """Read from USB capture memory.
         entries: integer
                  values: 1 to 8192
+        single_burst: True: read capture memory in a single burst (much faster).
+                      False: read capture memory in 3-byte bursts (much slower).
         verbose: True or False
         """
         timestep = 0
@@ -158,15 +160,18 @@ class Usb(object):
         data_times = []
         stat_bytes = []
         stat_times = []
-        raws = []
         data_commands = 0
         stat_commands = 0
         time_commands = 0
         underflowed = False
         overflowed = False
+        if single_burst:
+            rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
         for i in range(entries):
-            raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 3)
-            raws.append(raw)
+            if single_burst:
+                raw = rawburst[i*4:i*4+3]
+            else:
+                raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 3)
             command = raw[2] & 0x3
             if ((raw[2] & 8) >> 3) and not underflowed:
                 logging.warning("Capture FIFO underflowed!")
