@@ -29,7 +29,7 @@ module fe_capture #(
     /* FRONT END CONNECTIONS */
     input  wire reset_i,
     input  wire fe_clk,
-    inout  wire [7:0] fe_data,
+    input  wire [7:0] fe_data,
     input  wire fe_rxvalid,
     input  wire fe_rxactive,
     input  wire fe_rxerror,

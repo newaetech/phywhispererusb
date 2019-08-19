@@ -60,7 +60,7 @@ module phywhisperer_top(
     input  wire fe_sessend,
     
     input  wire fe_clk,
-    inout  wire [7:0] fe_data,
+    input  wire [7:0] fe_data,
     input  wire fe_rxvalid,
     input  wire fe_sessvld,
     output wire fe_dppd,
@@ -434,6 +434,7 @@ module phywhisperer_top(
 
 
    `ifndef __ICARUS__
+      //TODO: what should be the cw_clk source? Switchable between USB/FE/trigger?
       ODDR U_cw_clk (
          .Q(cw_clk),
          .C(clk_fe_buf),

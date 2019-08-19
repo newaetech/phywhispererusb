@@ -1,7 +1,5 @@
 create_clock -period 16.000 -name fe_clk -waveform {0.000 8.000} [get_nets fe_clk]
 create_clock -period 10.000 -name usb_clk -waveform {0.000 5.000} [get_nets usb_clk]
-#create_clock -period  4.000 -name trigger_clk -waveform {0.000 2.000} [get_nets trigger_clk]
-# NOTE: above would warn of overwriting automatically declared clock; instead, set alias for simplicity:
 create_generated_clock -name trigger_clk [get_pins U_trigger_clock/inst/mmcm_adv_inst/CLKOUT0]
 
 set_clock_groups -asynchronous \
@@ -162,11 +160,11 @@ set_output_delay -clock usb_clk 0.0 [get_ports USB_Data]
 set_false_path -to [get_ports cw_trig]
 set_false_path -to [get_ports mcx_trig]
 set_false_path -to [get_ports USB_Data]
-set_property IOB TRUE [get ports cw_trig]
-set_property IOB TRUE [get ports mcx_trig]
-set_property IOB TRUE [get ports USB_Data]
 
-set_property IOB TRUE [get ports cw_clk]
+#set_property IOB TRUE [get_ports cw_trig]
+#set_property IOB TRUE [get_ports mcx_trig]
+#set_property IOB TRUE [get_ports USB_Data]
+#set_property IOB TRUE [get_ports cw_clk]
 
 # No spec for these, seems sensible:
 set_input_delay -clock usb_clk 2.0 [get_ports USB_Addr]
