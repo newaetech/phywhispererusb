@@ -4,9 +4,18 @@ create_clock -period 10.000 -name usb_clk -waveform {0.000 5.000} [get_nets usb_
 # NOTE: above would warn of overwriting automatically declared clock; instead, set alias for simplicity:
 create_generated_clock -name trigger_clk [get_pins U_trigger_clock/inst/mmcm_adv_inst/CLKOUT0]
 
-# TODO: temporary? could be dangerous to leave this in:
-set_false_path -from [get_clocks usb_clk] -to [get_clocks trigger_clk]
-#set_false_path -from [get_clocks usb_clk] -to [get_clocks clk_out1_clk_wiz_0]
+set_clock_groups -asynchronous \
+                 -group [get_clocks usb_clk] \
+                 -group [get_clocks trigger_clk]
+
+set_clock_groups -asynchronous \
+                 -group [get_clocks usb_clk] \
+                 -group [get_clocks fe_clk]
+
+set_clock_groups -asynchronous \
+                 -group [get_clocks trigger_clk] \
+                 -group [get_clocks fe_clk]
+
 
 set_property IOSTANDARD LVCMOS33 [get_ports *]
 
@@ -102,7 +111,69 @@ set_property PACKAGE_PIN M13 [get_ports mcx_trig]
 set_property PACKAGE_PIN D2 [get_ports LED_TRIG]
 set_property PACKAGE_PIN A2 [get_ports LED_CAP]
 
-#set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
-#set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
-#set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
-#connect_debug_port dbg_hub/clk [get_nets fe_clk_IBUF_BUFG]
+# Quasi-static output signals which don't need to be constrained.
+# We do this to prevent 'no output delay' warnings in Vivado:
+set_output_delay -clock fe_clk 0.0 [get_ports fe_xcvrsel1]
+set_output_delay -clock fe_clk 0.0 [get_ports fe_xcvrsel0]
+set_output_delay -clock fe_clk 0.0 [get_ports fe_termsel]
+set_false_path -to [get_ports fe_xcvrsel1]
+set_false_path -to [get_ports fe_xcvrsel0]
+set_false_path -to [get_ports fe_termsel]
+
+# Same for LEDs: they're not static but we don't care about timing 
+# and don't want Vivado to warn or waste time/resources on them:
+set_output_delay -clock fe_clk 0.0 [get_ports LED_TRIG]
+set_output_delay -clock fe_clk 0.0 [get_ports LED_CAP]
+set_false_path -to [get_ports LED_TRIG]
+set_false_path -to [get_ports LED_CAP]
+
+# FE input delays as per USB3500 spec:
+set_input_delay -clock fe_clk -min 2.0 [get_ports fe_txrdy]
+set_input_delay -clock fe_clk -min 2.0 [get_ports fe_rxactive]
+set_input_delay -clock fe_clk -min 2.0 [get_ports fe_linestate0]
+set_input_delay -clock fe_clk -min 2.0 [get_ports fe_linestate1]
+set_input_delay -clock fe_clk -min 2.0 [get_ports fe_rxvalid]
+set_input_delay -clock fe_clk -min 2.0 [get_ports fe_rxerror]
+set_input_delay -clock fe_clk -min 2.0 [get_ports fe_data]
+set_input_delay -clock fe_clk -max 5.0 -add_delay [get_ports fe_txrdy]
+set_input_delay -clock fe_clk -max 5.0 -add_delay [get_ports fe_rxactive]
+set_input_delay -clock fe_clk -max 5.0 -add_delay [get_ports fe_linestate0]
+set_input_delay -clock fe_clk -max 5.0 -add_delay [get_ports fe_linestate1]
+set_input_delay -clock fe_clk -max 5.0 -add_delay [get_ports fe_rxvalid]
+set_input_delay -clock fe_clk -max 5.0 -add_delay [get_ports fe_rxerror]
+set_input_delay -clock fe_clk -max 5.0 -add_delay [get_ports fe_data]
+
+# There is no spec for these FE inputs:
+set_input_delay -clock fe_clk 0.0 [get_ports fe_id_dig]
+set_input_delay -clock fe_clk 0.0 [get_ports fe_hostdisc]
+set_input_delay -clock fe_clk 0.0 [get_ports fe_sessend]
+set_input_delay -clock fe_clk 0.0 [get_ports fe_sessvld]
+set_input_delay -clock fe_clk 0.0 [get_ports fe_vbusvld]
+set_false_path -from [get_ports fe_id_dig]
+set_false_path -from [get_ports fe_hostdisc]
+set_false_path -from [get_ports fe_sessend]
+set_false_path -from [get_ports fe_sessvld]
+set_false_path -from [get_ports fe_vbusvld]
+
+# As per https://forums.xilinx.com/t5/Timing-Analysis/Is-a-false-path-constriaint-the-best-option-for-control-signals/td-p/929812:
+set_output_delay -clock trigger_clk 0.0 [get_ports cw_trig]
+set_output_delay -clock trigger_clk 0.0 [get_ports mcx_trig]
+set_output_delay -clock usb_clk 0.0 [get_ports USB_Data]
+set_false_path -to [get_ports cw_trig]
+set_false_path -to [get_ports mcx_trig]
+set_false_path -to [get_ports USB_Data]
+set_property IOB TRUE [get ports cw_trig]
+set_property IOB TRUE [get ports mcx_trig]
+set_property IOB TRUE [get ports USB_Data]
+
+set_property IOB TRUE [get ports cw_clk]
+
+# No spec for these, seems sensible:
+set_input_delay -clock usb_clk 2.0 [get_ports USB_Addr]
+set_input_delay -clock usb_clk 2.0 [get_ports USB_Data]
+set_input_delay -clock usb_clk 2.0 [get_ports USB_SPARE0]
+set_input_delay -clock usb_clk 2.0 [get_ports USB_SPARE1]
+set_input_delay -clock usb_clk 2.0 [get_ports USB_nCS]
+set_input_delay -clock usb_clk 2.0 [get_ports USB_nRD]
+set_input_delay -clock usb_clk 2.0 [get_ports USB_nWE]
+
