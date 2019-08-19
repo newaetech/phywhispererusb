@@ -157,6 +157,7 @@ module tb_pw();
    reg [15:0] fe_times [0:pFIFO_DEPTH];
    reg [7:0] sniff_bytes [0:7];
    reg [7:0] match_pattern [0:pPATTERN_BYTES_MAX-1];
+   reg [7:0] match_mask [0:pPATTERN_BYTES_MAX-1];
    int pattern_bytes;
    int pretrig_bytes;
    bit armed;
@@ -178,7 +179,6 @@ module tb_pw();
 
    // timeout thread:
    initial begin
-      // TODO: check whether this is a good timeout value
       #(pFE_CLOCK_PERIOD*pTIMEOUT);
       errors += 1;
       $display("ERROR: global timeout");
@@ -188,7 +188,6 @@ module tb_pw();
 
    // heartbeat indicator for long tests that have no activity:
    initial begin
-      // TODO: check whether this is a good timeout value
       while (1) begin
          #(pFE_CLOCK_PERIOD*pTIMEOUT/20);
          $display(":hearbeat:time:%0t", $time);
@@ -209,8 +208,15 @@ module tb_pw();
          write_next_byte(match_pattern[i]);
       end
       rw_lots_bytes(`REG_PATTERN_MASK);
-      for (i = 0; i < pattern_bytes; i = i + 1)
-         write_next_byte(8'hFF);
+      for (i = 0; i < pattern_bytes; i = i + 1) begin
+         match_mask[i] = $urandom;
+         // things would get unnecessarily complex if the first mask byte could be 0, so prevent that:
+         if (i == 0) begin
+            while (match_mask[0] == 0)
+               match_mask[0] = $urandom;
+         end
+         write_next_byte(match_mask[i]);
+      end
 
       write_1byte(`REG_PATTERN_BYTES, pattern_bytes);
       write_1byte(`REG_PATTERN_ACTION, pACTION);
@@ -251,11 +257,13 @@ module tb_pw();
 
          @(posedge fe_clk);
          // send pre-trigger data:
-         // TODO: ensure we aren't randomly matching the programmed pattern here
          pretrig_bytes = $urandom_range(pPRETRIG_BYTES_MIN, pPRETRIG_BYTES_MAX);
          $display("Sending pre-trigger data (%0d events):", pretrig_bytes);
          for (txindex = 0; txindex < pretrig_bytes; txindex = txindex + 1) begin
             fe_bytes[0] = $urandom;
+            // ensure we aren't randomly matching the programmed pattern:
+            while ((fe_bytes[0] & match_mask[0]) == (match_pattern[0] & match_mask[0]))
+               fe_bytes[0] = $urandom;
             fe_stat[0] = $urandom;
             get_delay(fe_times[0]);
             get_valid(fe_data_event[0]);
@@ -270,6 +278,13 @@ module tb_pw();
 
          // send pattern which will match:
          $display("\nSending matching pattern (%0d bytes):", pattern_bytes);
+         $write("Pattern: ");
+         for (i = 0; i < pattern_bytes; i = i + 1)
+            $write("%h ", match_pattern[i]);
+         $write("\nMask:    ");
+         for (i = 0; i < pattern_bytes; i = i + 1)
+            $write("%h ", match_mask[i]);
+         $write("\n");
          txindex = 0;
          while (txindex < pattern_bytes) begin
             pattern_fe_stat = $urandom;
@@ -597,7 +612,6 @@ module tb_pw();
       else
          valid = 0;
    endtask
-
 
 
    always #(pUSB_CLOCK_PERIOD/2) usb_clk = !usb_clk;

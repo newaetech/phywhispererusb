@@ -109,7 +109,6 @@ tests.append(dict(name  = 'shortpattern',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
              DELAY_MODE = 0,
-             PRETRIG_MAX = 0,
              PATTERN_MIN = 1,
              PATTERN_MAX = 3))
 
