@@ -66,6 +66,10 @@ module reg_pw #(
    output wire [pTRIGGER_DELAY_WIDTH-1:0] O_trigger_delay,
    output wire [pTRIGGER_WIDTH_WIDTH-1:0] O_trigger_width,
 
+// Interface to USB autodetect:
+   output reg  O_usb_auto_restart,
+   input  wire [1:0] I_usb_auto_speed,
+
 // To top-level:
    output wire [1:0] O_usb_speed
 
@@ -83,6 +87,7 @@ module reg_pw #(
    reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
    reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
    reg [1:0] reg_usb_speed;
+   (* ASYNC_REG = "TRUE" *) reg [1:0] usb_speed_auto;
 
    wire sniff_fifo_full;
    wire sniff_fifo_empty;
@@ -111,7 +116,7 @@ module reg_pw #(
    assign O_capture_len = reg_capture_len;
    assign O_trigger_delay = reg_trigger_delay;
    assign O_trigger_width = reg_trigger_width;
-   assign O_usb_speed = reg_usb_speed;
+   assign O_usb_speed = (reg_usb_speed == `USB_SPEED_AUTO)? usb_speed_auto : reg_usb_speed;
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -123,7 +128,7 @@ module reg_pw #(
             `REG_PATTERN_ACTION: reg_read_data <= reg_pattern_action[reg_bytecnt*8 +: 8];
             `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
-            `REG_USB_SPEED: reg_read_data <= {6'b0, reg_usb_speed};
+            `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
          endcase
       end
       else
@@ -157,6 +162,7 @@ module reg_pw #(
          reg_trigger_delay <= 0;
          reg_trigger_width <= 0;
          reg_usb_speed <= 0;
+         O_usb_auto_restart <= 1'b0;
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -177,6 +183,12 @@ module reg_pw #(
             reg_arm <= write_data[0];
          else if (match)
             reg_arm <= 1'b0;
+
+         if (reg_addrvalid && reg_write && (reg_address == `REG_USB_SPEED) && (write_data == `USB_SPEED_AUTO))
+            O_usb_auto_restart <= 1'b1;
+         else
+            O_usb_auto_restart <= 1'b0;
+
       end
    end
 
@@ -203,8 +215,10 @@ module reg_pw #(
          sniff_fifo_full_pipe <= 0;
          sniff_fifo_overflow_blocked_pipe <= 0;
          sniff_fifo_full_threshold_pipe <= 0;
+         usb_speed_auto <= 0;
       end
       else begin
+         usb_speed_auto <= I_usb_auto_speed;
          {match, match_pipe} <= {match_pipe, I_match};
          {sniff_fifo_full_usbclk, sniff_fifo_full_pipe} <= {sniff_fifo_full_pipe, sniff_fifo_full};
          {sniff_fifo_overflow_blocked_usbclk, sniff_fifo_overflow_blocked_pipe} <= {sniff_fifo_overflow_blocked_pipe, sniff_fifo_overflow_blocked};

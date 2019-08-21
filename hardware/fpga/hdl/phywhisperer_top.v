@@ -141,6 +141,9 @@ module phywhisperer_top(
 
    wire [1:0] usb_speed;
 
+   wire usb_auto_restart;
+   wire [1:0] usb_auto_speed;
+
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
 
@@ -236,7 +239,11 @@ module phywhisperer_top(
       .O_pattern_bytes          (pattern_bytes),
       .I_match                  (match),
 
-      .O_usb_speed              (usb_speed)
+      .O_usb_speed              (usb_speed),
+
+      // USB autodetect:
+      .O_usb_auto_restart       (usb_auto_restart),
+      .I_usb_auto_speed         (usb_auto_speed)
 
    );
 
@@ -279,6 +286,11 @@ module phywhisperer_top(
           {fe_xcvrsel1, fe_xcvrsel0} = 2'b00;
           fe_termsel = 0; 
        end
+       // use FS when speed is set to auto and hasn't been determined yet:
+       else if ((usb_speed == `USB_SPEED_AUTO) || (usb_speed == `USB_SPEED_FS)) begin
+          {fe_xcvrsel1, fe_xcvrsel0} = 2'b01;
+          fe_termsel = 1; 
+       end
        else begin // default: `USB_SPEED_FS
           {fe_xcvrsel1, fe_xcvrsel0} = 2'b01;
           fe_termsel = 1; 
@@ -308,6 +320,8 @@ module phywhisperer_top(
     //assign userio_d[2] = USB_nWE;
     //assign userio_d[3] = USB_nCS;
     //assign userio_d[7:4] = USB_Addr[3:0];
+    assign userio_d[0] = fe_linestate0;
+    assign userio_d[1] = fe_linestate1;
 
 
     `ifdef ILA
@@ -431,6 +445,17 @@ module phywhisperer_top(
       .I_match          (trigger_match)
    );
 
+
+    usb_autodetect U_usb_autodetect (
+        .reset_i            (reset_i),
+        .fe_clk             (clk_fe_buf),
+        .cwusb_clk          (clk_usb_buf),
+        .fe_linestate0      (fe_linestate0),
+        .fe_linestate1      (fe_linestate1),
+    
+        .I_restart          (usb_auto_restart),
+        .O_speed            (usb_auto_speed)
+    );
 
 
    `ifndef __ICARUS__

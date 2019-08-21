@@ -69,7 +69,8 @@
 `define FIFO_STAT_FULL_THRESHOLD 5
 
 // USB speed definitions
-`define USB_SPEED_FS 0
-`define USB_SPEED_HS 1
-`define USB_SPEED_LS 2
+`define USB_SPEED_AUTO 0
+`define USB_SPEED_LS 1
+`define USB_SPEED_FS 2
+`define USB_SPEED_HS 3
 

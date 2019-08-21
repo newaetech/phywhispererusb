@@ -126,20 +126,48 @@ class Usb(object):
         sam.ser.close()
 
 
-    def set_usb_mode_hs(self):
-        """Manually set USB PHY to High-Speed Mode"""
-        self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [1])
+    def set_usb_mode(self, mode='auto'):
+        """Set USB PHY speed.
+           mode: string
+                 LS: manually set the PHY to low speed.
+                 FS: manually set the PHY to full speed.
+                 HS: manually set the PHY to high speed.
+                 auto: Default. PW will attempt to automatically determine the
+                       speed when the target is connected. Mode must be set to
+                       'auto' prior to connecting the target, otherwise speed
+                       cannot be determined correctly. Setting the mode to
+                       'auto' actively causes PW to try to determine the speed.
+        """
+        if mode == 'auto':
+           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [0])
+        elif mode == 'LS':
+           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [1])
+        elif mode == 'FS':
+           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [2])
+        elif mode == 'HS':
+           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [3])
+        else:
+           raise ValueError('Invalid mode %s; specify auto, LS, FS, or HS.' % mode)
         pass
 
-    def set_usb_mode_fs(self):
-        """Manually set USB PHY to Full-Speed Mode"""
-        self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [0])
-        pass
 
-    def set_usb_mode_ls(self):
-        """Manually set USB PHY to Low-Speed Mode"""
-        self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [2])
-        pass
+    def get_usb_mode(self):
+        """Returns USB PHY speed.
+           A return value of 'auto' means that the speed has not been
+           determined yet (was the mode set to 'auto' _before_ the target was
+           connected or powered up?).
+        """
+        value = self.usb.cmdReadMem(self.address('REG_USB_SPEED'), 1)[0]
+        if value == 0:
+           return 'auto'
+        elif value == 1:
+           return 'LS'
+        elif value == 2:
+           return 'FS'
+        elif value == 3:
+           return 'HS'
+        else:
+           raise ValueError('Internal error: REG_USB_SPEED register contains invalid value %d.' % value)
 
 
     def sniff_usb_traffic(self, bytes):
