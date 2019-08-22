@@ -71,7 +71,9 @@ module reg_pw #(
    input  wire [1:0] I_usb_auto_speed,
 
 // To top-level:
-   output wire [1:0] O_usb_speed
+   output wire [1:0] O_usb_speed,
+   output wire [1:0] O_usb_xcvrsel_auto,
+   output wire O_usb_termsel_auto
 
 );
 
@@ -87,6 +89,7 @@ module reg_pw #(
    reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
    reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
    reg [1:0] reg_usb_speed;
+   reg [2:0] reg_usb_auto_defaults;
    (* ASYNC_REG = "TRUE" *) reg [1:0] usb_speed_auto;
 
    wire sniff_fifo_full;
@@ -117,6 +120,8 @@ module reg_pw #(
    assign O_trigger_delay = reg_trigger_delay;
    assign O_trigger_width = reg_trigger_width;
    assign O_usb_speed = (reg_usb_speed == `USB_SPEED_AUTO)? usb_speed_auto : reg_usb_speed;
+   assign O_usb_xcvrsel_auto = reg_usb_auto_defaults[1:0];
+   assign O_usb_termsel_auto = reg_usb_auto_defaults[2];
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -161,8 +166,9 @@ module reg_pw #(
          reg_capture_len <= 0;
          reg_trigger_delay <= 0;
          reg_trigger_width <= 0;
-         reg_usb_speed <= 0;
+         reg_usb_speed <= `USB_SPEED_AUTO;
          O_usb_auto_restart <= 1'b0;
+         reg_usb_auto_defaults <= {1'b1, 2'b01}; // for USB_SPEED_FS
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -176,6 +182,7 @@ module reg_pw #(
                `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data;
                `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_SPEED: reg_usb_speed <= write_data;
+               `REG_USB_AUTO_DEFAULTS: reg_usb_auto_defaults <= write_data[2:0];
             endcase
          end
 

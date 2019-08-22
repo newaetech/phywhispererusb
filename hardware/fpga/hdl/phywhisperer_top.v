@@ -143,6 +143,8 @@ module phywhisperer_top(
 
    wire usb_auto_restart;
    wire [1:0] usb_auto_speed;
+   wire [1:0] usb_xcvrsel_auto;
+   wire usb_termsel_auto;
 
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
@@ -240,6 +242,8 @@ module phywhisperer_top(
       .I_match                  (match),
 
       .O_usb_speed              (usb_speed),
+      .O_usb_xcvrsel_auto       (usb_xcvrsel_auto),
+      .O_usb_termsel_auto       (usb_termsel_auto),
 
       // USB autodetect:
       .O_usb_auto_restart       (usb_auto_restart),
@@ -286,10 +290,15 @@ module phywhisperer_top(
           {fe_xcvrsel1, fe_xcvrsel0} = 2'b00;
           fe_termsel = 0; 
        end
-       // use FS when speed is set to auto and hasn't been determined yet:
        else if ((usb_speed == `USB_SPEED_AUTO) || (usb_speed == `USB_SPEED_FS)) begin
           {fe_xcvrsel1, fe_xcvrsel0} = 2'b01;
           fe_termsel = 1; 
+       end
+       // when speed is set to auto and hasn't been determined yet, settings are programmable
+       // (but default to FS)
+       else if (usb_speed == `USB_SPEED_AUTO) begin
+          {fe_xcvrsel1, fe_xcvrsel0} = usb_xcvrsel_auto;
+          fe_termsel = usb_termsel_auto;
        end
        else begin // default: `USB_SPEED_FS
           {fe_xcvrsel1, fe_xcvrsel0} = 2'b01;
@@ -325,7 +334,7 @@ module phywhisperer_top(
 
 
     `ifdef ILA
-       wire [31:0] ila_probe;
+       wire [17:0] ila_probe;
 
        assign ila_probe[7:0] = fe_data;
        assign ila_probe[8] = fe_txrdy;
@@ -337,34 +346,12 @@ module phywhisperer_top(
        assign ila_probe[14] = fe_sessvld;
        assign ila_probe[15] = fe_rxerror;
        assign ila_probe[16] = fe_vbusvld;
-       assign ila_probe[31:17] = 15'h0;
-
-       assign fe_data = 8'hZZ;
+       assign ila_probe[17] = 1'b0;
 
        ila_0 ila_0_inst (clk_fe_buf, ila_probe);
-
-       /*
-       wire [75:0] ila_usb_probe; // 8 + 8 + 3 + 6 + 16 + 8 + 16 + 3 + 6 = 74 bits
-       assign ila_usb_probe[7:0] = USB_Data;
-       assign ila_usb_probe[15:8] = USB_Addr;
-       assign ila_usb_probe[16] = USB_nRD;
-       assign ila_usb_probe[17] = USB_nWE;
-       assign ila_usb_probe[18] = USB_nCS;
-       assign ila_usb_probe[24:19] = reg_address;
-       assign ila_usb_probe[40:25] = reg_bytecnt;
-       assign ila_usb_probe[48:41] = reg_datao;
-       assign ila_usb_probe[64:49] = reg_size;
-       assign ila_usb_probe[65] = reg_read;
-       assign ila_usb_probe[66] = reg_write;
-       assign ila_usb_probe[67] = reg_addrvalid;
-       assign ila_usb_probe[73:68] = reg_hypaddress;
-       assign ila_usb_probe[74] = USB_SPARE0;
-       assign ila_usb_probe[75] = USB_SPARE1;
-       */
-
     `endif
 
-    `ifdef ILA
+    `ifdef ILA_USB
        ila_1 I_ila_usbreg (
           .clk          (clk_usb_buf),          // input wire clk
           .probe0       (USB_Data),             // input wire [7:0]  probe0  
@@ -382,8 +369,6 @@ module phywhisperer_top(
           .probe12      (USB_SPARE0),           // input wire [0:0]  probe12 
           .probe13      (USB_SPARE1)            // input wire [0:0]  probe13 
        );
-
-
     `endif
 
     // TODO: phase shift

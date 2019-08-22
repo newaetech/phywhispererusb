@@ -23,8 +23,9 @@
 `include "defines.v"
 
 module usb_autodetect #(
-    parameter pCOUNTER_WIDTH = 16,
-    parameter pCOUNTER_THRESHOLD = 60000
+    parameter pCOUNTER_WIDTH = 21,
+    parameter pWAIT_1_LINEHIGH = 60000,  // 1ms
+    parameter pWAIT_2_LINELOW = 1500000  // 25ms
 )(
     /* FRONT END CONNECTIONS */
     input  wire reset_i,
@@ -45,6 +46,8 @@ module usb_autodetect #(
     localparam pS_HS = 3;
     localparam pS_DONE = 4;
     localparam pS_ERROR = 5;
+    localparam pS_FSHS = 6;
+    localparam pS_WAIT_LOW = 7;
 
     reg  [pCOUNTER_WIDTH-1:0] timer;
     wire restart;
@@ -54,8 +57,10 @@ module usb_autodetect #(
     // strictly for easier visualization/debug:
     wire state_idle = (state == pS_IDLE);
     wire state_ls   = (state == pS_LS);
+    wire state_fshs = (state == pS_FSHS);
     wire state_fs   = (state == pS_FS);
     wire state_hs   = (state == pS_HS);
+    wire state_wait = (state == pS_WAIT_LOW);
     wire state_done = (state == pS_DONE);
     wire state_error = (state == pS_ERROR);
 
@@ -74,7 +79,7 @@ module usb_autodetect #(
              if (linestate == 2'b10)
                 next_state = pS_LS;
              else if (linestate == 2'b01)
-                next_state = pS_FS;
+                next_state = pS_FSHS;
              else
                 next_state = pS_IDLE;
           end
@@ -83,26 +88,47 @@ module usb_autodetect #(
           pS_LS: begin
              if (linestate != 2'b10)
                 next_state = pS_ERROR;
-             else if (timer == pCOUNTER_THRESHOLD)
+             else if (timer == pWAIT_1_LINEHIGH)
                 next_state = pS_DONE;
              else
                 next_state = pS_LS;
           end
 
 
-          pS_FS: begin
+          pS_FSHS: begin
              if (linestate != 2'b01)
                 next_state = pS_ERROR;
-             else if (timer == pCOUNTER_THRESHOLD)
-                next_state = pS_DONE;
+             else if (timer == pWAIT_1_LINEHIGH)
+                next_state = pS_WAIT_LOW;
              else
-                next_state = pS_FS;
+                next_state = pS_FSHS;
+          end
+
+
+          pS_WAIT_LOW: begin
+             if (linestate == 2'b01)
+                next_state = pS_WAIT_LOW;
+             else if (linestate == 2'b00)
+                next_state = pS_HS;
+             else
+                next_state = pS_ERROR;
           end
 
 
           pS_HS: begin
-             // TODO!
-             next_state = pS_HS;
+             if (timer == pWAIT_2_LINELOW)
+                next_state = pS_DONE;
+             else if (linestate == 2'b01)
+                next_state = pS_FS;
+             else if (linestate == 2'b10)
+                next_state = pS_ERROR;
+             else
+                next_state = pS_HS;
+          end
+
+
+          pS_FS: begin
+             next_state = pS_DONE;
           end
 
 
@@ -115,10 +141,7 @@ module usb_autodetect #(
 
 
           pS_ERROR: begin
-             if (restart)
-                next_state = pS_IDLE;
-             else
-                next_state = pS_ERROR;
+             next_state = pS_IDLE;
           end
 
 
@@ -137,9 +160,9 @@ module usb_autodetect #(
           timer <= 0;
        end
        else begin
-          if (state == pS_IDLE)
+          if ( (state == pS_IDLE) || (state == pS_WAIT_LOW) || restart)
              timer <= 0;
-          else if ( (state == pS_LS) || (state == pS_FS) )
+          else if ( (state == pS_LS) || (state == pS_FSHS)  || (state == pS_HS) )
              timer <= timer + 1;
        end
     end
@@ -188,7 +211,10 @@ module usb_autodetect #(
          .probe6       (fe_linestate0),         // input wire [0:0]  probe6 
          .probe7       (fe_linestate1),         // input wire [0:0]  probe7 
          .probe8       (O_speed),               // input wire [1:0]  probe8 
-         .probe9       (timer)                  // input wire [15:0]  probe9 
+         .probe9       (timer),                 // input wire [15:0]  probe9 
+         .probe10      (state_fshs),            // input wire [0:0]  probe10 
+         .probe11      (state_wait),            // input wire [0:0]  probe11 
+         .probe12      (restart)                // input wire [0:0]  probe12 
       );
    `endif
 
