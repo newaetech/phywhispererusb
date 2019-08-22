@@ -175,12 +175,15 @@ class Usb(object):
         pass
 
 
-    def read_from_fifo(self, entries=1, verbose=False, single_burst=True):
+    def read_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False):
         """Read from USB capture memory.
         entries: integer
                  values: 1 to 8192
         single_burst: True: read capture memory in a single burst (much faster).
                       False: read capture memory in 3-byte bursts (much slower).
+        blocking: True: wait for data to be available before reading. Slower and not available
+                        with single_burst=True.
+                  False: read requested number of entries without checking for availability.
         verbose: True or False
         """
         timestep = 0
@@ -194,11 +197,16 @@ class Usb(object):
         underflowed = False
         overflowed = False
         if single_burst:
-            rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
+            if blocking:
+               raise ValueError ('Cannot do blocking reads in a single burst.')
+            else:
+               rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
         for i in range(entries):
             if single_burst:
                 raw = rawburst[i*4:i*4+3]
             else:
+                while blocking and self.fifo_empty():
+                    pass
                 raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 3)
             command = raw[2] & 0x3
             if ((raw[2] & 8) >> 3) and not underflowed:
@@ -325,5 +333,31 @@ class Usb(object):
         fifo_overflow_blocked = (status & 16) >> 4
         assert fifo_underflow == underflow
         assert fifo_overflow_blocked == overflow_blocked
+
+
+    def fifo_empty(self):
+        """Returns True if the capture FIFO is empty, False otherwise.
+        """
+        if self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_STAT'),1)[0] & 1:
+            return True
+        else:
+            return False
+
+
+    def armed(self):
+        """Returns True if the PhyWhisperer is armed.
+        """
+        if self.usb.cmdReadMem(self.address('REG_ARM'),1)[0]:
+            return True
+        else:
+            return False
+
+
+    def wait_disarmed(self):
+        """Blocks until armed() returns false.
+        """
+        while self.armed():
+            pass
+
 
 

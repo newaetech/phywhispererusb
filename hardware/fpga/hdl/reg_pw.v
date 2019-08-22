@@ -128,6 +128,7 @@ module reg_pw #(
       if (reg_addrvalid && reg_read) begin
          // TODO: make all registers readable? or only those that are strictly necessary?
          case (reg_address)
+            `REG_ARM: reg_read_data <= reg_arm;
             `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
             `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
             `REG_PATTERN_ACTION: reg_read_data <= reg_pattern_action[reg_bytecnt*8 +: 8];
