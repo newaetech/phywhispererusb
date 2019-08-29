@@ -37,6 +37,7 @@
 `define FE_FIFO_CMD_DATA 2'b00
 `define FE_FIFO_CMD_STAT 2'b01
 `define FE_FIFO_CMD_TIME 2'b10
+`define FE_FIFO_CMD_STRM 2'b11
 
 `define FE_FIFO_CMD_START 16
 `define FE_FIFO_CMD_BIT_LEN 2
@@ -55,6 +56,8 @@
 
 `define FE_FIFO_DATA_START 8
 `define FE_FIFO_DATA_LEN 8
+
+`define FE_FIFO_STRM_EMPTY 8'h0
 
 // pattern match action definitions:
 `define PM_NOP 0

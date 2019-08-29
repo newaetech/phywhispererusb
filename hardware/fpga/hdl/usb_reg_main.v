@@ -21,7 +21,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module usb_reg_main (
+module usb_reg_main #(
+   parameter pBYTECNT_SIZE = 7
+)(
    input  wire         reset_i,
    input  wire         cwusb_clk,
 
@@ -37,7 +39,7 @@ module usb_reg_main (
 
  /* Interface to registers */
    output reg  [5:0]   reg_address,  // Address of register
-   output reg  [15:0]  reg_bytecnt,  // Current byte count
+   output reg  [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    output reg  [7:0]   reg_datao,    // Data to write
    input  wire [7:0]   reg_datai,    // Data to read
    output wire         reg_read,     // Read flag. One clock cycle AFTER this flag is high
@@ -114,10 +116,9 @@ module usb_reg_main (
       if (cwusb_alen_rs == 1'b0) begin
          reg_bytecnt <= 0;
       end else if ((rdflag_rs_dly) || (reg_write_dly) ) begin
-         //Stop roll-over
-         if (reg_bytecnt != 16'hFFFF) begin
-            reg_bytecnt <= reg_bytecnt + 1;
-         end
+         //roll-over is allowed (only access to use it is FIFO read, where we
+         //only look at reg_bytecnt % 4)
+         reg_bytecnt <= reg_bytecnt + 1;
       end
    end
 

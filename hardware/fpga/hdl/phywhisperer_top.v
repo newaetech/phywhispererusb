@@ -89,6 +89,7 @@ module phywhisperer_top(
    parameter pPATTERN_BYTES = 64;
    parameter pTRIGGER_DELAY_WIDTH = 20;
    parameter pTRIGGER_WIDTH_WIDTH = 17;
+   parameter pBYTECNT_SIZE = 7;
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -98,7 +99,7 @@ module phywhisperer_top(
    wire reset_i = USB_SPARE0;
 
    wire [5:0]   reg_address;
-   wire [15:0]  reg_bytecnt;
+   wire [pBYTECNT_SIZE-1:0]  reg_bytecnt;
    wire [7:0]   write_data;
    wire [7:0]   read_data;
    wire         reg_read;
@@ -179,7 +180,9 @@ module phywhisperer_top(
    assign USB_Data = cmdfifo_isout ? cmdfifo_dout : 8'bZ;
    assign cmdfifo_din = USB_Data;
 
-   usb_reg_main U_usb_reg_main (
+   usb_reg_main #(
+      .pBYTECNT_SIZE    (pBYTECNT_SIZE)
+   ) U_usb_reg_main (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
       .cwusb_din        (cmdfifo_din), 
@@ -205,7 +208,8 @@ module phywhisperer_top(
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pPATTERN_BYTES           (pPATTERN_BYTES),
       .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
-      .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH)
+      .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH),
+      .pBYTECNT_SIZE            (pBYTECNT_SIZE)
    ) U_reg_pw (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -333,7 +337,7 @@ module phywhisperer_top(
     assign userio_d[1] = fe_linestate1;
 
 
-    `ifdef ILA
+    `ifdef ILA_FE
        wire [17:0] ila_probe;
 
        assign ila_probe[7:0] = fe_data;
@@ -360,7 +364,7 @@ module phywhisperer_top(
           .probe3       (USB_nWE),              // input wire [0:0]  probe3 
           .probe4       (USB_nCS),              // input wire [0:0]  probe4 
           .probe5       (reg_address),          // input wire [5:0]  probe5 
-          .probe6       (reg_bytecnt),          // input wire [15:0]  probe6 
+          .probe6       ({9'b0, reg_bytecnt}),  // input wire [15:0]  probe6 
           .probe7       (write_data),           // input wire [7:0]  probe7 
           .probe8       (read_data),            // input wire [15:0]  probe8 
           .probe9       (reg_read),             // input wire [0:0]  probe9 

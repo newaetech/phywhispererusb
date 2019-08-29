@@ -42,6 +42,7 @@ module tb_pw();
     parameter pPVALID = 50;
     parameter pSEED = 1;
     parameter pFIFO_DEPTH = 8192;
+    parameter pMAX_EVENTS = pFIFO_DEPTH * 4; // arbitrary
     parameter pTIMEOUT = 50000;
     parameter pACTION = `PM_CAPTURE;
     parameter pTRIGGER_DELAY_MIN= 0;
@@ -49,6 +50,7 @@ module tb_pw();
     parameter pTRIGGER_WIDTH_MIN= 1;
     parameter pTRIGGER_WIDTH_MAX= 2**17-1;
     parameter pREAD_CONCURRENTLY = 1;
+    parameter pSTREAM_MODE = 0;
 
     reg           usb_clk;
     wire [7:0]    USB_Data;
@@ -86,6 +88,7 @@ module tb_pw();
     reg  [7:0] dummy;
     reg  [7:0] data;
     reg  [7:0] expected_data;
+    reg  [7:0] stream_code;
     reg  [1:0] command;
     reg  [`FE_FIFO_FULLTIME_LEN-1:0] timestamp;
     reg  dut_rxactive;
@@ -150,11 +153,11 @@ module tb_pw();
    int errors;
    int time_counter;
    string str;
-   reg fe_data_event [0:pFIFO_DEPTH];
-   reg [7:0] fe_bytes [0:pFIFO_DEPTH];
-   reg [4:0] fe_stat [0:pFIFO_DEPTH];
+   reg fe_data_event [0:pMAX_EVENTS-1];
+   reg [7:0] fe_bytes [0:pMAX_EVENTS-1];
+   reg [4:0] fe_stat [0:pMAX_EVENTS-1];
    reg [4:0] pattern_fe_stat;
-   reg [15:0] fe_times [0:pFIFO_DEPTH];
+   reg [15:0] fe_times [0:pMAX_EVENTS-1];
    reg [7:0] sniff_bytes [0:7];
    reg [7:0] match_pattern [0:pPATTERN_BYTES_MAX-1];
    reg [7:0] match_mask [0:pPATTERN_BYTES_MAX-1];
@@ -343,12 +346,21 @@ module tb_pw();
 
          // sync up with receive block:
          if (pACTION == `PM_CAPTURE)
-            wait (rx_readindex == pNUM_EVENTS);
+            wait (rx_readindex >= pNUM_EVENTS);
          else if (pACTION == `PM_TRIGGER)
             wait (receive_iteration == send_iteration + 1);
 
       end
 
+      if (receive_iteration < send_iteration) begin
+         $display("ERROR: simulation finished but receive thread did not complete its iterations: rx iteration=%0d, tx iteration=%0d", receive_iteration, send_iteration);
+         errors += 1;
+      end
+
+      if ( (rx_readindex < txindex) && pACTION == `PM_CAPTURE ) begin // TODO: when trigger captures as well, remove restriction
+         $display("ERROR: simulation finished but not all data was received: rx index=%0d, tx index=%0d", rx_readindex, txindex);
+         errors += 1;
+      end
 
       if (errors)
          $display("SIMULATION FAILED (%0d errors).", errors);
@@ -394,19 +406,21 @@ module tb_pw();
             while (fifo_empty == 0) begin
                read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
             end
+            //if ( (pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1) ) begin
             if (pREAD_CONCURRENTLY == 0) begin
                wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0);
                wait(txindex == pNUM_EVENTS);
                #(pFE_CLOCK_PERIOD*100);
             end
 
-            if (pREAD_CONCURRENTLY == 0)
+            if ( (pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1) )
                rw_lots_bytes(`REG_SNIFF_FIFO_RD);
 
             for (rx_readindex = 0; rx_readindex < pNUM_EVENTS; rx_readindex = rx_readindex + 1) begin
                // wait for FIFO data to be available:
-               wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0);
-               if (pREAD_CONCURRENTLY == 1)
+               if (pSTREAM_MODE == 0)
+                  wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0); // TODO: replace with register read
+               if ( !((pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1)) )
                   rw_lots_bytes(`REG_SNIFF_FIFO_RD);
                read_next_byte(read_data[7:0]);
                read_next_byte(read_data[15:8]);
@@ -420,7 +434,12 @@ module tb_pw();
                fifo_stat_full =            read_data[18+`FIFO_STAT_FULL];
                fifo_stat_overflow_blocked= read_data[18+`FIFO_STAT_OVERFLOW_BLOCKED];
                fifo_stat_full_threshold =  read_data[18+`FIFO_STAT_FULL_THRESHOLD];
-               if (fifo_stat_underflow | fifo_stat_overflow_blocked) begin
+
+               if (pSTREAM_MODE && fifo_stat_overflow_blocked) begin
+                  rx_readindex = pNUM_EVENTS;
+                  $display("\t\t\t\t\t*** Received overflow flag, stopping stream read\n");
+               end
+               else if (fifo_stat_underflow | fifo_stat_overflow_blocked) begin
                   $display("\t\t\t\t\t*** ERROR on read #%0d at time %0t: underflow=%d, overflow=%d", rx_dataindex, $time, fifo_stat_underflow, fifo_stat_overflow_blocked);
                   errors += 1;
                end
@@ -470,6 +489,16 @@ module tb_pw();
                   if (pVERBOSE && pSHOW_TIME_EVENTS)
                      $display("\t\t\t\t\ttime=%0d", timestamp);
                end
+
+
+               else if (command == `FE_FIFO_CMD_STRM) begin
+                  // we haven't actually consumed anything from the FIFO, so don't increment index:
+                  rx_readindex -= 1;
+                  stream_code = read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN];
+                  if (pVERBOSE)
+                     $display("\t\t\t\t\tstream code=%0d", stream_code);
+               end
+
 
                else begin
                   errors += 1;

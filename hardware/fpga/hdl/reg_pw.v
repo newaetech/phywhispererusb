@@ -27,14 +27,15 @@ module reg_pw #(
    parameter pTIMESTAMP_SHORT_WIDTH = 3,
    parameter pPATTERN_BYTES = 8,
    parameter pTRIGGER_DELAY_WIDTH = 20,
-   parameter pTRIGGER_WIDTH_WIDTH = 16
+   parameter pTRIGGER_WIDTH_WIDTH = 16,
+   parameter pBYTECNT_SIZE = 7
 )(
    input  wire         reset_i,
 
 // Interface to reg_main_cwlite:
    input  wire         cwusb_clk,
    input  wire [5:0]   reg_address,  // Address of register
-   input  wire [15:0]  reg_bytecnt,  // Current byte count
+   input  wire [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    output reg  [7:0]   read_data,    //
    input  wire [7:0]   write_data,   //
    input  wire         reg_read,     // Read flag. One clock cycle AFTER this flag is high
@@ -101,14 +102,20 @@ module reg_pw #(
    wire sniff_fifo_rd_en;
    reg  [17:0] sniff_fifo_din;
    wire [17:0] sniff_fifo_dout;
+   reg  [17:0] fifo_read_data;
    wire sniff_fifo_empty_threshold_xilinx;
    wire sniff_fifo_empty_threshold;
    wire sniff_fifo_full_threshold_xilinx;
    wire sniff_fifo_full_threshold;
+   wire fifo_read_condition;
+   wire fifo_flush_condition;
 
    reg  [7:0] reg_read_data;
    reg  flushing;
    wire [5:0] fifo_status;
+   reg  empty_fifo_read;
+   reg  sniff_fifo_rd_en_r;
+   reg  sniff_fifo_empty_r;
 
    assign O_arm = reg_arm_r & ~flushing;
    assign O_timestamps_disable = reg_timestamps_disable;
@@ -143,13 +150,21 @@ module reg_pw #(
 
    // MUX read output between registers and FIFO output:
    always @(*) begin
-      if (reg_address == `REG_SNIFF_FIFO_RD)
+      if (empty_fifo_read) begin
+         fifo_read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] = `FE_FIFO_CMD_STRM;
+         fifo_read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] = `FE_FIFO_STRM_EMPTY;
+      end
+      else
+         fifo_read_data = sniff_fifo_dout;
+      
+      if (reg_address == `REG_SNIFF_FIFO_RD) begin
          case (reg_bytecnt % 4)
-            0: read_data = sniff_fifo_dout[7:0];
-            1: read_data = sniff_fifo_dout[15:8];
-            2: read_data = {fifo_status, sniff_fifo_dout[17:16]};
+            0: read_data = fifo_read_data[7:0];
+            1: read_data = fifo_read_data[15:8];
+            2: read_data = {fifo_status, fifo_read_data[17:16]};
             default: read_data = 0;
          endcase
+      end
       else
          read_data = reg_read_data;
    end
@@ -249,7 +264,9 @@ module reg_pw #(
          // CDC:
          {reg_arm_feclk, reg_arm_pipe} <= {reg_arm_pipe, reg_arm};
          // don't overflow the FIFO:
-         if (I_fe_capture_data_wr & !sniff_fifo_full) begin
+         // Because back-to-back writes are possible, checking sniff_fifo_full may not prevent overflow,
+         // and so the last few FIFO entries are wasted :-(
+         if (I_fe_capture_data_wr & !sniff_fifo_full_threshold_xilinx) begin
             sniff_fifo_wr_en <= 1'b1;
             sniff_fifo_din[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] <= I_fe_capture_cmd;
             case (I_fe_capture_cmd)
@@ -272,7 +289,7 @@ module reg_pw #(
             sniff_fifo_wr_en <= 1'b0;
 
          // if a write WOULD have overflowed the FIFO, log it:
-         if (I_fe_capture_data_wr & sniff_fifo_full)
+         if (I_fe_capture_data_wr & sniff_fifo_full_threshold_xilinx)
             sniff_fifo_overflow_blocked <= 1'b1;
          else if (reg_arm_feclk)
             sniff_fifo_overflow_blocked <= 1'b0;
@@ -282,20 +299,37 @@ module reg_pw #(
 
    // FIFO read logic:
    // perform a FIFO read on first read access to FIFO register, or when flushing:
-   assign sniff_fifo_rd_en = ( reg_addrvalid && reg_read &&   // TODO: guard against underflow?
-                              (reg_address == `REG_SNIFF_FIFO_RD) &&
-                              ((reg_bytecnt % 4) == 0) ) || (flushing & ~sniff_fifo_empty);
+   assign fifo_read_condition = reg_addrvalid && reg_read && ~sniff_fifo_empty &&
+                               (reg_address == `REG_SNIFF_FIFO_RD) &&
+                              ((reg_bytecnt % 4) == 0) && ~empty_fifo_read;
+   assign fifo_flush_condition = (flushing & ~sniff_fifo_empty);
+   assign sniff_fifo_rd_en = fifo_read_condition || fifo_flush_condition;
 
-   // Xilinx FIFO underflow flag isn't sticky, so create our own:
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
          sniff_fifo_underflow_sticky <= 1'b0;
+         empty_fifo_read <= 1'b0;
+         sniff_fifo_rd_en_r <= 1'b0;
+         sniff_fifo_empty_r <= 1'b0;
       end
       else begin
+         // Xilinx FIFO underflow flag isn't sticky, so create our own:
          if (sniff_fifo_underflow)
             sniff_fifo_underflow_sticky <= 1'b1;
          else if (reg_arm)
             sniff_fifo_underflow_sticky <= 1'b0;
+
+         sniff_fifo_empty_r <= sniff_fifo_empty;
+         sniff_fifo_rd_en_r <= sniff_fifo_rd_en; // needed because when reading last entry, fifo empty will go
+                                                 // high immediately, empty_fifo_read will assert and simulation
+                                                 // will fail
+         if (reg_addrvalid && reg_read && (reg_address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && sniff_fifo_empty_r)
+            empty_fifo_read <= 1'b1;
+         // NOTE: this works because the 4th byte of a FIFO read is dummy data; it
+         // will have to be tweaked if the 4th byte contains valid data 
+         else if (reg_addrvalid && reg_read && (reg_address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 3) && ~sniff_fifo_empty_r)
+            empty_fifo_read <= 1'b0;
+
       end
    end
 
@@ -365,23 +399,25 @@ module reg_pw #(
 
    `endif
 
-   `ifdef ILA_FIFO
+   `ifdef ILA
        ila_3 U_fe_fifo_wr_ila (
           .clk          (fe_clk),
           .probe0       (sniff_fifo_wr_en),
           .probe1       (sniff_fifo_full),
           .probe2       (sniff_fifo_overflow_blocked),
-          .probe3       (sniff_fifo_din)
+          .probe3       (1'b0),
+          .probe4       (sniff_fifo_din)
        );
    `endif
 
-   `ifdef ILA_FIFO
+   `ifdef ILA
        ila_3 U_fe_fifo_rd_ila (
           .clk          (cwusb_clk),
           .probe0       (sniff_fifo_rd_en),
           .probe1       (sniff_fifo_empty),
           .probe2       (sniff_fifo_underflow_sticky),
-          .probe3       (sniff_fifo_dout)
+          .probe3       (sniff_fifo_overflow_blocked_usbclk),
+          .probe4       (sniff_fifo_dout)
        );
 
 

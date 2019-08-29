@@ -71,7 +71,7 @@ module pw_trigger #(
       .dst_pulse     (match_pulse)
    );
 
-   `ifdef ILA
+   `ifdef ILA_TRIG
       // NOTE: this ILA tends to make timing fail on the trigger_clk domain
       ila_4 I_ila_trigger (
          .clk          (trigger_clk),           // input wire clk

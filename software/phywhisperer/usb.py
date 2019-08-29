@@ -175,17 +175,21 @@ class Usb(object):
         pass
 
 
-    def read_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False):
+    def read_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False, stream=False):
         """Read from USB capture memory.
         entries: integer
-                 values: 1 to 8192
+                 values: 1 to 8188 if stream=False; no upper limit if stream=True
         single_burst: True: read capture memory in a single burst (much faster).
                       False: read capture memory in 3-byte bursts (much slower).
         blocking: True: wait for data to be available before reading. Slower and not available
                         with single_burst=True.
                   False: read requested number of entries without checking for availability.
+        stream: True:
+                False: regular read operation, as defined by 'single_burst' and 'blocking'
         verbose: True or False
         """
+        status = 0
+        entries_read = 0
         timestep = 0
         data_bytes = []
         data_times = []
@@ -196,26 +200,49 @@ class Usb(object):
         time_commands = 0
         underflowed = False
         overflowed = False
+        if (stream == False) and (entries < 1 or entries > 8188):
+           raise ValueError ('entries must be in range [1,8188] when stream=False.')
+
         if single_burst:
             if blocking:
                raise ValueError ('Cannot do blocking reads in a single burst.')
+
+            elif stream:
+            # TODO: for now using poor man's approach to support streaming with a burst read
+            # 
+                command = 3
+                while (command == 3):
+                    raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4)
+                    command = raw[2] & 0x3
+                    status += 1
+                    if (status % 1000 == 0) and status > 0:
+                       print("%d empty status read..." % status)
+                rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
+
             else:
-               rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
-        for i in range(entries):
+                rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
+
+        #for i in range(entries):
+        #while (entries_read < entries) and not (overflowed or underflowed):
+        while (entries_read < entries) and not overflowed:
+            if (entries_read % 500 == 0) and entries_read > 0:
+                print("%d entries read..." % entries_read)
             if single_burst:
-                raw = rawburst[i*4:i*4+3]
+                #raw = rawburst[i*4:i*4+3]
+                raw = rawburst[entries_read*4:entries_read*4+3]
             else:
                 while blocking and self.fifo_empty():
                     pass
-                raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 3)
+                raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4)
             command = raw[2] & 0x3
-            if ((raw[2] & 8) >> 3) and not underflowed:
+            if (raw[2] & 8) and not underflowed:
                 logging.warning("Capture FIFO underflowed!")
                 underflowed = True
-            if ((raw[2] & 32) >> 5) and not overflowed:
+            if (raw[2] & 64)and not overflowed:
                 logging.warning("Capture FIFO overflow blocked!")
                 overflowed = True
             if (command == 0): # data
+                entries_read += 1
                 data = raw[1]
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
@@ -225,10 +252,12 @@ class Usb(object):
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
                    print("%8d   flags=%02x data=%02x"%(timestep, flags, data))
+                # TODO: log flags
                 data_commands += 1
                 data_bytes.append(data)
                 data_times.append(timestep)
             elif (command == 1): # stat
+                entries_read += 1
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
                 timestep += (ts+1)
@@ -239,6 +268,7 @@ class Usb(object):
                 stat_bytes.append(flags)
                 stat_times.append(timestep)
             elif (command == 2): # time
+                entries_read += 1
                 ts = raw[0] + (raw[1] << 8)
                 self.long_timestamps[ts] += 1
                 #Unlike stat and data commands, we don't add one here; if we did
@@ -250,8 +280,15 @@ class Usb(object):
                 time_commands += 1
                 if verbose:
                    print("%8d" % timestep)
+            elif (command == 3): # stream status
+                status += 1
+                if stream:
+                   entries_read += 1
+                elif (status % 1000 == 0) and status > 0:
+                   print("%d empty status read..." % status)
             else:
                 print ("ERROR: unknown command (%d)" % command) 
+        print("Received stream empty status %d times." % status)
         return (data_times, data_bytes, stat_times, stat_bytes)
 
 
@@ -268,9 +305,10 @@ class Usb(object):
         """Set how many events to capture (events include data, USB status, and timestamps).
         size: int
                range: [1, 8192]
-        """
+        TODO: stream mode supports larger size, how to handle?
         if (size > 8192) or (size < 1):
             raise ValueError('Illegal size value.')
+        """
         size_bytes = [size & 255, (size >> 8) & 255]
         self.usb.cmdWriteMem(self.address('REG_CAPTURE_LEN'), size_bytes)
 
