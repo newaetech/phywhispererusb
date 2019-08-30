@@ -165,6 +165,7 @@ module tb_pw();
    int pretrig_bytes;
    bit armed;
    bit fifo_empty;
+   bit overflow_noted;
 
    int matchtime;
    int triggertime;
@@ -398,6 +399,8 @@ module tb_pw();
             $display("Rx Iteration %d:", receive_iteration);
             rx_dataindex = 0;
             time_counter = 0;
+            fifo_stat_overflow_blocked = 0;
+            overflow_noted = 0;
             // sync up with transmit block:
             wait(send_iteration == receive_iteration);
             wait(armed);
@@ -408,7 +411,7 @@ module tb_pw();
             end
             //if ( (pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1) ) begin
             if (pREAD_CONCURRENTLY == 0) begin
-               wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0);
+               wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0); // TODO: replace with register read
                wait(txindex == pNUM_EVENTS);
                #(pFE_CLOCK_PERIOD*100);
             end
@@ -436,8 +439,15 @@ module tb_pw();
                fifo_stat_full_threshold =  read_data[18+`FIFO_STAT_FULL_THRESHOLD];
 
                if (pSTREAM_MODE && fifo_stat_overflow_blocked) begin
-                  rx_readindex = pNUM_EVENTS;
-                  $display("\t\t\t\t\t*** Received overflow flag, stopping stream read\n");
+                  //rx_readindex = pNUM_EVENTS - 1;
+                  if (!overflow_noted) begin
+                     $display("\t\t\t\t\t*** Received overflow flag, will read FIFO until empty\n");
+                     overflow_noted = 1;
+                  end
+                  if (U_dut.U_reg_pw.sniff_fifo_empty_threshold) begin// TODO: replace empty check with with register read
+                     rx_readindex = pNUM_EVENTS - 1;
+                     $display("\t\t\t\t\t*** Emptied FIFO after overflow, stopping read.\n");
+                  end
                end
                else if (fifo_stat_underflow | fifo_stat_overflow_blocked) begin
                   $display("\t\t\t\t\t*** ERROR on read #%0d at time %0t: underflow=%d, overflow=%d", rx_dataindex, $time, fifo_stat_underflow, fifo_stat_overflow_blocked);

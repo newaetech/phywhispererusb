@@ -128,6 +128,7 @@ module phywhisperer_top(
    wire timestamps_disable;
    wire [15:0] capture_len;
    wire fifo_full;
+   wire fifo_overflow_blocked;
    wire arm;
    wire capturing;
    wire trig_pulse;
@@ -232,6 +233,7 @@ module phywhisperer_top(
       .O_timestamps_disable     (timestamps_disable),
       .O_capture_len            (capture_len),
       .O_fifo_full              (fifo_full),
+      .O_fifo_overflow_blocked  (fifo_overflow_blocked),
 
       // Trigger:
       .O_trigger_delay          (trigger_delay),
@@ -267,6 +269,7 @@ module phywhisperer_top(
       .I_capture_enable         (capture_match),
       .I_capture_len            (capture_len),
       .I_fifo_full              (fifo_full),
+      .I_fifo_overflow_blocked  (fifo_overflow_blocked),
       .fe_data                  (fe_data),
       .fe_rxvalid               (fe_rxvalid),
       .fe_rxactive              (fe_rxactive),
@@ -337,7 +340,7 @@ module phywhisperer_top(
     assign userio_d[1] = fe_linestate1;
 
 
-    `ifdef ILA_FE
+    `ifdef ILA
        wire [17:0] ila_probe;
 
        assign ila_probe[7:0] = fe_data;
@@ -355,7 +358,7 @@ module phywhisperer_top(
        ila_0 ila_0_inst (clk_fe_buf, ila_probe);
     `endif
 
-    `ifdef ILA_USB
+    `ifdef ILA
        ila_1 I_ila_usbreg (
           .clk          (clk_usb_buf),          // input wire clk
           .probe0       (USB_Data),             // input wire [7:0]  probe0  

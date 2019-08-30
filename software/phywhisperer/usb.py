@@ -200,6 +200,7 @@ class Usb(object):
         time_commands = 0
         underflowed = False
         overflowed = False
+        done_reading = False
         if (stream == False) and (entries < 1 or entries > 8188):
            raise ValueError ('entries must be in range [1,8188] when stream=False.')
 
@@ -208,8 +209,9 @@ class Usb(object):
                raise ValueError ('Cannot do blocking reads in a single burst.')
 
             elif stream:
-            # TODO: for now using poor man's approach to support streaming with a burst read
-            # 
+            # TODO: for now using poor man's approach to support streaming with a burst read:
+            # read one word at a time until a non-empty status is encountered, then start the
+            # burst.
                 command = 3
                 while (command == 3):
                     raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4)
@@ -222,9 +224,7 @@ class Usb(object):
             else:
                 rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
 
-        #for i in range(entries):
-        #while (entries_read < entries) and not (overflowed or underflowed):
-        while (entries_read < entries) and not overflowed:
+        while (entries_read < entries) and not done_reading:
             if (entries_read % 500 == 0) and entries_read > 0:
                 print("%d entries read..." % entries_read)
             if single_burst:
@@ -238,9 +238,12 @@ class Usb(object):
             if (raw[2] & 8) and not underflowed:
                 logging.warning("Capture FIFO underflowed!")
                 underflowed = True
-            if (raw[2] & 64)and not overflowed:
+                done_reading = True
+            if (raw[2] & 64) and not overflowed:
                 logging.warning("Capture FIFO overflow blocked!")
                 overflowed = True
+                if not stream:
+                   done_reading = True
             if (command == 0): # data
                 entries_read += 1
                 data = raw[1]
@@ -281,13 +284,20 @@ class Usb(object):
                 if verbose:
                    print("%8d" % timestep)
             elif (command == 3): # stream status
+                if not stream:
+                   raise Exception('Received empty stream status: attempted to read empty FIFO.')
                 status += 1
-                if stream:
+                if stream and single_burst:
                    entries_read += 1
-                elif (status % 1000 == 0) and status > 0:
+                if (status % 1000 == 0) and status > 0:
                    print("%d empty status read..." % status)
             else:
                 print ("ERROR: unknown command (%d)" % command) 
+
+            if stream and self.fifo_empty() and overflowed:
+                print('Emptied FIFO after overflow, done reading.')
+                done_reading = True
+
         print("Received stream empty status %d times." % status)
         return (data_times, data_bytes, stat_times, stat_bytes)
 

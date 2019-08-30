@@ -42,6 +42,7 @@ module fe_capture #(
     input  wire I_arm,
     input  wire [15:0] I_capture_len,
     input  wire I_fifo_full,
+    input  wire I_fifo_overflow_blocked,
     output reg  [1:0] O_command,
     output reg  [pTIMESTAMP_FULL_WIDTH-1:0] O_time,
     output wire [7:0] O_data,
@@ -285,7 +286,8 @@ module fe_capture #(
 
     assign O_capturing = capture_allowed;
 
-    assign capture_allowed = I_capture_enable & (capture_count < capture_len_r) & !I_fifo_full;
+    assign capture_allowed = I_capture_enable & (capture_count < capture_len_r) & 
+                            !I_fifo_full & !I_fifo_overflow_blocked;
 
     // strictly for easier visualization/debug:
     wire state_idle = (state == pS_IDLE);

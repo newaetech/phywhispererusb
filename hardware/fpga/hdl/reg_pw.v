@@ -50,6 +50,7 @@ module reg_pw #(
    output wire         O_arm,
    output wire [15:0]  O_capture_len,
    output wire         O_fifo_full,
+   output wire         O_fifo_overflow_blocked,
    input  wire [pTIMESTAMP_FULL_WIDTH-1:0]   I_fe_capture_time,
    input  wire [7:0]   I_fe_capture_data,
    input  wire [4:0]   I_fe_capture_stat,
@@ -371,10 +372,15 @@ module reg_pw #(
    assign sniff_fifo_full_threshold = sniff_fifo_full_threshold_xilinx & !sniff_fifo_full;
 
    assign O_fifo_full = sniff_fifo_full;
+   assign O_fifo_overflow_blocked = sniff_fifo_overflow_blocked;
    assign fifo_status[`FIFO_STAT_EMPTY] = sniff_fifo_empty;
    assign fifo_status[`FIFO_STAT_UNDERFLOW] = sniff_fifo_underflow_sticky;
    assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = sniff_fifo_empty_threshold;
    assign fifo_status[`FIFO_STAT_FULL] = sniff_fifo_full_usbclk;
+
+   // TODO: would be nice to delay the overflow status until the FIFO contents prior to the occurence of the overflow
+   // have been read. Or more simply: after overflow, don't write into FIFO (until re-arm), then SW just needs to
+   // read the rest of the FIFO.
    assign fifo_status[`FIFO_STAT_OVERFLOW_BLOCKED] = sniff_fifo_overflow_blocked_usbclk;
    assign fifo_status[`FIFO_STAT_FULL_THRESHOLD] = sniff_fifo_full_threshold_usbclk;
 
@@ -399,7 +405,7 @@ module reg_pw #(
 
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_FIFO
        ila_3 U_fe_fifo_wr_ila (
           .clk          (fe_clk),
           .probe0       (sniff_fifo_wr_en),
@@ -410,7 +416,7 @@ module reg_pw #(
        );
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_FIFO
        ila_3 U_fe_fifo_rd_ila (
           .clk          (cwusb_clk),
           .probe0       (sniff_fifo_rd_en),
