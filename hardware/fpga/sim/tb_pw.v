@@ -153,6 +153,7 @@ module tb_pw();
    int errors;
    int time_counter;
    string str;
+   string rxalign = "                                            ";
    reg fe_data_event [0:pMAX_EVENTS-1];
    reg [7:0] fe_bytes [0:pMAX_EVENTS-1];
    reg [4:0] fe_stat [0:pMAX_EVENTS-1];
@@ -164,7 +165,6 @@ module tb_pw();
    int pattern_bytes;
    int pretrig_bytes;
    bit armed;
-   bit fifo_empty;
    bit overflow_noted;
 
    int matchtime;
@@ -204,54 +204,24 @@ module tb_pw();
       errors = 0;
       #(pFE_CLOCK_PERIOD*100);
 
-      // write pattern and mask:
-      pattern_bytes = $urandom_range(pPATTERN_BYTES_MIN, pPATTERN_BYTES_MAX);
-      rw_lots_bytes(`REG_PATTERN);
-      for (i = 0; i < pattern_bytes; i = i + 1) begin
-         match_pattern[i] = $urandom;
-         write_next_byte(match_pattern[i]);
-      end
-      rw_lots_bytes(`REG_PATTERN_MASK);
-      for (i = 0; i < pattern_bytes; i = i + 1) begin
-         match_mask[i] = $urandom;
-         // things would get unnecessarily complex if the first mask byte could be 0, so prevent that:
-         if (i == 0) begin
-            while (match_mask[0] == 0)
-               match_mask[0] = $urandom;
-         end
-         write_next_byte(match_mask[i]);
-      end
-
-      write_1byte(`REG_PATTERN_BYTES, pattern_bytes);
       write_1byte(`REG_PATTERN_ACTION, pACTION);
-
       rw_lots_bytes(`REG_CAPTURE_LEN);
       write_next_byte(pNUM_EVENTS & 255);
       write_next_byte(pNUM_EVENTS >> 8);
 
       if (pVERBOSE) begin
-         $display("--------------------------------------|-------------------------------");
-         $display("FE testbench sending:                 | PhyWhisperer DUT receiving:");
-         $display("--------------------------------------|-------------------------------");
+         $display("---------------------------------------------|-------------------------------");
+         $display("FE testbench sending:                        | PhyWhisperer DUT receiving:");
+         $display("---------------------------------------------|-------------------------------");
       end
 
       for (send_iteration = 0; send_iteration < pNUM_REPEATS; send_iteration = send_iteration + 1) begin
          armed = 0;
          $display("Tx Iteration %d:", send_iteration);
 
-         if (pACTION == `PM_TRIGGER) begin
-            trigger_delay = $urandom_range(pTRIGGER_DELAY_MIN, pTRIGGER_DELAY_MAX);
-            trigger_width = $urandom_range(pTRIGGER_WIDTH_MIN, pTRIGGER_WIDTH_MAX);
-            $display("Programming trigger #%0d delay=%0d, width=%0d cycles", send_iteration, trigger_delay, trigger_width);
-            rw_lots_bytes(`REG_TRIGGER_DELAY);
-            write_next_byte(trigger_delay & 255);
-            write_next_byte((trigger_delay >> 8) & 255);
-            write_next_byte((trigger_delay >> 16) & 255);
-            rw_lots_bytes(`REG_TRIGGER_WIDTH);
-            write_next_byte(trigger_width & 255);
-            write_next_byte((trigger_width >> 8) & 255);
-            write_next_byte((trigger_width >> 16) & 255);
-         end
+         set_pattern();
+         if (pACTION == `PM_TRIGGER)
+            set_trigger();
 
          write_1byte(`REG_ARM, 8'h01);
          armed = 1;
@@ -260,90 +230,11 @@ module tb_pw();
             repeat (10) @(posedge fe_clk);
 
          @(posedge fe_clk);
-         // send pre-trigger data:
-         pretrig_bytes = $urandom_range(pPRETRIG_BYTES_MIN, pPRETRIG_BYTES_MAX);
-         $display("Sending pre-trigger data (%0d events):", pretrig_bytes);
-         for (txindex = 0; txindex < pretrig_bytes; txindex = txindex + 1) begin
-            fe_bytes[0] = $urandom;
-            // ensure we aren't randomly matching the programmed pattern:
-            while ((fe_bytes[0] & match_mask[0]) == (match_pattern[0] & match_mask[0]))
-               fe_bytes[0] = $urandom;
-            fe_stat[0] = $urandom;
-            get_delay(fe_times[0]);
-            get_valid(fe_data_event[0]);
-            send_fe_data(fe_data_event[0], fe_bytes[0], fe_stat[0], fe_times[0]);
-            if (pVERBOSE)
-               if (fe_data_event[0])
-                  $display("DATA: data=%h, stat=%h, delay=%0d", fe_bytes[0], fe_stat[0], fe_times[0]);
-               else
-                  $display("STAT:          stat=%h, delay=%0d", fe_stat[0], fe_times[0]);
-         end
-         fe_rxvalid = 1'b0;
 
-         // send pattern which will match:
-         $display("\nSending matching pattern (%0d bytes):", pattern_bytes);
-         $write("Pattern: ");
-         for (i = 0; i < pattern_bytes; i = i + 1)
-            $write("%h ", match_pattern[i]);
-         $write("\nMask:    ");
-         for (i = 0; i < pattern_bytes; i = i + 1)
-            $write("%h ", match_mask[i]);
-         $write("\n");
-         txindex = 0;
-         while (txindex < pattern_bytes) begin
-            pattern_fe_stat = $urandom;
-            get_delay(fe_times[0]);
-            get_valid(fe_data_event[0]);
-            if (fe_data_event[0]) begin
-               fe_bytes[0] = match_pattern[txindex];
-               txindex = txindex + 1;
-            end
-            else
-               fe_bytes[0] = $urandom;
-            send_fe_data(fe_data_event[0], fe_bytes[0], pattern_fe_stat, fe_times[0]);
-            if (pVERBOSE)
-               if (fe_data_event[0])
-                  $display("DATA: data=%h, stat=%h, delay=%0d", fe_bytes[0], pattern_fe_stat, fe_times[0]);
-               else
-                  $display("STAT:          stat=%h, delay=%0d", pattern_fe_stat, fe_times[0]);
-         end
-         fe_rxvalid = 1'b0;
-
-         // send data that will be captured:
-         get_delay(fe_times[0]);
-         repeat (fe_times[0]) @(posedge fe_clk);
-         fe_times[0] = 0; // by definition
-         $display("\nSending data that will be captured:");
-         for (txindex = 0; txindex < pNUM_EVENTS; txindex = txindex + 1) begin
-            // Notes we are sending pNUM_EVENTS data/stat events; if large time deltas between events
-            // generate TIME commands, then the number of events generated by the hardware will be greater
-            // than pNUM_EVENTS!
-            // To avoid over complicating the testbench, let's just accept this disparity.
-            fe_bytes[txindex] = $urandom;
-            fe_stat[txindex] = $urandom;
-            get_delay(fe_times[txindex+1]);
-            get_valid(fe_data_event[txindex]);
-            // if rxvalid is low, then stat must change -- otherwise there is no event to pick up
-            if (fe_data_event[txindex] == 0) begin
-               if (txindex == 0) begin
-                  while (fe_stat[txindex] == pattern_fe_stat)
-                     fe_stat[txindex] = $urandom;
-               end
-               else begin
-                  while (fe_stat[txindex] == fe_stat[txindex-1])
-                     fe_stat[txindex] = $urandom;
-               end
-            end
-
-            // TODO: consider driving fe_stat independently of fe_bytes?
-            send_fe_data(fe_data_event[txindex], fe_bytes[txindex], fe_stat[txindex], fe_times[txindex+1]);
-            if (pVERBOSE)
-               if (fe_data_event[txindex])
-                  $display("Write #%0d: DATA: data=%h, stat=%h, delay=%0d", txindex, fe_bytes[txindex], fe_stat[txindex], fe_times[txindex+1]);
-               else
-                  $display("Write #%0d: STAT:          stat=%h, delay=%0d", txindex, fe_stat[txindex], fe_times[txindex+1]);
-         end
-         fe_rxvalid = 1'b0;
+         // sending data moved to tasks to keep for loop readable:
+         send_pre_trigger_data();
+         send_patten_match_data();
+         send_capture_data();
 
          // sync up with receive block:
          if (pACTION == `PM_CAPTURE)
@@ -354,7 +245,8 @@ module tb_pw();
       end
 
       if (receive_iteration < send_iteration) begin
-         $display("ERROR: simulation finished but receive thread did not complete its iterations: rx iteration=%0d, tx iteration=%0d", receive_iteration, send_iteration);
+         $display("ERROR: simulation finished but receive thread did not complete its iterations: rx iteration=%0d, tx iteration=%0d", 
+                  receive_iteration, send_iteration);
          errors += 1;
       end
 
@@ -370,10 +262,12 @@ module tb_pw();
       $finish;
    end
 
+
    // Trigger check thread:
    initial begin
       if (pACTION == `PM_TRIGGER) begin
          for (receive_iteration = 0; receive_iteration < pNUM_REPEATS; receive_iteration = receive_iteration + 1) begin
+            // TODO: instead of peaking inside U_dut, time it off the injected pattern match
             wait (U_dut.U_pattern_matcher.O_match_trigger == 1'b1);
             matchtime = $time;
             wait (cw_trig == 1'b1);
@@ -383,9 +277,10 @@ module tb_pw();
             rx_trigger_delay -= 10; // additional 10 cycle delay is inherent to the current design
             rx_trigger_width = ($time - triggertime) / (pFE_CLOCK_PERIOD/4);
             if ( (rx_trigger_delay == trigger_delay) && (rx_trigger_width == trigger_width) )
-               $display("\t\t\t\t\tTrigger #%0d: delay=%0d, width=%0d", receive_iteration, rx_trigger_delay, rx_trigger_width);
+               $display("%sTrigger #%0d: delay=%0d, width=%0d", rxalign, receive_iteration, rx_trigger_delay, rx_trigger_width);
             else begin
-               $display("\t\t\t\t\t*** ERROR trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", receive_iteration, rx_trigger_delay, trigger_delay, rx_trigger_width, trigger_width);
+               $display("%s*** ERROR trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", rxalign, receive_iteration, rx_trigger_delay,
+                                                                                                       trigger_delay, rx_trigger_width, trigger_width);
                errors += 1;
             end
          end
@@ -404,15 +299,11 @@ module tb_pw();
             // sync up with transmit block:
             wait(send_iteration == receive_iteration);
             wait(armed);
-            // ensure FIFO is empty:
-            fifo_empty = 0;
-            while (fifo_empty == 0) begin
-               read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
-            end
-            //if ( (pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1) ) begin
+            wait_fifo_empty();
+
             if (pREAD_CONCURRENTLY == 0) begin
-               wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0); // TODO: replace with register read
-               wait(txindex == pNUM_EVENTS);
+               wait_fifo_not_empty();
+               wait(txindex == pNUM_EVENTS); // TODO: txindex is used for several things, this may not be robust, should use a 'tx_done' flag instead
                #(pFE_CLOCK_PERIOD*100);
             end
 
@@ -420,76 +311,33 @@ module tb_pw();
                rw_lots_bytes(`REG_SNIFF_FIFO_RD);
 
             for (rx_readindex = 0; rx_readindex < pNUM_EVENTS; rx_readindex = rx_readindex + 1) begin
-               // wait for FIFO data to be available:
-               if (pSTREAM_MODE == 0)
-                  wait (U_dut.U_reg_pw.sniff_fifo_empty == 1'b0); // TODO: replace with register read
-               if ( !((pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1)) )
+               if ( !((pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1)) ) begin
+                  wait_fifo_not_empty();
                   rw_lots_bytes(`REG_SNIFF_FIFO_RD);
-               read_next_byte(read_data[7:0]);
-               read_next_byte(read_data[15:8]);
-               read_next_byte(read_data[23:16]);
-               read_next_byte(dummy);
-               command = read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN];
+               end
 
-               fifo_stat_empty =           read_data[18+`FIFO_STAT_EMPTY];
-               fifo_stat_underflow =       read_data[18+`FIFO_STAT_UNDERFLOW];
-               fifo_stat_empty_threshold = read_data[18+`FIFO_STAT_EMPTY_THRESHOLD];
-               fifo_stat_full =            read_data[18+`FIFO_STAT_FULL];
-               fifo_stat_overflow_blocked= read_data[18+`FIFO_STAT_OVERFLOW_BLOCKED];
-               fifo_stat_full_threshold =  read_data[18+`FIFO_STAT_FULL_THRESHOLD];
+               read_next_fifo_word();
 
                if (pSTREAM_MODE && fifo_stat_overflow_blocked) begin
-                  //rx_readindex = pNUM_EVENTS - 1;
                   if (!overflow_noted) begin
-                     $display("\t\t\t\t\t*** Received overflow flag, will read FIFO until empty\n");
+                     $display("%s*** Received overflow flag, will read FIFO until empty\n", rxalign);
                      overflow_noted = 1;
                   end
-                  if (U_dut.U_reg_pw.sniff_fifo_empty_threshold) begin// TODO: replace empty check with with register read
+                  if (fifo_stat_empty_threshold) begin
                      rx_readindex = pNUM_EVENTS - 1;
-                     $display("\t\t\t\t\t*** Emptied FIFO after overflow, stopping read.\n");
+                     $display("%s*** Emptied FIFO after overflow, stopping read.\n", rxalign);
                   end
                end
                else if (fifo_stat_underflow | fifo_stat_overflow_blocked) begin
-                  $display("\t\t\t\t\t*** ERROR on read #%0d at time %0t: underflow=%d, overflow=%d", rx_dataindex, $time, fifo_stat_underflow, fifo_stat_overflow_blocked);
+                  $display("%s*** ERROR on read #%0d at time %0t: underflow=%d, overflow=%d", rxalign, rx_dataindex, $time, fifo_stat_underflow, 
+                                                                                              fifo_stat_overflow_blocked);
                   errors += 1;
                end
 
 
                if ( (command == `FE_FIFO_CMD_DATA) || (command == `FE_FIFO_CMD_STAT) ) begin
-                  data = read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN];
-                  dut_rxactive = read_data[`FE_FIFO_RXACTIVE_BIT];
-                  dut_rxerror = read_data[`FE_FIFO_RXERROR_BIT];
-                  dut_sessvld = read_data[`FE_FIFO_SESSVLD_BIT];
-                  dut_sessend = read_data[`FE_FIFO_SESSEND_BIT];
-                  dut_vbusvld = read_data[`FE_FIFO_VBUSVLD_BIT];
-                  dut_usbstat = read_data[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN];
-
-                  if (command == `FE_FIFO_CMD_DATA) begin
-                     expected_data = fe_bytes[rx_dataindex];
-                     str = "DATA";
-                  end
-                  else begin
-                     expected_data = 8'd0;
-                     str = "STAT";
-                  end
-
-                  timestamp = read_data[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN];
-                  time_counter = time_counter + timestamp;
-                  if ( (data == expected_data) && (dut_usbstat == fe_stat[rx_dataindex]) && (time_counter == fe_times[rx_dataindex]) ) begin
-                     if (pVERBOSE)
-                        $display("\t\t\t\t\tRead #%0d: %s: data=%h, stat=%h, time=%0d, total time=%0d", rx_dataindex, str, data, dut_usbstat, timestamp, time_counter);
-                  end
-                  else begin
-                     errors += 1;
-                     if ( (data == expected_data) && (dut_usbstat == fe_stat[rx_dataindex]))
-                        $display("\t\t\t\t\t*** ERROR on %s read #%0d at time %0t: got good data (%h) and stat (%h), bad time: expected %0d, got %0d", str, rx_dataindex, $time, data, dut_usbstat, fe_times[rx_dataindex], time_counter);
-                     else if (time_counter == fe_times[rx_dataindex])
-                        $display("\t\t\t\t\t*** ERROR on %s read #%0d at time %0t: got good timestamp (%0d), bad data (got %h, expected %h) or stat (got %h, expected %h)", str, rx_dataindex, $time, timestamp, data, expected_data, dut_usbstat, fe_stat[rx_dataindex]);
-                     else
-                        $display("\t\t\t\t\t*** ERROR on %s read #%0d at time %0t: bad data (got %h, expected %h), stat (got %h, expected %h) and time (got %0d, expected %0d)", str, rx_dataindex, $time, data, expected_data, dut_usbstat, fe_stat[rx_dataindex], time_counter, fe_times[rx_dataindex]);
-                  end
+                  check_rx_data(); // moved to task to keep for loop readable
                   rx_dataindex = rx_dataindex + 1;
-                  time_counter = 0;
                end
 
 
@@ -497,7 +345,7 @@ module tb_pw();
                   timestamp = read_data[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN];
                   time_counter = time_counter + timestamp;
                   if (pVERBOSE && pSHOW_TIME_EVENTS)
-                     $display("\t\t\t\t\ttime=%0d", timestamp);
+                     $display("%stime=%0d", rxalign, timestamp);
                end
 
 
@@ -506,24 +354,14 @@ module tb_pw();
                   rx_readindex -= 1;
                   stream_code = read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN];
                   if (pVERBOSE)
-                     $display("\t\t\t\t\tstream code=%0d", stream_code);
+                     $display("%sstream code=%0d", rxalign, stream_code);
                end
 
 
                else begin
                   errors += 1;
-                  $display("\t\t\t\t\t*** ERROR: Unknown command!");
+                  $display("%s*** ERROR: Unknown command!", rxalign);
                end
-
-               /* check sniff register (obsolete)
-               if (rx_dataindex == pNUM_EVENTS) begin
-                  rw_lots_bytes(`REG_FE_SNIFF);
-                  for (k = 0; k < 8; k = k + 1) begin
-                     read_next_byte(sniff_bytes[k]);
-                     $display("Sniff byte: %h", sniff_bytes[k]);
-                  end
-               end
-               */
 
             end
          end
@@ -611,6 +449,7 @@ module tb_pw();
 
 
    task send_fe_data;
+      input [31:0] index;
       input rxvalid;
       input [7:0] data;
       input [4:0] stat;
@@ -629,6 +468,13 @@ module tb_pw();
          fe_wdata = 0;
       end
       repeat (delay) @(posedge fe_clk);
+
+      if (pVERBOSE)
+         if (rxvalid)
+            $display("Write %4d DATA: data=%h, stat=%h, delay=%0d", index, data, stat, delay);
+         else
+            $display("Write %4d STAT:          stat=%h, delay=%0d", index, stat, delay);
+
    endtask
 
 
@@ -650,6 +496,192 @@ module tb_pw();
          valid = 1;
       else
          valid = 0;
+   endtask
+
+
+   task set_trigger;
+      trigger_delay = $urandom_range(pTRIGGER_DELAY_MIN, pTRIGGER_DELAY_MAX);
+      trigger_width = $urandom_range(pTRIGGER_WIDTH_MIN, pTRIGGER_WIDTH_MAX);
+      $display("Programming trigger #%0d delay=%0d, width=%0d cycles", send_iteration, trigger_delay, trigger_width);
+      rw_lots_bytes(`REG_TRIGGER_DELAY);
+      write_next_byte(trigger_delay & 255);
+      write_next_byte((trigger_delay >> 8) & 255);
+      write_next_byte((trigger_delay >> 16) & 255);
+      rw_lots_bytes(`REG_TRIGGER_WIDTH);
+      write_next_byte(trigger_width & 255);
+      write_next_byte((trigger_width >> 8) & 255);
+      write_next_byte((trigger_width >> 16) & 255);
+   endtask
+
+
+   task set_pattern;
+      int i;
+      pattern_bytes = $urandom_range(pPATTERN_BYTES_MIN, pPATTERN_BYTES_MAX);
+      rw_lots_bytes(`REG_PATTERN);
+      for (i = 0; i < pattern_bytes; i = i + 1) begin
+         match_pattern[i] = $urandom;
+         write_next_byte(match_pattern[i]);
+      end
+      rw_lots_bytes(`REG_PATTERN_MASK);
+      for (i = 0; i < pattern_bytes; i = i + 1) begin
+         match_mask[i] = $urandom;
+         // things would get unnecessarily complex if the first mask byte could be 0, so prevent that:
+         if (i == 0) begin
+            while (match_mask[0] == 0)
+               match_mask[0] = $urandom;
+         end
+         write_next_byte(match_mask[i]);
+      end
+      write_1byte(`REG_PATTERN_BYTES, pattern_bytes);
+
+      $write("Pattern: ");
+      for (i = 0; i < pattern_bytes; i = i + 1)
+         $write("%h ", match_pattern[i]);
+      $write("\nMask:    ");
+      for (i = 0; i < pattern_bytes; i = i + 1)
+         $write("%h ", match_mask[i]);
+      $write("\n");
+
+   endtask
+
+
+   task read_next_fifo_word;
+      read_next_byte(read_data[7:0]);
+      read_next_byte(read_data[15:8]);
+      read_next_byte(read_data[23:16]);
+      read_next_byte(dummy);
+      command = read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN];
+
+      fifo_stat_empty =           read_data[18+`FIFO_STAT_EMPTY];
+      fifo_stat_underflow =       read_data[18+`FIFO_STAT_UNDERFLOW];
+      fifo_stat_empty_threshold = read_data[18+`FIFO_STAT_EMPTY_THRESHOLD];
+      fifo_stat_full =            read_data[18+`FIFO_STAT_FULL];
+      fifo_stat_overflow_blocked= read_data[18+`FIFO_STAT_OVERFLOW_BLOCKED];
+      fifo_stat_full_threshold =  read_data[18+`FIFO_STAT_FULL_THRESHOLD];
+   endtask
+
+
+   task wait_fifo_empty;
+      bit fifo_empty = 0;
+      while (fifo_empty == 0) begin
+         read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
+      end
+   endtask
+
+
+   task wait_fifo_not_empty;
+      bit fifo_empty = 1;
+      read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
+      while (fifo_empty == 1) begin
+         read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
+      end
+   endtask
+
+
+   task check_rx_data;
+      data = read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN];
+      dut_rxactive = read_data[`FE_FIFO_RXACTIVE_BIT];
+      dut_rxerror = read_data[`FE_FIFO_RXERROR_BIT];
+      dut_sessvld = read_data[`FE_FIFO_SESSVLD_BIT];
+      dut_sessend = read_data[`FE_FIFO_SESSEND_BIT];
+      dut_vbusvld = read_data[`FE_FIFO_VBUSVLD_BIT];
+      dut_usbstat = read_data[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN];
+
+      if (command == `FE_FIFO_CMD_DATA) begin
+         expected_data = fe_bytes[rx_dataindex];
+         str = "DATA";
+      end
+      else begin
+         expected_data = 8'd0;
+         str = "STAT";
+      end
+
+      timestamp = read_data[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN];
+      time_counter = time_counter + timestamp;
+      if ( (data == expected_data) && (dut_usbstat == fe_stat[rx_dataindex]) && (time_counter == fe_times[rx_dataindex]) ) begin
+         if (pVERBOSE)
+            $display("%sRead %4d: %s: data=%h, stat=%h, time=%0d, total time=%0d", rxalign, rx_dataindex, str, data, dut_usbstat, timestamp, time_counter);
+      end
+      else begin
+         errors += 1;
+         $display("%sRead %4d *** %s ERROR at time %0t:", rxalign, rx_dataindex, str, $time);
+         if (data != expected_data)
+            $display("%s     *** bad data (got %h expected %h)", rxalign, data, expected_data);
+         if (dut_usbstat != fe_stat[rx_dataindex])
+            $display("%s     *** bad stat (got %h expected %h)", rxalign, dut_usbstat, fe_stat[rx_dataindex]);
+         if (time_counter != fe_times[rx_dataindex])
+            $display("%s     *** bad time (got %d expected %d)", rxalign, time_counter, fe_times[rx_dataindex]);
+      end
+      time_counter = 0;
+   endtask
+
+
+   task send_pre_trigger_data;
+      pretrig_bytes = $urandom_range(pPRETRIG_BYTES_MIN, pPRETRIG_BYTES_MAX);
+      $display("Sending pre-trigger data (%0d events):", pretrig_bytes);
+      for (txindex = 0; txindex < pretrig_bytes; txindex = txindex + 1) begin
+         fe_bytes[0] = $urandom;
+         // ensure we aren't randomly matching the programmed pattern:
+         while ((fe_bytes[0] & match_mask[0]) == (match_pattern[0] & match_mask[0]))
+            fe_bytes[0] = $urandom;
+         fe_stat[0] = $urandom;
+         get_delay(fe_times[0]);
+         get_valid(fe_data_event[0]);
+         send_fe_data(txindex, fe_data_event[0], fe_bytes[0], fe_stat[0], fe_times[0]);
+      end
+      fe_rxvalid = 1'b0;
+   endtask
+
+
+   task send_patten_match_data;
+      $display("\nSending matching pattern (%0d bytes):", pattern_bytes);
+      txindex = 0;
+      while (txindex < pattern_bytes) begin
+         pattern_fe_stat = $urandom;
+         get_delay(fe_times[0]);
+         get_valid(fe_data_event[0]);
+         if (fe_data_event[0]) begin
+            fe_bytes[0] = match_pattern[txindex];
+            txindex = txindex + 1;
+         end
+         else
+            fe_bytes[0] = $urandom;
+         send_fe_data(txindex, fe_data_event[0], fe_bytes[0], pattern_fe_stat, fe_times[0]);
+      end
+      fe_rxvalid = 1'b0;
+   endtask
+
+
+   task send_capture_data;
+      // send data that will be captured:
+      get_delay(fe_times[0]);
+      repeat (fe_times[0]) @(posedge fe_clk);
+      fe_times[0] = 0; // by definition
+      $display("\nSending data that will be captured:");
+      for (txindex = 0; txindex < pNUM_EVENTS; txindex = txindex + 1) begin
+         // Notes we are sending pNUM_EVENTS data/stat events; if large time deltas between events
+         // generate TIME commands, then the number of events generated by the hardware will be greater
+         // than pNUM_EVENTS!
+         // To avoid over complicating the testbench, let's just accept this disparity.
+         fe_bytes[txindex] = $urandom;
+         fe_stat[txindex] = $urandom;
+         get_delay(fe_times[txindex+1]);
+         get_valid(fe_data_event[txindex]);
+         // if rxvalid is low, then stat must change -- otherwise there is no event to pick up
+         if (fe_data_event[txindex] == 0) begin
+            if (txindex == 0) begin
+               while (fe_stat[txindex] == pattern_fe_stat)
+                  fe_stat[txindex] = $urandom;
+            end
+            else begin
+               while (fe_stat[txindex] == fe_stat[txindex-1])
+                  fe_stat[txindex] = $urandom;
+            end
+         end
+         // TODO: consider driving fe_stat independently of fe_bytes?
+         send_fe_data(txindex, fe_data_event[txindex], fe_bytes[txindex], fe_stat[txindex], fe_times[txindex+1]);
+      end
+      fe_rxvalid = 1'b0;
    endtask
 
 
