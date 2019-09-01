@@ -166,6 +166,7 @@ module tb_pw();
    int pretrig_bytes;
    bit armed;
    bit overflow_noted;
+   bit pattern_match_marker;
 
    int matchtime;
    int triggertime;
@@ -202,6 +203,7 @@ module tb_pw();
    // FE feeding thread:
    initial begin
       errors = 0;
+      pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
       write_1byte(`REG_PATTERN_ACTION, pACTION);
@@ -217,7 +219,7 @@ module tb_pw();
 
       for (send_iteration = 0; send_iteration < pNUM_REPEATS; send_iteration = send_iteration + 1) begin
          armed = 0;
-         $display("Tx Iteration %d:", send_iteration);
+         $display("\nTx Iteration %d:", send_iteration);
 
          set_pattern();
          if (pACTION == `PM_TRIGGER)
@@ -233,7 +235,7 @@ module tb_pw();
 
          // sending data moved to tasks to keep for loop readable:
          send_pre_trigger_data();
-         send_patten_match_data();
+         send_pattern_match_data();
          send_capture_data();
 
          // sync up with receive block:
@@ -267,22 +269,24 @@ module tb_pw();
    initial begin
       if (pACTION == `PM_TRIGGER) begin
          for (receive_iteration = 0; receive_iteration < pNUM_REPEATS; receive_iteration = receive_iteration + 1) begin
-            // TODO: instead of peaking inside U_dut, time it off the injected pattern match
-            wait (U_dut.U_pattern_matcher.O_match_trigger == 1'b1);
+            wait (pattern_match_marker == 1'b1);
             matchtime = $time;
             wait (cw_trig == 1'b1);
             triggertime = $time;
+            $display("DBG: matchtime=%t, triggertime=%t", matchtime, triggertime);
             wait (cw_trig == 1'b0);
             rx_trigger_delay = (triggertime - matchtime) / (pFE_CLOCK_PERIOD/4);
-            rx_trigger_delay -= 10; // additional 10 cycle delay is inherent to the current design
+            rx_trigger_delay -= 18; // Additional 18 cycle delay is inherent to the current design. 8 of the 18 is because
+                                    // we start measuring time when the pattern match data is *sent*.
             rx_trigger_width = ($time - triggertime) / (pFE_CLOCK_PERIOD/4);
             if ( (rx_trigger_delay == trigger_delay) && (rx_trigger_width == trigger_width) )
                $display("%sTrigger #%0d: delay=%0d, width=%0d", rxalign, receive_iteration, rx_trigger_delay, rx_trigger_width);
             else begin
-               $display("%s*** ERROR trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", rxalign, receive_iteration, rx_trigger_delay,
+               $display("%s*** ERROR Trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", rxalign, receive_iteration, rx_trigger_delay,
                                                                                                        trigger_delay, rx_trigger_width, trigger_width);
                errors += 1;
             end
+            wait (pattern_match_marker == 1'b0);
          end
       end
    end
@@ -633,7 +637,7 @@ module tb_pw();
    endtask
 
 
-   task send_patten_match_data;
+   task send_pattern_match_data;
       $display("\nSending matching pattern (%0d bytes):", pattern_bytes);
       txindex = 0;
       while (txindex < pattern_bytes) begin
@@ -643,10 +647,13 @@ module tb_pw();
          if (fe_data_event[0]) begin
             fe_bytes[0] = match_pattern[txindex];
             txindex = txindex + 1;
+            if (txindex == pattern_bytes)
+               pattern_match_marker = 1;
          end
          else
             fe_bytes[0] = $urandom;
          send_fe_data(txindex, fe_data_event[0], fe_bytes[0], pattern_fe_stat, fe_times[0]);
+         pattern_match_marker = 0;
       end
       fe_rxvalid = 1'b0;
    endtask
