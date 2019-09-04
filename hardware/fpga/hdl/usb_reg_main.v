@@ -24,7 +24,6 @@
 module usb_reg_main #(
    parameter pBYTECNT_SIZE = 7
 )(
-   input  wire         reset_i,
    input  wire         cwusb_clk,
 
    /* Interface to ChipWhisperer-Lite USB Chip */

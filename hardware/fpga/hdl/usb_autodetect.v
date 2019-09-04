@@ -199,7 +199,7 @@ module usb_autodetect #(
     );
 
 
-   `ifdef ILA
+   `ifdef ILA_AUTO
       ila_5 I_ila_autodetect (
          .clk          (fe_clk),           // input wire clk
          .probe0       (state_idle),            // input wire [0:0]  probe0  

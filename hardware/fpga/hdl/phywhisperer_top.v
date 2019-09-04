@@ -184,7 +184,6 @@ module phywhisperer_top(
    usb_reg_main #(
       .pBYTECNT_SIZE    (pBYTECNT_SIZE)
    ) U_usb_reg_main (
-      .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
       .cwusb_din        (cmdfifo_din), 
       .cwusb_dout       (cmdfifo_dout), 
@@ -454,7 +453,7 @@ module phywhisperer_top(
 
 
    `ifndef __ICARUS__
-      //TODO: what should be the cw_clk source? Switchable between USB/FE/trigger?
+      //TODO: add MMCM to provide CW with regenerated target clock from FE clock
       ODDR U_cw_clk (
          .Q(cw_clk),
          .C(clk_fe_buf),

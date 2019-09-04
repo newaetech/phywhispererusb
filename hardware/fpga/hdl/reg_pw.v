@@ -115,7 +115,6 @@ module reg_pw #(
    reg  flushing;
    wire [5:0] fifo_status;
    reg  empty_fifo_read;
-   reg  sniff_fifo_rd_en_r;
    reg  sniff_fifo_empty_r;
 
    assign O_arm = reg_arm_r & ~flushing;
@@ -152,6 +151,7 @@ module reg_pw #(
    // MUX read output between registers and FIFO output:
    always @(*) begin
       if (empty_fifo_read) begin
+         fifo_read_data = 0; // prevent uninentional latch inference
          fifo_read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] = `FE_FIFO_CMD_STRM;
          fifo_read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] = `FE_FIFO_STRM_EMPTY;
       end
@@ -310,7 +310,6 @@ module reg_pw #(
       if (reset_i) begin
          sniff_fifo_underflow_sticky <= 1'b0;
          empty_fifo_read <= 1'b0;
-         sniff_fifo_rd_en_r <= 1'b0;
          sniff_fifo_empty_r <= 1'b0;
       end
       else begin
@@ -321,9 +320,6 @@ module reg_pw #(
             sniff_fifo_underflow_sticky <= 1'b0;
 
          sniff_fifo_empty_r <= sniff_fifo_empty;
-         sniff_fifo_rd_en_r <= sniff_fifo_rd_en; // needed because when reading last entry, fifo empty will go
-                                                 // high immediately, empty_fifo_read will assert and simulation
-                                                 // will fail
          if (reg_addrvalid && reg_read && (reg_address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && sniff_fifo_empty_r)
             empty_fifo_read <= 1'b1;
          // NOTE: this works because the 4th byte of a FIFO read is dummy data; it
