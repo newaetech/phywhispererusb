@@ -158,7 +158,7 @@ module tb_pw();
    reg fe_data_event [0:pMAX_EVENTS-1];
    reg [7:0] fe_bytes [0:pMAX_EVENTS-1];
    reg [4:0] fe_stat [0:pMAX_EVENTS-1];
-   reg [4:0] pattern_fe_stat;
+   reg [4:0] last_stat;
    reg [15:0] fe_times [0:pMAX_EVENTS-1];
    reg [15:0] last_pattern_match_delay;
    reg [7:0] sniff_bytes [0:7];
@@ -475,6 +475,8 @@ module tb_pw();
       end
       repeat (delay) @(posedge fe_clk);
 
+      last_stat = stat;
+
       if (pVERBOSE)
          if (rxvalid)
             $display("Write %4d DATA: data=%h, stat=%h, delay=%0d", index, data, stat, delay);
@@ -643,7 +645,7 @@ module tb_pw();
       $display("\nSending matching pattern (%0d bytes):", pattern_bytes);
       txindex = 0;
       while (txindex < pattern_bytes) begin
-         pattern_fe_stat = $urandom;
+         fe_stat[0] = $urandom;
          get_delay(fe_times[0]);
          get_valid(fe_data_event[0]);
          if (fe_data_event[0]) begin
@@ -654,7 +656,7 @@ module tb_pw();
          end
          else
             fe_bytes[0] = $urandom;
-         send_fe_data(txindex, fe_data_event[0], fe_bytes[0], pattern_fe_stat, fe_times[0]);
+         send_fe_data(txindex, fe_data_event[0], fe_bytes[0], fe_stat[0], fe_times[0]);
          last_pattern_match_delay = fe_times[0];
          pattern_match_marker = 0;
       end
@@ -706,14 +708,8 @@ module tb_pw();
          get_valid(fe_data_event[txindex]);
          // if rxvalid is low, then stat must change -- otherwise there is no event to pick up
          if (fe_data_event[txindex] == 0) begin
-            if (txindex == 0) begin
-               while (fe_stat[txindex] == pattern_fe_stat)
-                  fe_stat[txindex] = $urandom;
-            end
-            else begin
-               while (fe_stat[txindex] == fe_stat[txindex-1])
-                  fe_stat[txindex] = $urandom;
-            end
+            while (fe_stat[txindex] == last_stat)
+               fe_stat[txindex] = $urandom;
          end
          // TODO: consider driving fe_stat independently of fe_bytes?
          send_fe_data(txindex, fe_data_event[txindex], fe_bytes[txindex], fe_stat[txindex], fe_times[txindex+1]);
