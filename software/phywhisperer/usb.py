@@ -17,16 +17,29 @@ class Usb(object):
     def __init__ (self):
         self.short_timestamps = [0] * 2**3
         self.long_timestamps = [0] * 2**16
-        # parse Verilog defines file so we can access registers by name:
-        self.registers = []
-        self.matches = 0
+        # parse Verilog defines file so we can access register definitions by name and avoid 'magic numbers':
+        self.verilog_define_matches = 0
         defines = open('../../hardware/fpga/hdl/defines.v', 'r')
-        define_regex = re.compile(r'`define (\w+?)\s+?\d+?\'h([0-9a-fA-F]+)')
+        define_regex_radix =   re.compile(r'`define\s+?(\w+).+?\'([bdh])([0-9a-fA-F]+)')
+        define_regex_noradix = re.compile(r'`define\s+?(\w+?)\s+?(\d+?)')
         for define in defines:
-            match = define_regex.search(define)
+            match = define_regex_radix.search(define)
             if match:
-                self.matches += 1
-                self.registers.append(dict(name=match.group(1), address=int(match.group(2),16)))
+                self.verilog_define_matches += 1
+                if match.group(2) == 'b':
+                    radix = 2
+                elif match.group(2) == 'h':
+                    radix = 16
+                else:
+                    radix = 10
+                #self.registers.append(dict(name=match.group(1), value=int(match.group(3),radix)))
+                setattr(self, match.group(1), int(match.group(3),radix))
+            else:
+                match = define_regex_noradix.search(define)
+                if match:
+                    self.verilog_define_matches += 1
+                    #self.registers.append(dict(name=match.group(1), value=int(match.group(2),10)))
+                    setattr(self, match.group(1), int(match.group(2),10))
         defines.close()
 
 
@@ -139,13 +152,13 @@ class Usb(object):
                        'auto' actively causes PW to try to determine the speed.
         """
         if mode == 'auto':
-           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [0])
+           self.usb.cmdWriteMem(self.REG_USB_SPEED, [self.USB_SPEED_AUTO])
         elif mode == 'LS':
-           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [1])
+           self.usb.cmdWriteMem(self.REG_USB_SPEED, [self.USB_SPEED_LS])
         elif mode == 'FS':
-           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [2])
+           self.usb.cmdWriteMem(self.REG_USB_SPEED, [self.USB_SPEED_FS])
         elif mode == 'HS':
-           self.usb.cmdWriteMem(self.address('REG_USB_SPEED'), [3])
+           self.usb.cmdWriteMem(self.REG_USB_SPEED, [self.USB_SPEED_HS])
         else:
            raise ValueError('Invalid mode %s; specify auto, LS, FS, or HS.' % mode)
         pass
@@ -157,14 +170,14 @@ class Usb(object):
            determined yet (was the mode set to 'auto' _before_ the target was
            connected or powered up?).
         """
-        value = self.usb.cmdReadMem(self.address('REG_USB_SPEED'), 1)[0]
-        if value == 0:
+        value = self.usb.cmdReadMem(self.REG_USB_SPEED, 1)[0]
+        if value == self.USB_SPEED_AUTO:
            return 'auto'
-        elif value == 1:
+        elif value == self.USB_SPEED_LS:
            return 'LS'
-        elif value == 2:
+        elif value == self.USB_SPEED_FS:
            return 'FS'
-        elif value == 3:
+        elif value == self.USB_SPEED_HS:
            return 'HS'
         else:
            raise ValueError('Internal error: REG_USB_SPEED register contains invalid value %d.' % value)
@@ -212,28 +225,27 @@ class Usb(object):
             # TODO: for now using poor man's approach to support streaming with a burst read:
             # read one word at a time until a non-empty status is encountered, then start the
             # burst.
-                command = 3
-                while (command == 3):
-                    raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4)
+                command = self.FE_FIFO_CMD_STRM
+                while (command == self.FE_FIFO_CMD_STRM):
+                    raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)
                     command = raw[2] & 0x3
                     status += 1
                     if (status % 1000 == 0) and status > 0:
                        print("%d empty status read..." % status)
-                rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
+                rawburst = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
 
             else:
-                rawburst = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4*entries)
+                rawburst = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
 
         while (entries_read < entries) and not done_reading:
             if (entries_read % 500 == 0) and entries_read > 0:
                 print("%d entries read..." % entries_read)
             if single_burst:
-                #raw = rawburst[i*4:i*4+3]
                 raw = rawburst[entries_read*4:entries_read*4+3]
             else:
                 while blocking and self.fifo_empty():
                     pass
-                raw = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_RD'), 4)
+                raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)
             command = raw[2] & 0x3
             if (raw[2] & 8) and not underflowed:
                 logging.warning("Capture FIFO underflowed!")
@@ -244,7 +256,7 @@ class Usb(object):
                 overflowed = True
                 if not stream:
                    done_reading = True
-            if (command == 0): # data
+            if (command == self.FE_FIFO_CMD_DATA):
                 entries_read += 1
                 data = raw[1]
                 ts = raw[0] & 0x7
@@ -259,7 +271,7 @@ class Usb(object):
                 data_commands += 1
                 data_bytes.append(data)
                 data_times.append(timestep)
-            elif (command == 1): # stat
+            elif (command == self.FE_FIFO_CMD_STAT):
                 entries_read += 1
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
@@ -270,7 +282,7 @@ class Usb(object):
                 stat_commands += 1
                 stat_bytes.append(flags)
                 stat_times.append(timestep)
-            elif (command == 2): # time
+            elif (command == self.FE_FIFO_CMD_TIME):
                 entries_read += 1
                 ts = raw[0] + (raw[1] << 8)
                 self.long_timestamps[ts] += 1
@@ -283,7 +295,7 @@ class Usb(object):
                 time_commands += 1
                 if verbose:
                    print("%8d" % timestep)
-            elif (command == 3): # stream status
+            elif (command == self.FE_FIFO_CMD_STAT):
                 if not stream:
                    raise Exception('Received empty stream status: attempted to read empty FIFO.')
                 status += 1
@@ -302,15 +314,6 @@ class Usb(object):
         return (data_times, data_bytes, stat_times, stat_bytes)
 
 
-    def address(self, regname):
-        """Get the address of an FPGA register, referenced by name as slurped from the FPGA defines file.
-        """
-        for register in self.registers:
-            if register['name'] == regname:
-                return register['address']
-        raise ValueError('Cannot find a register named %s' % regname)
-
-
     def set_capture_size(self, size=8192):
         """Set how many events to capture (events include data, USB status, and timestamps).
         size: int
@@ -320,7 +323,7 @@ class Usb(object):
             raise ValueError('Illegal size value.')
         """
         size_bytes = [size & 255, (size >> 8) & 255]
-        self.usb.cmdWriteMem(self.address('REG_CAPTURE_LEN'), size_bytes)
+        self.usb.cmdWriteMem(self.REG_CAPTURE_LEN, size_bytes)
 
 
     def set_trigger(self, delay, width):
@@ -336,8 +339,8 @@ class Usb(object):
             raise ValueError('Illegal width value.')
         delay_bytes = [delay & 255, (delay >> 8) & 255, (delay >> 16) & 255]
         width_bytes = [width & 255, (width >> 8) & 255, (width >> 16) & 255]
-        self.usb.cmdWriteMem(self.address('REG_TRIGGER_DELAY'), delay_bytes)
-        self.usb.cmdWriteMem(self.address('REG_TRIGGER_WIDTH'), width_bytes)
+        self.usb.cmdWriteMem(self.REG_TRIGGER_DELAY, delay_bytes)
+        self.usb.cmdWriteMem(self.REG_TRIGGER_WIDTH, width_bytes)
 
 
     def set_pattern(self, pattern, mask):
@@ -349,9 +352,9 @@ class Usb(object):
             raise ValueError('pattern and mask must be of same size.')
         elif len(pattern) > 64:
             raise ValueError('pattern and mask cannot be more than 64 bytes.')
-        self.usb.cmdWriteMem(self.address('REG_PATTERN'), pattern)
-        self.usb.cmdWriteMem(self.address('REG_PATTERN_MASK'), mask)
-        self.usb.cmdWriteMem(self.address('REG_PATTERN_BYTES'), [len(pattern)])
+        self.usb.cmdWriteMem(self.REG_PATTERN, pattern)
+        self.usb.cmdWriteMem(self.REG_PATTERN_MASK, mask)
+        self.usb.cmdWriteMem(self.REG_PATTERN_BYTES, [len(pattern)])
 
 
     def arm(self, action):
@@ -360,14 +363,14 @@ class Usb(object):
                 values: 'capture', 'trigger', or 'NOP'
         """
         if action == 'capture':
-           self.usb.cmdWriteMem(self.address('REG_PATTERN_ACTION'), [1])
+           self.usb.cmdWriteMem(self.REG_PATTERN_ACTION, [self.PM_CAPTURE])
         elif action == 'trigger':
-           self.usb.cmdWriteMem(self.address('REG_PATTERN_ACTION'), [2])
+           self.usb.cmdWriteMem(self.REG_PATTERN_ACTION, [self.PM_TRIGGER])
         elif action == 'NOP':
-           self.usb.cmdWriteMem(self.address('REG_PATTERN_ACTION'), [0])
+           self.usb.cmdWriteMem(self.REG_PATTERN_ACTION, [self.PM_NOP])
         else:
             raise ValueError('Invalid action.')
-        self.usb.cmdWriteMem(self.address('REG_ARM'), [1])
+        self.usb.cmdWriteMem(self.REG_ARM, [1])
 
 
     def check_fifo_errors(self, underflow=0, overflow_blocked=0):
@@ -376,7 +379,7 @@ class Usb(object):
         underflow: expected status, 0 or 1
         overflow_blocked: expected status, 0 or 1
         """
-        status = self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_STAT'),1)[0]
+        status = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_STAT,1)[0]
         fifo_underflow = (status & 2) >> 1
         fifo_overflow_blocked = (status & 16) >> 4
         assert fifo_underflow == underflow
@@ -386,7 +389,7 @@ class Usb(object):
     def fifo_empty(self):
         """Returns True if the capture FIFO is empty, False otherwise.
         """
-        if self.usb.cmdReadMem(self.address('REG_SNIFF_FIFO_STAT'),1)[0] & 1:
+        if self.usb.cmdReadMem(self.REG_SNIFF_FIFO_STAT,1)[0] & 1:
             return True
         else:
             return False
@@ -395,7 +398,7 @@ class Usb(object):
     def armed(self):
         """Returns True if the PhyWhisperer is armed.
         """
-        if self.usb.cmdReadMem(self.address('REG_ARM'),1)[0]:
+        if self.usb.cmdReadMem(self.REG_ARM,1)[0]:
             return True
         else:
             return False
