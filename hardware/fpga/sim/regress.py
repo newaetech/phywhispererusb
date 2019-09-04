@@ -92,6 +92,14 @@ tests.append(dict(name  = 'trigger',
              NUM_REPEATS = 10,
              ACTION = 2))
 
+tests.append(dict(name  = 'trigger_corner',
+             frequency = 1,
+             description = 'Trigger test where capture data comes very soon after pattern match.',
+             NUM_REPEATS = 10,
+             TRIGGER_DELAY_MAX = 4,
+             MAX_DELAY = 2,
+             ACTION = 2))
+
 tests.append(dict(name  = 'short_trigger',
              frequency = 1,
              description = 'Small trigger delay and width.',

@@ -377,10 +377,6 @@ module reg_pw #(
    assign fifo_status[`FIFO_STAT_UNDERFLOW] = sniff_fifo_underflow_sticky;
    assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = sniff_fifo_empty_threshold;
    assign fifo_status[`FIFO_STAT_FULL] = sniff_fifo_full_usbclk;
-
-   // TODO: would be nice to delay the overflow status until the FIFO contents prior to the occurence of the overflow
-   // have been read. Or more simply: after overflow, don't write into FIFO (until re-arm), then SW just needs to
-   // read the rest of the FIFO.
    assign fifo_status[`FIFO_STAT_OVERFLOW_BLOCKED] = sniff_fifo_overflow_blocked_usbclk;
    assign fifo_status[`FIFO_STAT_FULL_THRESHOLD] = sniff_fifo_full_threshold_usbclk;
 

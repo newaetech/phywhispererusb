@@ -150,6 +150,7 @@ module tb_pw();
    int rx_readindex;
    int send_iteration;
    int receive_iteration;
+   int trigger_receive_iteration;
    int errors;
    int time_counter;
    string str;
@@ -159,6 +160,7 @@ module tb_pw();
    reg [4:0] fe_stat [0:pMAX_EVENTS-1];
    reg [4:0] pattern_fe_stat;
    reg [15:0] fe_times [0:pMAX_EVENTS-1];
+   reg [15:0] last_pattern_match_delay;
    reg [7:0] sniff_bytes [0:7];
    reg [7:0] match_pattern [0:pPATTERN_BYTES_MAX-1];
    reg [7:0] match_mask [0:pPATTERN_BYTES_MAX-1];
@@ -234,15 +236,15 @@ module tb_pw();
          @(posedge fe_clk);
 
          // sending data moved to tasks to keep for loop readable:
-         send_pre_trigger_data();
+         send_pre_pm_data();
          send_pattern_match_data();
+         send_pre_trigger_data();
          send_capture_data();
 
          // sync up with receive block:
-         if (pACTION == `PM_CAPTURE)
-            wait (rx_readindex >= pNUM_EVENTS);
-         else if (pACTION == `PM_TRIGGER)
-            wait (receive_iteration == send_iteration + 1);
+         wait (rx_readindex >= pNUM_EVENTS);
+         if (pACTION == `PM_TRIGGER)
+            wait (trigger_receive_iteration == send_iteration + 1); // needed for very long triggers!
 
       end
 
@@ -252,7 +254,7 @@ module tb_pw();
          errors += 1;
       end
 
-      if ( (rx_readindex < txindex) && pACTION == `PM_CAPTURE ) begin // TODO: when trigger captures as well, remove restriction
+      if (rx_readindex < txindex) begin
          $display("ERROR: simulation finished but not all data was received: rx index=%0d, tx index=%0d", rx_readindex, txindex);
          errors += 1;
       end
@@ -268,21 +270,20 @@ module tb_pw();
    // Trigger check thread:
    initial begin
       if (pACTION == `PM_TRIGGER) begin
-         for (receive_iteration = 0; receive_iteration < pNUM_REPEATS; receive_iteration = receive_iteration + 1) begin
+         for (trigger_receive_iteration = 0; trigger_receive_iteration < pNUM_REPEATS; trigger_receive_iteration = trigger_receive_iteration + 1) begin
             wait (pattern_match_marker == 1'b1);
             matchtime = $time;
             wait (cw_trig == 1'b1);
             triggertime = $time;
-            $display("DBG: matchtime=%t, triggertime=%t", matchtime, triggertime);
             wait (cw_trig == 1'b0);
             rx_trigger_delay = (triggertime - matchtime) / (pFE_CLOCK_PERIOD/4);
             rx_trigger_delay -= 18; // Additional 18 cycle delay is inherent to the current design. 8 of the 18 is because
                                     // we start measuring time when the pattern match data is *sent*.
             rx_trigger_width = ($time - triggertime) / (pFE_CLOCK_PERIOD/4);
             if ( (rx_trigger_delay == trigger_delay) && (rx_trigger_width == trigger_width) )
-               $display("%sTrigger #%0d: delay=%0d, width=%0d", rxalign, receive_iteration, rx_trigger_delay, rx_trigger_width);
+               $display("%sTrigger #%0d: delay=%0d, width=%0d", rxalign, trigger_receive_iteration, rx_trigger_delay, rx_trigger_width);
             else begin
-               $display("%s*** ERROR Trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", rxalign, receive_iteration, rx_trigger_delay,
+               $display("%s*** ERROR Trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", rxalign, trigger_receive_iteration, rx_trigger_delay,
                                                                                                        trigger_delay, rx_trigger_width, trigger_width);
                errors += 1;
             end
@@ -291,9 +292,10 @@ module tb_pw();
       end
    end
 
+
    // FIFO read thread:
    initial begin
-      if (pACTION == `PM_CAPTURE) begin
+      //if (pACTION == `PM_CAPTURE) begin
          for (receive_iteration = 0; receive_iteration < pNUM_REPEATS; receive_iteration = receive_iteration + 1) begin
             $display("Rx Iteration %d:", receive_iteration);
             rx_dataindex = 0;
@@ -369,7 +371,7 @@ module tb_pw();
 
             end
          end
-      end
+      //end
    end
 
 
@@ -620,9 +622,9 @@ module tb_pw();
    endtask
 
 
-   task send_pre_trigger_data;
+   task send_pre_pm_data;
       pretrig_bytes = $urandom_range(pPRETRIG_BYTES_MIN, pPRETRIG_BYTES_MAX);
-      $display("Sending pre-trigger data (%0d events):", pretrig_bytes);
+      $display("Sending pre-pattern-match data (%0d events):", pretrig_bytes);
       for (txindex = 0; txindex < pretrig_bytes; txindex = txindex + 1) begin
          fe_bytes[0] = $urandom;
          // ensure we aren't randomly matching the programmed pattern:
@@ -653,9 +655,37 @@ module tb_pw();
          else
             fe_bytes[0] = $urandom;
          send_fe_data(txindex, fe_data_event[0], fe_bytes[0], pattern_fe_stat, fe_times[0]);
+         last_pattern_match_delay = fe_times[0];
          pattern_match_marker = 0;
       end
       fe_rxvalid = 1'b0;
+   endtask
+
+
+   task send_pre_trigger_data;
+      // send data that won't be captured because trigger hasn't occured yet:
+      int remaining_cycles;
+      txindex = 0;
+      remaining_cycles = trigger_delay/4 - last_pattern_match_delay;
+      if (trigger_delay > 0) begin
+         $display("\nSending pre-trigger data (not captured):");
+         // send data until the trigger activates:
+         while (remaining_cycles > 0) begin
+            fe_bytes[0] = $urandom;
+            fe_stat[0] = $urandom;
+            get_delay(fe_times[0]);
+            if (fe_times[0] > remaining_cycles)
+               fe_times[0] = remaining_cycles;
+            get_valid(fe_data_event[0]);
+            send_fe_data(txindex, fe_data_event[0], fe_bytes[0], fe_stat[0], fe_times[0]);
+            remaining_cycles = remaining_cycles - fe_times[0] - 1; // delay of 0 consumes 1 clock cycle
+            txindex += 1;
+         end
+      fe_rxvalid = 1'b0;
+
+      end
+      else
+         $display("\nNo pre-trigger data.");
    endtask
 
 

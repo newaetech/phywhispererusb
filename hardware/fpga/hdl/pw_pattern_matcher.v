@@ -40,9 +40,6 @@ module pw_pattern_matcher #(
    input  wire  I_fe_data_valid,
    input  wire  I_capturing,
 
-   // from trigger block:
-   input  wire  I_trigger_pulse,
-
    // to register block:
    output wire  O_match,
 
@@ -94,7 +91,7 @@ module pw_pattern_matcher #(
          capturing_r <= I_capturing;
 
          // end of capture is a good time to reset these:
-         if (match_trigger && (capture_done || trigger_pulse)) begin
+         if (match_trigger && capture_done) begin
             match_counter <= 0;
             match_trigger <= 1'b0;
          end
@@ -121,14 +118,6 @@ module pw_pattern_matcher #(
    assign O_match = match_trigger;// & !match_trigger_r;
    assign O_match_capture = O_match & (action_r == `PM_CAPTURE);
    assign O_match_trigger = match_trigger & !match_trigger_r & (action_r == `PM_TRIGGER);
-
-   cdc_pulse U_trig_cdc (
-      .reset_i       (reset_i),
-      .src_clk       (trigger_clk),
-      .src_pulse     (I_trigger_pulse),
-      .dst_clk       (fe_clk),
-      .dst_pulse     (trigger_pulse)
-   );
 
 
    // CDC for inputs from register block. Single flop for quasi-static signals,

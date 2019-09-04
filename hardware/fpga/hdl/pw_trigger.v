@@ -30,24 +30,33 @@ module pw_trigger #(
    input  wire         trigger_clk,
    input  wire         fe_clk,
    output reg          O_trigger,
-   output wire         O_trigger_pulse,
 
    // from register block:
    input  wire [pTRIGGER_DELAY_WIDTH-1:0] I_trigger_delay,
    input  wire [pTRIGGER_WIDTH_WIDTH-1:0] I_trigger_width,
 
    // from pattern match block:
-   input  wire         I_match
+   input  wire         I_match,
+
+   // to/from capture block:
+   input  wire         I_capturing,
+   output wire         O_capture_enable
 );
 
    reg  [pTRIGGER_DELAY_WIDTH-1:0] delay_counter;
+   reg  [pTRIGGER_DELAY_WIDTH-3:0] delay_counter_fe;
    reg  [pTRIGGER_WIDTH_WIDTH-1:0] width_counter;
    reg  delay_counter_running;
+   reg  delay_counter_fe_running;
    reg  width_counter_running;
    wire match_pulse;
-   reg  trigger_r;
    (* ASYNC_REG = "TRUE" *) reg  [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay_r;
    (* ASYNC_REG = "TRUE" *) reg  [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width_r;
+   reg  capturing_r;
+   wire capture_done;
+   wire match;
+   wire capture_enable_start;
+   reg  capture_enable_reg;
 
    // CDC for register block inputs: since these signals are quasi-static
    // and should not be changing while the downstream logic is active, a 
@@ -88,8 +97,7 @@ module pw_trigger #(
    `endif
 
 
-   assign O_trigger_pulse = O_trigger & ~trigger_r;
-
+   // generate the output trigger signal with the 4x trigger_clk:
    always @ (posedge trigger_clk) begin
       if (reset_i) begin
          delay_counter <= 0;
@@ -97,11 +105,9 @@ module pw_trigger #(
          width_counter <= 1;
          width_counter_running <= 1'b0;
          O_trigger <= 1'b0;
-         trigger_r <= 1'b0;
       end
 
       else begin
-         trigger_r <= O_trigger;
          if (O_trigger) 
             delay_counter_running <= 1'b0;
          else if (match_pulse) 
@@ -122,7 +128,6 @@ module pw_trigger #(
             end
          end
 
-
          if (width_counter_running) begin
             if (width_counter < trigger_width_r)
                width_counter <= width_counter + 1;
@@ -132,6 +137,47 @@ module pw_trigger #(
 
       end
    end
+
+
+   assign capture_done = !I_capturing & capturing_r;
+
+
+   // Generate an internal trigger signal with the 1x fe_clk for capture, to avoid crossing 
+   // clock domains back and forth. Bit more complicated than it could be in order to deal with the
+   // 0-delay case, where the data to be captured follows the pattern match immediately, as well as
+   // the general case where there is a programmable delay between pattern match and capture.
+   always @ (posedge fe_clk) begin
+      if (reset_i) begin
+         delay_counter_fe <= 0;
+         delay_counter_fe_running <= 1'b0;
+         capturing_r <= 1'b0;
+         capture_enable_reg <= 1'b0;
+      end
+
+      else begin
+         capturing_r <= I_capturing;
+         if (O_capture_enable) 
+            delay_counter_fe_running <= 1'b0;
+         else if (I_match) 
+            delay_counter_fe_running <= 1'b1;
+
+         if (capture_done)
+            capture_enable_reg <= 1'b0;
+         else if (I_match || delay_counter_fe_running) begin
+            if ((delay_counter_fe < I_trigger_delay[pTRIGGER_DELAY_WIDTH-1:2]) & ~O_capture_enable)
+               delay_counter_fe <= delay_counter_fe + 1;
+            else begin
+               delay_counter_fe <= 0;
+               capture_enable_reg <= 1'b1;
+            end
+         end
+
+      end
+   end
+
+   assign match = I_match | delay_counter_fe_running;
+   assign capture_enable_start = match & (delay_counter_fe == I_trigger_delay[pTRIGGER_DELAY_WIDTH-1:2]);
+   assign O_capture_enable = capture_enable_start | capture_enable_reg;
 
 
 endmodule

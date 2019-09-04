@@ -131,7 +131,7 @@ module phywhisperer_top(
    wire fifo_overflow_blocked;
    wire arm;
    wire capturing;
-   wire trig_pulse;
+   wire trigger_capture_enable;
 
    wire [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay;
    wire [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width;
@@ -284,7 +284,9 @@ module phywhisperer_top(
       .O_data_wr                (fe_capture_data_wr),
       .O_pm_data                (fe_capture_pm_data),
       .O_pm_wr                  (fe_capture_pm_wr),
-      .O_capturing              (capturing)
+      .O_capturing              (capturing),
+      .I_trigger_capture_enable (trigger_capture_enable)
+
    );
 
 
@@ -416,7 +418,6 @@ module phywhisperer_top(
       .I_fe_data        (fe_capture_pm_data),
       .I_fe_data_valid  (fe_capture_pm_wr),
       .I_capturing      (capturing),
-      .I_trigger_pulse  (trig_pulse),
       .O_match          (match),
       .O_match_capture  (capture_match),
       .O_match_trigger  (trigger_match)
@@ -431,10 +432,12 @@ module phywhisperer_top(
       .trigger_clk      (trigger_clk),
       .fe_clk           (clk_fe_buf),
       .O_trigger        (cw_trig),
-      .O_trigger_pulse  (trig_pulse),
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),
-      .I_match          (trigger_match)
+      .I_match          (trigger_match),
+      .I_capturing      (capturing),
+      .O_capture_enable (trigger_capture_enable)
+
    );
 
 

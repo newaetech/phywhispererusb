@@ -54,7 +54,10 @@ module fe_capture #(
 
     /* PATTERN MATCH CONNECTIONS */
     input  wire I_capture_enable,
-    output wire O_capturing
+    output wire O_capturing,
+
+    /* TRIGGER CONNECTIONS */
+    input  wire I_trigger_capture_enable
 );
 
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_ctr;
@@ -84,6 +87,7 @@ module fe_capture #(
     reg  usb_event_reg;
     reg  [15:0] capture_count;
     wire capture_allowed;
+    wire capture_enable;
 
     (* ASYNC_REG = "TRUE" *) reg [15:0] capture_len_r;
     (* ASYNC_REG = "TRUE" *) reg timestamps_disable_r;
@@ -148,9 +152,9 @@ module fe_capture #(
              // than we should. Could be fixed but it's not a problem since the FIFO gets flushed
              // upon re-arming. And the Xilinx FIFO is actually deeper than the requested 8192 anyway.
              // And we don't allow overflow writes anyway.
-             if (usb_event_reg && short_timestamp && I_capture_enable && capture_allowed)
+             if (usb_event_reg && short_timestamp && capture_enable && capture_allowed)
                 next_state = pS_DATA;
-             else if (usb_event && !short_timestamp_pre && I_capture_enable && capture_allowed)
+             else if (usb_event && !short_timestamp_pre && capture_enable && capture_allowed)
                 // do FE_FIFO_CMD_TIME packet one cycle early so we don't get caught behind, 
                 // for the corner case of back-to-back events following a long idle time:
                 next_state = pS_TIME;
@@ -162,7 +166,7 @@ module fe_capture #(
 
 
           pS_DATA: begin
-             if (usb_event_reg)
+             if (usb_event_reg && capture_allowed)
                 next_state = pS_DATA;
              else
                 next_state = pS_IDLE;
@@ -199,9 +203,9 @@ module fe_capture #(
           state_r2 <= state_r;
           timestamp_reg <= timestamp;
 
-          if (I_capture_enable && usb_event_reg)
+          if (capture_enable && usb_event_reg)
              ctr_running <= 1'b1;
-          else if (!I_capture_enable)
+          else if (!capture_enable)
              ctr_running <= 1'b0;
 
           if (!ctr_running) begin
@@ -286,8 +290,10 @@ module fe_capture #(
 
     assign O_capturing = capture_allowed;
 
-    assign capture_allowed = I_capture_enable & (capture_count < capture_len_r) & 
+    assign capture_allowed = capture_enable & (capture_count < capture_len_r) & 
                             !I_fifo_full & !I_fifo_overflow_blocked;
+
+    assign capture_enable = I_capture_enable | I_trigger_capture_enable;
 
     // strictly for easier visualization/debug:
     wire state_idle = (state == pS_IDLE);
