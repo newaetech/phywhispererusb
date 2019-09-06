@@ -49,9 +49,18 @@ tests.append(dict(name  = 'stream_long_nooverflow',
              MIN_DELAY  = 4,
              MAX_DELAY  = 8))
 
+tests.append(dict(name  = 'stream_long_emptyreads',
+             frequency = 10,
+             description = 'Stream mode where host read rate is higher than target write rate.',
+             TIMEOUT = 700000,
+             NUM_EVENTS = 8192*2,
+             NUM_REPEATS = 1,   # TODO: support repeats with streaming
+             STREAM_MODE = 1,
+             MIN_DELAY  = 20,
+             MAX_DELAY  = 45))
 
 tests.append(dict(name  = 'stream_long_overflow',
-             frequency = 3,
+             frequency = 5,
              description = 'Stream mode, test overflow.',
              TIMEOUT = 300000,
              NUM_EVENTS = 8192*2,
@@ -93,7 +102,7 @@ tests.append(dict(name  = 'trigger',
              ACTION = 2))
 
 tests.append(dict(name  = 'trigger_corner',
-             frequency = 1,
+             frequency = 2,
              description = 'Trigger test where capture data comes very soon after pattern match.',
              NUM_REPEATS = 10,
              TRIGGER_DELAY_MAX = 4,
@@ -101,7 +110,7 @@ tests.append(dict(name  = 'trigger_corner',
              ACTION = 2))
 
 tests.append(dict(name  = 'short_trigger',
-             frequency = 1,
+             frequency = 2,
              description = 'Small trigger delay and width.',
              TRIGGER_DELAY_MIN = 0,
              TRIGGER_DELAY_MAX = 16,
@@ -122,7 +131,7 @@ tests.append(dict(name  = 'long_trigger',
              ACTION = 2))
 
 tests.append(dict(name  = 'shortcorner_timestamps',
-             frequency = 1,
+             frequency = 5,
              description = 'Constrain timestamps around the boundary between short and long timestamps',
              NUM_EVENTS = 10,
              NUM_REPEATS = 2,
@@ -140,7 +149,7 @@ tests.append(dict(name  = 'corner_timestamps',
              MAX_DELAY  = 9))
 
 tests.append(dict(name  = 'bursts',
-             frequency = 1,
+             frequency = 2,
              description = 'Bursty inputs, alternating between no delay and long delay.',
              NUM_EVENTS = 50,
              NUM_REPEATS = 2,
@@ -149,7 +158,7 @@ tests.append(dict(name  = 'bursts',
              MAX_DELAY  = 16))
 
 tests.append(dict(name  = 'shortpattern',
-             frequency = 1,
+             frequency = 2,
              description = 'Pattern of 3 bytes or less.',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
@@ -158,7 +167,7 @@ tests.append(dict(name  = 'shortpattern',
              PATTERN_MAX = 3))
 
 tests.append(dict(name  = 'longpattern',
-             frequency = 1,
+             frequency = 2,
              description = 'Pattern of 16 bytes or more.',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,

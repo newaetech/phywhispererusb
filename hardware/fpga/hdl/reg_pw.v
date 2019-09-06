@@ -142,6 +142,7 @@ module reg_pw #(
             `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
             `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
+            6'h3f: reg_read_data <= 8'h88; //TEMP/debug
          endcase
       end
       else
@@ -300,7 +301,7 @@ module reg_pw #(
 
    // FIFO read logic:
    // perform a FIFO read on first read access to FIFO register, or when flushing:
-   assign fifo_read_condition = reg_addrvalid && reg_read && ~sniff_fifo_empty &&
+   assign fifo_read_condition = reg_addrvalid && reg_read && ~sniff_fifo_empty_r &&
                                (reg_address == `REG_SNIFF_FIFO_RD) &&
                               ((reg_bytecnt % 4) == 0) && ~empty_fifo_read;
    assign fifo_flush_condition = (flushing & ~sniff_fifo_empty);
