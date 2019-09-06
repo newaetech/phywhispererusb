@@ -20,19 +20,20 @@
   24              	cpu_irq_prev_interrupt_state:
   25 0000 00       	 .space 1
   26              	 .global g_interrupt_enabled
-  27              	 .section .data.g_interrupt_enabled,"aw",%progbits
+  27              	 .section .data.g_interrupt_enabled,"aw"
   30              	g_interrupt_enabled:
   31 0000 01       	 .byte 1
   32              	 .section .text.cpu_irq_enter_critical,"ax",%progbits
   33              	 .align 1
   34              	 .global cpu_irq_enter_critical
-  35              	 .syntax unified
-  36              	 .thumb
-  37              	 .thumb_func
-  38              	 .fpu softvfp
-  40              	cpu_irq_enter_critical:
-  41              	.LFB69:
-  42              	 .file 1 ".././hal/sam3u1c/interrupt_sam_nvic.c"
+  35              	 .arch armv7-m
+  36              	 .syntax unified
+  37              	 .thumb
+  38              	 .thumb_func
+  39              	 .fpu softvfp
+  41              	cpu_irq_enter_critical:
+  42              	.LFB69:
+  43              	 .file 1 ".././hal/sam3u1c/interrupt_sam_nvic.c"
    1:.././hal/sam3u1c/interrupt_sam_nvic.c **** /**
    2:.././hal/sam3u1c/interrupt_sam_nvic.c ****  * \file
    3:.././hal/sam3u1c/interrupt_sam_nvic.c ****  *
@@ -88,30 +89,31 @@
   53:.././hal/sam3u1c/interrupt_sam_nvic.c **** 
   54:.././hal/sam3u1c/interrupt_sam_nvic.c **** void cpu_irq_enter_critical(void)
   55:.././hal/sam3u1c/interrupt_sam_nvic.c **** {
-  43              	 .loc 1 55 0
-  44              	 .cfi_startproc
-  45              	 
+  44              	 .loc 1 55 1
+  45              	 .cfi_startproc
   46              	 
   47              	 
-  48 0000 80B4     	 push {r7}
-  49              	.LCFI0:
-  50              	 .cfi_def_cfa_offset 4
-  51              	 .cfi_offset 7,-4
-  52 0002 83B0     	 sub sp,sp,#12
-  53              	.LCFI1:
-  54              	 .cfi_def_cfa_offset 16
-  55 0004 00AF     	 add r7,sp,#0
-  56              	.LCFI2:
-  57              	 .cfi_def_cfa_register 7
+  48              	 
+  49 0000 80B4     	 push {r7}
+  50              	.LCFI0:
+  51              	 .cfi_def_cfa_offset 4
+  52              	 .cfi_offset 7,-4
+  53 0002 83B0     	 sub sp,sp,#12
+  54              	.LCFI1:
+  55              	 .cfi_def_cfa_offset 16
+  56 0004 00AF     	 add r7,sp,#0
+  57              	.LCFI2:
+  58              	 .cfi_def_cfa_register 7
   56:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	if (cpu_irq_critical_section_counter == 0) {
-  58              	 .loc 1 56 0
-  59 0006 104B     	 ldr r3,.L5
-  60 0008 1B68     	 ldr r3,[r3]
-  61 000a 002B     	 cmp r3,#0
-  62 000c 12D1     	 bne .L2
-  63              	.LBB12:
-  64              	.LBB13:
-  65              	 .file 2 ".././hal/sam3u1c/inc/core_cmFunc.h"
+  59              	 .loc 1 56 39
+  60 0006 104B     	 ldr r3,.L5
+  61 0008 1B68     	 ldr r3,[r3]
+  62              	 .loc 1 56 5
+  63 000a 002B     	 cmp r3,#0
+  64 000c 12D1     	 bne .L2
+  65              	.LBB12:
+  66              	.LBB13:
+  67              	 .file 2 ".././hal/sam3u1c/inc/core_cmFunc.h"
    1:.././hal/sam3u1c/inc/core_cmFunc.h **** /**************************************************************************//**
    2:.././hal/sam3u1c/inc/core_cmFunc.h ****  * @file     core_cmFunc.h
    3:.././hal/sam3u1c/inc/core_cmFunc.h ****  * @brief    CMSIS Cortex-M Core Function Access Header File
@@ -580,38 +582,38 @@
  466:.././hal/sam3u1c/inc/core_cmFunc.h ****   uint32_t result;
  467:.././hal/sam3u1c/inc/core_cmFunc.h **** 
  468:.././hal/sam3u1c/inc/core_cmFunc.h ****   __ASM volatile ("MRS %0, primask" : "=r" (result) );
-  66              	 .loc 2 468 0
-  67              	 .syntax unified
-  68              	
-  69 000e EFF31083 	 MRS r3,primask
+  68              	 .loc 2 468 3
+  69              	 .syntax unified
   70              	
-  71              	 .thumb
-  72              	 .syntax unified
-  73 0012 7B60     	 str r3,[r7,#4]
+  71 000e EFF31083 	 MRS r3,primask
+  72              	
+  73              	 .thumb
+  74              	 .syntax unified
+  75 0012 7B60     	 str r3,[r7,#4]
  469:.././hal/sam3u1c/inc/core_cmFunc.h ****   return(result);
-  74              	 .loc 2 469 0
-  75 0014 7B68     	 ldr r3,[r7,#4]
-  76              	.LBE13:
-  77              	.LBE12:
+  76              	 .loc 2 469 9
+  77 0014 7B68     	 ldr r3,[r7,#4]
+  78              	.LBE13:
+  79              	.LBE12:
   57:.././hal/sam3u1c/interrupt_sam_nvic.c **** 		if (cpu_irq_is_enabled()) {
-  78              	 .loc 1 57 0
-  79 0016 002B     	 cmp r3,#0
-  80 0018 09D1     	 bne .L4
-  81              	.LBB14:
-  82              	.LBB15:
+  80              	 .loc 1 57 6
+  81 0016 002B     	 cmp r3,#0
+  82 0018 09D1     	 bne .L4
+  83              	.LBB14:
+  84              	.LBB15:
  328:.././hal/sam3u1c/inc/core_cmFunc.h **** }
-  83              	 .loc 2 328 0
-  84              	 .syntax unified
-  85              	
-  86 001a 72B6     	 cpsid i
+  85              	 .loc 2 328 3
+  86              	 .syntax unified
   87              	
-  88              	 .thumb
-  89              	 .syntax unified
-  90              	.LBE15:
-  91              	.LBE14:
-  92              	.LBB16:
-  93              	.LBB17:
-  94              	 .file 3 ".././hal/sam3u1c/inc/core_cmInstr.h"
+  88 001a 72B6     	 cpsid i
+  89              	
+  90              	 .thumb
+  91              	 .syntax unified
+  92              	.LBE15:
+  93              	.LBE14:
+  94              	.LBB16:
+  95              	.LBB17:
+  96              	 .file 3 ".././hal/sam3u1c/inc/core_cmInstr.h"
    1:.././hal/sam3u1c/inc/core_cmInstr.h **** /**************************************************************************//**
    2:.././hal/sam3u1c/inc/core_cmInstr.h ****  * @file     core_cmInstr.h
    3:.././hal/sam3u1c/inc/core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
@@ -966,180 +968,181 @@
  352:.././hal/sam3u1c/inc/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __DMB(void)
  353:.././hal/sam3u1c/inc/core_cmInstr.h **** {
  354:.././hal/sam3u1c/inc/core_cmInstr.h ****   __ASM volatile ("dmb");
-  95              	 .loc 3 354 0
-  96              	 .syntax unified
-  97              	
-  98 001c BFF35F8F 	 dmb
+  97              	 .loc 3 354 3
+  98              	 .syntax unified
   99              	
- 100              	 .thumb
- 101              	 .syntax unified
- 102              	.LBE17:
- 103              	.LBE16:
+ 100 001c BFF35F8F 	 dmb
+ 101              	
+ 102              	 .thumb
+ 103              	 .syntax unified
+ 104              	.LBE17:
+ 105              	.LBE16:
   58:.././hal/sam3u1c/interrupt_sam_nvic.c **** 			cpu_irq_disable();
- 104              	 .loc 1 58 0
- 105 0020 0A4B     	 ldr r3,.L5+4
- 106 0022 0022     	 movs r2,#0
- 107 0024 1A70     	 strb r2,[r3]
+ 106              	 .loc 1 58 4
+ 107 0020 0A4B     	 ldr r3,.L5+4
+ 108 0022 0022     	 movs r2,#0
+ 109 0024 1A70     	 strb r2,[r3]
   59:.././hal/sam3u1c/interrupt_sam_nvic.c **** 			cpu_irq_prev_interrupt_state = true;
- 108              	 .loc 1 59 0
- 109 0026 0A4B     	 ldr r3,.L5+8
- 110 0028 0122     	 movs r2,#1
- 111 002a 1A70     	 strb r2,[r3]
- 112 002c 02E0     	 b .L2
- 113              	.L4:
+ 110              	 .loc 1 59 33
+ 111 0026 0A4B     	 ldr r3,.L5+8
+ 112 0028 0122     	 movs r2,#1
+ 113 002a 1A70     	 strb r2,[r3]
+ 114 002c 02E0     	 b .L2
+ 115              	.L4:
   60:.././hal/sam3u1c/interrupt_sam_nvic.c **** 		} else {
   61:.././hal/sam3u1c/interrupt_sam_nvic.c **** 			/* Make sure the to save the prev state as false */
   62:.././hal/sam3u1c/interrupt_sam_nvic.c **** 			cpu_irq_prev_interrupt_state = false;
- 114              	 .loc 1 62 0
- 115 002e 084B     	 ldr r3,.L5+8
- 116 0030 0022     	 movs r2,#0
- 117 0032 1A70     	 strb r2,[r3]
- 118              	.L2:
+ 116              	 .loc 1 62 33
+ 117 002e 084B     	 ldr r3,.L5+8
+ 118 0030 0022     	 movs r2,#0
+ 119 0032 1A70     	 strb r2,[r3]
+ 120              	.L2:
   63:.././hal/sam3u1c/interrupt_sam_nvic.c **** 		}
   64:.././hal/sam3u1c/interrupt_sam_nvic.c **** 
   65:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	}
   66:.././hal/sam3u1c/interrupt_sam_nvic.c **** 
   67:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	cpu_irq_critical_section_counter++;
- 119              	 .loc 1 67 0
- 120 0034 044B     	 ldr r3,.L5
- 121 0036 1B68     	 ldr r3,[r3]
- 122 0038 0133     	 adds r3,r3,#1
- 123 003a 034A     	 ldr r2,.L5
- 124 003c 1360     	 str r3,[r2]
+ 121              	 .loc 1 67 34
+ 122 0034 044B     	 ldr r3,.L5
+ 123 0036 1B68     	 ldr r3,[r3]
+ 124 0038 0133     	 adds r3,r3,#1
+ 125 003a 034A     	 ldr r2,.L5
+ 126 003c 1360     	 str r3,[r2]
   68:.././hal/sam3u1c/interrupt_sam_nvic.c **** }
- 125              	 .loc 1 68 0
- 126 003e 00BF     	 nop
- 127 0040 0C37     	 adds r7,r7,#12
- 128              	.LCFI3:
- 129              	 .cfi_def_cfa_offset 4
- 130 0042 BD46     	 mov sp,r7
- 131              	.LCFI4:
- 132              	 .cfi_def_cfa_register 13
- 133              	 
- 134 0044 80BC     	 pop {r7}
- 135              	.LCFI5:
- 136              	 .cfi_restore 7
- 137              	 .cfi_def_cfa_offset 0
- 138 0046 7047     	 bx lr
- 139              	.L6:
- 140              	 .align 2
- 141              	.L5:
- 142 0048 00000000 	 .word cpu_irq_critical_section_counter
- 143 004c 00000000 	 .word g_interrupt_enabled
- 144 0050 00000000 	 .word cpu_irq_prev_interrupt_state
- 145              	 .cfi_endproc
- 146              	.LFE69:
- 148              	 .section .text.cpu_irq_leave_critical,"ax",%progbits
- 149              	 .align 1
- 150              	 .global cpu_irq_leave_critical
- 151              	 .syntax unified
- 152              	 .thumb
- 153              	 .thumb_func
- 154              	 .fpu softvfp
- 156              	cpu_irq_leave_critical:
- 157              	.LFB70:
+ 127              	 .loc 1 68 1
+ 128 003e 00BF     	 nop
+ 129 0040 0C37     	 adds r7,r7,#12
+ 130              	.LCFI3:
+ 131              	 .cfi_def_cfa_offset 4
+ 132 0042 BD46     	 mov sp,r7
+ 133              	.LCFI4:
+ 134              	 .cfi_def_cfa_register 13
+ 135              	 
+ 136 0044 80BC     	 pop {r7}
+ 137              	.LCFI5:
+ 138              	 .cfi_restore 7
+ 139              	 .cfi_def_cfa_offset 0
+ 140 0046 7047     	 bx lr
+ 141              	.L6:
+ 142              	 .align 2
+ 143              	.L5:
+ 144 0048 00000000 	 .word cpu_irq_critical_section_counter
+ 145 004c 00000000 	 .word g_interrupt_enabled
+ 146 0050 00000000 	 .word cpu_irq_prev_interrupt_state
+ 147              	 .cfi_endproc
+ 148              	.LFE69:
+ 150              	 .section .text.cpu_irq_leave_critical,"ax",%progbits
+ 151              	 .align 1
+ 152              	 .global cpu_irq_leave_critical
+ 153              	 .syntax unified
+ 154              	 .thumb
+ 155              	 .thumb_func
+ 156              	 .fpu softvfp
+ 158              	cpu_irq_leave_critical:
+ 159              	.LFB70:
   69:.././hal/sam3u1c/interrupt_sam_nvic.c **** 
   70:.././hal/sam3u1c/interrupt_sam_nvic.c **** void cpu_irq_leave_critical(void)
   71:.././hal/sam3u1c/interrupt_sam_nvic.c **** {
- 158              	 .loc 1 71 0
- 159              	 .cfi_startproc
- 160              	 
- 161              	 
+ 160              	 .loc 1 71 1
+ 161              	 .cfi_startproc
  162              	 
- 163 0000 80B4     	 push {r7}
- 164              	.LCFI6:
- 165              	 .cfi_def_cfa_offset 4
- 166              	 .cfi_offset 7,-4
- 167 0002 00AF     	 add r7,sp,#0
- 168              	.LCFI7:
- 169              	 .cfi_def_cfa_register 7
+ 163              	 
+ 164              	 
+ 165 0000 80B4     	 push {r7}
+ 166              	.LCFI6:
+ 167              	 .cfi_def_cfa_offset 4
+ 168              	 .cfi_offset 7,-4
+ 169 0002 00AF     	 add r7,sp,#0
+ 170              	.LCFI7:
+ 171              	 .cfi_def_cfa_register 7
   72:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	/* Check if the user is trying to leave a critical section when not in a critical section */
   73:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	Assert(cpu_irq_critical_section_counter > 0);
   74:.././hal/sam3u1c/interrupt_sam_nvic.c **** 
   75:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	cpu_irq_critical_section_counter--;
- 170              	 .loc 1 75 0
- 171 0004 0B4B     	 ldr r3,.L10
- 172 0006 1B68     	 ldr r3,[r3]
- 173 0008 013B     	 subs r3,r3,#1
- 174 000a 0A4A     	 ldr r2,.L10
- 175 000c 1360     	 str r3,[r2]
+ 172              	 .loc 1 75 34
+ 173 0004 0B4B     	 ldr r3,.L10
+ 174 0006 1B68     	 ldr r3,[r3]
+ 175 0008 013B     	 subs r3,r3,#1
+ 176 000a 0A4A     	 ldr r2,.L10
+ 177 000c 1360     	 str r3,[r2]
   76:.././hal/sam3u1c/interrupt_sam_nvic.c **** 
   77:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	/* Only enable global interrupts when the counter reaches 0 and the state of the global interrupt 
   78:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	   was enabled when entering critical state */
   79:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	if ((cpu_irq_critical_section_counter == 0) && (cpu_irq_prev_interrupt_state)) {
- 176              	 .loc 1 79 0
- 177 000e 094B     	 ldr r3,.L10
- 178 0010 1B68     	 ldr r3,[r3]
- 179 0012 002B     	 cmp r3,#0
- 180 0014 0AD1     	 bne .L9
- 181              	 .loc 1 79 0 is_stmt 0 discriminator 1
- 182 0016 084B     	 ldr r3,.L10+4
- 183 0018 1B78     	 ldrb r3,[r3]
- 184 001a DBB2     	 uxtb r3,r3
- 185 001c 002B     	 cmp r3,#0
- 186 001e 05D0     	 beq .L9
+ 178              	 .loc 1 79 40
+ 179 000e 094B     	 ldr r3,.L10
+ 180 0010 1B68     	 ldr r3,[r3]
+ 181              	 .loc 1 79 5
+ 182 0012 002B     	 cmp r3,#0
+ 183 0014 0AD1     	 bne .L9
+ 184              	 .loc 1 79 46 discriminator 1
+ 185 0016 084B     	 ldr r3,.L10+4
+ 186 0018 1B78     	 ldrb r3,[r3]
+ 187 001a DBB2     	 uxtb r3,r3
+ 188 001c 002B     	 cmp r3,#0
+ 189 001e 05D0     	 beq .L9
   80:.././hal/sam3u1c/interrupt_sam_nvic.c **** 		cpu_irq_enable();
- 187              	 .loc 1 80 0 is_stmt 1
- 188 0020 064B     	 ldr r3,.L10+8
- 189 0022 0122     	 movs r2,#1
- 190 0024 1A70     	 strb r2,[r3]
- 191              	.LBB18:
- 192              	.LBB19:
- 193              	 .loc 3 354 0
- 194              	 .syntax unified
- 195              	
- 196 0026 BFF35F8F 	 dmb
- 197              	
- 198              	 .thumb
- 199              	 .syntax unified
- 200              	.LBE19:
- 201              	.LBE18:
- 202              	.LBB20:
- 203              	.LBB21:
+ 190              	 .loc 1 80 3
+ 191 0020 064B     	 ldr r3,.L10+8
+ 192 0022 0122     	 movs r2,#1
+ 193 0024 1A70     	 strb r2,[r3]
+ 194              	.LBB18:
+ 195              	.LBB19:
+ 196              	 .loc 3 354 3
+ 197              	 .syntax unified
+ 198              	
+ 199 0026 BFF35F8F 	 dmb
+ 200              	
+ 201              	 .thumb
+ 202              	 .syntax unified
+ 203              	.LBE19:
+ 204              	.LBE18:
+ 205              	.LBB20:
+ 206              	.LBB21:
  317:.././hal/sam3u1c/inc/core_cmFunc.h **** }
- 204              	 .loc 2 317 0
- 205              	 .syntax unified
- 206              	
- 207 002a 62B6     	 cpsie i
- 208              	
- 209              	 .thumb
- 210              	 .syntax unified
- 211              	.L9:
- 212              	.LBE21:
- 213              	.LBE20:
+ 207              	 .loc 2 317 3
+ 208              	 .syntax unified
+ 209              	
+ 210 002a 62B6     	 cpsie i
+ 211              	
+ 212              	 .thumb
+ 213              	 .syntax unified
+ 214              	.L9:
+ 215              	.LBE21:
+ 216              	.LBE20:
   81:.././hal/sam3u1c/interrupt_sam_nvic.c **** 	}
   82:.././hal/sam3u1c/interrupt_sam_nvic.c **** }
- 214              	 .loc 1 82 0
- 215 002c 00BF     	 nop
- 216 002e BD46     	 mov sp,r7
- 217              	.LCFI8:
- 218              	 .cfi_def_cfa_register 13
- 219              	 
- 220 0030 80BC     	 pop {r7}
- 221              	.LCFI9:
- 222              	 .cfi_restore 7
- 223              	 .cfi_def_cfa_offset 0
- 224 0032 7047     	 bx lr
- 225              	.L11:
- 226              	 .align 2
- 227              	.L10:
- 228 0034 00000000 	 .word cpu_irq_critical_section_counter
- 229 0038 00000000 	 .word cpu_irq_prev_interrupt_state
- 230 003c 00000000 	 .word g_interrupt_enabled
- 231              	 .cfi_endproc
- 232              	.LFE70:
- 234              	 .text
- 235              	.Letext0:
- 236              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 237              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 238              	 .file 6 ".././hal/sam3u1c/inc/core_cm3.h"
- 239              	 .file 7 ".././hal/sam3u1c/inc/system_sam3u.h"
- 240              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 241              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 242              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 243              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 244              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 245              	 .file 13 ".././hal/sam3u1c/inc/interrupt_sam_nvic.h"
+ 217              	 .loc 1 82 1
+ 218 002c 00BF     	 nop
+ 219 002e BD46     	 mov sp,r7
+ 220              	.LCFI8:
+ 221              	 .cfi_def_cfa_register 13
+ 222              	 
+ 223 0030 80BC     	 pop {r7}
+ 224              	.LCFI9:
+ 225              	 .cfi_restore 7
+ 226              	 .cfi_def_cfa_offset 0
+ 227 0032 7047     	 bx lr
+ 228              	.L11:
+ 229              	 .align 2
+ 230              	.L10:
+ 231 0034 00000000 	 .word cpu_irq_critical_section_counter
+ 232 0038 00000000 	 .word cpu_irq_prev_interrupt_state
+ 233 003c 00000000 	 .word g_interrupt_enabled
+ 234              	 .cfi_endproc
+ 235              	.LFE70:
+ 237              	 .text
+ 238              	.Letext0:
+ 239              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 240              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 241              	 .file 6 ".././hal/sam3u1c/inc/core_cm3.h"
+ 242              	 .file 7 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 243              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 244              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 245              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 246              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 247              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 248              	 .file 13 ".././hal/sam3u1c/inc/interrupt_sam_nvic.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 interrupt_sam_nvic.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1148,12 +1151,12 @@ DEFINED SYMBOLS
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:30     .data.g_interrupt_enabled:00000000 g_interrupt_enabled
     {standard input}:33     .text.cpu_irq_enter_critical:00000000 $t
-    {standard input}:40     .text.cpu_irq_enter_critical:00000000 cpu_irq_enter_critical
-    {standard input}:142    .text.cpu_irq_enter_critical:00000048 $d
-    {standard input}:149    .text.cpu_irq_leave_critical:00000000 $t
-    {standard input}:156    .text.cpu_irq_leave_critical:00000000 cpu_irq_leave_critical
-    {standard input}:228    .text.cpu_irq_leave_critical:00000034 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:41     .text.cpu_irq_enter_critical:00000000 cpu_irq_enter_critical
+    {standard input}:144    .text.cpu_irq_enter_critical:00000048 $d
+    {standard input}:151    .text.cpu_irq_leave_critical:00000000 $t
+    {standard input}:158    .text.cpu_irq_leave_critical:00000000 cpu_irq_leave_critical
+    {standard input}:231    .text.cpu_irq_leave_critical:00000034 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -1227,12 +1230,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

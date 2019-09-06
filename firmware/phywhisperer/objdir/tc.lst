@@ -22,13 +22,14 @@
   26              	 .section .text.tc_init,"ax",%progbits
   27              	 .align 1
   28              	 .global tc_init
-  29              	 .syntax unified
-  30              	 .thumb
-  31              	 .thumb_func
-  32              	 .fpu softvfp
-  34              	tc_init:
-  35              	.LFB69:
-  36              	 .file 1 ".././hal/sam3u1c/tc.c"
+  29              	 .arch armv7-m
+  30              	 .syntax unified
+  31              	 .thumb
+  32              	 .thumb_func
+  33              	 .fpu softvfp
+  35              	tc_init:
+  36              	.LFB69:
+  37              	 .file 1 ".././hal/sam3u1c/tc.c"
    1:.././hal/sam3u1c/tc.c **** /**
    2:.././hal/sam3u1c/tc.c ****  * \file
    3:.././hal/sam3u1c/tc.c ****  *
@@ -110,24 +111,24 @@
   79:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
   80:.././hal/sam3u1c/tc.c **** 		uint32_t ul_mode)
   81:.././hal/sam3u1c/tc.c **** {
-  37              	 .loc 1 81 0
-  38              	 .cfi_startproc
-  39              	 
+  38              	 .loc 1 81 1
+  39              	 .cfi_startproc
   40              	 
   41              	 
-  42 0000 80B4     	 push {r7}
-  43              	.LCFI0:
-  44              	 .cfi_def_cfa_offset 4
-  45              	 .cfi_offset 7,-4
-  46 0002 87B0     	 sub sp,sp,#28
-  47              	.LCFI1:
-  48              	 .cfi_def_cfa_offset 32
-  49 0004 00AF     	 add r7,sp,#0
-  50              	.LCFI2:
-  51              	 .cfi_def_cfa_register 7
-  52 0006 F860     	 str r0,[r7,#12]
-  53 0008 B960     	 str r1,[r7,#8]
-  54 000a 7A60     	 str r2,[r7,#4]
+  42              	 
+  43 0000 80B4     	 push {r7}
+  44              	.LCFI0:
+  45              	 .cfi_def_cfa_offset 4
+  46              	 .cfi_offset 7,-4
+  47 0002 87B0     	 sub sp,sp,#28
+  48              	.LCFI1:
+  49              	 .cfi_def_cfa_offset 32
+  50 0004 00AF     	 add r7,sp,#0
+  51              	.LCFI2:
+  52              	 .cfi_def_cfa_register 7
+  53 0006 F860     	 str r0,[r7,#12]
+  54 0008 B960     	 str r1,[r7,#8]
+  55 000a 7A60     	 str r2,[r7,#4]
   82:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
   83:.././hal/sam3u1c/tc.c **** 
   84:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
@@ -135,65 +136,67 @@
   86:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
   87:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
   88:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
-  55              	 .loc 1 88 0
-  56 000c FA68     	 ldr r2,[r7,#12]
-  57 000e BB68     	 ldr r3,[r7,#8]
-  58 0010 9B01     	 lsls r3,r3,#6
-  59 0012 1344     	 add r3,r3,r2
-  60 0014 7B61     	 str r3,[r7,#20]
+  56              	 .loc 1 88 15
+  57 000c FA68     	 ldr r2,[r7,#12]
+  58              	 .loc 1 88 32
+  59 000e BB68     	 ldr r3,[r7,#8]
+  60 0010 9B01     	 lsls r3,r3,#6
+  61              	 .loc 1 88 13
+  62 0012 1344     	 add r3,r3,r2
+  63 0014 7B61     	 str r3,[r7,#20]
   89:.././hal/sam3u1c/tc.c **** 
   90:.././hal/sam3u1c/tc.c **** 	/*  Disable TC clock. */
   91:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_CCR = TC_CCR_CLKDIS;
-  61              	 .loc 1 91 0
-  62 0016 7B69     	 ldr r3,[r7,#20]
-  63 0018 0222     	 movs r2,#2
-  64 001a 1A60     	 str r2,[r3]
+  64              	 .loc 1 91 21
+  65 0016 7B69     	 ldr r3,[r7,#20]
+  66 0018 0222     	 movs r2,#2
+  67 001a 1A60     	 str r2,[r3]
   92:.././hal/sam3u1c/tc.c **** 
   93:.././hal/sam3u1c/tc.c **** 	/*  Disable interrupts. */
   94:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_IDR = 0xFFFFFFFF;
-  65              	 .loc 1 94 0
-  66 001c 7B69     	 ldr r3,[r7,#20]
-  67 001e 4FF0FF32 	 mov r2,#-1
-  68 0022 9A62     	 str r2,[r3,#40]
+  68              	 .loc 1 94 21
+  69 001c 7B69     	 ldr r3,[r7,#20]
+  70 001e 4FF0FF32 	 mov r2,#-1
+  71 0022 9A62     	 str r2,[r3,#40]
   95:.././hal/sam3u1c/tc.c **** 
   96:.././hal/sam3u1c/tc.c **** 	/*  Clear status register. */
   97:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_SR;
-  69              	 .loc 1 97 0
-  70 0024 7B69     	 ldr r3,[r7,#20]
-  71 0026 1B6A     	 ldr r3,[r3,#32]
+  72              	 .loc 1 97 12
+  73 0024 7B69     	 ldr r3,[r7,#20]
+  74 0026 1B6A     	 ldr r3,[r3,#32]
   98:.././hal/sam3u1c/tc.c **** 
   99:.././hal/sam3u1c/tc.c **** 	/*  Set mode. */
  100:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_CMR = ul_mode;
-  72              	 .loc 1 100 0
-  73 0028 7B69     	 ldr r3,[r7,#20]
-  74 002a 7A68     	 ldr r2,[r7,#4]
-  75 002c 5A60     	 str r2,[r3,#4]
+  75              	 .loc 1 100 21
+  76 0028 7B69     	 ldr r3,[r7,#20]
+  77 002a 7A68     	 ldr r2,[r7,#4]
+  78 002c 5A60     	 str r2,[r3,#4]
  101:.././hal/sam3u1c/tc.c **** }
-  76              	 .loc 1 101 0
-  77 002e 00BF     	 nop
-  78 0030 1C37     	 adds r7,r7,#28
-  79              	.LCFI3:
-  80              	 .cfi_def_cfa_offset 4
-  81 0032 BD46     	 mov sp,r7
-  82              	.LCFI4:
-  83              	 .cfi_def_cfa_register 13
-  84              	 
-  85 0034 80BC     	 pop {r7}
-  86              	.LCFI5:
-  87              	 .cfi_restore 7
-  88              	 .cfi_def_cfa_offset 0
-  89 0036 7047     	 bx lr
-  90              	 .cfi_endproc
-  91              	.LFE69:
-  93              	 .section .text.tc_sync_trigger,"ax",%progbits
-  94              	 .align 1
-  95              	 .global tc_sync_trigger
-  96              	 .syntax unified
-  97              	 .thumb
-  98              	 .thumb_func
-  99              	 .fpu softvfp
- 101              	tc_sync_trigger:
- 102              	.LFB70:
+  79              	 .loc 1 101 1
+  80 002e 00BF     	 nop
+  81 0030 1C37     	 adds r7,r7,#28
+  82              	.LCFI3:
+  83              	 .cfi_def_cfa_offset 4
+  84 0032 BD46     	 mov sp,r7
+  85              	.LCFI4:
+  86              	 .cfi_def_cfa_register 13
+  87              	 
+  88 0034 80BC     	 pop {r7}
+  89              	.LCFI5:
+  90              	 .cfi_restore 7
+  91              	 .cfi_def_cfa_offset 0
+  92 0036 7047     	 bx lr
+  93              	 .cfi_endproc
+  94              	.LFE69:
+  96              	 .section .text.tc_sync_trigger,"ax",%progbits
+  97              	 .align 1
+  98              	 .global tc_sync_trigger
+  99              	 .syntax unified
+ 100              	 .thumb
+ 101              	 .thumb_func
+ 102              	 .fpu softvfp
+ 104              	tc_sync_trigger:
+ 105              	.LFB70:
  102:.././hal/sam3u1c/tc.c **** 
  103:.././hal/sam3u1c/tc.c **** /**
  104:.././hal/sam3u1c/tc.c ****  * \brief Asserts a SYNC signal to generate a software trigger on
@@ -205,56 +208,56 @@
  110:.././hal/sam3u1c/tc.c **** void tc_sync_trigger(
  111:.././hal/sam3u1c/tc.c **** 		Tc *p_tc)
  112:.././hal/sam3u1c/tc.c **** {
- 103              	 .loc 1 112 0
- 104              	 .cfi_startproc
- 105              	 
- 106              	 
- 107              	 
- 108 0000 80B4     	 push {r7}
- 109              	.LCFI6:
- 110              	 .cfi_def_cfa_offset 4
- 111              	 .cfi_offset 7,-4
- 112 0002 83B0     	 sub sp,sp,#12
- 113              	.LCFI7:
- 114              	 .cfi_def_cfa_offset 16
- 115 0004 00AF     	 add r7,sp,#0
- 116              	.LCFI8:
- 117              	 .cfi_def_cfa_register 7
- 118 0006 7860     	 str r0,[r7,#4]
+ 106              	 .loc 1 112 1
+ 107              	 .cfi_startproc
+ 108              	 
+ 109              	 
+ 110              	 
+ 111 0000 80B4     	 push {r7}
+ 112              	.LCFI6:
+ 113              	 .cfi_def_cfa_offset 4
+ 114              	 .cfi_offset 7,-4
+ 115 0002 83B0     	 sub sp,sp,#12
+ 116              	.LCFI7:
+ 117              	 .cfi_def_cfa_offset 16
+ 118 0004 00AF     	 add r7,sp,#0
+ 119              	.LCFI8:
+ 120              	 .cfi_def_cfa_register 7
+ 121 0006 7860     	 str r0,[r7,#4]
  113:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  114:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  115:.././hal/sam3u1c/tc.c **** 	
  116:.././hal/sam3u1c/tc.c **** 	p_tc->TC_BCR = TC_BCR_SYNC;
- 119              	 .loc 1 116 0
- 120 0008 7B68     	 ldr r3,[r7,#4]
- 121 000a 0122     	 movs r2,#1
- 122 000c C3F8C020 	 str r2,[r3,#192]
+ 122              	 .loc 1 116 15
+ 123 0008 7B68     	 ldr r3,[r7,#4]
+ 124 000a 0122     	 movs r2,#1
+ 125 000c C3F8C020 	 str r2,[r3,#192]
  117:.././hal/sam3u1c/tc.c **** }
- 123              	 .loc 1 117 0
- 124 0010 00BF     	 nop
- 125 0012 0C37     	 adds r7,r7,#12
- 126              	.LCFI9:
- 127              	 .cfi_def_cfa_offset 4
- 128 0014 BD46     	 mov sp,r7
- 129              	.LCFI10:
- 130              	 .cfi_def_cfa_register 13
- 131              	 
- 132 0016 80BC     	 pop {r7}
- 133              	.LCFI11:
- 134              	 .cfi_restore 7
- 135              	 .cfi_def_cfa_offset 0
- 136 0018 7047     	 bx lr
- 137              	 .cfi_endproc
- 138              	.LFE70:
- 140              	 .section .text.tc_set_block_mode,"ax",%progbits
- 141              	 .align 1
- 142              	 .global tc_set_block_mode
- 143              	 .syntax unified
- 144              	 .thumb
- 145              	 .thumb_func
- 146              	 .fpu softvfp
- 148              	tc_set_block_mode:
- 149              	.LFB71:
+ 126              	 .loc 1 117 1
+ 127 0010 00BF     	 nop
+ 128 0012 0C37     	 adds r7,r7,#12
+ 129              	.LCFI9:
+ 130              	 .cfi_def_cfa_offset 4
+ 131 0014 BD46     	 mov sp,r7
+ 132              	.LCFI10:
+ 133              	 .cfi_def_cfa_register 13
+ 134              	 
+ 135 0016 80BC     	 pop {r7}
+ 136              	.LCFI11:
+ 137              	 .cfi_restore 7
+ 138              	 .cfi_def_cfa_offset 0
+ 139 0018 7047     	 bx lr
+ 140              	 .cfi_endproc
+ 141              	.LFE70:
+ 143              	 .section .text.tc_set_block_mode,"ax",%progbits
+ 144              	 .align 1
+ 145              	 .global tc_set_block_mode
+ 146              	 .syntax unified
+ 147              	 .thumb
+ 148              	 .thumb_func
+ 149              	 .fpu softvfp
+ 151              	tc_set_block_mode:
+ 152              	.LFB71:
  118:.././hal/sam3u1c/tc.c **** 
  119:.././hal/sam3u1c/tc.c **** /**
  120:.././hal/sam3u1c/tc.c ****  * \brief Configure the TC Block mode.
@@ -271,57 +274,57 @@
  131:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  132:.././hal/sam3u1c/tc.c **** 		uint32_t ul_blockmode)
  133:.././hal/sam3u1c/tc.c **** {
- 150              	 .loc 1 133 0
- 151              	 .cfi_startproc
- 152              	 
- 153              	 
- 154              	 
- 155 0000 80B4     	 push {r7}
- 156              	.LCFI12:
- 157              	 .cfi_def_cfa_offset 4
- 158              	 .cfi_offset 7,-4
- 159 0002 83B0     	 sub sp,sp,#12
- 160              	.LCFI13:
- 161              	 .cfi_def_cfa_offset 16
- 162 0004 00AF     	 add r7,sp,#0
- 163              	.LCFI14:
- 164              	 .cfi_def_cfa_register 7
- 165 0006 7860     	 str r0,[r7,#4]
- 166 0008 3960     	 str r1,[r7]
+ 153              	 .loc 1 133 1
+ 154              	 .cfi_startproc
+ 155              	 
+ 156              	 
+ 157              	 
+ 158 0000 80B4     	 push {r7}
+ 159              	.LCFI12:
+ 160              	 .cfi_def_cfa_offset 4
+ 161              	 .cfi_offset 7,-4
+ 162 0002 83B0     	 sub sp,sp,#12
+ 163              	.LCFI13:
+ 164              	 .cfi_def_cfa_offset 16
+ 165 0004 00AF     	 add r7,sp,#0
+ 166              	.LCFI14:
+ 167              	 .cfi_def_cfa_register 7
+ 168 0006 7860     	 str r0,[r7,#4]
+ 169 0008 3960     	 str r1,[r7]
  134:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  135:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  136:.././hal/sam3u1c/tc.c **** 	
  137:.././hal/sam3u1c/tc.c **** 	p_tc->TC_BMR = ul_blockmode;
- 167              	 .loc 1 137 0
- 168 000a 7B68     	 ldr r3,[r7,#4]
- 169 000c 3A68     	 ldr r2,[r7]
- 170 000e C3F8C420 	 str r2,[r3,#196]
+ 170              	 .loc 1 137 15
+ 171 000a 7B68     	 ldr r3,[r7,#4]
+ 172 000c 3A68     	 ldr r2,[r7]
+ 173 000e C3F8C420 	 str r2,[r3,#196]
  138:.././hal/sam3u1c/tc.c **** }
- 171              	 .loc 1 138 0
- 172 0012 00BF     	 nop
- 173 0014 0C37     	 adds r7,r7,#12
- 174              	.LCFI15:
- 175              	 .cfi_def_cfa_offset 4
- 176 0016 BD46     	 mov sp,r7
- 177              	.LCFI16:
- 178              	 .cfi_def_cfa_register 13
- 179              	 
- 180 0018 80BC     	 pop {r7}
- 181              	.LCFI17:
- 182              	 .cfi_restore 7
- 183              	 .cfi_def_cfa_offset 0
- 184 001a 7047     	 bx lr
- 185              	 .cfi_endproc
- 186              	.LFE71:
- 188              	 .section .text.tc_start,"ax",%progbits
- 189              	 .align 1
- 190              	 .global tc_start
- 191              	 .syntax unified
- 192              	 .thumb
- 193              	 .thumb_func
- 194              	 .fpu softvfp
- 196              	tc_start:
- 197              	.LFB72:
+ 174              	 .loc 1 138 1
+ 175 0012 00BF     	 nop
+ 176 0014 0C37     	 adds r7,r7,#12
+ 177              	.LCFI15:
+ 178              	 .cfi_def_cfa_offset 4
+ 179 0016 BD46     	 mov sp,r7
+ 180              	.LCFI16:
+ 181              	 .cfi_def_cfa_register 13
+ 182              	 
+ 183 0018 80BC     	 pop {r7}
+ 184              	.LCFI17:
+ 185              	 .cfi_restore 7
+ 186              	 .cfi_def_cfa_offset 0
+ 187 001a 7047     	 bx lr
+ 188              	 .cfi_endproc
+ 189              	.LFE71:
+ 191              	 .section .text.tc_start,"ax",%progbits
+ 192              	 .align 1
+ 193              	 .global tc_start
+ 194              	 .syntax unified
+ 195              	 .thumb
+ 196              	 .thumb_func
+ 197              	 .fpu softvfp
+ 199              	tc_start:
+ 200              	.LFB72:
  139:.././hal/sam3u1c/tc.c **** 
  140:.././hal/sam3u1c/tc.c **** #if (!SAM3U) || defined(__DOXYGEN__)
  141:.././hal/sam3u1c/tc.c **** 
@@ -363,62 +366,62 @@
  177:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  178:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  179:.././hal/sam3u1c/tc.c **** {
- 198              	 .loc 1 179 0
- 199              	 .cfi_startproc
- 200              	 
- 201              	 
- 202              	 
- 203 0000 80B4     	 push {r7}
- 204              	.LCFI18:
- 205              	 .cfi_def_cfa_offset 4
- 206              	 .cfi_offset 7,-4
- 207 0002 83B0     	 sub sp,sp,#12
- 208              	.LCFI19:
- 209              	 .cfi_def_cfa_offset 16
- 210 0004 00AF     	 add r7,sp,#0
- 211              	.LCFI20:
- 212              	 .cfi_def_cfa_register 7
- 213 0006 7860     	 str r0,[r7,#4]
- 214 0008 3960     	 str r1,[r7]
+ 201              	 .loc 1 179 1
+ 202              	 .cfi_startproc
+ 203              	 
+ 204              	 
+ 205              	 
+ 206 0000 80B4     	 push {r7}
+ 207              	.LCFI18:
+ 208              	 .cfi_def_cfa_offset 4
+ 209              	 .cfi_offset 7,-4
+ 210 0002 83B0     	 sub sp,sp,#12
+ 211              	.LCFI19:
+ 212              	 .cfi_def_cfa_offset 16
+ 213 0004 00AF     	 add r7,sp,#0
+ 214              	.LCFI20:
+ 215              	 .cfi_def_cfa_register 7
+ 216 0006 7860     	 str r0,[r7,#4]
+ 217 0008 3960     	 str r1,[r7]
  180:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  181:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  182:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  183:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  184:.././hal/sam3u1c/tc.c **** 
  185:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
- 215              	 .loc 1 185 0
- 216 000a 7A68     	 ldr r2,[r7,#4]
- 217 000c 3B68     	 ldr r3,[r7]
- 218 000e 9B01     	 lsls r3,r3,#6
- 219 0010 1344     	 add r3,r3,r2
- 220 0012 0522     	 movs r2,#5
- 221 0014 1A60     	 str r2,[r3]
+ 218              	 .loc 1 185 38
+ 219 000a 7A68     	 ldr r2,[r7,#4]
+ 220 000c 3B68     	 ldr r3,[r7]
+ 221 000e 9B01     	 lsls r3,r3,#6
+ 222 0010 1344     	 add r3,r3,r2
+ 223 0012 0522     	 movs r2,#5
+ 224 0014 1A60     	 str r2,[r3]
  186:.././hal/sam3u1c/tc.c **** }
- 222              	 .loc 1 186 0
- 223 0016 00BF     	 nop
- 224 0018 0C37     	 adds r7,r7,#12
- 225              	.LCFI21:
- 226              	 .cfi_def_cfa_offset 4
- 227 001a BD46     	 mov sp,r7
- 228              	.LCFI22:
- 229              	 .cfi_def_cfa_register 13
- 230              	 
- 231 001c 80BC     	 pop {r7}
- 232              	.LCFI23:
- 233              	 .cfi_restore 7
- 234              	 .cfi_def_cfa_offset 0
- 235 001e 7047     	 bx lr
- 236              	 .cfi_endproc
- 237              	.LFE72:
- 239              	 .section .text.tc_stop,"ax",%progbits
- 240              	 .align 1
- 241              	 .global tc_stop
- 242              	 .syntax unified
- 243              	 .thumb
- 244              	 .thumb_func
- 245              	 .fpu softvfp
- 247              	tc_stop:
- 248              	.LFB73:
+ 225              	 .loc 1 186 1
+ 226 0016 00BF     	 nop
+ 227 0018 0C37     	 adds r7,r7,#12
+ 228              	.LCFI21:
+ 229              	 .cfi_def_cfa_offset 4
+ 230 001a BD46     	 mov sp,r7
+ 231              	.LCFI22:
+ 232              	 .cfi_def_cfa_register 13
+ 233              	 
+ 234 001c 80BC     	 pop {r7}
+ 235              	.LCFI23:
+ 236              	 .cfi_restore 7
+ 237              	 .cfi_def_cfa_offset 0
+ 238 001e 7047     	 bx lr
+ 239              	 .cfi_endproc
+ 240              	.LFE72:
+ 242              	 .section .text.tc_stop,"ax",%progbits
+ 243              	 .align 1
+ 244              	 .global tc_stop
+ 245              	 .syntax unified
+ 246              	 .thumb
+ 247              	 .thumb_func
+ 248              	 .fpu softvfp
+ 250              	tc_stop:
+ 251              	.LFB73:
  187:.././hal/sam3u1c/tc.c **** 
  188:.././hal/sam3u1c/tc.c **** /**
  189:.././hal/sam3u1c/tc.c ****  * \brief Stop the TC clock on the specified channel.
@@ -430,62 +433,62 @@
  195:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  196:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  197:.././hal/sam3u1c/tc.c **** {
- 249              	 .loc 1 197 0
- 250              	 .cfi_startproc
- 251              	 
- 252              	 
- 253              	 
- 254 0000 80B4     	 push {r7}
- 255              	.LCFI24:
- 256              	 .cfi_def_cfa_offset 4
- 257              	 .cfi_offset 7,-4
- 258 0002 83B0     	 sub sp,sp,#12
- 259              	.LCFI25:
- 260              	 .cfi_def_cfa_offset 16
- 261 0004 00AF     	 add r7,sp,#0
- 262              	.LCFI26:
- 263              	 .cfi_def_cfa_register 7
- 264 0006 7860     	 str r0,[r7,#4]
- 265 0008 3960     	 str r1,[r7]
+ 252              	 .loc 1 197 1
+ 253              	 .cfi_startproc
+ 254              	 
+ 255              	 
+ 256              	 
+ 257 0000 80B4     	 push {r7}
+ 258              	.LCFI24:
+ 259              	 .cfi_def_cfa_offset 4
+ 260              	 .cfi_offset 7,-4
+ 261 0002 83B0     	 sub sp,sp,#12
+ 262              	.LCFI25:
+ 263              	 .cfi_def_cfa_offset 16
+ 264 0004 00AF     	 add r7,sp,#0
+ 265              	.LCFI26:
+ 266              	 .cfi_def_cfa_register 7
+ 267 0006 7860     	 str r0,[r7,#4]
+ 268 0008 3960     	 str r1,[r7]
  198:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  199:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  200:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  201:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  202:.././hal/sam3u1c/tc.c **** 
  203:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_CCR = TC_CCR_CLKDIS;
- 266              	 .loc 1 203 0
- 267 000a 7A68     	 ldr r2,[r7,#4]
- 268 000c 3B68     	 ldr r3,[r7]
- 269 000e 9B01     	 lsls r3,r3,#6
- 270 0010 1344     	 add r3,r3,r2
- 271 0012 0222     	 movs r2,#2
- 272 0014 1A60     	 str r2,[r3]
+ 269              	 .loc 1 203 38
+ 270 000a 7A68     	 ldr r2,[r7,#4]
+ 271 000c 3B68     	 ldr r3,[r7]
+ 272 000e 9B01     	 lsls r3,r3,#6
+ 273 0010 1344     	 add r3,r3,r2
+ 274 0012 0222     	 movs r2,#2
+ 275 0014 1A60     	 str r2,[r3]
  204:.././hal/sam3u1c/tc.c **** }
- 273              	 .loc 1 204 0
- 274 0016 00BF     	 nop
- 275 0018 0C37     	 adds r7,r7,#12
- 276              	.LCFI27:
- 277              	 .cfi_def_cfa_offset 4
- 278 001a BD46     	 mov sp,r7
- 279              	.LCFI28:
- 280              	 .cfi_def_cfa_register 13
- 281              	 
- 282 001c 80BC     	 pop {r7}
- 283              	.LCFI29:
- 284              	 .cfi_restore 7
- 285              	 .cfi_def_cfa_offset 0
- 286 001e 7047     	 bx lr
- 287              	 .cfi_endproc
- 288              	.LFE73:
- 290              	 .section .text.tc_read_cv,"ax",%progbits
- 291              	 .align 1
- 292              	 .global tc_read_cv
- 293              	 .syntax unified
- 294              	 .thumb
- 295              	 .thumb_func
- 296              	 .fpu softvfp
- 298              	tc_read_cv:
- 299              	.LFB74:
+ 276              	 .loc 1 204 1
+ 277 0016 00BF     	 nop
+ 278 0018 0C37     	 adds r7,r7,#12
+ 279              	.LCFI27:
+ 280              	 .cfi_def_cfa_offset 4
+ 281 001a BD46     	 mov sp,r7
+ 282              	.LCFI28:
+ 283              	 .cfi_def_cfa_register 13
+ 284              	 
+ 285 001c 80BC     	 pop {r7}
+ 286              	.LCFI29:
+ 287              	 .cfi_restore 7
+ 288              	 .cfi_def_cfa_offset 0
+ 289 001e 7047     	 bx lr
+ 290              	 .cfi_endproc
+ 291              	.LFE73:
+ 293              	 .section .text.tc_read_cv,"ax",%progbits
+ 294              	 .align 1
+ 295              	 .global tc_read_cv
+ 296              	 .syntax unified
+ 297              	 .thumb
+ 298              	 .thumb_func
+ 299              	 .fpu softvfp
+ 301              	tc_read_cv:
+ 302              	.LFB74:
  205:.././hal/sam3u1c/tc.c **** 
  206:.././hal/sam3u1c/tc.c **** /**
  207:.././hal/sam3u1c/tc.c ****  * \brief Read the counter value on the specified channel.
@@ -499,62 +502,62 @@
  215:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  216:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  217:.././hal/sam3u1c/tc.c **** {
- 300              	 .loc 1 217 0
- 301              	 .cfi_startproc
- 302              	 
- 303              	 
- 304              	 
- 305 0000 80B4     	 push {r7}
- 306              	.LCFI30:
- 307              	 .cfi_def_cfa_offset 4
- 308              	 .cfi_offset 7,-4
- 309 0002 83B0     	 sub sp,sp,#12
- 310              	.LCFI31:
- 311              	 .cfi_def_cfa_offset 16
- 312 0004 00AF     	 add r7,sp,#0
- 313              	.LCFI32:
- 314              	 .cfi_def_cfa_register 7
- 315 0006 7860     	 str r0,[r7,#4]
- 316 0008 3960     	 str r1,[r7]
+ 303              	 .loc 1 217 1
+ 304              	 .cfi_startproc
+ 305              	 
+ 306              	 
+ 307              	 
+ 308 0000 80B4     	 push {r7}
+ 309              	.LCFI30:
+ 310              	 .cfi_def_cfa_offset 4
+ 311              	 .cfi_offset 7,-4
+ 312 0002 83B0     	 sub sp,sp,#12
+ 313              	.LCFI31:
+ 314              	 .cfi_def_cfa_offset 16
+ 315 0004 00AF     	 add r7,sp,#0
+ 316              	.LCFI32:
+ 317              	 .cfi_def_cfa_register 7
+ 318 0006 7860     	 str r0,[r7,#4]
+ 319 0008 3960     	 str r1,[r7]
  218:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  219:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  220:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  221:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  222:.././hal/sam3u1c/tc.c **** 
  223:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_CV;
- 317              	 .loc 1 223 0
- 318 000a 7A68     	 ldr r2,[r7,#4]
- 319 000c 3B68     	 ldr r3,[r7]
- 320 000e 9B01     	 lsls r3,r3,#6
- 321 0010 1344     	 add r3,r3,r2
- 322 0012 1033     	 adds r3,r3,#16
- 323 0014 1B68     	 ldr r3,[r3]
+ 320              	 .loc 1 223 37
+ 321 000a 7A68     	 ldr r2,[r7,#4]
+ 322 000c 3B68     	 ldr r3,[r7]
+ 323 000e 9B01     	 lsls r3,r3,#6
+ 324 0010 1344     	 add r3,r3,r2
+ 325 0012 1033     	 adds r3,r3,#16
+ 326 0014 1B68     	 ldr r3,[r3]
  224:.././hal/sam3u1c/tc.c **** }
- 324              	 .loc 1 224 0
- 325 0016 1846     	 mov r0,r3
- 326 0018 0C37     	 adds r7,r7,#12
- 327              	.LCFI33:
- 328              	 .cfi_def_cfa_offset 4
- 329 001a BD46     	 mov sp,r7
- 330              	.LCFI34:
- 331              	 .cfi_def_cfa_register 13
- 332              	 
- 333 001c 80BC     	 pop {r7}
- 334              	.LCFI35:
- 335              	 .cfi_restore 7
- 336              	 .cfi_def_cfa_offset 0
- 337 001e 7047     	 bx lr
- 338              	 .cfi_endproc
- 339              	.LFE74:
- 341              	 .section .text.tc_read_ra,"ax",%progbits
- 342              	 .align 1
- 343              	 .global tc_read_ra
- 344              	 .syntax unified
- 345              	 .thumb
- 346              	 .thumb_func
- 347              	 .fpu softvfp
- 349              	tc_read_ra:
- 350              	.LFB75:
+ 327              	 .loc 1 224 1
+ 328 0016 1846     	 mov r0,r3
+ 329 0018 0C37     	 adds r7,r7,#12
+ 330              	.LCFI33:
+ 331              	 .cfi_def_cfa_offset 4
+ 332 001a BD46     	 mov sp,r7
+ 333              	.LCFI34:
+ 334              	 .cfi_def_cfa_register 13
+ 335              	 
+ 336 001c 80BC     	 pop {r7}
+ 337              	.LCFI35:
+ 338              	 .cfi_restore 7
+ 339              	 .cfi_def_cfa_offset 0
+ 340 001e 7047     	 bx lr
+ 341              	 .cfi_endproc
+ 342              	.LFE74:
+ 344              	 .section .text.tc_read_ra,"ax",%progbits
+ 345              	 .align 1
+ 346              	 .global tc_read_ra
+ 347              	 .syntax unified
+ 348              	 .thumb
+ 349              	 .thumb_func
+ 350              	 .fpu softvfp
+ 352              	tc_read_ra:
+ 353              	.LFB75:
  225:.././hal/sam3u1c/tc.c **** 
  226:.././hal/sam3u1c/tc.c **** /**
  227:.././hal/sam3u1c/tc.c ****  * \brief Read TC Register A (RA) on the specified channel.
@@ -568,62 +571,62 @@
  235:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  236:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  237:.././hal/sam3u1c/tc.c **** {
- 351              	 .loc 1 237 0
- 352              	 .cfi_startproc
- 353              	 
- 354              	 
- 355              	 
- 356 0000 80B4     	 push {r7}
- 357              	.LCFI36:
- 358              	 .cfi_def_cfa_offset 4
- 359              	 .cfi_offset 7,-4
- 360 0002 83B0     	 sub sp,sp,#12
- 361              	.LCFI37:
- 362              	 .cfi_def_cfa_offset 16
- 363 0004 00AF     	 add r7,sp,#0
- 364              	.LCFI38:
- 365              	 .cfi_def_cfa_register 7
- 366 0006 7860     	 str r0,[r7,#4]
- 367 0008 3960     	 str r1,[r7]
+ 354              	 .loc 1 237 1
+ 355              	 .cfi_startproc
+ 356              	 
+ 357              	 
+ 358              	 
+ 359 0000 80B4     	 push {r7}
+ 360              	.LCFI36:
+ 361              	 .cfi_def_cfa_offset 4
+ 362              	 .cfi_offset 7,-4
+ 363 0002 83B0     	 sub sp,sp,#12
+ 364              	.LCFI37:
+ 365              	 .cfi_def_cfa_offset 16
+ 366 0004 00AF     	 add r7,sp,#0
+ 367              	.LCFI38:
+ 368              	 .cfi_def_cfa_register 7
+ 369 0006 7860     	 str r0,[r7,#4]
+ 370 0008 3960     	 str r1,[r7]
  238:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  239:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  240:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  241:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  242:.././hal/sam3u1c/tc.c **** 
  243:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_RA;
- 368              	 .loc 1 243 0
- 369 000a 7A68     	 ldr r2,[r7,#4]
- 370 000c 3B68     	 ldr r3,[r7]
- 371 000e 9B01     	 lsls r3,r3,#6
- 372 0010 1344     	 add r3,r3,r2
- 373 0012 1433     	 adds r3,r3,#20
- 374 0014 1B68     	 ldr r3,[r3]
+ 371              	 .loc 1 243 37
+ 372 000a 7A68     	 ldr r2,[r7,#4]
+ 373 000c 3B68     	 ldr r3,[r7]
+ 374 000e 9B01     	 lsls r3,r3,#6
+ 375 0010 1344     	 add r3,r3,r2
+ 376 0012 1433     	 adds r3,r3,#20
+ 377 0014 1B68     	 ldr r3,[r3]
  244:.././hal/sam3u1c/tc.c **** }
- 375              	 .loc 1 244 0
- 376 0016 1846     	 mov r0,r3
- 377 0018 0C37     	 adds r7,r7,#12
- 378              	.LCFI39:
- 379              	 .cfi_def_cfa_offset 4
- 380 001a BD46     	 mov sp,r7
- 381              	.LCFI40:
- 382              	 .cfi_def_cfa_register 13
- 383              	 
- 384 001c 80BC     	 pop {r7}
- 385              	.LCFI41:
- 386              	 .cfi_restore 7
- 387              	 .cfi_def_cfa_offset 0
- 388 001e 7047     	 bx lr
- 389              	 .cfi_endproc
- 390              	.LFE75:
- 392              	 .section .text.tc_read_rb,"ax",%progbits
- 393              	 .align 1
- 394              	 .global tc_read_rb
- 395              	 .syntax unified
- 396              	 .thumb
- 397              	 .thumb_func
- 398              	 .fpu softvfp
- 400              	tc_read_rb:
- 401              	.LFB76:
+ 378              	 .loc 1 244 1
+ 379 0016 1846     	 mov r0,r3
+ 380 0018 0C37     	 adds r7,r7,#12
+ 381              	.LCFI39:
+ 382              	 .cfi_def_cfa_offset 4
+ 383 001a BD46     	 mov sp,r7
+ 384              	.LCFI40:
+ 385              	 .cfi_def_cfa_register 13
+ 386              	 
+ 387 001c 80BC     	 pop {r7}
+ 388              	.LCFI41:
+ 389              	 .cfi_restore 7
+ 390              	 .cfi_def_cfa_offset 0
+ 391 001e 7047     	 bx lr
+ 392              	 .cfi_endproc
+ 393              	.LFE75:
+ 395              	 .section .text.tc_read_rb,"ax",%progbits
+ 396              	 .align 1
+ 397              	 .global tc_read_rb
+ 398              	 .syntax unified
+ 399              	 .thumb
+ 400              	 .thumb_func
+ 401              	 .fpu softvfp
+ 403              	tc_read_rb:
+ 404              	.LFB76:
  245:.././hal/sam3u1c/tc.c **** 
  246:.././hal/sam3u1c/tc.c **** /**
  247:.././hal/sam3u1c/tc.c ****  * \brief Read TC Register B (RB) on the specified channel.
@@ -637,62 +640,62 @@
  255:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  256:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  257:.././hal/sam3u1c/tc.c **** {
- 402              	 .loc 1 257 0
- 403              	 .cfi_startproc
- 404              	 
- 405              	 
- 406              	 
- 407 0000 80B4     	 push {r7}
- 408              	.LCFI42:
- 409              	 .cfi_def_cfa_offset 4
- 410              	 .cfi_offset 7,-4
- 411 0002 83B0     	 sub sp,sp,#12
- 412              	.LCFI43:
- 413              	 .cfi_def_cfa_offset 16
- 414 0004 00AF     	 add r7,sp,#0
- 415              	.LCFI44:
- 416              	 .cfi_def_cfa_register 7
- 417 0006 7860     	 str r0,[r7,#4]
- 418 0008 3960     	 str r1,[r7]
+ 405              	 .loc 1 257 1
+ 406              	 .cfi_startproc
+ 407              	 
+ 408              	 
+ 409              	 
+ 410 0000 80B4     	 push {r7}
+ 411              	.LCFI42:
+ 412              	 .cfi_def_cfa_offset 4
+ 413              	 .cfi_offset 7,-4
+ 414 0002 83B0     	 sub sp,sp,#12
+ 415              	.LCFI43:
+ 416              	 .cfi_def_cfa_offset 16
+ 417 0004 00AF     	 add r7,sp,#0
+ 418              	.LCFI44:
+ 419              	 .cfi_def_cfa_register 7
+ 420 0006 7860     	 str r0,[r7,#4]
+ 421 0008 3960     	 str r1,[r7]
  258:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  259:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  260:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  261:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  262:.././hal/sam3u1c/tc.c **** 
  263:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_RB;
- 419              	 .loc 1 263 0
- 420 000a 7A68     	 ldr r2,[r7,#4]
- 421 000c 3B68     	 ldr r3,[r7]
- 422 000e 9B01     	 lsls r3,r3,#6
- 423 0010 1344     	 add r3,r3,r2
- 424 0012 1833     	 adds r3,r3,#24
- 425 0014 1B68     	 ldr r3,[r3]
+ 422              	 .loc 1 263 37
+ 423 000a 7A68     	 ldr r2,[r7,#4]
+ 424 000c 3B68     	 ldr r3,[r7]
+ 425 000e 9B01     	 lsls r3,r3,#6
+ 426 0010 1344     	 add r3,r3,r2
+ 427 0012 1833     	 adds r3,r3,#24
+ 428 0014 1B68     	 ldr r3,[r3]
  264:.././hal/sam3u1c/tc.c **** }
- 426              	 .loc 1 264 0
- 427 0016 1846     	 mov r0,r3
- 428 0018 0C37     	 adds r7,r7,#12
- 429              	.LCFI45:
- 430              	 .cfi_def_cfa_offset 4
- 431 001a BD46     	 mov sp,r7
- 432              	.LCFI46:
- 433              	 .cfi_def_cfa_register 13
- 434              	 
- 435 001c 80BC     	 pop {r7}
- 436              	.LCFI47:
- 437              	 .cfi_restore 7
- 438              	 .cfi_def_cfa_offset 0
- 439 001e 7047     	 bx lr
- 440              	 .cfi_endproc
- 441              	.LFE76:
- 443              	 .section .text.tc_read_rc,"ax",%progbits
- 444              	 .align 1
- 445              	 .global tc_read_rc
- 446              	 .syntax unified
- 447              	 .thumb
- 448              	 .thumb_func
- 449              	 .fpu softvfp
- 451              	tc_read_rc:
- 452              	.LFB77:
+ 429              	 .loc 1 264 1
+ 430 0016 1846     	 mov r0,r3
+ 431 0018 0C37     	 adds r7,r7,#12
+ 432              	.LCFI45:
+ 433              	 .cfi_def_cfa_offset 4
+ 434 001a BD46     	 mov sp,r7
+ 435              	.LCFI46:
+ 436              	 .cfi_def_cfa_register 13
+ 437              	 
+ 438 001c 80BC     	 pop {r7}
+ 439              	.LCFI47:
+ 440              	 .cfi_restore 7
+ 441              	 .cfi_def_cfa_offset 0
+ 442 001e 7047     	 bx lr
+ 443              	 .cfi_endproc
+ 444              	.LFE76:
+ 446              	 .section .text.tc_read_rc,"ax",%progbits
+ 447              	 .align 1
+ 448              	 .global tc_read_rc
+ 449              	 .syntax unified
+ 450              	 .thumb
+ 451              	 .thumb_func
+ 452              	 .fpu softvfp
+ 454              	tc_read_rc:
+ 455              	.LFB77:
  265:.././hal/sam3u1c/tc.c **** 
  266:.././hal/sam3u1c/tc.c **** /**
  267:.././hal/sam3u1c/tc.c ****  * \brief Read TC Register C (RC) on the specified channel.
@@ -706,62 +709,62 @@
  275:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  276:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  277:.././hal/sam3u1c/tc.c **** {
- 453              	 .loc 1 277 0
- 454              	 .cfi_startproc
- 455              	 
- 456              	 
- 457              	 
- 458 0000 80B4     	 push {r7}
- 459              	.LCFI48:
- 460              	 .cfi_def_cfa_offset 4
- 461              	 .cfi_offset 7,-4
- 462 0002 83B0     	 sub sp,sp,#12
- 463              	.LCFI49:
- 464              	 .cfi_def_cfa_offset 16
- 465 0004 00AF     	 add r7,sp,#0
- 466              	.LCFI50:
- 467              	 .cfi_def_cfa_register 7
- 468 0006 7860     	 str r0,[r7,#4]
- 469 0008 3960     	 str r1,[r7]
+ 456              	 .loc 1 277 1
+ 457              	 .cfi_startproc
+ 458              	 
+ 459              	 
+ 460              	 
+ 461 0000 80B4     	 push {r7}
+ 462              	.LCFI48:
+ 463              	 .cfi_def_cfa_offset 4
+ 464              	 .cfi_offset 7,-4
+ 465 0002 83B0     	 sub sp,sp,#12
+ 466              	.LCFI49:
+ 467              	 .cfi_def_cfa_offset 16
+ 468 0004 00AF     	 add r7,sp,#0
+ 469              	.LCFI50:
+ 470              	 .cfi_def_cfa_register 7
+ 471 0006 7860     	 str r0,[r7,#4]
+ 472 0008 3960     	 str r1,[r7]
  278:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  279:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  280:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  281:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  282:.././hal/sam3u1c/tc.c **** 
  283:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_CHANNEL[ul_channel].TC_RC;
- 470              	 .loc 1 283 0
- 471 000a 7A68     	 ldr r2,[r7,#4]
- 472 000c 3B68     	 ldr r3,[r7]
- 473 000e 9B01     	 lsls r3,r3,#6
- 474 0010 1344     	 add r3,r3,r2
- 475 0012 1C33     	 adds r3,r3,#28
- 476 0014 1B68     	 ldr r3,[r3]
+ 473              	 .loc 1 283 37
+ 474 000a 7A68     	 ldr r2,[r7,#4]
+ 475 000c 3B68     	 ldr r3,[r7]
+ 476 000e 9B01     	 lsls r3,r3,#6
+ 477 0010 1344     	 add r3,r3,r2
+ 478 0012 1C33     	 adds r3,r3,#28
+ 479 0014 1B68     	 ldr r3,[r3]
  284:.././hal/sam3u1c/tc.c **** }
- 477              	 .loc 1 284 0
- 478 0016 1846     	 mov r0,r3
- 479 0018 0C37     	 adds r7,r7,#12
- 480              	.LCFI51:
- 481              	 .cfi_def_cfa_offset 4
- 482 001a BD46     	 mov sp,r7
- 483              	.LCFI52:
- 484              	 .cfi_def_cfa_register 13
- 485              	 
- 486 001c 80BC     	 pop {r7}
- 487              	.LCFI53:
- 488              	 .cfi_restore 7
- 489              	 .cfi_def_cfa_offset 0
- 490 001e 7047     	 bx lr
- 491              	 .cfi_endproc
- 492              	.LFE77:
- 494              	 .section .text.tc_write_ra,"ax",%progbits
- 495              	 .align 1
- 496              	 .global tc_write_ra
- 497              	 .syntax unified
- 498              	 .thumb
- 499              	 .thumb_func
- 500              	 .fpu softvfp
- 502              	tc_write_ra:
- 503              	.LFB78:
+ 480              	 .loc 1 284 1
+ 481 0016 1846     	 mov r0,r3
+ 482 0018 0C37     	 adds r7,r7,#12
+ 483              	.LCFI51:
+ 484              	 .cfi_def_cfa_offset 4
+ 485 001a BD46     	 mov sp,r7
+ 486              	.LCFI52:
+ 487              	 .cfi_def_cfa_register 13
+ 488              	 
+ 489 001c 80BC     	 pop {r7}
+ 490              	.LCFI53:
+ 491              	 .cfi_restore 7
+ 492              	 .cfi_def_cfa_offset 0
+ 493 001e 7047     	 bx lr
+ 494              	 .cfi_endproc
+ 495              	.LFE77:
+ 497              	 .section .text.tc_write_ra,"ax",%progbits
+ 498              	 .align 1
+ 499              	 .global tc_write_ra
+ 500              	 .syntax unified
+ 501              	 .thumb
+ 502              	 .thumb_func
+ 503              	 .fpu softvfp
+ 505              	tc_write_ra:
+ 506              	.LFB78:
  285:.././hal/sam3u1c/tc.c **** 
  286:.././hal/sam3u1c/tc.c **** /**
  287:.././hal/sam3u1c/tc.c ****  * \brief Write to TC Register A (RA) on the specified channel.
@@ -775,64 +778,64 @@
  295:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
  296:.././hal/sam3u1c/tc.c **** 		uint32_t ul_value)
  297:.././hal/sam3u1c/tc.c **** {
- 504              	 .loc 1 297 0
- 505              	 .cfi_startproc
- 506              	 
- 507              	 
- 508              	 
- 509 0000 80B4     	 push {r7}
- 510              	.LCFI54:
- 511              	 .cfi_def_cfa_offset 4
- 512              	 .cfi_offset 7,-4
- 513 0002 85B0     	 sub sp,sp,#20
- 514              	.LCFI55:
- 515              	 .cfi_def_cfa_offset 24
- 516 0004 00AF     	 add r7,sp,#0
- 517              	.LCFI56:
- 518              	 .cfi_def_cfa_register 7
- 519 0006 F860     	 str r0,[r7,#12]
- 520 0008 B960     	 str r1,[r7,#8]
- 521 000a 7A60     	 str r2,[r7,#4]
+ 507              	 .loc 1 297 1
+ 508              	 .cfi_startproc
+ 509              	 
+ 510              	 
+ 511              	 
+ 512 0000 80B4     	 push {r7}
+ 513              	.LCFI54:
+ 514              	 .cfi_def_cfa_offset 4
+ 515              	 .cfi_offset 7,-4
+ 516 0002 85B0     	 sub sp,sp,#20
+ 517              	.LCFI55:
+ 518              	 .cfi_def_cfa_offset 24
+ 519 0004 00AF     	 add r7,sp,#0
+ 520              	.LCFI56:
+ 521              	 .cfi_def_cfa_register 7
+ 522 0006 F860     	 str r0,[r7,#12]
+ 523 0008 B960     	 str r1,[r7,#8]
+ 524 000a 7A60     	 str r2,[r7,#4]
  298:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  299:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  300:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  301:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  302:.././hal/sam3u1c/tc.c **** 
  303:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_RA = ul_value;
- 522              	 .loc 1 303 0
- 523 000c FA68     	 ldr r2,[r7,#12]
- 524 000e BB68     	 ldr r3,[r7,#8]
- 525 0010 9B01     	 lsls r3,r3,#6
- 526 0012 1344     	 add r3,r3,r2
- 527 0014 1433     	 adds r3,r3,#20
- 528 0016 7A68     	 ldr r2,[r7,#4]
- 529 0018 1A60     	 str r2,[r3]
+ 525              	 .loc 1 303 37
+ 526 000c FA68     	 ldr r2,[r7,#12]
+ 527 000e BB68     	 ldr r3,[r7,#8]
+ 528 0010 9B01     	 lsls r3,r3,#6
+ 529 0012 1344     	 add r3,r3,r2
+ 530 0014 1433     	 adds r3,r3,#20
+ 531 0016 7A68     	 ldr r2,[r7,#4]
+ 532 0018 1A60     	 str r2,[r3]
  304:.././hal/sam3u1c/tc.c **** }
- 530              	 .loc 1 304 0
- 531 001a 00BF     	 nop
- 532 001c 1437     	 adds r7,r7,#20
- 533              	.LCFI57:
- 534              	 .cfi_def_cfa_offset 4
- 535 001e BD46     	 mov sp,r7
- 536              	.LCFI58:
- 537              	 .cfi_def_cfa_register 13
- 538              	 
- 539 0020 80BC     	 pop {r7}
- 540              	.LCFI59:
- 541              	 .cfi_restore 7
- 542              	 .cfi_def_cfa_offset 0
- 543 0022 7047     	 bx lr
- 544              	 .cfi_endproc
- 545              	.LFE78:
- 547              	 .section .text.tc_write_rb,"ax",%progbits
- 548              	 .align 1
- 549              	 .global tc_write_rb
- 550              	 .syntax unified
- 551              	 .thumb
- 552              	 .thumb_func
- 553              	 .fpu softvfp
- 555              	tc_write_rb:
- 556              	.LFB79:
+ 533              	 .loc 1 304 1
+ 534 001a 00BF     	 nop
+ 535 001c 1437     	 adds r7,r7,#20
+ 536              	.LCFI57:
+ 537              	 .cfi_def_cfa_offset 4
+ 538 001e BD46     	 mov sp,r7
+ 539              	.LCFI58:
+ 540              	 .cfi_def_cfa_register 13
+ 541              	 
+ 542 0020 80BC     	 pop {r7}
+ 543              	.LCFI59:
+ 544              	 .cfi_restore 7
+ 545              	 .cfi_def_cfa_offset 0
+ 546 0022 7047     	 bx lr
+ 547              	 .cfi_endproc
+ 548              	.LFE78:
+ 550              	 .section .text.tc_write_rb,"ax",%progbits
+ 551              	 .align 1
+ 552              	 .global tc_write_rb
+ 553              	 .syntax unified
+ 554              	 .thumb
+ 555              	 .thumb_func
+ 556              	 .fpu softvfp
+ 558              	tc_write_rb:
+ 559              	.LFB79:
  305:.././hal/sam3u1c/tc.c **** 
  306:.././hal/sam3u1c/tc.c **** /**
  307:.././hal/sam3u1c/tc.c ****  * \brief Write to TC Register B (RB) on the specified channel.
@@ -846,64 +849,64 @@
  315:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
  316:.././hal/sam3u1c/tc.c **** 		uint32_t ul_value)
  317:.././hal/sam3u1c/tc.c **** {
- 557              	 .loc 1 317 0
- 558              	 .cfi_startproc
- 559              	 
- 560              	 
- 561              	 
- 562 0000 80B4     	 push {r7}
- 563              	.LCFI60:
- 564              	 .cfi_def_cfa_offset 4
- 565              	 .cfi_offset 7,-4
- 566 0002 85B0     	 sub sp,sp,#20
- 567              	.LCFI61:
- 568              	 .cfi_def_cfa_offset 24
- 569 0004 00AF     	 add r7,sp,#0
- 570              	.LCFI62:
- 571              	 .cfi_def_cfa_register 7
- 572 0006 F860     	 str r0,[r7,#12]
- 573 0008 B960     	 str r1,[r7,#8]
- 574 000a 7A60     	 str r2,[r7,#4]
+ 560              	 .loc 1 317 1
+ 561              	 .cfi_startproc
+ 562              	 
+ 563              	 
+ 564              	 
+ 565 0000 80B4     	 push {r7}
+ 566              	.LCFI60:
+ 567              	 .cfi_def_cfa_offset 4
+ 568              	 .cfi_offset 7,-4
+ 569 0002 85B0     	 sub sp,sp,#20
+ 570              	.LCFI61:
+ 571              	 .cfi_def_cfa_offset 24
+ 572 0004 00AF     	 add r7,sp,#0
+ 573              	.LCFI62:
+ 574              	 .cfi_def_cfa_register 7
+ 575 0006 F860     	 str r0,[r7,#12]
+ 576 0008 B960     	 str r1,[r7,#8]
+ 577 000a 7A60     	 str r2,[r7,#4]
  318:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  319:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  320:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  321:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  322:.././hal/sam3u1c/tc.c **** 
  323:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_RB = ul_value;
- 575              	 .loc 1 323 0
- 576 000c FA68     	 ldr r2,[r7,#12]
- 577 000e BB68     	 ldr r3,[r7,#8]
- 578 0010 9B01     	 lsls r3,r3,#6
- 579 0012 1344     	 add r3,r3,r2
- 580 0014 1833     	 adds r3,r3,#24
- 581 0016 7A68     	 ldr r2,[r7,#4]
- 582 0018 1A60     	 str r2,[r3]
+ 578              	 .loc 1 323 37
+ 579 000c FA68     	 ldr r2,[r7,#12]
+ 580 000e BB68     	 ldr r3,[r7,#8]
+ 581 0010 9B01     	 lsls r3,r3,#6
+ 582 0012 1344     	 add r3,r3,r2
+ 583 0014 1833     	 adds r3,r3,#24
+ 584 0016 7A68     	 ldr r2,[r7,#4]
+ 585 0018 1A60     	 str r2,[r3]
  324:.././hal/sam3u1c/tc.c **** }
- 583              	 .loc 1 324 0
- 584 001a 00BF     	 nop
- 585 001c 1437     	 adds r7,r7,#20
- 586              	.LCFI63:
- 587              	 .cfi_def_cfa_offset 4
- 588 001e BD46     	 mov sp,r7
- 589              	.LCFI64:
- 590              	 .cfi_def_cfa_register 13
- 591              	 
- 592 0020 80BC     	 pop {r7}
- 593              	.LCFI65:
- 594              	 .cfi_restore 7
- 595              	 .cfi_def_cfa_offset 0
- 596 0022 7047     	 bx lr
- 597              	 .cfi_endproc
- 598              	.LFE79:
- 600              	 .section .text.tc_write_rc,"ax",%progbits
- 601              	 .align 1
- 602              	 .global tc_write_rc
- 603              	 .syntax unified
- 604              	 .thumb
- 605              	 .thumb_func
- 606              	 .fpu softvfp
- 608              	tc_write_rc:
- 609              	.LFB80:
+ 586              	 .loc 1 324 1
+ 587 001a 00BF     	 nop
+ 588 001c 1437     	 adds r7,r7,#20
+ 589              	.LCFI63:
+ 590              	 .cfi_def_cfa_offset 4
+ 591 001e BD46     	 mov sp,r7
+ 592              	.LCFI64:
+ 593              	 .cfi_def_cfa_register 13
+ 594              	 
+ 595 0020 80BC     	 pop {r7}
+ 596              	.LCFI65:
+ 597              	 .cfi_restore 7
+ 598              	 .cfi_def_cfa_offset 0
+ 599 0022 7047     	 bx lr
+ 600              	 .cfi_endproc
+ 601              	.LFE79:
+ 603              	 .section .text.tc_write_rc,"ax",%progbits
+ 604              	 .align 1
+ 605              	 .global tc_write_rc
+ 606              	 .syntax unified
+ 607              	 .thumb
+ 608              	 .thumb_func
+ 609              	 .fpu softvfp
+ 611              	tc_write_rc:
+ 612              	.LFB80:
  325:.././hal/sam3u1c/tc.c **** 
  326:.././hal/sam3u1c/tc.c **** /**
  327:.././hal/sam3u1c/tc.c ****  * \brief Write to TC Register C (RC) on the selected channel.
@@ -917,64 +920,64 @@
  335:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
  336:.././hal/sam3u1c/tc.c **** 		uint32_t ul_value)
  337:.././hal/sam3u1c/tc.c **** {
- 610              	 .loc 1 337 0
- 611              	 .cfi_startproc
- 612              	 
- 613              	 
- 614              	 
- 615 0000 80B4     	 push {r7}
- 616              	.LCFI66:
- 617              	 .cfi_def_cfa_offset 4
- 618              	 .cfi_offset 7,-4
- 619 0002 85B0     	 sub sp,sp,#20
- 620              	.LCFI67:
- 621              	 .cfi_def_cfa_offset 24
- 622 0004 00AF     	 add r7,sp,#0
- 623              	.LCFI68:
- 624              	 .cfi_def_cfa_register 7
- 625 0006 F860     	 str r0,[r7,#12]
- 626 0008 B960     	 str r1,[r7,#8]
- 627 000a 7A60     	 str r2,[r7,#4]
+ 613              	 .loc 1 337 1
+ 614              	 .cfi_startproc
+ 615              	 
+ 616              	 
+ 617              	 
+ 618 0000 80B4     	 push {r7}
+ 619              	.LCFI66:
+ 620              	 .cfi_def_cfa_offset 4
+ 621              	 .cfi_offset 7,-4
+ 622 0002 85B0     	 sub sp,sp,#20
+ 623              	.LCFI67:
+ 624              	 .cfi_def_cfa_offset 24
+ 625 0004 00AF     	 add r7,sp,#0
+ 626              	.LCFI68:
+ 627              	 .cfi_def_cfa_register 7
+ 628 0006 F860     	 str r0,[r7,#12]
+ 629 0008 B960     	 str r1,[r7,#8]
+ 630 000a 7A60     	 str r2,[r7,#4]
  338:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  339:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  340:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  341:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  342:.././hal/sam3u1c/tc.c **** 
  343:.././hal/sam3u1c/tc.c **** 	p_tc->TC_CHANNEL[ul_channel].TC_RC = ul_value;
- 628              	 .loc 1 343 0
- 629 000c FA68     	 ldr r2,[r7,#12]
- 630 000e BB68     	 ldr r3,[r7,#8]
- 631 0010 9B01     	 lsls r3,r3,#6
- 632 0012 1344     	 add r3,r3,r2
- 633 0014 1C33     	 adds r3,r3,#28
- 634 0016 7A68     	 ldr r2,[r7,#4]
- 635 0018 1A60     	 str r2,[r3]
+ 631              	 .loc 1 343 37
+ 632 000c FA68     	 ldr r2,[r7,#12]
+ 633 000e BB68     	 ldr r3,[r7,#8]
+ 634 0010 9B01     	 lsls r3,r3,#6
+ 635 0012 1344     	 add r3,r3,r2
+ 636 0014 1C33     	 adds r3,r3,#28
+ 637 0016 7A68     	 ldr r2,[r7,#4]
+ 638 0018 1A60     	 str r2,[r3]
  344:.././hal/sam3u1c/tc.c **** }
- 636              	 .loc 1 344 0
- 637 001a 00BF     	 nop
- 638 001c 1437     	 adds r7,r7,#20
- 639              	.LCFI69:
- 640              	 .cfi_def_cfa_offset 4
- 641 001e BD46     	 mov sp,r7
- 642              	.LCFI70:
- 643              	 .cfi_def_cfa_register 13
- 644              	 
- 645 0020 80BC     	 pop {r7}
- 646              	.LCFI71:
- 647              	 .cfi_restore 7
- 648              	 .cfi_def_cfa_offset 0
- 649 0022 7047     	 bx lr
- 650              	 .cfi_endproc
- 651              	.LFE80:
- 653              	 .section .text.tc_enable_interrupt,"ax",%progbits
- 654              	 .align 1
- 655              	 .global tc_enable_interrupt
- 656              	 .syntax unified
- 657              	 .thumb
- 658              	 .thumb_func
- 659              	 .fpu softvfp
- 661              	tc_enable_interrupt:
- 662              	.LFB81:
+ 639              	 .loc 1 344 1
+ 640 001a 00BF     	 nop
+ 641 001c 1437     	 adds r7,r7,#20
+ 642              	.LCFI69:
+ 643              	 .cfi_def_cfa_offset 4
+ 644 001e BD46     	 mov sp,r7
+ 645              	.LCFI70:
+ 646              	 .cfi_def_cfa_register 13
+ 647              	 
+ 648 0020 80BC     	 pop {r7}
+ 649              	.LCFI71:
+ 650              	 .cfi_restore 7
+ 651              	 .cfi_def_cfa_offset 0
+ 652 0022 7047     	 bx lr
+ 653              	 .cfi_endproc
+ 654              	.LFE80:
+ 656              	 .section .text.tc_enable_interrupt,"ax",%progbits
+ 657              	 .align 1
+ 658              	 .global tc_enable_interrupt
+ 659              	 .syntax unified
+ 660              	 .thumb
+ 661              	 .thumb_func
+ 662              	 .fpu softvfp
+ 664              	tc_enable_interrupt:
+ 665              	.LFB81:
  345:.././hal/sam3u1c/tc.c **** 
  346:.././hal/sam3u1c/tc.c **** /**
  347:.././hal/sam3u1c/tc.c ****  * \brief Enable the TC interrupts on the specified channel.
@@ -1004,24 +1007,24 @@
  371:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
  372:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
  373:.././hal/sam3u1c/tc.c **** {
- 663              	 .loc 1 373 0
- 664              	 .cfi_startproc
- 665              	 
- 666              	 
- 667              	 
- 668 0000 80B4     	 push {r7}
- 669              	.LCFI72:
- 670              	 .cfi_def_cfa_offset 4
- 671              	 .cfi_offset 7,-4
- 672 0002 87B0     	 sub sp,sp,#28
- 673              	.LCFI73:
- 674              	 .cfi_def_cfa_offset 32
- 675 0004 00AF     	 add r7,sp,#0
- 676              	.LCFI74:
- 677              	 .cfi_def_cfa_register 7
- 678 0006 F860     	 str r0,[r7,#12]
- 679 0008 B960     	 str r1,[r7,#8]
- 680 000a 7A60     	 str r2,[r7,#4]
+ 666              	 .loc 1 373 1
+ 667              	 .cfi_startproc
+ 668              	 
+ 669              	 
+ 670              	 
+ 671 0000 80B4     	 push {r7}
+ 672              	.LCFI72:
+ 673              	 .cfi_def_cfa_offset 4
+ 674              	 .cfi_offset 7,-4
+ 675 0002 87B0     	 sub sp,sp,#28
+ 676              	.LCFI73:
+ 677              	 .cfi_def_cfa_offset 32
+ 678 0004 00AF     	 add r7,sp,#0
+ 679              	.LCFI74:
+ 680              	 .cfi_def_cfa_register 7
+ 681 0006 F860     	 str r0,[r7,#12]
+ 682 0008 B960     	 str r1,[r7,#8]
+ 683 000a 7A60     	 str r2,[r7,#4]
  374:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
  375:.././hal/sam3u1c/tc.c **** 
  376:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
@@ -1029,43 +1032,45 @@
  378:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  379:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  380:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
- 681              	 .loc 1 380 0
- 682 000c FA68     	 ldr r2,[r7,#12]
- 683 000e BB68     	 ldr r3,[r7,#8]
- 684 0010 9B01     	 lsls r3,r3,#6
- 685 0012 1344     	 add r3,r3,r2
- 686 0014 7B61     	 str r3,[r7,#20]
+ 684              	 .loc 1 380 15
+ 685 000c FA68     	 ldr r2,[r7,#12]
+ 686              	 .loc 1 380 32
+ 687 000e BB68     	 ldr r3,[r7,#8]
+ 688 0010 9B01     	 lsls r3,r3,#6
+ 689              	 .loc 1 380 13
+ 690 0012 1344     	 add r3,r3,r2
+ 691 0014 7B61     	 str r3,[r7,#20]
  381:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_IER = ul_sources;
- 687              	 .loc 1 381 0
- 688 0016 7B69     	 ldr r3,[r7,#20]
- 689 0018 7A68     	 ldr r2,[r7,#4]
- 690 001a 5A62     	 str r2,[r3,#36]
+ 692              	 .loc 1 381 21
+ 693 0016 7B69     	 ldr r3,[r7,#20]
+ 694 0018 7A68     	 ldr r2,[r7,#4]
+ 695 001a 5A62     	 str r2,[r3,#36]
  382:.././hal/sam3u1c/tc.c **** }
- 691              	 .loc 1 382 0
- 692 001c 00BF     	 nop
- 693 001e 1C37     	 adds r7,r7,#28
- 694              	.LCFI75:
- 695              	 .cfi_def_cfa_offset 4
- 696 0020 BD46     	 mov sp,r7
- 697              	.LCFI76:
- 698              	 .cfi_def_cfa_register 13
- 699              	 
- 700 0022 80BC     	 pop {r7}
- 701              	.LCFI77:
- 702              	 .cfi_restore 7
- 703              	 .cfi_def_cfa_offset 0
- 704 0024 7047     	 bx lr
- 705              	 .cfi_endproc
- 706              	.LFE81:
- 708              	 .section .text.tc_disable_interrupt,"ax",%progbits
- 709              	 .align 1
- 710              	 .global tc_disable_interrupt
- 711              	 .syntax unified
- 712              	 .thumb
- 713              	 .thumb_func
- 714              	 .fpu softvfp
- 716              	tc_disable_interrupt:
- 717              	.LFB82:
+ 696              	 .loc 1 382 1
+ 697 001c 00BF     	 nop
+ 698 001e 1C37     	 adds r7,r7,#28
+ 699              	.LCFI75:
+ 700              	 .cfi_def_cfa_offset 4
+ 701 0020 BD46     	 mov sp,r7
+ 702              	.LCFI76:
+ 703              	 .cfi_def_cfa_register 13
+ 704              	 
+ 705 0022 80BC     	 pop {r7}
+ 706              	.LCFI77:
+ 707              	 .cfi_restore 7
+ 708              	 .cfi_def_cfa_offset 0
+ 709 0024 7047     	 bx lr
+ 710              	 .cfi_endproc
+ 711              	.LFE81:
+ 713              	 .section .text.tc_disable_interrupt,"ax",%progbits
+ 714              	 .align 1
+ 715              	 .global tc_disable_interrupt
+ 716              	 .syntax unified
+ 717              	 .thumb
+ 718              	 .thumb_func
+ 719              	 .fpu softvfp
+ 721              	tc_disable_interrupt:
+ 722              	.LFB82:
  383:.././hal/sam3u1c/tc.c **** 
  384:.././hal/sam3u1c/tc.c **** /**
  385:.././hal/sam3u1c/tc.c ****  * \brief Disable TC interrupts on the specified channel.
@@ -1095,24 +1100,24 @@
  409:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel,
  410:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
  411:.././hal/sam3u1c/tc.c **** {
- 718              	 .loc 1 411 0
- 719              	 .cfi_startproc
- 720              	 
- 721              	 
- 722              	 
- 723 0000 80B4     	 push {r7}
- 724              	.LCFI78:
- 725              	 .cfi_def_cfa_offset 4
- 726              	 .cfi_offset 7,-4
- 727 0002 87B0     	 sub sp,sp,#28
- 728              	.LCFI79:
- 729              	 .cfi_def_cfa_offset 32
- 730 0004 00AF     	 add r7,sp,#0
- 731              	.LCFI80:
- 732              	 .cfi_def_cfa_register 7
- 733 0006 F860     	 str r0,[r7,#12]
- 734 0008 B960     	 str r1,[r7,#8]
- 735 000a 7A60     	 str r2,[r7,#4]
+ 723              	 .loc 1 411 1
+ 724              	 .cfi_startproc
+ 725              	 
+ 726              	 
+ 727              	 
+ 728 0000 80B4     	 push {r7}
+ 729              	.LCFI78:
+ 730              	 .cfi_def_cfa_offset 4
+ 731              	 .cfi_offset 7,-4
+ 732 0002 87B0     	 sub sp,sp,#28
+ 733              	.LCFI79:
+ 734              	 .cfi_def_cfa_offset 32
+ 735 0004 00AF     	 add r7,sp,#0
+ 736              	.LCFI80:
+ 737              	 .cfi_def_cfa_register 7
+ 738 0006 F860     	 str r0,[r7,#12]
+ 739 0008 B960     	 str r1,[r7,#8]
+ 740 000a 7A60     	 str r2,[r7,#4]
  412:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
  413:.././hal/sam3u1c/tc.c **** 
  414:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
@@ -1120,43 +1125,45 @@
  416:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  417:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  418:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
- 736              	 .loc 1 418 0
- 737 000c FA68     	 ldr r2,[r7,#12]
- 738 000e BB68     	 ldr r3,[r7,#8]
- 739 0010 9B01     	 lsls r3,r3,#6
- 740 0012 1344     	 add r3,r3,r2
- 741 0014 7B61     	 str r3,[r7,#20]
+ 741              	 .loc 1 418 15
+ 742 000c FA68     	 ldr r2,[r7,#12]
+ 743              	 .loc 1 418 32
+ 744 000e BB68     	 ldr r3,[r7,#8]
+ 745 0010 9B01     	 lsls r3,r3,#6
+ 746              	 .loc 1 418 13
+ 747 0012 1344     	 add r3,r3,r2
+ 748 0014 7B61     	 str r3,[r7,#20]
  419:.././hal/sam3u1c/tc.c **** 	tc_channel->TC_IDR = ul_sources;
- 742              	 .loc 1 419 0
- 743 0016 7B69     	 ldr r3,[r7,#20]
- 744 0018 7A68     	 ldr r2,[r7,#4]
- 745 001a 9A62     	 str r2,[r3,#40]
+ 749              	 .loc 1 419 21
+ 750 0016 7B69     	 ldr r3,[r7,#20]
+ 751 0018 7A68     	 ldr r2,[r7,#4]
+ 752 001a 9A62     	 str r2,[r3,#40]
  420:.././hal/sam3u1c/tc.c **** }
- 746              	 .loc 1 420 0
- 747 001c 00BF     	 nop
- 748 001e 1C37     	 adds r7,r7,#28
- 749              	.LCFI81:
- 750              	 .cfi_def_cfa_offset 4
- 751 0020 BD46     	 mov sp,r7
- 752              	.LCFI82:
- 753              	 .cfi_def_cfa_register 13
- 754              	 
- 755 0022 80BC     	 pop {r7}
- 756              	.LCFI83:
- 757              	 .cfi_restore 7
- 758              	 .cfi_def_cfa_offset 0
- 759 0024 7047     	 bx lr
- 760              	 .cfi_endproc
- 761              	.LFE82:
- 763              	 .section .text.tc_get_interrupt_mask,"ax",%progbits
- 764              	 .align 1
- 765              	 .global tc_get_interrupt_mask
- 766              	 .syntax unified
- 767              	 .thumb
- 768              	 .thumb_func
- 769              	 .fpu softvfp
- 771              	tc_get_interrupt_mask:
- 772              	.LFB83:
+ 753              	 .loc 1 420 1
+ 754 001c 00BF     	 nop
+ 755 001e 1C37     	 adds r7,r7,#28
+ 756              	.LCFI81:
+ 757              	 .cfi_def_cfa_offset 4
+ 758 0020 BD46     	 mov sp,r7
+ 759              	.LCFI82:
+ 760              	 .cfi_def_cfa_register 13
+ 761              	 
+ 762 0022 80BC     	 pop {r7}
+ 763              	.LCFI83:
+ 764              	 .cfi_restore 7
+ 765              	 .cfi_def_cfa_offset 0
+ 766 0024 7047     	 bx lr
+ 767              	 .cfi_endproc
+ 768              	.LFE82:
+ 770              	 .section .text.tc_get_interrupt_mask,"ax",%progbits
+ 771              	 .align 1
+ 772              	 .global tc_get_interrupt_mask
+ 773              	 .syntax unified
+ 774              	 .thumb
+ 775              	 .thumb_func
+ 776              	 .fpu softvfp
+ 778              	tc_get_interrupt_mask:
+ 779              	.LFB83:
  421:.././hal/sam3u1c/tc.c **** 
  422:.././hal/sam3u1c/tc.c **** /**
  423:.././hal/sam3u1c/tc.c ****  * \brief Read the TC interrupt mask for the specified channel.
@@ -1170,23 +1177,23 @@
  431:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  432:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  433:.././hal/sam3u1c/tc.c **** {
- 773              	 .loc 1 433 0
- 774              	 .cfi_startproc
- 775              	 
- 776              	 
- 777              	 
- 778 0000 80B4     	 push {r7}
- 779              	.LCFI84:
- 780              	 .cfi_def_cfa_offset 4
- 781              	 .cfi_offset 7,-4
- 782 0002 85B0     	 sub sp,sp,#20
- 783              	.LCFI85:
- 784              	 .cfi_def_cfa_offset 24
- 785 0004 00AF     	 add r7,sp,#0
- 786              	.LCFI86:
- 787              	 .cfi_def_cfa_register 7
- 788 0006 7860     	 str r0,[r7,#4]
- 789 0008 3960     	 str r1,[r7]
+ 780              	 .loc 1 433 1
+ 781              	 .cfi_startproc
+ 782              	 
+ 783              	 
+ 784              	 
+ 785 0000 80B4     	 push {r7}
+ 786              	.LCFI84:
+ 787              	 .cfi_def_cfa_offset 4
+ 788              	 .cfi_offset 7,-4
+ 789 0002 85B0     	 sub sp,sp,#20
+ 790              	.LCFI85:
+ 791              	 .cfi_def_cfa_offset 24
+ 792 0004 00AF     	 add r7,sp,#0
+ 793              	.LCFI86:
+ 794              	 .cfi_def_cfa_register 7
+ 795 0006 7860     	 str r0,[r7,#4]
+ 796 0008 3960     	 str r1,[r7]
  434:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
  435:.././hal/sam3u1c/tc.c **** 
  436:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
@@ -1194,42 +1201,44 @@
  438:.././hal/sam3u1c/tc.c **** 	Assert(ul_channel <
  439:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  440:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
- 790              	 .loc 1 440 0
- 791 000a 7A68     	 ldr r2,[r7,#4]
- 792 000c 3B68     	 ldr r3,[r7]
- 793 000e 9B01     	 lsls r3,r3,#6
- 794 0010 1344     	 add r3,r3,r2
- 795 0012 FB60     	 str r3,[r7,#12]
+ 797              	 .loc 1 440 15
+ 798 000a 7A68     	 ldr r2,[r7,#4]
+ 799              	 .loc 1 440 32
+ 800 000c 3B68     	 ldr r3,[r7]
+ 801 000e 9B01     	 lsls r3,r3,#6
+ 802              	 .loc 1 440 13
+ 803 0010 1344     	 add r3,r3,r2
+ 804 0012 FB60     	 str r3,[r7,#12]
  441:.././hal/sam3u1c/tc.c **** 	return tc_channel->TC_IMR;
- 796              	 .loc 1 441 0
- 797 0014 FB68     	 ldr r3,[r7,#12]
- 798 0016 DB6A     	 ldr r3,[r3,#44]
+ 805              	 .loc 1 441 19
+ 806 0014 FB68     	 ldr r3,[r7,#12]
+ 807 0016 DB6A     	 ldr r3,[r3,#44]
  442:.././hal/sam3u1c/tc.c **** }
- 799              	 .loc 1 442 0
- 800 0018 1846     	 mov r0,r3
- 801 001a 1437     	 adds r7,r7,#20
- 802              	.LCFI87:
- 803              	 .cfi_def_cfa_offset 4
- 804 001c BD46     	 mov sp,r7
- 805              	.LCFI88:
- 806              	 .cfi_def_cfa_register 13
- 807              	 
- 808 001e 80BC     	 pop {r7}
- 809              	.LCFI89:
- 810              	 .cfi_restore 7
- 811              	 .cfi_def_cfa_offset 0
- 812 0020 7047     	 bx lr
- 813              	 .cfi_endproc
- 814              	.LFE83:
- 816              	 .section .text.tc_get_status,"ax",%progbits
- 817              	 .align 1
- 818              	 .global tc_get_status
- 819              	 .syntax unified
- 820              	 .thumb
- 821              	 .thumb_func
- 822              	 .fpu softvfp
- 824              	tc_get_status:
- 825              	.LFB84:
+ 808              	 .loc 1 442 1
+ 809 0018 1846     	 mov r0,r3
+ 810 001a 1437     	 adds r7,r7,#20
+ 811              	.LCFI87:
+ 812              	 .cfi_def_cfa_offset 4
+ 813 001c BD46     	 mov sp,r7
+ 814              	.LCFI88:
+ 815              	 .cfi_def_cfa_register 13
+ 816              	 
+ 817 001e 80BC     	 pop {r7}
+ 818              	.LCFI89:
+ 819              	 .cfi_restore 7
+ 820              	 .cfi_def_cfa_offset 0
+ 821 0020 7047     	 bx lr
+ 822              	 .cfi_endproc
+ 823              	.LFE83:
+ 825              	 .section .text.tc_get_status,"ax",%progbits
+ 826              	 .align 1
+ 827              	 .global tc_get_status
+ 828              	 .syntax unified
+ 829              	 .thumb
+ 830              	 .thumb_func
+ 831              	 .fpu softvfp
+ 833              	tc_get_status:
+ 834              	.LFB84:
  443:.././hal/sam3u1c/tc.c **** 
  444:.././hal/sam3u1c/tc.c **** /**
  445:.././hal/sam3u1c/tc.c ****  * \brief Get the current status for the specified TC channel.
@@ -1243,23 +1252,23 @@
  453:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  454:.././hal/sam3u1c/tc.c **** 		uint32_t ul_channel)
  455:.././hal/sam3u1c/tc.c **** {
- 826              	 .loc 1 455 0
- 827              	 .cfi_startproc
- 828              	 
- 829              	 
- 830              	 
- 831 0000 80B4     	 push {r7}
- 832              	.LCFI90:
- 833              	 .cfi_def_cfa_offset 4
- 834              	 .cfi_offset 7,-4
- 835 0002 85B0     	 sub sp,sp,#20
- 836              	.LCFI91:
- 837              	 .cfi_def_cfa_offset 24
- 838 0004 00AF     	 add r7,sp,#0
- 839              	.LCFI92:
- 840              	 .cfi_def_cfa_register 7
- 841 0006 7860     	 str r0,[r7,#4]
- 842 0008 3960     	 str r1,[r7]
+ 835              	 .loc 1 455 1
+ 836              	 .cfi_startproc
+ 837              	 
+ 838              	 
+ 839              	 
+ 840 0000 80B4     	 push {r7}
+ 841              	.LCFI90:
+ 842              	 .cfi_def_cfa_offset 4
+ 843              	 .cfi_offset 7,-4
+ 844 0002 85B0     	 sub sp,sp,#20
+ 845              	.LCFI91:
+ 846              	 .cfi_def_cfa_offset 24
+ 847 0004 00AF     	 add r7,sp,#0
+ 848              	.LCFI92:
+ 849              	 .cfi_def_cfa_register 7
+ 850 0006 7860     	 str r0,[r7,#4]
+ 851 0008 3960     	 str r1,[r7]
  456:.././hal/sam3u1c/tc.c **** 	TcChannel *tc_channel;
  457:.././hal/sam3u1c/tc.c **** 
  458:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
@@ -1268,42 +1277,44 @@
  461:.././hal/sam3u1c/tc.c **** 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
  462:.././hal/sam3u1c/tc.c **** 			
  463:.././hal/sam3u1c/tc.c **** 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
- 843              	 .loc 1 463 0
- 844 000a 7A68     	 ldr r2,[r7,#4]
- 845 000c 3B68     	 ldr r3,[r7]
- 846 000e 9B01     	 lsls r3,r3,#6
- 847 0010 1344     	 add r3,r3,r2
- 848 0012 FB60     	 str r3,[r7,#12]
+ 852              	 .loc 1 463 15
+ 853 000a 7A68     	 ldr r2,[r7,#4]
+ 854              	 .loc 1 463 32
+ 855 000c 3B68     	 ldr r3,[r7]
+ 856 000e 9B01     	 lsls r3,r3,#6
+ 857              	 .loc 1 463 13
+ 858 0010 1344     	 add r3,r3,r2
+ 859 0012 FB60     	 str r3,[r7,#12]
  464:.././hal/sam3u1c/tc.c **** 	return tc_channel->TC_SR;
- 849              	 .loc 1 464 0
- 850 0014 FB68     	 ldr r3,[r7,#12]
- 851 0016 1B6A     	 ldr r3,[r3,#32]
+ 860              	 .loc 1 464 19
+ 861 0014 FB68     	 ldr r3,[r7,#12]
+ 862 0016 1B6A     	 ldr r3,[r3,#32]
  465:.././hal/sam3u1c/tc.c **** }
- 852              	 .loc 1 465 0
- 853 0018 1846     	 mov r0,r3
- 854 001a 1437     	 adds r7,r7,#20
- 855              	.LCFI93:
- 856              	 .cfi_def_cfa_offset 4
- 857 001c BD46     	 mov sp,r7
- 858              	.LCFI94:
- 859              	 .cfi_def_cfa_register 13
- 860              	 
- 861 001e 80BC     	 pop {r7}
- 862              	.LCFI95:
- 863              	 .cfi_restore 7
- 864              	 .cfi_def_cfa_offset 0
- 865 0020 7047     	 bx lr
- 866              	 .cfi_endproc
- 867              	.LFE84:
- 869              	 .section .text.tc_find_mck_divisor,"ax",%progbits
- 870              	 .align 1
- 871              	 .global tc_find_mck_divisor
- 872              	 .syntax unified
- 873              	 .thumb
- 874              	 .thumb_func
- 875              	 .fpu softvfp
- 877              	tc_find_mck_divisor:
- 878              	.LFB85:
+ 863              	 .loc 1 465 1
+ 864 0018 1846     	 mov r0,r3
+ 865 001a 1437     	 adds r7,r7,#20
+ 866              	.LCFI93:
+ 867              	 .cfi_def_cfa_offset 4
+ 868 001c BD46     	 mov sp,r7
+ 869              	.LCFI94:
+ 870              	 .cfi_def_cfa_register 13
+ 871              	 
+ 872 001e 80BC     	 pop {r7}
+ 873              	.LCFI95:
+ 874              	 .cfi_restore 7
+ 875              	 .cfi_def_cfa_offset 0
+ 876 0020 7047     	 bx lr
+ 877              	 .cfi_endproc
+ 878              	.LFE84:
+ 880              	 .section .text.tc_find_mck_divisor,"ax",%progbits
+ 881              	 .align 1
+ 882              	 .global tc_find_mck_divisor
+ 883              	 .syntax unified
+ 884              	 .thumb
+ 885              	 .thumb_func
+ 886              	 .fpu softvfp
+ 888              	tc_find_mck_divisor:
+ 889              	.LFB85:
  466:.././hal/sam3u1c/tc.c **** 
  467:.././hal/sam3u1c/tc.c **** /* TC divisor used to find the lowest acceptable timer frequency */
  468:.././hal/sam3u1c/tc.c **** #define TC_DIV_FACTOR 65536
@@ -1339,178 +1350,181 @@
  498:.././hal/sam3u1c/tc.c **** 		uint32_t *p_ultcclks,
  499:.././hal/sam3u1c/tc.c **** 		uint32_t ul_boardmck)
  500:.././hal/sam3u1c/tc.c **** {
- 879              	 .loc 1 500 0
- 880              	 .cfi_startproc
- 881              	 
- 882              	 
- 883              	 
- 884 0000 80B4     	 push {r7}
- 885              	.LCFI96:
- 886              	 .cfi_def_cfa_offset 4
- 887              	 .cfi_offset 7,-4
- 888 0002 8DB0     	 sub sp,sp,#52
- 889              	.LCFI97:
- 890              	 .cfi_def_cfa_offset 56
- 891 0004 00AF     	 add r7,sp,#0
- 892              	.LCFI98:
- 893              	 .cfi_def_cfa_register 7
- 894 0006 F860     	 str r0,[r7,#12]
- 895 0008 B960     	 str r1,[r7,#8]
- 896 000a 7A60     	 str r2,[r7,#4]
- 897 000c 3B60     	 str r3,[r7]
+ 890              	 .loc 1 500 1
+ 891              	 .cfi_startproc
+ 892              	 
+ 893              	 
+ 894              	 
+ 895 0000 80B4     	 push {r7}
+ 896              	.LCFI96:
+ 897              	 .cfi_def_cfa_offset 4
+ 898              	 .cfi_offset 7,-4
+ 899 0002 8DB0     	 sub sp,sp,#52
+ 900              	.LCFI97:
+ 901              	 .cfi_def_cfa_offset 56
+ 902 0004 00AF     	 add r7,sp,#0
+ 903              	.LCFI98:
+ 904              	 .cfi_def_cfa_register 7
+ 905 0006 F860     	 str r0,[r7,#12]
+ 906 0008 B960     	 str r1,[r7,#8]
+ 907 000a 7A60     	 str r2,[r7,#4]
+ 908 000c 3B60     	 str r3,[r7]
  501:.././hal/sam3u1c/tc.c **** 	const uint32_t divisors[5] = { 2, 8, 32, 128,
- 898              	 .loc 1 501 0
- 899 000e 0223     	 movs r3,#2
- 900 0010 3B61     	 str r3,[r7,#16]
- 901 0012 0823     	 movs r3,#8
- 902 0014 7B61     	 str r3,[r7,#20]
- 903 0016 2023     	 movs r3,#32
- 904 0018 BB61     	 str r3,[r7,#24]
- 905 001a 8023     	 movs r3,#128
- 906 001c FB61     	 str r3,[r7,#28]
+ 909              	 .loc 1 501 17
+ 910 000e 0223     	 movs r3,#2
+ 911 0010 3B61     	 str r3,[r7,#16]
+ 912 0012 0823     	 movs r3,#8
+ 913 0014 7B61     	 str r3,[r7,#20]
+ 914 0016 2023     	 movs r3,#32
+ 915 0018 BB61     	 str r3,[r7,#24]
+ 916 001a 8023     	 movs r3,#128
+ 917 001c FB61     	 str r3,[r7,#28]
  502:.././hal/sam3u1c/tc.c **** 			ul_boardmck / FREQ_SLOW_CLOCK_EXT };
- 907              	 .loc 1 502 0
- 908 001e BB6B     	 ldr r3,[r7,#56]
- 909 0020 DB0B     	 lsrs r3,r3,#15
+ 918              	 .loc 1 502 16
+ 919 001e BB6B     	 ldr r3,[r7,#56]
+ 920 0020 DB0B     	 lsrs r3,r3,#15
  501:.././hal/sam3u1c/tc.c **** 	const uint32_t divisors[5] = { 2, 8, 32, 128,
- 910              	 .loc 1 501 0
- 911 0022 3B62     	 str r3,[r7,#32]
+ 921              	 .loc 1 501 17
+ 922 0022 3B62     	 str r3,[r7,#32]
  503:.././hal/sam3u1c/tc.c **** 	uint32_t ul_index;
  504:.././hal/sam3u1c/tc.c **** 	uint32_t ul_high, ul_low;
  505:.././hal/sam3u1c/tc.c **** 
  506:.././hal/sam3u1c/tc.c **** 	/*  Satisfy frequency bound. */
  507:.././hal/sam3u1c/tc.c **** 	for (ul_index = 0;
- 912              	 .loc 1 507 0
- 913 0024 0023     	 movs r3,#0
- 914 0026 FB62     	 str r3,[r7,#44]
- 915 0028 1AE0     	 b .L24
- 916              	.L29:
+ 923              	 .loc 1 507 16
+ 924 0024 0023     	 movs r3,#0
+ 925 0026 FB62     	 str r3,[r7,#44]
+ 926              	 .loc 1 507 2
+ 927 0028 1AE0     	 b .L24
+ 928              	.L29:
  508:.././hal/sam3u1c/tc.c **** 			ul_index < (sizeof(divisors) / sizeof(divisors[0]));
  509:.././hal/sam3u1c/tc.c **** 			ul_index++) {
  510:.././hal/sam3u1c/tc.c **** 		ul_high = ul_mck / divisors[ul_index];
- 917              	 .loc 1 510 0
- 918 002a FB6A     	 ldr r3,[r7,#44]
- 919 002c 9B00     	 lsls r3,r3,#2
- 920 002e 07F13002 	 add r2,r7,#48
- 921 0032 1344     	 add r3,r3,r2
- 922 0034 53F8203C 	 ldr r3,[r3,#-32]
- 923 0038 BA68     	 ldr r2,[r7,#8]
- 924 003a B2FBF3F3 	 udiv r3,r2,r3
- 925 003e BB62     	 str r3,[r7,#40]
+ 929              	 .loc 1 510 30
+ 930 002a FB6A     	 ldr r3,[r7,#44]
+ 931 002c 9B00     	 lsls r3,r3,#2
+ 932 002e 07F13002 	 add r2,r7,#48
+ 933 0032 1344     	 add r3,r3,r2
+ 934 0034 53F8203C 	 ldr r3,[r3,#-32]
+ 935              	 .loc 1 510 11
+ 936 0038 BA68     	 ldr r2,[r7,#8]
+ 937 003a B2FBF3F3 	 udiv r3,r2,r3
+ 938 003e BB62     	 str r3,[r7,#40]
  511:.././hal/sam3u1c/tc.c **** 		ul_low  = ul_high / TC_DIV_FACTOR;
- 926              	 .loc 1 511 0
- 927 0040 BB6A     	 ldr r3,[r7,#40]
- 928 0042 1B0C     	 lsrs r3,r3,#16
- 929 0044 7B62     	 str r3,[r7,#36]
+ 939              	 .loc 1 511 11
+ 940 0040 BB6A     	 ldr r3,[r7,#40]
+ 941 0042 1B0C     	 lsrs r3,r3,#16
+ 942 0044 7B62     	 str r3,[r7,#36]
  512:.././hal/sam3u1c/tc.c **** 		if (ul_freq > ul_high) {
- 930              	 .loc 1 512 0
- 931 0046 FA68     	 ldr r2,[r7,#12]
- 932 0048 BB6A     	 ldr r3,[r7,#40]
- 933 004a 9A42     	 cmp r2,r3
- 934 004c 01D9     	 bls .L25
+ 943              	 .loc 1 512 6
+ 944 0046 FA68     	 ldr r2,[r7,#12]
+ 945 0048 BB6A     	 ldr r3,[r7,#40]
+ 946 004a 9A42     	 cmp r2,r3
+ 947 004c 01D9     	 bls .L25
  513:.././hal/sam3u1c/tc.c **** 			return 0;
- 935              	 .loc 1 513 0
- 936 004e 0023     	 movs r3,#0
- 937 0050 23E0     	 b .L33
- 938              	.L25:
+ 948              	 .loc 1 513 11
+ 949 004e 0023     	 movs r3,#0
+ 950 0050 23E0     	 b .L33
+ 951              	.L25:
  514:.././hal/sam3u1c/tc.c **** 		} else if (ul_freq >= ul_low) {
- 939              	 .loc 1 514 0
- 940 0052 FA68     	 ldr r2,[r7,#12]
- 941 0054 7B6A     	 ldr r3,[r7,#36]
- 942 0056 9A42     	 cmp r2,r3
- 943 0058 06D2     	 bcs .L34
+ 952              	 .loc 1 514 13
+ 953 0052 FA68     	 ldr r2,[r7,#12]
+ 954 0054 7B6A     	 ldr r3,[r7,#36]
+ 955 0056 9A42     	 cmp r2,r3
+ 956 0058 06D2     	 bcs .L34
  509:.././hal/sam3u1c/tc.c **** 		ul_high = ul_mck / divisors[ul_index];
- 944              	 .loc 1 509 0
- 945 005a FB6A     	 ldr r3,[r7,#44]
- 946 005c 0133     	 adds r3,r3,#1
- 947 005e FB62     	 str r3,[r7,#44]
- 948              	.L24:
+ 957              	 .loc 1 509 12
+ 958 005a FB6A     	 ldr r3,[r7,#44]
+ 959 005c 0133     	 adds r3,r3,#1
+ 960 005e FB62     	 str r3,[r7,#44]
+ 961              	.L24:
  507:.././hal/sam3u1c/tc.c **** 			ul_index < (sizeof(divisors) / sizeof(divisors[0]));
- 949              	 .loc 1 507 0 discriminator 1
- 950 0060 FB6A     	 ldr r3,[r7,#44]
- 951 0062 042B     	 cmp r3,#4
- 952 0064 E1D9     	 bls .L29
- 953 0066 00E0     	 b .L28
- 954              	.L34:
+ 962              	 .loc 1 507 2 discriminator 1
+ 963 0060 FB6A     	 ldr r3,[r7,#44]
+ 964 0062 042B     	 cmp r3,#4
+ 965 0064 E1D9     	 bls .L29
+ 966 0066 00E0     	 b .L28
+ 967              	.L34:
  515:.././hal/sam3u1c/tc.c **** 			break;
- 955              	 .loc 1 515 0
- 956 0068 00BF     	 nop
- 957              	.L28:
+ 968              	 .loc 1 515 4
+ 969 0068 00BF     	 nop
+ 970              	.L28:
  516:.././hal/sam3u1c/tc.c **** 		}
  517:.././hal/sam3u1c/tc.c **** 	}
  518:.././hal/sam3u1c/tc.c **** 	if (ul_index >= (sizeof(divisors) / sizeof(divisors[0]))) {
- 958              	 .loc 1 518 0
- 959 006a FB6A     	 ldr r3,[r7,#44]
- 960 006c 042B     	 cmp r3,#4
- 961 006e 01D9     	 bls .L30
+ 971              	 .loc 1 518 5
+ 972 006a FB6A     	 ldr r3,[r7,#44]
+ 973 006c 042B     	 cmp r3,#4
+ 974 006e 01D9     	 bls .L30
  519:.././hal/sam3u1c/tc.c **** 		return 0;
- 962              	 .loc 1 519 0
- 963 0070 0023     	 movs r3,#0
- 964 0072 12E0     	 b .L33
- 965              	.L30:
+ 975              	 .loc 1 519 10
+ 976 0070 0023     	 movs r3,#0
+ 977 0072 12E0     	 b .L33
+ 978              	.L30:
  520:.././hal/sam3u1c/tc.c **** 	}
  521:.././hal/sam3u1c/tc.c **** 
  522:.././hal/sam3u1c/tc.c **** 	/*  Store results. */
  523:.././hal/sam3u1c/tc.c **** 	if (p_uldiv) {
- 966              	 .loc 1 523 0
- 967 0074 7B68     	 ldr r3,[r7,#4]
- 968 0076 002B     	 cmp r3,#0
- 969 0078 08D0     	 beq .L31
+ 979              	 .loc 1 523 5
+ 980 0074 7B68     	 ldr r3,[r7,#4]
+ 981 0076 002B     	 cmp r3,#0
+ 982 0078 08D0     	 beq .L31
  524:.././hal/sam3u1c/tc.c **** 		*p_uldiv = divisors[ul_index];
- 970              	 .loc 1 524 0
- 971 007a FB6A     	 ldr r3,[r7,#44]
- 972 007c 9B00     	 lsls r3,r3,#2
- 973 007e 07F13002 	 add r2,r7,#48
- 974 0082 1344     	 add r3,r3,r2
- 975 0084 53F8202C 	 ldr r2,[r3,#-32]
- 976 0088 7B68     	 ldr r3,[r7,#4]
- 977 008a 1A60     	 str r2,[r3]
- 978              	.L31:
+ 983              	 .loc 1 524 22
+ 984 007a FB6A     	 ldr r3,[r7,#44]
+ 985 007c 9B00     	 lsls r3,r3,#2
+ 986 007e 07F13002 	 add r2,r7,#48
+ 987 0082 1344     	 add r3,r3,r2
+ 988 0084 53F8202C 	 ldr r2,[r3,#-32]
+ 989              	 .loc 1 524 12
+ 990 0088 7B68     	 ldr r3,[r7,#4]
+ 991 008a 1A60     	 str r2,[r3]
+ 992              	.L31:
  525:.././hal/sam3u1c/tc.c **** 	}
  526:.././hal/sam3u1c/tc.c **** 
  527:.././hal/sam3u1c/tc.c **** 	if (p_ultcclks) {
- 979              	 .loc 1 527 0
- 980 008c 3B68     	 ldr r3,[r7]
- 981 008e 002B     	 cmp r3,#0
- 982 0090 02D0     	 beq .L32
+ 993              	 .loc 1 527 5
+ 994 008c 3B68     	 ldr r3,[r7]
+ 995 008e 002B     	 cmp r3,#0
+ 996 0090 02D0     	 beq .L32
  528:.././hal/sam3u1c/tc.c **** 		*p_ultcclks = ul_index;
- 983              	 .loc 1 528 0
- 984 0092 3B68     	 ldr r3,[r7]
- 985 0094 FA6A     	 ldr r2,[r7,#44]
- 986 0096 1A60     	 str r2,[r3]
- 987              	.L32:
+ 997              	 .loc 1 528 15
+ 998 0092 3B68     	 ldr r3,[r7]
+ 999 0094 FA6A     	 ldr r2,[r7,#44]
+ 1000 0096 1A60     	 str r2,[r3]
+ 1001              	.L32:
  529:.././hal/sam3u1c/tc.c **** 	}
  530:.././hal/sam3u1c/tc.c **** 
  531:.././hal/sam3u1c/tc.c **** 	return 1;
- 988              	 .loc 1 531 0
- 989 0098 0123     	 movs r3,#1
- 990              	.L33:
+ 1002              	 .loc 1 531 9
+ 1003 0098 0123     	 movs r3,#1
+ 1004              	.L33:
  532:.././hal/sam3u1c/tc.c **** }
- 991              	 .loc 1 532 0 discriminator 1
- 992 009a 1846     	 mov r0,r3
- 993 009c 3437     	 adds r7,r7,#52
- 994              	.LCFI99:
- 995              	 .cfi_def_cfa_offset 4
- 996 009e BD46     	 mov sp,r7
- 997              	.LCFI100:
- 998              	 .cfi_def_cfa_register 13
- 999              	 
- 1000 00a0 80BC     	 pop {r7}
- 1001              	.LCFI101:
- 1002              	 .cfi_restore 7
- 1003              	 .cfi_def_cfa_offset 0
- 1004 00a2 7047     	 bx lr
- 1005              	 .cfi_endproc
- 1006              	.LFE85:
- 1008              	 .section .text.tc_enable_qdec_interrupt,"ax",%progbits
- 1009              	 .align 1
- 1010              	 .global tc_enable_qdec_interrupt
- 1011              	 .syntax unified
- 1012              	 .thumb
- 1013              	 .thumb_func
- 1014              	 .fpu softvfp
- 1016              	tc_enable_qdec_interrupt:
- 1017              	.LFB86:
+ 1005              	 .loc 1 532 1 discriminator 1
+ 1006 009a 1846     	 mov r0,r3
+ 1007 009c 3437     	 adds r7,r7,#52
+ 1008              	.LCFI99:
+ 1009              	 .cfi_def_cfa_offset 4
+ 1010 009e BD46     	 mov sp,r7
+ 1011              	.LCFI100:
+ 1012              	 .cfi_def_cfa_register 13
+ 1013              	 
+ 1014 00a0 80BC     	 pop {r7}
+ 1015              	.LCFI101:
+ 1016              	 .cfi_restore 7
+ 1017              	 .cfi_def_cfa_offset 0
+ 1018 00a2 7047     	 bx lr
+ 1019              	 .cfi_endproc
+ 1020              	.LFE85:
+ 1022              	 .section .text.tc_enable_qdec_interrupt,"ax",%progbits
+ 1023              	 .align 1
+ 1024              	 .global tc_enable_qdec_interrupt
+ 1025              	 .syntax unified
+ 1026              	 .thumb
+ 1027              	 .thumb_func
+ 1028              	 .fpu softvfp
+ 1030              	tc_enable_qdec_interrupt:
+ 1031              	.LFB86:
  533:.././hal/sam3u1c/tc.c **** 
  534:.././hal/sam3u1c/tc.c **** #endif /* (!SAM4L) */
  535:.././hal/sam3u1c/tc.c **** 
@@ -1606,57 +1620,57 @@
  625:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  626:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
  627:.././hal/sam3u1c/tc.c **** {
- 1018              	 .loc 1 627 0
- 1019              	 .cfi_startproc
- 1020              	 
- 1021              	 
- 1022              	 
- 1023 0000 80B4     	 push {r7}
- 1024              	.LCFI102:
- 1025              	 .cfi_def_cfa_offset 4
- 1026              	 .cfi_offset 7,-4
- 1027 0002 83B0     	 sub sp,sp,#12
- 1028              	.LCFI103:
- 1029              	 .cfi_def_cfa_offset 16
- 1030 0004 00AF     	 add r7,sp,#0
- 1031              	.LCFI104:
- 1032              	 .cfi_def_cfa_register 7
- 1033 0006 7860     	 str r0,[r7,#4]
- 1034 0008 3960     	 str r1,[r7]
+ 1032              	 .loc 1 627 1
+ 1033              	 .cfi_startproc
+ 1034              	 
+ 1035              	 
+ 1036              	 
+ 1037 0000 80B4     	 push {r7}
+ 1038              	.LCFI102:
+ 1039              	 .cfi_def_cfa_offset 4
+ 1040              	 .cfi_offset 7,-4
+ 1041 0002 83B0     	 sub sp,sp,#12
+ 1042              	.LCFI103:
+ 1043              	 .cfi_def_cfa_offset 16
+ 1044 0004 00AF     	 add r7,sp,#0
+ 1045              	.LCFI104:
+ 1046              	 .cfi_def_cfa_register 7
+ 1047 0006 7860     	 str r0,[r7,#4]
+ 1048 0008 3960     	 str r1,[r7]
  628:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  629:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  630:.././hal/sam3u1c/tc.c **** 	
  631:.././hal/sam3u1c/tc.c **** 	p_tc->TC_QIER = ul_sources;
- 1035              	 .loc 1 631 0
- 1036 000a 7B68     	 ldr r3,[r7,#4]
- 1037 000c 3A68     	 ldr r2,[r7]
- 1038 000e C3F8C820 	 str r2,[r3,#200]
+ 1049              	 .loc 1 631 16
+ 1050 000a 7B68     	 ldr r3,[r7,#4]
+ 1051 000c 3A68     	 ldr r2,[r7]
+ 1052 000e C3F8C820 	 str r2,[r3,#200]
  632:.././hal/sam3u1c/tc.c **** }
- 1039              	 .loc 1 632 0
- 1040 0012 00BF     	 nop
- 1041 0014 0C37     	 adds r7,r7,#12
- 1042              	.LCFI105:
- 1043              	 .cfi_def_cfa_offset 4
- 1044 0016 BD46     	 mov sp,r7
- 1045              	.LCFI106:
- 1046              	 .cfi_def_cfa_register 13
- 1047              	 
- 1048 0018 80BC     	 pop {r7}
- 1049              	.LCFI107:
- 1050              	 .cfi_restore 7
- 1051              	 .cfi_def_cfa_offset 0
- 1052 001a 7047     	 bx lr
- 1053              	 .cfi_endproc
- 1054              	.LFE86:
- 1056              	 .section .text.tc_disable_qdec_interrupt,"ax",%progbits
- 1057              	 .align 1
- 1058              	 .global tc_disable_qdec_interrupt
- 1059              	 .syntax unified
- 1060              	 .thumb
- 1061              	 .thumb_func
- 1062              	 .fpu softvfp
- 1064              	tc_disable_qdec_interrupt:
- 1065              	.LFB87:
+ 1053              	 .loc 1 632 1
+ 1054 0012 00BF     	 nop
+ 1055 0014 0C37     	 adds r7,r7,#12
+ 1056              	.LCFI105:
+ 1057              	 .cfi_def_cfa_offset 4
+ 1058 0016 BD46     	 mov sp,r7
+ 1059              	.LCFI106:
+ 1060              	 .cfi_def_cfa_register 13
+ 1061              	 
+ 1062 0018 80BC     	 pop {r7}
+ 1063              	.LCFI107:
+ 1064              	 .cfi_restore 7
+ 1065              	 .cfi_def_cfa_offset 0
+ 1066 001a 7047     	 bx lr
+ 1067              	 .cfi_endproc
+ 1068              	.LFE86:
+ 1070              	 .section .text.tc_disable_qdec_interrupt,"ax",%progbits
+ 1071              	 .align 1
+ 1072              	 .global tc_disable_qdec_interrupt
+ 1073              	 .syntax unified
+ 1074              	 .thumb
+ 1075              	 .thumb_func
+ 1076              	 .fpu softvfp
+ 1078              	tc_disable_qdec_interrupt:
+ 1079              	.LFB87:
  633:.././hal/sam3u1c/tc.c **** 
  634:.././hal/sam3u1c/tc.c **** /**
  635:.././hal/sam3u1c/tc.c ****  * \brief Disable TC QDEC interrupts.
@@ -1681,57 +1695,57 @@
  654:.././hal/sam3u1c/tc.c **** 		Tc *p_tc,
  655:.././hal/sam3u1c/tc.c **** 		uint32_t ul_sources)
  656:.././hal/sam3u1c/tc.c **** {
- 1066              	 .loc 1 656 0
- 1067              	 .cfi_startproc
- 1068              	 
- 1069              	 
- 1070              	 
- 1071 0000 80B4     	 push {r7}
- 1072              	.LCFI108:
- 1073              	 .cfi_def_cfa_offset 4
- 1074              	 .cfi_offset 7,-4
- 1075 0002 83B0     	 sub sp,sp,#12
- 1076              	.LCFI109:
- 1077              	 .cfi_def_cfa_offset 16
- 1078 0004 00AF     	 add r7,sp,#0
- 1079              	.LCFI110:
- 1080              	 .cfi_def_cfa_register 7
- 1081 0006 7860     	 str r0,[r7,#4]
- 1082 0008 3960     	 str r1,[r7]
+ 1080              	 .loc 1 656 1
+ 1081              	 .cfi_startproc
+ 1082              	 
+ 1083              	 
+ 1084              	 
+ 1085 0000 80B4     	 push {r7}
+ 1086              	.LCFI108:
+ 1087              	 .cfi_def_cfa_offset 4
+ 1088              	 .cfi_offset 7,-4
+ 1089 0002 83B0     	 sub sp,sp,#12
+ 1090              	.LCFI109:
+ 1091              	 .cfi_def_cfa_offset 16
+ 1092 0004 00AF     	 add r7,sp,#0
+ 1093              	.LCFI110:
+ 1094              	 .cfi_def_cfa_register 7
+ 1095 0006 7860     	 str r0,[r7,#4]
+ 1096 0008 3960     	 str r1,[r7]
  657:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  658:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  659:.././hal/sam3u1c/tc.c **** 	
  660:.././hal/sam3u1c/tc.c **** 	p_tc->TC_QIDR = ul_sources;
- 1083              	 .loc 1 660 0
- 1084 000a 7B68     	 ldr r3,[r7,#4]
- 1085 000c 3A68     	 ldr r2,[r7]
- 1086 000e C3F8CC20 	 str r2,[r3,#204]
+ 1097              	 .loc 1 660 16
+ 1098 000a 7B68     	 ldr r3,[r7,#4]
+ 1099 000c 3A68     	 ldr r2,[r7]
+ 1100 000e C3F8CC20 	 str r2,[r3,#204]
  661:.././hal/sam3u1c/tc.c **** }
- 1087              	 .loc 1 661 0
- 1088 0012 00BF     	 nop
- 1089 0014 0C37     	 adds r7,r7,#12
- 1090              	.LCFI111:
- 1091              	 .cfi_def_cfa_offset 4
- 1092 0016 BD46     	 mov sp,r7
- 1093              	.LCFI112:
- 1094              	 .cfi_def_cfa_register 13
- 1095              	 
- 1096 0018 80BC     	 pop {r7}
- 1097              	.LCFI113:
- 1098              	 .cfi_restore 7
- 1099              	 .cfi_def_cfa_offset 0
- 1100 001a 7047     	 bx lr
- 1101              	 .cfi_endproc
- 1102              	.LFE87:
- 1104              	 .section .text.tc_get_qdec_interrupt_mask,"ax",%progbits
- 1105              	 .align 1
- 1106              	 .global tc_get_qdec_interrupt_mask
- 1107              	 .syntax unified
- 1108              	 .thumb
- 1109              	 .thumb_func
- 1110              	 .fpu softvfp
- 1112              	tc_get_qdec_interrupt_mask:
- 1113              	.LFB88:
+ 1101              	 .loc 1 661 1
+ 1102 0012 00BF     	 nop
+ 1103 0014 0C37     	 adds r7,r7,#12
+ 1104              	.LCFI111:
+ 1105              	 .cfi_def_cfa_offset 4
+ 1106 0016 BD46     	 mov sp,r7
+ 1107              	.LCFI112:
+ 1108              	 .cfi_def_cfa_register 13
+ 1109              	 
+ 1110 0018 80BC     	 pop {r7}
+ 1111              	.LCFI113:
+ 1112              	 .cfi_restore 7
+ 1113              	 .cfi_def_cfa_offset 0
+ 1114 001a 7047     	 bx lr
+ 1115              	 .cfi_endproc
+ 1116              	.LFE87:
+ 1118              	 .section .text.tc_get_qdec_interrupt_mask,"ax",%progbits
+ 1119              	 .align 1
+ 1120              	 .global tc_get_qdec_interrupt_mask
+ 1121              	 .syntax unified
+ 1122              	 .thumb
+ 1123              	 .thumb_func
+ 1124              	 .fpu softvfp
+ 1126              	tc_get_qdec_interrupt_mask:
+ 1127              	.LFB88:
  662:.././hal/sam3u1c/tc.c **** 
  663:.././hal/sam3u1c/tc.c **** /**
  664:.././hal/sam3u1c/tc.c ****  * \brief Read TC QDEC interrupt mask.
@@ -1745,55 +1759,55 @@
  672:.././hal/sam3u1c/tc.c **** uint32_t tc_get_qdec_interrupt_mask(
  673:.././hal/sam3u1c/tc.c **** 		Tc *p_tc)
  674:.././hal/sam3u1c/tc.c **** {
- 1114              	 .loc 1 674 0
- 1115              	 .cfi_startproc
- 1116              	 
- 1117              	 
- 1118              	 
- 1119 0000 80B4     	 push {r7}
- 1120              	.LCFI114:
- 1121              	 .cfi_def_cfa_offset 4
- 1122              	 .cfi_offset 7,-4
- 1123 0002 83B0     	 sub sp,sp,#12
- 1124              	.LCFI115:
- 1125              	 .cfi_def_cfa_offset 16
- 1126 0004 00AF     	 add r7,sp,#0
- 1127              	.LCFI116:
- 1128              	 .cfi_def_cfa_register 7
- 1129 0006 7860     	 str r0,[r7,#4]
+ 1128              	 .loc 1 674 1
+ 1129              	 .cfi_startproc
+ 1130              	 
+ 1131              	 
+ 1132              	 
+ 1133 0000 80B4     	 push {r7}
+ 1134              	.LCFI114:
+ 1135              	 .cfi_def_cfa_offset 4
+ 1136              	 .cfi_offset 7,-4
+ 1137 0002 83B0     	 sub sp,sp,#12
+ 1138              	.LCFI115:
+ 1139              	 .cfi_def_cfa_offset 16
+ 1140 0004 00AF     	 add r7,sp,#0
+ 1141              	.LCFI116:
+ 1142              	 .cfi_def_cfa_register 7
+ 1143 0006 7860     	 str r0,[r7,#4]
  675:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  676:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  677:.././hal/sam3u1c/tc.c **** 	
  678:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_QIMR;
- 1130              	 .loc 1 678 0
- 1131 0008 7B68     	 ldr r3,[r7,#4]
- 1132 000a D3F8D030 	 ldr r3,[r3,#208]
+ 1144              	 .loc 1 678 13
+ 1145 0008 7B68     	 ldr r3,[r7,#4]
+ 1146 000a D3F8D030 	 ldr r3,[r3,#208]
  679:.././hal/sam3u1c/tc.c **** }
- 1133              	 .loc 1 679 0
- 1134 000e 1846     	 mov r0,r3
- 1135 0010 0C37     	 adds r7,r7,#12
- 1136              	.LCFI117:
- 1137              	 .cfi_def_cfa_offset 4
- 1138 0012 BD46     	 mov sp,r7
- 1139              	.LCFI118:
- 1140              	 .cfi_def_cfa_register 13
- 1141              	 
- 1142 0014 80BC     	 pop {r7}
- 1143              	.LCFI119:
- 1144              	 .cfi_restore 7
- 1145              	 .cfi_def_cfa_offset 0
- 1146 0016 7047     	 bx lr
- 1147              	 .cfi_endproc
- 1148              	.LFE88:
- 1150              	 .section .text.tc_get_qdec_interrupt_status,"ax",%progbits
- 1151              	 .align 1
- 1152              	 .global tc_get_qdec_interrupt_status
- 1153              	 .syntax unified
- 1154              	 .thumb
- 1155              	 .thumb_func
- 1156              	 .fpu softvfp
- 1158              	tc_get_qdec_interrupt_status:
- 1159              	.LFB89:
+ 1147              	 .loc 1 679 1
+ 1148 000e 1846     	 mov r0,r3
+ 1149 0010 0C37     	 adds r7,r7,#12
+ 1150              	.LCFI117:
+ 1151              	 .cfi_def_cfa_offset 4
+ 1152 0012 BD46     	 mov sp,r7
+ 1153              	.LCFI118:
+ 1154              	 .cfi_def_cfa_register 13
+ 1155              	 
+ 1156 0014 80BC     	 pop {r7}
+ 1157              	.LCFI119:
+ 1158              	 .cfi_restore 7
+ 1159              	 .cfi_def_cfa_offset 0
+ 1160 0016 7047     	 bx lr
+ 1161              	 .cfi_endproc
+ 1162              	.LFE88:
+ 1164              	 .section .text.tc_get_qdec_interrupt_status,"ax",%progbits
+ 1165              	 .align 1
+ 1166              	 .global tc_get_qdec_interrupt_status
+ 1167              	 .syntax unified
+ 1168              	 .thumb
+ 1169              	 .thumb_func
+ 1170              	 .fpu softvfp
+ 1172              	tc_get_qdec_interrupt_status:
+ 1173              	.LFB89:
  680:.././hal/sam3u1c/tc.c **** 
  681:.././hal/sam3u1c/tc.c **** /**
  682:.././hal/sam3u1c/tc.c ****  * \brief Get current TC QDEC interrupt status.
@@ -1807,60 +1821,60 @@
  690:.././hal/sam3u1c/tc.c **** uint32_t tc_get_qdec_interrupt_status(
  691:.././hal/sam3u1c/tc.c **** 		Tc *p_tc)
  692:.././hal/sam3u1c/tc.c **** {
- 1160              	 .loc 1 692 0
- 1161              	 .cfi_startproc
- 1162              	 
- 1163              	 
- 1164              	 
- 1165 0000 80B4     	 push {r7}
- 1166              	.LCFI120:
- 1167              	 .cfi_def_cfa_offset 4
- 1168              	 .cfi_offset 7,-4
- 1169 0002 83B0     	 sub sp,sp,#12
- 1170              	.LCFI121:
- 1171              	 .cfi_def_cfa_offset 16
- 1172 0004 00AF     	 add r7,sp,#0
- 1173              	.LCFI122:
- 1174              	 .cfi_def_cfa_register 7
- 1175 0006 7860     	 str r0,[r7,#4]
+ 1174              	 .loc 1 692 1
+ 1175              	 .cfi_startproc
+ 1176              	 
+ 1177              	 
+ 1178              	 
+ 1179 0000 80B4     	 push {r7}
+ 1180              	.LCFI120:
+ 1181              	 .cfi_def_cfa_offset 4
+ 1182              	 .cfi_offset 7,-4
+ 1183 0002 83B0     	 sub sp,sp,#12
+ 1184              	.LCFI121:
+ 1185              	 .cfi_def_cfa_offset 16
+ 1186 0004 00AF     	 add r7,sp,#0
+ 1187              	.LCFI122:
+ 1188              	 .cfi_def_cfa_register 7
+ 1189 0006 7860     	 str r0,[r7,#4]
  693:.././hal/sam3u1c/tc.c **** 	/* Validate inputs. */
  694:.././hal/sam3u1c/tc.c **** 	Assert(p_tc);
  695:.././hal/sam3u1c/tc.c **** 	
  696:.././hal/sam3u1c/tc.c **** 	return p_tc->TC_QISR;
- 1176              	 .loc 1 696 0
- 1177 0008 7B68     	 ldr r3,[r7,#4]
- 1178 000a D3F8D430 	 ldr r3,[r3,#212]
+ 1190              	 .loc 1 696 13
+ 1191 0008 7B68     	 ldr r3,[r7,#4]
+ 1192 000a D3F8D430 	 ldr r3,[r3,#212]
  697:.././hal/sam3u1c/tc.c **** }
- 1179              	 .loc 1 697 0
- 1180 000e 1846     	 mov r0,r3
- 1181 0010 0C37     	 adds r7,r7,#12
- 1182              	.LCFI123:
- 1183              	 .cfi_def_cfa_offset 4
- 1184 0012 BD46     	 mov sp,r7
- 1185              	.LCFI124:
- 1186              	 .cfi_def_cfa_register 13
- 1187              	 
- 1188 0014 80BC     	 pop {r7}
- 1189              	.LCFI125:
- 1190              	 .cfi_restore 7
- 1191              	 .cfi_def_cfa_offset 0
- 1192 0016 7047     	 bx lr
- 1193              	 .cfi_endproc
- 1194              	.LFE89:
- 1196              	 .text
- 1197              	.Letext0:
- 1198              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1199              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 1200              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
- 1201              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
- 1202              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
- 1203              	 .file 7 ".././hal/sam3u1c/inc/component/component_tc.h"
- 1204              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 1205              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 1206              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 1207              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 1208              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 1209              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 1193              	 .loc 1 697 1
+ 1194 000e 1846     	 mov r0,r3
+ 1195 0010 0C37     	 adds r7,r7,#12
+ 1196              	.LCFI123:
+ 1197              	 .cfi_def_cfa_offset 4
+ 1198 0012 BD46     	 mov sp,r7
+ 1199              	.LCFI124:
+ 1200              	 .cfi_def_cfa_register 13
+ 1201              	 
+ 1202 0014 80BC     	 pop {r7}
+ 1203              	.LCFI125:
+ 1204              	 .cfi_restore 7
+ 1205              	 .cfi_def_cfa_offset 0
+ 1206 0016 7047     	 bx lr
+ 1207              	 .cfi_endproc
+ 1208              	.LFE89:
+ 1210              	 .text
+ 1211              	.Letext0:
+ 1212              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1213              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1214              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 1215              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
+ 1216              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 1217              	 .file 7 ".././hal/sam3u1c/inc/component/component_tc.h"
+ 1218              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1219              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1220              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 1221              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1222              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 1223              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 tc.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1868,51 +1882,51 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.tc_init:00000000 $t
-    {standard input}:34     .text.tc_init:00000000 tc_init
-    {standard input}:94     .text.tc_sync_trigger:00000000 $t
-    {standard input}:101    .text.tc_sync_trigger:00000000 tc_sync_trigger
-    {standard input}:141    .text.tc_set_block_mode:00000000 $t
-    {standard input}:148    .text.tc_set_block_mode:00000000 tc_set_block_mode
-    {standard input}:189    .text.tc_start:00000000 $t
-    {standard input}:196    .text.tc_start:00000000 tc_start
-    {standard input}:240    .text.tc_stop:00000000 $t
-    {standard input}:247    .text.tc_stop:00000000 tc_stop
-    {standard input}:291    .text.tc_read_cv:00000000 $t
-    {standard input}:298    .text.tc_read_cv:00000000 tc_read_cv
-    {standard input}:342    .text.tc_read_ra:00000000 $t
-    {standard input}:349    .text.tc_read_ra:00000000 tc_read_ra
-    {standard input}:393    .text.tc_read_rb:00000000 $t
-    {standard input}:400    .text.tc_read_rb:00000000 tc_read_rb
-    {standard input}:444    .text.tc_read_rc:00000000 $t
-    {standard input}:451    .text.tc_read_rc:00000000 tc_read_rc
-    {standard input}:495    .text.tc_write_ra:00000000 $t
-    {standard input}:502    .text.tc_write_ra:00000000 tc_write_ra
-    {standard input}:548    .text.tc_write_rb:00000000 $t
-    {standard input}:555    .text.tc_write_rb:00000000 tc_write_rb
-    {standard input}:601    .text.tc_write_rc:00000000 $t
-    {standard input}:608    .text.tc_write_rc:00000000 tc_write_rc
-    {standard input}:654    .text.tc_enable_interrupt:00000000 $t
-    {standard input}:661    .text.tc_enable_interrupt:00000000 tc_enable_interrupt
-    {standard input}:709    .text.tc_disable_interrupt:00000000 $t
-    {standard input}:716    .text.tc_disable_interrupt:00000000 tc_disable_interrupt
-    {standard input}:764    .text.tc_get_interrupt_mask:00000000 $t
-    {standard input}:771    .text.tc_get_interrupt_mask:00000000 tc_get_interrupt_mask
-    {standard input}:817    .text.tc_get_status:00000000 $t
-    {standard input}:824    .text.tc_get_status:00000000 tc_get_status
-    {standard input}:870    .text.tc_find_mck_divisor:00000000 $t
-    {standard input}:877    .text.tc_find_mck_divisor:00000000 tc_find_mck_divisor
-    {standard input}:1009   .text.tc_enable_qdec_interrupt:00000000 $t
-    {standard input}:1016   .text.tc_enable_qdec_interrupt:00000000 tc_enable_qdec_interrupt
-    {standard input}:1057   .text.tc_disable_qdec_interrupt:00000000 $t
-    {standard input}:1064   .text.tc_disable_qdec_interrupt:00000000 tc_disable_qdec_interrupt
-    {standard input}:1105   .text.tc_get_qdec_interrupt_mask:00000000 $t
-    {standard input}:1112   .text.tc_get_qdec_interrupt_mask:00000000 tc_get_qdec_interrupt_mask
-    {standard input}:1151   .text.tc_get_qdec_interrupt_status:00000000 $t
-    {standard input}:1158   .text.tc_get_qdec_interrupt_status:00000000 tc_get_qdec_interrupt_status
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:35     .text.tc_init:00000000 tc_init
+    {standard input}:97     .text.tc_sync_trigger:00000000 $t
+    {standard input}:104    .text.tc_sync_trigger:00000000 tc_sync_trigger
+    {standard input}:144    .text.tc_set_block_mode:00000000 $t
+    {standard input}:151    .text.tc_set_block_mode:00000000 tc_set_block_mode
+    {standard input}:192    .text.tc_start:00000000 $t
+    {standard input}:199    .text.tc_start:00000000 tc_start
+    {standard input}:243    .text.tc_stop:00000000 $t
+    {standard input}:250    .text.tc_stop:00000000 tc_stop
+    {standard input}:294    .text.tc_read_cv:00000000 $t
+    {standard input}:301    .text.tc_read_cv:00000000 tc_read_cv
+    {standard input}:345    .text.tc_read_ra:00000000 $t
+    {standard input}:352    .text.tc_read_ra:00000000 tc_read_ra
+    {standard input}:396    .text.tc_read_rb:00000000 $t
+    {standard input}:403    .text.tc_read_rb:00000000 tc_read_rb
+    {standard input}:447    .text.tc_read_rc:00000000 $t
+    {standard input}:454    .text.tc_read_rc:00000000 tc_read_rc
+    {standard input}:498    .text.tc_write_ra:00000000 $t
+    {standard input}:505    .text.tc_write_ra:00000000 tc_write_ra
+    {standard input}:551    .text.tc_write_rb:00000000 $t
+    {standard input}:558    .text.tc_write_rb:00000000 tc_write_rb
+    {standard input}:604    .text.tc_write_rc:00000000 $t
+    {standard input}:611    .text.tc_write_rc:00000000 tc_write_rc
+    {standard input}:657    .text.tc_enable_interrupt:00000000 $t
+    {standard input}:664    .text.tc_enable_interrupt:00000000 tc_enable_interrupt
+    {standard input}:714    .text.tc_disable_interrupt:00000000 $t
+    {standard input}:721    .text.tc_disable_interrupt:00000000 tc_disable_interrupt
+    {standard input}:771    .text.tc_get_interrupt_mask:00000000 $t
+    {standard input}:778    .text.tc_get_interrupt_mask:00000000 tc_get_interrupt_mask
+    {standard input}:826    .text.tc_get_status:00000000 $t
+    {standard input}:833    .text.tc_get_status:00000000 tc_get_status
+    {standard input}:881    .text.tc_find_mck_divisor:00000000 $t
+    {standard input}:888    .text.tc_find_mck_divisor:00000000 tc_find_mck_divisor
+    {standard input}:1023   .text.tc_enable_qdec_interrupt:00000000 $t
+    {standard input}:1030   .text.tc_enable_qdec_interrupt:00000000 tc_enable_qdec_interrupt
+    {standard input}:1071   .text.tc_disable_qdec_interrupt:00000000 $t
+    {standard input}:1078   .text.tc_disable_qdec_interrupt:00000000 tc_disable_qdec_interrupt
+    {standard input}:1119   .text.tc_get_qdec_interrupt_mask:00000000 $t
+    {standard input}:1126   .text.tc_get_qdec_interrupt_mask:00000000 tc_get_qdec_interrupt_mask
+    {standard input}:1165   .text.tc_get_qdec_interrupt_status:00000000 $t
+    {standard input}:1172   .text.tc_get_qdec_interrupt_status:00000000 tc_get_qdec_interrupt_status
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
                            .group:00000000 wm4.newlib.h.18.5e5ca3429233af402d406a202f1fc1ac
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.features.h.22.026edb2397769f4ae13f35900dbdb560
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
@@ -1989,7 +2003,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.stdio.h.27.3fc80220048df77954e38daec3bb9670
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

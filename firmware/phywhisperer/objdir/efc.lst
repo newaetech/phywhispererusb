@@ -21,13 +21,14 @@
   25 0000 00       	 .space 1
   26              	 .section .text.cpu_irq_save,"ax",%progbits
   27              	 .align 1
-  28              	 .syntax unified
-  29              	 .thumb
-  30              	 .thumb_func
-  31              	 .fpu softvfp
-  33              	cpu_irq_save:
-  34              	.LFB59:
-  35              	 .file 1 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+  28              	 .arch armv7-m
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	cpu_irq_save:
+  35              	.LFB59:
+  36              	 .file 1 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
    1:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** /**
    2:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h ****  * \file
    3:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h ****  *
@@ -177,24 +178,24 @@
  147:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 
  148:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** static inline irqflags_t cpu_irq_save(void)
  149:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** {
-  36              	 .loc 1 149 0
-  37              	 .cfi_startproc
-  38              	 
+  37              	 .loc 1 149 1
+  38              	 .cfi_startproc
   39              	 
   40              	 
-  41 0000 80B4     	 push {r7}
-  42              	.LCFI0:
-  43              	 .cfi_def_cfa_offset 4
-  44              	 .cfi_offset 7,-4
-  45 0002 83B0     	 sub sp,sp,#12
-  46              	.LCFI1:
-  47              	 .cfi_def_cfa_offset 16
-  48 0004 00AF     	 add r7,sp,#0
-  49              	.LCFI2:
-  50              	 .cfi_def_cfa_register 7
-  51              	.LBB12:
-  52              	.LBB13:
-  53              	 .file 2 ".././hal/sam3u1c/inc/core_cmFunc.h"
+  41              	 
+  42 0000 80B4     	 push {r7}
+  43              	.LCFI0:
+  44              	 .cfi_def_cfa_offset 4
+  45              	 .cfi_offset 7,-4
+  46 0002 83B0     	 sub sp,sp,#12
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 16
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52              	.LBB12:
+  53              	.LBB13:
+  54              	 .file 2 ".././hal/sam3u1c/inc/core_cmFunc.h"
    1:.././hal/sam3u1c/inc/core_cmFunc.h **** /**************************************************************************//**
    2:.././hal/sam3u1c/inc/core_cmFunc.h ****  * @file     core_cmFunc.h
    3:.././hal/sam3u1c/inc/core_cmFunc.h ****  * @brief    CMSIS Cortex-M Core Function Access Header File
@@ -663,42 +664,43 @@
  466:.././hal/sam3u1c/inc/core_cmFunc.h ****   uint32_t result;
  467:.././hal/sam3u1c/inc/core_cmFunc.h **** 
  468:.././hal/sam3u1c/inc/core_cmFunc.h ****   __ASM volatile ("MRS %0, primask" : "=r" (result) );
-  54              	 .loc 2 468 0
-  55              	 .syntax unified
-  56              	
-  57 0006 EFF31083 	 MRS r3,primask
-  58              	
-  59              	 .thumb
-  60              	 .syntax unified
-  61 000a 3B60     	 str r3,[r7]
+  55              	 .loc 2 468 3
+  56              	 .syntax unified
+  57              	
+  58 0006 EFF31083 	 MRS r3,primask
+  59              	
+  60              	 .thumb
+  61              	 .syntax unified
+  62 000a 3B60     	 str r3,[r7]
  469:.././hal/sam3u1c/inc/core_cmFunc.h ****   return(result);
-  62              	 .loc 2 469 0
-  63 000c 3B68     	 ldr r3,[r7]
-  64              	.LBE13:
-  65              	.LBE12:
+  63              	 .loc 2 469 9
+  64 000c 3B68     	 ldr r3,[r7]
+  65              	.LBE13:
+  66              	.LBE12:
  150:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 	irqflags_t flags = cpu_irq_is_enabled();
-  66              	 .loc 1 150 0
-  67 000e 002B     	 cmp r3,#0
-  68 0010 0CBF     	 ite eq
-  69 0012 0123     	 moveq r3,#1
-  70 0014 0023     	 movne r3,#0
-  71 0016 DBB2     	 uxtb r3,r3
-  72 0018 7B60     	 str r3,[r7,#4]
-  73              	.LBB14:
-  74              	.LBB15:
+  67              	 .loc 1 150 21
+  68 000e 002B     	 cmp r3,#0
+  69 0010 0CBF     	 ite eq
+  70 0012 0123     	 moveq r3,#1
+  71 0014 0023     	 movne r3,#0
+  72 0016 DBB2     	 uxtb r3,r3
+  73              	 .loc 1 150 13
+  74 0018 7B60     	 str r3,[r7,#4]
+  75              	.LBB14:
+  76              	.LBB15:
  328:.././hal/sam3u1c/inc/core_cmFunc.h **** }
-  75              	 .loc 2 328 0
-  76              	 .syntax unified
-  77              	
-  78 001a 72B6     	 cpsid i
+  77              	 .loc 2 328 3
+  78              	 .syntax unified
   79              	
-  80              	 .thumb
-  81              	 .syntax unified
-  82              	.LBE15:
-  83              	.LBE14:
-  84              	.LBB16:
-  85              	.LBB17:
-  86              	 .file 3 ".././hal/sam3u1c/inc/core_cmInstr.h"
+  80 001a 72B6     	 cpsid i
+  81              	
+  82              	 .thumb
+  83              	 .syntax unified
+  84              	.LBE15:
+  85              	.LBE14:
+  86              	.LBB16:
+  87              	.LBB17:
+  88              	 .file 3 ".././hal/sam3u1c/inc/core_cmInstr.h"
    1:.././hal/sam3u1c/inc/core_cmInstr.h **** /**************************************************************************//**
    2:.././hal/sam3u1c/inc/core_cmInstr.h ****  * @file     core_cmInstr.h
    3:.././hal/sam3u1c/inc/core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
@@ -1053,189 +1055,190 @@
  352:.././hal/sam3u1c/inc/core_cmInstr.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __DMB(void)
  353:.././hal/sam3u1c/inc/core_cmInstr.h **** {
  354:.././hal/sam3u1c/inc/core_cmInstr.h ****   __ASM volatile ("dmb");
-  87              	 .loc 3 354 0
-  88              	 .syntax unified
-  89              	
-  90 001c BFF35F8F 	 dmb
+  89              	 .loc 3 354 3
+  90              	 .syntax unified
   91              	
-  92              	 .thumb
-  93              	 .syntax unified
-  94              	.LBE17:
-  95              	.LBE16:
+  92 001c BFF35F8F 	 dmb
+  93              	
+  94              	 .thumb
+  95              	 .syntax unified
+  96              	.LBE17:
+  97              	.LBE16:
  151:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 	cpu_irq_disable();
-  96              	 .loc 1 151 0
-  97 0020 044B     	 ldr r3,.L4
-  98 0022 0022     	 movs r2,#0
-  99 0024 1A70     	 strb r2,[r3]
+  98              	 .loc 1 151 2
+  99 0020 044B     	 ldr r3,.L4
+ 100 0022 0022     	 movs r2,#0
+ 101 0024 1A70     	 strb r2,[r3]
  152:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 	return flags;
- 100              	 .loc 1 152 0
- 101 0026 7B68     	 ldr r3,[r7,#4]
+ 102              	 .loc 1 152 9
+ 103 0026 7B68     	 ldr r3,[r7,#4]
  153:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** }
- 102              	 .loc 1 153 0
- 103 0028 1846     	 mov r0,r3
- 104 002a 0C37     	 adds r7,r7,#12
- 105              	.LCFI3:
- 106              	 .cfi_def_cfa_offset 4
- 107 002c BD46     	 mov sp,r7
- 108              	.LCFI4:
- 109              	 .cfi_def_cfa_register 13
- 110              	 
- 111 002e 80BC     	 pop {r7}
- 112              	.LCFI5:
- 113              	 .cfi_restore 7
- 114              	 .cfi_def_cfa_offset 0
- 115 0030 7047     	 bx lr
- 116              	.L5:
- 117 0032 00BF     	 .align 2
- 118              	.L4:
- 119 0034 00000000 	 .word g_interrupt_enabled
- 120              	 .cfi_endproc
- 121              	.LFE59:
- 123              	 .section .text.cpu_irq_is_enabled_flags,"ax",%progbits
- 124              	 .align 1
- 125              	 .syntax unified
- 126              	 .thumb
- 127              	 .thumb_func
- 128              	 .fpu softvfp
- 130              	cpu_irq_is_enabled_flags:
- 131              	.LFB60:
+ 104              	 .loc 1 153 1
+ 105 0028 1846     	 mov r0,r3
+ 106 002a 0C37     	 adds r7,r7,#12
+ 107              	.LCFI3:
+ 108              	 .cfi_def_cfa_offset 4
+ 109 002c BD46     	 mov sp,r7
+ 110              	.LCFI4:
+ 111              	 .cfi_def_cfa_register 13
+ 112              	 
+ 113 002e 80BC     	 pop {r7}
+ 114              	.LCFI5:
+ 115              	 .cfi_restore 7
+ 116              	 .cfi_def_cfa_offset 0
+ 117 0030 7047     	 bx lr
+ 118              	.L5:
+ 119 0032 00BF     	 .align 2
+ 120              	.L4:
+ 121 0034 00000000 	 .word g_interrupt_enabled
+ 122              	 .cfi_endproc
+ 123              	.LFE59:
+ 125              	 .section .text.cpu_irq_is_enabled_flags,"ax",%progbits
+ 126              	 .align 1
+ 127              	 .syntax unified
+ 128              	 .thumb
+ 129              	 .thumb_func
+ 130              	 .fpu softvfp
+ 132              	cpu_irq_is_enabled_flags:
+ 133              	.LFB60:
  154:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 
  155:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** static inline bool cpu_irq_is_enabled_flags(irqflags_t flags)
  156:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** {
- 132              	 .loc 1 156 0
- 133              	 .cfi_startproc
- 134              	 
- 135              	 
+ 134              	 .loc 1 156 1
+ 135              	 .cfi_startproc
  136              	 
- 137 0000 80B4     	 push {r7}
- 138              	.LCFI6:
- 139              	 .cfi_def_cfa_offset 4
- 140              	 .cfi_offset 7,-4
- 141 0002 83B0     	 sub sp,sp,#12
- 142              	.LCFI7:
- 143              	 .cfi_def_cfa_offset 16
- 144 0004 00AF     	 add r7,sp,#0
- 145              	.LCFI8:
- 146              	 .cfi_def_cfa_register 7
- 147 0006 7860     	 str r0,[r7,#4]
+ 137              	 
+ 138              	 
+ 139 0000 80B4     	 push {r7}
+ 140              	.LCFI6:
+ 141              	 .cfi_def_cfa_offset 4
+ 142              	 .cfi_offset 7,-4
+ 143 0002 83B0     	 sub sp,sp,#12
+ 144              	.LCFI7:
+ 145              	 .cfi_def_cfa_offset 16
+ 146 0004 00AF     	 add r7,sp,#0
+ 147              	.LCFI8:
+ 148              	 .cfi_def_cfa_register 7
+ 149 0006 7860     	 str r0,[r7,#4]
  157:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 	return (flags);
- 148              	 .loc 1 157 0
- 149 0008 7B68     	 ldr r3,[r7,#4]
- 150 000a 002B     	 cmp r3,#0
- 151 000c 14BF     	 ite ne
- 152 000e 0123     	 movne r3,#1
- 153 0010 0023     	 moveq r3,#0
- 154 0012 DBB2     	 uxtb r3,r3
+ 150              	 .loc 1 157 9
+ 151 0008 7B68     	 ldr r3,[r7,#4]
+ 152 000a 002B     	 cmp r3,#0
+ 153 000c 14BF     	 ite ne
+ 154 000e 0123     	 movne r3,#1
+ 155 0010 0023     	 moveq r3,#0
+ 156 0012 DBB2     	 uxtb r3,r3
  158:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** }
- 155              	 .loc 1 158 0
- 156 0014 1846     	 mov r0,r3
- 157 0016 0C37     	 adds r7,r7,#12
- 158              	.LCFI9:
- 159              	 .cfi_def_cfa_offset 4
- 160 0018 BD46     	 mov sp,r7
- 161              	.LCFI10:
- 162              	 .cfi_def_cfa_register 13
- 163              	 
- 164 001a 80BC     	 pop {r7}
- 165              	.LCFI11:
- 166              	 .cfi_restore 7
- 167              	 .cfi_def_cfa_offset 0
- 168 001c 7047     	 bx lr
- 169              	 .cfi_endproc
- 170              	.LFE60:
- 172              	 .section .text.cpu_irq_restore,"ax",%progbits
- 173              	 .align 1
- 174              	 .syntax unified
- 175              	 .thumb
- 176              	 .thumb_func
- 177              	 .fpu softvfp
- 179              	cpu_irq_restore:
- 180              	.LFB61:
+ 157              	 .loc 1 158 1
+ 158 0014 1846     	 mov r0,r3
+ 159 0016 0C37     	 adds r7,r7,#12
+ 160              	.LCFI9:
+ 161              	 .cfi_def_cfa_offset 4
+ 162 0018 BD46     	 mov sp,r7
+ 163              	.LCFI10:
+ 164              	 .cfi_def_cfa_register 13
+ 165              	 
+ 166 001a 80BC     	 pop {r7}
+ 167              	.LCFI11:
+ 168              	 .cfi_restore 7
+ 169              	 .cfi_def_cfa_offset 0
+ 170 001c 7047     	 bx lr
+ 171              	 .cfi_endproc
+ 172              	.LFE60:
+ 174              	 .section .text.cpu_irq_restore,"ax",%progbits
+ 175              	 .align 1
+ 176              	 .syntax unified
+ 177              	 .thumb
+ 178              	 .thumb_func
+ 179              	 .fpu softvfp
+ 181              	cpu_irq_restore:
+ 182              	.LFB61:
  159:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 
  160:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** static inline void cpu_irq_restore(irqflags_t flags)
  161:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** {
- 181              	 .loc 1 161 0
- 182              	 .cfi_startproc
- 183              	 
- 184              	 
- 185 0000 80B5     	 push {r7,lr}
- 186              	.LCFI12:
- 187              	 .cfi_def_cfa_offset 8
- 188              	 .cfi_offset 7,-8
- 189              	 .cfi_offset 14,-4
- 190 0002 82B0     	 sub sp,sp,#8
- 191              	.LCFI13:
- 192              	 .cfi_def_cfa_offset 16
- 193 0004 00AF     	 add r7,sp,#0
- 194              	.LCFI14:
- 195              	 .cfi_def_cfa_register 7
- 196 0006 7860     	 str r0,[r7,#4]
+ 183              	 .loc 1 161 1
+ 184              	 .cfi_startproc
+ 185              	 
+ 186              	 
+ 187 0000 80B5     	 push {r7,lr}
+ 188              	.LCFI12:
+ 189              	 .cfi_def_cfa_offset 8
+ 190              	 .cfi_offset 7,-8
+ 191              	 .cfi_offset 14,-4
+ 192 0002 82B0     	 sub sp,sp,#8
+ 193              	.LCFI13:
+ 194              	 .cfi_def_cfa_offset 16
+ 195 0004 00AF     	 add r7,sp,#0
+ 196              	.LCFI14:
+ 197              	 .cfi_def_cfa_register 7
+ 198 0006 7860     	 str r0,[r7,#4]
  162:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 	if (cpu_irq_is_enabled_flags(flags))
- 197              	 .loc 1 162 0
- 198 0008 7868     	 ldr r0,[r7,#4]
- 199 000a 074B     	 ldr r3,.L11
- 200 000c 9847     	 blx r3
- 201              	.LVL0:
- 202 000e 0346     	 mov r3,r0
- 203 0010 002B     	 cmp r3,#0
- 204 0012 05D0     	 beq .L10
+ 199              	 .loc 1 162 6
+ 200 0008 7868     	 ldr r0,[r7,#4]
+ 201 000a 074B     	 ldr r3,.L11
+ 202 000c 9847     	 blx r3
+ 203              	.LVL0:
+ 204 000e 0346     	 mov r3,r0
+ 205              	 .loc 1 162 5
+ 206 0010 002B     	 cmp r3,#0
+ 207 0012 05D0     	 beq .L10
  163:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** 		cpu_irq_enable();
- 205              	 .loc 1 163 0
- 206 0014 054B     	 ldr r3,.L11+4
- 207 0016 0122     	 movs r2,#1
- 208 0018 1A70     	 strb r2,[r3]
- 209              	.LBB18:
- 210              	.LBB19:
- 211              	 .loc 3 354 0
- 212              	 .syntax unified
- 213              	
- 214 001a BFF35F8F 	 dmb
- 215              	
- 216              	 .thumb
- 217              	 .syntax unified
- 218              	.LBE19:
- 219              	.LBE18:
- 220              	.LBB20:
- 221              	.LBB21:
+ 208              	 .loc 1 163 3
+ 209 0014 054B     	 ldr r3,.L11+4
+ 210 0016 0122     	 movs r2,#1
+ 211 0018 1A70     	 strb r2,[r3]
+ 212              	.LBB18:
+ 213              	.LBB19:
+ 214              	 .loc 3 354 3
+ 215              	 .syntax unified
+ 216              	
+ 217 001a BFF35F8F 	 dmb
+ 218              	
+ 219              	 .thumb
+ 220              	 .syntax unified
+ 221              	.LBE19:
+ 222              	.LBE18:
+ 223              	.LBB20:
+ 224              	.LBB21:
  317:.././hal/sam3u1c/inc/core_cmFunc.h **** }
- 222              	 .loc 2 317 0
- 223              	 .syntax unified
- 224              	
- 225 001e 62B6     	 cpsie i
- 226              	
- 227              	 .thumb
- 228              	 .syntax unified
- 229              	.L10:
- 230              	.LBE21:
- 231              	.LBE20:
+ 225              	 .loc 2 317 3
+ 226              	 .syntax unified
+ 227              	
+ 228 001e 62B6     	 cpsie i
+ 229              	
+ 230              	 .thumb
+ 231              	 .syntax unified
+ 232              	.L10:
+ 233              	.LBE21:
+ 234              	.LBE20:
  164:.././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h **** }
- 232              	 .loc 1 164 0
- 233 0020 00BF     	 nop
- 234 0022 0837     	 adds r7,r7,#8
- 235              	.LCFI15:
- 236              	 .cfi_def_cfa_offset 8
- 237 0024 BD46     	 mov sp,r7
- 238              	.LCFI16:
- 239              	 .cfi_def_cfa_register 13
- 240              	 
- 241 0026 80BD     	 pop {r7,pc}
- 242              	.L12:
- 243              	 .align 2
- 244              	.L11:
- 245 0028 00000000 	 .word cpu_irq_is_enabled_flags
- 246 002c 00000000 	 .word g_interrupt_enabled
- 247              	 .cfi_endproc
- 248              	.LFE61:
- 250              	 .section .text.efc_init,"ax",%progbits
- 251              	 .align 1
- 252              	 .global efc_init
- 253              	 .syntax unified
- 254              	 .thumb
- 255              	 .thumb_func
- 256              	 .fpu softvfp
- 258              	efc_init:
- 259              	.LFB69:
- 260              	 .file 4 ".././hal/sam3u1c/efc.c"
+ 235              	 .loc 1 164 1
+ 236 0020 00BF     	 nop
+ 237 0022 0837     	 adds r7,r7,#8
+ 238              	.LCFI15:
+ 239              	 .cfi_def_cfa_offset 8
+ 240 0024 BD46     	 mov sp,r7
+ 241              	.LCFI16:
+ 242              	 .cfi_def_cfa_register 13
+ 243              	 
+ 244 0026 80BD     	 pop {r7,pc}
+ 245              	.L12:
+ 246              	 .align 2
+ 247              	.L11:
+ 248 0028 00000000 	 .word cpu_irq_is_enabled_flags
+ 249 002c 00000000 	 .word g_interrupt_enabled
+ 250              	 .cfi_endproc
+ 251              	.LFE61:
+ 253              	 .section .text.efc_init,"ax",%progbits
+ 254              	 .align 1
+ 255              	 .global efc_init
+ 256              	 .syntax unified
+ 257              	 .thumb
+ 258              	 .thumb_func
+ 259              	 .fpu softvfp
+ 261              	efc_init:
+ 262              	.LFB69:
+ 263              	 .file 4 ".././hal/sam3u1c/efc.c"
    1:.././hal/sam3u1c/efc.c **** /**
    2:.././hal/sam3u1c/efc.c ****  * \file
    3:.././hal/sam3u1c/efc.c ****  *
@@ -1350,69 +1353,70 @@
  112:.././hal/sam3u1c/efc.c ****  */
  113:.././hal/sam3u1c/efc.c **** uint32_t efc_init(Efc *p_efc, uint32_t ul_access_mode, uint32_t ul_fws)
  114:.././hal/sam3u1c/efc.c **** {
- 261              	 .loc 4 114 0
- 262              	 .cfi_startproc
- 263              	 
- 264              	 
- 265 0000 80B5     	 push {r7,lr}
- 266              	.LCFI17:
- 267              	 .cfi_def_cfa_offset 8
- 268              	 .cfi_offset 7,-8
- 269              	 .cfi_offset 14,-4
- 270 0002 84B0     	 sub sp,sp,#16
- 271              	.LCFI18:
- 272              	 .cfi_def_cfa_offset 24
- 273 0004 00AF     	 add r7,sp,#0
- 274              	.LCFI19:
- 275              	 .cfi_def_cfa_register 7
- 276 0006 F860     	 str r0,[r7,#12]
- 277 0008 B960     	 str r1,[r7,#8]
- 278 000a 7A60     	 str r2,[r7,#4]
+ 264              	 .loc 4 114 1
+ 265              	 .cfi_startproc
+ 266              	 
+ 267              	 
+ 268 0000 80B5     	 push {r7,lr}
+ 269              	.LCFI17:
+ 270              	 .cfi_def_cfa_offset 8
+ 271              	 .cfi_offset 7,-8
+ 272              	 .cfi_offset 14,-4
+ 273 0002 84B0     	 sub sp,sp,#16
+ 274              	.LCFI18:
+ 275              	 .cfi_def_cfa_offset 24
+ 276 0004 00AF     	 add r7,sp,#0
+ 277              	.LCFI19:
+ 278              	 .cfi_def_cfa_register 7
+ 279 0006 F860     	 str r0,[r7,#12]
+ 280 0008 B960     	 str r1,[r7,#8]
+ 281 000a 7A60     	 str r2,[r7,#4]
  115:.././hal/sam3u1c/efc.c **** #if (SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
  116:.././hal/sam3u1c/efc.c **** 	efc_write_fmr(p_efc, ul_access_mode | EEFC_FMR_FWS(ul_fws) | EEFC_FMR_CLOE);
  117:.././hal/sam3u1c/efc.c **** #else
  118:.././hal/sam3u1c/efc.c **** 	efc_write_fmr(p_efc, ul_access_mode | EEFC_FMR_FWS(ul_fws));
- 279              	 .loc 4 118 0
- 280 000c 7B68     	 ldr r3,[r7,#4]
- 281 000e 1B02     	 lsls r3,r3,#8
- 282 0010 03F47062 	 and r2,r3,#3840
- 283 0014 BB68     	 ldr r3,[r7,#8]
- 284 0016 1343     	 orrs r3,r3,r2
- 285 0018 1946     	 mov r1,r3
- 286 001a F868     	 ldr r0,[r7,#12]
- 287 001c 034B     	 ldr r3,.L15
- 288 001e 9847     	 blx r3
- 289              	.LVL1:
+ 282              	 .loc 4 118 40
+ 283 000c 7B68     	 ldr r3,[r7,#4]
+ 284 000e 1B02     	 lsls r3,r3,#8
+ 285 0010 03F47062 	 and r2,r3,#3840
+ 286              	 .loc 4 118 2
+ 287 0014 BB68     	 ldr r3,[r7,#8]
+ 288 0016 1343     	 orrs r3,r3,r2
+ 289 0018 1946     	 mov r1,r3
+ 290 001a F868     	 ldr r0,[r7,#12]
+ 291 001c 034B     	 ldr r3,.L15
+ 292 001e 9847     	 blx r3
+ 293              	.LVL1:
  119:.././hal/sam3u1c/efc.c **** #endif	
  120:.././hal/sam3u1c/efc.c **** 	return EFC_RC_OK;
- 290              	 .loc 4 120 0
- 291 0020 0023     	 movs r3,#0
+ 294              	 .loc 4 120 9
+ 295 0020 0023     	 movs r3,#0
  121:.././hal/sam3u1c/efc.c **** }
- 292              	 .loc 4 121 0
- 293 0022 1846     	 mov r0,r3
- 294 0024 1037     	 adds r7,r7,#16
- 295              	.LCFI20:
- 296              	 .cfi_def_cfa_offset 8
- 297 0026 BD46     	 mov sp,r7
- 298              	.LCFI21:
- 299              	 .cfi_def_cfa_register 13
- 300              	 
- 301 0028 80BD     	 pop {r7,pc}
- 302              	.L16:
- 303 002a 00BF     	 .align 2
- 304              	.L15:
- 305 002c 00000000 	 .word efc_write_fmr
- 306              	 .cfi_endproc
- 307              	.LFE69:
- 309              	 .section .text.efc_enable_frdy_interrupt,"ax",%progbits
- 310              	 .align 1
- 311              	 .global efc_enable_frdy_interrupt
- 312              	 .syntax unified
- 313              	 .thumb
- 314              	 .thumb_func
- 315              	 .fpu softvfp
- 317              	efc_enable_frdy_interrupt:
- 318              	.LFB70:
+ 296              	 .loc 4 121 1
+ 297 0022 1846     	 mov r0,r3
+ 298 0024 1037     	 adds r7,r7,#16
+ 299              	.LCFI20:
+ 300              	 .cfi_def_cfa_offset 8
+ 301 0026 BD46     	 mov sp,r7
+ 302              	.LCFI21:
+ 303              	 .cfi_def_cfa_register 13
+ 304              	 
+ 305 0028 80BD     	 pop {r7,pc}
+ 306              	.L16:
+ 307 002a 00BF     	 .align 2
+ 308              	.L15:
+ 309 002c 00000000 	 .word efc_write_fmr
+ 310              	 .cfi_endproc
+ 311              	.LFE69:
+ 313              	 .section .text.efc_enable_frdy_interrupt,"ax",%progbits
+ 314              	 .align 1
+ 315              	 .global efc_enable_frdy_interrupt
+ 316              	 .syntax unified
+ 317              	 .thumb
+ 318              	 .thumb_func
+ 319              	 .fpu softvfp
+ 321              	efc_enable_frdy_interrupt:
+ 322              	.LFB70:
  122:.././hal/sam3u1c/efc.c **** 
  123:.././hal/sam3u1c/efc.c **** #if (SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
  124:.././hal/sam3u1c/efc.c **** /**
@@ -1447,63 +1451,63 @@
  153:.././hal/sam3u1c/efc.c ****  */
  154:.././hal/sam3u1c/efc.c **** void efc_enable_frdy_interrupt(Efc *p_efc)
  155:.././hal/sam3u1c/efc.c **** {
- 319              	 .loc 4 155 0
- 320              	 .cfi_startproc
- 321              	 
- 322              	 
- 323 0000 80B5     	 push {r7,lr}
- 324              	.LCFI22:
- 325              	 .cfi_def_cfa_offset 8
- 326              	 .cfi_offset 7,-8
- 327              	 .cfi_offset 14,-4
- 328 0002 84B0     	 sub sp,sp,#16
- 329              	.LCFI23:
- 330              	 .cfi_def_cfa_offset 24
- 331 0004 00AF     	 add r7,sp,#0
- 332              	.LCFI24:
- 333              	 .cfi_def_cfa_register 7
- 334 0006 7860     	 str r0,[r7,#4]
+ 323              	 .loc 4 155 1
+ 324              	 .cfi_startproc
+ 325              	 
+ 326              	 
+ 327 0000 80B5     	 push {r7,lr}
+ 328              	.LCFI22:
+ 329              	 .cfi_def_cfa_offset 8
+ 330              	 .cfi_offset 7,-8
+ 331              	 .cfi_offset 14,-4
+ 332 0002 84B0     	 sub sp,sp,#16
+ 333              	.LCFI23:
+ 334              	 .cfi_def_cfa_offset 24
+ 335 0004 00AF     	 add r7,sp,#0
+ 336              	.LCFI24:
+ 337              	 .cfi_def_cfa_register 7
+ 338 0006 7860     	 str r0,[r7,#4]
  156:.././hal/sam3u1c/efc.c **** 	uint32_t ul_fmr = p_efc->EEFC_FMR;
- 335              	 .loc 4 156 0
- 336 0008 7B68     	 ldr r3,[r7,#4]
- 337 000a 1B68     	 ldr r3,[r3]
- 338 000c FB60     	 str r3,[r7,#12]
+ 339              	 .loc 4 156 11
+ 340 0008 7B68     	 ldr r3,[r7,#4]
+ 341 000a 1B68     	 ldr r3,[r3]
+ 342 000c FB60     	 str r3,[r7,#12]
  157:.././hal/sam3u1c/efc.c **** 
  158:.././hal/sam3u1c/efc.c **** 	efc_write_fmr(p_efc, ul_fmr | EEFC_FMR_FRDY);
- 339              	 .loc 4 158 0
- 340 000e FB68     	 ldr r3,[r7,#12]
- 341 0010 43F00103 	 orr r3,r3,#1
- 342 0014 1946     	 mov r1,r3
- 343 0016 7868     	 ldr r0,[r7,#4]
- 344 0018 024B     	 ldr r3,.L18
- 345 001a 9847     	 blx r3
- 346              	.LVL2:
+ 343              	 .loc 4 158 2
+ 344 000e FB68     	 ldr r3,[r7,#12]
+ 345 0010 43F00103 	 orr r3,r3,#1
+ 346 0014 1946     	 mov r1,r3
+ 347 0016 7868     	 ldr r0,[r7,#4]
+ 348 0018 024B     	 ldr r3,.L18
+ 349 001a 9847     	 blx r3
+ 350              	.LVL2:
  159:.././hal/sam3u1c/efc.c **** }
- 347              	 .loc 4 159 0
- 348 001c 00BF     	 nop
- 349 001e 1037     	 adds r7,r7,#16
- 350              	.LCFI25:
- 351              	 .cfi_def_cfa_offset 8
- 352 0020 BD46     	 mov sp,r7
- 353              	.LCFI26:
- 354              	 .cfi_def_cfa_register 13
- 355              	 
- 356 0022 80BD     	 pop {r7,pc}
- 357              	.L19:
- 358              	 .align 2
- 359              	.L18:
- 360 0024 00000000 	 .word efc_write_fmr
- 361              	 .cfi_endproc
- 362              	.LFE70:
- 364              	 .section .text.efc_disable_frdy_interrupt,"ax",%progbits
- 365              	 .align 1
- 366              	 .global efc_disable_frdy_interrupt
- 367              	 .syntax unified
- 368              	 .thumb
- 369              	 .thumb_func
- 370              	 .fpu softvfp
- 372              	efc_disable_frdy_interrupt:
- 373              	.LFB71:
+ 351              	 .loc 4 159 1
+ 352 001c 00BF     	 nop
+ 353 001e 1037     	 adds r7,r7,#16
+ 354              	.LCFI25:
+ 355              	 .cfi_def_cfa_offset 8
+ 356 0020 BD46     	 mov sp,r7
+ 357              	.LCFI26:
+ 358              	 .cfi_def_cfa_register 13
+ 359              	 
+ 360 0022 80BD     	 pop {r7,pc}
+ 361              	.L19:
+ 362              	 .align 2
+ 363              	.L18:
+ 364 0024 00000000 	 .word efc_write_fmr
+ 365              	 .cfi_endproc
+ 366              	.LFE70:
+ 368              	 .section .text.efc_disable_frdy_interrupt,"ax",%progbits
+ 369              	 .align 1
+ 370              	 .global efc_disable_frdy_interrupt
+ 371              	 .syntax unified
+ 372              	 .thumb
+ 373              	 .thumb_func
+ 374              	 .fpu softvfp
+ 376              	efc_disable_frdy_interrupt:
+ 377              	.LFB71:
  160:.././hal/sam3u1c/efc.c **** 
  161:.././hal/sam3u1c/efc.c **** /**
  162:.././hal/sam3u1c/efc.c ****  * \brief Disable the flash ready interrupt.
@@ -1512,63 +1516,63 @@
  165:.././hal/sam3u1c/efc.c ****  */
  166:.././hal/sam3u1c/efc.c **** void efc_disable_frdy_interrupt(Efc *p_efc)
  167:.././hal/sam3u1c/efc.c **** {
- 374              	 .loc 4 167 0
- 375              	 .cfi_startproc
- 376              	 
- 377              	 
- 378 0000 80B5     	 push {r7,lr}
- 379              	.LCFI27:
- 380              	 .cfi_def_cfa_offset 8
- 381              	 .cfi_offset 7,-8
- 382              	 .cfi_offset 14,-4
- 383 0002 84B0     	 sub sp,sp,#16
- 384              	.LCFI28:
- 385              	 .cfi_def_cfa_offset 24
- 386 0004 00AF     	 add r7,sp,#0
- 387              	.LCFI29:
- 388              	 .cfi_def_cfa_register 7
- 389 0006 7860     	 str r0,[r7,#4]
+ 378              	 .loc 4 167 1
+ 379              	 .cfi_startproc
+ 380              	 
+ 381              	 
+ 382 0000 80B5     	 push {r7,lr}
+ 383              	.LCFI27:
+ 384              	 .cfi_def_cfa_offset 8
+ 385              	 .cfi_offset 7,-8
+ 386              	 .cfi_offset 14,-4
+ 387 0002 84B0     	 sub sp,sp,#16
+ 388              	.LCFI28:
+ 389              	 .cfi_def_cfa_offset 24
+ 390 0004 00AF     	 add r7,sp,#0
+ 391              	.LCFI29:
+ 392              	 .cfi_def_cfa_register 7
+ 393 0006 7860     	 str r0,[r7,#4]
  168:.././hal/sam3u1c/efc.c **** 	uint32_t ul_fmr = p_efc->EEFC_FMR;
- 390              	 .loc 4 168 0
- 391 0008 7B68     	 ldr r3,[r7,#4]
- 392 000a 1B68     	 ldr r3,[r3]
- 393 000c FB60     	 str r3,[r7,#12]
+ 394              	 .loc 4 168 11
+ 395 0008 7B68     	 ldr r3,[r7,#4]
+ 396 000a 1B68     	 ldr r3,[r3]
+ 397 000c FB60     	 str r3,[r7,#12]
  169:.././hal/sam3u1c/efc.c **** 
  170:.././hal/sam3u1c/efc.c **** 	efc_write_fmr(p_efc, ul_fmr & (~EEFC_FMR_FRDY));
- 394              	 .loc 4 170 0
- 395 000e FB68     	 ldr r3,[r7,#12]
- 396 0010 23F00103 	 bic r3,r3,#1
- 397 0014 1946     	 mov r1,r3
- 398 0016 7868     	 ldr r0,[r7,#4]
- 399 0018 024B     	 ldr r3,.L21
- 400 001a 9847     	 blx r3
- 401              	.LVL3:
+ 398              	 .loc 4 170 2
+ 399 000e FB68     	 ldr r3,[r7,#12]
+ 400 0010 23F00103 	 bic r3,r3,#1
+ 401 0014 1946     	 mov r1,r3
+ 402 0016 7868     	 ldr r0,[r7,#4]
+ 403 0018 024B     	 ldr r3,.L21
+ 404 001a 9847     	 blx r3
+ 405              	.LVL3:
  171:.././hal/sam3u1c/efc.c **** }
- 402              	 .loc 4 171 0
- 403 001c 00BF     	 nop
- 404 001e 1037     	 adds r7,r7,#16
- 405              	.LCFI30:
- 406              	 .cfi_def_cfa_offset 8
- 407 0020 BD46     	 mov sp,r7
- 408              	.LCFI31:
- 409              	 .cfi_def_cfa_register 13
- 410              	 
- 411 0022 80BD     	 pop {r7,pc}
- 412              	.L22:
- 413              	 .align 2
- 414              	.L21:
- 415 0024 00000000 	 .word efc_write_fmr
- 416              	 .cfi_endproc
- 417              	.LFE71:
- 419              	 .section .text.efc_set_flash_access_mode,"ax",%progbits
- 420              	 .align 1
- 421              	 .global efc_set_flash_access_mode
- 422              	 .syntax unified
- 423              	 .thumb
- 424              	 .thumb_func
- 425              	 .fpu softvfp
- 427              	efc_set_flash_access_mode:
- 428              	.LFB72:
+ 406              	 .loc 4 171 1
+ 407 001c 00BF     	 nop
+ 408 001e 1037     	 adds r7,r7,#16
+ 409              	.LCFI30:
+ 410              	 .cfi_def_cfa_offset 8
+ 411 0020 BD46     	 mov sp,r7
+ 412              	.LCFI31:
+ 413              	 .cfi_def_cfa_register 13
+ 414              	 
+ 415 0022 80BD     	 pop {r7,pc}
+ 416              	.L22:
+ 417              	 .align 2
+ 418              	.L21:
+ 419 0024 00000000 	 .word efc_write_fmr
+ 420              	 .cfi_endproc
+ 421              	.LFE71:
+ 423              	 .section .text.efc_set_flash_access_mode,"ax",%progbits
+ 424              	 .align 1
+ 425              	 .global efc_set_flash_access_mode
+ 426              	 .syntax unified
+ 427              	 .thumb
+ 428              	 .thumb_func
+ 429              	 .fpu softvfp
+ 431              	efc_set_flash_access_mode:
+ 432              	.LFB72:
  172:.././hal/sam3u1c/efc.c **** 
  173:.././hal/sam3u1c/efc.c **** /**
  174:.././hal/sam3u1c/efc.c ****  * \brief Set flash access mode.
@@ -1578,66 +1582,67 @@
  178:.././hal/sam3u1c/efc.c ****  */
  179:.././hal/sam3u1c/efc.c **** void efc_set_flash_access_mode(Efc *p_efc, uint32_t ul_mode)
  180:.././hal/sam3u1c/efc.c **** {
- 429              	 .loc 4 180 0
- 430              	 .cfi_startproc
- 431              	 
- 432              	 
- 433 0000 80B5     	 push {r7,lr}
- 434              	.LCFI32:
- 435              	 .cfi_def_cfa_offset 8
- 436              	 .cfi_offset 7,-8
- 437              	 .cfi_offset 14,-4
- 438 0002 84B0     	 sub sp,sp,#16
- 439              	.LCFI33:
- 440              	 .cfi_def_cfa_offset 24
- 441 0004 00AF     	 add r7,sp,#0
- 442              	.LCFI34:
- 443              	 .cfi_def_cfa_register 7
- 444 0006 7860     	 str r0,[r7,#4]
- 445 0008 3960     	 str r1,[r7]
+ 433              	 .loc 4 180 1
+ 434              	 .cfi_startproc
+ 435              	 
+ 436              	 
+ 437 0000 80B5     	 push {r7,lr}
+ 438              	.LCFI32:
+ 439              	 .cfi_def_cfa_offset 8
+ 440              	 .cfi_offset 7,-8
+ 441              	 .cfi_offset 14,-4
+ 442 0002 84B0     	 sub sp,sp,#16
+ 443              	.LCFI33:
+ 444              	 .cfi_def_cfa_offset 24
+ 445 0004 00AF     	 add r7,sp,#0
+ 446              	.LCFI34:
+ 447              	 .cfi_def_cfa_register 7
+ 448 0006 7860     	 str r0,[r7,#4]
+ 449 0008 3960     	 str r1,[r7]
  181:.././hal/sam3u1c/efc.c **** 	uint32_t ul_fmr = p_efc->EEFC_FMR & (~EEFC_FMR_FAM);
- 446              	 .loc 4 181 0
- 447 000a 7B68     	 ldr r3,[r7,#4]
- 448 000c 1B68     	 ldr r3,[r3]
- 449 000e 23F08073 	 bic r3,r3,#16777216
- 450 0012 FB60     	 str r3,[r7,#12]
+ 450              	 .loc 4 181 25
+ 451 000a 7B68     	 ldr r3,[r7,#4]
+ 452 000c 1B68     	 ldr r3,[r3]
+ 453              	 .loc 4 181 11
+ 454 000e 23F08073 	 bic r3,r3,#16777216
+ 455 0012 FB60     	 str r3,[r7,#12]
  182:.././hal/sam3u1c/efc.c **** 
  183:.././hal/sam3u1c/efc.c **** 	efc_write_fmr(p_efc, ul_fmr | ul_mode);
- 451              	 .loc 4 183 0
- 452 0014 FA68     	 ldr r2,[r7,#12]
- 453 0016 3B68     	 ldr r3,[r7]
- 454 0018 1343     	 orrs r3,r3,r2
- 455 001a 1946     	 mov r1,r3
- 456 001c 7868     	 ldr r0,[r7,#4]
- 457 001e 034B     	 ldr r3,.L24
- 458 0020 9847     	 blx r3
- 459              	.LVL4:
+ 456              	 .loc 4 183 2
+ 457 0014 FA68     	 ldr r2,[r7,#12]
+ 458 0016 3B68     	 ldr r3,[r7]
+ 459 0018 1343     	 orrs r3,r3,r2
+ 460 001a 1946     	 mov r1,r3
+ 461 001c 7868     	 ldr r0,[r7,#4]
+ 462 001e 034B     	 ldr r3,.L24
+ 463 0020 9847     	 blx r3
+ 464              	.LVL4:
  184:.././hal/sam3u1c/efc.c **** }
- 460              	 .loc 4 184 0
- 461 0022 00BF     	 nop
- 462 0024 1037     	 adds r7,r7,#16
- 463              	.LCFI35:
- 464              	 .cfi_def_cfa_offset 8
- 465 0026 BD46     	 mov sp,r7
- 466              	.LCFI36:
- 467              	 .cfi_def_cfa_register 13
- 468              	 
- 469 0028 80BD     	 pop {r7,pc}
- 470              	.L25:
- 471 002a 00BF     	 .align 2
- 472              	.L24:
- 473 002c 00000000 	 .word efc_write_fmr
- 474              	 .cfi_endproc
- 475              	.LFE72:
- 477              	 .section .text.efc_get_flash_access_mode,"ax",%progbits
- 478              	 .align 1
- 479              	 .global efc_get_flash_access_mode
- 480              	 .syntax unified
- 481              	 .thumb
- 482              	 .thumb_func
- 483              	 .fpu softvfp
- 485              	efc_get_flash_access_mode:
- 486              	.LFB73:
+ 465              	 .loc 4 184 1
+ 466 0022 00BF     	 nop
+ 467 0024 1037     	 adds r7,r7,#16
+ 468              	.LCFI35:
+ 469              	 .cfi_def_cfa_offset 8
+ 470 0026 BD46     	 mov sp,r7
+ 471              	.LCFI36:
+ 472              	 .cfi_def_cfa_register 13
+ 473              	 
+ 474 0028 80BD     	 pop {r7,pc}
+ 475              	.L25:
+ 476 002a 00BF     	 .align 2
+ 477              	.L24:
+ 478 002c 00000000 	 .word efc_write_fmr
+ 479              	 .cfi_endproc
+ 480              	.LFE72:
+ 482              	 .section .text.efc_get_flash_access_mode,"ax",%progbits
+ 483              	 .align 1
+ 484              	 .global efc_get_flash_access_mode
+ 485              	 .syntax unified
+ 486              	 .thumb
+ 487              	 .thumb_func
+ 488              	 .fpu softvfp
+ 490              	efc_get_flash_access_mode:
+ 491              	.LFB73:
  185:.././hal/sam3u1c/efc.c **** 
  186:.././hal/sam3u1c/efc.c **** /**
  187:.././hal/sam3u1c/efc.c ****  * \brief Get flash access mode.
@@ -1648,53 +1653,54 @@
  192:.././hal/sam3u1c/efc.c ****  */
  193:.././hal/sam3u1c/efc.c **** uint32_t efc_get_flash_access_mode(Efc *p_efc)
  194:.././hal/sam3u1c/efc.c **** {
- 487              	 .loc 4 194 0
- 488              	 .cfi_startproc
- 489              	 
- 490              	 
- 491              	 
- 492 0000 80B4     	 push {r7}
- 493              	.LCFI37:
- 494              	 .cfi_def_cfa_offset 4
- 495              	 .cfi_offset 7,-4
- 496 0002 83B0     	 sub sp,sp,#12
- 497              	.LCFI38:
- 498              	 .cfi_def_cfa_offset 16
- 499 0004 00AF     	 add r7,sp,#0
- 500              	.LCFI39:
- 501              	 .cfi_def_cfa_register 7
- 502 0006 7860     	 str r0,[r7,#4]
+ 492              	 .loc 4 194 1
+ 493              	 .cfi_startproc
+ 494              	 
+ 495              	 
+ 496              	 
+ 497 0000 80B4     	 push {r7}
+ 498              	.LCFI37:
+ 499              	 .cfi_def_cfa_offset 4
+ 500              	 .cfi_offset 7,-4
+ 501 0002 83B0     	 sub sp,sp,#12
+ 502              	.LCFI38:
+ 503              	 .cfi_def_cfa_offset 16
+ 504 0004 00AF     	 add r7,sp,#0
+ 505              	.LCFI39:
+ 506              	 .cfi_def_cfa_register 7
+ 507 0006 7860     	 str r0,[r7,#4]
  195:.././hal/sam3u1c/efc.c **** 	return (p_efc->EEFC_FMR & EEFC_FMR_FAM);
- 503              	 .loc 4 195 0
- 504 0008 7B68     	 ldr r3,[r7,#4]
- 505 000a 1B68     	 ldr r3,[r3]
- 506 000c 03F08073 	 and r3,r3,#16777216
+ 508              	 .loc 4 195 15
+ 509 0008 7B68     	 ldr r3,[r7,#4]
+ 510 000a 1B68     	 ldr r3,[r3]
+ 511              	 .loc 4 195 26
+ 512 000c 03F08073 	 and r3,r3,#16777216
  196:.././hal/sam3u1c/efc.c **** }
- 507              	 .loc 4 196 0
- 508 0010 1846     	 mov r0,r3
- 509 0012 0C37     	 adds r7,r7,#12
- 510              	.LCFI40:
- 511              	 .cfi_def_cfa_offset 4
- 512 0014 BD46     	 mov sp,r7
- 513              	.LCFI41:
- 514              	 .cfi_def_cfa_register 13
- 515              	 
- 516 0016 80BC     	 pop {r7}
- 517              	.LCFI42:
- 518              	 .cfi_restore 7
- 519              	 .cfi_def_cfa_offset 0
- 520 0018 7047     	 bx lr
- 521              	 .cfi_endproc
- 522              	.LFE73:
- 524              	 .section .text.efc_set_wait_state,"ax",%progbits
- 525              	 .align 1
- 526              	 .global efc_set_wait_state
- 527              	 .syntax unified
- 528              	 .thumb
- 529              	 .thumb_func
- 530              	 .fpu softvfp
- 532              	efc_set_wait_state:
- 533              	.LFB74:
+ 513              	 .loc 4 196 1
+ 514 0010 1846     	 mov r0,r3
+ 515 0012 0C37     	 adds r7,r7,#12
+ 516              	.LCFI40:
+ 517              	 .cfi_def_cfa_offset 4
+ 518 0014 BD46     	 mov sp,r7
+ 519              	.LCFI41:
+ 520              	 .cfi_def_cfa_register 13
+ 521              	 
+ 522 0016 80BC     	 pop {r7}
+ 523              	.LCFI42:
+ 524              	 .cfi_restore 7
+ 525              	 .cfi_def_cfa_offset 0
+ 526 0018 7047     	 bx lr
+ 527              	 .cfi_endproc
+ 528              	.LFE73:
+ 530              	 .section .text.efc_set_wait_state,"ax",%progbits
+ 531              	 .align 1
+ 532              	 .global efc_set_wait_state
+ 533              	 .syntax unified
+ 534              	 .thumb
+ 535              	 .thumb_func
+ 536              	 .fpu softvfp
+ 538              	efc_set_wait_state:
+ 539              	.LFB74:
  197:.././hal/sam3u1c/efc.c **** 
  198:.././hal/sam3u1c/efc.c **** /**
  199:.././hal/sam3u1c/efc.c ****  * \brief Set flash wait state.
@@ -1704,68 +1710,70 @@
  203:.././hal/sam3u1c/efc.c ****  */
  204:.././hal/sam3u1c/efc.c **** void efc_set_wait_state(Efc *p_efc, uint32_t ul_fws)
  205:.././hal/sam3u1c/efc.c **** {
- 534              	 .loc 4 205 0
- 535              	 .cfi_startproc
- 536              	 
- 537              	 
- 538 0000 80B5     	 push {r7,lr}
- 539              	.LCFI43:
- 540              	 .cfi_def_cfa_offset 8
- 541              	 .cfi_offset 7,-8
- 542              	 .cfi_offset 14,-4
- 543 0002 84B0     	 sub sp,sp,#16
- 544              	.LCFI44:
- 545              	 .cfi_def_cfa_offset 24
- 546 0004 00AF     	 add r7,sp,#0
- 547              	.LCFI45:
- 548              	 .cfi_def_cfa_register 7
- 549 0006 7860     	 str r0,[r7,#4]
- 550 0008 3960     	 str r1,[r7]
+ 540              	 .loc 4 205 1
+ 541              	 .cfi_startproc
+ 542              	 
+ 543              	 
+ 544 0000 80B5     	 push {r7,lr}
+ 545              	.LCFI43:
+ 546              	 .cfi_def_cfa_offset 8
+ 547              	 .cfi_offset 7,-8
+ 548              	 .cfi_offset 14,-4
+ 549 0002 84B0     	 sub sp,sp,#16
+ 550              	.LCFI44:
+ 551              	 .cfi_def_cfa_offset 24
+ 552 0004 00AF     	 add r7,sp,#0
+ 553              	.LCFI45:
+ 554              	 .cfi_def_cfa_register 7
+ 555 0006 7860     	 str r0,[r7,#4]
+ 556 0008 3960     	 str r1,[r7]
  206:.././hal/sam3u1c/efc.c **** 	uint32_t ul_fmr = p_efc->EEFC_FMR & (~EEFC_FMR_FWS_Msk);
- 551              	 .loc 4 206 0
- 552 000a 7B68     	 ldr r3,[r7,#4]
- 553 000c 1B68     	 ldr r3,[r3]
- 554 000e 23F47063 	 bic r3,r3,#3840
- 555 0012 FB60     	 str r3,[r7,#12]
+ 557              	 .loc 4 206 25
+ 558 000a 7B68     	 ldr r3,[r7,#4]
+ 559 000c 1B68     	 ldr r3,[r3]
+ 560              	 .loc 4 206 11
+ 561 000e 23F47063 	 bic r3,r3,#3840
+ 562 0012 FB60     	 str r3,[r7,#12]
  207:.././hal/sam3u1c/efc.c **** 
  208:.././hal/sam3u1c/efc.c **** 	efc_write_fmr(p_efc, ul_fmr | EEFC_FMR_FWS(ul_fws));
- 556              	 .loc 4 208 0
- 557 0014 3B68     	 ldr r3,[r7]
- 558 0016 1B02     	 lsls r3,r3,#8
- 559 0018 03F47062 	 and r2,r3,#3840
- 560 001c FB68     	 ldr r3,[r7,#12]
- 561 001e 1343     	 orrs r3,r3,r2
- 562 0020 1946     	 mov r1,r3
- 563 0022 7868     	 ldr r0,[r7,#4]
- 564 0024 024B     	 ldr r3,.L29
- 565 0026 9847     	 blx r3
- 566              	.LVL5:
+ 563              	 .loc 4 208 32
+ 564 0014 3B68     	 ldr r3,[r7]
+ 565 0016 1B02     	 lsls r3,r3,#8
+ 566 0018 03F47062 	 and r2,r3,#3840
+ 567              	 .loc 4 208 2
+ 568 001c FB68     	 ldr r3,[r7,#12]
+ 569 001e 1343     	 orrs r3,r3,r2
+ 570 0020 1946     	 mov r1,r3
+ 571 0022 7868     	 ldr r0,[r7,#4]
+ 572 0024 024B     	 ldr r3,.L29
+ 573 0026 9847     	 blx r3
+ 574              	.LVL5:
  209:.././hal/sam3u1c/efc.c **** }
- 567              	 .loc 4 209 0
- 568 0028 00BF     	 nop
- 569 002a 1037     	 adds r7,r7,#16
- 570              	.LCFI46:
- 571              	 .cfi_def_cfa_offset 8
- 572 002c BD46     	 mov sp,r7
- 573              	.LCFI47:
- 574              	 .cfi_def_cfa_register 13
- 575              	 
- 576 002e 80BD     	 pop {r7,pc}
- 577              	.L30:
- 578              	 .align 2
- 579              	.L29:
- 580 0030 00000000 	 .word efc_write_fmr
- 581              	 .cfi_endproc
- 582              	.LFE74:
- 584              	 .section .text.efc_get_wait_state,"ax",%progbits
- 585              	 .align 1
- 586              	 .global efc_get_wait_state
- 587              	 .syntax unified
- 588              	 .thumb
- 589              	 .thumb_func
- 590              	 .fpu softvfp
- 592              	efc_get_wait_state:
- 593              	.LFB75:
+ 575              	 .loc 4 209 1
+ 576 0028 00BF     	 nop
+ 577 002a 1037     	 adds r7,r7,#16
+ 578              	.LCFI46:
+ 579              	 .cfi_def_cfa_offset 8
+ 580 002c BD46     	 mov sp,r7
+ 581              	.LCFI47:
+ 582              	 .cfi_def_cfa_register 13
+ 583              	 
+ 584 002e 80BD     	 pop {r7,pc}
+ 585              	.L30:
+ 586              	 .align 2
+ 587              	.L29:
+ 588 0030 00000000 	 .word efc_write_fmr
+ 589              	 .cfi_endproc
+ 590              	.LFE74:
+ 592              	 .section .text.efc_get_wait_state,"ax",%progbits
+ 593              	 .align 1
+ 594              	 .global efc_get_wait_state
+ 595              	 .syntax unified
+ 596              	 .thumb
+ 597              	 .thumb_func
+ 598              	 .fpu softvfp
+ 600              	efc_get_wait_state:
+ 601              	.LFB75:
  210:.././hal/sam3u1c/efc.c **** 
  211:.././hal/sam3u1c/efc.c **** /**
  212:.././hal/sam3u1c/efc.c ****  * \brief Get flash wait state.
@@ -1776,54 +1784,55 @@
  217:.././hal/sam3u1c/efc.c ****  */
  218:.././hal/sam3u1c/efc.c **** uint32_t efc_get_wait_state(Efc *p_efc)
  219:.././hal/sam3u1c/efc.c **** {
- 594              	 .loc 4 219 0
- 595              	 .cfi_startproc
- 596              	 
- 597              	 
- 598              	 
- 599 0000 80B4     	 push {r7}
- 600              	.LCFI48:
- 601              	 .cfi_def_cfa_offset 4
- 602              	 .cfi_offset 7,-4
- 603 0002 83B0     	 sub sp,sp,#12
- 604              	.LCFI49:
- 605              	 .cfi_def_cfa_offset 16
- 606 0004 00AF     	 add r7,sp,#0
- 607              	.LCFI50:
- 608              	 .cfi_def_cfa_register 7
- 609 0006 7860     	 str r0,[r7,#4]
+ 602              	 .loc 4 219 1
+ 603              	 .cfi_startproc
+ 604              	 
+ 605              	 
+ 606              	 
+ 607 0000 80B4     	 push {r7}
+ 608              	.LCFI48:
+ 609              	 .cfi_def_cfa_offset 4
+ 610              	 .cfi_offset 7,-4
+ 611 0002 83B0     	 sub sp,sp,#12
+ 612              	.LCFI49:
+ 613              	 .cfi_def_cfa_offset 16
+ 614 0004 00AF     	 add r7,sp,#0
+ 615              	.LCFI50:
+ 616              	 .cfi_def_cfa_register 7
+ 617 0006 7860     	 str r0,[r7,#4]
  220:.././hal/sam3u1c/efc.c **** 	return ((p_efc->EEFC_FMR & EEFC_FMR_FWS_Msk) >> EEFC_FMR_FWS_Pos);
- 610              	 .loc 4 220 0
- 611 0008 7B68     	 ldr r3,[r7,#4]
- 612 000a 1B68     	 ldr r3,[r3]
- 613 000c 1B0A     	 lsrs r3,r3,#8
- 614 000e 03F00F03 	 and r3,r3,#15
+ 618              	 .loc 4 220 16
+ 619 0008 7B68     	 ldr r3,[r7,#4]
+ 620 000a 1B68     	 ldr r3,[r3]
+ 621              	 .loc 4 220 47
+ 622 000c 1B0A     	 lsrs r3,r3,#8
+ 623 000e 03F00F03 	 and r3,r3,#15
  221:.././hal/sam3u1c/efc.c **** }
- 615              	 .loc 4 221 0
- 616 0012 1846     	 mov r0,r3
- 617 0014 0C37     	 adds r7,r7,#12
- 618              	.LCFI51:
- 619              	 .cfi_def_cfa_offset 4
- 620 0016 BD46     	 mov sp,r7
- 621              	.LCFI52:
- 622              	 .cfi_def_cfa_register 13
- 623              	 
- 624 0018 80BC     	 pop {r7}
- 625              	.LCFI53:
- 626              	 .cfi_restore 7
- 627              	 .cfi_def_cfa_offset 0
- 628 001a 7047     	 bx lr
- 629              	 .cfi_endproc
- 630              	.LFE75:
- 632              	 .section .text.efc_perform_command,"ax",%progbits
- 633              	 .align 1
- 634              	 .global efc_perform_command
- 635              	 .syntax unified
- 636              	 .thumb
- 637              	 .thumb_func
- 638              	 .fpu softvfp
- 640              	efc_perform_command:
- 641              	.LFB76:
+ 624              	 .loc 4 221 1
+ 625 0012 1846     	 mov r0,r3
+ 626 0014 0C37     	 adds r7,r7,#12
+ 627              	.LCFI51:
+ 628              	 .cfi_def_cfa_offset 4
+ 629 0016 BD46     	 mov sp,r7
+ 630              	.LCFI52:
+ 631              	 .cfi_def_cfa_register 13
+ 632              	 
+ 633 0018 80BC     	 pop {r7}
+ 634              	.LCFI53:
+ 635              	 .cfi_restore 7
+ 636              	 .cfi_def_cfa_offset 0
+ 637 001a 7047     	 bx lr
+ 638              	 .cfi_endproc
+ 639              	.LFE75:
+ 641              	 .section .text.efc_perform_command,"ax",%progbits
+ 642              	 .align 1
+ 643              	 .global efc_perform_command
+ 644              	 .syntax unified
+ 645              	 .thumb
+ 646              	 .thumb_func
+ 647              	 .fpu softvfp
+ 649              	efc_perform_command:
+ 650              	.LFB76:
  222:.././hal/sam3u1c/efc.c **** 
  223:.././hal/sam3u1c/efc.c **** /**
  224:.././hal/sam3u1c/efc.c ****  * \brief Perform the given command and wait until its completion (or an error).
@@ -1841,113 +1850,113 @@
  236:.././hal/sam3u1c/efc.c **** uint32_t efc_perform_command(Efc *p_efc, uint32_t ul_command,
  237:.././hal/sam3u1c/efc.c **** 		uint32_t ul_argument)
  238:.././hal/sam3u1c/efc.c **** {
- 642              	 .loc 4 238 0
- 643              	 .cfi_startproc
- 644              	 
- 645              	 
- 646 0000 80B5     	 push {r7,lr}
- 647              	.LCFI54:
- 648              	 .cfi_def_cfa_offset 8
- 649              	 .cfi_offset 7,-8
- 650              	 .cfi_offset 14,-4
- 651 0002 86B0     	 sub sp,sp,#24
- 652              	.LCFI55:
- 653              	 .cfi_def_cfa_offset 32
- 654 0004 00AF     	 add r7,sp,#0
- 655              	.LCFI56:
- 656              	 .cfi_def_cfa_register 7
- 657 0006 F860     	 str r0,[r7,#12]
- 658 0008 B960     	 str r1,[r7,#8]
- 659 000a 7A60     	 str r2,[r7,#4]
+ 651              	 .loc 4 238 1
+ 652              	 .cfi_startproc
+ 653              	 
+ 654              	 
+ 655 0000 80B5     	 push {r7,lr}
+ 656              	.LCFI54:
+ 657              	 .cfi_def_cfa_offset 8
+ 658              	 .cfi_offset 7,-8
+ 659              	 .cfi_offset 14,-4
+ 660 0002 86B0     	 sub sp,sp,#24
+ 661              	.LCFI55:
+ 662              	 .cfi_def_cfa_offset 32
+ 663 0004 00AF     	 add r7,sp,#0
+ 664              	.LCFI56:
+ 665              	 .cfi_def_cfa_register 7
+ 666 0006 F860     	 str r0,[r7,#12]
+ 667 0008 B960     	 str r1,[r7,#8]
+ 668 000a 7A60     	 str r2,[r7,#4]
  239:.././hal/sam3u1c/efc.c **** 	uint32_t result;
  240:.././hal/sam3u1c/efc.c **** 	irqflags_t flags;
  241:.././hal/sam3u1c/efc.c **** 
  242:.././hal/sam3u1c/efc.c **** 	/* Unique ID commands are not supported. */
  243:.././hal/sam3u1c/efc.c **** 	if (ul_command == EFC_FCMD_STUI || ul_command == EFC_FCMD_SPUI) {
- 660              	 .loc 4 243 0
- 661 000c BB68     	 ldr r3,[r7,#8]
- 662 000e 0E2B     	 cmp r3,#14
- 663 0010 02D0     	 beq .L34
- 664              	 .loc 4 243 0 is_stmt 0 discriminator 1
- 665 0012 BB68     	 ldr r3,[r7,#8]
- 666 0014 0F2B     	 cmp r3,#15
- 667 0016 02D1     	 bne .L35
- 668              	.L34:
+ 669              	 .loc 4 243 5
+ 670 000c BB68     	 ldr r3,[r7,#8]
+ 671 000e 0E2B     	 cmp r3,#14
+ 672 0010 02D0     	 beq .L34
+ 673              	 .loc 4 243 34 discriminator 1
+ 674 0012 BB68     	 ldr r3,[r7,#8]
+ 675 0014 0F2B     	 cmp r3,#15
+ 676 0016 02D1     	 bne .L35
+ 677              	.L34:
  244:.././hal/sam3u1c/efc.c **** 		return EFC_RC_NOT_SUPPORT;
- 669              	 .loc 4 244 0 is_stmt 1
- 670 0018 4FF0FF33 	 mov r3,#-1
- 671 001c 16E0     	 b .L36
- 672              	.L35:
+ 678              	 .loc 4 244 10
+ 679 0018 4FF0FF33 	 mov r3,#-1
+ 680 001c 16E0     	 b .L36
+ 681              	.L35:
  245:.././hal/sam3u1c/efc.c **** 	}
  246:.././hal/sam3u1c/efc.c **** 
  247:.././hal/sam3u1c/efc.c **** 	flags = cpu_irq_save();
- 673              	 .loc 4 247 0
- 674 001e 0D4B     	 ldr r3,.L37
- 675 0020 9847     	 blx r3
- 676              	.LVL6:
- 677 0022 7861     	 str r0,[r7,#20]
+ 682              	 .loc 4 247 10
+ 683 001e 0D4B     	 ldr r3,.L37
+ 684 0020 9847     	 blx r3
+ 685              	.LVL6:
+ 686 0022 7861     	 str r0,[r7,#20]
  248:.././hal/sam3u1c/efc.c **** 	/* Use RAM Function. */
  249:.././hal/sam3u1c/efc.c **** 	result = efc_perform_fcr(p_efc,
  250:.././hal/sam3u1c/efc.c **** 			EEFC_FCR_FKEY_PASSWD | EEFC_FCR_FARG(ul_argument) |
- 678              	 .loc 4 250 0
- 679 0024 7B68     	 ldr r3,[r7,#4]
- 680 0026 1B02     	 lsls r3,r3,#8
- 681 0028 23F07F43 	 bic r3,r3,#-16777216
- 682 002c 23F0FF03 	 bic r3,r3,#255
+ 687              	 .loc 4 250 27
+ 688 0024 7B68     	 ldr r3,[r7,#4]
+ 689 0026 1B02     	 lsls r3,r3,#8
+ 690 0028 23F07F43 	 bic r3,r3,#-16777216
+ 691 002c 23F0FF03 	 bic r3,r3,#255
  251:.././hal/sam3u1c/efc.c **** 			EEFC_FCR_FCMD(ul_command));
- 683              	 .loc 4 251 0
- 684 0030 BA68     	 ldr r2,[r7,#8]
- 685 0032 D2B2     	 uxtb r2,r2
+ 692              	 .loc 4 251 4
+ 693 0030 BA68     	 ldr r2,[r7,#8]
+ 694 0032 D2B2     	 uxtb r2,r2
  250:.././hal/sam3u1c/efc.c **** 			EEFC_FCR_FCMD(ul_command));
- 686              	 .loc 4 250 0
- 687 0034 1343     	 orrs r3,r3,r2
+ 695              	 .loc 4 250 54
+ 696 0034 1343     	 orrs r3,r3,r2
  249:.././hal/sam3u1c/efc.c **** 			EEFC_FCR_FKEY_PASSWD | EEFC_FCR_FARG(ul_argument) |
- 688              	 .loc 4 249 0
- 689 0036 43F0B443 	 orr r3,r3,#1509949440
- 690 003a 1946     	 mov r1,r3
- 691 003c F868     	 ldr r0,[r7,#12]
- 692 003e 064B     	 ldr r3,.L37+4
- 693 0040 9847     	 blx r3
- 694              	.LVL7:
- 695 0042 3861     	 str r0,[r7,#16]
+ 697              	 .loc 4 249 11
+ 698 0036 43F0B443 	 orr r3,r3,#1509949440
+ 699 003a 1946     	 mov r1,r3
+ 700 003c F868     	 ldr r0,[r7,#12]
+ 701 003e 064B     	 ldr r3,.L37+4
+ 702 0040 9847     	 blx r3
+ 703              	.LVL7:
+ 704 0042 3861     	 str r0,[r7,#16]
  252:.././hal/sam3u1c/efc.c **** 	cpu_irq_restore(flags);
- 696              	 .loc 4 252 0
- 697 0044 7869     	 ldr r0,[r7,#20]
- 698 0046 054B     	 ldr r3,.L37+8
- 699 0048 9847     	 blx r3
- 700              	.LVL8:
+ 705              	 .loc 4 252 2
+ 706 0044 7869     	 ldr r0,[r7,#20]
+ 707 0046 054B     	 ldr r3,.L37+8
+ 708 0048 9847     	 blx r3
+ 709              	.LVL8:
  253:.././hal/sam3u1c/efc.c **** 	return result;
- 701              	 .loc 4 253 0
- 702 004a 3B69     	 ldr r3,[r7,#16]
- 703              	.L36:
+ 710              	 .loc 4 253 9
+ 711 004a 3B69     	 ldr r3,[r7,#16]
+ 712              	.L36:
  254:.././hal/sam3u1c/efc.c **** }
- 704              	 .loc 4 254 0
- 705 004c 1846     	 mov r0,r3
- 706 004e 1837     	 adds r7,r7,#24
- 707              	.LCFI57:
- 708              	 .cfi_def_cfa_offset 8
- 709 0050 BD46     	 mov sp,r7
- 710              	.LCFI58:
- 711              	 .cfi_def_cfa_register 13
- 712              	 
- 713 0052 80BD     	 pop {r7,pc}
- 714              	.L38:
- 715              	 .align 2
- 716              	.L37:
- 717 0054 00000000 	 .word cpu_irq_save
- 718 0058 00000000 	 .word efc_perform_fcr
- 719 005c 00000000 	 .word cpu_irq_restore
- 720              	 .cfi_endproc
- 721              	.LFE76:
- 723              	 .section .text.efc_get_status,"ax",%progbits
- 724              	 .align 1
- 725              	 .global efc_get_status
- 726              	 .syntax unified
- 727              	 .thumb
- 728              	 .thumb_func
- 729              	 .fpu softvfp
- 731              	efc_get_status:
- 732              	.LFB77:
+ 713              	 .loc 4 254 1
+ 714 004c 1846     	 mov r0,r3
+ 715 004e 1837     	 adds r7,r7,#24
+ 716              	.LCFI57:
+ 717              	 .cfi_def_cfa_offset 8
+ 718 0050 BD46     	 mov sp,r7
+ 719              	.LCFI58:
+ 720              	 .cfi_def_cfa_register 13
+ 721              	 
+ 722 0052 80BD     	 pop {r7,pc}
+ 723              	.L38:
+ 724              	 .align 2
+ 725              	.L37:
+ 726 0054 00000000 	 .word cpu_irq_save
+ 727 0058 00000000 	 .word efc_perform_fcr
+ 728 005c 00000000 	 .word cpu_irq_restore
+ 729              	 .cfi_endproc
+ 730              	.LFE76:
+ 732              	 .section .text.efc_get_status,"ax",%progbits
+ 733              	 .align 1
+ 734              	 .global efc_get_status
+ 735              	 .syntax unified
+ 736              	 .thumb
+ 737              	 .thumb_func
+ 738              	 .fpu softvfp
+ 740              	efc_get_status:
+ 741              	.LFB77:
  255:.././hal/sam3u1c/efc.c **** 
  256:.././hal/sam3u1c/efc.c **** /**
  257:.././hal/sam3u1c/efc.c ****  * \brief Get the current status of the EEFC.
@@ -1960,52 +1969,52 @@
  264:.././hal/sam3u1c/efc.c ****  */
  265:.././hal/sam3u1c/efc.c **** uint32_t efc_get_status(Efc *p_efc)
  266:.././hal/sam3u1c/efc.c **** {
- 733              	 .loc 4 266 0
- 734              	 .cfi_startproc
- 735              	 
- 736              	 
- 737              	 
- 738 0000 80B4     	 push {r7}
- 739              	.LCFI59:
- 740              	 .cfi_def_cfa_offset 4
- 741              	 .cfi_offset 7,-4
- 742 0002 83B0     	 sub sp,sp,#12
- 743              	.LCFI60:
- 744              	 .cfi_def_cfa_offset 16
- 745 0004 00AF     	 add r7,sp,#0
- 746              	.LCFI61:
- 747              	 .cfi_def_cfa_register 7
- 748 0006 7860     	 str r0,[r7,#4]
+ 742              	 .loc 4 266 1
+ 743              	 .cfi_startproc
+ 744              	 
+ 745              	 
+ 746              	 
+ 747 0000 80B4     	 push {r7}
+ 748              	.LCFI59:
+ 749              	 .cfi_def_cfa_offset 4
+ 750              	 .cfi_offset 7,-4
+ 751 0002 83B0     	 sub sp,sp,#12
+ 752              	.LCFI60:
+ 753              	 .cfi_def_cfa_offset 16
+ 754 0004 00AF     	 add r7,sp,#0
+ 755              	.LCFI61:
+ 756              	 .cfi_def_cfa_register 7
+ 757 0006 7860     	 str r0,[r7,#4]
  267:.././hal/sam3u1c/efc.c **** 	return p_efc->EEFC_FSR;
- 749              	 .loc 4 267 0
- 750 0008 7B68     	 ldr r3,[r7,#4]
- 751 000a 9B68     	 ldr r3,[r3,#8]
+ 758              	 .loc 4 267 14
+ 759 0008 7B68     	 ldr r3,[r7,#4]
+ 760 000a 9B68     	 ldr r3,[r3,#8]
  268:.././hal/sam3u1c/efc.c **** }
- 752              	 .loc 4 268 0
- 753 000c 1846     	 mov r0,r3
- 754 000e 0C37     	 adds r7,r7,#12
- 755              	.LCFI62:
- 756              	 .cfi_def_cfa_offset 4
- 757 0010 BD46     	 mov sp,r7
- 758              	.LCFI63:
- 759              	 .cfi_def_cfa_register 13
- 760              	 
- 761 0012 80BC     	 pop {r7}
- 762              	.LCFI64:
- 763              	 .cfi_restore 7
- 764              	 .cfi_def_cfa_offset 0
- 765 0014 7047     	 bx lr
- 766              	 .cfi_endproc
- 767              	.LFE77:
- 769              	 .section .text.efc_get_result,"ax",%progbits
- 770              	 .align 1
- 771              	 .global efc_get_result
- 772              	 .syntax unified
- 773              	 .thumb
- 774              	 .thumb_func
- 775              	 .fpu softvfp
- 777              	efc_get_result:
- 778              	.LFB78:
+ 761              	 .loc 4 268 1
+ 762 000c 1846     	 mov r0,r3
+ 763 000e 0C37     	 adds r7,r7,#12
+ 764              	.LCFI62:
+ 765              	 .cfi_def_cfa_offset 4
+ 766 0010 BD46     	 mov sp,r7
+ 767              	.LCFI63:
+ 768              	 .cfi_def_cfa_register 13
+ 769              	 
+ 770 0012 80BC     	 pop {r7}
+ 771              	.LCFI64:
+ 772              	 .cfi_restore 7
+ 773              	 .cfi_def_cfa_offset 0
+ 774 0014 7047     	 bx lr
+ 775              	 .cfi_endproc
+ 776              	.LFE77:
+ 778              	 .section .text.efc_get_result,"ax",%progbits
+ 779              	 .align 1
+ 780              	 .global efc_get_result
+ 781              	 .syntax unified
+ 782              	 .thumb
+ 783              	 .thumb_func
+ 784              	 .fpu softvfp
+ 786              	efc_get_result:
+ 787              	.LFB78:
  269:.././hal/sam3u1c/efc.c **** 
  270:.././hal/sam3u1c/efc.c **** /**
  271:.././hal/sam3u1c/efc.c ****  * \brief Get the result of the last executed command.
@@ -2016,52 +2025,52 @@
  276:.././hal/sam3u1c/efc.c ****  */
  277:.././hal/sam3u1c/efc.c **** uint32_t efc_get_result(Efc *p_efc)
  278:.././hal/sam3u1c/efc.c **** {
- 779              	 .loc 4 278 0
- 780              	 .cfi_startproc
- 781              	 
- 782              	 
- 783              	 
- 784 0000 80B4     	 push {r7}
- 785              	.LCFI65:
- 786              	 .cfi_def_cfa_offset 4
- 787              	 .cfi_offset 7,-4
- 788 0002 83B0     	 sub sp,sp,#12
- 789              	.LCFI66:
- 790              	 .cfi_def_cfa_offset 16
- 791 0004 00AF     	 add r7,sp,#0
- 792              	.LCFI67:
- 793              	 .cfi_def_cfa_register 7
- 794 0006 7860     	 str r0,[r7,#4]
+ 788              	 .loc 4 278 1
+ 789              	 .cfi_startproc
+ 790              	 
+ 791              	 
+ 792              	 
+ 793 0000 80B4     	 push {r7}
+ 794              	.LCFI65:
+ 795              	 .cfi_def_cfa_offset 4
+ 796              	 .cfi_offset 7,-4
+ 797 0002 83B0     	 sub sp,sp,#12
+ 798              	.LCFI66:
+ 799              	 .cfi_def_cfa_offset 16
+ 800 0004 00AF     	 add r7,sp,#0
+ 801              	.LCFI67:
+ 802              	 .cfi_def_cfa_register 7
+ 803 0006 7860     	 str r0,[r7,#4]
  279:.././hal/sam3u1c/efc.c **** 	return p_efc->EEFC_FRR;
- 795              	 .loc 4 279 0
- 796 0008 7B68     	 ldr r3,[r7,#4]
- 797 000a DB68     	 ldr r3,[r3,#12]
+ 804              	 .loc 4 279 14
+ 805 0008 7B68     	 ldr r3,[r7,#4]
+ 806 000a DB68     	 ldr r3,[r3,#12]
  280:.././hal/sam3u1c/efc.c **** }
- 798              	 .loc 4 280 0
- 799 000c 1846     	 mov r0,r3
- 800 000e 0C37     	 adds r7,r7,#12
- 801              	.LCFI68:
- 802              	 .cfi_def_cfa_offset 4
- 803 0010 BD46     	 mov sp,r7
- 804              	.LCFI69:
- 805              	 .cfi_def_cfa_register 13
- 806              	 
- 807 0012 80BC     	 pop {r7}
- 808              	.LCFI70:
- 809              	 .cfi_restore 7
- 810              	 .cfi_def_cfa_offset 0
- 811 0014 7047     	 bx lr
- 812              	 .cfi_endproc
- 813              	.LFE78:
- 815              	 .section .ramfunc,"ax",%progbits
- 816              	 .align 1
- 817              	 .global efc_perform_read_sequence
- 818              	 .syntax unified
- 819              	 .thumb
- 820              	 .thumb_func
- 821              	 .fpu softvfp
- 823              	efc_perform_read_sequence:
- 824              	.LFB79:
+ 807              	 .loc 4 280 1
+ 808 000c 1846     	 mov r0,r3
+ 809 000e 0C37     	 adds r7,r7,#12
+ 810              	.LCFI68:
+ 811              	 .cfi_def_cfa_offset 4
+ 812 0010 BD46     	 mov sp,r7
+ 813              	.LCFI69:
+ 814              	 .cfi_def_cfa_register 13
+ 815              	 
+ 816 0012 80BC     	 pop {r7}
+ 817              	.LCFI70:
+ 818              	 .cfi_restore 7
+ 819              	 .cfi_def_cfa_offset 0
+ 820 0014 7047     	 bx lr
+ 821              	 .cfi_endproc
+ 822              	.LFE78:
+ 824              	 .section .ramfunc,"ax",%progbits
+ 825              	 .align 1
+ 826              	 .global efc_perform_read_sequence
+ 827              	 .syntax unified
+ 828              	 .thumb
+ 829              	 .thumb_func
+ 830              	 .fpu softvfp
+ 832              	efc_perform_read_sequence:
+ 833              	.LFB79:
  281:.././hal/sam3u1c/efc.c **** 
  282:.././hal/sam3u1c/efc.c **** /**
  283:.././hal/sam3u1c/efc.c ****  * \brief Perform read sequence. Supported sequences are read Unique ID and
@@ -2081,25 +2090,25 @@
  297:.././hal/sam3u1c/efc.c **** 		uint32_t ul_cmd_st, uint32_t ul_cmd_sp,
  298:.././hal/sam3u1c/efc.c **** 		uint32_t *p_ul_buf, uint32_t ul_size)
  299:.././hal/sam3u1c/efc.c **** {
- 825              	 .loc 4 299 0
- 826              	 .cfi_startproc
- 827              	 
- 828              	 
- 829              	 
- 830 0000 80B4     	 push {r7}
- 831              	.LCFI71:
- 832              	 .cfi_def_cfa_offset 4
- 833              	 .cfi_offset 7,-4
- 834 0002 89B0     	 sub sp,sp,#36
- 835              	.LCFI72:
- 836              	 .cfi_def_cfa_offset 40
- 837 0004 00AF     	 add r7,sp,#0
- 838              	.LCFI73:
- 839              	 .cfi_def_cfa_register 7
- 840 0006 F860     	 str r0,[r7,#12]
- 841 0008 B960     	 str r1,[r7,#8]
- 842 000a 7A60     	 str r2,[r7,#4]
- 843 000c 3B60     	 str r3,[r7]
+ 834              	 .loc 4 299 1
+ 835              	 .cfi_startproc
+ 836              	 
+ 837              	 
+ 838              	 
+ 839 0000 80B4     	 push {r7}
+ 840              	.LCFI71:
+ 841              	 .cfi_def_cfa_offset 4
+ 842              	 .cfi_offset 7,-4
+ 843 0002 89B0     	 sub sp,sp,#36
+ 844              	.LCFI72:
+ 845              	 .cfi_def_cfa_offset 40
+ 846 0004 00AF     	 add r7,sp,#0
+ 847              	.LCFI73:
+ 848              	 .cfi_def_cfa_register 7
+ 849 0006 F860     	 str r0,[r7,#12]
+ 850 0008 B960     	 str r1,[r7,#8]
+ 851 000a 7A60     	 str r2,[r7,#4]
+ 852 000c 3B60     	 str r3,[r7]
  300:.././hal/sam3u1c/efc.c **** 	volatile uint32_t ul_status;
  301:.././hal/sam3u1c/efc.c **** 	uint32_t ul_cnt;
  302:.././hal/sam3u1c/efc.c **** 
@@ -2109,32 +2118,32 @@
  306:.././hal/sam3u1c/efc.c **** 			READ_BUFF_ADDR0 : READ_BUFF_ADDR1);
  307:.././hal/sam3u1c/efc.c **** #elif (SAM3S || SAM4S || SAM3N || SAM3U || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
  308:.././hal/sam3u1c/efc.c **** 	uint32_t *p_ul_data = (uint32_t *) READ_BUFF_ADDR;
- 844              	 .loc 4 308 0
- 845 000e 4FF40023 	 mov r3,#524288
- 846 0012 BB61     	 str r3,[r7,#24]
+ 853              	 .loc 4 308 12
+ 854 000e 4FF40023 	 mov r3,#524288
+ 855 0012 BB61     	 str r3,[r7,#24]
  309:.././hal/sam3u1c/efc.c **** #else
  310:.././hal/sam3u1c/efc.c **** 	return EFC_RC_NOT_SUPPORT;
  311:.././hal/sam3u1c/efc.c **** #endif
  312:.././hal/sam3u1c/efc.c **** 
  313:.././hal/sam3u1c/efc.c **** 	if (p_ul_buf == NULL) {
- 847              	 .loc 4 313 0
- 848 0014 3B68     	 ldr r3,[r7]
- 849 0016 002B     	 cmp r3,#0
- 850 0018 01D1     	 bne .L44
+ 856              	 .loc 4 313 5
+ 857 0014 3B68     	 ldr r3,[r7]
+ 858 0016 002B     	 cmp r3,#0
+ 859 0018 01D1     	 bne .L44
  314:.././hal/sam3u1c/efc.c **** 		return EFC_RC_INVALID;
- 851              	 .loc 4 314 0
- 852 001a 0223     	 movs r3,#2
- 853 001c 3CE0     	 b .L45
- 854              	.L44:
+ 860              	 .loc 4 314 10
+ 861 001a 0223     	 movs r3,#2
+ 862 001c 3CE0     	 b .L45
+ 863              	.L44:
  315:.././hal/sam3u1c/efc.c **** 	}
  316:.././hal/sam3u1c/efc.c **** 
  317:.././hal/sam3u1c/efc.c **** 	p_efc->EEFC_FMR |= (0x1u << 16);
- 855              	 .loc 4 317 0
- 856 001e FB68     	 ldr r3,[r7,#12]
- 857 0020 1B68     	 ldr r3,[r3]
- 858 0022 43F48032 	 orr r2,r3,#65536
- 859 0026 FB68     	 ldr r3,[r7,#12]
- 860 0028 1A60     	 str r2,[r3]
+ 864              	 .loc 4 317 18
+ 865 001e FB68     	 ldr r3,[r7,#12]
+ 866 0020 1B68     	 ldr r3,[r3]
+ 867 0022 43F48032 	 orr r2,r3,#65536
+ 868 0026 FB68     	 ldr r3,[r7,#12]
+ 869 0028 1A60     	 str r2,[r3]
  318:.././hal/sam3u1c/efc.c **** 
  319:.././hal/sam3u1c/efc.c **** 	/* Send the Start Read command */
  320:.././hal/sam3u1c/efc.c **** #if (SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
@@ -2143,65 +2152,72 @@
  323:.././hal/sam3u1c/efc.c **** #else
  324:.././hal/sam3u1c/efc.c **** 	p_efc->EEFC_FCR = EEFC_FCR_FKEY(FWP_KEY) | EEFC_FCR_FARG(0)
  325:.././hal/sam3u1c/efc.c **** 			| EEFC_FCR_FCMD(ul_cmd_st);
- 861              	 .loc 4 325 0
- 862 002a BB68     	 ldr r3,[r7,#8]
- 863 002c DBB2     	 uxtb r3,r3
- 864 002e 43F0B442 	 orr r2,r3,#1509949440
+ 870              	 .loc 4 325 6
+ 871 002a BB68     	 ldr r3,[r7,#8]
+ 872 002c DBB2     	 uxtb r3,r3
+ 873              	 .loc 4 325 4
+ 874 002e 43F0B442 	 orr r2,r3,#1509949440
  324:.././hal/sam3u1c/efc.c **** 			| EEFC_FCR_FCMD(ul_cmd_st);
- 865              	 .loc 4 324 0
- 866 0032 FB68     	 ldr r3,[r7,#12]
- 867 0034 5A60     	 str r2,[r3,#4]
- 868              	.L46:
+ 875              	 .loc 4 324 18
+ 876 0032 FB68     	 ldr r3,[r7,#12]
+ 877 0034 5A60     	 str r2,[r3,#4]
+ 878              	.L46:
  326:.././hal/sam3u1c/efc.c **** #endif
  327:.././hal/sam3u1c/efc.c **** 	/* Wait for the FRDY bit in the Flash Programming Status Register
  328:.././hal/sam3u1c/efc.c **** 	 * (EEFC_FSR) falls.
  329:.././hal/sam3u1c/efc.c **** 	 */
  330:.././hal/sam3u1c/efc.c **** 	do {
  331:.././hal/sam3u1c/efc.c **** 		ul_status = p_efc->EEFC_FSR;
- 869              	 .loc 4 331 0 discriminator 1
- 870 0036 FB68     	 ldr r3,[r7,#12]
- 871 0038 9B68     	 ldr r3,[r3,#8]
- 872 003a 7B61     	 str r3,[r7,#20]
+ 879              	 .loc 4 331 20 discriminator 1
+ 880 0036 FB68     	 ldr r3,[r7,#12]
+ 881 0038 9B68     	 ldr r3,[r3,#8]
+ 882              	 .loc 4 331 13 discriminator 1
+ 883 003a 7B61     	 str r3,[r7,#20]
  332:.././hal/sam3u1c/efc.c **** 	} while ((ul_status & EEFC_FSR_FRDY) == EEFC_FSR_FRDY);
- 873              	 .loc 4 332 0 discriminator 1
- 874 003c 7B69     	 ldr r3,[r7,#20]
- 875 003e 03F00103 	 and r3,r3,#1
- 876 0042 012B     	 cmp r3,#1
- 877 0044 F7D0     	 beq .L46
+ 884              	 .loc 4 332 22 discriminator 1
+ 885 003c 7B69     	 ldr r3,[r7,#20]
+ 886 003e 03F00103 	 and r3,r3,#1
+ 887              	 .loc 4 332 2 discriminator 1
+ 888 0042 012B     	 cmp r3,#1
+ 889 0044 F7D0     	 beq .L46
  333:.././hal/sam3u1c/efc.c **** 
  334:.././hal/sam3u1c/efc.c **** 	/* The data is located in the first address of the Flash
  335:.././hal/sam3u1c/efc.c **** 	 * memory mapping.
  336:.././hal/sam3u1c/efc.c **** 	 */
  337:.././hal/sam3u1c/efc.c **** 	for (ul_cnt = 0; ul_cnt < ul_size; ul_cnt++) {
- 878              	 .loc 4 337 0
- 879 0046 0023     	 movs r3,#0
- 880 0048 FB61     	 str r3,[r7,#28]
- 881 004a 0CE0     	 b .L47
- 882              	.L48:
+ 890              	 .loc 4 337 14
+ 891 0046 0023     	 movs r3,#0
+ 892 0048 FB61     	 str r3,[r7,#28]
+ 893              	 .loc 4 337 2
+ 894 004a 0CE0     	 b .L47
+ 895              	.L48:
  338:.././hal/sam3u1c/efc.c **** 		p_ul_buf[ul_cnt] = p_ul_data[ul_cnt];
- 883              	 .loc 4 338 0 discriminator 3
- 884 004c FB69     	 ldr r3,[r7,#28]
- 885 004e 9B00     	 lsls r3,r3,#2
- 886 0050 BA69     	 ldr r2,[r7,#24]
- 887 0052 1A44     	 add r2,r2,r3
- 888 0054 FB69     	 ldr r3,[r7,#28]
- 889 0056 9B00     	 lsls r3,r3,#2
- 890 0058 3968     	 ldr r1,[r7]
- 891 005a 0B44     	 add r3,r3,r1
- 892 005c 1268     	 ldr r2,[r2]
- 893 005e 1A60     	 str r2,[r3]
+ 896              	 .loc 4 338 31 discriminator 3
+ 897 004c FB69     	 ldr r3,[r7,#28]
+ 898 004e 9B00     	 lsls r3,r3,#2
+ 899 0050 BA69     	 ldr r2,[r7,#24]
+ 900 0052 1A44     	 add r2,r2,r3
+ 901              	 .loc 4 338 11 discriminator 3
+ 902 0054 FB69     	 ldr r3,[r7,#28]
+ 903 0056 9B00     	 lsls r3,r3,#2
+ 904 0058 3968     	 ldr r1,[r7]
+ 905 005a 0B44     	 add r3,r3,r1
+ 906              	 .loc 4 338 31 discriminator 3
+ 907 005c 1268     	 ldr r2,[r2]
+ 908              	 .loc 4 338 20 discriminator 3
+ 909 005e 1A60     	 str r2,[r3]
  337:.././hal/sam3u1c/efc.c **** 		p_ul_buf[ul_cnt] = p_ul_data[ul_cnt];
- 894              	 .loc 4 337 0 discriminator 3
- 895 0060 FB69     	 ldr r3,[r7,#28]
- 896 0062 0133     	 adds r3,r3,#1
- 897 0064 FB61     	 str r3,[r7,#28]
- 898              	.L47:
+ 910              	 .loc 4 337 43 discriminator 3
+ 911 0060 FB69     	 ldr r3,[r7,#28]
+ 912 0062 0133     	 adds r3,r3,#1
+ 913 0064 FB61     	 str r3,[r7,#28]
+ 914              	.L47:
  337:.././hal/sam3u1c/efc.c **** 		p_ul_buf[ul_cnt] = p_ul_data[ul_cnt];
- 899              	 .loc 4 337 0 is_stmt 0 discriminator 1
- 900 0066 FA69     	 ldr r2,[r7,#28]
- 901 0068 BB6A     	 ldr r3,[r7,#40]
- 902 006a 9A42     	 cmp r2,r3
- 903 006c EED3     	 bcc .L48
+ 915              	 .loc 4 337 2 discriminator 1
+ 916 0066 FA69     	 ldr r2,[r7,#28]
+ 917 0068 BB6A     	 ldr r3,[r7,#40]
+ 918 006a 9A42     	 cmp r2,r3
+ 919 006c EED3     	 bcc .L48
  339:.././hal/sam3u1c/efc.c **** 	}
  340:.././hal/sam3u1c/efc.c **** 
  341:.././hal/sam3u1c/efc.c **** 	/* To stop the read mode */
@@ -2212,71 +2228,73 @@
  346:.././hal/sam3u1c/efc.c **** #else
  347:.././hal/sam3u1c/efc.c **** 			EEFC_FCR_FKEY(FWP_KEY) | EEFC_FCR_FARG(0) |
  348:.././hal/sam3u1c/efc.c **** 			EEFC_FCR_FCMD(ul_cmd_sp);
- 904              	 .loc 4 348 0 is_stmt 1
- 905 006e 7B68     	 ldr r3,[r7,#4]
- 906 0070 DBB2     	 uxtb r3,r3
+ 920              	 .loc 4 348 4
+ 921 006e 7B68     	 ldr r3,[r7,#4]
+ 922 0070 DBB2     	 uxtb r3,r3
  347:.././hal/sam3u1c/efc.c **** 			EEFC_FCR_FCMD(ul_cmd_sp);
- 907              	 .loc 4 347 0
- 908 0072 43F0B442 	 orr r2,r3,#1509949440
+ 923              	 .loc 4 347 46
+ 924 0072 43F0B442 	 orr r2,r3,#1509949440
  342:.././hal/sam3u1c/efc.c **** #if (SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
- 909              	 .loc 4 342 0
- 910 0076 FB68     	 ldr r3,[r7,#12]
- 911 0078 5A60     	 str r2,[r3,#4]
- 912              	.L49:
+ 925              	 .loc 4 342 18
+ 926 0076 FB68     	 ldr r3,[r7,#12]
+ 927 0078 5A60     	 str r2,[r3,#4]
+ 928              	.L49:
  349:.././hal/sam3u1c/efc.c **** #endif
  350:.././hal/sam3u1c/efc.c **** 	/* Wait for the FRDY bit in the Flash Programming Status Register (EEFC_FSR)
  351:.././hal/sam3u1c/efc.c **** 	 * rises.
  352:.././hal/sam3u1c/efc.c **** 	 */
  353:.././hal/sam3u1c/efc.c **** 	do {
  354:.././hal/sam3u1c/efc.c **** 		ul_status = p_efc->EEFC_FSR;
- 913              	 .loc 4 354 0 discriminator 1
- 914 007a FB68     	 ldr r3,[r7,#12]
- 915 007c 9B68     	 ldr r3,[r3,#8]
- 916 007e 7B61     	 str r3,[r7,#20]
+ 929              	 .loc 4 354 20 discriminator 1
+ 930 007a FB68     	 ldr r3,[r7,#12]
+ 931 007c 9B68     	 ldr r3,[r3,#8]
+ 932              	 .loc 4 354 13 discriminator 1
+ 933 007e 7B61     	 str r3,[r7,#20]
  355:.././hal/sam3u1c/efc.c **** 	} while ((ul_status & EEFC_FSR_FRDY) != EEFC_FSR_FRDY);
- 917              	 .loc 4 355 0 discriminator 1
- 918 0080 7B69     	 ldr r3,[r7,#20]
- 919 0082 03F00103 	 and r3,r3,#1
- 920 0086 012B     	 cmp r3,#1
- 921 0088 F7D1     	 bne .L49
+ 934              	 .loc 4 355 22 discriminator 1
+ 935 0080 7B69     	 ldr r3,[r7,#20]
+ 936 0082 03F00103 	 and r3,r3,#1
+ 937              	 .loc 4 355 2 discriminator 1
+ 938 0086 012B     	 cmp r3,#1
+ 939 0088 F7D1     	 bne .L49
  356:.././hal/sam3u1c/efc.c **** 
  357:.././hal/sam3u1c/efc.c **** 	p_efc->EEFC_FMR &= ~(0x1u << 16);
- 922              	 .loc 4 357 0
- 923 008a FB68     	 ldr r3,[r7,#12]
- 924 008c 1B68     	 ldr r3,[r3]
- 925 008e 23F48032 	 bic r2,r3,#65536
- 926 0092 FB68     	 ldr r3,[r7,#12]
- 927 0094 1A60     	 str r2,[r3]
+ 940              	 .loc 4 357 18
+ 941 008a FB68     	 ldr r3,[r7,#12]
+ 942 008c 1B68     	 ldr r3,[r3]
+ 943 008e 23F48032 	 bic r2,r3,#65536
+ 944 0092 FB68     	 ldr r3,[r7,#12]
+ 945 0094 1A60     	 str r2,[r3]
  358:.././hal/sam3u1c/efc.c **** 
  359:.././hal/sam3u1c/efc.c **** 	return EFC_RC_OK;
- 928              	 .loc 4 359 0
- 929 0096 0023     	 movs r3,#0
- 930              	.L45:
+ 946              	 .loc 4 359 9
+ 947 0096 0023     	 movs r3,#0
+ 948              	.L45:
  360:.././hal/sam3u1c/efc.c **** }
- 931              	 .loc 4 360 0
- 932 0098 1846     	 mov r0,r3
- 933 009a 2437     	 adds r7,r7,#36
- 934              	.LCFI74:
- 935              	 .cfi_def_cfa_offset 4
- 936 009c BD46     	 mov sp,r7
- 937              	.LCFI75:
- 938              	 .cfi_def_cfa_register 13
- 939              	 
- 940 009e 80BC     	 pop {r7}
- 941              	.LCFI76:
- 942              	 .cfi_restore 7
- 943              	 .cfi_def_cfa_offset 0
- 944 00a0 7047     	 bx lr
- 945              	 .cfi_endproc
- 946              	.LFE79:
- 948              	 .align 1
- 949              	 .global efc_write_fmr
- 950              	 .syntax unified
- 951              	 .thumb
- 952              	 .thumb_func
- 953              	 .fpu softvfp
- 955              	efc_write_fmr:
- 956              	.LFB80:
+ 949              	 .loc 4 360 1
+ 950 0098 1846     	 mov r0,r3
+ 951 009a 2437     	 adds r7,r7,#36
+ 952              	.LCFI74:
+ 953              	 .cfi_def_cfa_offset 4
+ 954 009c BD46     	 mov sp,r7
+ 955              	.LCFI75:
+ 956              	 .cfi_def_cfa_register 13
+ 957              	 
+ 958 009e 80BC     	 pop {r7}
+ 959              	.LCFI76:
+ 960              	 .cfi_restore 7
+ 961              	 .cfi_def_cfa_offset 0
+ 962 00a0 7047     	 bx lr
+ 963              	 .cfi_endproc
+ 964              	.LFE79:
+ 966              	 .align 1
+ 967              	 .global efc_write_fmr
+ 968              	 .syntax unified
+ 969              	 .thumb
+ 970              	 .thumb_func
+ 971              	 .fpu softvfp
+ 973              	efc_write_fmr:
+ 974              	.LFB80:
  361:.././hal/sam3u1c/efc.c **** 
  362:.././hal/sam3u1c/efc.c **** /**
  363:.././hal/sam3u1c/efc.c ****  * \brief Set mode register.
@@ -2288,53 +2306,53 @@
  369:.././hal/sam3u1c/efc.c **** RAMFUNC
  370:.././hal/sam3u1c/efc.c **** void efc_write_fmr(Efc *p_efc, uint32_t ul_fmr)
  371:.././hal/sam3u1c/efc.c **** {
- 957              	 .loc 4 371 0
- 958              	 .cfi_startproc
- 959              	 
- 960              	 
- 961              	 
- 962 00a2 80B4     	 push {r7}
- 963              	.LCFI77:
- 964              	 .cfi_def_cfa_offset 4
- 965              	 .cfi_offset 7,-4
- 966 00a4 83B0     	 sub sp,sp,#12
- 967              	.LCFI78:
- 968              	 .cfi_def_cfa_offset 16
- 969 00a6 00AF     	 add r7,sp,#0
- 970              	.LCFI79:
- 971              	 .cfi_def_cfa_register 7
- 972 00a8 7860     	 str r0,[r7,#4]
- 973 00aa 3960     	 str r1,[r7]
- 372:.././hal/sam3u1c/efc.c **** 	p_efc->EEFC_FMR = ul_fmr;
- 974              	 .loc 4 372 0
- 975 00ac 7B68     	 ldr r3,[r7,#4]
- 976 00ae 3A68     	 ldr r2,[r7]
- 977 00b0 1A60     	 str r2,[r3]
- 373:.././hal/sam3u1c/efc.c **** }
- 978              	 .loc 4 373 0
- 979 00b2 00BF     	 nop
- 980 00b4 0C37     	 adds r7,r7,#12
- 981              	.LCFI80:
+ 975              	 .loc 4 371 1
+ 976              	 .cfi_startproc
+ 977              	 
+ 978              	 
+ 979              	 
+ 980 00a2 80B4     	 push {r7}
+ 981              	.LCFI77:
  982              	 .cfi_def_cfa_offset 4
- 983 00b6 BD46     	 mov sp,r7
- 984              	.LCFI81:
- 985              	 .cfi_def_cfa_register 13
- 986              	 
- 987 00b8 80BC     	 pop {r7}
- 988              	.LCFI82:
- 989              	 .cfi_restore 7
- 990              	 .cfi_def_cfa_offset 0
- 991 00ba 7047     	 bx lr
- 992              	 .cfi_endproc
- 993              	.LFE80:
- 995              	 .align 1
- 996              	 .global efc_perform_fcr
- 997              	 .syntax unified
- 998              	 .thumb
- 999              	 .thumb_func
- 1000              	 .fpu softvfp
- 1002              	efc_perform_fcr:
- 1003              	.LFB81:
+ 983              	 .cfi_offset 7,-4
+ 984 00a4 83B0     	 sub sp,sp,#12
+ 985              	.LCFI78:
+ 986              	 .cfi_def_cfa_offset 16
+ 987 00a6 00AF     	 add r7,sp,#0
+ 988              	.LCFI79:
+ 989              	 .cfi_def_cfa_register 7
+ 990 00a8 7860     	 str r0,[r7,#4]
+ 991 00aa 3960     	 str r1,[r7]
+ 372:.././hal/sam3u1c/efc.c **** 	p_efc->EEFC_FMR = ul_fmr;
+ 992              	 .loc 4 372 18
+ 993 00ac 7B68     	 ldr r3,[r7,#4]
+ 994 00ae 3A68     	 ldr r2,[r7]
+ 995 00b0 1A60     	 str r2,[r3]
+ 373:.././hal/sam3u1c/efc.c **** }
+ 996              	 .loc 4 373 1
+ 997 00b2 00BF     	 nop
+ 998 00b4 0C37     	 adds r7,r7,#12
+ 999              	.LCFI80:
+ 1000              	 .cfi_def_cfa_offset 4
+ 1001 00b6 BD46     	 mov sp,r7
+ 1002              	.LCFI81:
+ 1003              	 .cfi_def_cfa_register 13
+ 1004              	 
+ 1005 00b8 80BC     	 pop {r7}
+ 1006              	.LCFI82:
+ 1007              	 .cfi_restore 7
+ 1008              	 .cfi_def_cfa_offset 0
+ 1009 00ba 7047     	 bx lr
+ 1010              	 .cfi_endproc
+ 1011              	.LFE80:
+ 1013              	 .align 1
+ 1014              	 .global efc_perform_fcr
+ 1015              	 .syntax unified
+ 1016              	 .thumb
+ 1017              	 .thumb_func
+ 1018              	 .fpu softvfp
+ 1020              	efc_perform_fcr:
+ 1021              	.LFB81:
  374:.././hal/sam3u1c/efc.c **** 
  375:.././hal/sam3u1c/efc.c **** /**
  376:.././hal/sam3u1c/efc.c ****  * \brief Perform command.
@@ -2348,79 +2366,81 @@
  384:.././hal/sam3u1c/efc.c **** RAMFUNC
  385:.././hal/sam3u1c/efc.c **** uint32_t efc_perform_fcr(Efc *p_efc, uint32_t ul_fcr)
  386:.././hal/sam3u1c/efc.c **** {
- 1004              	 .loc 4 386 0
- 1005              	 .cfi_startproc
- 1006              	 
- 1007              	 
- 1008              	 
- 1009 00bc 80B4     	 push {r7}
- 1010              	.LCFI83:
- 1011              	 .cfi_def_cfa_offset 4
- 1012              	 .cfi_offset 7,-4
- 1013 00be 85B0     	 sub sp,sp,#20
- 1014              	.LCFI84:
- 1015              	 .cfi_def_cfa_offset 24
- 1016 00c0 00AF     	 add r7,sp,#0
- 1017              	.LCFI85:
- 1018              	 .cfi_def_cfa_register 7
- 1019 00c2 7860     	 str r0,[r7,#4]
- 1020 00c4 3960     	 str r1,[r7]
+ 1022              	 .loc 4 386 1
+ 1023              	 .cfi_startproc
+ 1024              	 
+ 1025              	 
+ 1026              	 
+ 1027 00bc 80B4     	 push {r7}
+ 1028              	.LCFI83:
+ 1029              	 .cfi_def_cfa_offset 4
+ 1030              	 .cfi_offset 7,-4
+ 1031 00be 85B0     	 sub sp,sp,#20
+ 1032              	.LCFI84:
+ 1033              	 .cfi_def_cfa_offset 24
+ 1034 00c0 00AF     	 add r7,sp,#0
+ 1035              	.LCFI85:
+ 1036              	 .cfi_def_cfa_register 7
+ 1037 00c2 7860     	 str r0,[r7,#4]
+ 1038 00c4 3960     	 str r1,[r7]
  387:.././hal/sam3u1c/efc.c **** 	volatile uint32_t ul_status;
  388:.././hal/sam3u1c/efc.c **** 
  389:.././hal/sam3u1c/efc.c **** 	p_efc->EEFC_FCR = ul_fcr;
- 1021              	 .loc 4 389 0
- 1022 00c6 7B68     	 ldr r3,[r7,#4]
- 1023 00c8 3A68     	 ldr r2,[r7]
- 1024 00ca 5A60     	 str r2,[r3,#4]
- 1025              	.L52:
+ 1039              	 .loc 4 389 18
+ 1040 00c6 7B68     	 ldr r3,[r7,#4]
+ 1041 00c8 3A68     	 ldr r2,[r7]
+ 1042 00ca 5A60     	 str r2,[r3,#4]
+ 1043              	.L52:
  390:.././hal/sam3u1c/efc.c **** 	do {
  391:.././hal/sam3u1c/efc.c **** 		ul_status = p_efc->EEFC_FSR;
- 1026              	 .loc 4 391 0 discriminator 1
- 1027 00cc 7B68     	 ldr r3,[r7,#4]
- 1028 00ce 9B68     	 ldr r3,[r3,#8]
- 1029 00d0 FB60     	 str r3,[r7,#12]
+ 1044              	 .loc 4 391 20 discriminator 1
+ 1045 00cc 7B68     	 ldr r3,[r7,#4]
+ 1046 00ce 9B68     	 ldr r3,[r3,#8]
+ 1047              	 .loc 4 391 13 discriminator 1
+ 1048 00d0 FB60     	 str r3,[r7,#12]
  392:.././hal/sam3u1c/efc.c **** 	} while ((ul_status & EEFC_FSR_FRDY) != EEFC_FSR_FRDY);
- 1030              	 .loc 4 392 0 discriminator 1
- 1031 00d2 FB68     	 ldr r3,[r7,#12]
- 1032 00d4 03F00103 	 and r3,r3,#1
- 1033 00d8 012B     	 cmp r3,#1
- 1034 00da F7D1     	 bne .L52
+ 1049              	 .loc 4 392 22 discriminator 1
+ 1050 00d2 FB68     	 ldr r3,[r7,#12]
+ 1051 00d4 03F00103 	 and r3,r3,#1
+ 1052              	 .loc 4 392 2 discriminator 1
+ 1053 00d8 012B     	 cmp r3,#1
+ 1054 00da F7D1     	 bne .L52
  393:.././hal/sam3u1c/efc.c **** 
  394:.././hal/sam3u1c/efc.c **** 	return (ul_status & EEFC_ERROR_FLAGS);
- 1035              	 .loc 4 394 0
- 1036 00dc FB68     	 ldr r3,[r7,#12]
- 1037 00de 03F00603 	 and r3,r3,#6
+ 1055              	 .loc 4 394 20
+ 1056 00dc FB68     	 ldr r3,[r7,#12]
+ 1057 00de 03F00603 	 and r3,r3,#6
  395:.././hal/sam3u1c/efc.c **** }
- 1038              	 .loc 4 395 0
- 1039 00e2 1846     	 mov r0,r3
- 1040 00e4 1437     	 adds r7,r7,#20
- 1041              	.LCFI86:
- 1042              	 .cfi_def_cfa_offset 4
- 1043 00e6 BD46     	 mov sp,r7
- 1044              	.LCFI87:
- 1045              	 .cfi_def_cfa_register 13
- 1046              	 
- 1047 00e8 80BC     	 pop {r7}
- 1048              	.LCFI88:
- 1049              	 .cfi_restore 7
- 1050              	 .cfi_def_cfa_offset 0
- 1051 00ea 7047     	 bx lr
- 1052              	 .cfi_endproc
- 1053              	.LFE81:
- 1055              	 .text
- 1056              	.Letext0:
- 1057              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1058              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 1059              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
- 1060              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
- 1061              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
- 1062              	 .file 10 ".././hal/sam3u1c/inc/component/component_efc.h"
- 1063              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 1064              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 1065              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 1066              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 1067              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 1068              	 .file 16 ".././hal/sam3u1c/inc/efc.h"
+ 1058              	 .loc 4 395 1
+ 1059 00e2 1846     	 mov r0,r3
+ 1060 00e4 1437     	 adds r7,r7,#20
+ 1061              	.LCFI86:
+ 1062              	 .cfi_def_cfa_offset 4
+ 1063 00e6 BD46     	 mov sp,r7
+ 1064              	.LCFI87:
+ 1065              	 .cfi_def_cfa_register 13
+ 1066              	 
+ 1067 00e8 80BC     	 pop {r7}
+ 1068              	.LCFI88:
+ 1069              	 .cfi_restore 7
+ 1070              	 .cfi_def_cfa_offset 0
+ 1071 00ea 7047     	 bx lr
+ 1072              	 .cfi_endproc
+ 1073              	.LFE81:
+ 1075              	 .text
+ 1076              	.Letext0:
+ 1077              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1078              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1079              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 1080              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
+ 1081              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 1082              	 .file 10 ".././hal/sam3u1c/inc/component/component_efc.h"
+ 1083              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1084              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1085              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 1086              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1087              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 1088              	 .file 16 ".././hal/sam3u1c/inc/efc.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 efc.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -2428,44 +2448,44 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.cpu_irq_save:00000000 $t
-    {standard input}:33     .text.cpu_irq_save:00000000 cpu_irq_save
-    {standard input}:119    .text.cpu_irq_save:00000034 $d
-    {standard input}:124    .text.cpu_irq_is_enabled_flags:00000000 $t
-    {standard input}:130    .text.cpu_irq_is_enabled_flags:00000000 cpu_irq_is_enabled_flags
-    {standard input}:173    .text.cpu_irq_restore:00000000 $t
-    {standard input}:179    .text.cpu_irq_restore:00000000 cpu_irq_restore
-    {standard input}:245    .text.cpu_irq_restore:00000028 $d
-    {standard input}:251    .text.efc_init:00000000 $t
-    {standard input}:258    .text.efc_init:00000000 efc_init
-    {standard input}:305    .text.efc_init:0000002c $d
-    {standard input}:955    .ramfunc:000000a2 efc_write_fmr
-    {standard input}:310    .text.efc_enable_frdy_interrupt:00000000 $t
-    {standard input}:317    .text.efc_enable_frdy_interrupt:00000000 efc_enable_frdy_interrupt
-    {standard input}:360    .text.efc_enable_frdy_interrupt:00000024 $d
-    {standard input}:365    .text.efc_disable_frdy_interrupt:00000000 $t
-    {standard input}:372    .text.efc_disable_frdy_interrupt:00000000 efc_disable_frdy_interrupt
-    {standard input}:415    .text.efc_disable_frdy_interrupt:00000024 $d
-    {standard input}:420    .text.efc_set_flash_access_mode:00000000 $t
-    {standard input}:427    .text.efc_set_flash_access_mode:00000000 efc_set_flash_access_mode
-    {standard input}:473    .text.efc_set_flash_access_mode:0000002c $d
-    {standard input}:478    .text.efc_get_flash_access_mode:00000000 $t
-    {standard input}:485    .text.efc_get_flash_access_mode:00000000 efc_get_flash_access_mode
-    {standard input}:525    .text.efc_set_wait_state:00000000 $t
-    {standard input}:532    .text.efc_set_wait_state:00000000 efc_set_wait_state
-    {standard input}:580    .text.efc_set_wait_state:00000030 $d
-    {standard input}:585    .text.efc_get_wait_state:00000000 $t
-    {standard input}:592    .text.efc_get_wait_state:00000000 efc_get_wait_state
-    {standard input}:633    .text.efc_perform_command:00000000 $t
-    {standard input}:640    .text.efc_perform_command:00000000 efc_perform_command
-    {standard input}:717    .text.efc_perform_command:00000054 $d
-    {standard input}:1002   .ramfunc:000000bc efc_perform_fcr
-    {standard input}:724    .text.efc_get_status:00000000 $t
-    {standard input}:731    .text.efc_get_status:00000000 efc_get_status
-    {standard input}:770    .text.efc_get_result:00000000 $t
-    {standard input}:777    .text.efc_get_result:00000000 efc_get_result
-    {standard input}:816    .ramfunc:00000000 $t
-    {standard input}:823    .ramfunc:00000000 efc_perform_read_sequence
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:34     .text.cpu_irq_save:00000000 cpu_irq_save
+    {standard input}:121    .text.cpu_irq_save:00000034 $d
+    {standard input}:126    .text.cpu_irq_is_enabled_flags:00000000 $t
+    {standard input}:132    .text.cpu_irq_is_enabled_flags:00000000 cpu_irq_is_enabled_flags
+    {standard input}:175    .text.cpu_irq_restore:00000000 $t
+    {standard input}:181    .text.cpu_irq_restore:00000000 cpu_irq_restore
+    {standard input}:248    .text.cpu_irq_restore:00000028 $d
+    {standard input}:254    .text.efc_init:00000000 $t
+    {standard input}:261    .text.efc_init:00000000 efc_init
+    {standard input}:309    .text.efc_init:0000002c $d
+    {standard input}:973    .ramfunc:000000a2 efc_write_fmr
+    {standard input}:314    .text.efc_enable_frdy_interrupt:00000000 $t
+    {standard input}:321    .text.efc_enable_frdy_interrupt:00000000 efc_enable_frdy_interrupt
+    {standard input}:364    .text.efc_enable_frdy_interrupt:00000024 $d
+    {standard input}:369    .text.efc_disable_frdy_interrupt:00000000 $t
+    {standard input}:376    .text.efc_disable_frdy_interrupt:00000000 efc_disable_frdy_interrupt
+    {standard input}:419    .text.efc_disable_frdy_interrupt:00000024 $d
+    {standard input}:424    .text.efc_set_flash_access_mode:00000000 $t
+    {standard input}:431    .text.efc_set_flash_access_mode:00000000 efc_set_flash_access_mode
+    {standard input}:478    .text.efc_set_flash_access_mode:0000002c $d
+    {standard input}:483    .text.efc_get_flash_access_mode:00000000 $t
+    {standard input}:490    .text.efc_get_flash_access_mode:00000000 efc_get_flash_access_mode
+    {standard input}:531    .text.efc_set_wait_state:00000000 $t
+    {standard input}:538    .text.efc_set_wait_state:00000000 efc_set_wait_state
+    {standard input}:588    .text.efc_set_wait_state:00000030 $d
+    {standard input}:593    .text.efc_get_wait_state:00000000 $t
+    {standard input}:600    .text.efc_get_wait_state:00000000 efc_get_wait_state
+    {standard input}:642    .text.efc_perform_command:00000000 $t
+    {standard input}:649    .text.efc_perform_command:00000000 efc_perform_command
+    {standard input}:726    .text.efc_perform_command:00000054 $d
+    {standard input}:1020   .ramfunc:000000bc efc_perform_fcr
+    {standard input}:733    .text.efc_get_status:00000000 $t
+    {standard input}:740    .text.efc_get_status:00000000 efc_get_status
+    {standard input}:779    .text.efc_get_result:00000000 $t
+    {standard input}:786    .text.efc_get_result:00000000 efc_get_result
+    {standard input}:825    .ramfunc:00000000 $t
+    {standard input}:832    .ramfunc:00000000 efc_perform_read_sequence
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -2539,12 +2559,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

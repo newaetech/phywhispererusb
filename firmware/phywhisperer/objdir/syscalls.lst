@@ -15,13 +15,14 @@
   15              	 .section .text._sbrk,"ax",%progbits
   16              	 .align 1
   17              	 .global _sbrk
-  18              	 .syntax unified
-  19              	 .thumb
-  20              	 .thumb_func
-  21              	 .fpu softvfp
-  23              	_sbrk:
-  24              	.LFB3:
-  25              	 .file 1 ".././hal/sam3u1c/syscalls.c"
+  18              	 .arch armv7-m
+  19              	 .syntax unified
+  20              	 .thumb
+  21              	 .thumb_func
+  22              	 .fpu softvfp
+  24              	_sbrk:
+  25              	.LFB3:
+  26              	 .file 1 ".././hal/sam3u1c/syscalls.c"
    1:.././hal/sam3u1c/syscalls.c **** /**
    2:.././hal/sam3u1c/syscalls.c ****  * \file
    3:.././hal/sam3u1c/syscalls.c ****  *
@@ -95,546 +96,549 @@
   71:.././hal/sam3u1c/syscalls.c **** 
   72:.././hal/sam3u1c/syscalls.c **** extern caddr_t _sbrk(int incr)
   73:.././hal/sam3u1c/syscalls.c **** {
-  26              	 .loc 1 73 0
-  27              	 .cfi_startproc
-  28              	 
+  27              	 .loc 1 73 1
+  28              	 .cfi_startproc
   29              	 
   30              	 
-  31 0000 80B4     	 push {r7}
-  32              	.LCFI0:
-  33              	 .cfi_def_cfa_offset 4
-  34              	 .cfi_offset 7,-4
-  35 0002 85B0     	 sub sp,sp,#20
-  36              	.LCFI1:
-  37              	 .cfi_def_cfa_offset 24
-  38 0004 00AF     	 add r7,sp,#0
-  39              	.LCFI2:
-  40              	 .cfi_def_cfa_register 7
-  41 0006 7860     	 str r0,[r7,#4]
+  31              	 
+  32 0000 80B4     	 push {r7}
+  33              	.LCFI0:
+  34              	 .cfi_def_cfa_offset 4
+  35              	 .cfi_offset 7,-4
+  36 0002 85B0     	 sub sp,sp,#20
+  37              	.LCFI1:
+  38              	 .cfi_def_cfa_offset 24
+  39 0004 00AF     	 add r7,sp,#0
+  40              	.LCFI2:
+  41              	 .cfi_def_cfa_register 7
+  42 0006 7860     	 str r0,[r7,#4]
   74:.././hal/sam3u1c/syscalls.c **** 	static unsigned char *heap = NULL;
   75:.././hal/sam3u1c/syscalls.c **** 	unsigned char *prev_heap;
   76:.././hal/sam3u1c/syscalls.c **** 	int ramend = (int)&__ram_end__;
-  42              	 .loc 1 76 0
-  43 0008 104B     	 ldr r3,.L5
-  44 000a FB60     	 str r3,[r7,#12]
+  43              	 .loc 1 76 6
+  44 0008 104B     	 ldr r3,.L5
+  45 000a FB60     	 str r3,[r7,#12]
   77:.././hal/sam3u1c/syscalls.c **** 
   78:.././hal/sam3u1c/syscalls.c **** 	if (heap == NULL) {
-  45              	 .loc 1 78 0
-  46 000c 104B     	 ldr r3,.L5+4
-  47 000e 1B68     	 ldr r3,[r3]
-  48 0010 002B     	 cmp r3,#0
-  49 0012 02D1     	 bne .L2
+  46              	 .loc 1 78 11
+  47 000c 104B     	 ldr r3,.L5+4
+  48 000e 1B68     	 ldr r3,[r3]
+  49              	 .loc 1 78 5
+  50 0010 002B     	 cmp r3,#0
+  51 0012 02D1     	 bne .L2
   79:.././hal/sam3u1c/syscalls.c **** 		heap = (unsigned char *)&_end;
-  50              	 .loc 1 79 0
-  51 0014 0E4B     	 ldr r3,.L5+4
-  52 0016 0F4A     	 ldr r2,.L5+8
-  53 0018 1A60     	 str r2,[r3]
-  54              	.L2:
+  52              	 .loc 1 79 8
+  53 0014 0E4B     	 ldr r3,.L5+4
+  54 0016 0F4A     	 ldr r2,.L5+8
+  55 0018 1A60     	 str r2,[r3]
+  56              	.L2:
   80:.././hal/sam3u1c/syscalls.c **** 	}
   81:.././hal/sam3u1c/syscalls.c **** 	prev_heap = heap;
-  55              	 .loc 1 81 0
-  56 001a 0D4B     	 ldr r3,.L5+4
-  57 001c 1B68     	 ldr r3,[r3]
-  58 001e BB60     	 str r3,[r7,#8]
+  57              	 .loc 1 81 12
+  58 001a 0D4B     	 ldr r3,.L5+4
+  59 001c 1B68     	 ldr r3,[r3]
+  60 001e BB60     	 str r3,[r7,#8]
   82:.././hal/sam3u1c/syscalls.c **** 
   83:.././hal/sam3u1c/syscalls.c **** 	if (((int)prev_heap + incr) > ramend) {
-  59              	 .loc 1 83 0
-  60 0020 BA68     	 ldr r2,[r7,#8]
-  61 0022 7B68     	 ldr r3,[r7,#4]
-  62 0024 1344     	 add r3,r3,r2
-  63 0026 FA68     	 ldr r2,[r7,#12]
-  64 0028 9A42     	 cmp r2,r3
-  65 002a 02DA     	 bge .L3
+  61              	 .loc 1 83 7
+  62 0020 BA68     	 ldr r2,[r7,#8]
+  63              	 .loc 1 83 22
+  64 0022 7B68     	 ldr r3,[r7,#4]
+  65 0024 1344     	 add r3,r3,r2
+  66              	 .loc 1 83 5
+  67 0026 FA68     	 ldr r2,[r7,#12]
+  68 0028 9A42     	 cmp r2,r3
+  69 002a 02DA     	 bge .L3
   84:.././hal/sam3u1c/syscalls.c **** 		return (caddr_t) -1;	
-  66              	 .loc 1 84 0
-  67 002c 4FF0FF33 	 mov r3,#-1
-  68 0030 06E0     	 b .L4
-  69              	.L3:
+  70              	 .loc 1 84 10
+  71 002c 4FF0FF33 	 mov r3,#-1
+  72 0030 06E0     	 b .L4
+  73              	.L3:
   85:.././hal/sam3u1c/syscalls.c **** 	}
   86:.././hal/sam3u1c/syscalls.c **** 
   87:.././hal/sam3u1c/syscalls.c **** 	heap += incr;
-  70              	 .loc 1 87 0
-  71 0032 074B     	 ldr r3,.L5+4
-  72 0034 1A68     	 ldr r2,[r3]
-  73 0036 7B68     	 ldr r3,[r7,#4]
-  74 0038 1344     	 add r3,r3,r2
-  75 003a 054A     	 ldr r2,.L5+4
-  76 003c 1360     	 str r3,[r2]
+  74              	 .loc 1 87 7
+  75 0032 074B     	 ldr r3,.L5+4
+  76 0034 1A68     	 ldr r2,[r3]
+  77 0036 7B68     	 ldr r3,[r7,#4]
+  78 0038 1344     	 add r3,r3,r2
+  79 003a 054A     	 ldr r2,.L5+4
+  80 003c 1360     	 str r3,[r2]
   88:.././hal/sam3u1c/syscalls.c **** 
   89:.././hal/sam3u1c/syscalls.c **** 	return (caddr_t) prev_heap;
-  77              	 .loc 1 89 0
-  78 003e BB68     	 ldr r3,[r7,#8]
-  79              	.L4:
+  81              	 .loc 1 89 9
+  82 003e BB68     	 ldr r3,[r7,#8]
+  83              	.L4:
   90:.././hal/sam3u1c/syscalls.c **** }
-  80              	 .loc 1 90 0
-  81 0040 1846     	 mov r0,r3
-  82 0042 1437     	 adds r7,r7,#20
-  83              	.LCFI3:
-  84              	 .cfi_def_cfa_offset 4
-  85 0044 BD46     	 mov sp,r7
-  86              	.LCFI4:
-  87              	 .cfi_def_cfa_register 13
-  88              	 
-  89 0046 80BC     	 pop {r7}
-  90              	.LCFI5:
-  91              	 .cfi_restore 7
-  92              	 .cfi_def_cfa_offset 0
-  93 0048 7047     	 bx lr
-  94              	.L6:
-  95 004a 00BF     	 .align 2
-  96              	.L5:
-  97 004c 00000000 	 .word __ram_end__
-  98 0050 00000000 	 .word heap.5319
-  99 0054 00000000 	 .word _end
- 100              	 .cfi_endproc
- 101              	.LFE3:
- 103              	 .section .text.link,"ax",%progbits
- 104              	 .align 1
- 105              	 .global link
- 106              	 .syntax unified
- 107              	 .thumb
- 108              	 .thumb_func
- 109              	 .fpu softvfp
- 111              	link:
- 112              	.LFB4:
+  84              	 .loc 1 90 1
+  85 0040 1846     	 mov r0,r3
+  86 0042 1437     	 adds r7,r7,#20
+  87              	.LCFI3:
+  88              	 .cfi_def_cfa_offset 4
+  89 0044 BD46     	 mov sp,r7
+  90              	.LCFI4:
+  91              	 .cfi_def_cfa_register 13
+  92              	 
+  93 0046 80BC     	 pop {r7}
+  94              	.LCFI5:
+  95              	 .cfi_restore 7
+  96              	 .cfi_def_cfa_offset 0
+  97 0048 7047     	 bx lr
+  98              	.L6:
+  99 004a 00BF     	 .align 2
+ 100              	.L5:
+ 101 004c 00000000 	 .word __ram_end__
+ 102 0050 00000000 	 .word heap.5414
+ 103 0054 00000000 	 .word _end
+ 104              	 .cfi_endproc
+ 105              	.LFE3:
+ 107              	 .section .text.link,"ax",%progbits
+ 108              	 .align 1
+ 109              	 .global link
+ 110              	 .syntax unified
+ 111              	 .thumb
+ 112              	 .thumb_func
+ 113              	 .fpu softvfp
+ 115              	link:
+ 116              	.LFB4:
   91:.././hal/sam3u1c/syscalls.c **** 
   92:.././hal/sam3u1c/syscalls.c **** extern int link(char *old, char *new)
   93:.././hal/sam3u1c/syscalls.c **** {
- 113              	 .loc 1 93 0
- 114              	 .cfi_startproc
- 115              	 
- 116              	 
- 117              	 
- 118 0000 80B4     	 push {r7}
- 119              	.LCFI6:
- 120              	 .cfi_def_cfa_offset 4
- 121              	 .cfi_offset 7,-4
- 122 0002 83B0     	 sub sp,sp,#12
- 123              	.LCFI7:
- 124              	 .cfi_def_cfa_offset 16
- 125 0004 00AF     	 add r7,sp,#0
- 126              	.LCFI8:
- 127              	 .cfi_def_cfa_register 7
- 128 0006 7860     	 str r0,[r7,#4]
- 129 0008 3960     	 str r1,[r7]
+ 117              	 .loc 1 93 1
+ 118              	 .cfi_startproc
+ 119              	 
+ 120              	 
+ 121              	 
+ 122 0000 80B4     	 push {r7}
+ 123              	.LCFI6:
+ 124              	 .cfi_def_cfa_offset 4
+ 125              	 .cfi_offset 7,-4
+ 126 0002 83B0     	 sub sp,sp,#12
+ 127              	.LCFI7:
+ 128              	 .cfi_def_cfa_offset 16
+ 129 0004 00AF     	 add r7,sp,#0
+ 130              	.LCFI8:
+ 131              	 .cfi_def_cfa_register 7
+ 132 0006 7860     	 str r0,[r7,#4]
+ 133 0008 3960     	 str r1,[r7]
   94:.././hal/sam3u1c/syscalls.c **** 	return -1;
- 130              	 .loc 1 94 0
- 131 000a 4FF0FF33 	 mov r3,#-1
+ 134              	 .loc 1 94 9
+ 135 000a 4FF0FF33 	 mov r3,#-1
   95:.././hal/sam3u1c/syscalls.c **** }
- 132              	 .loc 1 95 0
- 133 000e 1846     	 mov r0,r3
- 134 0010 0C37     	 adds r7,r7,#12
- 135              	.LCFI9:
- 136              	 .cfi_def_cfa_offset 4
- 137 0012 BD46     	 mov sp,r7
- 138              	.LCFI10:
- 139              	 .cfi_def_cfa_register 13
- 140              	 
- 141 0014 80BC     	 pop {r7}
- 142              	.LCFI11:
- 143              	 .cfi_restore 7
- 144              	 .cfi_def_cfa_offset 0
- 145 0016 7047     	 bx lr
- 146              	 .cfi_endproc
- 147              	.LFE4:
- 149              	 .section .text._close,"ax",%progbits
- 150              	 .align 1
- 151              	 .global _close
- 152              	 .syntax unified
- 153              	 .thumb
- 154              	 .thumb_func
- 155              	 .fpu softvfp
- 157              	_close:
- 158              	.LFB5:
+ 136              	 .loc 1 95 1
+ 137 000e 1846     	 mov r0,r3
+ 138 0010 0C37     	 adds r7,r7,#12
+ 139              	.LCFI9:
+ 140              	 .cfi_def_cfa_offset 4
+ 141 0012 BD46     	 mov sp,r7
+ 142              	.LCFI10:
+ 143              	 .cfi_def_cfa_register 13
+ 144              	 
+ 145 0014 80BC     	 pop {r7}
+ 146              	.LCFI11:
+ 147              	 .cfi_restore 7
+ 148              	 .cfi_def_cfa_offset 0
+ 149 0016 7047     	 bx lr
+ 150              	 .cfi_endproc
+ 151              	.LFE4:
+ 153              	 .section .text._close,"ax",%progbits
+ 154              	 .align 1
+ 155              	 .global _close
+ 156              	 .syntax unified
+ 157              	 .thumb
+ 158              	 .thumb_func
+ 159              	 .fpu softvfp
+ 161              	_close:
+ 162              	.LFB5:
   96:.././hal/sam3u1c/syscalls.c **** 
   97:.././hal/sam3u1c/syscalls.c **** extern int _close(int file)
   98:.././hal/sam3u1c/syscalls.c **** {
- 159              	 .loc 1 98 0
- 160              	 .cfi_startproc
- 161              	 
- 162              	 
- 163              	 
- 164 0000 80B4     	 push {r7}
- 165              	.LCFI12:
- 166              	 .cfi_def_cfa_offset 4
- 167              	 .cfi_offset 7,-4
- 168 0002 83B0     	 sub sp,sp,#12
- 169              	.LCFI13:
- 170              	 .cfi_def_cfa_offset 16
- 171 0004 00AF     	 add r7,sp,#0
- 172              	.LCFI14:
- 173              	 .cfi_def_cfa_register 7
- 174 0006 7860     	 str r0,[r7,#4]
+ 163              	 .loc 1 98 1
+ 164              	 .cfi_startproc
+ 165              	 
+ 166              	 
+ 167              	 
+ 168 0000 80B4     	 push {r7}
+ 169              	.LCFI12:
+ 170              	 .cfi_def_cfa_offset 4
+ 171              	 .cfi_offset 7,-4
+ 172 0002 83B0     	 sub sp,sp,#12
+ 173              	.LCFI13:
+ 174              	 .cfi_def_cfa_offset 16
+ 175 0004 00AF     	 add r7,sp,#0
+ 176              	.LCFI14:
+ 177              	 .cfi_def_cfa_register 7
+ 178 0006 7860     	 str r0,[r7,#4]
   99:.././hal/sam3u1c/syscalls.c **** 	return -1;
- 175              	 .loc 1 99 0
- 176 0008 4FF0FF33 	 mov r3,#-1
+ 179              	 .loc 1 99 9
+ 180 0008 4FF0FF33 	 mov r3,#-1
  100:.././hal/sam3u1c/syscalls.c **** }
- 177              	 .loc 1 100 0
- 178 000c 1846     	 mov r0,r3
- 179 000e 0C37     	 adds r7,r7,#12
- 180              	.LCFI15:
- 181              	 .cfi_def_cfa_offset 4
- 182 0010 BD46     	 mov sp,r7
- 183              	.LCFI16:
- 184              	 .cfi_def_cfa_register 13
- 185              	 
- 186 0012 80BC     	 pop {r7}
- 187              	.LCFI17:
- 188              	 .cfi_restore 7
- 189              	 .cfi_def_cfa_offset 0
- 190 0014 7047     	 bx lr
- 191              	 .cfi_endproc
- 192              	.LFE5:
- 194              	 .section .text._fstat,"ax",%progbits
- 195              	 .align 1
- 196              	 .global _fstat
- 197              	 .syntax unified
- 198              	 .thumb
- 199              	 .thumb_func
- 200              	 .fpu softvfp
- 202              	_fstat:
- 203              	.LFB6:
+ 181              	 .loc 1 100 1
+ 182 000c 1846     	 mov r0,r3
+ 183 000e 0C37     	 adds r7,r7,#12
+ 184              	.LCFI15:
+ 185              	 .cfi_def_cfa_offset 4
+ 186 0010 BD46     	 mov sp,r7
+ 187              	.LCFI16:
+ 188              	 .cfi_def_cfa_register 13
+ 189              	 
+ 190 0012 80BC     	 pop {r7}
+ 191              	.LCFI17:
+ 192              	 .cfi_restore 7
+ 193              	 .cfi_def_cfa_offset 0
+ 194 0014 7047     	 bx lr
+ 195              	 .cfi_endproc
+ 196              	.LFE5:
+ 198              	 .section .text._fstat,"ax",%progbits
+ 199              	 .align 1
+ 200              	 .global _fstat
+ 201              	 .syntax unified
+ 202              	 .thumb
+ 203              	 .thumb_func
+ 204              	 .fpu softvfp
+ 206              	_fstat:
+ 207              	.LFB6:
  101:.././hal/sam3u1c/syscalls.c **** 
  102:.././hal/sam3u1c/syscalls.c **** extern int _fstat(int file, struct stat *st)
  103:.././hal/sam3u1c/syscalls.c **** {
- 204              	 .loc 1 103 0
- 205              	 .cfi_startproc
- 206              	 
- 207              	 
- 208              	 
- 209 0000 80B4     	 push {r7}
- 210              	.LCFI18:
- 211              	 .cfi_def_cfa_offset 4
- 212              	 .cfi_offset 7,-4
- 213 0002 83B0     	 sub sp,sp,#12
- 214              	.LCFI19:
- 215              	 .cfi_def_cfa_offset 16
- 216 0004 00AF     	 add r7,sp,#0
- 217              	.LCFI20:
- 218              	 .cfi_def_cfa_register 7
- 219 0006 7860     	 str r0,[r7,#4]
- 220 0008 3960     	 str r1,[r7]
+ 208              	 .loc 1 103 1
+ 209              	 .cfi_startproc
+ 210              	 
+ 211              	 
+ 212              	 
+ 213 0000 80B4     	 push {r7}
+ 214              	.LCFI18:
+ 215              	 .cfi_def_cfa_offset 4
+ 216              	 .cfi_offset 7,-4
+ 217 0002 83B0     	 sub sp,sp,#12
+ 218              	.LCFI19:
+ 219              	 .cfi_def_cfa_offset 16
+ 220 0004 00AF     	 add r7,sp,#0
+ 221              	.LCFI20:
+ 222              	 .cfi_def_cfa_register 7
+ 223 0006 7860     	 str r0,[r7,#4]
+ 224 0008 3960     	 str r1,[r7]
  104:.././hal/sam3u1c/syscalls.c **** 	st->st_mode = S_IFCHR;
- 221              	 .loc 1 104 0
- 222 000a 3B68     	 ldr r3,[r7]
- 223 000c 4FF40052 	 mov r2,#8192
- 224 0010 5A60     	 str r2,[r3,#4]
+ 225              	 .loc 1 104 14
+ 226 000a 3B68     	 ldr r3,[r7]
+ 227 000c 4FF40052 	 mov r2,#8192
+ 228 0010 5A60     	 str r2,[r3,#4]
  105:.././hal/sam3u1c/syscalls.c **** 
  106:.././hal/sam3u1c/syscalls.c **** 	return 0;
- 225              	 .loc 1 106 0
- 226 0012 0023     	 movs r3,#0
+ 229              	 .loc 1 106 9
+ 230 0012 0023     	 movs r3,#0
  107:.././hal/sam3u1c/syscalls.c **** }
- 227              	 .loc 1 107 0
- 228 0014 1846     	 mov r0,r3
- 229 0016 0C37     	 adds r7,r7,#12
- 230              	.LCFI21:
- 231              	 .cfi_def_cfa_offset 4
- 232 0018 BD46     	 mov sp,r7
- 233              	.LCFI22:
- 234              	 .cfi_def_cfa_register 13
- 235              	 
- 236 001a 80BC     	 pop {r7}
- 237              	.LCFI23:
- 238              	 .cfi_restore 7
- 239              	 .cfi_def_cfa_offset 0
- 240 001c 7047     	 bx lr
- 241              	 .cfi_endproc
- 242              	.LFE6:
- 244              	 .section .text._isatty,"ax",%progbits
- 245              	 .align 1
- 246              	 .global _isatty
- 247              	 .syntax unified
- 248              	 .thumb
- 249              	 .thumb_func
- 250              	 .fpu softvfp
- 252              	_isatty:
- 253              	.LFB7:
+ 231              	 .loc 1 107 1
+ 232 0014 1846     	 mov r0,r3
+ 233 0016 0C37     	 adds r7,r7,#12
+ 234              	.LCFI21:
+ 235              	 .cfi_def_cfa_offset 4
+ 236 0018 BD46     	 mov sp,r7
+ 237              	.LCFI22:
+ 238              	 .cfi_def_cfa_register 13
+ 239              	 
+ 240 001a 80BC     	 pop {r7}
+ 241              	.LCFI23:
+ 242              	 .cfi_restore 7
+ 243              	 .cfi_def_cfa_offset 0
+ 244 001c 7047     	 bx lr
+ 245              	 .cfi_endproc
+ 246              	.LFE6:
+ 248              	 .section .text._isatty,"ax",%progbits
+ 249              	 .align 1
+ 250              	 .global _isatty
+ 251              	 .syntax unified
+ 252              	 .thumb
+ 253              	 .thumb_func
+ 254              	 .fpu softvfp
+ 256              	_isatty:
+ 257              	.LFB7:
  108:.././hal/sam3u1c/syscalls.c **** 
  109:.././hal/sam3u1c/syscalls.c **** extern int _isatty(int file)
  110:.././hal/sam3u1c/syscalls.c **** {
- 254              	 .loc 1 110 0
- 255              	 .cfi_startproc
- 256              	 
- 257              	 
- 258              	 
- 259 0000 80B4     	 push {r7}
- 260              	.LCFI24:
- 261              	 .cfi_def_cfa_offset 4
- 262              	 .cfi_offset 7,-4
- 263 0002 83B0     	 sub sp,sp,#12
- 264              	.LCFI25:
- 265              	 .cfi_def_cfa_offset 16
- 266 0004 00AF     	 add r7,sp,#0
- 267              	.LCFI26:
- 268              	 .cfi_def_cfa_register 7
- 269 0006 7860     	 str r0,[r7,#4]
+ 258              	 .loc 1 110 1
+ 259              	 .cfi_startproc
+ 260              	 
+ 261              	 
+ 262              	 
+ 263 0000 80B4     	 push {r7}
+ 264              	.LCFI24:
+ 265              	 .cfi_def_cfa_offset 4
+ 266              	 .cfi_offset 7,-4
+ 267 0002 83B0     	 sub sp,sp,#12
+ 268              	.LCFI25:
+ 269              	 .cfi_def_cfa_offset 16
+ 270 0004 00AF     	 add r7,sp,#0
+ 271              	.LCFI26:
+ 272              	 .cfi_def_cfa_register 7
+ 273 0006 7860     	 str r0,[r7,#4]
  111:.././hal/sam3u1c/syscalls.c **** 	return 1;
- 270              	 .loc 1 111 0
- 271 0008 0123     	 movs r3,#1
+ 274              	 .loc 1 111 9
+ 275 0008 0123     	 movs r3,#1
  112:.././hal/sam3u1c/syscalls.c **** }
- 272              	 .loc 1 112 0
- 273 000a 1846     	 mov r0,r3
- 274 000c 0C37     	 adds r7,r7,#12
- 275              	.LCFI27:
- 276              	 .cfi_def_cfa_offset 4
- 277 000e BD46     	 mov sp,r7
- 278              	.LCFI28:
- 279              	 .cfi_def_cfa_register 13
- 280              	 
- 281 0010 80BC     	 pop {r7}
- 282              	.LCFI29:
- 283              	 .cfi_restore 7
- 284              	 .cfi_def_cfa_offset 0
- 285 0012 7047     	 bx lr
- 286              	 .cfi_endproc
- 287              	.LFE7:
- 289              	 .section .text._lseek,"ax",%progbits
- 290              	 .align 1
- 291              	 .global _lseek
- 292              	 .syntax unified
- 293              	 .thumb
- 294              	 .thumb_func
- 295              	 .fpu softvfp
- 297              	_lseek:
- 298              	.LFB8:
+ 276              	 .loc 1 112 1
+ 277 000a 1846     	 mov r0,r3
+ 278 000c 0C37     	 adds r7,r7,#12
+ 279              	.LCFI27:
+ 280              	 .cfi_def_cfa_offset 4
+ 281 000e BD46     	 mov sp,r7
+ 282              	.LCFI28:
+ 283              	 .cfi_def_cfa_register 13
+ 284              	 
+ 285 0010 80BC     	 pop {r7}
+ 286              	.LCFI29:
+ 287              	 .cfi_restore 7
+ 288              	 .cfi_def_cfa_offset 0
+ 289 0012 7047     	 bx lr
+ 290              	 .cfi_endproc
+ 291              	.LFE7:
+ 293              	 .section .text._lseek,"ax",%progbits
+ 294              	 .align 1
+ 295              	 .global _lseek
+ 296              	 .syntax unified
+ 297              	 .thumb
+ 298              	 .thumb_func
+ 299              	 .fpu softvfp
+ 301              	_lseek:
+ 302              	.LFB8:
  113:.././hal/sam3u1c/syscalls.c **** 
  114:.././hal/sam3u1c/syscalls.c **** extern int _lseek(int file, int ptr, int dir)
  115:.././hal/sam3u1c/syscalls.c **** {
- 299              	 .loc 1 115 0
- 300              	 .cfi_startproc
- 301              	 
- 302              	 
- 303              	 
- 304 0000 80B4     	 push {r7}
- 305              	.LCFI30:
- 306              	 .cfi_def_cfa_offset 4
- 307              	 .cfi_offset 7,-4
- 308 0002 85B0     	 sub sp,sp,#20
- 309              	.LCFI31:
- 310              	 .cfi_def_cfa_offset 24
- 311 0004 00AF     	 add r7,sp,#0
- 312              	.LCFI32:
- 313              	 .cfi_def_cfa_register 7
- 314 0006 F860     	 str r0,[r7,#12]
- 315 0008 B960     	 str r1,[r7,#8]
- 316 000a 7A60     	 str r2,[r7,#4]
+ 303              	 .loc 1 115 1
+ 304              	 .cfi_startproc
+ 305              	 
+ 306              	 
+ 307              	 
+ 308 0000 80B4     	 push {r7}
+ 309              	.LCFI30:
+ 310              	 .cfi_def_cfa_offset 4
+ 311              	 .cfi_offset 7,-4
+ 312 0002 85B0     	 sub sp,sp,#20
+ 313              	.LCFI31:
+ 314              	 .cfi_def_cfa_offset 24
+ 315 0004 00AF     	 add r7,sp,#0
+ 316              	.LCFI32:
+ 317              	 .cfi_def_cfa_register 7
+ 318 0006 F860     	 str r0,[r7,#12]
+ 319 0008 B960     	 str r1,[r7,#8]
+ 320 000a 7A60     	 str r2,[r7,#4]
  116:.././hal/sam3u1c/syscalls.c **** 	return 0;
- 317              	 .loc 1 116 0
- 318 000c 0023     	 movs r3,#0
+ 321              	 .loc 1 116 9
+ 322 000c 0023     	 movs r3,#0
  117:.././hal/sam3u1c/syscalls.c **** }
- 319              	 .loc 1 117 0
- 320 000e 1846     	 mov r0,r3
- 321 0010 1437     	 adds r7,r7,#20
- 322              	.LCFI33:
- 323              	 .cfi_def_cfa_offset 4
- 324 0012 BD46     	 mov sp,r7
- 325              	.LCFI34:
- 326              	 .cfi_def_cfa_register 13
- 327              	 
- 328 0014 80BC     	 pop {r7}
- 329              	.LCFI35:
- 330              	 .cfi_restore 7
- 331              	 .cfi_def_cfa_offset 0
- 332 0016 7047     	 bx lr
- 333              	 .cfi_endproc
- 334              	.LFE8:
- 336              	 .section .rodata
- 337              	 .align 2
- 338              	.LC0:
- 339 0000 45786974 	 .ascii "Exiting with status %d.\012\000"
- 339      696E6720 
- 339      77697468 
- 339      20737461 
- 339      74757320 
- 340              	 .section .text._exit,"ax",%progbits
- 341              	 .align 1
- 342              	 .global _exit
- 343              	 .syntax unified
- 344              	 .thumb
- 345              	 .thumb_func
- 346              	 .fpu softvfp
- 348              	_exit:
- 349              	.LFB9:
+ 323              	 .loc 1 117 1
+ 324 000e 1846     	 mov r0,r3
+ 325 0010 1437     	 adds r7,r7,#20
+ 326              	.LCFI33:
+ 327              	 .cfi_def_cfa_offset 4
+ 328 0012 BD46     	 mov sp,r7
+ 329              	.LCFI34:
+ 330              	 .cfi_def_cfa_register 13
+ 331              	 
+ 332 0014 80BC     	 pop {r7}
+ 333              	.LCFI35:
+ 334              	 .cfi_restore 7
+ 335              	 .cfi_def_cfa_offset 0
+ 336 0016 7047     	 bx lr
+ 337              	 .cfi_endproc
+ 338              	.LFE8:
+ 340              	 .section .rodata
+ 341              	 .align 2
+ 342              	.LC0:
+ 343 0000 45786974 	 .ascii "Exiting with status %d.\012\000"
+ 343      696E6720 
+ 343      77697468 
+ 343      20737461 
+ 343      74757320 
+ 344              	 .section .text._exit,"ax",%progbits
+ 345              	 .align 1
+ 346              	 .global _exit
+ 347              	 .syntax unified
+ 348              	 .thumb
+ 349              	 .thumb_func
+ 350              	 .fpu softvfp
+ 352              	_exit:
+ 353              	.LFB9:
  118:.././hal/sam3u1c/syscalls.c **** 
  119:.././hal/sam3u1c/syscalls.c **** extern void _exit(int status)
  120:.././hal/sam3u1c/syscalls.c **** {
- 350              	 .loc 1 120 0
- 351              	 .cfi_startproc
- 352              	 
- 353              	 
- 354 0000 80B5     	 push {r7,lr}
- 355              	.LCFI36:
- 356              	 .cfi_def_cfa_offset 8
- 357              	 .cfi_offset 7,-8
- 358              	 .cfi_offset 14,-4
- 359 0002 82B0     	 sub sp,sp,#8
- 360              	.LCFI37:
- 361              	 .cfi_def_cfa_offset 16
- 362 0004 00AF     	 add r7,sp,#0
- 363              	.LCFI38:
- 364              	 .cfi_def_cfa_register 7
- 365 0006 7860     	 str r0,[r7,#4]
+ 354              	 .loc 1 120 1
+ 355              	 .cfi_startproc
+ 356              	 
+ 357              	 
+ 358 0000 80B5     	 push {r7,lr}
+ 359              	.LCFI36:
+ 360              	 .cfi_def_cfa_offset 8
+ 361              	 .cfi_offset 7,-8
+ 362              	 .cfi_offset 14,-4
+ 363 0002 82B0     	 sub sp,sp,#8
+ 364              	.LCFI37:
+ 365              	 .cfi_def_cfa_offset 16
+ 366 0004 00AF     	 add r7,sp,#0
+ 367              	.LCFI38:
+ 368              	 .cfi_def_cfa_register 7
+ 369 0006 7860     	 str r0,[r7,#4]
  121:.././hal/sam3u1c/syscalls.c **** 	printf("Exiting with status %d.\n", status);
- 366              	 .loc 1 121 0
- 367 0008 7968     	 ldr r1,[r7,#4]
- 368 000a 0248     	 ldr r0,.L19
- 369 000c 024B     	 ldr r3,.L19+4
- 370 000e 9847     	 blx r3
- 371              	.LVL0:
- 372              	.L18:
+ 370              	 .loc 1 121 2
+ 371 0008 7968     	 ldr r1,[r7,#4]
+ 372 000a 0248     	 ldr r0,.L19
+ 373 000c 024B     	 ldr r3,.L19+4
+ 374 000e 9847     	 blx r3
+ 375              	.LVL0:
+ 376              	.L18:
  122:.././hal/sam3u1c/syscalls.c **** 
  123:.././hal/sam3u1c/syscalls.c **** 	for (;;);
- 373              	 .loc 1 123 0 discriminator 1
- 374 0010 FEE7     	 b .L18
- 375              	.L20:
- 376 0012 00BF     	 .align 2
- 377              	.L19:
- 378 0014 00000000 	 .word .LC0
- 379 0018 00000000 	 .word iprintf
- 380              	 .cfi_endproc
- 381              	.LFE9:
- 383              	 .section .text._kill,"ax",%progbits
- 384              	 .align 1
- 385              	 .global _kill
- 386              	 .syntax unified
- 387              	 .thumb
- 388              	 .thumb_func
- 389              	 .fpu softvfp
- 391              	_kill:
- 392              	.LFB10:
+ 377              	 .loc 1 123 2 discriminator 1
+ 378 0010 FEE7     	 b .L18
+ 379              	.L20:
+ 380 0012 00BF     	 .align 2
+ 381              	.L19:
+ 382 0014 00000000 	 .word .LC0
+ 383 0018 00000000 	 .word iprintf
+ 384              	 .cfi_endproc
+ 385              	.LFE9:
+ 387              	 .section .text._kill,"ax",%progbits
+ 388              	 .align 1
+ 389              	 .global _kill
+ 390              	 .syntax unified
+ 391              	 .thumb
+ 392              	 .thumb_func
+ 393              	 .fpu softvfp
+ 395              	_kill:
+ 396              	.LFB10:
  124:.././hal/sam3u1c/syscalls.c **** }
  125:.././hal/sam3u1c/syscalls.c **** 
  126:.././hal/sam3u1c/syscalls.c **** extern void _kill(int pid, int sig)
  127:.././hal/sam3u1c/syscalls.c **** {
- 393              	 .loc 1 127 0
- 394              	 .cfi_startproc
- 395              	 
- 396              	 
- 397              	 
- 398 0000 80B4     	 push {r7}
- 399              	.LCFI39:
- 400              	 .cfi_def_cfa_offset 4
- 401              	 .cfi_offset 7,-4
- 402 0002 83B0     	 sub sp,sp,#12
- 403              	.LCFI40:
- 404              	 .cfi_def_cfa_offset 16
- 405 0004 00AF     	 add r7,sp,#0
- 406              	.LCFI41:
- 407              	 .cfi_def_cfa_register 7
- 408 0006 7860     	 str r0,[r7,#4]
- 409 0008 3960     	 str r1,[r7]
+ 397              	 .loc 1 127 1
+ 398              	 .cfi_startproc
+ 399              	 
+ 400              	 
+ 401              	 
+ 402 0000 80B4     	 push {r7}
+ 403              	.LCFI39:
+ 404              	 .cfi_def_cfa_offset 4
+ 405              	 .cfi_offset 7,-4
+ 406 0002 83B0     	 sub sp,sp,#12
+ 407              	.LCFI40:
+ 408              	 .cfi_def_cfa_offset 16
+ 409 0004 00AF     	 add r7,sp,#0
+ 410              	.LCFI41:
+ 411              	 .cfi_def_cfa_register 7
+ 412 0006 7860     	 str r0,[r7,#4]
+ 413 0008 3960     	 str r1,[r7]
  128:.././hal/sam3u1c/syscalls.c **** 	return;
- 410              	 .loc 1 128 0
- 411 000a 00BF     	 nop
+ 414              	 .loc 1 128 2
+ 415 000a 00BF     	 nop
  129:.././hal/sam3u1c/syscalls.c **** }
- 412              	 .loc 1 129 0
- 413 000c 0C37     	 adds r7,r7,#12
- 414              	.LCFI42:
- 415              	 .cfi_def_cfa_offset 4
- 416 000e BD46     	 mov sp,r7
- 417              	.LCFI43:
- 418              	 .cfi_def_cfa_register 13
- 419              	 
- 420 0010 80BC     	 pop {r7}
- 421              	.LCFI44:
- 422              	 .cfi_restore 7
- 423              	 .cfi_def_cfa_offset 0
- 424 0012 7047     	 bx lr
- 425              	 .cfi_endproc
- 426              	.LFE10:
- 428              	 .section .text._getpid,"ax",%progbits
- 429              	 .align 1
- 430              	 .global _getpid
- 431              	 .syntax unified
- 432              	 .thumb
- 433              	 .thumb_func
- 434              	 .fpu softvfp
- 436              	_getpid:
- 437              	.LFB11:
+ 416              	 .loc 1 129 1
+ 417 000c 0C37     	 adds r7,r7,#12
+ 418              	.LCFI42:
+ 419              	 .cfi_def_cfa_offset 4
+ 420 000e BD46     	 mov sp,r7
+ 421              	.LCFI43:
+ 422              	 .cfi_def_cfa_register 13
+ 423              	 
+ 424 0010 80BC     	 pop {r7}
+ 425              	.LCFI44:
+ 426              	 .cfi_restore 7
+ 427              	 .cfi_def_cfa_offset 0
+ 428 0012 7047     	 bx lr
+ 429              	 .cfi_endproc
+ 430              	.LFE10:
+ 432              	 .section .text._getpid,"ax",%progbits
+ 433              	 .align 1
+ 434              	 .global _getpid
+ 435              	 .syntax unified
+ 436              	 .thumb
+ 437              	 .thumb_func
+ 438              	 .fpu softvfp
+ 440              	_getpid:
+ 441              	.LFB11:
  130:.././hal/sam3u1c/syscalls.c **** 
  131:.././hal/sam3u1c/syscalls.c **** extern int _getpid(void)
  132:.././hal/sam3u1c/syscalls.c **** {
- 438              	 .loc 1 132 0
- 439              	 .cfi_startproc
- 440              	 
- 441              	 
- 442              	 
- 443 0000 80B4     	 push {r7}
- 444              	.LCFI45:
- 445              	 .cfi_def_cfa_offset 4
- 446              	 .cfi_offset 7,-4
- 447 0002 00AF     	 add r7,sp,#0
- 448              	.LCFI46:
- 449              	 .cfi_def_cfa_register 7
+ 442              	 .loc 1 132 1
+ 443              	 .cfi_startproc
+ 444              	 
+ 445              	 
+ 446              	 
+ 447 0000 80B4     	 push {r7}
+ 448              	.LCFI45:
+ 449              	 .cfi_def_cfa_offset 4
+ 450              	 .cfi_offset 7,-4
+ 451 0002 00AF     	 add r7,sp,#0
+ 452              	.LCFI46:
+ 453              	 .cfi_def_cfa_register 7
  133:.././hal/sam3u1c/syscalls.c **** 	return -1;
- 450              	 .loc 1 133 0
- 451 0004 4FF0FF33 	 mov r3,#-1
+ 454              	 .loc 1 133 9
+ 455 0004 4FF0FF33 	 mov r3,#-1
  134:.././hal/sam3u1c/syscalls.c **** }
- 452              	 .loc 1 134 0
- 453 0008 1846     	 mov r0,r3
- 454 000a BD46     	 mov sp,r7
- 455              	.LCFI47:
- 456              	 .cfi_def_cfa_register 13
- 457              	 
- 458 000c 80BC     	 pop {r7}
- 459              	.LCFI48:
- 460              	 .cfi_restore 7
- 461              	 .cfi_def_cfa_offset 0
- 462 000e 7047     	 bx lr
- 463              	 .cfi_endproc
- 464              	.LFE11:
- 466              	 .section .bss.heap.5319,"aw",%nobits
- 467              	 .align 2
- 470              	heap.5319:
- 471 0000 00000000 	 .space 4
- 472              	 .text
- 473              	.Letext0:
- 474              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 475              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 476              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 477              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 478              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 479              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_timeval.h"
- 480              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\types.h"
- 481              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\time.h"
- 482              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\stat.h"
- 483              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdio.h"
+ 456              	 .loc 1 134 1
+ 457 0008 1846     	 mov r0,r3
+ 458 000a BD46     	 mov sp,r7
+ 459              	.LCFI47:
+ 460              	 .cfi_def_cfa_register 13
+ 461              	 
+ 462 000c 80BC     	 pop {r7}
+ 463              	.LCFI48:
+ 464              	 .cfi_restore 7
+ 465              	 .cfi_def_cfa_offset 0
+ 466 000e 7047     	 bx lr
+ 467              	 .cfi_endproc
+ 468              	.LFE11:
+ 470              	 .section .bss.heap.5414,"aw",%nobits
+ 471              	 .align 2
+ 474              	heap.5414:
+ 475 0000 00000000 	 .space 4
+ 476              	 .text
+ 477              	.Letext0:
+ 478              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 479              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 480              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 481              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 482              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 483              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_timeval.h"
+ 484              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\types.h"
+ 485              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\time.h"
+ 486              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\stat.h"
+ 487              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdio.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 syscalls.c
     {standard input}:16     .text._sbrk:00000000 $t
-    {standard input}:23     .text._sbrk:00000000 _sbrk
-    {standard input}:97     .text._sbrk:0000004c $d
-    {standard input}:470    .bss.heap.5319:00000000 heap.5319
-    {standard input}:104    .text.link:00000000 $t
-    {standard input}:111    .text.link:00000000 link
-    {standard input}:150    .text._close:00000000 $t
-    {standard input}:157    .text._close:00000000 _close
-    {standard input}:195    .text._fstat:00000000 $t
-    {standard input}:202    .text._fstat:00000000 _fstat
-    {standard input}:245    .text._isatty:00000000 $t
-    {standard input}:252    .text._isatty:00000000 _isatty
-    {standard input}:290    .text._lseek:00000000 $t
-    {standard input}:297    .text._lseek:00000000 _lseek
-    {standard input}:337    .rodata:00000000 $d
-    {standard input}:341    .text._exit:00000000 $t
-    {standard input}:348    .text._exit:00000000 _exit
-    {standard input}:378    .text._exit:00000014 $d
-    {standard input}:384    .text._kill:00000000 $t
-    {standard input}:391    .text._kill:00000000 _kill
-    {standard input}:429    .text._getpid:00000000 $t
-    {standard input}:436    .text._getpid:00000000 _getpid
-    {standard input}:467    .bss.heap.5319:00000000 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:24     .text._sbrk:00000000 _sbrk
+    {standard input}:101    .text._sbrk:0000004c $d
+    {standard input}:474    .bss.heap.5414:00000000 heap.5414
+    {standard input}:108    .text.link:00000000 $t
+    {standard input}:115    .text.link:00000000 link
+    {standard input}:154    .text._close:00000000 $t
+    {standard input}:161    .text._close:00000000 _close
+    {standard input}:199    .text._fstat:00000000 $t
+    {standard input}:206    .text._fstat:00000000 _fstat
+    {standard input}:249    .text._isatty:00000000 $t
+    {standard input}:256    .text._isatty:00000000 _isatty
+    {standard input}:294    .text._lseek:00000000 $t
+    {standard input}:301    .text._lseek:00000000 _lseek
+    {standard input}:341    .rodata:00000000 $d
+    {standard input}:345    .text._exit:00000000 $t
+    {standard input}:352    .text._exit:00000000 _exit
+    {standard input}:382    .text._exit:00000014 $d
+    {standard input}:388    .text._kill:00000000 $t
+    {standard input}:395    .text._kill:00000000 _kill
+    {standard input}:433    .text._getpid:00000000 $t
+    {standard input}:440    .text._getpid:00000000 _getpid
+    {standard input}:471    .bss.heap.5414:00000000 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
                            .group:00000000 wm4.newlib.h.18.5e5ca3429233af402d406a202f1fc1ac
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.features.h.22.026edb2397769f4ae13f35900dbdb560
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
                            .group:00000000 wm4.stddef.h.187.2ff233552538c6ff9b8575ca8ea52cb3
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stddef.h.39.a231a87e043a95babfd62cebe88e50f8
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
@@ -659,7 +663,7 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
                            .group:00000000 wm4.time.h.2.4581ce0ffb6627cfc02162c94bf846c9
                            .group:00000000 wm4.time.h.25.0e6a0fdbc9955f5707ed54246ed2e089
-                           .group:00000000 wm4.time.h.162.117026b75cfaa0f83901a5f301a8b4f7
+                           .group:00000000 wm4.time.h.162.796fecef3e6a40c4fe27297168cad6e6
                            .group:00000000 wm4.stat.h.71.d65ac61ff88c651e198008cfb38bda9c
 
 UNDEFINED SYMBOLS

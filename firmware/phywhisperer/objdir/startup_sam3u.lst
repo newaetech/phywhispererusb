@@ -20,7 +20,7 @@
   24              	cpu_irq_prev_interrupt_state:
   25 0000 00       	 .space 1
   26              	 .global exception_table
-  27              	 .section .vectors,"aw",%progbits
+  27              	 .section .vectors,"aw"
   28              	 .align 2
   31              	exception_table:
   32 0000 00000000 	 .word _estack
@@ -73,13 +73,14 @@
   79              	 .section .text.Reset_Handler,"ax",%progbits
   80              	 .align 1
   81              	 .global Reset_Handler
-  82              	 .syntax unified
-  83              	 .thumb
-  84              	 .thumb_func
-  85              	 .fpu softvfp
-  87              	Reset_Handler:
-  88              	.LFB69:
-  89              	 .file 1 ".././hal/sam3u1c/startup_sam3u.c"
+  82              	 .arch armv7-m
+  83              	 .syntax unified
+  84              	 .thumb
+  85              	 .thumb_func
+  86              	 .fpu softvfp
+  88              	Reset_Handler:
+  89              	.LFB69:
+  90              	 .file 1 ".././hal/sam3u1c/startup_sam3u.c"
    1:.././hal/sam3u1c/startup_sam3u.c **** /**
    2:.././hal/sam3u1c/startup_sam3u.c ****  * \file
    3:.././hal/sam3u1c/startup_sam3u.c ****  *
@@ -215,167 +216,177 @@
  133:.././hal/sam3u1c/startup_sam3u.c ****  */
  134:.././hal/sam3u1c/startup_sam3u.c **** void Reset_Handler(void)
  135:.././hal/sam3u1c/startup_sam3u.c **** {
-  90              	 .loc 1 135 0
-  91              	 .cfi_startproc
-  92              	 
+  91              	 .loc 1 135 1
+  92              	 .cfi_startproc
   93              	 
-  94 0000 80B5     	 push {r7,lr}
-  95              	.LCFI0:
-  96              	 .cfi_def_cfa_offset 8
-  97              	 .cfi_offset 7,-8
-  98              	 .cfi_offset 14,-4
-  99 0002 82B0     	 sub sp,sp,#8
- 100              	.LCFI1:
- 101              	 .cfi_def_cfa_offset 16
- 102 0004 00AF     	 add r7,sp,#0
- 103              	.LCFI2:
- 104              	 .cfi_def_cfa_register 7
+  94              	 
+  95 0000 80B5     	 push {r7,lr}
+  96              	.LCFI0:
+  97              	 .cfi_def_cfa_offset 8
+  98              	 .cfi_offset 7,-8
+  99              	 .cfi_offset 14,-4
+ 100 0002 82B0     	 sub sp,sp,#8
+ 101              	.LCFI1:
+ 102              	 .cfi_def_cfa_offset 16
+ 103 0004 00AF     	 add r7,sp,#0
+ 104              	.LCFI2:
+ 105              	 .cfi_def_cfa_register 7
  136:.././hal/sam3u1c/startup_sam3u.c **** 	uint32_t *pSrc, *pDest;
  137:.././hal/sam3u1c/startup_sam3u.c **** 
  138:.././hal/sam3u1c/startup_sam3u.c **** 	/* Initialize the relocate segment */
  139:.././hal/sam3u1c/startup_sam3u.c **** 	pSrc = &_etext;
- 105              	 .loc 1 139 0
- 106 0006 1E4B     	 ldr r3,.L9
- 107 0008 7B60     	 str r3,[r7,#4]
+ 106              	 .loc 1 139 7
+ 107 0006 1E4B     	 ldr r3,.L9
+ 108 0008 7B60     	 str r3,[r7,#4]
  140:.././hal/sam3u1c/startup_sam3u.c **** 	pDest = &_srelocate;
- 108              	 .loc 1 140 0
- 109 000a 1E4B     	 ldr r3,.L9+4
- 110 000c 3B60     	 str r3,[r7]
+ 109              	 .loc 1 140 8
+ 110 000a 1E4B     	 ldr r3,.L9+4
+ 111 000c 3B60     	 str r3,[r7]
  141:.././hal/sam3u1c/startup_sam3u.c **** 
  142:.././hal/sam3u1c/startup_sam3u.c **** 	if (pSrc != pDest) {
- 111              	 .loc 1 142 0
- 112 000e 7A68     	 ldr r2,[r7,#4]
- 113 0010 3B68     	 ldr r3,[r7]
- 114 0012 9A42     	 cmp r2,r3
- 115 0014 0CD0     	 beq .L2
+ 112              	 .loc 1 142 5
+ 113 000e 7A68     	 ldr r2,[r7,#4]
+ 114 0010 3B68     	 ldr r3,[r7]
+ 115 0012 9A42     	 cmp r2,r3
+ 116 0014 0CD0     	 beq .L2
  143:.././hal/sam3u1c/startup_sam3u.c **** 		for (; pDest < &_erelocate;) {
- 116              	 .loc 1 143 0
- 117 0016 07E0     	 b .L3
- 118              	.L4:
+ 117              	 .loc 1 143 3
+ 118 0016 07E0     	 b .L3
+ 119              	.L4:
  144:.././hal/sam3u1c/startup_sam3u.c **** 			*pDest++ = *pSrc++;
- 119              	 .loc 1 144 0
- 120 0018 7A68     	 ldr r2,[r7,#4]
- 121 001a 131D     	 adds r3,r2,#4
- 122 001c 7B60     	 str r3,[r7,#4]
- 123 001e 3B68     	 ldr r3,[r7]
- 124 0020 191D     	 adds r1,r3,#4
- 125 0022 3960     	 str r1,[r7]
- 126 0024 1268     	 ldr r2,[r2]
- 127 0026 1A60     	 str r2,[r3]
- 128              	.L3:
+ 120              	 .loc 1 144 20
+ 121 0018 7A68     	 ldr r2,[r7,#4]
+ 122 001a 131D     	 adds r3,r2,#4
+ 123 001c 7B60     	 str r3,[r7,#4]
+ 124              	 .loc 1 144 10
+ 125 001e 3B68     	 ldr r3,[r7]
+ 126 0020 191D     	 adds r1,r3,#4
+ 127 0022 3960     	 str r1,[r7]
+ 128              	 .loc 1 144 15
+ 129 0024 1268     	 ldr r2,[r2]
+ 130              	 .loc 1 144 13
+ 131 0026 1A60     	 str r2,[r3]
+ 132              	.L3:
  143:.././hal/sam3u1c/startup_sam3u.c **** 		for (; pDest < &_erelocate;) {
- 129              	 .loc 1 143 0
- 130 0028 3B68     	 ldr r3,[r7]
- 131 002a 174A     	 ldr r2,.L9+8
- 132 002c 9342     	 cmp r3,r2
- 133 002e F3D3     	 bcc .L4
- 134              	.L2:
+ 133              	 .loc 1 143 3
+ 134 0028 3B68     	 ldr r3,[r7]
+ 135 002a 174A     	 ldr r2,.L9+8
+ 136 002c 9342     	 cmp r3,r2
+ 137 002e F3D3     	 bcc .L4
+ 138              	.L2:
  145:.././hal/sam3u1c/startup_sam3u.c **** 		}
  146:.././hal/sam3u1c/startup_sam3u.c **** 	}
  147:.././hal/sam3u1c/startup_sam3u.c **** 
  148:.././hal/sam3u1c/startup_sam3u.c **** 	/* Clear the zero segment */
  149:.././hal/sam3u1c/startup_sam3u.c **** 	for (pDest = &_szero; pDest < &_ezero;) {
- 135              	 .loc 1 149 0
- 136 0030 164B     	 ldr r3,.L9+12
- 137 0032 3B60     	 str r3,[r7]
- 138 0034 04E0     	 b .L5
- 139              	.L6:
+ 139              	 .loc 1 149 13
+ 140 0030 164B     	 ldr r3,.L9+12
+ 141 0032 3B60     	 str r3,[r7]
+ 142              	 .loc 1 149 2
+ 143 0034 04E0     	 b .L5
+ 144              	.L6:
  150:.././hal/sam3u1c/startup_sam3u.c **** 		*pDest++ = 0;
- 140              	 .loc 1 150 0
- 141 0036 3B68     	 ldr r3,[r7]
- 142 0038 1A1D     	 adds r2,r3,#4
- 143 003a 3A60     	 str r2,[r7]
- 144 003c 0022     	 movs r2,#0
- 145 003e 1A60     	 str r2,[r3]
- 146              	.L5:
+ 145              	 .loc 1 150 9
+ 146 0036 3B68     	 ldr r3,[r7]
+ 147 0038 1A1D     	 adds r2,r3,#4
+ 148 003a 3A60     	 str r2,[r7]
+ 149              	 .loc 1 150 12
+ 150 003c 0022     	 movs r2,#0
+ 151 003e 1A60     	 str r2,[r3]
+ 152              	.L5:
  149:.././hal/sam3u1c/startup_sam3u.c **** 		*pDest++ = 0;
- 147              	 .loc 1 149 0 discriminator 1
- 148 0040 3B68     	 ldr r3,[r7]
- 149 0042 134A     	 ldr r2,.L9+16
- 150 0044 9342     	 cmp r3,r2
- 151 0046 F6D3     	 bcc .L6
+ 153              	 .loc 1 149 2 discriminator 1
+ 154 0040 3B68     	 ldr r3,[r7]
+ 155 0042 134A     	 ldr r2,.L9+16
+ 156 0044 9342     	 cmp r3,r2
+ 157 0046 F6D3     	 bcc .L6
  151:.././hal/sam3u1c/startup_sam3u.c **** 	}
  152:.././hal/sam3u1c/startup_sam3u.c **** 
  153:.././hal/sam3u1c/startup_sam3u.c **** 	/* Set the vector table base address */
  154:.././hal/sam3u1c/startup_sam3u.c **** 	pSrc = (uint32_t *) & _sfixed;
- 152              	 .loc 1 154 0
- 153 0048 124B     	 ldr r3,.L9+20
- 154 004a 7B60     	 str r3,[r7,#4]
+ 158              	 .loc 1 154 7
+ 159 0048 124B     	 ldr r3,.L9+20
+ 160 004a 7B60     	 str r3,[r7,#4]
  155:.././hal/sam3u1c/startup_sam3u.c **** 	SCB->VTOR = ((uint32_t) pSrc & SCB_VTOR_TBLOFF_Msk);
- 155              	 .loc 1 155 0
- 156 004c 7B68     	 ldr r3,[r7,#4]
- 157 004e 124A     	 ldr r2,.L9+24
- 158 0050 23F06043 	 bic r3,r3,#-536870912
- 159 0054 23F07F03 	 bic r3,r3,#127
- 160 0058 9360     	 str r3,[r2,#8]
+ 161              	 .loc 1 155 15
+ 162 004c 7B68     	 ldr r3,[r7,#4]
+ 163              	 .loc 1 155 5
+ 164 004e 124A     	 ldr r2,.L9+24
+ 165              	 .loc 1 155 31
+ 166 0050 23F06043 	 bic r3,r3,#-536870912
+ 167 0054 23F07F03 	 bic r3,r3,#127
+ 168              	 .loc 1 155 12
+ 169 0058 9360     	 str r3,[r2,#8]
  156:.././hal/sam3u1c/startup_sam3u.c **** 
  157:.././hal/sam3u1c/startup_sam3u.c **** 	if (((uint32_t) pSrc >= IRAM0_ADDR) && ((uint32_t) pSrc < IRAM0_ADDR + IRAM_SIZE)) {
- 161              	 .loc 1 157 0
- 162 005a 7B68     	 ldr r3,[r7,#4]
- 163 005c B3F1005F 	 cmp r3,#536870912
- 164 0060 09D3     	 bcc .L7
- 165              	 .loc 1 157 0 is_stmt 0 discriminator 1
- 166 0062 7B68     	 ldr r3,[r7,#4]
- 167 0064 0D4A     	 ldr r2,.L9+28
- 168 0066 9342     	 cmp r3,r2
- 169 0068 05D8     	 bhi .L7
+ 170              	 .loc 1 157 7
+ 171 005a 7B68     	 ldr r3,[r7,#4]
+ 172              	 .loc 1 157 5
+ 173 005c B3F1005F 	 cmp r3,#536870912
+ 174 0060 09D3     	 bcc .L7
+ 175              	 .loc 1 157 42 discriminator 1
+ 176 0062 7B68     	 ldr r3,[r7,#4]
+ 177              	 .loc 1 157 38 discriminator 1
+ 178 0064 0D4A     	 ldr r2,.L9+28
+ 179 0066 9342     	 cmp r3,r2
+ 180 0068 05D8     	 bhi .L7
  158:.././hal/sam3u1c/startup_sam3u.c **** 		SCB->VTOR |= 1 << SCB_VTOR_TBLBASE_Pos;
- 170              	 .loc 1 158 0 is_stmt 1
- 171 006a 0B4B     	 ldr r3,.L9+24
- 172 006c 9B68     	 ldr r3,[r3,#8]
- 173 006e 0A4A     	 ldr r2,.L9+24
- 174 0070 43F00053 	 orr r3,r3,#536870912
- 175 0074 9360     	 str r3,[r2,#8]
- 176              	.L7:
+ 181              	 .loc 1 158 13
+ 182 006a 0B4B     	 ldr r3,.L9+24
+ 183 006c 9B68     	 ldr r3,[r3,#8]
+ 184 006e 0A4A     	 ldr r2,.L9+24
+ 185 0070 43F00053 	 orr r3,r3,#536870912
+ 186 0074 9360     	 str r3,[r2,#8]
+ 187              	.L7:
  159:.././hal/sam3u1c/startup_sam3u.c **** 	}
  160:.././hal/sam3u1c/startup_sam3u.c **** 
  161:.././hal/sam3u1c/startup_sam3u.c **** 	/* Initialize the C library */
  162:.././hal/sam3u1c/startup_sam3u.c **** 	__libc_init_array();
- 177              	 .loc 1 162 0
- 178 0076 0A4B     	 ldr r3,.L9+32
- 179 0078 9847     	 blx r3
- 180              	.LVL0:
+ 188              	 .loc 1 162 2
+ 189 0076 0A4B     	 ldr r3,.L9+32
+ 190 0078 9847     	 blx r3
+ 191              	.LVL0:
  163:.././hal/sam3u1c/startup_sam3u.c **** 
  164:.././hal/sam3u1c/startup_sam3u.c **** 	/* Branch to main function */
  165:.././hal/sam3u1c/startup_sam3u.c **** 	main();
- 181              	 .loc 1 165 0
- 182 007a 0A4B     	 ldr r3,.L9+36
- 183 007c 9847     	 blx r3
- 184              	.LVL1:
- 185              	.L8:
+ 192              	 .loc 1 165 2
+ 193 007a 0A4B     	 ldr r3,.L9+36
+ 194 007c 9847     	 blx r3
+ 195              	.LVL1:
+ 196              	.L8:
  166:.././hal/sam3u1c/startup_sam3u.c **** 
  167:.././hal/sam3u1c/startup_sam3u.c **** 	/* Infinite loop */
  168:.././hal/sam3u1c/startup_sam3u.c **** 	while (1);
- 186              	 .loc 1 168 0 discriminator 1
- 187 007e FEE7     	 b .L8
- 188              	.L10:
- 189              	 .align 2
- 190              	.L9:
- 191 0080 00000000 	 .word _etext
- 192 0084 00000000 	 .word _srelocate
- 193 0088 00000000 	 .word _erelocate
- 194 008c 00000000 	 .word _szero
- 195 0090 00000000 	 .word _ezero
- 196 0094 00000000 	 .word _sfixed
- 197 0098 00ED00E0 	 .word -536810240
- 198 009c FF3F0020 	 .word 536887295
- 199 00a0 00000000 	 .word __libc_init_array
- 200 00a4 00000000 	 .word main
- 201              	 .cfi_endproc
- 202              	.LFE69:
- 204              	 .text
- 205              	.Letext0:
- 206              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 207              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 208              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
- 209              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 210              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 211              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 212              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 213              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 214              	 .file 10 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 215              	 .file 11 ".././hal/sam3u1c/inc/system_sam3u.h"
- 216              	 .file 12 ".././hal/sam3u1c/inc/exceptions.h"
+ 197              	 .loc 1 168 8 discriminator 1
+ 198 007e FEE7     	 b .L8
+ 199              	.L10:
+ 200              	 .align 2
+ 201              	.L9:
+ 202 0080 00000000 	 .word _etext
+ 203 0084 00000000 	 .word _srelocate
+ 204 0088 00000000 	 .word _erelocate
+ 205 008c 00000000 	 .word _szero
+ 206 0090 00000000 	 .word _ezero
+ 207 0094 00000000 	 .word _sfixed
+ 208 0098 00ED00E0 	 .word -536810240
+ 209 009c FF3F0020 	 .word 536887295
+ 210 00a0 00000000 	 .word __libc_init_array
+ 211 00a4 00000000 	 .word main
+ 212              	 .cfi_endproc
+ 213              	.LFE69:
+ 215              	 .text
+ 216              	.Letext0:
+ 217              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 218              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 219              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
+ 220              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 221              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 222              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 223              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 224              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 225              	 .file 10 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 226              	 .file 11 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 227              	 .file 12 ".././hal/sam3u1c/inc/exceptions.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 startup_sam3u.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -384,10 +395,10 @@ DEFINED SYMBOLS
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:31     .vectors:00000000 exception_table
     {standard input}:28     .vectors:00000000 $d
-    {standard input}:87     .text.Reset_Handler:00000000 Reset_Handler
+    {standard input}:88     .text.Reset_Handler:00000000 Reset_Handler
     {standard input}:80     .text.Reset_Handler:00000000 $t
-    {standard input}:191    .text.Reset_Handler:00000080 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:202    .text.Reset_Handler:00000080 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
                            .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
@@ -404,12 +415,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

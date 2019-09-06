@@ -21,13 +21,14 @@
   25 0000 00       	 .space 1
   26              	 .section .text.osc_enable,"ax",%progbits
   27              	 .align 1
-  28              	 .syntax unified
-  29              	 .thumb
-  30              	 .thumb_func
-  31              	 .fpu softvfp
-  33              	osc_enable:
-  34              	.LFB69:
-  35              	 .file 1 ".././hal/sam3u1c/inc/sam3u/osc.h"
+  28              	 .arch armv7-m
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	osc_enable:
+  35              	.LFB69:
+  36              	 .file 1 ".././hal/sam3u1c/inc/sam3u/osc.h"
    1:.././hal/sam3u1c/inc/sam3u/osc.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/osc.h ****  * \file
    3:.././hal/sam3u1c/inc/sam3u/osc.h ****  *
@@ -145,163 +146,163 @@
  115:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  116:.././hal/sam3u1c/inc/sam3u/osc.h **** static inline void osc_enable(uint32_t ul_id)
  117:.././hal/sam3u1c/inc/sam3u/osc.h **** {
-  36              	 .loc 1 117 0
-  37              	 .cfi_startproc
-  38              	 
+  37              	 .loc 1 117 1
+  38              	 .cfi_startproc
   39              	 
-  40 0000 80B5     	 push {r7,lr}
-  41              	.LCFI0:
-  42              	 .cfi_def_cfa_offset 8
-  43              	 .cfi_offset 7,-8
-  44              	 .cfi_offset 14,-4
-  45 0002 82B0     	 sub sp,sp,#8
-  46              	.LCFI1:
-  47              	 .cfi_def_cfa_offset 16
-  48 0004 00AF     	 add r7,sp,#0
-  49              	.LCFI2:
-  50              	 .cfi_def_cfa_register 7
-  51 0006 7860     	 str r0,[r7,#4]
+  40              	 
+  41 0000 80B5     	 push {r7,lr}
+  42              	.LCFI0:
+  43              	 .cfi_def_cfa_offset 8
+  44              	 .cfi_offset 7,-8
+  45              	 .cfi_offset 14,-4
+  46 0002 82B0     	 sub sp,sp,#8
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 16
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52 0006 7860     	 str r0,[r7,#4]
  118:.././hal/sam3u1c/inc/sam3u/osc.h **** 	switch (ul_id) {
-  52              	 .loc 1 118 0
-  53 0008 7B68     	 ldr r3,[r7,#4]
-  54 000a 072B     	 cmp r3,#7
-  55 000c 2ED8     	 bhi .L12
-  56 000e 01A2     	 adr r2,.L4
-  57 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
-  58              	 .p2align 2
-  59              	.L4:
-  60 0014 6B000000 	 .word .L13+1
-  61 0018 35000000 	 .word .L5+1
-  62 001c 3D000000 	 .word .L6+1
-  63 0020 45000000 	 .word .L7+1
-  64 0024 4D000000 	 .word .L8+1
-  65 0028 55000000 	 .word .L9+1
-  66 002c 5D000000 	 .word .L10+1
-  67 0030 65000000 	 .word .L11+1
-  68              	 .p2align 1
-  69              	.L5:
+  53              	 .loc 1 118 2
+  54 0008 7B68     	 ldr r3,[r7,#4]
+  55 000a 072B     	 cmp r3,#7
+  56 000c 2ED8     	 bhi .L12
+  57 000e 01A2     	 adr r2,.L4
+  58 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+  59              	 .p2align 2
+  60              	.L4:
+  61 0014 6B000000 	 .word .L13+1
+  62 0018 35000000 	 .word .L10+1
+  63 001c 3D000000 	 .word .L9+1
+  64 0020 45000000 	 .word .L8+1
+  65 0024 4D000000 	 .word .L7+1
+  66 0028 55000000 	 .word .L6+1
+  67 002c 5D000000 	 .word .L5+1
+  68 0030 65000000 	 .word .L3+1
+  69              	 .p2align 1
+  70              	.L10:
  119:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_RC:
  120:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
  121:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  122:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_XTAL:
  123:.././hal/sam3u1c/inc/sam3u/osc.h **** 		pmc_switch_sclk_to_32kxtal(PMC_OSC_XTAL);
-  70              	 .loc 1 123 0
-  71 0034 0020     	 movs r0,#0
-  72 0036 0F4B     	 ldr r3,.L14
-  73 0038 9847     	 blx r3
-  74              	.LVL0:
+  71              	 .loc 1 123 3
+  72 0034 0020     	 movs r0,#0
+  73 0036 0F4B     	 ldr r3,.L14
+  74 0038 9847     	 blx r3
+  75              	.LVL0:
  124:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
-  75              	 .loc 1 124 0
-  76 003a 17E0     	 b .L2
-  77              	.L6:
+  76              	 .loc 1 124 3
+  77 003a 17E0     	 b .L2
+  78              	.L9:
  125:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  126:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_BYPASS:
  127:.././hal/sam3u1c/inc/sam3u/osc.h **** 		pmc_switch_sclk_to_32kxtal(PMC_OSC_BYPASS);
-  78              	 .loc 1 127 0
-  79 003c 0120     	 movs r0,#1
-  80 003e 0D4B     	 ldr r3,.L14
-  81 0040 9847     	 blx r3
-  82              	.LVL1:
+  79              	 .loc 1 127 3
+  80 003c 0120     	 movs r0,#1
+  81 003e 0D4B     	 ldr r3,.L14
+  82 0040 9847     	 blx r3
+  83              	.LVL1:
  128:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
-  83              	 .loc 1 128 0
-  84 0042 13E0     	 b .L2
-  85              	.L7:
+  84              	 .loc 1 128 3
+  85 0042 13E0     	 b .L2
+  86              	.L8:
  129:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  130:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  131:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_4M_RC:
  132:.././hal/sam3u1c/inc/sam3u/osc.h **** 		pmc_osc_enable_fastrc(CKGR_MOR_MOSCRCF_4_MHz);
-  86              	 .loc 1 132 0
-  87 0044 0020     	 movs r0,#0
-  88 0046 0C4B     	 ldr r3,.L14+4
-  89 0048 9847     	 blx r3
-  90              	.LVL2:
+  87              	 .loc 1 132 3
+  88 0044 0020     	 movs r0,#0
+  89 0046 0C4B     	 ldr r3,.L14+4
+  90 0048 9847     	 blx r3
+  91              	.LVL2:
  133:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
-  91              	 .loc 1 133 0
-  92 004a 0FE0     	 b .L2
-  93              	.L8:
+  92              	 .loc 1 133 3
+  93 004a 0FE0     	 b .L2
+  94              	.L7:
  134:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  135:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_8M_RC:
  136:.././hal/sam3u1c/inc/sam3u/osc.h **** 		pmc_osc_enable_fastrc(CKGR_MOR_MOSCRCF_8_MHz);
-  94              	 .loc 1 136 0
-  95 004c 1020     	 movs r0,#16
-  96 004e 0A4B     	 ldr r3,.L14+4
-  97 0050 9847     	 blx r3
-  98              	.LVL3:
+  95              	 .loc 1 136 3
+  96 004c 1020     	 movs r0,#16
+  97 004e 0A4B     	 ldr r3,.L14+4
+  98 0050 9847     	 blx r3
+  99              	.LVL3:
  137:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
-  99              	 .loc 1 137 0
- 100 0052 0BE0     	 b .L2
- 101              	.L9:
+ 100              	 .loc 1 137 3
+ 101 0052 0BE0     	 b .L2
+ 102              	.L6:
  138:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  139:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_12M_RC:
  140:.././hal/sam3u1c/inc/sam3u/osc.h **** 		pmc_osc_enable_fastrc(CKGR_MOR_MOSCRCF_12_MHz);
- 102              	 .loc 1 140 0
- 103 0054 2020     	 movs r0,#32
- 104 0056 084B     	 ldr r3,.L14+4
- 105 0058 9847     	 blx r3
- 106              	.LVL4:
+ 103              	 .loc 1 140 3
+ 104 0054 2020     	 movs r0,#32
+ 105 0056 084B     	 ldr r3,.L14+4
+ 106 0058 9847     	 blx r3
+ 107              	.LVL4:
  141:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
- 107              	 .loc 1 141 0
- 108 005a 07E0     	 b .L2
- 109              	.L10:
+ 108              	 .loc 1 141 3
+ 109 005a 07E0     	 b .L2
+ 110              	.L5:
  142:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  143:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  144:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_XTAL:
  145:.././hal/sam3u1c/inc/sam3u/osc.h **** 		pmc_osc_enable_main_xtal(pmc_us_to_moscxtst(
- 110              	 .loc 1 145 0
- 111 005c 3E20     	 movs r0,#62
- 112 005e 074B     	 ldr r3,.L14+8
- 113 0060 9847     	 blx r3
- 114              	.LVL5:
+ 111              	 .loc 1 145 3
+ 112 005c 3E20     	 movs r0,#62
+ 113 005e 074B     	 ldr r3,.L14+8
+ 114 0060 9847     	 blx r3
+ 115              	.LVL5:
  146:.././hal/sam3u1c/inc/sam3u/osc.h **** 				BOARD_OSC_STARTUP_US, OSC_SLCK_32K_RC_HZ));
  147:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
- 115              	 .loc 1 147 0
- 116 0062 03E0     	 b .L2
- 117              	.L11:
+ 116              	 .loc 1 147 3
+ 117 0062 03E0     	 b .L2
+ 118              	.L3:
  148:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  149:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_BYPASS:
  150:.././hal/sam3u1c/inc/sam3u/osc.h **** 		pmc_osc_bypass_main_xtal();
- 118              	 .loc 1 150 0
- 119 0064 064B     	 ldr r3,.L14+12
- 120 0066 9847     	 blx r3
- 121              	.LVL6:
+ 119              	 .loc 1 150 3
+ 120 0064 064B     	 ldr r3,.L14+12
+ 121 0066 9847     	 blx r3
+ 122              	.LVL6:
  151:.././hal/sam3u1c/inc/sam3u/osc.h **** 		break;
- 122              	 .loc 1 151 0
- 123 0068 00E0     	 b .L2
- 124              	.L13:
+ 123              	 .loc 1 151 3
+ 124 0068 00E0     	 b .L2
+ 125              	.L13:
  120:.././hal/sam3u1c/inc/sam3u/osc.h **** 
- 125              	 .loc 1 120 0
- 126 006a 00BF     	 nop
- 127              	.L2:
- 128              	.L12:
+ 126              	 .loc 1 120 3
+ 127 006a 00BF     	 nop
+ 128              	.L2:
+ 129              	.L12:
  152:.././hal/sam3u1c/inc/sam3u/osc.h **** 	}
  153:.././hal/sam3u1c/inc/sam3u/osc.h **** }
- 129              	 .loc 1 153 0
- 130 006c 00BF     	 nop
- 131 006e 0837     	 adds r7,r7,#8
- 132              	.LCFI3:
- 133              	 .cfi_def_cfa_offset 8
- 134 0070 BD46     	 mov sp,r7
- 135              	.LCFI4:
- 136              	 .cfi_def_cfa_register 13
- 137              	 
- 138 0072 80BD     	 pop {r7,pc}
- 139              	.L15:
- 140              	 .align 2
- 141              	.L14:
- 142 0074 00000000 	 .word pmc_switch_sclk_to_32kxtal
- 143 0078 00000000 	 .word pmc_osc_enable_fastrc
- 144 007c 00000000 	 .word pmc_osc_enable_main_xtal
- 145 0080 00000000 	 .word pmc_osc_bypass_main_xtal
- 146              	 .cfi_endproc
- 147              	.LFE69:
- 149              	 .section .text.osc_is_ready,"ax",%progbits
- 150              	 .align 1
- 151              	 .syntax unified
- 152              	 .thumb
- 153              	 .thumb_func
- 154              	 .fpu softvfp
- 156              	osc_is_ready:
- 157              	.LFB71:
+ 130              	 .loc 1 153 1
+ 131 006c 00BF     	 nop
+ 132 006e 0837     	 adds r7,r7,#8
+ 133              	.LCFI3:
+ 134              	 .cfi_def_cfa_offset 8
+ 135 0070 BD46     	 mov sp,r7
+ 136              	.LCFI4:
+ 137              	 .cfi_def_cfa_register 13
+ 138              	 
+ 139 0072 80BD     	 pop {r7,pc}
+ 140              	.L15:
+ 141              	 .align 2
+ 142              	.L14:
+ 143 0074 00000000 	 .word pmc_switch_sclk_to_32kxtal
+ 144 0078 00000000 	 .word pmc_osc_enable_fastrc
+ 145 007c 00000000 	 .word pmc_osc_enable_main_xtal
+ 146 0080 00000000 	 .word pmc_osc_bypass_main_xtal
+ 147              	 .cfi_endproc
+ 148              	.LFE69:
+ 150              	 .section .text.osc_is_ready,"ax",%progbits
+ 151              	 .align 1
+ 152              	 .syntax unified
+ 153              	 .thumb
+ 154              	 .thumb_func
+ 155              	 .fpu softvfp
+ 157              	osc_is_ready:
+ 158              	.LFB71:
  154:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  155:.././hal/sam3u1c/inc/sam3u/osc.h **** static inline void osc_disable(uint32_t ul_id)
  156:.././hal/sam3u1c/inc/sam3u/osc.h **** {
@@ -329,260 +330,260 @@
  178:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  179:.././hal/sam3u1c/inc/sam3u/osc.h **** static inline bool osc_is_ready(uint32_t ul_id)
  180:.././hal/sam3u1c/inc/sam3u/osc.h **** {
- 158              	 .loc 1 180 0
- 159              	 .cfi_startproc
- 160              	 
+ 159              	 .loc 1 180 1
+ 160              	 .cfi_startproc
  161              	 
- 162 0000 80B5     	 push {r7,lr}
- 163              	.LCFI5:
- 164              	 .cfi_def_cfa_offset 8
- 165              	 .cfi_offset 7,-8
- 166              	 .cfi_offset 14,-4
- 167 0002 82B0     	 sub sp,sp,#8
- 168              	.LCFI6:
- 169              	 .cfi_def_cfa_offset 16
- 170 0004 00AF     	 add r7,sp,#0
- 171              	.LCFI7:
- 172              	 .cfi_def_cfa_register 7
- 173 0006 7860     	 str r0,[r7,#4]
+ 162              	 
+ 163 0000 80B5     	 push {r7,lr}
+ 164              	.LCFI5:
+ 165              	 .cfi_def_cfa_offset 8
+ 166              	 .cfi_offset 7,-8
+ 167              	 .cfi_offset 14,-4
+ 168 0002 82B0     	 sub sp,sp,#8
+ 169              	.LCFI6:
+ 170              	 .cfi_def_cfa_offset 16
+ 171 0004 00AF     	 add r7,sp,#0
+ 172              	.LCFI7:
+ 173              	 .cfi_def_cfa_register 7
+ 174 0006 7860     	 str r0,[r7,#4]
  181:.././hal/sam3u1c/inc/sam3u/osc.h **** 	switch (ul_id) {
- 174              	 .loc 1 181 0
- 175 0008 7B68     	 ldr r3,[r7,#4]
- 176 000a 072B     	 cmp r3,#7
- 177 000c 2FD8     	 bhi .L17
- 178 000e 01A2     	 adr r2,.L19
- 179 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
- 180              	 .p2align 2
- 181              	.L19:
- 182 0014 35000000 	 .word .L18+1
- 183 0018 39000000 	 .word .L20+1
- 184 001c 39000000 	 .word .L20+1
- 185 0020 4B000000 	 .word .L21+1
- 186 0024 4B000000 	 .word .L21+1
- 187 0028 4B000000 	 .word .L21+1
- 188 002c 5D000000 	 .word .L22+1
- 189 0030 5D000000 	 .word .L22+1
- 190              	 .p2align 1
- 191              	.L18:
+ 175              	 .loc 1 181 2
+ 176 0008 7B68     	 ldr r3,[r7,#4]
+ 177 000a 072B     	 cmp r3,#7
+ 178 000c 2FD8     	 bhi .L17
+ 179 000e 01A2     	 adr r2,.L19
+ 180 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+ 181              	 .p2align 2
+ 182              	.L19:
+ 183 0014 35000000 	 .word .L22+1
+ 184 0018 39000000 	 .word .L21+1
+ 185 001c 39000000 	 .word .L21+1
+ 186 0020 4B000000 	 .word .L20+1
+ 187 0024 4B000000 	 .word .L20+1
+ 188 0028 4B000000 	 .word .L20+1
+ 189 002c 5D000000 	 .word .L18+1
+ 190 0030 5D000000 	 .word .L18+1
+ 191              	 .p2align 1
+ 192              	.L22:
  182:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_RC:
  183:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return 1;
- 192              	 .loc 1 183 0
- 193 0034 0123     	 movs r3,#1
- 194 0036 1BE0     	 b .L23
- 195              	.L20:
+ 193              	 .loc 1 183 10
+ 194 0034 0123     	 movs r3,#1
+ 195 0036 1BE0     	 b .L23
+ 196              	.L21:
  184:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  185:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_XTAL:
  186:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_BYPASS:
  187:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return pmc_osc_is_ready_32kxtal();
- 196              	 .loc 1 187 0
- 197 0038 0F4B     	 ldr r3,.L24
- 198 003a 9847     	 blx r3
- 199              	.LVL7:
- 200 003c 0346     	 mov r3,r0
- 201 003e 002B     	 cmp r3,#0
- 202 0040 14BF     	 ite ne
- 203 0042 0123     	 movne r3,#1
- 204 0044 0023     	 moveq r3,#0
- 205 0046 DBB2     	 uxtb r3,r3
- 206 0048 12E0     	 b .L23
- 207              	.L21:
+ 197              	 .loc 1 187 10
+ 198 0038 0F4B     	 ldr r3,.L24
+ 199 003a 9847     	 blx r3
+ 200              	.LVL7:
+ 201 003c 0346     	 mov r3,r0
+ 202 003e 002B     	 cmp r3,#0
+ 203 0040 14BF     	 ite ne
+ 204 0042 0123     	 movne r3,#1
+ 205 0044 0023     	 moveq r3,#0
+ 206 0046 DBB2     	 uxtb r3,r3
+ 207 0048 12E0     	 b .L23
+ 208              	.L20:
  188:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  189:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_4M_RC:
  190:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_8M_RC:
  191:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_12M_RC:
  192:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return pmc_osc_is_ready_fastrc();
- 208              	 .loc 1 192 0
- 209 004a 0C4B     	 ldr r3,.L24+4
- 210 004c 9847     	 blx r3
- 211              	.LVL8:
- 212 004e 0346     	 mov r3,r0
- 213 0050 002B     	 cmp r3,#0
- 214 0052 14BF     	 ite ne
- 215 0054 0123     	 movne r3,#1
- 216 0056 0023     	 moveq r3,#0
- 217 0058 DBB2     	 uxtb r3,r3
- 218 005a 09E0     	 b .L23
- 219              	.L22:
+ 209              	 .loc 1 192 10
+ 210 004a 0C4B     	 ldr r3,.L24+4
+ 211 004c 9847     	 blx r3
+ 212              	.LVL8:
+ 213 004e 0346     	 mov r3,r0
+ 214 0050 002B     	 cmp r3,#0
+ 215 0052 14BF     	 ite ne
+ 216 0054 0123     	 movne r3,#1
+ 217 0056 0023     	 moveq r3,#0
+ 218 0058 DBB2     	 uxtb r3,r3
+ 219 005a 09E0     	 b .L23
+ 220              	.L18:
  193:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  194:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_XTAL:
  195:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_BYPASS:
  196:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return pmc_osc_is_ready_main_xtal();
- 220              	 .loc 1 196 0
- 221 005c 084B     	 ldr r3,.L24+8
- 222 005e 9847     	 blx r3
- 223              	.LVL9:
- 224 0060 0346     	 mov r3,r0
- 225 0062 002B     	 cmp r3,#0
- 226 0064 14BF     	 ite ne
- 227 0066 0123     	 movne r3,#1
- 228 0068 0023     	 moveq r3,#0
- 229 006a DBB2     	 uxtb r3,r3
- 230 006c 00E0     	 b .L23
- 231              	.L17:
+ 221              	 .loc 1 196 10
+ 222 005c 084B     	 ldr r3,.L24+8
+ 223 005e 9847     	 blx r3
+ 224              	.LVL9:
+ 225 0060 0346     	 mov r3,r0
+ 226 0062 002B     	 cmp r3,#0
+ 227 0064 14BF     	 ite ne
+ 228 0066 0123     	 movne r3,#1
+ 229 0068 0023     	 moveq r3,#0
+ 230 006a DBB2     	 uxtb r3,r3
+ 231 006c 00E0     	 b .L23
+ 232              	.L17:
  197:.././hal/sam3u1c/inc/sam3u/osc.h **** 	}
  198:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  199:.././hal/sam3u1c/inc/sam3u/osc.h **** 	return 0;
- 232              	 .loc 1 199 0
- 233 006e 0023     	 movs r3,#0
- 234              	.L23:
+ 233              	 .loc 1 199 9
+ 234 006e 0023     	 movs r3,#0
+ 235              	.L23:
  200:.././hal/sam3u1c/inc/sam3u/osc.h **** }
- 235              	 .loc 1 200 0
- 236 0070 1846     	 mov r0,r3
- 237 0072 0837     	 adds r7,r7,#8
- 238              	.LCFI8:
- 239              	 .cfi_def_cfa_offset 8
- 240 0074 BD46     	 mov sp,r7
- 241              	.LCFI9:
- 242              	 .cfi_def_cfa_register 13
- 243              	 
- 244 0076 80BD     	 pop {r7,pc}
- 245              	.L25:
- 246              	 .align 2
- 247              	.L24:
- 248 0078 00000000 	 .word pmc_osc_is_ready_32kxtal
- 249 007c 00000000 	 .word pmc_osc_is_ready_fastrc
- 250 0080 00000000 	 .word pmc_osc_is_ready_main_xtal
- 251              	 .cfi_endproc
- 252              	.LFE71:
- 254              	 .section .text.osc_get_rate,"ax",%progbits
- 255              	 .align 1
- 256              	 .syntax unified
- 257              	 .thumb
- 258              	 .thumb_func
- 259              	 .fpu softvfp
- 261              	osc_get_rate:
- 262              	.LFB72:
+ 236              	 .loc 1 200 1
+ 237 0070 1846     	 mov r0,r3
+ 238 0072 0837     	 adds r7,r7,#8
+ 239              	.LCFI8:
+ 240              	 .cfi_def_cfa_offset 8
+ 241 0074 BD46     	 mov sp,r7
+ 242              	.LCFI9:
+ 243              	 .cfi_def_cfa_register 13
+ 244              	 
+ 245 0076 80BD     	 pop {r7,pc}
+ 246              	.L25:
+ 247              	 .align 2
+ 248              	.L24:
+ 249 0078 00000000 	 .word pmc_osc_is_ready_32kxtal
+ 250 007c 00000000 	 .word pmc_osc_is_ready_fastrc
+ 251 0080 00000000 	 .word pmc_osc_is_ready_main_xtal
+ 252              	 .cfi_endproc
+ 253              	.LFE71:
+ 255              	 .section .text.osc_get_rate,"ax",%progbits
+ 256              	 .align 1
+ 257              	 .syntax unified
+ 258              	 .thumb
+ 259              	 .thumb_func
+ 260              	 .fpu softvfp
+ 262              	osc_get_rate:
+ 263              	.LFB72:
  201:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  202:.././hal/sam3u1c/inc/sam3u/osc.h **** static inline uint32_t osc_get_rate(uint32_t ul_id)
  203:.././hal/sam3u1c/inc/sam3u/osc.h **** {
- 263              	 .loc 1 203 0
- 264              	 .cfi_startproc
- 265              	 
+ 264              	 .loc 1 203 1
+ 265              	 .cfi_startproc
  266              	 
  267              	 
- 268 0000 80B4     	 push {r7}
- 269              	.LCFI10:
- 270              	 .cfi_def_cfa_offset 4
- 271              	 .cfi_offset 7,-4
- 272 0002 83B0     	 sub sp,sp,#12
- 273              	.LCFI11:
- 274              	 .cfi_def_cfa_offset 16
- 275 0004 00AF     	 add r7,sp,#0
- 276              	.LCFI12:
- 277              	 .cfi_def_cfa_register 7
- 278 0006 7860     	 str r0,[r7,#4]
+ 268              	 
+ 269 0000 80B4     	 push {r7}
+ 270              	.LCFI10:
+ 271              	 .cfi_def_cfa_offset 4
+ 272              	 .cfi_offset 7,-4
+ 273 0002 83B0     	 sub sp,sp,#12
+ 274              	.LCFI11:
+ 275              	 .cfi_def_cfa_offset 16
+ 276 0004 00AF     	 add r7,sp,#0
+ 277              	.LCFI12:
+ 278              	 .cfi_def_cfa_register 7
+ 279 0006 7860     	 str r0,[r7,#4]
  204:.././hal/sam3u1c/inc/sam3u/osc.h **** 	switch (ul_id) {
- 279              	 .loc 1 204 0
- 280 0008 7B68     	 ldr r3,[r7,#4]
- 281 000a 072B     	 cmp r3,#7
- 282 000c 23D8     	 bhi .L27
- 283 000e 01A2     	 adr r2,.L29
- 284 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
- 285              	 .p2align 2
- 286              	.L29:
- 287 0014 35000000 	 .word .L28+1
- 288 0018 3B000000 	 .word .L30+1
- 289 001c 3F000000 	 .word .L31+1
- 290 0020 43000000 	 .word .L32+1
- 291 0024 47000000 	 .word .L33+1
- 292 0028 4B000000 	 .word .L34+1
- 293 002c 4F000000 	 .word .L35+1
- 294 0030 53000000 	 .word .L36+1
- 295              	 .p2align 1
- 296              	.L28:
+ 280              	 .loc 1 204 2
+ 281 0008 7B68     	 ldr r3,[r7,#4]
+ 282 000a 072B     	 cmp r3,#7
+ 283 000c 23D8     	 bhi .L27
+ 284 000e 01A2     	 adr r2,.L29
+ 285 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+ 286              	 .p2align 2
+ 287              	.L29:
+ 288 0014 35000000 	 .word .L36+1
+ 289 0018 3B000000 	 .word .L35+1
+ 290 001c 3F000000 	 .word .L34+1
+ 291 0020 43000000 	 .word .L33+1
+ 292 0024 47000000 	 .word .L32+1
+ 293 0028 4B000000 	 .word .L31+1
+ 294 002c 4F000000 	 .word .L30+1
+ 295 0030 53000000 	 .word .L28+1
+ 296              	 .p2align 1
+ 297              	.L36:
  205:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_RC:
  206:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_SLCK_32K_RC_HZ;
- 297              	 .loc 1 206 0
- 298 0034 4FF4FA43 	 mov r3,#32000
- 299 0038 0EE0     	 b .L37
- 300              	.L30:
+ 298              	 .loc 1 206 10
+ 299 0034 4FF4FA43 	 mov r3,#32000
+ 300 0038 0EE0     	 b .L37
+ 301              	.L35:
  207:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  208:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_XTAL:
  209:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_SLCK_XTAL;
- 301              	 .loc 1 209 0
- 302 003a 0023     	 movs r3,#0
- 303 003c 0CE0     	 b .L37
- 304              	.L31:
+ 302              	 .loc 1 209 10
+ 303 003a 0023     	 movs r3,#0
+ 304 003c 0CE0     	 b .L37
+ 305              	.L34:
  210:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  211:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_BYPASS:
  212:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_SLCK_BYPASS;
- 305              	 .loc 1 212 0
- 306 003e 0023     	 movs r3,#0
- 307 0040 0AE0     	 b .L37
- 308              	.L32:
+ 306              	 .loc 1 212 10
+ 307 003e 0023     	 movs r3,#0
+ 308 0040 0AE0     	 b .L37
+ 309              	.L33:
  213:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  214:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_4M_RC:
  215:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_MAINCK_4M_RC_HZ;
- 309              	 .loc 1 215 0
- 310 0042 084B     	 ldr r3,.L38
- 311 0044 08E0     	 b .L37
- 312              	.L33:
+ 310              	 .loc 1 215 10
+ 311 0042 084B     	 ldr r3,.L38
+ 312 0044 08E0     	 b .L37
+ 313              	.L32:
  216:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  217:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_8M_RC:
  218:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_MAINCK_8M_RC_HZ;
- 313              	 .loc 1 218 0
- 314 0046 084B     	 ldr r3,.L38+4
- 315 0048 06E0     	 b .L37
- 316              	.L34:
+ 314              	 .loc 1 218 10
+ 315 0046 084B     	 ldr r3,.L38+4
+ 316 0048 06E0     	 b .L37
+ 317              	.L31:
  219:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  220:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_12M_RC:
  221:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_MAINCK_12M_RC_HZ;
- 317              	 .loc 1 221 0
- 318 004a 084B     	 ldr r3,.L38+8
- 319 004c 04E0     	 b .L37
- 320              	.L35:
+ 318              	 .loc 1 221 10
+ 319 004a 084B     	 ldr r3,.L38+8
+ 320 004c 04E0     	 b .L37
+ 321              	.L30:
  222:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  223:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_XTAL:
  224:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_MAINCK_XTAL;
- 321              	 .loc 1 224 0
- 322 004e 074B     	 ldr r3,.L38+8
- 323 0050 02E0     	 b .L37
- 324              	.L36:
+ 322              	 .loc 1 224 10
+ 323 004e 074B     	 ldr r3,.L38+8
+ 324 0050 02E0     	 b .L37
+ 325              	.L28:
  225:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  226:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_BYPASS:
  227:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_MAINCK_BYPASS;
- 325              	 .loc 1 227 0
- 326 0052 064B     	 ldr r3,.L38+8
- 327 0054 00E0     	 b .L37
- 328              	.L27:
+ 326              	 .loc 1 227 10
+ 327 0052 064B     	 ldr r3,.L38+8
+ 328 0054 00E0     	 b .L37
+ 329              	.L27:
  228:.././hal/sam3u1c/inc/sam3u/osc.h **** 	}
  229:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  230:.././hal/sam3u1c/inc/sam3u/osc.h **** 	return 0;
- 329              	 .loc 1 230 0
- 330 0056 0023     	 movs r3,#0
- 331              	.L37:
+ 330              	 .loc 1 230 9
+ 331 0056 0023     	 movs r3,#0
+ 332              	.L37:
  231:.././hal/sam3u1c/inc/sam3u/osc.h **** }
- 332              	 .loc 1 231 0
- 333 0058 1846     	 mov r0,r3
- 334 005a 0C37     	 adds r7,r7,#12
- 335              	.LCFI13:
- 336              	 .cfi_def_cfa_offset 4
- 337 005c BD46     	 mov sp,r7
- 338              	.LCFI14:
- 339              	 .cfi_def_cfa_register 13
- 340              	 
- 341 005e 80BC     	 pop {r7}
- 342              	.LCFI15:
- 343              	 .cfi_restore 7
- 344              	 .cfi_def_cfa_offset 0
- 345 0060 7047     	 bx lr
- 346              	.L39:
- 347 0062 00BF     	 .align 2
- 348              	.L38:
- 349 0064 00093D00 	 .word 4000000
- 350 0068 00127A00 	 .word 8000000
- 351 006c 001BB700 	 .word 12000000
- 352              	 .cfi_endproc
- 353              	.LFE72:
- 355              	 .section .text.osc_wait_ready,"ax",%progbits
- 356              	 .align 1
- 357              	 .syntax unified
- 358              	 .thumb
- 359              	 .thumb_func
- 360              	 .fpu softvfp
- 362              	osc_wait_ready:
- 363              	.LFB73:
- 364              	 .file 2 ".././hal/sam3u1c/inc/osc.h"
+ 333              	 .loc 1 231 1
+ 334 0058 1846     	 mov r0,r3
+ 335 005a 0C37     	 adds r7,r7,#12
+ 336              	.LCFI13:
+ 337              	 .cfi_def_cfa_offset 4
+ 338 005c BD46     	 mov sp,r7
+ 339              	.LCFI14:
+ 340              	 .cfi_def_cfa_register 13
+ 341              	 
+ 342 005e 80BC     	 pop {r7}
+ 343              	.LCFI15:
+ 344              	 .cfi_restore 7
+ 345              	 .cfi_def_cfa_offset 0
+ 346 0060 7047     	 bx lr
+ 347              	.L39:
+ 348 0062 00BF     	 .align 2
+ 349              	.L38:
+ 350 0064 00093D00 	 .word 4000000
+ 351 0068 00127A00 	 .word 8000000
+ 352 006c 001BB700 	 .word 12000000
+ 353              	 .cfi_endproc
+ 354              	.LFE72:
+ 356              	 .section .text.osc_wait_ready,"ax",%progbits
+ 357              	 .align 1
+ 358              	 .syntax unified
+ 359              	 .thumb
+ 360              	 .thumb_func
+ 361              	 .fpu softvfp
+ 363              	osc_wait_ready:
+ 364              	.LFB73:
+ 365              	 .file 2 ".././hal/sam3u1c/inc/osc.h"
    1:.././hal/sam3u1c/inc/osc.h **** /**
    2:.././hal/sam3u1c/inc/osc.h ****  * \file
    3:.././hal/sam3u1c/inc/osc.h ****  *
@@ -745,66 +746,68 @@
  160:.././hal/sam3u1c/inc/osc.h ****  */
  161:.././hal/sam3u1c/inc/osc.h **** static inline void osc_wait_ready(uint8_t id)
  162:.././hal/sam3u1c/inc/osc.h **** {
- 365              	 .loc 2 162 0
- 366              	 .cfi_startproc
- 367              	 
+ 366              	 .loc 2 162 1
+ 367              	 .cfi_startproc
  368              	 
- 369 0000 80B5     	 push {r7,lr}
- 370              	.LCFI16:
- 371              	 .cfi_def_cfa_offset 8
- 372              	 .cfi_offset 7,-8
- 373              	 .cfi_offset 14,-4
- 374 0002 82B0     	 sub sp,sp,#8
- 375              	.LCFI17:
- 376              	 .cfi_def_cfa_offset 16
- 377 0004 00AF     	 add r7,sp,#0
- 378              	.LCFI18:
- 379              	 .cfi_def_cfa_register 7
- 380 0006 0346     	 mov r3,r0
- 381 0008 FB71     	 strb r3,[r7,#7]
+ 369              	 
+ 370 0000 80B5     	 push {r7,lr}
+ 371              	.LCFI16:
+ 372              	 .cfi_def_cfa_offset 8
+ 373              	 .cfi_offset 7,-8
+ 374              	 .cfi_offset 14,-4
+ 375 0002 82B0     	 sub sp,sp,#8
+ 376              	.LCFI17:
+ 377              	 .cfi_def_cfa_offset 16
+ 378 0004 00AF     	 add r7,sp,#0
+ 379              	.LCFI18:
+ 380              	 .cfi_def_cfa_register 7
+ 381 0006 0346     	 mov r3,r0
+ 382 0008 FB71     	 strb r3,[r7,#7]
  163:.././hal/sam3u1c/inc/osc.h **** 	while (!osc_is_ready(id)) {
- 382              	 .loc 2 163 0
- 383 000a 00BF     	 nop
- 384              	.L41:
- 385              	 .loc 2 163 0 is_stmt 0 discriminator 1
- 386 000c FB79     	 ldrb r3,[r7,#7]
- 387 000e 1846     	 mov r0,r3
- 388 0010 054B     	 ldr r3,.L42
- 389 0012 9847     	 blx r3
- 390              	.LVL10:
- 391 0014 0346     	 mov r3,r0
- 392 0016 83F00103 	 eor r3,r3,#1
- 393 001a DBB2     	 uxtb r3,r3
- 394 001c 002B     	 cmp r3,#0
- 395 001e F5D1     	 bne .L41
+ 383              	 .loc 2 163 8
+ 384 000a 00BF     	 nop
+ 385              	.L41:
+ 386              	 .loc 2 163 10 discriminator 1
+ 387 000c FB79     	 ldrb r3,[r7,#7]
+ 388 000e 1846     	 mov r0,r3
+ 389 0010 054B     	 ldr r3,.L42
+ 390 0012 9847     	 blx r3
+ 391              	.LVL10:
+ 392 0014 0346     	 mov r3,r0
+ 393              	 .loc 2 163 9 discriminator 1
+ 394 0016 83F00103 	 eor r3,r3,#1
+ 395 001a DBB2     	 uxtb r3,r3
+ 396              	 .loc 2 163 8 discriminator 1
+ 397 001c 002B     	 cmp r3,#0
+ 398 001e F5D1     	 bne .L41
  164:.././hal/sam3u1c/inc/osc.h **** 		/* Do nothing */
  165:.././hal/sam3u1c/inc/osc.h **** 	}
  166:.././hal/sam3u1c/inc/osc.h **** }
- 396              	 .loc 2 166 0 is_stmt 1
- 397 0020 00BF     	 nop
- 398 0022 0837     	 adds r7,r7,#8
- 399              	.LCFI19:
- 400              	 .cfi_def_cfa_offset 8
- 401 0024 BD46     	 mov sp,r7
- 402              	.LCFI20:
- 403              	 .cfi_def_cfa_register 13
- 404              	 
- 405 0026 80BD     	 pop {r7,pc}
- 406              	.L43:
- 407              	 .align 2
- 408              	.L42:
- 409 0028 00000000 	 .word osc_is_ready
- 410              	 .cfi_endproc
- 411              	.LFE73:
- 413              	 .section .text.pll_config_init,"ax",%progbits
- 414              	 .align 1
- 415              	 .syntax unified
- 416              	 .thumb
- 417              	 .thumb_func
- 418              	 .fpu softvfp
- 420              	pll_config_init:
- 421              	.LFB74:
- 422              	 .file 3 ".././hal/sam3u1c/inc/sam3u/pll.h"
+ 399              	 .loc 2 166 1
+ 400 0020 00BF     	 nop
+ 401 0022 0837     	 adds r7,r7,#8
+ 402              	.LCFI19:
+ 403              	 .cfi_def_cfa_offset 8
+ 404 0024 BD46     	 mov sp,r7
+ 405              	.LCFI20:
+ 406              	 .cfi_def_cfa_register 13
+ 407              	 
+ 408 0026 80BD     	 pop {r7,pc}
+ 409              	.L43:
+ 410              	 .align 2
+ 411              	.L42:
+ 412 0028 00000000 	 .word osc_is_ready
+ 413              	 .cfi_endproc
+ 414              	.LFE73:
+ 416              	 .section .text.pll_config_init,"ax",%progbits
+ 417              	 .align 1
+ 418              	 .syntax unified
+ 419              	 .thumb
+ 420              	 .thumb_func
+ 421              	 .fpu softvfp
+ 423              	pll_config_init:
+ 424              	.LFB74:
+ 425              	 .file 3 ".././hal/sam3u1c/inc/sam3u/pll.h"
    1:.././hal/sam3u1c/inc/sam3u/pll.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/pll.h ****  * \file
    3:.././hal/sam3u1c/inc/sam3u/pll.h ****  *
@@ -920,121 +923,122 @@
  113:.././hal/sam3u1c/inc/sam3u/pll.h **** static inline void pll_config_init(struct pll_config *p_cfg,
  114:.././hal/sam3u1c/inc/sam3u/pll.h **** 		enum pll_source e_src, uint32_t ul_div, uint32_t ul_mul)
  115:.././hal/sam3u1c/inc/sam3u/pll.h **** {
- 423              	 .loc 3 115 0
- 424              	 .cfi_startproc
- 425              	 
- 426              	 
- 427 0000 80B5     	 push {r7,lr}
- 428              	.LCFI21:
- 429              	 .cfi_def_cfa_offset 8
- 430              	 .cfi_offset 7,-8
- 431              	 .cfi_offset 14,-4
- 432 0002 86B0     	 sub sp,sp,#24
- 433              	.LCFI22:
- 434              	 .cfi_def_cfa_offset 32
- 435 0004 00AF     	 add r7,sp,#0
- 436              	.LCFI23:
- 437              	 .cfi_def_cfa_register 7
- 438 0006 F860     	 str r0,[r7,#12]
- 439 0008 7A60     	 str r2,[r7,#4]
- 440 000a 3B60     	 str r3,[r7]
- 441 000c 0B46     	 mov r3,r1
- 442 000e FB72     	 strb r3,[r7,#11]
+ 426              	 .loc 3 115 1
+ 427              	 .cfi_startproc
+ 428              	 
+ 429              	 
+ 430 0000 80B5     	 push {r7,lr}
+ 431              	.LCFI21:
+ 432              	 .cfi_def_cfa_offset 8
+ 433              	 .cfi_offset 7,-8
+ 434              	 .cfi_offset 14,-4
+ 435 0002 86B0     	 sub sp,sp,#24
+ 436              	.LCFI22:
+ 437              	 .cfi_def_cfa_offset 32
+ 438 0004 00AF     	 add r7,sp,#0
+ 439              	.LCFI23:
+ 440              	 .cfi_def_cfa_register 7
+ 441 0006 F860     	 str r0,[r7,#12]
+ 442 0008 7A60     	 str r2,[r7,#4]
+ 443 000a 3B60     	 str r3,[r7]
+ 444 000c 0B46     	 mov r3,r1
+ 445 000e FB72     	 strb r3,[r7,#11]
  116:.././hal/sam3u1c/inc/sam3u/pll.h **** 	uint32_t vco_hz;
  117:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  118:.././hal/sam3u1c/inc/sam3u/pll.h **** 	Assert(e_src < PLL_NR_SOURCES);
  119:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  120:.././hal/sam3u1c/inc/sam3u/pll.h **** 	if (ul_div == 0 && ul_mul == 0) { /* Must only be true for UTMI PLL */
- 443              	 .loc 3 120 0
- 444 0010 7B68     	 ldr r3,[r7,#4]
- 445 0012 002B     	 cmp r3,#0
- 446 0014 07D1     	 bne .L45
- 447              	 .loc 3 120 0 is_stmt 0 discriminator 1
- 448 0016 3B68     	 ldr r3,[r7]
- 449 0018 002B     	 cmp r3,#0
- 450 001a 04D1     	 bne .L45
+ 446              	 .loc 3 120 5
+ 447 0010 7B68     	 ldr r3,[r7,#4]
+ 448 0012 002B     	 cmp r3,#0
+ 449 0014 07D1     	 bne .L45
+ 450              	 .loc 3 120 18 discriminator 1
+ 451 0016 3B68     	 ldr r3,[r7]
+ 452 0018 002B     	 cmp r3,#0
+ 453 001a 04D1     	 bne .L45
  121:.././hal/sam3u1c/inc/sam3u/pll.h **** 		p_cfg->ctrl = CKGR_UCKR_UPLLCOUNT(PLL_COUNT);
- 451              	 .loc 3 121 0 is_stmt 1
- 452 001c FB68     	 ldr r3,[r7,#12]
- 453 001e 4FF47002 	 mov r2,#15728640
- 454 0022 1A60     	 str r2,[r3]
- 455 0024 19E0     	 b .L46
- 456              	.L45:
+ 454              	 .loc 3 121 15
+ 455 001c FB68     	 ldr r3,[r7,#12]
+ 456 001e 4FF47002 	 mov r2,#15728640
+ 457 0022 1A60     	 str r2,[r3]
+ 458 0024 19E0     	 b .L46
+ 459              	.L45:
  122:.././hal/sam3u1c/inc/sam3u/pll.h **** 	} else { /* PLLA */
  123:.././hal/sam3u1c/inc/sam3u/pll.h **** 		/* Calculate internal VCO frequency */
  124:.././hal/sam3u1c/inc/sam3u/pll.h **** 		vco_hz = osc_get_rate(e_src) / ul_div;
- 457              	 .loc 3 124 0
- 458 0026 FB7A     	 ldrb r3,[r7,#11]
- 459 0028 1846     	 mov r0,r3
- 460 002a 0E4B     	 ldr r3,.L47
- 461 002c 9847     	 blx r3
- 462              	.LVL11:
- 463 002e 0246     	 mov r2,r0
- 464 0030 7B68     	 ldr r3,[r7,#4]
- 465 0032 B2FBF3F3 	 udiv r3,r2,r3
- 466 0036 7B61     	 str r3,[r7,#20]
+ 460              	 .loc 3 124 12
+ 461 0026 FB7A     	 ldrb r3,[r7,#11]
+ 462 0028 1846     	 mov r0,r3
+ 463 002a 0E4B     	 ldr r3,.L47
+ 464 002c 9847     	 blx r3
+ 465              	.LVL11:
+ 466 002e 0246     	 mov r2,r0
+ 467              	 .loc 3 124 10
+ 468 0030 7B68     	 ldr r3,[r7,#4]
+ 469 0032 B2FBF3F3 	 udiv r3,r2,r3
+ 470 0036 7B61     	 str r3,[r7,#20]
  125:.././hal/sam3u1c/inc/sam3u/pll.h **** 		Assert(vco_hz >= PLL_INPUT_MIN_HZ);
  126:.././hal/sam3u1c/inc/sam3u/pll.h **** 		Assert(vco_hz <= PLL_INPUT_MAX_HZ);
  127:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  128:.././hal/sam3u1c/inc/sam3u/pll.h **** 		vco_hz *= ul_mul;
- 467              	 .loc 3 128 0
- 468 0038 7B69     	 ldr r3,[r7,#20]
- 469 003a 3A68     	 ldr r2,[r7]
- 470 003c 02FB03F3 	 mul r3,r2,r3
- 471 0040 7B61     	 str r3,[r7,#20]
+ 471              	 .loc 3 128 10
+ 472 0038 7B69     	 ldr r3,[r7,#20]
+ 473 003a 3A68     	 ldr r2,[r7]
+ 474 003c 02FB03F3 	 mul r3,r2,r3
+ 475 0040 7B61     	 str r3,[r7,#20]
  129:.././hal/sam3u1c/inc/sam3u/pll.h **** 		Assert(vco_hz >= PLL_OUTPUT_MIN_HZ);
  130:.././hal/sam3u1c/inc/sam3u/pll.h **** 		Assert(vco_hz <= PLL_OUTPUT_MAX_HZ);
  131:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  132:.././hal/sam3u1c/inc/sam3u/pll.h **** 		/* PMC hardware will automatically make it mul+1 */
  133:.././hal/sam3u1c/inc/sam3u/pll.h **** 		p_cfg->ctrl = CKGR_PLLAR_MULA(ul_mul - 1) |
- 472              	 .loc 3 133 0
- 473 0042 3B68     	 ldr r3,[r7]
- 474 0044 013B     	 subs r3,r3,#1
- 475 0046 1A04     	 lsls r2,r3,#16
- 476 0048 074B     	 ldr r3,.L47+4
- 477 004a 1340     	 ands r3,r3,r2
+ 476              	 .loc 3 133 17
+ 477 0042 3B68     	 ldr r3,[r7]
+ 478 0044 013B     	 subs r3,r3,#1
+ 479 0046 1A04     	 lsls r2,r3,#16
+ 480 0048 074B     	 ldr r3,.L47+4
+ 481 004a 1340     	 ands r3,r3,r2
  134:.././hal/sam3u1c/inc/sam3u/pll.h **** 			CKGR_PLLAR_DIVA(ul_div) |
- 478              	 .loc 3 134 0
- 479 004c 7A68     	 ldr r2,[r7,#4]
- 480 004e D2B2     	 uxtb r2,r2
+ 482              	 .loc 3 134 4
+ 483 004c 7A68     	 ldr r2,[r7,#4]
+ 484 004e D2B2     	 uxtb r2,r2
  133:.././hal/sam3u1c/inc/sam3u/pll.h **** 			CKGR_PLLAR_DIVA(ul_div) |
- 481              	 .loc 3 133 0
- 482 0050 1343     	 orrs r3,r3,r2
- 483              	 .loc 3 134 0
- 484 0052 43F47C52 	 orr r2,r3,#16128
+ 485              	 .loc 3 133 45
+ 486 0050 1343     	 orrs r3,r3,r2
+ 487              	 .loc 3 134 28
+ 488 0052 43F47C52 	 orr r2,r3,#16128
  133:.././hal/sam3u1c/inc/sam3u/pll.h **** 			CKGR_PLLAR_DIVA(ul_div) |
- 485              	 .loc 3 133 0
- 486 0056 FB68     	 ldr r3,[r7,#12]
- 487 0058 1A60     	 str r2,[r3]
- 488              	.L46:
+ 489              	 .loc 3 133 15
+ 490 0056 FB68     	 ldr r3,[r7,#12]
+ 491 0058 1A60     	 str r2,[r3]
+ 492              	.L46:
  135:.././hal/sam3u1c/inc/sam3u/pll.h **** 			CKGR_PLLAR_PLLACOUNT(PLL_COUNT);
  136:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
  137:.././hal/sam3u1c/inc/sam3u/pll.h **** }
- 489              	 .loc 3 137 0
- 490 005a 00BF     	 nop
- 491 005c 1837     	 adds r7,r7,#24
- 492              	.LCFI24:
- 493              	 .cfi_def_cfa_offset 8
- 494 005e BD46     	 mov sp,r7
- 495              	.LCFI25:
- 496              	 .cfi_def_cfa_register 13
- 497              	 
- 498 0060 80BD     	 pop {r7,pc}
- 499              	.L48:
- 500 0062 00BF     	 .align 2
- 501              	.L47:
- 502 0064 00000000 	 .word osc_get_rate
- 503 0068 0000FF07 	 .word 134152192
- 504              	 .cfi_endproc
- 505              	.LFE74:
- 507              	 .section .text.pll_enable,"ax",%progbits
- 508              	 .align 1
- 509              	 .syntax unified
- 510              	 .thumb
- 511              	 .thumb_func
- 512              	 .fpu softvfp
- 514              	pll_enable:
- 515              	.LFB77:
+ 493              	 .loc 3 137 1
+ 494 005a 00BF     	 nop
+ 495 005c 1837     	 adds r7,r7,#24
+ 496              	.LCFI24:
+ 497              	 .cfi_def_cfa_offset 8
+ 498 005e BD46     	 mov sp,r7
+ 499              	.LCFI25:
+ 500              	 .cfi_def_cfa_register 13
+ 501              	 
+ 502 0060 80BD     	 pop {r7,pc}
+ 503              	.L48:
+ 504 0062 00BF     	 .align 2
+ 505              	.L47:
+ 506 0064 00000000 	 .word osc_get_rate
+ 507 0068 0000FF07 	 .word 134152192
+ 508              	 .cfi_endproc
+ 509              	.LFE74:
+ 511              	 .section .text.pll_enable,"ax",%progbits
+ 512              	 .align 1
+ 513              	 .syntax unified
+ 514              	 .thumb
+ 515              	 .thumb_func
+ 516              	 .fpu softvfp
+ 518              	pll_enable:
+ 519              	.LFB77:
  138:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  139:.././hal/sam3u1c/inc/sam3u/pll.h **** #define pll_config_defaults(cfg, pll_id)                                   \
  140:.././hal/sam3u1c/inc/sam3u/pll.h **** 	pll_config_init(cfg,                                               \
@@ -1069,82 +1073,91 @@
  169:.././hal/sam3u1c/inc/sam3u/pll.h **** static inline void pll_enable(const struct pll_config *p_cfg,
  170:.././hal/sam3u1c/inc/sam3u/pll.h **** 		uint32_t ul_pll_id)
  171:.././hal/sam3u1c/inc/sam3u/pll.h **** {
- 516              	 .loc 3 171 0
- 517              	 .cfi_startproc
- 518              	 
- 519              	 
- 520 0000 80B5     	 push {r7,lr}
- 521              	.LCFI26:
- 522              	 .cfi_def_cfa_offset 8
- 523              	 .cfi_offset 7,-8
- 524              	 .cfi_offset 14,-4
- 525 0002 82B0     	 sub sp,sp,#8
- 526              	.LCFI27:
- 527              	 .cfi_def_cfa_offset 16
- 528 0004 00AF     	 add r7,sp,#0
- 529              	.LCFI28:
- 530              	 .cfi_def_cfa_register 7
- 531 0006 7860     	 str r0,[r7,#4]
- 532 0008 3960     	 str r1,[r7]
+ 520              	 .loc 3 171 1
+ 521              	 .cfi_startproc
+ 522              	 
+ 523              	 
+ 524 0000 80B5     	 push {r7,lr}
+ 525              	.LCFI26:
+ 526              	 .cfi_def_cfa_offset 8
+ 527              	 .cfi_offset 7,-8
+ 528              	 .cfi_offset 14,-4
+ 529 0002 82B0     	 sub sp,sp,#8
+ 530              	.LCFI27:
+ 531              	 .cfi_def_cfa_offset 16
+ 532 0004 00AF     	 add r7,sp,#0
+ 533              	.LCFI28:
+ 534              	 .cfi_def_cfa_register 7
+ 535 0006 7860     	 str r0,[r7,#4]
+ 536 0008 3960     	 str r1,[r7]
  172:.././hal/sam3u1c/inc/sam3u/pll.h **** 	Assert(ul_pll_id < NR_PLLS);
  173:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  174:.././hal/sam3u1c/inc/sam3u/pll.h **** 	if (ul_pll_id == PLLA_ID) {
- 533              	 .loc 3 174 0
- 534 000a 3B68     	 ldr r3,[r7]
- 535 000c 002B     	 cmp r3,#0
- 536 000e 08D1     	 bne .L50
+ 537              	 .loc 3 174 5
+ 538 000a 3B68     	 ldr r3,[r7]
+ 539 000c 002B     	 cmp r3,#0
+ 540 000e 08D1     	 bne .L50
  175:.././hal/sam3u1c/inc/sam3u/pll.h **** 		pmc_disable_pllack(); // Always stop PLL first!
- 537              	 .loc 3 175 0
- 538 0010 094B     	 ldr r3,.L53
- 539 0012 9847     	 blx r3
- 540              	.LVL12:
+ 541              	 .loc 3 175 3
+ 542 0010 094B     	 ldr r3,.L53
+ 543 0012 9847     	 blx r3
+ 544              	.LVL12:
  176:.././hal/sam3u1c/inc/sam3u/pll.h **** 		PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | p_cfg->ctrl;
- 541              	 .loc 3 176 0
- 542 0014 7B68     	 ldr r3,[r7,#4]
- 543 0016 1B68     	 ldr r3,[r3]
- 544 0018 084A     	 ldr r2,.L53+4
- 545 001a 43F00053 	 orr r3,r3,#536870912
- 546 001e 9362     	 str r3,[r2,#40]
+ 545              	 .loc 3 176 43
+ 546 0014 7B68     	 ldr r3,[r7,#4]
+ 547 0016 1B68     	 ldr r3,[r3]
+ 548              	 .loc 3 176 6
+ 549 0018 084A     	 ldr r2,.L53+4
+ 550              	 .loc 3 176 36
+ 551 001a 43F00053 	 orr r3,r3,#536870912
+ 552              	 .loc 3 176 19
+ 553 001e 9362     	 str r3,[r2,#40]
  177:.././hal/sam3u1c/inc/sam3u/pll.h **** 	} else {
  178:.././hal/sam3u1c/inc/sam3u/pll.h **** 		PMC->CKGR_UCKR = p_cfg->ctrl | CKGR_UCKR_UPLLEN;
  179:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
  180:.././hal/sam3u1c/inc/sam3u/pll.h **** }
- 547              	 .loc 3 180 0
- 548 0020 05E0     	 b .L52
- 549              	.L50:
+ 554              	 .loc 3 180 1
+ 555 0020 05E0     	 b .L52
+ 556              	.L50:
  178:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
- 550              	 .loc 3 178 0
- 551 0022 7B68     	 ldr r3,[r7,#4]
- 552 0024 1B68     	 ldr r3,[r3]
- 553 0026 054A     	 ldr r2,.L53+4
- 554 0028 43F48033 	 orr r3,r3,#65536
- 555 002c D361     	 str r3,[r2,#28]
- 556              	.L52:
- 557              	 .loc 3 180 0
- 558 002e 00BF     	 nop
- 559 0030 0837     	 adds r7,r7,#8
- 560              	.LCFI29:
- 561              	 .cfi_def_cfa_offset 8
- 562 0032 BD46     	 mov sp,r7
- 563              	.LCFI30:
- 564              	 .cfi_def_cfa_register 13
- 565              	 
- 566 0034 80BD     	 pop {r7,pc}
- 567              	.L54:
- 568 0036 00BF     	 .align 2
- 569              	.L53:
- 570 0038 00000000 	 .word pmc_disable_pllack
- 571 003c 00040E40 	 .word 1074660352
- 572              	 .cfi_endproc
- 573              	.LFE77:
- 575              	 .section .text.pll_disable,"ax",%progbits
- 576              	 .align 1
- 577              	 .syntax unified
- 578              	 .thumb
- 579              	 .thumb_func
- 580              	 .fpu softvfp
- 582              	pll_disable:
- 583              	.LFB78:
+ 557              	 .loc 3 178 25
+ 558 0022 7B68     	 ldr r3,[r7,#4]
+ 559 0024 1B68     	 ldr r3,[r3]
+ 178:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
+ 560              	 .loc 3 178 6
+ 561 0026 054A     	 ldr r2,.L53+4
+ 178:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
+ 562              	 .loc 3 178 32
+ 563 0028 43F48033 	 orr r3,r3,#65536
+ 178:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
+ 564              	 .loc 3 178 18
+ 565 002c D361     	 str r3,[r2,#28]
+ 566              	.L52:
+ 567              	 .loc 3 180 1
+ 568 002e 00BF     	 nop
+ 569 0030 0837     	 adds r7,r7,#8
+ 570              	.LCFI29:
+ 571              	 .cfi_def_cfa_offset 8
+ 572 0032 BD46     	 mov sp,r7
+ 573              	.LCFI30:
+ 574              	 .cfi_def_cfa_register 13
+ 575              	 
+ 576 0034 80BD     	 pop {r7,pc}
+ 577              	.L54:
+ 578 0036 00BF     	 .align 2
+ 579              	.L53:
+ 580 0038 00000000 	 .word pmc_disable_pllack
+ 581 003c 00040E40 	 .word 1074660352
+ 582              	 .cfi_endproc
+ 583              	.LFE77:
+ 585              	 .section .text.pll_disable,"ax",%progbits
+ 586              	 .align 1
+ 587              	 .syntax unified
+ 588              	 .thumb
+ 589              	 .thumb_func
+ 590              	 .fpu softvfp
+ 592              	pll_disable:
+ 593              	.LFB78:
  181:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  182:.././hal/sam3u1c/inc/sam3u/pll.h **** /**
  183:.././hal/sam3u1c/inc/sam3u/pll.h ****  * \note This will only disable the selected PLL, not the underlying oscillator
@@ -1152,227 +1165,227 @@
  185:.././hal/sam3u1c/inc/sam3u/pll.h ****  */
  186:.././hal/sam3u1c/inc/sam3u/pll.h **** static inline void pll_disable(uint32_t ul_pll_id)
  187:.././hal/sam3u1c/inc/sam3u/pll.h **** {
- 584              	 .loc 3 187 0
- 585              	 .cfi_startproc
- 586              	 
- 587              	 
- 588 0000 80B5     	 push {r7,lr}
- 589              	.LCFI31:
- 590              	 .cfi_def_cfa_offset 8
- 591              	 .cfi_offset 7,-8
- 592              	 .cfi_offset 14,-4
- 593 0002 82B0     	 sub sp,sp,#8
- 594              	.LCFI32:
- 595              	 .cfi_def_cfa_offset 16
- 596 0004 00AF     	 add r7,sp,#0
- 597              	.LCFI33:
- 598              	 .cfi_def_cfa_register 7
- 599 0006 7860     	 str r0,[r7,#4]
+ 594              	 .loc 3 187 1
+ 595              	 .cfi_startproc
+ 596              	 
+ 597              	 
+ 598 0000 80B5     	 push {r7,lr}
+ 599              	.LCFI31:
+ 600              	 .cfi_def_cfa_offset 8
+ 601              	 .cfi_offset 7,-8
+ 602              	 .cfi_offset 14,-4
+ 603 0002 82B0     	 sub sp,sp,#8
+ 604              	.LCFI32:
+ 605              	 .cfi_def_cfa_offset 16
+ 606 0004 00AF     	 add r7,sp,#0
+ 607              	.LCFI33:
+ 608              	 .cfi_def_cfa_register 7
+ 609 0006 7860     	 str r0,[r7,#4]
  188:.././hal/sam3u1c/inc/sam3u/pll.h **** 	Assert(ul_pll_id < NR_PLLS);
  189:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  190:.././hal/sam3u1c/inc/sam3u/pll.h **** 	if (ul_pll_id == PLLA_ID) {
- 600              	 .loc 3 190 0
- 601 0008 7B68     	 ldr r3,[r7,#4]
- 602 000a 002B     	 cmp r3,#0
- 603 000c 02D1     	 bne .L56
+ 610              	 .loc 3 190 5
+ 611 0008 7B68     	 ldr r3,[r7,#4]
+ 612 000a 002B     	 cmp r3,#0
+ 613 000c 02D1     	 bne .L56
  191:.././hal/sam3u1c/inc/sam3u/pll.h **** 		pmc_disable_pllack();
- 604              	 .loc 3 191 0
- 605 000e 064B     	 ldr r3,.L59
- 606 0010 9847     	 blx r3
- 607              	.LVL13:
+ 614              	 .loc 3 191 3
+ 615 000e 064B     	 ldr r3,.L59
+ 616 0010 9847     	 blx r3
+ 617              	.LVL13:
  192:.././hal/sam3u1c/inc/sam3u/pll.h **** 	} else {
  193:.././hal/sam3u1c/inc/sam3u/pll.h **** 		PMC->CKGR_UCKR &= ~CKGR_UCKR_UPLLEN;
  194:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
  195:.././hal/sam3u1c/inc/sam3u/pll.h **** }
- 608              	 .loc 3 195 0
- 609 0012 05E0     	 b .L58
- 610              	.L56:
+ 618              	 .loc 3 195 1
+ 619 0012 05E0     	 b .L58
+ 620              	.L56:
  193:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
- 611              	 .loc 3 193 0
- 612 0014 054B     	 ldr r3,.L59+4
- 613 0016 DB69     	 ldr r3,[r3,#28]
- 614 0018 044A     	 ldr r2,.L59+4
- 615 001a 23F48033 	 bic r3,r3,#65536
- 616 001e D361     	 str r3,[r2,#28]
- 617              	.L58:
- 618              	 .loc 3 195 0
- 619 0020 00BF     	 nop
- 620 0022 0837     	 adds r7,r7,#8
- 621              	.LCFI34:
- 622              	 .cfi_def_cfa_offset 8
- 623 0024 BD46     	 mov sp,r7
- 624              	.LCFI35:
- 625              	 .cfi_def_cfa_register 13
- 626              	 
- 627 0026 80BD     	 pop {r7,pc}
- 628              	.L60:
- 629              	 .align 2
- 630              	.L59:
- 631 0028 00000000 	 .word pmc_disable_pllack
- 632 002c 00040E40 	 .word 1074660352
- 633              	 .cfi_endproc
- 634              	.LFE78:
- 636              	 .section .text.pll_is_locked,"ax",%progbits
- 637              	 .align 1
- 638              	 .syntax unified
- 639              	 .thumb
- 640              	 .thumb_func
- 641              	 .fpu softvfp
- 643              	pll_is_locked:
- 644              	.LFB79:
+ 621              	 .loc 3 193 18
+ 622 0014 054B     	 ldr r3,.L59+4
+ 623 0016 DB69     	 ldr r3,[r3,#28]
+ 624 0018 044A     	 ldr r2,.L59+4
+ 625 001a 23F48033 	 bic r3,r3,#65536
+ 626 001e D361     	 str r3,[r2,#28]
+ 627              	.L58:
+ 628              	 .loc 3 195 1
+ 629 0020 00BF     	 nop
+ 630 0022 0837     	 adds r7,r7,#8
+ 631              	.LCFI34:
+ 632              	 .cfi_def_cfa_offset 8
+ 633 0024 BD46     	 mov sp,r7
+ 634              	.LCFI35:
+ 635              	 .cfi_def_cfa_register 13
+ 636              	 
+ 637 0026 80BD     	 pop {r7,pc}
+ 638              	.L60:
+ 639              	 .align 2
+ 640              	.L59:
+ 641 0028 00000000 	 .word pmc_disable_pllack
+ 642 002c 00040E40 	 .word 1074660352
+ 643              	 .cfi_endproc
+ 644              	.LFE78:
+ 646              	 .section .text.pll_is_locked,"ax",%progbits
+ 647              	 .align 1
+ 648              	 .syntax unified
+ 649              	 .thumb
+ 650              	 .thumb_func
+ 651              	 .fpu softvfp
+ 653              	pll_is_locked:
+ 654              	.LFB79:
  196:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  197:.././hal/sam3u1c/inc/sam3u/pll.h **** static inline uint32_t pll_is_locked(uint32_t ul_pll_id)
  198:.././hal/sam3u1c/inc/sam3u/pll.h **** {
- 645              	 .loc 3 198 0
- 646              	 .cfi_startproc
- 647              	 
- 648              	 
- 649 0000 80B5     	 push {r7,lr}
- 650              	.LCFI36:
- 651              	 .cfi_def_cfa_offset 8
- 652              	 .cfi_offset 7,-8
- 653              	 .cfi_offset 14,-4
- 654 0002 82B0     	 sub sp,sp,#8
- 655              	.LCFI37:
- 656              	 .cfi_def_cfa_offset 16
- 657 0004 00AF     	 add r7,sp,#0
- 658              	.LCFI38:
- 659              	 .cfi_def_cfa_register 7
- 660 0006 7860     	 str r0,[r7,#4]
+ 655              	 .loc 3 198 1
+ 656              	 .cfi_startproc
+ 657              	 
+ 658              	 
+ 659 0000 80B5     	 push {r7,lr}
+ 660              	.LCFI36:
+ 661              	 .cfi_def_cfa_offset 8
+ 662              	 .cfi_offset 7,-8
+ 663              	 .cfi_offset 14,-4
+ 664 0002 82B0     	 sub sp,sp,#8
+ 665              	.LCFI37:
+ 666              	 .cfi_def_cfa_offset 16
+ 667 0004 00AF     	 add r7,sp,#0
+ 668              	.LCFI38:
+ 669              	 .cfi_def_cfa_register 7
+ 670 0006 7860     	 str r0,[r7,#4]
  199:.././hal/sam3u1c/inc/sam3u/pll.h **** 	Assert(ul_pll_id < NR_PLLS);
  200:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  201:.././hal/sam3u1c/inc/sam3u/pll.h **** 	if (ul_pll_id == PLLA_ID) {
- 661              	 .loc 3 201 0
- 662 0008 7B68     	 ldr r3,[r7,#4]
- 663 000a 002B     	 cmp r3,#0
- 664 000c 03D1     	 bne .L62
+ 671              	 .loc 3 201 5
+ 672 0008 7B68     	 ldr r3,[r7,#4]
+ 673 000a 002B     	 cmp r3,#0
+ 674 000c 03D1     	 bne .L62
  202:.././hal/sam3u1c/inc/sam3u/pll.h **** 		return pmc_is_locked_pllack();
- 665              	 .loc 3 202 0
- 666 000e 054B     	 ldr r3,.L64
- 667 0010 9847     	 blx r3
- 668              	.LVL14:
- 669 0012 0346     	 mov r3,r0
- 670 0014 02E0     	 b .L63
- 671              	.L62:
+ 675              	 .loc 3 202 10
+ 676 000e 054B     	 ldr r3,.L64
+ 677 0010 9847     	 blx r3
+ 678              	.LVL14:
+ 679 0012 0346     	 mov r3,r0
+ 680 0014 02E0     	 b .L63
+ 681              	.L62:
  203:.././hal/sam3u1c/inc/sam3u/pll.h **** 	} else {
  204:.././hal/sam3u1c/inc/sam3u/pll.h **** 		return pmc_is_locked_upll();
- 672              	 .loc 3 204 0
- 673 0016 044B     	 ldr r3,.L64+4
- 674 0018 9847     	 blx r3
- 675              	.LVL15:
- 676 001a 0346     	 mov r3,r0
- 677              	.L63:
+ 682              	 .loc 3 204 10
+ 683 0016 044B     	 ldr r3,.L64+4
+ 684 0018 9847     	 blx r3
+ 685              	.LVL15:
+ 686 001a 0346     	 mov r3,r0
+ 687              	.L63:
  205:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
  206:.././hal/sam3u1c/inc/sam3u/pll.h **** }
- 678              	 .loc 3 206 0
- 679 001c 1846     	 mov r0,r3
- 680 001e 0837     	 adds r7,r7,#8
- 681              	.LCFI39:
- 682              	 .cfi_def_cfa_offset 8
- 683 0020 BD46     	 mov sp,r7
- 684              	.LCFI40:
- 685              	 .cfi_def_cfa_register 13
- 686              	 
- 687 0022 80BD     	 pop {r7,pc}
- 688              	.L65:
- 689              	 .align 2
- 690              	.L64:
- 691 0024 00000000 	 .word pmc_is_locked_pllack
- 692 0028 00000000 	 .word pmc_is_locked_upll
- 693              	 .cfi_endproc
- 694              	.LFE79:
- 696              	 .section .text.pll_enable_source,"ax",%progbits
- 697              	 .align 1
- 698              	 .syntax unified
- 699              	 .thumb
- 700              	 .thumb_func
- 701              	 .fpu softvfp
- 703              	pll_enable_source:
- 704              	.LFB80:
+ 688              	 .loc 3 206 1
+ 689 001c 1846     	 mov r0,r3
+ 690 001e 0837     	 adds r7,r7,#8
+ 691              	.LCFI39:
+ 692              	 .cfi_def_cfa_offset 8
+ 693 0020 BD46     	 mov sp,r7
+ 694              	.LCFI40:
+ 695              	 .cfi_def_cfa_register 13
+ 696              	 
+ 697 0022 80BD     	 pop {r7,pc}
+ 698              	.L65:
+ 699              	 .align 2
+ 700              	.L64:
+ 701 0024 00000000 	 .word pmc_is_locked_pllack
+ 702 0028 00000000 	 .word pmc_is_locked_upll
+ 703              	 .cfi_endproc
+ 704              	.LFE79:
+ 706              	 .section .text.pll_enable_source,"ax",%progbits
+ 707              	 .align 1
+ 708              	 .syntax unified
+ 709              	 .thumb
+ 710              	 .thumb_func
+ 711              	 .fpu softvfp
+ 713              	pll_enable_source:
+ 714              	.LFB80:
  207:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  208:.././hal/sam3u1c/inc/sam3u/pll.h **** static inline void pll_enable_source(enum pll_source e_src)
  209:.././hal/sam3u1c/inc/sam3u/pll.h **** {
- 705              	 .loc 3 209 0
- 706              	 .cfi_startproc
- 707              	 
- 708              	 
- 709 0000 80B5     	 push {r7,lr}
- 710              	.LCFI41:
- 711              	 .cfi_def_cfa_offset 8
- 712              	 .cfi_offset 7,-8
- 713              	 .cfi_offset 14,-4
- 714 0002 82B0     	 sub sp,sp,#8
- 715              	.LCFI42:
- 716              	 .cfi_def_cfa_offset 16
- 717 0004 00AF     	 add r7,sp,#0
- 718              	.LCFI43:
- 719              	 .cfi_def_cfa_register 7
- 720 0006 0346     	 mov r3,r0
- 721 0008 FB71     	 strb r3,[r7,#7]
+ 715              	 .loc 3 209 1
+ 716              	 .cfi_startproc
+ 717              	 
+ 718              	 
+ 719 0000 80B5     	 push {r7,lr}
+ 720              	.LCFI41:
+ 721              	 .cfi_def_cfa_offset 8
+ 722              	 .cfi_offset 7,-8
+ 723              	 .cfi_offset 14,-4
+ 724 0002 82B0     	 sub sp,sp,#8
+ 725              	.LCFI42:
+ 726              	 .cfi_def_cfa_offset 16
+ 727 0004 00AF     	 add r7,sp,#0
+ 728              	.LCFI43:
+ 729              	 .cfi_def_cfa_register 7
+ 730 0006 0346     	 mov r3,r0
+ 731 0008 FB71     	 strb r3,[r7,#7]
  210:.././hal/sam3u1c/inc/sam3u/pll.h **** 	switch (e_src) {
- 722              	 .loc 3 210 0
- 723 000a FB79     	 ldrb r3,[r7,#7]
- 724 000c 033B     	 subs r3,r3,#3
- 725 000e 042B     	 cmp r3,#4
- 726 0010 08D8     	 bhi .L70
+ 732              	 .loc 3 210 2
+ 733 000a FB79     	 ldrb r3,[r7,#7]
+ 734 000c 033B     	 subs r3,r3,#3
+ 735 000e 042B     	 cmp r3,#4
+ 736 0010 08D8     	 bhi .L69
  211:.././hal/sam3u1c/inc/sam3u/pll.h **** 	case PLL_SRC_MAINCK_4M_RC:
  212:.././hal/sam3u1c/inc/sam3u/pll.h **** 	case PLL_SRC_MAINCK_8M_RC:
  213:.././hal/sam3u1c/inc/sam3u/pll.h **** 	case PLL_SRC_MAINCK_12M_RC:
  214:.././hal/sam3u1c/inc/sam3u/pll.h **** 	case PLL_SRC_MAINCK_XTAL:
  215:.././hal/sam3u1c/inc/sam3u/pll.h **** 	case PLL_SRC_MAINCK_BYPASS:
  216:.././hal/sam3u1c/inc/sam3u/pll.h **** 		osc_enable(e_src);
- 727              	 .loc 3 216 0
- 728 0012 FB79     	 ldrb r3,[r7,#7]
- 729 0014 1846     	 mov r0,r3
- 730 0016 064B     	 ldr r3,.L71
- 731 0018 9847     	 blx r3
- 732              	.LVL16:
+ 737              	 .loc 3 216 3
+ 738 0012 FB79     	 ldrb r3,[r7,#7]
+ 739 0014 1846     	 mov r0,r3
+ 740 0016 064B     	 ldr r3,.L70
+ 741 0018 9847     	 blx r3
+ 742              	.LVL16:
  217:.././hal/sam3u1c/inc/sam3u/pll.h **** 		osc_wait_ready(e_src);
- 733              	 .loc 3 217 0
- 734 001a FB79     	 ldrb r3,[r7,#7]
- 735 001c 1846     	 mov r0,r3
- 736 001e 054B     	 ldr r3,.L71+4
- 737 0020 9847     	 blx r3
- 738              	.LVL17:
+ 743              	 .loc 3 217 3
+ 744 001a FB79     	 ldrb r3,[r7,#7]
+ 745 001c 1846     	 mov r0,r3
+ 746 001e 054B     	 ldr r3,.L70+4
+ 747 0020 9847     	 blx r3
+ 748              	.LVL17:
  218:.././hal/sam3u1c/inc/sam3u/pll.h **** 		break;
- 739              	 .loc 3 218 0
- 740 0022 00E0     	 b .L69
- 741              	.L70:
+ 749              	 .loc 3 218 3
+ 750 0022 00E0     	 b .L68
+ 751              	.L69:
  219:.././hal/sam3u1c/inc/sam3u/pll.h **** 
  220:.././hal/sam3u1c/inc/sam3u/pll.h **** 	default:
  221:.././hal/sam3u1c/inc/sam3u/pll.h **** 		Assert(false);
  222:.././hal/sam3u1c/inc/sam3u/pll.h **** 		break;
- 742              	 .loc 3 222 0
- 743 0024 00BF     	 nop
- 744              	.L69:
+ 752              	 .loc 3 222 3
+ 753 0024 00BF     	 nop
+ 754              	.L68:
  223:.././hal/sam3u1c/inc/sam3u/pll.h **** 	}
  224:.././hal/sam3u1c/inc/sam3u/pll.h **** }
- 745              	 .loc 3 224 0
- 746 0026 00BF     	 nop
- 747 0028 0837     	 adds r7,r7,#8
- 748              	.LCFI44:
- 749              	 .cfi_def_cfa_offset 8
- 750 002a BD46     	 mov sp,r7
- 751              	.LCFI45:
- 752              	 .cfi_def_cfa_register 13
- 753              	 
- 754 002c 80BD     	 pop {r7,pc}
- 755              	.L72:
- 756 002e 00BF     	 .align 2
- 757              	.L71:
- 758 0030 00000000 	 .word osc_enable
- 759 0034 00000000 	 .word osc_wait_ready
- 760              	 .cfi_endproc
- 761              	.LFE80:
- 763              	 .section .text.pll_wait_for_lock,"ax",%progbits
- 764              	 .align 1
- 765              	 .syntax unified
- 766              	 .thumb
- 767              	 .thumb_func
- 768              	 .fpu softvfp
- 770              	pll_wait_for_lock:
- 771              	.LFB82:
- 772              	 .file 4 ".././hal/sam3u1c/inc/pll.h"
+ 755              	 .loc 3 224 1
+ 756 0026 00BF     	 nop
+ 757 0028 0837     	 adds r7,r7,#8
+ 758              	.LCFI44:
+ 759              	 .cfi_def_cfa_offset 8
+ 760 002a BD46     	 mov sp,r7
+ 761              	.LCFI45:
+ 762              	 .cfi_def_cfa_register 13
+ 763              	 
+ 764 002c 80BD     	 pop {r7,pc}
+ 765              	.L71:
+ 766 002e 00BF     	 .align 2
+ 767              	.L70:
+ 768 0030 00000000 	 .word osc_enable
+ 769 0034 00000000 	 .word osc_wait_ready
+ 770              	 .cfi_endproc
+ 771              	.LFE80:
+ 773              	 .section .text.pll_wait_for_lock,"ax",%progbits
+ 774              	 .align 1
+ 775              	 .syntax unified
+ 776              	 .thumb
+ 777              	 .thumb_func
+ 778              	 .fpu softvfp
+ 780              	pll_wait_for_lock:
+ 781              	.LFB82:
+ 782              	 .file 4 ".././hal/sam3u1c/inc/pll.h"
    1:.././hal/sam3u1c/inc/pll.h **** /**
    2:.././hal/sam3u1c/inc/pll.h ****  * \file
    3:.././hal/sam3u1c/inc/pll.h ****  *
@@ -1690,68 +1703,69 @@
  315:.././hal/sam3u1c/inc/pll.h ****  */
  316:.././hal/sam3u1c/inc/pll.h **** static inline int pll_wait_for_lock(unsigned int pll_id)
  317:.././hal/sam3u1c/inc/pll.h **** {
- 773              	 .loc 4 317 0
- 774              	 .cfi_startproc
- 775              	 
- 776              	 
- 777 0000 80B5     	 push {r7,lr}
- 778              	.LCFI46:
- 779              	 .cfi_def_cfa_offset 8
- 780              	 .cfi_offset 7,-8
- 781              	 .cfi_offset 14,-4
- 782 0002 82B0     	 sub sp,sp,#8
- 783              	.LCFI47:
- 784              	 .cfi_def_cfa_offset 16
- 785 0004 00AF     	 add r7,sp,#0
- 786              	.LCFI48:
- 787              	 .cfi_def_cfa_register 7
- 788 0006 7860     	 str r0,[r7,#4]
+ 783              	 .loc 4 317 1
+ 784              	 .cfi_startproc
+ 785              	 
+ 786              	 
+ 787 0000 80B5     	 push {r7,lr}
+ 788              	.LCFI46:
+ 789              	 .cfi_def_cfa_offset 8
+ 790              	 .cfi_offset 7,-8
+ 791              	 .cfi_offset 14,-4
+ 792 0002 82B0     	 sub sp,sp,#8
+ 793              	.LCFI47:
+ 794              	 .cfi_def_cfa_offset 16
+ 795 0004 00AF     	 add r7,sp,#0
+ 796              	.LCFI48:
+ 797              	 .cfi_def_cfa_register 7
+ 798 0006 7860     	 str r0,[r7,#4]
  318:.././hal/sam3u1c/inc/pll.h **** 	Assert(pll_id < NR_PLLS);
  319:.././hal/sam3u1c/inc/pll.h **** 
  320:.././hal/sam3u1c/inc/pll.h **** 	while (!pll_is_locked(pll_id)) {
- 789              	 .loc 4 320 0
- 790 0008 00BF     	 nop
- 791              	.L74:
- 792              	 .loc 4 320 0 is_stmt 0 discriminator 1
- 793 000a 7868     	 ldr r0,[r7,#4]
- 794 000c 044B     	 ldr r3,.L76
- 795 000e 9847     	 blx r3
- 796              	.LVL18:
- 797 0010 0346     	 mov r3,r0
- 798 0012 002B     	 cmp r3,#0
- 799 0014 F9D0     	 beq .L74
+ 799              	 .loc 4 320 8
+ 800 0008 00BF     	 nop
+ 801              	.L73:
+ 802              	 .loc 4 320 10 discriminator 1
+ 803 000a 7868     	 ldr r0,[r7,#4]
+ 804 000c 044B     	 ldr r3,.L75
+ 805 000e 9847     	 blx r3
+ 806              	.LVL18:
+ 807 0010 0346     	 mov r3,r0
+ 808              	 .loc 4 320 8 discriminator 1
+ 809 0012 002B     	 cmp r3,#0
+ 810 0014 F9D0     	 beq .L73
  321:.././hal/sam3u1c/inc/pll.h **** 		/* Do nothing */
  322:.././hal/sam3u1c/inc/pll.h **** 	}
  323:.././hal/sam3u1c/inc/pll.h **** 
  324:.././hal/sam3u1c/inc/pll.h **** 	return 0;
- 800              	 .loc 4 324 0 is_stmt 1
- 801 0016 0023     	 movs r3,#0
+ 811              	 .loc 4 324 9
+ 812 0016 0023     	 movs r3,#0
  325:.././hal/sam3u1c/inc/pll.h **** }
- 802              	 .loc 4 325 0
- 803 0018 1846     	 mov r0,r3
- 804 001a 0837     	 adds r7,r7,#8
- 805              	.LCFI49:
- 806              	 .cfi_def_cfa_offset 8
- 807 001c BD46     	 mov sp,r7
- 808              	.LCFI50:
- 809              	 .cfi_def_cfa_register 13
- 810              	 
- 811 001e 80BD     	 pop {r7,pc}
- 812              	.L77:
- 813              	 .align 2
- 814              	.L76:
- 815 0020 00000000 	 .word pll_is_locked
- 816              	 .cfi_endproc
- 817              	.LFE82:
- 819              	 .section .text.sysclk_get_main_hz,"ax",%progbits
- 820              	 .align 1
- 821              	 .syntax unified
- 822              	 .thumb
- 823              	 .thumb_func
- 824              	 .fpu softvfp
- 826              	sysclk_get_main_hz:
- 827              	.LFB83:
- 828              	 .file 5 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
+ 813              	 .loc 4 325 1
+ 814 0018 1846     	 mov r0,r3
+ 815 001a 0837     	 adds r7,r7,#8
+ 816              	.LCFI49:
+ 817              	 .cfi_def_cfa_offset 8
+ 818 001c BD46     	 mov sp,r7
+ 819              	.LCFI50:
+ 820              	 .cfi_def_cfa_register 13
+ 821              	 
+ 822 001e 80BD     	 pop {r7,pc}
+ 823              	.L76:
+ 824              	 .align 2
+ 825              	.L75:
+ 826 0020 00000000 	 .word pll_is_locked
+ 827              	 .cfi_endproc
+ 828              	.LFE82:
+ 830              	 .section .text.sysclk_get_main_hz,"ax",%progbits
+ 831              	 .align 1
+ 832              	 .syntax unified
+ 833              	 .thumb
+ 834              	 .thumb_func
+ 835              	 .fpu softvfp
+ 837              	sysclk_get_main_hz:
+ 838              	.LFB83:
+ 839              	 .file 5 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
    1:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \file
    3:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
@@ -1984,18 +1998,18 @@
  230:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
  231:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_main_hz(void)
  232:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
- 829              	 .loc 5 232 0
- 830              	 .cfi_startproc
- 831              	 
- 832              	 
- 833 0000 80B5     	 push {r7,lr}
- 834              	.LCFI51:
- 835              	 .cfi_def_cfa_offset 8
- 836              	 .cfi_offset 7,-8
- 837              	 .cfi_offset 14,-4
- 838 0002 00AF     	 add r7,sp,#0
- 839              	.LCFI52:
- 840              	 .cfi_def_cfa_register 7
+ 840              	 .loc 5 232 1
+ 841              	 .cfi_startproc
+ 842              	 
+ 843              	 
+ 844 0000 80B5     	 push {r7,lr}
+ 845              	.LCFI51:
+ 846              	 .cfi_def_cfa_offset 8
+ 847              	 .cfi_offset 7,-8
+ 848              	 .cfi_offset 14,-4
+ 849 0002 00AF     	 add r7,sp,#0
+ 850              	.LCFI52:
+ 851              	 .cfi_def_cfa_register 7
  233:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #if (defined CONFIG_SYSCLK_DEFAULT_RETURNS_SLOW_OSC)
  234:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	if (!sysclk_initialized ) {
  235:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_4M_RC_HZ;
@@ -2023,13 +2037,13 @@
  257:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifdef CONFIG_PLL0_SOURCE
  258:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_PLLACK) {
  259:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return pll_get_default_rate(0);
- 841              	 .loc 5 259 0
- 842 0004 0620     	 movs r0,#6
- 843 0006 034B     	 ldr r3,.L80
- 844 0008 9847     	 blx r3
- 845              	.LVL19:
- 846 000a 0346     	 mov r3,r0
- 847 000c 1B01     	 lsls r3,r3,#4
+ 852              	 .loc 5 259 10
+ 853 0004 0620     	 movs r0,#6
+ 854 0006 034B     	 ldr r3,.L79
+ 855 0008 9847     	 blx r3
+ 856              	.LVL19:
+ 857 000a 0346     	 mov r3,r0
+ 858 000c 1B01     	 lsls r3,r3,#4
  260:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
  261:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
  262:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
@@ -2043,23 +2057,23 @@
  270:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return 0;
  271:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
  272:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
- 848              	 .loc 5 272 0
- 849 000e 1846     	 mov r0,r3
- 850 0010 80BD     	 pop {r7,pc}
- 851              	.L81:
- 852 0012 00BF     	 .align 2
- 853              	.L80:
- 854 0014 00000000 	 .word osc_get_rate
- 855              	 .cfi_endproc
- 856              	.LFE83:
- 858              	 .section .text.sysclk_get_cpu_hz,"ax",%progbits
- 859              	 .align 1
- 860              	 .syntax unified
- 861              	 .thumb
- 862              	 .thumb_func
- 863              	 .fpu softvfp
- 865              	sysclk_get_cpu_hz:
- 866              	.LFB84:
+ 859              	 .loc 5 272 1
+ 860 000e 1846     	 mov r0,r3
+ 861 0010 80BD     	 pop {r7,pc}
+ 862              	.L80:
+ 863 0012 00BF     	 .align 2
+ 864              	.L79:
+ 865 0014 00000000 	 .word osc_get_rate
+ 866              	 .cfi_endproc
+ 867              	.LFE83:
+ 869              	 .section .text.sysclk_get_cpu_hz,"ax",%progbits
+ 870              	 .align 1
+ 871              	 .syntax unified
+ 872              	 .thumb
+ 873              	 .thumb_func
+ 874              	 .fpu softvfp
+ 876              	sysclk_get_cpu_hz:
+ 877              	.LFB84:
  273:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
  274:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
  275:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Return the current rate in Hz of the CPU clock
@@ -2074,49 +2088,50 @@
  284:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
  285:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_cpu_hz(void)
  286:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
- 867              	 .loc 5 286 0
- 868              	 .cfi_startproc
- 869              	 
- 870              	 
- 871 0000 80B5     	 push {r7,lr}
- 872              	.LCFI53:
- 873              	 .cfi_def_cfa_offset 8
- 874              	 .cfi_offset 7,-8
- 875              	 .cfi_offset 14,-4
- 876 0002 00AF     	 add r7,sp,#0
- 877              	.LCFI54:
- 878              	 .cfi_def_cfa_register 7
+ 878              	 .loc 5 286 1
+ 879              	 .cfi_startproc
+ 880              	 
+ 881              	 
+ 882 0000 80B5     	 push {r7,lr}
+ 883              	.LCFI53:
+ 884              	 .cfi_def_cfa_offset 8
+ 885              	 .cfi_offset 7,-8
+ 886              	 .cfi_offset 14,-4
+ 887 0002 00AF     	 add r7,sp,#0
+ 888              	.LCFI54:
+ 889              	 .cfi_def_cfa_register 7
  287:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* CONFIG_SYSCLK_PRES is the register value for setting the expected */
  288:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* prescaler, not an immediate value. */
  289:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	return sysclk_get_main_hz() /
- 879              	 .loc 5 289 0
- 880 0004 024B     	 ldr r3,.L84
- 881 0006 9847     	 blx r3
- 882              	.LVL20:
- 883 0008 0346     	 mov r3,r0
- 884 000a 5B08     	 lsrs r3,r3,#1
+ 890              	 .loc 5 289 9
+ 891 0004 024B     	 ldr r3,.L83
+ 892 0006 9847     	 blx r3
+ 893              	.LVL20:
+ 894 0008 0346     	 mov r3,r0
+ 895              	 .loc 5 289 30
+ 896 000a 5B08     	 lsrs r3,r3,#1
  290:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		((CONFIG_SYSCLK_PRES == SYSCLK_PRES_3) ? 3 :
  291:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 			(1 << (CONFIG_SYSCLK_PRES >> PMC_MCKR_PRES_Pos)));
  292:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
- 885              	 .loc 5 292 0
- 886 000c 1846     	 mov r0,r3
- 887 000e 80BD     	 pop {r7,pc}
- 888              	.L85:
- 889              	 .align 2
- 890              	.L84:
- 891 0010 00000000 	 .word sysclk_get_main_hz
- 892              	 .cfi_endproc
- 893              	.LFE84:
- 895              	 .section .text.sysclk_set_prescalers,"ax",%progbits
- 896              	 .align 1
- 897              	 .global sysclk_set_prescalers
- 898              	 .syntax unified
- 899              	 .thumb
- 900              	 .thumb_func
- 901              	 .fpu softvfp
- 903              	sysclk_set_prescalers:
- 904              	.LFB89:
- 905              	 .file 6 ".././hal/sam3u1c/sysclk.c"
+ 897              	 .loc 5 292 1
+ 898 000c 1846     	 mov r0,r3
+ 899 000e 80BD     	 pop {r7,pc}
+ 900              	.L84:
+ 901              	 .align 2
+ 902              	.L83:
+ 903 0010 00000000 	 .word sysclk_get_main_hz
+ 904              	 .cfi_endproc
+ 905              	.LFE84:
+ 907              	 .section .text.sysclk_set_prescalers,"ax",%progbits
+ 908              	 .align 1
+ 909              	 .global sysclk_set_prescalers
+ 910              	 .syntax unified
+ 911              	 .thumb
+ 912              	 .thumb_func
+ 913              	 .fpu softvfp
+ 915              	sysclk_set_prescalers:
+ 916              	.LFB89:
+ 917              	 .file 6 ".././hal/sam3u1c/sysclk.c"
    1:.././hal/sam3u1c/sysclk.c **** /**
    2:.././hal/sam3u1c/sysclk.c ****  * \file
    3:.././hal/sam3u1c/sysclk.c ****  *
@@ -2194,60 +2209,60 @@
   75:.././hal/sam3u1c/sysclk.c ****  */
   76:.././hal/sam3u1c/sysclk.c **** void sysclk_set_prescalers(uint32_t ul_pres)
   77:.././hal/sam3u1c/sysclk.c **** {
- 906              	 .loc 6 77 0
- 907              	 .cfi_startproc
- 908              	 
- 909              	 
- 910 0000 80B5     	 push {r7,lr}
- 911              	.LCFI55:
- 912              	 .cfi_def_cfa_offset 8
- 913              	 .cfi_offset 7,-8
- 914              	 .cfi_offset 14,-4
- 915 0002 82B0     	 sub sp,sp,#8
- 916              	.LCFI56:
- 917              	 .cfi_def_cfa_offset 16
- 918 0004 00AF     	 add r7,sp,#0
- 919              	.LCFI57:
- 920              	 .cfi_def_cfa_register 7
- 921 0006 7860     	 str r0,[r7,#4]
+ 918              	 .loc 6 77 1
+ 919              	 .cfi_startproc
+ 920              	 
+ 921              	 
+ 922 0000 80B5     	 push {r7,lr}
+ 923              	.LCFI55:
+ 924              	 .cfi_def_cfa_offset 8
+ 925              	 .cfi_offset 7,-8
+ 926              	 .cfi_offset 14,-4
+ 927 0002 82B0     	 sub sp,sp,#8
+ 928              	.LCFI56:
+ 929              	 .cfi_def_cfa_offset 16
+ 930 0004 00AF     	 add r7,sp,#0
+ 931              	.LCFI57:
+ 932              	 .cfi_def_cfa_register 7
+ 933 0006 7860     	 str r0,[r7,#4]
   78:.././hal/sam3u1c/sysclk.c **** 	pmc_mck_set_prescaler(ul_pres);
- 922              	 .loc 6 78 0
- 923 0008 7868     	 ldr r0,[r7,#4]
- 924 000a 044B     	 ldr r3,.L87
- 925 000c 9847     	 blx r3
- 926              	.LVL21:
+ 934              	 .loc 6 78 2
+ 935 0008 7868     	 ldr r0,[r7,#4]
+ 936 000a 044B     	 ldr r3,.L86
+ 937 000c 9847     	 blx r3
+ 938              	.LVL21:
   79:.././hal/sam3u1c/sysclk.c **** 	SystemCoreClockUpdate();
- 927              	 .loc 6 79 0
- 928 000e 044B     	 ldr r3,.L87+4
- 929 0010 9847     	 blx r3
- 930              	.LVL22:
+ 939              	 .loc 6 79 2
+ 940 000e 044B     	 ldr r3,.L86+4
+ 941 0010 9847     	 blx r3
+ 942              	.LVL22:
   80:.././hal/sam3u1c/sysclk.c **** }
- 931              	 .loc 6 80 0
- 932 0012 00BF     	 nop
- 933 0014 0837     	 adds r7,r7,#8
- 934              	.LCFI58:
- 935              	 .cfi_def_cfa_offset 8
- 936 0016 BD46     	 mov sp,r7
- 937              	.LCFI59:
- 938              	 .cfi_def_cfa_register 13
- 939              	 
- 940 0018 80BD     	 pop {r7,pc}
- 941              	.L88:
- 942 001a 00BF     	 .align 2
- 943              	.L87:
- 944 001c 00000000 	 .word pmc_mck_set_prescaler
- 945 0020 00000000 	 .word SystemCoreClockUpdate
- 946              	 .cfi_endproc
- 947              	.LFE89:
- 949              	 .section .text.sysclk_set_source,"ax",%progbits
- 950              	 .align 1
- 951              	 .global sysclk_set_source
- 952              	 .syntax unified
- 953              	 .thumb
- 954              	 .thumb_func
- 955              	 .fpu softvfp
- 957              	sysclk_set_source:
- 958              	.LFB90:
+ 943              	 .loc 6 80 1
+ 944 0012 00BF     	 nop
+ 945 0014 0837     	 adds r7,r7,#8
+ 946              	.LCFI58:
+ 947              	 .cfi_def_cfa_offset 8
+ 948 0016 BD46     	 mov sp,r7
+ 949              	.LCFI59:
+ 950              	 .cfi_def_cfa_register 13
+ 951              	 
+ 952 0018 80BD     	 pop {r7,pc}
+ 953              	.L87:
+ 954 001a 00BF     	 .align 2
+ 955              	.L86:
+ 956 001c 00000000 	 .word pmc_mck_set_prescaler
+ 957 0020 00000000 	 .word SystemCoreClockUpdate
+ 958              	 .cfi_endproc
+ 959              	.LFE89:
+ 961              	 .section .text.sysclk_set_source,"ax",%progbits
+ 962              	 .align 1
+ 963              	 .global sysclk_set_source
+ 964              	 .syntax unified
+ 965              	 .thumb
+ 966              	 .thumb_func
+ 967              	 .fpu softvfp
+ 969              	sysclk_set_source:
+ 970              	.LFB90:
   81:.././hal/sam3u1c/sysclk.c **** 
   82:.././hal/sam3u1c/sysclk.c **** /**
   83:.././hal/sam3u1c/sysclk.c ****  * \brief Change the source of the main system clock.
@@ -2257,56 +2272,56 @@
   87:.././hal/sam3u1c/sysclk.c ****  */
   88:.././hal/sam3u1c/sysclk.c **** void sysclk_set_source(uint32_t ul_src)
   89:.././hal/sam3u1c/sysclk.c **** {
- 959              	 .loc 6 89 0
- 960              	 .cfi_startproc
- 961              	 
- 962              	 
- 963 0000 80B5     	 push {r7,lr}
- 964              	.LCFI60:
- 965              	 .cfi_def_cfa_offset 8
- 966              	 .cfi_offset 7,-8
- 967              	 .cfi_offset 14,-4
- 968 0002 82B0     	 sub sp,sp,#8
- 969              	.LCFI61:
- 970              	 .cfi_def_cfa_offset 16
- 971 0004 00AF     	 add r7,sp,#0
- 972              	.LCFI62:
- 973              	 .cfi_def_cfa_register 7
- 974 0006 7860     	 str r0,[r7,#4]
+ 971              	 .loc 6 89 1
+ 972              	 .cfi_startproc
+ 973              	 
+ 974              	 
+ 975 0000 80B5     	 push {r7,lr}
+ 976              	.LCFI60:
+ 977              	 .cfi_def_cfa_offset 8
+ 978              	 .cfi_offset 7,-8
+ 979              	 .cfi_offset 14,-4
+ 980 0002 82B0     	 sub sp,sp,#8
+ 981              	.LCFI61:
+ 982              	 .cfi_def_cfa_offset 16
+ 983 0004 00AF     	 add r7,sp,#0
+ 984              	.LCFI62:
+ 985              	 .cfi_def_cfa_register 7
+ 986 0006 7860     	 str r0,[r7,#4]
   90:.././hal/sam3u1c/sysclk.c **** 	switch (ul_src) {
- 975              	 .loc 6 90 0
- 976 0008 7B68     	 ldr r3,[r7,#4]
- 977 000a 092B     	 cmp r3,#9
- 978 000c 26D8     	 bhi .L90
- 979 000e 01A2     	 adr r2,.L92
- 980 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
- 981              	 .p2align 2
- 982              	.L92:
- 983 0014 3D000000 	 .word .L91+1
- 984 0018 3D000000 	 .word .L91+1
- 985 001c 3D000000 	 .word .L91+1
- 986 0020 45000000 	 .word .L93+1
- 987 0024 45000000 	 .word .L93+1
- 988 0028 45000000 	 .word .L93+1
- 989 002c 45000000 	 .word .L93+1
- 990 0030 45000000 	 .word .L93+1
- 991 0034 4D000000 	 .word .L94+1
- 992 0038 55000000 	 .word .L95+1
- 993              	 .p2align 1
+ 987              	 .loc 6 90 2
+ 988 0008 7B68     	 ldr r3,[r7,#4]
+ 989 000a 092B     	 cmp r3,#9
+ 990 000c 26D8     	 bhi .L89
+ 991 000e 01A2     	 adr r2,.L91
+ 992 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+ 993              	 .p2align 2
  994              	.L91:
+ 995 0014 3D000000 	 .word .L94+1
+ 996 0018 3D000000 	 .word .L94+1
+ 997 001c 3D000000 	 .word .L94+1
+ 998 0020 45000000 	 .word .L93+1
+ 999 0024 45000000 	 .word .L93+1
+ 1000 0028 45000000 	 .word .L93+1
+ 1001 002c 45000000 	 .word .L93+1
+ 1002 0030 45000000 	 .word .L93+1
+ 1003 0034 4D000000 	 .word .L92+1
+ 1004 0038 55000000 	 .word .L90+1
+ 1005              	 .p2align 1
+ 1006              	.L94:
   91:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_SLCK_RC:
   92:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_SLCK_XTAL:
   93:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_SLCK_BYPASS:
   94:.././hal/sam3u1c/sysclk.c **** 		pmc_mck_set_source(PMC_MCKR_CSS_SLOW_CLK);
- 995              	 .loc 6 94 0
- 996 003c 0020     	 movs r0,#0
- 997 003e 0A4B     	 ldr r3,.L96
- 998 0040 9847     	 blx r3
- 999              	.LVL23:
+ 1007              	 .loc 6 94 3
+ 1008 003c 0020     	 movs r0,#0
+ 1009 003e 0A4B     	 ldr r3,.L95
+ 1010 0040 9847     	 blx r3
+ 1011              	.LVL23:
   95:.././hal/sam3u1c/sysclk.c **** 		break;
- 1000              	 .loc 6 95 0
- 1001 0042 0BE0     	 b .L90
- 1002              	.L93:
+ 1012              	 .loc 6 95 3
+ 1013 0042 0BE0     	 b .L89
+ 1014              	.L93:
   96:.././hal/sam3u1c/sysclk.c **** 
   97:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_MAINCK_4M_RC:
   98:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_MAINCK_8M_RC:
@@ -2314,73 +2329,73 @@
  100:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_MAINCK_XTAL:
  101:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_MAINCK_BYPASS:
  102:.././hal/sam3u1c/sysclk.c **** 		pmc_mck_set_source(PMC_MCKR_CSS_MAIN_CLK);
- 1003              	 .loc 6 102 0
- 1004 0044 0120     	 movs r0,#1
- 1005 0046 084B     	 ldr r3,.L96
- 1006 0048 9847     	 blx r3
- 1007              	.LVL24:
+ 1015              	 .loc 6 102 3
+ 1016 0044 0120     	 movs r0,#1
+ 1017 0046 084B     	 ldr r3,.L95
+ 1018 0048 9847     	 blx r3
+ 1019              	.LVL24:
  103:.././hal/sam3u1c/sysclk.c **** 		break;
- 1008              	 .loc 6 103 0
- 1009 004a 07E0     	 b .L90
- 1010              	.L94:
+ 1020              	 .loc 6 103 3
+ 1021 004a 07E0     	 b .L89
+ 1022              	.L92:
  104:.././hal/sam3u1c/sysclk.c **** 
  105:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_PLLACK:
  106:.././hal/sam3u1c/sysclk.c **** 		pmc_mck_set_source(PMC_MCKR_CSS_PLLA_CLK);
- 1011              	 .loc 6 106 0
- 1012 004c 0220     	 movs r0,#2
- 1013 004e 064B     	 ldr r3,.L96
- 1014 0050 9847     	 blx r3
- 1015              	.LVL25:
+ 1023              	 .loc 6 106 3
+ 1024 004c 0220     	 movs r0,#2
+ 1025 004e 064B     	 ldr r3,.L95
+ 1026 0050 9847     	 blx r3
+ 1027              	.LVL25:
  107:.././hal/sam3u1c/sysclk.c **** 		break;
- 1016              	 .loc 6 107 0
- 1017 0052 03E0     	 b .L90
- 1018              	.L95:
+ 1028              	 .loc 6 107 3
+ 1029 0052 03E0     	 b .L89
+ 1030              	.L90:
  108:.././hal/sam3u1c/sysclk.c **** 
  109:.././hal/sam3u1c/sysclk.c **** 	case SYSCLK_SRC_UPLLCK:
  110:.././hal/sam3u1c/sysclk.c **** 		pmc_mck_set_source(PMC_MCKR_CSS_UPLL_CLK);
- 1019              	 .loc 6 110 0
- 1020 0054 0320     	 movs r0,#3
- 1021 0056 044B     	 ldr r3,.L96
- 1022 0058 9847     	 blx r3
- 1023              	.LVL26:
+ 1031              	 .loc 6 110 3
+ 1032 0054 0320     	 movs r0,#3
+ 1033 0056 044B     	 ldr r3,.L95
+ 1034 0058 9847     	 blx r3
+ 1035              	.LVL26:
  111:.././hal/sam3u1c/sysclk.c **** 		break;
- 1024              	 .loc 6 111 0
- 1025 005a 00BF     	 nop
- 1026              	.L90:
+ 1036              	 .loc 6 111 3
+ 1037 005a 00BF     	 nop
+ 1038              	.L89:
  112:.././hal/sam3u1c/sysclk.c **** 	}
  113:.././hal/sam3u1c/sysclk.c **** 
  114:.././hal/sam3u1c/sysclk.c **** 	SystemCoreClockUpdate();
- 1027              	 .loc 6 114 0
- 1028 005c 034B     	 ldr r3,.L96+4
- 1029 005e 9847     	 blx r3
- 1030              	.LVL27:
+ 1039              	 .loc 6 114 2
+ 1040 005c 034B     	 ldr r3,.L95+4
+ 1041 005e 9847     	 blx r3
+ 1042              	.LVL27:
  115:.././hal/sam3u1c/sysclk.c **** }
- 1031              	 .loc 6 115 0
- 1032 0060 00BF     	 nop
- 1033 0062 0837     	 adds r7,r7,#8
- 1034              	.LCFI63:
- 1035              	 .cfi_def_cfa_offset 8
- 1036 0064 BD46     	 mov sp,r7
- 1037              	.LCFI64:
- 1038              	 .cfi_def_cfa_register 13
- 1039              	 
- 1040 0066 80BD     	 pop {r7,pc}
- 1041              	.L97:
- 1042              	 .align 2
- 1043              	.L96:
- 1044 0068 00000000 	 .word pmc_mck_set_source
- 1045 006c 00000000 	 .word SystemCoreClockUpdate
- 1046              	 .cfi_endproc
- 1047              	.LFE90:
- 1049              	 .section .text.sysclk_enable_usb,"ax",%progbits
- 1050              	 .align 1
- 1051              	 .global sysclk_enable_usb
- 1052              	 .syntax unified
- 1053              	 .thumb
- 1054              	 .thumb_func
- 1055              	 .fpu softvfp
- 1057              	sysclk_enable_usb:
- 1058              	.LFB91:
+ 1043              	 .loc 6 115 1
+ 1044 0060 00BF     	 nop
+ 1045 0062 0837     	 adds r7,r7,#8
+ 1046              	.LCFI63:
+ 1047              	 .cfi_def_cfa_offset 8
+ 1048 0064 BD46     	 mov sp,r7
+ 1049              	.LCFI64:
+ 1050              	 .cfi_def_cfa_register 13
+ 1051              	 
+ 1052 0066 80BD     	 pop {r7,pc}
+ 1053              	.L96:
+ 1054              	 .align 2
+ 1055              	.L95:
+ 1056 0068 00000000 	 .word pmc_mck_set_source
+ 1057 006c 00000000 	 .word SystemCoreClockUpdate
+ 1058              	 .cfi_endproc
+ 1059              	.LFE90:
+ 1061              	 .section .text.sysclk_enable_usb,"ax",%progbits
+ 1062              	 .align 1
+ 1063              	 .global sysclk_enable_usb
+ 1064              	 .syntax unified
+ 1065              	 .thumb
+ 1066              	 .thumb_func
+ 1067              	 .fpu softvfp
+ 1069              	sysclk_enable_usb:
+ 1070              	.LFB91:
  116:.././hal/sam3u1c/sysclk.c **** 
  117:.././hal/sam3u1c/sysclk.c **** /**
  118:.././hal/sam3u1c/sysclk.c ****  * \brief Enable USB clock.
@@ -2394,82 +2409,82 @@
  126:.././hal/sam3u1c/sysclk.c ****  */
  127:.././hal/sam3u1c/sysclk.c **** void sysclk_enable_usb(void)
  128:.././hal/sam3u1c/sysclk.c **** {
- 1059              	 .loc 6 128 0
- 1060              	 .cfi_startproc
- 1061              	 
- 1062              	 
- 1063 0000 90B5     	 push {r4,r7,lr}
- 1064              	.LCFI65:
- 1065              	 .cfi_def_cfa_offset 12
- 1066              	 .cfi_offset 4,-12
- 1067              	 .cfi_offset 7,-8
- 1068              	 .cfi_offset 14,-4
- 1069 0002 83B0     	 sub sp,sp,#12
- 1070              	.LCFI66:
- 1071              	 .cfi_def_cfa_offset 24
- 1072 0004 00AF     	 add r7,sp,#0
- 1073              	.LCFI67:
- 1074              	 .cfi_def_cfa_register 7
+ 1071              	 .loc 6 128 1
+ 1072              	 .cfi_startproc
+ 1073              	 
+ 1074              	 
+ 1075 0000 90B5     	 push {r4,r7,lr}
+ 1076              	.LCFI65:
+ 1077              	 .cfi_def_cfa_offset 12
+ 1078              	 .cfi_offset 4,-12
+ 1079              	 .cfi_offset 7,-8
+ 1080              	 .cfi_offset 14,-4
+ 1081 0002 83B0     	 sub sp,sp,#12
+ 1082              	.LCFI66:
+ 1083              	 .cfi_def_cfa_offset 24
+ 1084 0004 00AF     	 add r7,sp,#0
+ 1085              	.LCFI67:
+ 1086              	 .cfi_def_cfa_register 7
  129:.././hal/sam3u1c/sysclk.c **** 	struct pll_config pllcfg;
  130:.././hal/sam3u1c/sysclk.c **** 
  131:.././hal/sam3u1c/sysclk.c **** 	pll_enable_source(CONFIG_PLL1_SOURCE);
- 1075              	 .loc 6 131 0
- 1076 0006 0620     	 movs r0,#6
- 1077 0008 094B     	 ldr r3,.L99
- 1078 000a 9847     	 blx r3
- 1079              	.LVL28:
+ 1087              	 .loc 6 131 2
+ 1088 0006 0620     	 movs r0,#6
+ 1089 0008 094B     	 ldr r3,.L98
+ 1090 000a 9847     	 blx r3
+ 1091              	.LVL28:
  132:.././hal/sam3u1c/sysclk.c **** 	pll_config_defaults(&pllcfg, 1);
- 1080              	 .loc 6 132 0
- 1081 000c 381D     	 adds r0,r7,#4
- 1082 000e 0023     	 movs r3,#0
- 1083 0010 0022     	 movs r2,#0
- 1084 0012 0621     	 movs r1,#6
- 1085 0014 074C     	 ldr r4,.L99+4
- 1086 0016 A047     	 blx r4
- 1087              	.LVL29:
+ 1092              	 .loc 6 132 2
+ 1093 000c 381D     	 adds r0,r7,#4
+ 1094 000e 0023     	 movs r3,#0
+ 1095 0010 0022     	 movs r2,#0
+ 1096 0012 0621     	 movs r1,#6
+ 1097 0014 074C     	 ldr r4,.L98+4
+ 1098 0016 A047     	 blx r4
+ 1099              	.LVL29:
  133:.././hal/sam3u1c/sysclk.c **** 	pll_enable(&pllcfg, 1);
- 1088              	 .loc 6 133 0
- 1089 0018 3B1D     	 adds r3,r7,#4
- 1090 001a 0121     	 movs r1,#1
- 1091 001c 1846     	 mov r0,r3
- 1092 001e 064B     	 ldr r3,.L99+8
- 1093 0020 9847     	 blx r3
- 1094              	.LVL30:
+ 1100              	 .loc 6 133 2
+ 1101 0018 3B1D     	 adds r3,r7,#4
+ 1102 001a 0121     	 movs r1,#1
+ 1103 001c 1846     	 mov r0,r3
+ 1104 001e 064B     	 ldr r3,.L98+8
+ 1105 0020 9847     	 blx r3
+ 1106              	.LVL30:
  134:.././hal/sam3u1c/sysclk.c **** 	pll_wait_for_lock(1);
- 1095              	 .loc 6 134 0
- 1096 0022 0120     	 movs r0,#1
- 1097 0024 054B     	 ldr r3,.L99+12
- 1098 0026 9847     	 blx r3
- 1099              	.LVL31:
+ 1107              	 .loc 6 134 2
+ 1108 0022 0120     	 movs r0,#1
+ 1109 0024 054B     	 ldr r3,.L98+12
+ 1110 0026 9847     	 blx r3
+ 1111              	.LVL31:
  135:.././hal/sam3u1c/sysclk.c **** }
- 1100              	 .loc 6 135 0
- 1101 0028 00BF     	 nop
- 1102 002a 0C37     	 adds r7,r7,#12
- 1103              	.LCFI68:
- 1104              	 .cfi_def_cfa_offset 12
- 1105 002c BD46     	 mov sp,r7
- 1106              	.LCFI69:
- 1107              	 .cfi_def_cfa_register 13
- 1108              	 
- 1109 002e 90BD     	 pop {r4,r7,pc}
- 1110              	.L100:
- 1111              	 .align 2
- 1112              	.L99:
- 1113 0030 00000000 	 .word pll_enable_source
- 1114 0034 00000000 	 .word pll_config_init
- 1115 0038 00000000 	 .word pll_enable
- 1116 003c 00000000 	 .word pll_wait_for_lock
- 1117              	 .cfi_endproc
- 1118              	.LFE91:
- 1120              	 .section .text.sysclk_disable_usb,"ax",%progbits
- 1121              	 .align 1
- 1122              	 .global sysclk_disable_usb
- 1123              	 .syntax unified
- 1124              	 .thumb
- 1125              	 .thumb_func
- 1126              	 .fpu softvfp
- 1128              	sysclk_disable_usb:
- 1129              	.LFB92:
+ 1112              	 .loc 6 135 1
+ 1113 0028 00BF     	 nop
+ 1114 002a 0C37     	 adds r7,r7,#12
+ 1115              	.LCFI68:
+ 1116              	 .cfi_def_cfa_offset 12
+ 1117 002c BD46     	 mov sp,r7
+ 1118              	.LCFI69:
+ 1119              	 .cfi_def_cfa_register 13
+ 1120              	 
+ 1121 002e 90BD     	 pop {r4,r7,pc}
+ 1122              	.L99:
+ 1123              	 .align 2
+ 1124              	.L98:
+ 1125 0030 00000000 	 .word pll_enable_source
+ 1126 0034 00000000 	 .word pll_config_init
+ 1127 0038 00000000 	 .word pll_enable
+ 1128 003c 00000000 	 .word pll_wait_for_lock
+ 1129              	 .cfi_endproc
+ 1130              	.LFE91:
+ 1132              	 .section .text.sysclk_disable_usb,"ax",%progbits
+ 1133              	 .align 1
+ 1134              	 .global sysclk_disable_usb
+ 1135              	 .syntax unified
+ 1136              	 .thumb
+ 1137              	 .thumb_func
+ 1138              	 .fpu softvfp
+ 1140              	sysclk_disable_usb:
+ 1141              	.LFB92:
  136:.././hal/sam3u1c/sysclk.c **** 
  137:.././hal/sam3u1c/sysclk.c **** /**
  138:.././hal/sam3u1c/sysclk.c ****  * \brief Disable the USB clock.
@@ -2479,73 +2494,73 @@
  142:.././hal/sam3u1c/sysclk.c ****  */
  143:.././hal/sam3u1c/sysclk.c **** void sysclk_disable_usb(void)
  144:.././hal/sam3u1c/sysclk.c **** {
- 1130              	 .loc 6 144 0
- 1131              	 .cfi_startproc
- 1132              	 
- 1133              	 
- 1134 0000 80B5     	 push {r7,lr}
- 1135              	.LCFI70:
- 1136              	 .cfi_def_cfa_offset 8
- 1137              	 .cfi_offset 7,-8
- 1138              	 .cfi_offset 14,-4
- 1139 0002 00AF     	 add r7,sp,#0
- 1140              	.LCFI71:
- 1141              	 .cfi_def_cfa_register 7
+ 1142              	 .loc 6 144 1
+ 1143              	 .cfi_startproc
+ 1144              	 
+ 1145              	 
+ 1146 0000 80B5     	 push {r7,lr}
+ 1147              	.LCFI70:
+ 1148              	 .cfi_def_cfa_offset 8
+ 1149              	 .cfi_offset 7,-8
+ 1150              	 .cfi_offset 14,-4
+ 1151 0002 00AF     	 add r7,sp,#0
+ 1152              	.LCFI71:
+ 1153              	 .cfi_def_cfa_register 7
  145:.././hal/sam3u1c/sysclk.c **** 	if (CONFIG_SYSCLK_SOURCE != SYSCLK_SRC_UPLLCK) {
  146:.././hal/sam3u1c/sysclk.c **** 		pll_disable(1);
- 1142              	 .loc 6 146 0
- 1143 0004 0120     	 movs r0,#1
- 1144 0006 024B     	 ldr r3,.L102
- 1145 0008 9847     	 blx r3
- 1146              	.LVL32:
+ 1154              	 .loc 6 146 3
+ 1155 0004 0120     	 movs r0,#1
+ 1156 0006 024B     	 ldr r3,.L101
+ 1157 0008 9847     	 blx r3
+ 1158              	.LVL32:
  147:.././hal/sam3u1c/sysclk.c **** 	}
  148:.././hal/sam3u1c/sysclk.c **** }
- 1147              	 .loc 6 148 0
- 1148 000a 00BF     	 nop
- 1149 000c 80BD     	 pop {r7,pc}
- 1150              	.L103:
- 1151 000e 00BF     	 .align 2
- 1152              	.L102:
- 1153 0010 00000000 	 .word pll_disable
- 1154              	 .cfi_endproc
- 1155              	.LFE92:
- 1157              	 .section .text.sysclk_init,"ax",%progbits
- 1158              	 .align 1
- 1159              	 .global sysclk_init
- 1160              	 .syntax unified
- 1161              	 .thumb
- 1162              	 .thumb_func
- 1163              	 .fpu softvfp
- 1165              	sysclk_init:
- 1166              	.LFB93:
+ 1159              	 .loc 6 148 1
+ 1160 000a 00BF     	 nop
+ 1161 000c 80BD     	 pop {r7,pc}
+ 1162              	.L102:
+ 1163 000e 00BF     	 .align 2
+ 1164              	.L101:
+ 1165 0010 00000000 	 .word pll_disable
+ 1166              	 .cfi_endproc
+ 1167              	.LFE92:
+ 1169              	 .section .text.sysclk_init,"ax",%progbits
+ 1170              	 .align 1
+ 1171              	 .global sysclk_init
+ 1172              	 .syntax unified
+ 1173              	 .thumb
+ 1174              	 .thumb_func
+ 1175              	 .fpu softvfp
+ 1177              	sysclk_init:
+ 1178              	.LFB93:
  149:.././hal/sam3u1c/sysclk.c **** 
  150:.././hal/sam3u1c/sysclk.c **** void sysclk_init(void)
  151:.././hal/sam3u1c/sysclk.c **** {
- 1167              	 .loc 6 151 0
- 1168              	 .cfi_startproc
- 1169              	 
- 1170              	 
- 1171 0000 90B5     	 push {r4,r7,lr}
- 1172              	.LCFI72:
- 1173              	 .cfi_def_cfa_offset 12
- 1174              	 .cfi_offset 4,-12
- 1175              	 .cfi_offset 7,-8
- 1176              	 .cfi_offset 14,-4
- 1177 0002 83B0     	 sub sp,sp,#12
- 1178              	.LCFI73:
- 1179              	 .cfi_def_cfa_offset 24
- 1180 0004 00AF     	 add r7,sp,#0
- 1181              	.LCFI74:
- 1182              	 .cfi_def_cfa_register 7
+ 1179              	 .loc 6 151 1
+ 1180              	 .cfi_startproc
+ 1181              	 
+ 1182              	 
+ 1183 0000 90B5     	 push {r4,r7,lr}
+ 1184              	.LCFI72:
+ 1185              	 .cfi_def_cfa_offset 12
+ 1186              	 .cfi_offset 4,-12
+ 1187              	 .cfi_offset 7,-8
+ 1188              	 .cfi_offset 14,-4
+ 1189 0002 83B0     	 sub sp,sp,#12
+ 1190              	.LCFI73:
+ 1191              	 .cfi_def_cfa_offset 24
+ 1192 0004 00AF     	 add r7,sp,#0
+ 1193              	.LCFI74:
+ 1194              	 .cfi_def_cfa_register 7
  152:.././hal/sam3u1c/sysclk.c **** 	struct pll_config pllcfg;
  153:.././hal/sam3u1c/sysclk.c **** 
  154:.././hal/sam3u1c/sysclk.c **** 	/* Set flash wait state to max in case the below clock switching. */
  155:.././hal/sam3u1c/sysclk.c **** 	system_init_flash(CHIP_FREQ_CPU_MAX);
- 1183              	 .loc 6 155 0
- 1184 0006 1648     	 ldr r0,.L106
- 1185 0008 164B     	 ldr r3,.L106+4
- 1186 000a 9847     	 blx r3
- 1187              	.LVL33:
+ 1195              	 .loc 6 155 2
+ 1196 0006 1648     	 ldr r0,.L105
+ 1197 0008 164B     	 ldr r3,.L105+4
+ 1198 000a 9847     	 blx r3
+ 1199              	.LVL33:
  156:.././hal/sam3u1c/sysclk.c **** 
  157:.././hal/sam3u1c/sysclk.c **** 	/* Config system clock setting */
  158:.././hal/sam3u1c/sysclk.c **** 	if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_SLCK_RC) {
@@ -2597,11 +2612,11 @@
  204:.././hal/sam3u1c/sysclk.c **** #ifdef CONFIG_PLL0_SOURCE
  205:.././hal/sam3u1c/sysclk.c **** 	else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_PLLACK) {
  206:.././hal/sam3u1c/sysclk.c **** 		pll_enable_source(CONFIG_PLL0_SOURCE);
- 1188              	 .loc 6 206 0
- 1189 000c 0620     	 movs r0,#6
- 1190 000e 164B     	 ldr r3,.L106+8
- 1191 0010 9847     	 blx r3
- 1192              	.LVL34:
+ 1200              	 .loc 6 206 3
+ 1201 000c 0620     	 movs r0,#6
+ 1202 000e 164B     	 ldr r3,.L105+8
+ 1203 0010 9847     	 blx r3
+ 1204              	.LVL34:
  207:.././hal/sam3u1c/sysclk.c **** 		// Source is mainck, select source for mainck
  208:.././hal/sam3u1c/sysclk.c **** 		if (CONFIG_PLL0_SOURCE == PLL_SRC_MAINCK_4M_RC ||
  209:.././hal/sam3u1c/sysclk.c **** 				CONFIG_PLL0_SOURCE == PLL_SRC_MAINCK_8M_RC ||
@@ -2614,52 +2629,53 @@
  216:.././hal/sam3u1c/sysclk.c **** 		} else if (CONFIG_PLL0_SOURCE == PLL_SRC_MAINCK_XTAL ||
  217:.././hal/sam3u1c/sysclk.c **** 				CONFIG_PLL0_SOURCE == PLL_SRC_MAINCK_BYPASS) {
  218:.././hal/sam3u1c/sysclk.c **** 			pmc_mainck_osc_select(CKGR_MOR_MOSCSEL);
- 1193              	 .loc 6 218 0
- 1194 0012 4FF08070 	 mov r0,#16777216
- 1195 0016 154B     	 ldr r3,.L106+12
- 1196 0018 9847     	 blx r3
- 1197              	.LVL35:
+ 1205              	 .loc 6 218 4
+ 1206 0012 4FF08070 	 mov r0,#16777216
+ 1207 0016 154B     	 ldr r3,.L105+12
+ 1208 0018 9847     	 blx r3
+ 1209              	.LVL35:
  219:.././hal/sam3u1c/sysclk.c **** 			while(!pmc_osc_is_ready_mainck());
- 1198              	 .loc 6 219 0
- 1199 001a 00BF     	 nop
- 1200              	.L105:
- 1201              	 .loc 6 219 0 is_stmt 0 discriminator 1
- 1202 001c 144B     	 ldr r3,.L106+16
- 1203 001e 9847     	 blx r3
- 1204              	.LVL36:
- 1205 0020 0346     	 mov r3,r0
- 1206 0022 002B     	 cmp r3,#0
- 1207 0024 FAD0     	 beq .L105
+ 1210              	 .loc 6 219 9
+ 1211 001a 00BF     	 nop
+ 1212              	.L104:
+ 1213              	 .loc 6 219 11 discriminator 1
+ 1214 001c 144B     	 ldr r3,.L105+16
+ 1215 001e 9847     	 blx r3
+ 1216              	.LVL36:
+ 1217 0020 0346     	 mov r3,r0
+ 1218              	 .loc 6 219 9 discriminator 1
+ 1219 0022 002B     	 cmp r3,#0
+ 1220 0024 FAD0     	 beq .L104
  220:.././hal/sam3u1c/sysclk.c **** 		}
  221:.././hal/sam3u1c/sysclk.c **** 		pll_config_defaults(&pllcfg, 0);
- 1208              	 .loc 6 221 0 is_stmt 1
- 1209 0026 381D     	 adds r0,r7,#4
- 1210 0028 1023     	 movs r3,#16
- 1211 002a 0122     	 movs r2,#1
- 1212 002c 0621     	 movs r1,#6
- 1213 002e 114C     	 ldr r4,.L106+20
- 1214 0030 A047     	 blx r4
- 1215              	.LVL37:
+ 1221              	 .loc 6 221 3
+ 1222 0026 381D     	 adds r0,r7,#4
+ 1223 0028 1023     	 movs r3,#16
+ 1224 002a 0122     	 movs r2,#1
+ 1225 002c 0621     	 movs r1,#6
+ 1226 002e 114C     	 ldr r4,.L105+20
+ 1227 0030 A047     	 blx r4
+ 1228              	.LVL37:
  222:.././hal/sam3u1c/sysclk.c **** 		pll_enable(&pllcfg, 0);
- 1216              	 .loc 6 222 0
- 1217 0032 3B1D     	 adds r3,r7,#4
- 1218 0034 0021     	 movs r1,#0
- 1219 0036 1846     	 mov r0,r3
- 1220 0038 0F4B     	 ldr r3,.L106+24
- 1221 003a 9847     	 blx r3
- 1222              	.LVL38:
+ 1229              	 .loc 6 222 3
+ 1230 0032 3B1D     	 adds r3,r7,#4
+ 1231 0034 0021     	 movs r1,#0
+ 1232 0036 1846     	 mov r0,r3
+ 1233 0038 0F4B     	 ldr r3,.L105+24
+ 1234 003a 9847     	 blx r3
+ 1235              	.LVL38:
  223:.././hal/sam3u1c/sysclk.c **** 		pll_wait_for_lock(0);
- 1223              	 .loc 6 223 0
- 1224 003c 0020     	 movs r0,#0
- 1225 003e 0F4B     	 ldr r3,.L106+28
- 1226 0040 9847     	 blx r3
- 1227              	.LVL39:
+ 1236              	 .loc 6 223 3
+ 1237 003c 0020     	 movs r0,#0
+ 1238 003e 0F4B     	 ldr r3,.L105+28
+ 1239 0040 9847     	 blx r3
+ 1240              	.LVL39:
  224:.././hal/sam3u1c/sysclk.c **** 		pmc_switch_mck_to_pllack(CONFIG_SYSCLK_PRES);
- 1228              	 .loc 6 224 0
- 1229 0042 1020     	 movs r0,#16
- 1230 0044 0E4B     	 ldr r3,.L106+32
- 1231 0046 9847     	 blx r3
- 1232              	.LVL40:
+ 1241              	 .loc 6 224 3
+ 1242 0042 1020     	 movs r0,#16
+ 1243 0044 0E4B     	 ldr r3,.L105+32
+ 1244 0046 9847     	 blx r3
+ 1245              	.LVL40:
  225:.././hal/sam3u1c/sysclk.c **** 	}
  226:.././hal/sam3u1c/sysclk.c **** #endif
  227:.././hal/sam3u1c/sysclk.c **** 
@@ -2673,69 +2689,69 @@
  235:.././hal/sam3u1c/sysclk.c **** 
  236:.././hal/sam3u1c/sysclk.c **** 	/* Update the SystemFrequency variable */
  237:.././hal/sam3u1c/sysclk.c **** 	SystemCoreClockUpdate();
- 1233              	 .loc 6 237 0
- 1234 0048 0E4B     	 ldr r3,.L106+36
- 1235 004a 9847     	 blx r3
- 1236              	.LVL41:
+ 1246              	 .loc 6 237 2
+ 1247 0048 0E4B     	 ldr r3,.L105+36
+ 1248 004a 9847     	 blx r3
+ 1249              	.LVL41:
  238:.././hal/sam3u1c/sysclk.c **** 
  239:.././hal/sam3u1c/sysclk.c **** 	/* Set a flash wait state depending on the new cpu frequency */
  240:.././hal/sam3u1c/sysclk.c **** 	system_init_flash(sysclk_get_cpu_hz());
- 1237              	 .loc 6 240 0
- 1238 004c 0E4B     	 ldr r3,.L106+40
- 1239 004e 9847     	 blx r3
- 1240              	.LVL42:
- 1241 0050 0346     	 mov r3,r0
- 1242 0052 1846     	 mov r0,r3
- 1243 0054 034B     	 ldr r3,.L106+4
- 1244 0056 9847     	 blx r3
- 1245              	.LVL43:
+ 1250              	 .loc 6 240 2
+ 1251 004c 0E4B     	 ldr r3,.L105+40
+ 1252 004e 9847     	 blx r3
+ 1253              	.LVL42:
+ 1254 0050 0346     	 mov r3,r0
+ 1255 0052 1846     	 mov r0,r3
+ 1256 0054 034B     	 ldr r3,.L105+4
+ 1257 0056 9847     	 blx r3
+ 1258              	.LVL43:
  241:.././hal/sam3u1c/sysclk.c **** 
  242:.././hal/sam3u1c/sysclk.c **** #if (defined CONFIG_SYSCLK_DEFAULT_RETURNS_SLOW_OSC)
  243:.././hal/sam3u1c/sysclk.c **** 	/* Signal that the internal frequencies are setup */
  244:.././hal/sam3u1c/sysclk.c **** 	sysclk_initialized = 1;
  245:.././hal/sam3u1c/sysclk.c **** #endif
  246:.././hal/sam3u1c/sysclk.c **** }
- 1246              	 .loc 6 246 0
- 1247 0058 00BF     	 nop
- 1248 005a 0C37     	 adds r7,r7,#12
- 1249              	.LCFI75:
- 1250              	 .cfi_def_cfa_offset 12
- 1251 005c BD46     	 mov sp,r7
- 1252              	.LCFI76:
- 1253              	 .cfi_def_cfa_register 13
- 1254              	 
- 1255 005e 90BD     	 pop {r4,r7,pc}
- 1256              	.L107:
- 1257              	 .align 2
- 1258              	.L106:
- 1259 0060 00D8B805 	 .word 96000000
- 1260 0064 00000000 	 .word system_init_flash
- 1261 0068 00000000 	 .word pll_enable_source
- 1262 006c 00000000 	 .word pmc_mainck_osc_select
- 1263 0070 00000000 	 .word pmc_osc_is_ready_mainck
- 1264 0074 00000000 	 .word pll_config_init
- 1265 0078 00000000 	 .word pll_enable
- 1266 007c 00000000 	 .word pll_wait_for_lock
- 1267 0080 00000000 	 .word pmc_switch_mck_to_pllack
- 1268 0084 00000000 	 .word SystemCoreClockUpdate
- 1269 0088 00000000 	 .word sysclk_get_cpu_hz
- 1270              	 .cfi_endproc
- 1271              	.LFE93:
- 1273              	 .text
- 1274              	.Letext0:
- 1275              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1276              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 1277              	 .file 9 ".././hal/sam3u1c/inc/sam3u1c.h"
- 1278              	 .file 10 ".././hal/sam3u1c/inc/core_cm3.h"
- 1279              	 .file 11 ".././hal/sam3u1c/inc/system_sam3u.h"
- 1280              	 .file 12 ".././hal/sam3u1c/inc/component/component_pmc.h"
- 1281              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 1282              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 1283              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 1284              	 .file 16 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 1285              	 .file 17 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 1286              	 .file 18 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 1287              	 .file 19 ".././hal/sam3u1c/inc/pmc.h"
+ 1259              	 .loc 6 246 1
+ 1260 0058 00BF     	 nop
+ 1261 005a 0C37     	 adds r7,r7,#12
+ 1262              	.LCFI75:
+ 1263              	 .cfi_def_cfa_offset 12
+ 1264 005c BD46     	 mov sp,r7
+ 1265              	.LCFI76:
+ 1266              	 .cfi_def_cfa_register 13
+ 1267              	 
+ 1268 005e 90BD     	 pop {r4,r7,pc}
+ 1269              	.L106:
+ 1270              	 .align 2
+ 1271              	.L105:
+ 1272 0060 00D8B805 	 .word 96000000
+ 1273 0064 00000000 	 .word system_init_flash
+ 1274 0068 00000000 	 .word pll_enable_source
+ 1275 006c 00000000 	 .word pmc_mainck_osc_select
+ 1276 0070 00000000 	 .word pmc_osc_is_ready_mainck
+ 1277 0074 00000000 	 .word pll_config_init
+ 1278 0078 00000000 	 .word pll_enable
+ 1279 007c 00000000 	 .word pll_wait_for_lock
+ 1280 0080 00000000 	 .word pmc_switch_mck_to_pllack
+ 1281 0084 00000000 	 .word SystemCoreClockUpdate
+ 1282 0088 00000000 	 .word sysclk_get_cpu_hz
+ 1283              	 .cfi_endproc
+ 1284              	.LFE93:
+ 1286              	 .text
+ 1287              	.Letext0:
+ 1288              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1289              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1290              	 .file 9 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 1291              	 .file 10 ".././hal/sam3u1c/inc/core_cm3.h"
+ 1292              	 .file 11 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 1293              	 .file 12 ".././hal/sam3u1c/inc/component/component_pmc.h"
+ 1294              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1295              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1296              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 1297              	 .file 16 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1298              	 .file 17 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 1299              	 .file 18 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 1300              	 .file 19 ".././hal/sam3u1c/inc/pmc.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 sysclk.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -2743,65 +2759,65 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.osc_enable:00000000 $t
-    {standard input}:33     .text.osc_enable:00000000 osc_enable
-    {standard input}:60     .text.osc_enable:00000014 $d
-    {standard input}:68     .text.osc_enable:00000034 $t
-    {standard input}:142    .text.osc_enable:00000074 $d
-    {standard input}:150    .text.osc_is_ready:00000000 $t
-    {standard input}:156    .text.osc_is_ready:00000000 osc_is_ready
-    {standard input}:182    .text.osc_is_ready:00000014 $d
-    {standard input}:190    .text.osc_is_ready:00000034 $t
-    {standard input}:248    .text.osc_is_ready:00000078 $d
-    {standard input}:255    .text.osc_get_rate:00000000 $t
-    {standard input}:261    .text.osc_get_rate:00000000 osc_get_rate
-    {standard input}:287    .text.osc_get_rate:00000014 $d
-    {standard input}:295    .text.osc_get_rate:00000034 $t
-    {standard input}:349    .text.osc_get_rate:00000064 $d
-    {standard input}:356    .text.osc_wait_ready:00000000 $t
-    {standard input}:362    .text.osc_wait_ready:00000000 osc_wait_ready
-    {standard input}:409    .text.osc_wait_ready:00000028 $d
-    {standard input}:414    .text.pll_config_init:00000000 $t
-    {standard input}:420    .text.pll_config_init:00000000 pll_config_init
-    {standard input}:502    .text.pll_config_init:00000064 $d
-    {standard input}:508    .text.pll_enable:00000000 $t
-    {standard input}:514    .text.pll_enable:00000000 pll_enable
-    {standard input}:570    .text.pll_enable:00000038 $d
-    {standard input}:576    .text.pll_disable:00000000 $t
-    {standard input}:582    .text.pll_disable:00000000 pll_disable
-    {standard input}:631    .text.pll_disable:00000028 $d
-    {standard input}:637    .text.pll_is_locked:00000000 $t
-    {standard input}:643    .text.pll_is_locked:00000000 pll_is_locked
-    {standard input}:691    .text.pll_is_locked:00000024 $d
-    {standard input}:697    .text.pll_enable_source:00000000 $t
-    {standard input}:703    .text.pll_enable_source:00000000 pll_enable_source
-    {standard input}:758    .text.pll_enable_source:00000030 $d
-    {standard input}:764    .text.pll_wait_for_lock:00000000 $t
-    {standard input}:770    .text.pll_wait_for_lock:00000000 pll_wait_for_lock
-    {standard input}:815    .text.pll_wait_for_lock:00000020 $d
-    {standard input}:820    .text.sysclk_get_main_hz:00000000 $t
-    {standard input}:826    .text.sysclk_get_main_hz:00000000 sysclk_get_main_hz
-    {standard input}:854    .text.sysclk_get_main_hz:00000014 $d
-    {standard input}:859    .text.sysclk_get_cpu_hz:00000000 $t
-    {standard input}:865    .text.sysclk_get_cpu_hz:00000000 sysclk_get_cpu_hz
-    {standard input}:891    .text.sysclk_get_cpu_hz:00000010 $d
-    {standard input}:896    .text.sysclk_set_prescalers:00000000 $t
-    {standard input}:903    .text.sysclk_set_prescalers:00000000 sysclk_set_prescalers
-    {standard input}:944    .text.sysclk_set_prescalers:0000001c $d
-    {standard input}:950    .text.sysclk_set_source:00000000 $t
-    {standard input}:957    .text.sysclk_set_source:00000000 sysclk_set_source
-    {standard input}:983    .text.sysclk_set_source:00000014 $d
-    {standard input}:993    .text.sysclk_set_source:0000003c $t
-    {standard input}:1044   .text.sysclk_set_source:00000068 $d
-    {standard input}:1050   .text.sysclk_enable_usb:00000000 $t
-    {standard input}:1057   .text.sysclk_enable_usb:00000000 sysclk_enable_usb
-    {standard input}:1113   .text.sysclk_enable_usb:00000030 $d
-    {standard input}:1121   .text.sysclk_disable_usb:00000000 $t
-    {standard input}:1128   .text.sysclk_disable_usb:00000000 sysclk_disable_usb
-    {standard input}:1153   .text.sysclk_disable_usb:00000010 $d
-    {standard input}:1158   .text.sysclk_init:00000000 $t
-    {standard input}:1165   .text.sysclk_init:00000000 sysclk_init
-    {standard input}:1259   .text.sysclk_init:00000060 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:34     .text.osc_enable:00000000 osc_enable
+    {standard input}:61     .text.osc_enable:00000014 $d
+    {standard input}:69     .text.osc_enable:00000034 $t
+    {standard input}:143    .text.osc_enable:00000074 $d
+    {standard input}:151    .text.osc_is_ready:00000000 $t
+    {standard input}:157    .text.osc_is_ready:00000000 osc_is_ready
+    {standard input}:183    .text.osc_is_ready:00000014 $d
+    {standard input}:191    .text.osc_is_ready:00000034 $t
+    {standard input}:249    .text.osc_is_ready:00000078 $d
+    {standard input}:256    .text.osc_get_rate:00000000 $t
+    {standard input}:262    .text.osc_get_rate:00000000 osc_get_rate
+    {standard input}:288    .text.osc_get_rate:00000014 $d
+    {standard input}:296    .text.osc_get_rate:00000034 $t
+    {standard input}:350    .text.osc_get_rate:00000064 $d
+    {standard input}:357    .text.osc_wait_ready:00000000 $t
+    {standard input}:363    .text.osc_wait_ready:00000000 osc_wait_ready
+    {standard input}:412    .text.osc_wait_ready:00000028 $d
+    {standard input}:417    .text.pll_config_init:00000000 $t
+    {standard input}:423    .text.pll_config_init:00000000 pll_config_init
+    {standard input}:506    .text.pll_config_init:00000064 $d
+    {standard input}:512    .text.pll_enable:00000000 $t
+    {standard input}:518    .text.pll_enable:00000000 pll_enable
+    {standard input}:580    .text.pll_enable:00000038 $d
+    {standard input}:586    .text.pll_disable:00000000 $t
+    {standard input}:592    .text.pll_disable:00000000 pll_disable
+    {standard input}:641    .text.pll_disable:00000028 $d
+    {standard input}:647    .text.pll_is_locked:00000000 $t
+    {standard input}:653    .text.pll_is_locked:00000000 pll_is_locked
+    {standard input}:701    .text.pll_is_locked:00000024 $d
+    {standard input}:707    .text.pll_enable_source:00000000 $t
+    {standard input}:713    .text.pll_enable_source:00000000 pll_enable_source
+    {standard input}:768    .text.pll_enable_source:00000030 $d
+    {standard input}:774    .text.pll_wait_for_lock:00000000 $t
+    {standard input}:780    .text.pll_wait_for_lock:00000000 pll_wait_for_lock
+    {standard input}:826    .text.pll_wait_for_lock:00000020 $d
+    {standard input}:831    .text.sysclk_get_main_hz:00000000 $t
+    {standard input}:837    .text.sysclk_get_main_hz:00000000 sysclk_get_main_hz
+    {standard input}:865    .text.sysclk_get_main_hz:00000014 $d
+    {standard input}:870    .text.sysclk_get_cpu_hz:00000000 $t
+    {standard input}:876    .text.sysclk_get_cpu_hz:00000000 sysclk_get_cpu_hz
+    {standard input}:903    .text.sysclk_get_cpu_hz:00000010 $d
+    {standard input}:908    .text.sysclk_set_prescalers:00000000 $t
+    {standard input}:915    .text.sysclk_set_prescalers:00000000 sysclk_set_prescalers
+    {standard input}:956    .text.sysclk_set_prescalers:0000001c $d
+    {standard input}:962    .text.sysclk_set_source:00000000 $t
+    {standard input}:969    .text.sysclk_set_source:00000000 sysclk_set_source
+    {standard input}:995    .text.sysclk_set_source:00000014 $d
+    {standard input}:1005   .text.sysclk_set_source:0000003c $t
+    {standard input}:1056   .text.sysclk_set_source:00000068 $d
+    {standard input}:1062   .text.sysclk_enable_usb:00000000 $t
+    {standard input}:1069   .text.sysclk_enable_usb:00000000 sysclk_enable_usb
+    {standard input}:1125   .text.sysclk_enable_usb:00000030 $d
+    {standard input}:1133   .text.sysclk_disable_usb:00000000 $t
+    {standard input}:1140   .text.sysclk_disable_usb:00000000 sysclk_disable_usb
+    {standard input}:1165   .text.sysclk_disable_usb:00000010 $d
+    {standard input}:1170   .text.sysclk_init:00000000 $t
+    {standard input}:1177   .text.sysclk_init:00000000 sysclk_init
+    {standard input}:1272   .text.sysclk_init:00000060 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.conf_clock.h.45.5dc276d21b4d793a62f1a9757cc18d5c
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
@@ -2876,12 +2892,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

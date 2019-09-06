@@ -22,13 +22,14 @@
   26              	 .section .text.Dummy_Handler,"ax",%progbits
   27              	 .align 1
   28              	 .global Dummy_Handler
-  29              	 .syntax unified
-  30              	 .thumb
-  31              	 .thumb_func
-  32              	 .fpu softvfp
-  34              	Dummy_Handler:
-  35              	.LFB69:
-  36              	 .file 1 ".././hal/sam3u1c/exceptions.c"
+  29              	 .arch armv7-m
+  30              	 .syntax unified
+  31              	 .thumb
+  32              	 .thumb_func
+  33              	 .fpu softvfp
+  35              	Dummy_Handler:
+  36              	.LFB69:
+  37              	 .file 1 ".././hal/sam3u1c/exceptions.c"
    1:.././hal/sam3u1c/exceptions.c **** /**
    2:.././hal/sam3u1c/exceptions.c ****  * \file
    3:.././hal/sam3u1c/exceptions.c ****  *
@@ -197,112 +198,112 @@
  166:.././hal/sam3u1c/exceptions.c ****  */
  167:.././hal/sam3u1c/exceptions.c **** void Dummy_Handler(void)
  168:.././hal/sam3u1c/exceptions.c **** {
-  37              	 .loc 1 168 0
-  38              	 .cfi_startproc
-  39              	 
+  38              	 .loc 1 168 1
+  39              	 .cfi_startproc
   40              	 
   41              	 
-  42 0000 80B4     	 push {r7}
-  43              	.LCFI0:
-  44              	 .cfi_def_cfa_offset 4
-  45              	 .cfi_offset 7,-4
-  46 0002 00AF     	 add r7,sp,#0
-  47              	.LCFI1:
-  48              	 .cfi_def_cfa_register 7
-  49              	.L2:
+  42              	 
+  43 0000 80B4     	 push {r7}
+  44              	.LCFI0:
+  45              	 .cfi_def_cfa_offset 4
+  46              	 .cfi_offset 7,-4
+  47 0002 00AF     	 add r7,sp,#0
+  48              	.LCFI1:
+  49              	 .cfi_def_cfa_register 7
+  50              	.L2:
  169:.././hal/sam3u1c/exceptions.c **** 	while (1) {
-  50              	 .loc 1 169 0 discriminator 1
-  51 0004 FEE7     	 b .L2
-  52              	 .cfi_endproc
-  53              	.LFE69:
-  55              	 .weak UDPHS_Handler
-  56              	 .thumb_set UDPHS_Handler,Dummy_Handler
-  57              	 .weak DMAC_Handler
-  58              	 .thumb_set DMAC_Handler,Dummy_Handler
-  59              	 .weak ADC_Handler
-  60              	 .thumb_set ADC_Handler,Dummy_Handler
-  61              	 .weak ADC12B_Handler
-  62              	 .thumb_set ADC12B_Handler,Dummy_Handler
-  63              	 .weak PWM_Handler
-  64              	 .thumb_set PWM_Handler,Dummy_Handler
-  65              	 .weak TC2_Handler
-  66              	 .thumb_set TC2_Handler,Dummy_Handler
-  67              	 .weak TC1_Handler
-  68              	 .thumb_set TC1_Handler,Dummy_Handler
-  69              	 .weak TC0_Handler
-  70              	 .thumb_set TC0_Handler,Dummy_Handler
-  71              	 .weak SSC_Handler
-  72              	 .thumb_set SSC_Handler,Dummy_Handler
-  73              	 .weak SPI_Handler
-  74              	 .thumb_set SPI_Handler,Dummy_Handler
-  75              	 .weak TWI1_Handler
-  76              	 .thumb_set TWI1_Handler,Dummy_Handler
-  77              	 .weak TWI0_Handler
-  78              	 .thumb_set TWI0_Handler,Dummy_Handler
-  79              	 .weak HSMCI_Handler
-  80              	 .thumb_set HSMCI_Handler,Dummy_Handler
-  81              	 .weak USART2_Handler
-  82              	 .thumb_set USART2_Handler,Dummy_Handler
-  83              	 .weak USART1_Handler
-  84              	 .thumb_set USART1_Handler,Dummy_Handler
-  85              	 .weak USART0_Handler
-  86              	 .thumb_set USART0_Handler,Dummy_Handler
-  87              	 .weak PIOB_Handler
-  88              	 .thumb_set PIOB_Handler,Dummy_Handler
-  89              	 .weak PIOA_Handler
-  90              	 .thumb_set PIOA_Handler,Dummy_Handler
-  91              	 .weak SMC_Handler
-  92              	 .thumb_set SMC_Handler,Dummy_Handler
-  93              	 .weak UART_Handler
-  94              	 .thumb_set UART_Handler,Dummy_Handler
-  95              	 .weak EFC1_Handler
-  96              	 .thumb_set EFC1_Handler,Dummy_Handler
-  97              	 .weak EFC0_Handler
-  98              	 .thumb_set EFC0_Handler,Dummy_Handler
-  99              	 .weak PMC_Handler
- 100              	 .thumb_set PMC_Handler,Dummy_Handler
- 101              	 .weak WDT_Handler
- 102              	 .thumb_set WDT_Handler,Dummy_Handler
- 103              	 .weak RTT_Handler
- 104              	 .thumb_set RTT_Handler,Dummy_Handler
- 105              	 .weak RTC_Handler
- 106              	 .thumb_set RTC_Handler,Dummy_Handler
- 107              	 .weak RSTC_Handler
- 108              	 .thumb_set RSTC_Handler,Dummy_Handler
- 109              	 .weak SUPC_Handler
- 110              	 .thumb_set SUPC_Handler,Dummy_Handler
- 111              	 .weak SysTick_Handler
- 112              	 .thumb_set SysTick_Handler,Dummy_Handler
- 113              	 .weak PendSV_Handler
- 114              	 .thumb_set PendSV_Handler,Dummy_Handler
- 115              	 .weak DebugMon_Handler
- 116              	 .thumb_set DebugMon_Handler,Dummy_Handler
- 117              	 .weak SVC_Handler
- 118              	 .thumb_set SVC_Handler,Dummy_Handler
- 119              	 .weak UsageFault_Handler
- 120              	 .thumb_set UsageFault_Handler,Dummy_Handler
- 121              	 .weak BusFault_Handler
- 122              	 .thumb_set BusFault_Handler,Dummy_Handler
- 123              	 .weak MemManage_Handler
- 124              	 .thumb_set MemManage_Handler,Dummy_Handler
- 125              	 .weak HardFault_Handler
- 126              	 .thumb_set HardFault_Handler,Dummy_Handler
- 127              	 .weak NMI_Handler
- 128              	 .thumb_set NMI_Handler,Dummy_Handler
- 129              	 .weak Reset_Handler
- 130              	 .thumb_set Reset_Handler,Dummy_Handler
- 131              	 .text
- 132              	.Letext0:
- 133              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 134              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 135              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 136              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 137              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 138              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 139              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
- 140              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 141              	 .file 10 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 142              	 .file 11 ".././hal/sam3u1c/inc/system_sam3u.h"
+  51              	 .loc 1 169 8 discriminator 1
+  52 0004 FEE7     	 b .L2
+  53              	 .cfi_endproc
+  54              	.LFE69:
+  56              	 .weak UDPHS_Handler
+  57              	 .thumb_set UDPHS_Handler,Dummy_Handler
+  58              	 .weak DMAC_Handler
+  59              	 .thumb_set DMAC_Handler,Dummy_Handler
+  60              	 .weak ADC_Handler
+  61              	 .thumb_set ADC_Handler,Dummy_Handler
+  62              	 .weak ADC12B_Handler
+  63              	 .thumb_set ADC12B_Handler,Dummy_Handler
+  64              	 .weak PWM_Handler
+  65              	 .thumb_set PWM_Handler,Dummy_Handler
+  66              	 .weak TC2_Handler
+  67              	 .thumb_set TC2_Handler,Dummy_Handler
+  68              	 .weak TC1_Handler
+  69              	 .thumb_set TC1_Handler,Dummy_Handler
+  70              	 .weak TC0_Handler
+  71              	 .thumb_set TC0_Handler,Dummy_Handler
+  72              	 .weak SSC_Handler
+  73              	 .thumb_set SSC_Handler,Dummy_Handler
+  74              	 .weak SPI_Handler
+  75              	 .thumb_set SPI_Handler,Dummy_Handler
+  76              	 .weak TWI1_Handler
+  77              	 .thumb_set TWI1_Handler,Dummy_Handler
+  78              	 .weak TWI0_Handler
+  79              	 .thumb_set TWI0_Handler,Dummy_Handler
+  80              	 .weak HSMCI_Handler
+  81              	 .thumb_set HSMCI_Handler,Dummy_Handler
+  82              	 .weak USART2_Handler
+  83              	 .thumb_set USART2_Handler,Dummy_Handler
+  84              	 .weak USART1_Handler
+  85              	 .thumb_set USART1_Handler,Dummy_Handler
+  86              	 .weak USART0_Handler
+  87              	 .thumb_set USART0_Handler,Dummy_Handler
+  88              	 .weak PIOB_Handler
+  89              	 .thumb_set PIOB_Handler,Dummy_Handler
+  90              	 .weak PIOA_Handler
+  91              	 .thumb_set PIOA_Handler,Dummy_Handler
+  92              	 .weak SMC_Handler
+  93              	 .thumb_set SMC_Handler,Dummy_Handler
+  94              	 .weak UART_Handler
+  95              	 .thumb_set UART_Handler,Dummy_Handler
+  96              	 .weak EFC1_Handler
+  97              	 .thumb_set EFC1_Handler,Dummy_Handler
+  98              	 .weak EFC0_Handler
+  99              	 .thumb_set EFC0_Handler,Dummy_Handler
+ 100              	 .weak PMC_Handler
+ 101              	 .thumb_set PMC_Handler,Dummy_Handler
+ 102              	 .weak WDT_Handler
+ 103              	 .thumb_set WDT_Handler,Dummy_Handler
+ 104              	 .weak RTT_Handler
+ 105              	 .thumb_set RTT_Handler,Dummy_Handler
+ 106              	 .weak RTC_Handler
+ 107              	 .thumb_set RTC_Handler,Dummy_Handler
+ 108              	 .weak RSTC_Handler
+ 109              	 .thumb_set RSTC_Handler,Dummy_Handler
+ 110              	 .weak SUPC_Handler
+ 111              	 .thumb_set SUPC_Handler,Dummy_Handler
+ 112              	 .weak SysTick_Handler
+ 113              	 .thumb_set SysTick_Handler,Dummy_Handler
+ 114              	 .weak PendSV_Handler
+ 115              	 .thumb_set PendSV_Handler,Dummy_Handler
+ 116              	 .weak DebugMon_Handler
+ 117              	 .thumb_set DebugMon_Handler,Dummy_Handler
+ 118              	 .weak SVC_Handler
+ 119              	 .thumb_set SVC_Handler,Dummy_Handler
+ 120              	 .weak UsageFault_Handler
+ 121              	 .thumb_set UsageFault_Handler,Dummy_Handler
+ 122              	 .weak BusFault_Handler
+ 123              	 .thumb_set BusFault_Handler,Dummy_Handler
+ 124              	 .weak MemManage_Handler
+ 125              	 .thumb_set MemManage_Handler,Dummy_Handler
+ 126              	 .weak HardFault_Handler
+ 127              	 .thumb_set HardFault_Handler,Dummy_Handler
+ 128              	 .weak NMI_Handler
+ 129              	 .thumb_set NMI_Handler,Dummy_Handler
+ 130              	 .weak Reset_Handler
+ 131              	 .thumb_set Reset_Handler,Dummy_Handler
+ 132              	 .text
+ 133              	.Letext0:
+ 134              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 135              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 136              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 137              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 138              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 139              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 140              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
+ 141              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 142              	 .file 10 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 143              	 .file 11 ".././hal/sam3u1c/inc/system_sam3u.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 exceptions.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -310,46 +311,46 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.Dummy_Handler:00000000 $t
-    {standard input}:34     .text.Dummy_Handler:00000000 Dummy_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 UDPHS_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 DMAC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 ADC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 ADC12B_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 PWM_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 TC2_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 TC1_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 TC0_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 SSC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 SPI_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 TWI1_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 TWI0_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 HSMCI_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 USART2_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 USART1_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 USART0_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 PIOB_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 PIOA_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 SMC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 UART_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 EFC1_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 EFC0_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 PMC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 WDT_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 RTT_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 RTC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 RSTC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 SUPC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 SysTick_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 PendSV_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 DebugMon_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 SVC_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 UsageFault_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 BusFault_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 MemManage_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 HardFault_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 NMI_Handler
-    {standard input}:34     .text.Dummy_Handler:00000000 Reset_Handler
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:35     .text.Dummy_Handler:00000000 Dummy_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 UDPHS_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 DMAC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 ADC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 ADC12B_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 PWM_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 TC2_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 TC1_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 TC0_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 SSC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 SPI_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 TWI1_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 TWI0_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 HSMCI_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 USART2_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 USART1_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 USART0_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 PIOB_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 PIOA_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 SMC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 UART_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 EFC1_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 EFC0_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 PMC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 WDT_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 RTT_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 RTC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 RSTC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 SUPC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 SysTick_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 PendSV_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 DebugMon_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 SVC_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 UsageFault_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 BusFault_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 MemManage_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 HardFault_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 NMI_Handler
+    {standard input}:35     .text.Dummy_Handler:00000000 Reset_Handler
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
                            .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
@@ -366,12 +367,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.stringz.h.45.c4f6cbe0005e6c1d2139bc6c0e4f4722
                            .group:00000000 wm4.mrepeat.h.59.c5daaed201a4340b0edf435161d0b77f
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

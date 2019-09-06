@@ -21,13 +21,14 @@
   25 0000 00       	 .space 1
   26              	 .section .text.usart_serial_putchar,"ax",%progbits
   27              	 .align 1
-  28              	 .syntax unified
-  29              	 .thumb
-  30              	 .thumb_func
-  31              	 .fpu softvfp
-  33              	usart_serial_putchar:
-  34              	.LFB90:
-  35              	 .file 1 ".././hal/sam3u1c/inc/sam_uart/uart_serial.h"
+  28              	 .arch armv7-m
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	usart_serial_putchar:
+  35              	.LFB90:
+  36              	 .file 1 ".././hal/sam3u1c/inc/sam_uart/uart_serial.h"
    1:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /**
    2:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \file
    3:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
@@ -401,50 +402,51 @@
  371:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  */
  372:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** static inline int usart_serial_putchar(usart_if p_usart, const uint8_t c)
  373:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** {
-  36              	 .loc 1 373 0
-  37              	 .cfi_startproc
-  38              	 
+  37              	 .loc 1 373 1
+  38              	 .cfi_startproc
   39              	 
-  40 0000 80B5     	 push {r7,lr}
-  41              	.LCFI0:
-  42              	 .cfi_def_cfa_offset 8
-  43              	 .cfi_offset 7,-8
-  44              	 .cfi_offset 14,-4
-  45 0002 82B0     	 sub sp,sp,#8
-  46              	.LCFI1:
-  47              	 .cfi_def_cfa_offset 16
-  48 0004 00AF     	 add r7,sp,#0
-  49              	.LCFI2:
-  50              	 .cfi_def_cfa_register 7
-  51 0006 7860     	 str r0,[r7,#4]
-  52 0008 0B46     	 mov r3,r1
-  53 000a FB70     	 strb r3,[r7,#3]
+  40              	 
+  41 0000 80B5     	 push {r7,lr}
+  42              	.LCFI0:
+  43              	 .cfi_def_cfa_offset 8
+  44              	 .cfi_offset 7,-8
+  45              	 .cfi_offset 14,-4
+  46 0002 82B0     	 sub sp,sp,#8
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 16
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52 0006 7860     	 str r0,[r7,#4]
+  53 0008 0B46     	 mov r3,r1
+  54 000a FB70     	 strb r3,[r7,#3]
  374:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef UART
  375:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART == (Uart*)p_usart) {
-  54              	 .loc 1 375 0
-  55 000c 7B68     	 ldr r3,[r7,#4]
-  56 000e 204A     	 ldr r2,.L11
-  57 0010 9342     	 cmp r3,r2
-  58 0012 0AD1     	 bne .L2
+  55              	 .loc 1 375 5
+  56 000c 7B68     	 ldr r3,[r7,#4]
+  57 000e 204A     	 ldr r2,.L11
+  58 0010 9342     	 cmp r3,r2
+  59 0012 0AD1     	 bne .L2
  376:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_write((Uart*)p_usart, c)!=0);
-  59              	 .loc 1 376 0
-  60 0014 00BF     	 nop
-  61              	.L3:
-  62              	 .loc 1 376 0 is_stmt 0 discriminator 1
-  63 0016 FB78     	 ldrb r3,[r7,#3]
-  64 0018 1946     	 mov r1,r3
-  65 001a 7868     	 ldr r0,[r7,#4]
-  66 001c 1D4B     	 ldr r3,.L11+4
-  67 001e 9847     	 blx r3
-  68              	.LVL0:
-  69 0020 0346     	 mov r3,r0
-  70 0022 002B     	 cmp r3,#0
-  71 0024 F7D1     	 bne .L3
+  60              	 .loc 1 376 9
+  61 0014 00BF     	 nop
+  62              	.L3:
+  63              	 .loc 1 376 10 discriminator 1
+  64 0016 FB78     	 ldrb r3,[r7,#3]
+  65 0018 1946     	 mov r1,r3
+  66 001a 7868     	 ldr r0,[r7,#4]
+  67 001c 1D4B     	 ldr r3,.L11+4
+  68 001e 9847     	 blx r3
+  69              	.LVL0:
+  70 0020 0346     	 mov r3,r0
+  71              	 .loc 1 376 9 discriminator 1
+  72 0022 002B     	 cmp r3,#0
+  73 0024 F7D1     	 bne .L3
  377:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
-  72              	 .loc 1 377 0 is_stmt 1
-  73 0026 0123     	 movs r3,#1
-  74 0028 2DE0     	 b .L4
-  75              	.L2:
+  74              	 .loc 1 377 10
+  75 0026 0123     	 movs r3,#1
+  76 0028 2DE0     	 b .L4
+  77              	.L2:
  378:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  379:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
  380:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART0
@@ -482,86 +484,89 @@
  412:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
  413:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART0
  414:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART0 == p_usart) {
-  76              	 .loc 1 414 0
-  77 002a 7B68     	 ldr r3,[r7,#4]
-  78 002c 1A4A     	 ldr r2,.L11+8
-  79 002e 9342     	 cmp r3,r2
-  80 0030 0AD1     	 bne .L5
+  78              	 .loc 1 414 5
+  79 002a 7B68     	 ldr r3,[r7,#4]
+  80 002c 1A4A     	 ldr r2,.L11+8
+  81 002e 9342     	 cmp r3,r2
+  82 0030 0AD1     	 bne .L5
  415:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
-  81              	 .loc 1 415 0
-  82 0032 00BF     	 nop
-  83              	.L6:
-  84              	 .loc 1 415 0 is_stmt 0 discriminator 1
-  85 0034 FB78     	 ldrb r3,[r7,#3]
-  86 0036 1946     	 mov r1,r3
-  87 0038 7868     	 ldr r0,[r7,#4]
-  88 003a 184B     	 ldr r3,.L11+12
-  89 003c 9847     	 blx r3
-  90              	.LVL1:
-  91 003e 0346     	 mov r3,r0
-  92 0040 002B     	 cmp r3,#0
-  93 0042 F7D1     	 bne .L6
+  83              	 .loc 1 415 9
+  84 0032 00BF     	 nop
+  85              	.L6:
+  86              	 .loc 1 415 10 discriminator 1
+  87 0034 FB78     	 ldrb r3,[r7,#3]
+  88 0036 1946     	 mov r1,r3
+  89 0038 7868     	 ldr r0,[r7,#4]
+  90 003a 184B     	 ldr r3,.L11+12
+  91 003c 9847     	 blx r3
+  92              	.LVL1:
+  93 003e 0346     	 mov r3,r0
+  94              	 .loc 1 415 9 discriminator 1
+  95 0040 002B     	 cmp r3,#0
+  96 0042 F7D1     	 bne .L6
  416:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
-  94              	 .loc 1 416 0 is_stmt 1
-  95 0044 0123     	 movs r3,#1
-  96 0046 1EE0     	 b .L4
-  97              	.L5:
+  97              	 .loc 1 416 10
+  98 0044 0123     	 movs r3,#1
+  99 0046 1EE0     	 b .L4
+ 100              	.L5:
  417:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  418:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
  419:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART1
  420:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART1 == p_usart) {
-  98              	 .loc 1 420 0
-  99 0048 7B68     	 ldr r3,[r7,#4]
- 100 004a 154A     	 ldr r2,.L11+16
- 101 004c 9342     	 cmp r3,r2
- 102 004e 0AD1     	 bne .L7
+ 101              	 .loc 1 420 5
+ 102 0048 7B68     	 ldr r3,[r7,#4]
+ 103 004a 154A     	 ldr r2,.L11+16
+ 104 004c 9342     	 cmp r3,r2
+ 105 004e 0AD1     	 bne .L7
  421:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
- 103              	 .loc 1 421 0
- 104 0050 00BF     	 nop
- 105              	.L8:
- 106              	 .loc 1 421 0 is_stmt 0 discriminator 1
- 107 0052 FB78     	 ldrb r3,[r7,#3]
- 108 0054 1946     	 mov r1,r3
- 109 0056 7868     	 ldr r0,[r7,#4]
- 110 0058 104B     	 ldr r3,.L11+12
- 111 005a 9847     	 blx r3
- 112              	.LVL2:
- 113 005c 0346     	 mov r3,r0
- 114 005e 002B     	 cmp r3,#0
- 115 0060 F7D1     	 bne .L8
+ 106              	 .loc 1 421 9
+ 107 0050 00BF     	 nop
+ 108              	.L8:
+ 109              	 .loc 1 421 10 discriminator 1
+ 110 0052 FB78     	 ldrb r3,[r7,#3]
+ 111 0054 1946     	 mov r1,r3
+ 112 0056 7868     	 ldr r0,[r7,#4]
+ 113 0058 104B     	 ldr r3,.L11+12
+ 114 005a 9847     	 blx r3
+ 115              	.LVL2:
+ 116 005c 0346     	 mov r3,r0
+ 117              	 .loc 1 421 9 discriminator 1
+ 118 005e 002B     	 cmp r3,#0
+ 119 0060 F7D1     	 bne .L8
  422:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
- 116              	 .loc 1 422 0 is_stmt 1
- 117 0062 0123     	 movs r3,#1
- 118 0064 0FE0     	 b .L4
- 119              	.L7:
+ 120              	 .loc 1 422 10
+ 121 0062 0123     	 movs r3,#1
+ 122 0064 0FE0     	 b .L4
+ 123              	.L7:
  423:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  424:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
  425:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART2
  426:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART2 == p_usart) {
- 120              	 .loc 1 426 0
- 121 0066 7B68     	 ldr r3,[r7,#4]
- 122 0068 0E4A     	 ldr r2,.L11+20
- 123 006a 9342     	 cmp r3,r2
- 124 006c 0AD1     	 bne .L9
+ 124              	 .loc 1 426 5
+ 125 0066 7B68     	 ldr r3,[r7,#4]
+ 126 0068 0E4A     	 ldr r2,.L11+20
+ 127 006a 9342     	 cmp r3,r2
+ 128 006c 0AD1     	 bne .L9
  427:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_write(p_usart, c)!=0);
- 125              	 .loc 1 427 0
- 126 006e 00BF     	 nop
- 127              	.L10:
- 128              	 .loc 1 427 0 is_stmt 0 discriminator 1
- 129 0070 FB78     	 ldrb r3,[r7,#3]
- 130 0072 1946     	 mov r1,r3
- 131 0074 7868     	 ldr r0,[r7,#4]
- 132 0076 094B     	 ldr r3,.L11+12
- 133 0078 9847     	 blx r3
- 134              	.LVL3:
- 135 007a 0346     	 mov r3,r0
- 136 007c 002B     	 cmp r3,#0
- 137 007e F7D1     	 bne .L10
+ 129              	 .loc 1 427 9
+ 130 006e 00BF     	 nop
+ 131              	.L10:
+ 132              	 .loc 1 427 10 discriminator 1
+ 133 0070 FB78     	 ldrb r3,[r7,#3]
+ 134 0072 1946     	 mov r1,r3
+ 135 0074 7868     	 ldr r0,[r7,#4]
+ 136 0076 094B     	 ldr r3,.L11+12
+ 137 0078 9847     	 blx r3
+ 138              	.LVL3:
+ 139 007a 0346     	 mov r3,r0
+ 140              	 .loc 1 427 9 discriminator 1
+ 141 007c 002B     	 cmp r3,#0
+ 142 007e F7D1     	 bne .L10
  428:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		return 1;
- 138              	 .loc 1 428 0 is_stmt 1
- 139 0080 0123     	 movs r3,#1
- 140 0082 00E0     	 b .L4
- 141              	.L9:
+ 143              	 .loc 1 428 10
+ 144 0080 0123     	 movs r3,#1
+ 145 0082 00E0     	 b .L4
+ 146              	.L9:
  429:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  430:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
  431:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART3
@@ -597,39 +602,39 @@
  461:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef USART */
  462:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
  463:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	return 0;
- 142              	 .loc 1 463 0
- 143 0084 0023     	 movs r3,#0
- 144              	.L4:
+ 147              	 .loc 1 463 9
+ 148 0084 0023     	 movs r3,#0
+ 149              	.L4:
  464:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** }
- 145              	 .loc 1 464 0
- 146 0086 1846     	 mov r0,r3
- 147 0088 0837     	 adds r7,r7,#8
- 148              	.LCFI3:
- 149              	 .cfi_def_cfa_offset 8
- 150 008a BD46     	 mov sp,r7
- 151              	.LCFI4:
- 152              	 .cfi_def_cfa_register 13
- 153              	 
- 154 008c 80BD     	 pop {r7,pc}
- 155              	.L12:
- 156 008e 00BF     	 .align 2
- 157              	.L11:
- 158 0090 00060E40 	 .word 1074660864
- 159 0094 00000000 	 .word uart_write
- 160 0098 00000940 	 .word 1074331648
- 161 009c 00000000 	 .word usart_write
- 162 00a0 00400940 	 .word 1074348032
- 163 00a4 00800940 	 .word 1074364416
- 164              	 .cfi_endproc
- 165              	.LFE90:
- 167              	 .section .text.usart_serial_getchar,"ax",%progbits
- 168              	 .align 1
- 169              	 .syntax unified
- 170              	 .thumb
- 171              	 .thumb_func
- 172              	 .fpu softvfp
- 174              	usart_serial_getchar:
- 175              	.LFB91:
+ 150              	 .loc 1 464 1
+ 151 0086 1846     	 mov r0,r3
+ 152 0088 0837     	 adds r7,r7,#8
+ 153              	.LCFI3:
+ 154              	 .cfi_def_cfa_offset 8
+ 155 008a BD46     	 mov sp,r7
+ 156              	.LCFI4:
+ 157              	 .cfi_def_cfa_register 13
+ 158              	 
+ 159 008c 80BD     	 pop {r7,pc}
+ 160              	.L12:
+ 161 008e 00BF     	 .align 2
+ 162              	.L11:
+ 163 0090 00060E40 	 .word 1074660864
+ 164 0094 00000000 	 .word uart_write
+ 165 0098 00000940 	 .word 1074331648
+ 166 009c 00000000 	 .word usart_write
+ 167 00a0 00400940 	 .word 1074348032
+ 168 00a4 00800940 	 .word 1074364416
+ 169              	 .cfi_endproc
+ 170              	.LFE90:
+ 172              	 .section .text.usart_serial_getchar,"ax",%progbits
+ 173              	 .align 1
+ 174              	 .syntax unified
+ 175              	 .thumb
+ 176              	 .thumb_func
+ 177              	 .fpu softvfp
+ 179              	usart_serial_getchar:
+ 180              	.LFB91:
  465:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** /**
  466:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  * \brief Waits until a character is received, and returns it.
  467:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  *
@@ -639,52 +644,53 @@
  471:.././hal/sam3u1c/inc/sam_uart/uart_serial.h ****  */
  472:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** static inline void usart_serial_getchar(usart_if p_usart, uint8_t *data)
  473:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** {
- 176              	 .loc 1 473 0
- 177              	 .cfi_startproc
- 178              	 
- 179              	 
- 180 0000 80B5     	 push {r7,lr}
- 181              	.LCFI5:
- 182              	 .cfi_def_cfa_offset 8
- 183              	 .cfi_offset 7,-8
- 184              	 .cfi_offset 14,-4
- 185 0002 84B0     	 sub sp,sp,#16
- 186              	.LCFI6:
- 187              	 .cfi_def_cfa_offset 24
- 188 0004 00AF     	 add r7,sp,#0
- 189              	.LCFI7:
- 190              	 .cfi_def_cfa_register 7
- 191 0006 7860     	 str r0,[r7,#4]
- 192 0008 3960     	 str r1,[r7]
+ 181              	 .loc 1 473 1
+ 182              	 .cfi_startproc
+ 183              	 
+ 184              	 
+ 185 0000 80B5     	 push {r7,lr}
+ 186              	.LCFI5:
+ 187              	 .cfi_def_cfa_offset 8
+ 188              	 .cfi_offset 7,-8
+ 189              	 .cfi_offset 14,-4
+ 190 0002 84B0     	 sub sp,sp,#16
+ 191              	.LCFI6:
+ 192              	 .cfi_def_cfa_offset 24
+ 193 0004 00AF     	 add r7,sp,#0
+ 194              	.LCFI7:
+ 195              	 .cfi_def_cfa_register 7
+ 196 0006 7860     	 str r0,[r7,#4]
+ 197 0008 3960     	 str r1,[r7]
  474:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	uint32_t val = 0;
- 193              	 .loc 1 474 0
- 194 000a 0023     	 movs r3,#0
- 195 000c FB60     	 str r3,[r7,#12]
+ 198              	 .loc 1 474 11
+ 199 000a 0023     	 movs r3,#0
+ 200 000c FB60     	 str r3,[r7,#12]
  475:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
  476:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	/* Avoid Cppcheck Warning */
  477:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	UNUSED(val);
  478:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
  479:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #ifdef UART
  480:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (UART == (Uart*)p_usart) {
- 196              	 .loc 1 480 0
- 197 000e 7B68     	 ldr r3,[r7,#4]
- 198 0010 224A     	 ldr r2,.L23
- 199 0012 9342     	 cmp r3,r2
- 200 0014 07D1     	 bne .L14
+ 201              	 .loc 1 480 5
+ 202 000e 7B68     	 ldr r3,[r7,#4]
+ 203 0010 224A     	 ldr r2,.L23
+ 204 0012 9342     	 cmp r3,r2
+ 205 0014 07D1     	 bne .L14
  481:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (uart_read((Uart*)p_usart, data));
- 201              	 .loc 1 481 0
- 202 0016 00BF     	 nop
- 203              	.L15:
- 204              	 .loc 1 481 0 is_stmt 0 discriminator 1
- 205 0018 3968     	 ldr r1,[r7]
- 206 001a 7868     	 ldr r0,[r7,#4]
- 207 001c 204B     	 ldr r3,.L23+4
- 208 001e 9847     	 blx r3
- 209              	.LVL4:
- 210 0020 0346     	 mov r3,r0
- 211 0022 002B     	 cmp r3,#0
- 212 0024 F8D1     	 bne .L15
- 213              	.L14:
+ 206              	 .loc 1 481 9
+ 207 0016 00BF     	 nop
+ 208              	.L15:
+ 209              	 .loc 1 481 10 discriminator 1
+ 210 0018 3968     	 ldr r1,[r7]
+ 211 001a 7868     	 ldr r0,[r7,#4]
+ 212 001c 204B     	 ldr r3,.L23+4
+ 213 001e 9847     	 blx r3
+ 214              	.LVL4:
+ 215 0020 0346     	 mov r3,r0
+ 216              	 .loc 1 481 9 discriminator 1
+ 217 0022 002B     	 cmp r3,#0
+ 218 0024 F8D1     	 bne .L15
+ 219              	.L14:
  482:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  483:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
  484:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef UART0
@@ -718,92 +724,98 @@
  512:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #else
  513:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART0
  514:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART0 == p_usart) {
- 214              	 .loc 1 514 0 is_stmt 1
- 215 0026 7B68     	 ldr r3,[r7,#4]
- 216 0028 1E4A     	 ldr r2,.L23+8
- 217 002a 9342     	 cmp r3,r2
- 218 002c 0DD1     	 bne .L16
+ 220              	 .loc 1 514 5
+ 221 0026 7B68     	 ldr r3,[r7,#4]
+ 222 0028 1E4A     	 ldr r2,.L23+8
+ 223 002a 9342     	 cmp r3,r2
+ 224 002c 0DD1     	 bne .L16
  515:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
- 219              	 .loc 1 515 0
- 220 002e 00BF     	 nop
- 221              	.L17:
- 222              	 .loc 1 515 0 is_stmt 0 discriminator 1
- 223 0030 07F10C03 	 add r3,r7,#12
- 224 0034 1946     	 mov r1,r3
- 225 0036 7868     	 ldr r0,[r7,#4]
- 226 0038 1B4B     	 ldr r3,.L23+12
- 227 003a 9847     	 blx r3
- 228              	.LVL5:
- 229 003c 0346     	 mov r3,r0
- 230 003e 002B     	 cmp r3,#0
- 231 0040 F6D1     	 bne .L17
+ 225              	 .loc 1 515 9
+ 226 002e 00BF     	 nop
+ 227              	.L17:
+ 228              	 .loc 1 515 10 discriminator 1
+ 229 0030 07F10C03 	 add r3,r7,#12
+ 230 0034 1946     	 mov r1,r3
+ 231 0036 7868     	 ldr r0,[r7,#4]
+ 232 0038 1B4B     	 ldr r3,.L23+12
+ 233 003a 9847     	 blx r3
+ 234              	.LVL5:
+ 235 003c 0346     	 mov r3,r0
+ 236              	 .loc 1 515 9 discriminator 1
+ 237 003e 002B     	 cmp r3,#0
+ 238 0040 F6D1     	 bne .L17
  516:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
- 232              	 .loc 1 516 0 is_stmt 1
- 233 0042 FB68     	 ldr r3,[r7,#12]
- 234 0044 DAB2     	 uxtb r2,r3
- 235 0046 3B68     	 ldr r3,[r7]
- 236 0048 1A70     	 strb r2,[r3]
- 237              	.L16:
+ 239              	 .loc 1 516 11
+ 240 0042 FB68     	 ldr r3,[r7,#12]
+ 241 0044 DAB2     	 uxtb r2,r3
+ 242              	 .loc 1 516 9
+ 243 0046 3B68     	 ldr r3,[r7]
+ 244 0048 1A70     	 strb r2,[r3]
+ 245              	.L16:
  517:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  518:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
  519:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART1
  520:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART1 == p_usart) {
- 238              	 .loc 1 520 0
- 239 004a 7B68     	 ldr r3,[r7,#4]
- 240 004c 174A     	 ldr r2,.L23+16
- 241 004e 9342     	 cmp r3,r2
- 242 0050 0DD1     	 bne .L18
+ 246              	 .loc 1 520 5
+ 247 004a 7B68     	 ldr r3,[r7,#4]
+ 248 004c 174A     	 ldr r2,.L23+16
+ 249 004e 9342     	 cmp r3,r2
+ 250 0050 0DD1     	 bne .L18
  521:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
- 243              	 .loc 1 521 0
- 244 0052 00BF     	 nop
- 245              	.L19:
- 246              	 .loc 1 521 0 is_stmt 0 discriminator 1
- 247 0054 07F10C03 	 add r3,r7,#12
- 248 0058 1946     	 mov r1,r3
- 249 005a 7868     	 ldr r0,[r7,#4]
- 250 005c 124B     	 ldr r3,.L23+12
- 251 005e 9847     	 blx r3
- 252              	.LVL6:
- 253 0060 0346     	 mov r3,r0
- 254 0062 002B     	 cmp r3,#0
- 255 0064 F6D1     	 bne .L19
+ 251              	 .loc 1 521 9
+ 252 0052 00BF     	 nop
+ 253              	.L19:
+ 254              	 .loc 1 521 10 discriminator 1
+ 255 0054 07F10C03 	 add r3,r7,#12
+ 256 0058 1946     	 mov r1,r3
+ 257 005a 7868     	 ldr r0,[r7,#4]
+ 258 005c 124B     	 ldr r3,.L23+12
+ 259 005e 9847     	 blx r3
+ 260              	.LVL6:
+ 261 0060 0346     	 mov r3,r0
+ 262              	 .loc 1 521 9 discriminator 1
+ 263 0062 002B     	 cmp r3,#0
+ 264 0064 F6D1     	 bne .L19
  522:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
- 256              	 .loc 1 522 0 is_stmt 1
- 257 0066 FB68     	 ldr r3,[r7,#12]
- 258 0068 DAB2     	 uxtb r2,r3
- 259 006a 3B68     	 ldr r3,[r7]
- 260 006c 1A70     	 strb r2,[r3]
- 261              	.L18:
+ 265              	 .loc 1 522 11
+ 266 0066 FB68     	 ldr r3,[r7,#12]
+ 267 0068 DAB2     	 uxtb r2,r3
+ 268              	 .loc 1 522 9
+ 269 006a 3B68     	 ldr r3,[r7]
+ 270 006c 1A70     	 strb r2,[r3]
+ 271              	.L18:
  523:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  524:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
  525:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART2
  526:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	if (USART2 == p_usart) {
- 262              	 .loc 1 526 0
- 263 006e 7B68     	 ldr r3,[r7,#4]
- 264 0070 0F4A     	 ldr r2,.L23+20
- 265 0072 9342     	 cmp r3,r2
- 266 0074 0DD1     	 bne .L22
+ 272              	 .loc 1 526 5
+ 273 006e 7B68     	 ldr r3,[r7,#4]
+ 274 0070 0F4A     	 ldr r2,.L23+20
+ 275 0072 9342     	 cmp r3,r2
+ 276 0074 0DD1     	 bne .L22
  527:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		while (usart_read(p_usart, &val));
- 267              	 .loc 1 527 0
- 268 0076 00BF     	 nop
- 269              	.L21:
- 270              	 .loc 1 527 0 is_stmt 0 discriminator 1
- 271 0078 07F10C03 	 add r3,r7,#12
- 272 007c 1946     	 mov r1,r3
- 273 007e 7868     	 ldr r0,[r7,#4]
- 274 0080 094B     	 ldr r3,.L23+12
- 275 0082 9847     	 blx r3
- 276              	.LVL7:
- 277 0084 0346     	 mov r3,r0
- 278 0086 002B     	 cmp r3,#0
- 279 0088 F6D1     	 bne .L21
+ 277              	 .loc 1 527 9
+ 278 0076 00BF     	 nop
+ 279              	.L21:
+ 280              	 .loc 1 527 10 discriminator 1
+ 281 0078 07F10C03 	 add r3,r7,#12
+ 282 007c 1946     	 mov r1,r3
+ 283 007e 7868     	 ldr r0,[r7,#4]
+ 284 0080 094B     	 ldr r3,.L23+12
+ 285 0082 9847     	 blx r3
+ 286              	.LVL7:
+ 287 0084 0346     	 mov r3,r0
+ 288              	 .loc 1 527 9 discriminator 1
+ 289 0086 002B     	 cmp r3,#0
+ 290 0088 F6D1     	 bne .L21
  528:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 		*data = (uint8_t)(val & 0xFF);
- 280              	 .loc 1 528 0 is_stmt 1
- 281 008a FB68     	 ldr r3,[r7,#12]
- 282 008c DAB2     	 uxtb r2,r3
- 283 008e 3B68     	 ldr r3,[r7]
- 284 0090 1A70     	 strb r2,[r3]
- 285              	.L22:
+ 291              	 .loc 1 528 11
+ 292 008a FB68     	 ldr r3,[r7,#12]
+ 293 008c DAB2     	 uxtb r2,r3
+ 294              	 .loc 1 528 9
+ 295 008e 3B68     	 ldr r3,[r7]
+ 296 0090 1A70     	 strb r2,[r3]
+ 297              	.L22:
  529:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 	}
  530:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # endif
  531:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** # ifdef USART3
@@ -839,37 +851,37 @@
  561:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** #endif /* ifdef USART */
  562:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** 
  563:.././hal/sam3u1c/inc/sam_uart/uart_serial.h **** }
- 286              	 .loc 1 563 0
- 287 0092 00BF     	 nop
- 288 0094 1037     	 adds r7,r7,#16
- 289              	.LCFI8:
- 290              	 .cfi_def_cfa_offset 8
- 291 0096 BD46     	 mov sp,r7
- 292              	.LCFI9:
- 293              	 .cfi_def_cfa_register 13
- 294              	 
- 295 0098 80BD     	 pop {r7,pc}
- 296              	.L24:
- 297 009a 00BF     	 .align 2
- 298              	.L23:
- 299 009c 00060E40 	 .word 1074660864
- 300 00a0 00000000 	 .word uart_read
- 301 00a4 00000940 	 .word 1074331648
- 302 00a8 00000000 	 .word usart_read
- 303 00ac 00400940 	 .word 1074348032
- 304 00b0 00800940 	 .word 1074364416
- 305              	 .cfi_endproc
- 306              	.LFE91:
- 308              	 .section .text.usart_serial_write_packet,"ax",%progbits
- 309              	 .align 1
- 310              	 .global usart_serial_write_packet
- 311              	 .syntax unified
- 312              	 .thumb
- 313              	 .thumb_func
- 314              	 .fpu softvfp
- 316              	usart_serial_write_packet:
- 317              	.LFB93:
- 318              	 .file 2 ".././hal/sam3u1c/usart_serial.c"
+ 298              	 .loc 1 563 1
+ 299 0092 00BF     	 nop
+ 300 0094 1037     	 adds r7,r7,#16
+ 301              	.LCFI8:
+ 302              	 .cfi_def_cfa_offset 8
+ 303 0096 BD46     	 mov sp,r7
+ 304              	.LCFI9:
+ 305              	 .cfi_def_cfa_register 13
+ 306              	 
+ 307 0098 80BD     	 pop {r7,pc}
+ 308              	.L24:
+ 309 009a 00BF     	 .align 2
+ 310              	.L23:
+ 311 009c 00060E40 	 .word 1074660864
+ 312 00a0 00000000 	 .word uart_read
+ 313 00a4 00000940 	 .word 1074331648
+ 314 00a8 00000000 	 .word usart_read
+ 315 00ac 00400940 	 .word 1074348032
+ 316 00b0 00800940 	 .word 1074364416
+ 317              	 .cfi_endproc
+ 318              	.LFE91:
+ 320              	 .section .text.usart_serial_write_packet,"ax",%progbits
+ 321              	 .align 1
+ 322              	 .global usart_serial_write_packet
+ 323              	 .syntax unified
+ 324              	 .thumb
+ 325              	 .thumb_func
+ 326              	 .fpu softvfp
+ 328              	usart_serial_write_packet:
+ 329              	.LFB93:
+ 330              	 .file 2 ".././hal/sam3u1c/usart_serial.c"
    1:.././hal/sam3u1c/usart_serial.c **** /**
    2:.././hal/sam3u1c/usart_serial.c ****  *
    3:.././hal/sam3u1c/usart_serial.c ****  * \file
@@ -927,83 +939,83 @@
   55:.././hal/sam3u1c/usart_serial.c **** status_code_t usart_serial_write_packet(usart_if usart, const uint8_t *data,
   56:.././hal/sam3u1c/usart_serial.c **** 		size_t len)
   57:.././hal/sam3u1c/usart_serial.c **** {
- 319              	 .loc 2 57 0
- 320              	 .cfi_startproc
- 321              	 
- 322              	 
- 323 0000 80B5     	 push {r7,lr}
- 324              	.LCFI10:
- 325              	 .cfi_def_cfa_offset 8
- 326              	 .cfi_offset 7,-8
- 327              	 .cfi_offset 14,-4
- 328 0002 84B0     	 sub sp,sp,#16
- 329              	.LCFI11:
- 330              	 .cfi_def_cfa_offset 24
- 331 0004 00AF     	 add r7,sp,#0
- 332              	.LCFI12:
- 333              	 .cfi_def_cfa_register 7
- 334 0006 F860     	 str r0,[r7,#12]
- 335 0008 B960     	 str r1,[r7,#8]
- 336 000a 7A60     	 str r2,[r7,#4]
+ 331              	 .loc 2 57 1
+ 332              	 .cfi_startproc
+ 333              	 
+ 334              	 
+ 335 0000 80B5     	 push {r7,lr}
+ 336              	.LCFI10:
+ 337              	 .cfi_def_cfa_offset 8
+ 338              	 .cfi_offset 7,-8
+ 339              	 .cfi_offset 14,-4
+ 340 0002 84B0     	 sub sp,sp,#16
+ 341              	.LCFI11:
+ 342              	 .cfi_def_cfa_offset 24
+ 343 0004 00AF     	 add r7,sp,#0
+ 344              	.LCFI12:
+ 345              	 .cfi_def_cfa_register 7
+ 346 0006 F860     	 str r0,[r7,#12]
+ 347 0008 B960     	 str r1,[r7,#8]
+ 348 000a 7A60     	 str r2,[r7,#4]
   58:.././hal/sam3u1c/usart_serial.c **** 	while (len) {
- 337              	 .loc 2 58 0
- 338 000c 0BE0     	 b .L26
- 339              	.L27:
+ 349              	 .loc 2 58 8
+ 350 000c 0BE0     	 b .L26
+ 351              	.L27:
   59:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_putchar(usart, *data);
- 340              	 .loc 2 59 0
- 341 000e BB68     	 ldr r3,[r7,#8]
- 342 0010 1B78     	 ldrb r3,[r3]
- 343 0012 1946     	 mov r1,r3
- 344 0014 F868     	 ldr r0,[r7,#12]
- 345 0016 084B     	 ldr r3,.L29
- 346 0018 9847     	 blx r3
- 347              	.LVL8:
+ 352              	 .loc 2 59 3
+ 353 000e BB68     	 ldr r3,[r7,#8]
+ 354 0010 1B78     	 ldrb r3,[r3]
+ 355 0012 1946     	 mov r1,r3
+ 356 0014 F868     	 ldr r0,[r7,#12]
+ 357 0016 084B     	 ldr r3,.L29
+ 358 0018 9847     	 blx r3
+ 359              	.LVL8:
   60:.././hal/sam3u1c/usart_serial.c **** 		len--;
- 348              	 .loc 2 60 0
- 349 001a 7B68     	 ldr r3,[r7,#4]
- 350 001c 013B     	 subs r3,r3,#1
- 351 001e 7B60     	 str r3,[r7,#4]
+ 360              	 .loc 2 60 6
+ 361 001a 7B68     	 ldr r3,[r7,#4]
+ 362 001c 013B     	 subs r3,r3,#1
+ 363 001e 7B60     	 str r3,[r7,#4]
   61:.././hal/sam3u1c/usart_serial.c **** 		data++;
- 352              	 .loc 2 61 0
- 353 0020 BB68     	 ldr r3,[r7,#8]
- 354 0022 0133     	 adds r3,r3,#1
- 355 0024 BB60     	 str r3,[r7,#8]
- 356              	.L26:
+ 364              	 .loc 2 61 7
+ 365 0020 BB68     	 ldr r3,[r7,#8]
+ 366 0022 0133     	 adds r3,r3,#1
+ 367 0024 BB60     	 str r3,[r7,#8]
+ 368              	.L26:
   58:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_putchar(usart, *data);
- 357              	 .loc 2 58 0
- 358 0026 7B68     	 ldr r3,[r7,#4]
- 359 0028 002B     	 cmp r3,#0
- 360 002a F0D1     	 bne .L27
+ 369              	 .loc 2 58 8
+ 370 0026 7B68     	 ldr r3,[r7,#4]
+ 371 0028 002B     	 cmp r3,#0
+ 372 002a F0D1     	 bne .L27
   62:.././hal/sam3u1c/usart_serial.c **** 	}
   63:.././hal/sam3u1c/usart_serial.c **** 	return STATUS_OK;
- 361              	 .loc 2 63 0
- 362 002c 0023     	 movs r3,#0
+ 373              	 .loc 2 63 9
+ 374 002c 0023     	 movs r3,#0
   64:.././hal/sam3u1c/usart_serial.c **** }
- 363              	 .loc 2 64 0
- 364 002e 1846     	 mov r0,r3
- 365 0030 1037     	 adds r7,r7,#16
- 366              	.LCFI13:
- 367              	 .cfi_def_cfa_offset 8
- 368 0032 BD46     	 mov sp,r7
- 369              	.LCFI14:
- 370              	 .cfi_def_cfa_register 13
- 371              	 
- 372 0034 80BD     	 pop {r7,pc}
- 373              	.L30:
- 374 0036 00BF     	 .align 2
- 375              	.L29:
- 376 0038 00000000 	 .word usart_serial_putchar
- 377              	 .cfi_endproc
- 378              	.LFE93:
- 380              	 .section .text.usart_serial_read_packet,"ax",%progbits
- 381              	 .align 1
- 382              	 .global usart_serial_read_packet
- 383              	 .syntax unified
- 384              	 .thumb
- 385              	 .thumb_func
- 386              	 .fpu softvfp
- 388              	usart_serial_read_packet:
- 389              	.LFB94:
+ 375              	 .loc 2 64 1
+ 376 002e 1846     	 mov r0,r3
+ 377 0030 1037     	 adds r7,r7,#16
+ 378              	.LCFI13:
+ 379              	 .cfi_def_cfa_offset 8
+ 380 0032 BD46     	 mov sp,r7
+ 381              	.LCFI14:
+ 382              	 .cfi_def_cfa_register 13
+ 383              	 
+ 384 0034 80BD     	 pop {r7,pc}
+ 385              	.L30:
+ 386 0036 00BF     	 .align 2
+ 387              	.L29:
+ 388 0038 00000000 	 .word usart_serial_putchar
+ 389              	 .cfi_endproc
+ 390              	.LFE93:
+ 392              	 .section .text.usart_serial_read_packet,"ax",%progbits
+ 393              	 .align 1
+ 394              	 .global usart_serial_read_packet
+ 395              	 .syntax unified
+ 396              	 .thumb
+ 397              	 .thumb_func
+ 398              	 .fpu softvfp
+ 400              	usart_serial_read_packet:
+ 401              	.LFB94:
   65:.././hal/sam3u1c/usart_serial.c **** 
   66:.././hal/sam3u1c/usart_serial.c **** 
   67:.././hal/sam3u1c/usart_serial.c **** /**
@@ -1017,90 +1029,90 @@
   75:.././hal/sam3u1c/usart_serial.c **** status_code_t usart_serial_read_packet(usart_if usart, uint8_t *data,
   76:.././hal/sam3u1c/usart_serial.c **** 		size_t len)
   77:.././hal/sam3u1c/usart_serial.c **** {
- 390              	 .loc 2 77 0
- 391              	 .cfi_startproc
- 392              	 
- 393              	 
- 394 0000 80B5     	 push {r7,lr}
- 395              	.LCFI15:
- 396              	 .cfi_def_cfa_offset 8
- 397              	 .cfi_offset 7,-8
- 398              	 .cfi_offset 14,-4
- 399 0002 84B0     	 sub sp,sp,#16
- 400              	.LCFI16:
- 401              	 .cfi_def_cfa_offset 24
- 402 0004 00AF     	 add r7,sp,#0
- 403              	.LCFI17:
- 404              	 .cfi_def_cfa_register 7
- 405 0006 F860     	 str r0,[r7,#12]
- 406 0008 B960     	 str r1,[r7,#8]
- 407 000a 7A60     	 str r2,[r7,#4]
+ 402              	 .loc 2 77 1
+ 403              	 .cfi_startproc
+ 404              	 
+ 405              	 
+ 406 0000 80B5     	 push {r7,lr}
+ 407              	.LCFI15:
+ 408              	 .cfi_def_cfa_offset 8
+ 409              	 .cfi_offset 7,-8
+ 410              	 .cfi_offset 14,-4
+ 411 0002 84B0     	 sub sp,sp,#16
+ 412              	.LCFI16:
+ 413              	 .cfi_def_cfa_offset 24
+ 414 0004 00AF     	 add r7,sp,#0
+ 415              	.LCFI17:
+ 416              	 .cfi_def_cfa_register 7
+ 417 0006 F860     	 str r0,[r7,#12]
+ 418 0008 B960     	 str r1,[r7,#8]
+ 419 000a 7A60     	 str r2,[r7,#4]
   78:.././hal/sam3u1c/usart_serial.c **** 	while (len) {
- 408              	 .loc 2 78 0
- 409 000c 09E0     	 b .L32
- 410              	.L33:
+ 420              	 .loc 2 78 8
+ 421 000c 09E0     	 b .L32
+ 422              	.L33:
   79:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_getchar(usart, data);
- 411              	 .loc 2 79 0
- 412 000e B968     	 ldr r1,[r7,#8]
- 413 0010 F868     	 ldr r0,[r7,#12]
- 414 0012 084B     	 ldr r3,.L35
- 415 0014 9847     	 blx r3
- 416              	.LVL9:
+ 423              	 .loc 2 79 3
+ 424 000e B968     	 ldr r1,[r7,#8]
+ 425 0010 F868     	 ldr r0,[r7,#12]
+ 426 0012 084B     	 ldr r3,.L35
+ 427 0014 9847     	 blx r3
+ 428              	.LVL9:
   80:.././hal/sam3u1c/usart_serial.c **** 		len--;
- 417              	 .loc 2 80 0
- 418 0016 7B68     	 ldr r3,[r7,#4]
- 419 0018 013B     	 subs r3,r3,#1
- 420 001a 7B60     	 str r3,[r7,#4]
+ 429              	 .loc 2 80 6
+ 430 0016 7B68     	 ldr r3,[r7,#4]
+ 431 0018 013B     	 subs r3,r3,#1
+ 432 001a 7B60     	 str r3,[r7,#4]
   81:.././hal/sam3u1c/usart_serial.c **** 		data++;
- 421              	 .loc 2 81 0
- 422 001c BB68     	 ldr r3,[r7,#8]
- 423 001e 0133     	 adds r3,r3,#1
- 424 0020 BB60     	 str r3,[r7,#8]
- 425              	.L32:
+ 433              	 .loc 2 81 7
+ 434 001c BB68     	 ldr r3,[r7,#8]
+ 435 001e 0133     	 adds r3,r3,#1
+ 436 0020 BB60     	 str r3,[r7,#8]
+ 437              	.L32:
   78:.././hal/sam3u1c/usart_serial.c **** 		usart_serial_getchar(usart, data);
- 426              	 .loc 2 78 0
- 427 0022 7B68     	 ldr r3,[r7,#4]
- 428 0024 002B     	 cmp r3,#0
- 429 0026 F2D1     	 bne .L33
+ 438              	 .loc 2 78 8
+ 439 0022 7B68     	 ldr r3,[r7,#4]
+ 440 0024 002B     	 cmp r3,#0
+ 441 0026 F2D1     	 bne .L33
   82:.././hal/sam3u1c/usart_serial.c **** 	}
   83:.././hal/sam3u1c/usart_serial.c **** 	return STATUS_OK;
- 430              	 .loc 2 83 0
- 431 0028 0023     	 movs r3,#0
+ 442              	 .loc 2 83 9
+ 443 0028 0023     	 movs r3,#0
   84:.././hal/sam3u1c/usart_serial.c **** }
- 432              	 .loc 2 84 0
- 433 002a 1846     	 mov r0,r3
- 434 002c 1037     	 adds r7,r7,#16
- 435              	.LCFI18:
- 436              	 .cfi_def_cfa_offset 8
- 437 002e BD46     	 mov sp,r7
- 438              	.LCFI19:
- 439              	 .cfi_def_cfa_register 13
- 440              	 
- 441 0030 80BD     	 pop {r7,pc}
- 442              	.L36:
- 443 0032 00BF     	 .align 2
- 444              	.L35:
- 445 0034 00000000 	 .word usart_serial_getchar
- 446              	 .cfi_endproc
- 447              	.LFE94:
- 449              	 .text
- 450              	.Letext0:
- 451              	 .file 3 ".././hal/sam3u1c/inc/status_codes.h"
- 452              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 453              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 454              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 455              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
- 456              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
- 457              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
- 458              	 .file 10 ".././hal/sam3u1c/inc/component/component_uart.h"
- 459              	 .file 11 ".././hal/sam3u1c/inc/component/component_usart.h"
- 460              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 461              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 462              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 463              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 464              	 .file 16 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 465              	 .file 17 ".././hal/sam3u1c/inc/uart.h"
- 466              	 .file 18 ".././hal/sam3u1c/inc/usart.h"
+ 444              	 .loc 2 84 1
+ 445 002a 1846     	 mov r0,r3
+ 446 002c 1037     	 adds r7,r7,#16
+ 447              	.LCFI18:
+ 448              	 .cfi_def_cfa_offset 8
+ 449 002e BD46     	 mov sp,r7
+ 450              	.LCFI19:
+ 451              	 .cfi_def_cfa_register 13
+ 452              	 
+ 453 0030 80BD     	 pop {r7,pc}
+ 454              	.L36:
+ 455 0032 00BF     	 .align 2
+ 456              	.L35:
+ 457 0034 00000000 	 .word usart_serial_getchar
+ 458              	 .cfi_endproc
+ 459              	.LFE94:
+ 461              	 .text
+ 462              	.Letext0:
+ 463              	 .file 3 ".././hal/sam3u1c/inc/status_codes.h"
+ 464              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 465              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 466              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 467              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 468              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
+ 469              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 470              	 .file 10 ".././hal/sam3u1c/inc/component/component_uart.h"
+ 471              	 .file 11 ".././hal/sam3u1c/inc/component/component_usart.h"
+ 472              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 473              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 474              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 475              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 476              	 .file 16 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 477              	 .file 17 ".././hal/sam3u1c/inc/uart.h"
+ 478              	 .file 18 ".././hal/sam3u1c/inc/usart.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 usart_serial.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1108,18 +1120,18 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.usart_serial_putchar:00000000 $t
-    {standard input}:33     .text.usart_serial_putchar:00000000 usart_serial_putchar
-    {standard input}:158    .text.usart_serial_putchar:00000090 $d
-    {standard input}:168    .text.usart_serial_getchar:00000000 $t
-    {standard input}:174    .text.usart_serial_getchar:00000000 usart_serial_getchar
-    {standard input}:299    .text.usart_serial_getchar:0000009c $d
-    {standard input}:309    .text.usart_serial_write_packet:00000000 $t
-    {standard input}:316    .text.usart_serial_write_packet:00000000 usart_serial_write_packet
-    {standard input}:376    .text.usart_serial_write_packet:00000038 $d
-    {standard input}:381    .text.usart_serial_read_packet:00000000 $t
-    {standard input}:388    .text.usart_serial_read_packet:00000000 usart_serial_read_packet
-    {standard input}:445    .text.usart_serial_read_packet:00000034 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:34     .text.usart_serial_putchar:00000000 usart_serial_putchar
+    {standard input}:163    .text.usart_serial_putchar:00000090 $d
+    {standard input}:173    .text.usart_serial_getchar:00000000 $t
+    {standard input}:179    .text.usart_serial_getchar:00000000 usart_serial_getchar
+    {standard input}:311    .text.usart_serial_getchar:0000009c $d
+    {standard input}:321    .text.usart_serial_write_packet:00000000 $t
+    {standard input}:328    .text.usart_serial_write_packet:00000000 usart_serial_write_packet
+    {standard input}:388    .text.usart_serial_write_packet:00000038 $d
+    {standard input}:393    .text.usart_serial_read_packet:00000000 $t
+    {standard input}:400    .text.usart_serial_read_packet:00000000 usart_serial_read_packet
+    {standard input}:457    .text.usart_serial_read_packet:00000034 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -1193,12 +1205,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

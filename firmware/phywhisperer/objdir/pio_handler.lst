@@ -14,13 +14,14 @@
   14              	 .cfi_sections .debug_frame
   15              	 .section .text.NVIC_EnableIRQ,"ax",%progbits
   16              	 .align 1
-  17              	 .syntax unified
-  18              	 .thumb
-  19              	 .thumb_func
-  20              	 .fpu softvfp
-  22              	NVIC_EnableIRQ:
-  23              	.LFB41:
-  24              	 .file 1 ".././hal/sam3u1c/inc/core_cm3.h"
+  17              	 .arch armv7-m
+  18              	 .syntax unified
+  19              	 .thumb
+  20              	 .thumb_func
+  21              	 .fpu softvfp
+  23              	NVIC_EnableIRQ:
+  24              	.LFB41:
+  25              	 .file 1 ".././hal/sam3u1c/inc/core_cm3.h"
    1:.././hal/sam3u1c/inc/core_cm3.h **** /**************************************************************************//**
    2:.././hal/sam3u1c/inc/core_cm3.h ****  * @file     core_cm3.h
    3:.././hal/sam3u1c/inc/core_cm3.h ****  * @brief    CMSIS Cortex-M3 Core Peripheral Access Layer Header File
@@ -1268,62 +1269,67 @@
 1245:.././hal/sam3u1c/inc/core_cm3.h ****  */
 1246:.././hal/sam3u1c/inc/core_cm3.h **** __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
 1247:.././hal/sam3u1c/inc/core_cm3.h **** {
-  25              	 .loc 1 1247 0
-  26              	 .cfi_startproc
-  27              	 
+  26              	 .loc 1 1247 1
+  27              	 .cfi_startproc
   28              	 
   29              	 
-  30 0000 80B4     	 push {r7}
-  31              	.LCFI0:
-  32              	 .cfi_def_cfa_offset 4
-  33              	 .cfi_offset 7,-4
-  34 0002 83B0     	 sub sp,sp,#12
-  35              	.LCFI1:
-  36              	 .cfi_def_cfa_offset 16
-  37 0004 00AF     	 add r7,sp,#0
-  38              	.LCFI2:
-  39              	 .cfi_def_cfa_register 7
-  40 0006 0346     	 mov r3,r0
-  41 0008 FB71     	 strb r3,[r7,#7]
+  30              	 
+  31 0000 80B4     	 push {r7}
+  32              	.LCFI0:
+  33              	 .cfi_def_cfa_offset 4
+  34              	 .cfi_offset 7,-4
+  35 0002 83B0     	 sub sp,sp,#12
+  36              	.LCFI1:
+  37              	 .cfi_def_cfa_offset 16
+  38 0004 00AF     	 add r7,sp,#0
+  39              	.LCFI2:
+  40              	 .cfi_def_cfa_register 7
+  41 0006 0346     	 mov r3,r0
+  42 0008 FB71     	 strb r3,[r7,#7]
 1248:.././hal/sam3u1c/inc/core_cm3.h ****   NVIC->ISER[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* enable interrupt */
-  42              	 .loc 1 1248 0
-  43 000a FB79     	 ldrb r3,[r7,#7]
-  44 000c 03F01F03 	 and r3,r3,#31
-  45 0010 0122     	 movs r2,#1
-  46 0012 02FA03F1 	 lsl r1,r2,r3
-  47 0016 054A     	 ldr r2,.L2
-  48 0018 97F90730 	 ldrsb r3,[r7,#7]
-  49 001c 5B09     	 lsrs r3,r3,#5
-  50 001e 42F82310 	 str r1,[r2,r3,lsl#2]
+  43              	 .loc 1 1248 65
+  44 000a FB79     	 ldrb r3,[r7,#7]
+  45 000c 03F01F03 	 and r3,r3,#31
+  46              	 .loc 1 1248 44
+  47 0010 0122     	 movs r2,#1
+  48 0012 02FA03F1 	 lsl r1,r2,r3
+  49              	 .loc 1 1248 7
+  50 0016 054A     	 ldr r2,.L2
+  51              	 .loc 1 1248 15
+  52 0018 97F90730 	 ldrsb r3,[r7,#7]
+  53              	 .loc 1 1248 32
+  54 001c 5B09     	 lsrs r3,r3,#5
+  55              	 .loc 1 1248 39
+  56 001e 42F82310 	 str r1,[r2,r3,lsl#2]
 1249:.././hal/sam3u1c/inc/core_cm3.h **** }
-  51              	 .loc 1 1249 0
-  52 0022 00BF     	 nop
-  53 0024 0C37     	 adds r7,r7,#12
-  54              	.LCFI3:
-  55              	 .cfi_def_cfa_offset 4
-  56 0026 BD46     	 mov sp,r7
-  57              	.LCFI4:
-  58              	 .cfi_def_cfa_register 13
-  59              	 
-  60 0028 80BC     	 pop {r7}
-  61              	.LCFI5:
-  62              	 .cfi_restore 7
-  63              	 .cfi_def_cfa_offset 0
-  64 002a 7047     	 bx lr
-  65              	.L3:
-  66              	 .align 2
-  67              	.L2:
-  68 002c 00E100E0 	 .word -536813312
-  69              	 .cfi_endproc
-  70              	.LFE41:
-  72              	 .section .text.NVIC_DisableIRQ,"ax",%progbits
-  73              	 .align 1
-  74              	 .syntax unified
-  75              	 .thumb
-  76              	 .thumb_func
-  77              	 .fpu softvfp
-  79              	NVIC_DisableIRQ:
-  80              	.LFB42:
+  57              	 .loc 1 1249 1
+  58 0022 00BF     	 nop
+  59 0024 0C37     	 adds r7,r7,#12
+  60              	.LCFI3:
+  61              	 .cfi_def_cfa_offset 4
+  62 0026 BD46     	 mov sp,r7
+  63              	.LCFI4:
+  64              	 .cfi_def_cfa_register 13
+  65              	 
+  66 0028 80BC     	 pop {r7}
+  67              	.LCFI5:
+  68              	 .cfi_restore 7
+  69              	 .cfi_def_cfa_offset 0
+  70 002a 7047     	 bx lr
+  71              	.L3:
+  72              	 .align 2
+  73              	.L2:
+  74 002c 00E100E0 	 .word -536813312
+  75              	 .cfi_endproc
+  76              	.LFE41:
+  78              	 .section .text.NVIC_DisableIRQ,"ax",%progbits
+  79              	 .align 1
+  80              	 .syntax unified
+  81              	 .thumb
+  82              	 .thumb_func
+  83              	 .fpu softvfp
+  85              	NVIC_DisableIRQ:
+  86              	.LFB42:
 1250:.././hal/sam3u1c/inc/core_cm3.h **** 
 1251:.././hal/sam3u1c/inc/core_cm3.h **** 
 1252:.././hal/sam3u1c/inc/core_cm3.h **** /** \brief  Disable External Interrupt
@@ -1334,63 +1340,68 @@
 1257:.././hal/sam3u1c/inc/core_cm3.h ****  */
 1258:.././hal/sam3u1c/inc/core_cm3.h **** __STATIC_INLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
 1259:.././hal/sam3u1c/inc/core_cm3.h **** {
-  81              	 .loc 1 1259 0
-  82              	 .cfi_startproc
-  83              	 
-  84              	 
-  85              	 
-  86 0000 80B4     	 push {r7}
-  87              	.LCFI6:
-  88              	 .cfi_def_cfa_offset 4
-  89              	 .cfi_offset 7,-4
-  90 0002 83B0     	 sub sp,sp,#12
-  91              	.LCFI7:
-  92              	 .cfi_def_cfa_offset 16
-  93 0004 00AF     	 add r7,sp,#0
-  94              	.LCFI8:
-  95              	 .cfi_def_cfa_register 7
-  96 0006 0346     	 mov r3,r0
-  97 0008 FB71     	 strb r3,[r7,#7]
+  87              	 .loc 1 1259 1
+  88              	 .cfi_startproc
+  89              	 
+  90              	 
+  91              	 
+  92 0000 80B4     	 push {r7}
+  93              	.LCFI6:
+  94              	 .cfi_def_cfa_offset 4
+  95              	 .cfi_offset 7,-4
+  96 0002 83B0     	 sub sp,sp,#12
+  97              	.LCFI7:
+  98              	 .cfi_def_cfa_offset 16
+  99 0004 00AF     	 add r7,sp,#0
+ 100              	.LCFI8:
+ 101              	 .cfi_def_cfa_register 7
+ 102 0006 0346     	 mov r3,r0
+ 103 0008 FB71     	 strb r3,[r7,#7]
 1260:.././hal/sam3u1c/inc/core_cm3.h ****   NVIC->ICER[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* disable interrupt */
-  98              	 .loc 1 1260 0
-  99 000a FB79     	 ldrb r3,[r7,#7]
- 100 000c 03F01F03 	 and r3,r3,#31
- 101 0010 0122     	 movs r2,#1
- 102 0012 02FA03F1 	 lsl r1,r2,r3
- 103 0016 064A     	 ldr r2,.L5
- 104 0018 97F90730 	 ldrsb r3,[r7,#7]
- 105 001c 5B09     	 lsrs r3,r3,#5
- 106 001e 2033     	 adds r3,r3,#32
- 107 0020 42F82310 	 str r1,[r2,r3,lsl#2]
+ 104              	 .loc 1 1260 65
+ 105 000a FB79     	 ldrb r3,[r7,#7]
+ 106 000c 03F01F03 	 and r3,r3,#31
+ 107              	 .loc 1 1260 44
+ 108 0010 0122     	 movs r2,#1
+ 109 0012 02FA03F1 	 lsl r1,r2,r3
+ 110              	 .loc 1 1260 7
+ 111 0016 064A     	 ldr r2,.L5
+ 112              	 .loc 1 1260 15
+ 113 0018 97F90730 	 ldrsb r3,[r7,#7]
+ 114              	 .loc 1 1260 32
+ 115 001c 5B09     	 lsrs r3,r3,#5
+ 116              	 .loc 1 1260 39
+ 117 001e 2033     	 adds r3,r3,#32
+ 118 0020 42F82310 	 str r1,[r2,r3,lsl#2]
 1261:.././hal/sam3u1c/inc/core_cm3.h **** }
- 108              	 .loc 1 1261 0
- 109 0024 00BF     	 nop
- 110 0026 0C37     	 adds r7,r7,#12
- 111              	.LCFI9:
- 112              	 .cfi_def_cfa_offset 4
- 113 0028 BD46     	 mov sp,r7
- 114              	.LCFI10:
- 115              	 .cfi_def_cfa_register 13
- 116              	 
- 117 002a 80BC     	 pop {r7}
- 118              	.LCFI11:
- 119              	 .cfi_restore 7
- 120              	 .cfi_def_cfa_offset 0
- 121 002c 7047     	 bx lr
- 122              	.L6:
- 123 002e 00BF     	 .align 2
- 124              	.L5:
- 125 0030 00E100E0 	 .word -536813312
- 126              	 .cfi_endproc
- 127              	.LFE42:
- 129              	 .section .text.NVIC_ClearPendingIRQ,"ax",%progbits
- 130              	 .align 1
- 131              	 .syntax unified
- 132              	 .thumb
- 133              	 .thumb_func
- 134              	 .fpu softvfp
- 136              	NVIC_ClearPendingIRQ:
- 137              	.LFB45:
+ 119              	 .loc 1 1261 1
+ 120 0024 00BF     	 nop
+ 121 0026 0C37     	 adds r7,r7,#12
+ 122              	.LCFI9:
+ 123              	 .cfi_def_cfa_offset 4
+ 124 0028 BD46     	 mov sp,r7
+ 125              	.LCFI10:
+ 126              	 .cfi_def_cfa_register 13
+ 127              	 
+ 128 002a 80BC     	 pop {r7}
+ 129              	.LCFI11:
+ 130              	 .cfi_restore 7
+ 131              	 .cfi_def_cfa_offset 0
+ 132 002c 7047     	 bx lr
+ 133              	.L6:
+ 134 002e 00BF     	 .align 2
+ 135              	.L5:
+ 136 0030 00E100E0 	 .word -536813312
+ 137              	 .cfi_endproc
+ 138              	.LFE42:
+ 140              	 .section .text.NVIC_ClearPendingIRQ,"ax",%progbits
+ 141              	 .align 1
+ 142              	 .syntax unified
+ 143              	 .thumb
+ 144              	 .thumb_func
+ 145              	 .fpu softvfp
+ 147              	NVIC_ClearPendingIRQ:
+ 148              	.LFB45:
 1262:.././hal/sam3u1c/inc/core_cm3.h **** 
 1263:.././hal/sam3u1c/inc/core_cm3.h **** 
 1264:.././hal/sam3u1c/inc/core_cm3.h **** /** \brief  Get Pending Interrupt
@@ -1429,63 +1440,68 @@
 1297:.././hal/sam3u1c/inc/core_cm3.h ****  */
 1298:.././hal/sam3u1c/inc/core_cm3.h **** __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 1299:.././hal/sam3u1c/inc/core_cm3.h **** {
- 138              	 .loc 1 1299 0
- 139              	 .cfi_startproc
- 140              	 
- 141              	 
- 142              	 
- 143 0000 80B4     	 push {r7}
- 144              	.LCFI12:
- 145              	 .cfi_def_cfa_offset 4
- 146              	 .cfi_offset 7,-4
- 147 0002 83B0     	 sub sp,sp,#12
- 148              	.LCFI13:
- 149              	 .cfi_def_cfa_offset 16
- 150 0004 00AF     	 add r7,sp,#0
- 151              	.LCFI14:
- 152              	 .cfi_def_cfa_register 7
- 153 0006 0346     	 mov r3,r0
- 154 0008 FB71     	 strb r3,[r7,#7]
+ 149              	 .loc 1 1299 1
+ 150              	 .cfi_startproc
+ 151              	 
+ 152              	 
+ 153              	 
+ 154 0000 80B4     	 push {r7}
+ 155              	.LCFI12:
+ 156              	 .cfi_def_cfa_offset 4
+ 157              	 .cfi_offset 7,-4
+ 158 0002 83B0     	 sub sp,sp,#12
+ 159              	.LCFI13:
+ 160              	 .cfi_def_cfa_offset 16
+ 161 0004 00AF     	 add r7,sp,#0
+ 162              	.LCFI14:
+ 163              	 .cfi_def_cfa_register 7
+ 164 0006 0346     	 mov r3,r0
+ 165 0008 FB71     	 strb r3,[r7,#7]
 1300:.././hal/sam3u1c/inc/core_cm3.h ****   NVIC->ICPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrup
- 155              	 .loc 1 1300 0
- 156 000a FB79     	 ldrb r3,[r7,#7]
- 157 000c 03F01F03 	 and r3,r3,#31
- 158 0010 0122     	 movs r2,#1
- 159 0012 02FA03F1 	 lsl r1,r2,r3
- 160 0016 064A     	 ldr r2,.L8
- 161 0018 97F90730 	 ldrsb r3,[r7,#7]
- 162 001c 5B09     	 lsrs r3,r3,#5
- 163 001e 6033     	 adds r3,r3,#96
- 164 0020 42F82310 	 str r1,[r2,r3,lsl#2]
+ 166              	 .loc 1 1300 65
+ 167 000a FB79     	 ldrb r3,[r7,#7]
+ 168 000c 03F01F03 	 and r3,r3,#31
+ 169              	 .loc 1 1300 44
+ 170 0010 0122     	 movs r2,#1
+ 171 0012 02FA03F1 	 lsl r1,r2,r3
+ 172              	 .loc 1 1300 7
+ 173 0016 064A     	 ldr r2,.L8
+ 174              	 .loc 1 1300 15
+ 175 0018 97F90730 	 ldrsb r3,[r7,#7]
+ 176              	 .loc 1 1300 32
+ 177 001c 5B09     	 lsrs r3,r3,#5
+ 178              	 .loc 1 1300 39
+ 179 001e 6033     	 adds r3,r3,#96
+ 180 0020 42F82310 	 str r1,[r2,r3,lsl#2]
 1301:.././hal/sam3u1c/inc/core_cm3.h **** }
- 165              	 .loc 1 1301 0
- 166 0024 00BF     	 nop
- 167 0026 0C37     	 adds r7,r7,#12
- 168              	.LCFI15:
- 169              	 .cfi_def_cfa_offset 4
- 170 0028 BD46     	 mov sp,r7
- 171              	.LCFI16:
- 172              	 .cfi_def_cfa_register 13
- 173              	 
- 174 002a 80BC     	 pop {r7}
- 175              	.LCFI17:
- 176              	 .cfi_restore 7
- 177              	 .cfi_def_cfa_offset 0
- 178 002c 7047     	 bx lr
- 179              	.L9:
- 180 002e 00BF     	 .align 2
- 181              	.L8:
- 182 0030 00E100E0 	 .word -536813312
- 183              	 .cfi_endproc
- 184              	.LFE45:
- 186              	 .section .text.NVIC_SetPriority,"ax",%progbits
- 187              	 .align 1
- 188              	 .syntax unified
- 189              	 .thumb
- 190              	 .thumb_func
- 191              	 .fpu softvfp
- 193              	NVIC_SetPriority:
- 194              	.LFB47:
+ 181              	 .loc 1 1301 1
+ 182 0024 00BF     	 nop
+ 183 0026 0C37     	 adds r7,r7,#12
+ 184              	.LCFI15:
+ 185              	 .cfi_def_cfa_offset 4
+ 186 0028 BD46     	 mov sp,r7
+ 187              	.LCFI16:
+ 188              	 .cfi_def_cfa_register 13
+ 189              	 
+ 190 002a 80BC     	 pop {r7}
+ 191              	.LCFI17:
+ 192              	 .cfi_restore 7
+ 193              	 .cfi_def_cfa_offset 0
+ 194 002c 7047     	 bx lr
+ 195              	.L9:
+ 196 002e 00BF     	 .align 2
+ 197              	.L8:
+ 198 0030 00E100E0 	 .word -536813312
+ 199              	 .cfi_endproc
+ 200              	.LFE45:
+ 202              	 .section .text.NVIC_SetPriority,"ax",%progbits
+ 203              	 .align 1
+ 204              	 .syntax unified
+ 205              	 .thumb
+ 206              	 .thumb_func
+ 207              	 .fpu softvfp
+ 209              	NVIC_SetPriority:
+ 210              	.LFB47:
 1302:.././hal/sam3u1c/inc/core_cm3.h **** 
 1303:.././hal/sam3u1c/inc/core_cm3.h **** 
 1304:.././hal/sam3u1c/inc/core_cm3.h **** /** \brief  Get Active Interrupt
@@ -1514,108 +1530,121 @@
 1327:.././hal/sam3u1c/inc/core_cm3.h ****  */
 1328:.././hal/sam3u1c/inc/core_cm3.h **** __STATIC_INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
 1329:.././hal/sam3u1c/inc/core_cm3.h **** {
- 195              	 .loc 1 1329 0
- 196              	 .cfi_startproc
- 197              	 
- 198              	 
- 199              	 
- 200 0000 80B4     	 push {r7}
- 201              	.LCFI18:
- 202              	 .cfi_def_cfa_offset 4
- 203              	 .cfi_offset 7,-4
- 204 0002 83B0     	 sub sp,sp,#12
- 205              	.LCFI19:
- 206              	 .cfi_def_cfa_offset 16
- 207 0004 00AF     	 add r7,sp,#0
- 208              	.LCFI20:
- 209              	 .cfi_def_cfa_register 7
- 210 0006 0346     	 mov r3,r0
- 211 0008 3960     	 str r1,[r7]
- 212 000a FB71     	 strb r3,[r7,#7]
+ 211              	 .loc 1 1329 1
+ 212              	 .cfi_startproc
+ 213              	 
+ 214              	 
+ 215              	 
+ 216 0000 80B4     	 push {r7}
+ 217              	.LCFI18:
+ 218              	 .cfi_def_cfa_offset 4
+ 219              	 .cfi_offset 7,-4
+ 220 0002 83B0     	 sub sp,sp,#12
+ 221              	.LCFI19:
+ 222              	 .cfi_def_cfa_offset 16
+ 223 0004 00AF     	 add r7,sp,#0
+ 224              	.LCFI20:
+ 225              	 .cfi_def_cfa_register 7
+ 226 0006 0346     	 mov r3,r0
+ 227 0008 3960     	 str r1,[r7]
+ 228 000a FB71     	 strb r3,[r7,#7]
 1330:.././hal/sam3u1c/inc/core_cm3.h ****   if(IRQn < 0) {
- 213              	 .loc 1 1330 0
- 214 000c 97F90730 	 ldrsb r3,[r7,#7]
- 215 0010 002B     	 cmp r3,#0
- 216 0012 0BDA     	 bge .L11
+ 229              	 .loc 1 1330 5
+ 230 000c 97F90730 	 ldrsb r3,[r7,#7]
+ 231 0010 002B     	 cmp r3,#0
+ 232 0012 0BDA     	 bge .L11
 1331:.././hal/sam3u1c/inc/core_cm3.h ****     SCB->SHP[((uint32_t)(IRQn) & 0xF)-4] = ((priority << (8 - __NVIC_PRIO_BITS)) & 0xff); } /* set 
- 217              	 .loc 1 1331 0
- 218 0014 3B68     	 ldr r3,[r7]
- 219 0016 DAB2     	 uxtb r2,r3
- 220 0018 0C49     	 ldr r1,.L14
- 221 001a FB79     	 ldrb r3,[r7,#7]
- 222 001c 03F00F03 	 and r3,r3,#15
- 223 0020 043B     	 subs r3,r3,#4
- 224 0022 1201     	 lsls r2,r2,#4
- 225 0024 D2B2     	 uxtb r2,r2
- 226 0026 0B44     	 add r3,r3,r1
- 227 0028 1A76     	 strb r2,[r3,#24]
+ 233              	 .loc 1 1331 55
+ 234 0014 3B68     	 ldr r3,[r7]
+ 235 0016 DAB2     	 uxtb r2,r3
+ 236              	 .loc 1 1331 8
+ 237 0018 0C49     	 ldr r1,.L14
+ 238              	 .loc 1 1331 32
+ 239 001a FB79     	 ldrb r3,[r7,#7]
+ 240 001c 03F00F03 	 and r3,r3,#15
+ 241              	 .loc 1 1331 38
+ 242 0020 043B     	 subs r3,r3,#4
+ 243              	 .loc 1 1331 55
+ 244 0022 1201     	 lsls r2,r2,#4
+ 245 0024 D2B2     	 uxtb r2,r2
+ 246              	 .loc 1 1331 42
+ 247 0026 0B44     	 add r3,r3,r1
+ 248 0028 1A76     	 strb r2,[r3,#24]
 1332:.././hal/sam3u1c/inc/core_cm3.h ****   else {
 1333:.././hal/sam3u1c/inc/core_cm3.h ****     NVIC->IP[(uint32_t)(IRQn)] = ((priority << (8 - __NVIC_PRIO_BITS)) & 0xff);    }        /* set 
 1334:.././hal/sam3u1c/inc/core_cm3.h **** }
- 228              	 .loc 1 1334 0
- 229 002a 09E0     	 b .L13
- 230              	.L11:
+ 249              	 .loc 1 1334 1
+ 250 002a 09E0     	 b .L13
+ 251              	.L11:
 1333:.././hal/sam3u1c/inc/core_cm3.h **** }
- 231              	 .loc 1 1333 0
- 232 002c 3B68     	 ldr r3,[r7]
- 233 002e DAB2     	 uxtb r2,r3
- 234 0030 0749     	 ldr r1,.L14+4
- 235 0032 97F90730 	 ldrsb r3,[r7,#7]
- 236 0036 1201     	 lsls r2,r2,#4
- 237 0038 D2B2     	 uxtb r2,r2
- 238 003a 0B44     	 add r3,r3,r1
- 239 003c 83F80023 	 strb r2,[r3,#768]
- 240              	.L13:
- 241              	 .loc 1 1334 0
- 242 0040 00BF     	 nop
- 243 0042 0C37     	 adds r7,r7,#12
- 244              	.LCFI21:
- 245              	 .cfi_def_cfa_offset 4
- 246 0044 BD46     	 mov sp,r7
- 247              	.LCFI22:
- 248              	 .cfi_def_cfa_register 13
- 249              	 
- 250 0046 80BC     	 pop {r7}
- 251              	.LCFI23:
- 252              	 .cfi_restore 7
- 253              	 .cfi_def_cfa_offset 0
- 254 0048 7047     	 bx lr
- 255              	.L15:
- 256 004a 00BF     	 .align 2
- 257              	.L14:
- 258 004c 00ED00E0 	 .word -536810240
- 259 0050 00E100E0 	 .word -536813312
- 260              	 .cfi_endproc
- 261              	.LFE47:
- 263              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
- 264              	 .align 2
- 267              	cpu_irq_critical_section_counter:
- 268 0000 00000000 	 .space 4
- 269              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
- 272              	cpu_irq_prev_interrupt_state:
- 273 0000 00       	 .space 1
- 274              	 .section .bss.gs_interrupt_sources,"aw",%nobits
- 275              	 .align 2
- 278              	gs_interrupt_sources:
- 279 0000 00000000 	 .space 112
- 279      00000000 
- 279      00000000 
- 279      00000000 
- 279      00000000 
- 280              	 .section .bss.gs_ul_nb_sources,"aw",%nobits
- 281              	 .align 2
- 284              	gs_ul_nb_sources:
- 285 0000 00000000 	 .space 4
- 286              	 .section .text.pio_handler_process,"ax",%progbits
- 287              	 .align 1
- 288              	 .global pio_handler_process
- 289              	 .syntax unified
- 290              	 .thumb
- 291              	 .thumb_func
- 292              	 .fpu softvfp
- 294              	pio_handler_process:
- 295              	.LFB69:
- 296              	 .file 2 ".././hal/sam3u1c/pio_handler.c"
+ 252              	 .loc 1 1333 45
+ 253 002c 3B68     	 ldr r3,[r7]
+ 254 002e DAB2     	 uxtb r2,r3
+1333:.././hal/sam3u1c/inc/core_cm3.h **** }
+ 255              	 .loc 1 1333 9
+ 256 0030 0749     	 ldr r1,.L14+4
+1333:.././hal/sam3u1c/inc/core_cm3.h **** }
+ 257              	 .loc 1 1333 14
+ 258 0032 97F90730 	 ldrsb r3,[r7,#7]
+1333:.././hal/sam3u1c/inc/core_cm3.h **** }
+ 259              	 .loc 1 1333 45
+ 260 0036 1201     	 lsls r2,r2,#4
+ 261 0038 D2B2     	 uxtb r2,r2
+1333:.././hal/sam3u1c/inc/core_cm3.h **** }
+ 262              	 .loc 1 1333 32
+ 263 003a 0B44     	 add r3,r3,r1
+ 264 003c 83F80023 	 strb r2,[r3,#768]
+ 265              	.L13:
+ 266              	 .loc 1 1334 1
+ 267 0040 00BF     	 nop
+ 268 0042 0C37     	 adds r7,r7,#12
+ 269              	.LCFI21:
+ 270              	 .cfi_def_cfa_offset 4
+ 271 0044 BD46     	 mov sp,r7
+ 272              	.LCFI22:
+ 273              	 .cfi_def_cfa_register 13
+ 274              	 
+ 275 0046 80BC     	 pop {r7}
+ 276              	.LCFI23:
+ 277              	 .cfi_restore 7
+ 278              	 .cfi_def_cfa_offset 0
+ 279 0048 7047     	 bx lr
+ 280              	.L15:
+ 281 004a 00BF     	 .align 2
+ 282              	.L14:
+ 283 004c 00ED00E0 	 .word -536810240
+ 284 0050 00E100E0 	 .word -536813312
+ 285              	 .cfi_endproc
+ 286              	.LFE47:
+ 288              	 .section .bss.cpu_irq_critical_section_counter,"aw",%nobits
+ 289              	 .align 2
+ 292              	cpu_irq_critical_section_counter:
+ 293 0000 00000000 	 .space 4
+ 294              	 .section .bss.cpu_irq_prev_interrupt_state,"aw",%nobits
+ 297              	cpu_irq_prev_interrupt_state:
+ 298 0000 00       	 .space 1
+ 299              	 .section .bss.gs_interrupt_sources,"aw",%nobits
+ 300              	 .align 2
+ 303              	gs_interrupt_sources:
+ 304 0000 00000000 	 .space 112
+ 304      00000000 
+ 304      00000000 
+ 304      00000000 
+ 304      00000000 
+ 305              	 .section .bss.gs_ul_nb_sources,"aw",%nobits
+ 306              	 .align 2
+ 309              	gs_ul_nb_sources:
+ 310 0000 00000000 	 .space 4
+ 311              	 .section .text.pio_handler_process,"ax",%progbits
+ 312              	 .align 1
+ 313              	 .global pio_handler_process
+ 314              	 .syntax unified
+ 315              	 .thumb
+ 316              	 .thumb_func
+ 317              	 .fpu softvfp
+ 319              	pio_handler_process:
+ 320              	.LFB69:
+ 321              	 .file 2 ".././hal/sam3u1c/pio_handler.c"
    1:.././hal/sam3u1c/pio_handler.c **** /**
    2:.././hal/sam3u1c/pio_handler.c ****  * \file
    3:.././hal/sam3u1c/pio_handler.c ****  *
@@ -1703,138 +1732,145 @@
   85:.././hal/sam3u1c/pio_handler.c ****  */
   86:.././hal/sam3u1c/pio_handler.c **** void pio_handler_process(Pio *p_pio, uint32_t ul_id)
   87:.././hal/sam3u1c/pio_handler.c **** {
- 297              	 .loc 2 87 0
- 298              	 .cfi_startproc
- 299              	 
- 300              	 
- 301 0000 80B5     	 push {r7,lr}
- 302              	.LCFI24:
- 303              	 .cfi_def_cfa_offset 8
- 304              	 .cfi_offset 7,-8
- 305              	 .cfi_offset 14,-4
- 306 0002 84B0     	 sub sp,sp,#16
- 307              	.LCFI25:
- 308              	 .cfi_def_cfa_offset 24
- 309 0004 00AF     	 add r7,sp,#0
- 310              	.LCFI26:
- 311              	 .cfi_def_cfa_register 7
- 312 0006 7860     	 str r0,[r7,#4]
- 313 0008 3960     	 str r1,[r7]
+ 322              	 .loc 2 87 1
+ 323              	 .cfi_startproc
+ 324              	 
+ 325              	 
+ 326 0000 80B5     	 push {r7,lr}
+ 327              	.LCFI24:
+ 328              	 .cfi_def_cfa_offset 8
+ 329              	 .cfi_offset 7,-8
+ 330              	 .cfi_offset 14,-4
+ 331 0002 84B0     	 sub sp,sp,#16
+ 332              	.LCFI25:
+ 333              	 .cfi_def_cfa_offset 24
+ 334 0004 00AF     	 add r7,sp,#0
+ 335              	.LCFI26:
+ 336              	 .cfi_def_cfa_register 7
+ 337 0006 7860     	 str r0,[r7,#4]
+ 338 0008 3960     	 str r1,[r7]
   88:.././hal/sam3u1c/pio_handler.c **** 	uint32_t status;
   89:.././hal/sam3u1c/pio_handler.c **** 	uint32_t i;
   90:.././hal/sam3u1c/pio_handler.c **** 
   91:.././hal/sam3u1c/pio_handler.c **** 	/* Read PIO controller status */
   92:.././hal/sam3u1c/pio_handler.c **** 	status = pio_get_interrupt_status(p_pio);
- 314              	 .loc 2 92 0
- 315 000a 7868     	 ldr r0,[r7,#4]
- 316 000c 264B     	 ldr r3,.L24
- 317 000e 9847     	 blx r3
- 318              	.LVL0:
- 319 0010 F860     	 str r0,[r7,#12]
+ 339              	 .loc 2 92 11
+ 340 000a 7868     	 ldr r0,[r7,#4]
+ 341 000c 264B     	 ldr r3,.L24
+ 342 000e 9847     	 blx r3
+ 343              	.LVL0:
+ 344 0010 F860     	 str r0,[r7,#12]
   93:.././hal/sam3u1c/pio_handler.c **** 	status &= pio_get_interrupt_mask(p_pio);
- 320              	 .loc 2 93 0
- 321 0012 7868     	 ldr r0,[r7,#4]
- 322 0014 254B     	 ldr r3,.L24+4
- 323 0016 9847     	 blx r3
- 324              	.LVL1:
- 325 0018 0246     	 mov r2,r0
- 326 001a FB68     	 ldr r3,[r7,#12]
- 327 001c 1340     	 ands r3,r3,r2
- 328 001e FB60     	 str r3,[r7,#12]
+ 345              	 .loc 2 93 12
+ 346 0012 7868     	 ldr r0,[r7,#4]
+ 347 0014 254B     	 ldr r3,.L24+4
+ 348 0016 9847     	 blx r3
+ 349              	.LVL1:
+ 350 0018 0246     	 mov r2,r0
+ 351              	 .loc 2 93 9
+ 352 001a FB68     	 ldr r3,[r7,#12]
+ 353 001c 1340     	 ands r3,r3,r2
+ 354 001e FB60     	 str r3,[r7,#12]
   94:.././hal/sam3u1c/pio_handler.c **** 
   95:.././hal/sam3u1c/pio_handler.c **** 	/* Check pending events */
   96:.././hal/sam3u1c/pio_handler.c **** 	if (status != 0) {
- 329              	 .loc 2 96 0
- 330 0020 FB68     	 ldr r3,[r7,#12]
- 331 0022 002B     	 cmp r3,#0
- 332 0024 3CD0     	 beq .L22
+ 355              	 .loc 2 96 5
+ 356 0020 FB68     	 ldr r3,[r7,#12]
+ 357 0022 002B     	 cmp r3,#0
+ 358 0024 3CD0     	 beq .L22
   97:.././hal/sam3u1c/pio_handler.c **** 		/* Find triggering source */
   98:.././hal/sam3u1c/pio_handler.c **** 		i = 0;
- 333              	 .loc 2 98 0
- 334 0026 0023     	 movs r3,#0
- 335 0028 BB60     	 str r3,[r7,#8]
+ 359              	 .loc 2 98 5
+ 360 0026 0023     	 movs r3,#0
+ 361 0028 BB60     	 str r3,[r7,#8]
   99:.././hal/sam3u1c/pio_handler.c **** 		while (status != 0) {
- 336              	 .loc 2 99 0
- 337 002a 34E0     	 b .L18
- 338              	.L20:
+ 362              	 .loc 2 99 9
+ 363 002a 34E0     	 b .L18
+ 364              	.L20:
  100:.././hal/sam3u1c/pio_handler.c **** 			/* Source is configured on the same controller */
  101:.././hal/sam3u1c/pio_handler.c **** 			if (gs_interrupt_sources[i].id == ul_id) {
- 339              	 .loc 2 101 0
- 340 002c 204A     	 ldr r2,.L24+8
- 341 002e BB68     	 ldr r3,[r7,#8]
- 342 0030 1B01     	 lsls r3,r3,#4
- 343 0032 1344     	 add r3,r3,r2
- 344 0034 1B68     	 ldr r3,[r3]
- 345 0036 3A68     	 ldr r2,[r7]
- 346 0038 9A42     	 cmp r2,r3
- 347 003a 26D1     	 bne .L19
+ 365              	 .loc 2 101 31
+ 366 002c 204A     	 ldr r2,.L24+8
+ 367 002e BB68     	 ldr r3,[r7,#8]
+ 368 0030 1B01     	 lsls r3,r3,#4
+ 369 0032 1344     	 add r3,r3,r2
+ 370 0034 1B68     	 ldr r3,[r3]
+ 371              	 .loc 2 101 7
+ 372 0036 3A68     	 ldr r2,[r7]
+ 373 0038 9A42     	 cmp r2,r3
+ 374 003a 26D1     	 bne .L19
  102:.././hal/sam3u1c/pio_handler.c **** 				/* Source has PIOs whose statuses have changed */
  103:.././hal/sam3u1c/pio_handler.c **** 				if ((status & gs_interrupt_sources[i].mask) != 0) {
- 348              	 .loc 2 103 0
- 349 003c 1C4A     	 ldr r2,.L24+8
- 350 003e BB68     	 ldr r3,[r7,#8]
- 351 0040 1B01     	 lsls r3,r3,#4
- 352 0042 1344     	 add r3,r3,r2
- 353 0044 0433     	 adds r3,r3,#4
- 354 0046 1A68     	 ldr r2,[r3]
- 355 0048 FB68     	 ldr r3,[r7,#12]
- 356 004a 1340     	 ands r3,r3,r2
- 357 004c 002B     	 cmp r3,#0
- 358 004e 1CD0     	 beq .L19
+ 375              	 .loc 2 103 42
+ 376 003c 1C4A     	 ldr r2,.L24+8
+ 377 003e BB68     	 ldr r3,[r7,#8]
+ 378 0040 1B01     	 lsls r3,r3,#4
+ 379 0042 1344     	 add r3,r3,r2
+ 380 0044 0433     	 adds r3,r3,#4
+ 381 0046 1A68     	 ldr r2,[r3]
+ 382              	 .loc 2 103 17
+ 383 0048 FB68     	 ldr r3,[r7,#12]
+ 384 004a 1340     	 ands r3,r3,r2
+ 385              	 .loc 2 103 8
+ 386 004c 002B     	 cmp r3,#0
+ 387 004e 1CD0     	 beq .L19
  104:.././hal/sam3u1c/pio_handler.c **** 					gs_interrupt_sources[i].handler(gs_interrupt_sources[i].id,
- 359              	 .loc 2 104 0
- 360 0050 174A     	 ldr r2,.L24+8
- 361 0052 BB68     	 ldr r3,[r7,#8]
- 362 0054 1B01     	 lsls r3,r3,#4
- 363 0056 1344     	 add r3,r3,r2
- 364 0058 0C33     	 adds r3,r3,#12
- 365 005a 1B68     	 ldr r3,[r3]
- 366 005c 1449     	 ldr r1,.L24+8
- 367 005e BA68     	 ldr r2,[r7,#8]
- 368 0060 1201     	 lsls r2,r2,#4
- 369 0062 0A44     	 add r2,r2,r1
- 370 0064 1068     	 ldr r0,[r2]
- 371 0066 1249     	 ldr r1,.L24+8
- 372 0068 BA68     	 ldr r2,[r7,#8]
- 373 006a 1201     	 lsls r2,r2,#4
- 374 006c 0A44     	 add r2,r2,r1
- 375 006e 0432     	 adds r2,r2,#4
- 376 0070 1268     	 ldr r2,[r2]
- 377 0072 1146     	 mov r1,r2
- 378 0074 9847     	 blx r3
- 379              	.LVL2:
+ 388              	 .loc 2 104 29
+ 389 0050 174A     	 ldr r2,.L24+8
+ 390 0052 BB68     	 ldr r3,[r7,#8]
+ 391 0054 1B01     	 lsls r3,r3,#4
+ 392 0056 1344     	 add r3,r3,r2
+ 393 0058 0C33     	 adds r3,r3,#12
+ 394 005a 1B68     	 ldr r3,[r3]
+ 395              	 .loc 2 104 6
+ 396 005c 1449     	 ldr r1,.L24+8
+ 397 005e BA68     	 ldr r2,[r7,#8]
+ 398 0060 1201     	 lsls r2,r2,#4
+ 399 0062 0A44     	 add r2,r2,r1
+ 400 0064 1068     	 ldr r0,[r2]
+ 401 0066 1249     	 ldr r1,.L24+8
+ 402 0068 BA68     	 ldr r2,[r7,#8]
+ 403 006a 1201     	 lsls r2,r2,#4
+ 404 006c 0A44     	 add r2,r2,r1
+ 405 006e 0432     	 adds r2,r2,#4
+ 406 0070 1268     	 ldr r2,[r2]
+ 407 0072 1146     	 mov r1,r2
+ 408 0074 9847     	 blx r3
+ 409              	.LVL2:
  105:.././hal/sam3u1c/pio_handler.c **** 							gs_interrupt_sources[i].mask);
  106:.././hal/sam3u1c/pio_handler.c **** 					status &= ~(gs_interrupt_sources[i].mask);
- 380              	 .loc 2 106 0
- 381 0076 0E4A     	 ldr r2,.L24+8
- 382 0078 BB68     	 ldr r3,[r7,#8]
- 383 007a 1B01     	 lsls r3,r3,#4
- 384 007c 1344     	 add r3,r3,r2
- 385 007e 0433     	 adds r3,r3,#4
- 386 0080 1B68     	 ldr r3,[r3]
- 387 0082 DB43     	 mvns r3,r3
- 388 0084 FA68     	 ldr r2,[r7,#12]
- 389 0086 1340     	 ands r3,r3,r2
- 390 0088 FB60     	 str r3,[r7,#12]
- 391              	.L19:
+ 410              	 .loc 2 106 41
+ 411 0076 0E4A     	 ldr r2,.L24+8
+ 412 0078 BB68     	 ldr r3,[r7,#8]
+ 413 007a 1B01     	 lsls r3,r3,#4
+ 414 007c 1344     	 add r3,r3,r2
+ 415 007e 0433     	 adds r3,r3,#4
+ 416 0080 1B68     	 ldr r3,[r3]
+ 417              	 .loc 2 106 16
+ 418 0082 DB43     	 mvns r3,r3
+ 419              	 .loc 2 106 13
+ 420 0084 FA68     	 ldr r2,[r7,#12]
+ 421 0086 1340     	 ands r3,r3,r2
+ 422 0088 FB60     	 str r3,[r7,#12]
+ 423              	.L19:
  107:.././hal/sam3u1c/pio_handler.c **** 				}
  108:.././hal/sam3u1c/pio_handler.c **** 			}
  109:.././hal/sam3u1c/pio_handler.c **** 			i++;
- 392              	 .loc 2 109 0
- 393 008a BB68     	 ldr r3,[r7,#8]
- 394 008c 0133     	 adds r3,r3,#1
- 395 008e BB60     	 str r3,[r7,#8]
+ 424              	 .loc 2 109 5
+ 425 008a BB68     	 ldr r3,[r7,#8]
+ 426 008c 0133     	 adds r3,r3,#1
+ 427 008e BB60     	 str r3,[r7,#8]
  110:.././hal/sam3u1c/pio_handler.c **** 			if (i >= MAX_INTERRUPT_SOURCES) {
- 396              	 .loc 2 110 0
- 397 0090 BB68     	 ldr r3,[r7,#8]
- 398 0092 062B     	 cmp r3,#6
- 399 0094 03D8     	 bhi .L23
- 400              	.L18:
+ 428              	 .loc 2 110 7
+ 429 0090 BB68     	 ldr r3,[r7,#8]
+ 430 0092 062B     	 cmp r3,#6
+ 431 0094 03D8     	 bhi .L23
+ 432              	.L18:
   99:.././hal/sam3u1c/pio_handler.c **** 			/* Source is configured on the same controller */
- 401              	 .loc 2 99 0
- 402 0096 FB68     	 ldr r3,[r7,#12]
- 403 0098 002B     	 cmp r3,#0
- 404 009a C7D1     	 bne .L20
+ 433              	 .loc 2 99 9
+ 434 0096 FB68     	 ldr r3,[r7,#12]
+ 435 0098 002B     	 cmp r3,#0
+ 436 009a C7D1     	 bne .L20
  111:.././hal/sam3u1c/pio_handler.c **** 				break;
  112:.././hal/sam3u1c/pio_handler.c **** 			}
  113:.././hal/sam3u1c/pio_handler.c **** 		}
@@ -1849,40 +1885,40 @@
  122:.././hal/sam3u1c/pio_handler.c **** 	}
  123:.././hal/sam3u1c/pio_handler.c **** #endif
  124:.././hal/sam3u1c/pio_handler.c **** }
- 405              	 .loc 2 124 0
- 406 009c 00E0     	 b .L22
- 407              	.L23:
+ 437              	 .loc 2 124 1
+ 438 009c 00E0     	 b .L22
+ 439              	.L23:
  111:.././hal/sam3u1c/pio_handler.c **** 				break;
- 408              	 .loc 2 111 0
- 409 009e 00BF     	 nop
- 410              	.L22:
- 411              	 .loc 2 124 0
- 412 00a0 00BF     	 nop
- 413 00a2 1037     	 adds r7,r7,#16
- 414              	.LCFI27:
- 415              	 .cfi_def_cfa_offset 8
- 416 00a4 BD46     	 mov sp,r7
- 417              	.LCFI28:
- 418              	 .cfi_def_cfa_register 13
- 419              	 
- 420 00a6 80BD     	 pop {r7,pc}
- 421              	.L25:
- 422              	 .align 2
- 423              	.L24:
- 424 00a8 00000000 	 .word pio_get_interrupt_status
- 425 00ac 00000000 	 .word pio_get_interrupt_mask
- 426 00b0 00000000 	 .word gs_interrupt_sources
- 427              	 .cfi_endproc
- 428              	.LFE69:
- 430              	 .section .text.pio_handler_set,"ax",%progbits
- 431              	 .align 1
- 432              	 .global pio_handler_set
- 433              	 .syntax unified
- 434              	 .thumb
- 435              	 .thumb_func
- 436              	 .fpu softvfp
- 438              	pio_handler_set:
- 439              	.LFB70:
+ 440              	 .loc 2 111 5
+ 441 009e 00BF     	 nop
+ 442              	.L22:
+ 443              	 .loc 2 124 1
+ 444 00a0 00BF     	 nop
+ 445 00a2 1037     	 adds r7,r7,#16
+ 446              	.LCFI27:
+ 447              	 .cfi_def_cfa_offset 8
+ 448 00a4 BD46     	 mov sp,r7
+ 449              	.LCFI28:
+ 450              	 .cfi_def_cfa_register 13
+ 451              	 
+ 452 00a6 80BD     	 pop {r7,pc}
+ 453              	.L25:
+ 454              	 .align 2
+ 455              	.L24:
+ 456 00a8 00000000 	 .word pio_get_interrupt_status
+ 457 00ac 00000000 	 .word pio_get_interrupt_mask
+ 458 00b0 00000000 	 .word gs_interrupt_sources
+ 459              	 .cfi_endproc
+ 460              	.LFE69:
+ 462              	 .section .text.pio_handler_set,"ax",%progbits
+ 463              	 .align 1
+ 464              	 .global pio_handler_set
+ 465              	 .syntax unified
+ 466              	 .thumb
+ 467              	 .thumb_func
+ 468              	 .fpu softvfp
+ 470              	pio_handler_set:
+ 471              	.LFB70:
  125:.././hal/sam3u1c/pio_handler.c **** 
  126:.././hal/sam3u1c/pio_handler.c **** /**
  127:.././hal/sam3u1c/pio_handler.c ****  * \brief Set an interrupt handler for the provided pins.
@@ -1900,118 +1936,120 @@
  139:.././hal/sam3u1c/pio_handler.c **** uint32_t pio_handler_set(Pio *p_pio, uint32_t ul_id, uint32_t ul_mask,
  140:.././hal/sam3u1c/pio_handler.c **** 		uint32_t ul_attr, void (*p_handler) (uint32_t, uint32_t))
  141:.././hal/sam3u1c/pio_handler.c **** {
- 440              	 .loc 2 141 0
- 441              	 .cfi_startproc
- 442              	 
- 443              	 
- 444 0000 80B5     	 push {r7,lr}
- 445              	.LCFI29:
- 446              	 .cfi_def_cfa_offset 8
- 447              	 .cfi_offset 7,-8
- 448              	 .cfi_offset 14,-4
- 449 0002 86B0     	 sub sp,sp,#24
- 450              	.LCFI30:
- 451              	 .cfi_def_cfa_offset 32
- 452 0004 00AF     	 add r7,sp,#0
- 453              	.LCFI31:
- 454              	 .cfi_def_cfa_register 7
- 455 0006 F860     	 str r0,[r7,#12]
- 456 0008 B960     	 str r1,[r7,#8]
- 457 000a 7A60     	 str r2,[r7,#4]
- 458 000c 3B60     	 str r3,[r7]
+ 472              	 .loc 2 141 1
+ 473              	 .cfi_startproc
+ 474              	 
+ 475              	 
+ 476 0000 80B5     	 push {r7,lr}
+ 477              	.LCFI29:
+ 478              	 .cfi_def_cfa_offset 8
+ 479              	 .cfi_offset 7,-8
+ 480              	 .cfi_offset 14,-4
+ 481 0002 86B0     	 sub sp,sp,#24
+ 482              	.LCFI30:
+ 483              	 .cfi_def_cfa_offset 32
+ 484 0004 00AF     	 add r7,sp,#0
+ 485              	.LCFI31:
+ 486              	 .cfi_def_cfa_register 7
+ 487 0006 F860     	 str r0,[r7,#12]
+ 488 0008 B960     	 str r1,[r7,#8]
+ 489 000a 7A60     	 str r2,[r7,#4]
+ 490 000c 3B60     	 str r3,[r7]
  142:.././hal/sam3u1c/pio_handler.c **** 	struct s_interrupt_source *pSource;
  143:.././hal/sam3u1c/pio_handler.c **** 
  144:.././hal/sam3u1c/pio_handler.c **** 	if (gs_ul_nb_sources >= MAX_INTERRUPT_SOURCES)
- 459              	 .loc 2 144 0
- 460 000e 134B     	 ldr r3,.L29
- 461 0010 1B68     	 ldr r3,[r3]
- 462 0012 062B     	 cmp r3,#6
- 463 0014 01D9     	 bls .L27
+ 491              	 .loc 2 144 23
+ 492 000e 134B     	 ldr r3,.L29
+ 493 0010 1B68     	 ldr r3,[r3]
+ 494              	 .loc 2 144 5
+ 495 0012 062B     	 cmp r3,#6
+ 496 0014 01D9     	 bls .L27
  145:.././hal/sam3u1c/pio_handler.c **** 		return 1;
- 464              	 .loc 2 145 0
- 465 0016 0123     	 movs r3,#1
- 466 0018 1CE0     	 b .L28
- 467              	.L27:
+ 497              	 .loc 2 145 10
+ 498 0016 0123     	 movs r3,#1
+ 499 0018 1CE0     	 b .L28
+ 500              	.L27:
  146:.././hal/sam3u1c/pio_handler.c **** 
  147:.././hal/sam3u1c/pio_handler.c **** 	/* Define new source */
  148:.././hal/sam3u1c/pio_handler.c **** 	pSource = &(gs_interrupt_sources[gs_ul_nb_sources]);
- 468              	 .loc 2 148 0
- 469 001a 104B     	 ldr r3,.L29
- 470 001c 1B68     	 ldr r3,[r3]
- 471 001e 1B01     	 lsls r3,r3,#4
- 472 0020 0F4A     	 ldr r2,.L29+4
- 473 0022 1344     	 add r3,r3,r2
- 474 0024 7B61     	 str r3,[r7,#20]
+ 501              	 .loc 2 148 34
+ 502 001a 104B     	 ldr r3,.L29
+ 503 001c 1B68     	 ldr r3,[r3]
+ 504              	 .loc 2 148 10
+ 505 001e 1B01     	 lsls r3,r3,#4
+ 506 0020 0F4A     	 ldr r2,.L29+4
+ 507 0022 1344     	 add r3,r3,r2
+ 508 0024 7B61     	 str r3,[r7,#20]
  149:.././hal/sam3u1c/pio_handler.c **** 	pSource->id = ul_id;
- 475              	 .loc 2 149 0
- 476 0026 7B69     	 ldr r3,[r7,#20]
- 477 0028 BA68     	 ldr r2,[r7,#8]
- 478 002a 1A60     	 str r2,[r3]
+ 509              	 .loc 2 149 14
+ 510 0026 7B69     	 ldr r3,[r7,#20]
+ 511 0028 BA68     	 ldr r2,[r7,#8]
+ 512 002a 1A60     	 str r2,[r3]
  150:.././hal/sam3u1c/pio_handler.c **** 	pSource->mask = ul_mask;
- 479              	 .loc 2 150 0
- 480 002c 7B69     	 ldr r3,[r7,#20]
- 481 002e 7A68     	 ldr r2,[r7,#4]
- 482 0030 5A60     	 str r2,[r3,#4]
+ 513              	 .loc 2 150 16
+ 514 002c 7B69     	 ldr r3,[r7,#20]
+ 515 002e 7A68     	 ldr r2,[r7,#4]
+ 516 0030 5A60     	 str r2,[r3,#4]
  151:.././hal/sam3u1c/pio_handler.c **** 	pSource->attr = ul_attr;
- 483              	 .loc 2 151 0
- 484 0032 7B69     	 ldr r3,[r7,#20]
- 485 0034 3A68     	 ldr r2,[r7]
- 486 0036 9A60     	 str r2,[r3,#8]
+ 517              	 .loc 2 151 16
+ 518 0032 7B69     	 ldr r3,[r7,#20]
+ 519 0034 3A68     	 ldr r2,[r7]
+ 520 0036 9A60     	 str r2,[r3,#8]
  152:.././hal/sam3u1c/pio_handler.c **** 	pSource->handler = p_handler;
- 487              	 .loc 2 152 0
- 488 0038 7B69     	 ldr r3,[r7,#20]
- 489 003a 3A6A     	 ldr r2,[r7,#32]
- 490 003c DA60     	 str r2,[r3,#12]
+ 521              	 .loc 2 152 19
+ 522 0038 7B69     	 ldr r3,[r7,#20]
+ 523 003a 3A6A     	 ldr r2,[r7,#32]
+ 524 003c DA60     	 str r2,[r3,#12]
  153:.././hal/sam3u1c/pio_handler.c **** 	gs_ul_nb_sources++;
- 491              	 .loc 2 153 0
- 492 003e 074B     	 ldr r3,.L29
- 493 0040 1B68     	 ldr r3,[r3]
- 494 0042 0133     	 adds r3,r3,#1
- 495 0044 054A     	 ldr r2,.L29
- 496 0046 1360     	 str r3,[r2]
+ 525              	 .loc 2 153 18
+ 526 003e 074B     	 ldr r3,.L29
+ 527 0040 1B68     	 ldr r3,[r3]
+ 528 0042 0133     	 adds r3,r3,#1
+ 529 0044 054A     	 ldr r2,.L29
+ 530 0046 1360     	 str r3,[r2]
  154:.././hal/sam3u1c/pio_handler.c **** 
  155:.././hal/sam3u1c/pio_handler.c **** 	/* Configure interrupt mode */
  156:.././hal/sam3u1c/pio_handler.c **** 	pio_configure_interrupt(p_pio, ul_mask, ul_attr);
- 497              	 .loc 2 156 0
- 498 0048 3A68     	 ldr r2,[r7]
- 499 004a 7968     	 ldr r1,[r7,#4]
- 500 004c F868     	 ldr r0,[r7,#12]
- 501 004e 054B     	 ldr r3,.L29+8
- 502 0050 9847     	 blx r3
- 503              	.LVL3:
+ 531              	 .loc 2 156 2
+ 532 0048 3A68     	 ldr r2,[r7]
+ 533 004a 7968     	 ldr r1,[r7,#4]
+ 534 004c F868     	 ldr r0,[r7,#12]
+ 535 004e 054B     	 ldr r3,.L29+8
+ 536 0050 9847     	 blx r3
+ 537              	.LVL3:
  157:.././hal/sam3u1c/pio_handler.c **** 
  158:.././hal/sam3u1c/pio_handler.c **** 	return 0;
- 504              	 .loc 2 158 0
- 505 0052 0023     	 movs r3,#0
- 506              	.L28:
+ 538              	 .loc 2 158 9
+ 539 0052 0023     	 movs r3,#0
+ 540              	.L28:
  159:.././hal/sam3u1c/pio_handler.c **** }
- 507              	 .loc 2 159 0
- 508 0054 1846     	 mov r0,r3
- 509 0056 1837     	 adds r7,r7,#24
- 510              	.LCFI32:
- 511              	 .cfi_def_cfa_offset 8
- 512 0058 BD46     	 mov sp,r7
- 513              	.LCFI33:
- 514              	 .cfi_def_cfa_register 13
- 515              	 
- 516 005a 80BD     	 pop {r7,pc}
- 517              	.L30:
- 518              	 .align 2
- 519              	.L29:
- 520 005c 00000000 	 .word gs_ul_nb_sources
- 521 0060 00000000 	 .word gs_interrupt_sources
- 522 0064 00000000 	 .word pio_configure_interrupt
- 523              	 .cfi_endproc
- 524              	.LFE70:
- 526              	 .section .text.pio_handler_set_pin,"ax",%progbits
- 527              	 .align 1
- 528              	 .global pio_handler_set_pin
- 529              	 .syntax unified
- 530              	 .thumb
- 531              	 .thumb_func
- 532              	 .fpu softvfp
- 534              	pio_handler_set_pin:
- 535              	.LFB71:
+ 541              	 .loc 2 159 1
+ 542 0054 1846     	 mov r0,r3
+ 543 0056 1837     	 adds r7,r7,#24
+ 544              	.LCFI32:
+ 545              	 .cfi_def_cfa_offset 8
+ 546 0058 BD46     	 mov sp,r7
+ 547              	.LCFI33:
+ 548              	 .cfi_def_cfa_register 13
+ 549              	 
+ 550 005a 80BD     	 pop {r7,pc}
+ 551              	.L30:
+ 552              	 .align 2
+ 553              	.L29:
+ 554 005c 00000000 	 .word gs_ul_nb_sources
+ 555 0060 00000000 	 .word gs_interrupt_sources
+ 556 0064 00000000 	 .word pio_configure_interrupt
+ 557              	 .cfi_endproc
+ 558              	.LFE70:
+ 560              	 .section .text.pio_handler_set_pin,"ax",%progbits
+ 561              	 .align 1
+ 562              	 .global pio_handler_set_pin
+ 563              	 .syntax unified
+ 564              	 .thumb
+ 565              	 .thumb_func
+ 566              	 .fpu softvfp
+ 568              	pio_handler_set_pin:
+ 569              	.LFB71:
  160:.././hal/sam3u1c/pio_handler.c **** 
  161:.././hal/sam3u1c/pio_handler.c **** #if (SAM3S || SAM4S || SAM4E)
  162:.././hal/sam3u1c/pio_handler.c **** /**
@@ -2044,88 +2082,88 @@
  189:.././hal/sam3u1c/pio_handler.c **** uint32_t pio_handler_set_pin(uint32_t ul_pin, uint32_t ul_flag,
  190:.././hal/sam3u1c/pio_handler.c **** 		void (*p_handler) (uint32_t, uint32_t))
  191:.././hal/sam3u1c/pio_handler.c **** {
- 536              	 .loc 2 191 0
- 537              	 .cfi_startproc
- 538              	 
- 539              	 
- 540 0000 90B5     	 push {r4,r7,lr}
- 541              	.LCFI34:
- 542              	 .cfi_def_cfa_offset 12
- 543              	 .cfi_offset 4,-12
- 544              	 .cfi_offset 7,-8
- 545              	 .cfi_offset 14,-4
- 546 0002 8BB0     	 sub sp,sp,#44
- 547              	.LCFI35:
- 548              	 .cfi_def_cfa_offset 56
- 549 0004 02AF     	 add r7,sp,#8
- 550              	.LCFI36:
- 551              	 .cfi_def_cfa 7,48
- 552 0006 F860     	 str r0,[r7,#12]
- 553 0008 B960     	 str r1,[r7,#8]
- 554 000a 7A60     	 str r2,[r7,#4]
+ 570              	 .loc 2 191 1
+ 571              	 .cfi_startproc
+ 572              	 
+ 573              	 
+ 574 0000 90B5     	 push {r4,r7,lr}
+ 575              	.LCFI34:
+ 576              	 .cfi_def_cfa_offset 12
+ 577              	 .cfi_offset 4,-12
+ 578              	 .cfi_offset 7,-8
+ 579              	 .cfi_offset 14,-4
+ 580 0002 8BB0     	 sub sp,sp,#44
+ 581              	.LCFI35:
+ 582              	 .cfi_def_cfa_offset 56
+ 583 0004 02AF     	 add r7,sp,#8
+ 584              	.LCFI36:
+ 585              	 .cfi_def_cfa 7,48
+ 586 0006 F860     	 str r0,[r7,#12]
+ 587 0008 B960     	 str r1,[r7,#8]
+ 588 000a 7A60     	 str r2,[r7,#4]
  192:.././hal/sam3u1c/pio_handler.c **** 	Pio *p_pio = pio_get_pin_group(ul_pin);
- 555              	 .loc 2 192 0
- 556 000c F868     	 ldr r0,[r7,#12]
- 557 000e 0C4B     	 ldr r3,.L33
- 558 0010 9847     	 blx r3
- 559              	.LVL4:
- 560 0012 F861     	 str r0,[r7,#28]
+ 589              	 .loc 2 192 15
+ 590 000c F868     	 ldr r0,[r7,#12]
+ 591 000e 0C4B     	 ldr r3,.L33
+ 592 0010 9847     	 blx r3
+ 593              	.LVL4:
+ 594 0012 F861     	 str r0,[r7,#28]
  193:.././hal/sam3u1c/pio_handler.c **** 	uint32_t group_id =  pio_get_pin_group_id(ul_pin);
- 561              	 .loc 2 193 0
- 562 0014 F868     	 ldr r0,[r7,#12]
- 563 0016 0B4B     	 ldr r3,.L33+4
- 564 0018 9847     	 blx r3
- 565              	.LVL5:
- 566 001a B861     	 str r0,[r7,#24]
+ 595              	 .loc 2 193 23
+ 596 0014 F868     	 ldr r0,[r7,#12]
+ 597 0016 0B4B     	 ldr r3,.L33+4
+ 598 0018 9847     	 blx r3
+ 599              	.LVL5:
+ 600 001a B861     	 str r0,[r7,#24]
  194:.././hal/sam3u1c/pio_handler.c **** 	uint32_t group_mask = pio_get_pin_group_mask(ul_pin);
- 567              	 .loc 2 194 0
- 568 001c F868     	 ldr r0,[r7,#12]
- 569 001e 0A4B     	 ldr r3,.L33+8
- 570 0020 9847     	 blx r3
- 571              	.LVL6:
- 572 0022 7861     	 str r0,[r7,#20]
+ 601              	 .loc 2 194 24
+ 602 001c F868     	 ldr r0,[r7,#12]
+ 603 001e 0A4B     	 ldr r3,.L33+8
+ 604 0020 9847     	 blx r3
+ 605              	.LVL6:
+ 606 0022 7861     	 str r0,[r7,#20]
  195:.././hal/sam3u1c/pio_handler.c **** 
  196:.././hal/sam3u1c/pio_handler.c **** 	return pio_handler_set(p_pio, group_id, group_mask, ul_flag, p_handler);
- 573              	 .loc 2 196 0
- 574 0024 7B68     	 ldr r3,[r7,#4]
- 575 0026 0093     	 str r3,[sp]
- 576 0028 BB68     	 ldr r3,[r7,#8]
- 577 002a 7A69     	 ldr r2,[r7,#20]
- 578 002c B969     	 ldr r1,[r7,#24]
- 579 002e F869     	 ldr r0,[r7,#28]
- 580 0030 064C     	 ldr r4,.L33+12
- 581 0032 A047     	 blx r4
- 582              	.LVL7:
- 583 0034 0346     	 mov r3,r0
+ 607              	 .loc 2 196 9
+ 608 0024 7B68     	 ldr r3,[r7,#4]
+ 609 0026 0093     	 str r3,[sp]
+ 610 0028 BB68     	 ldr r3,[r7,#8]
+ 611 002a 7A69     	 ldr r2,[r7,#20]
+ 612 002c B969     	 ldr r1,[r7,#24]
+ 613 002e F869     	 ldr r0,[r7,#28]
+ 614 0030 064C     	 ldr r4,.L33+12
+ 615 0032 A047     	 blx r4
+ 616              	.LVL7:
+ 617 0034 0346     	 mov r3,r0
  197:.././hal/sam3u1c/pio_handler.c **** }
- 584              	 .loc 2 197 0
- 585 0036 1846     	 mov r0,r3
- 586 0038 2437     	 adds r7,r7,#36
- 587              	.LCFI37:
- 588              	 .cfi_def_cfa_offset 12
- 589 003a BD46     	 mov sp,r7
- 590              	.LCFI38:
- 591              	 .cfi_def_cfa_register 13
- 592              	 
- 593 003c 90BD     	 pop {r4,r7,pc}
- 594              	.L34:
- 595 003e 00BF     	 .align 2
- 596              	.L33:
- 597 0040 00000000 	 .word pio_get_pin_group
- 598 0044 00000000 	 .word pio_get_pin_group_id
- 599 0048 00000000 	 .word pio_get_pin_group_mask
- 600 004c 00000000 	 .word pio_handler_set
- 601              	 .cfi_endproc
- 602              	.LFE71:
- 604              	 .section .text.PIOA_Handler,"ax",%progbits
- 605              	 .align 1
- 606              	 .global PIOA_Handler
- 607              	 .syntax unified
- 608              	 .thumb
- 609              	 .thumb_func
- 610              	 .fpu softvfp
- 612              	PIOA_Handler:
- 613              	.LFB72:
+ 618              	 .loc 2 197 1
+ 619 0036 1846     	 mov r0,r3
+ 620 0038 2437     	 adds r7,r7,#36
+ 621              	.LCFI37:
+ 622              	 .cfi_def_cfa_offset 12
+ 623 003a BD46     	 mov sp,r7
+ 624              	.LCFI38:
+ 625              	 .cfi_def_cfa_register 13
+ 626              	 
+ 627 003c 90BD     	 pop {r4,r7,pc}
+ 628              	.L34:
+ 629 003e 00BF     	 .align 2
+ 630              	.L33:
+ 631 0040 00000000 	 .word pio_get_pin_group
+ 632 0044 00000000 	 .word pio_get_pin_group_id
+ 633 0048 00000000 	 .word pio_get_pin_group_mask
+ 634 004c 00000000 	 .word pio_handler_set
+ 635              	 .cfi_endproc
+ 636              	.LFE71:
+ 638              	 .section .text.PIOA_Handler,"ax",%progbits
+ 639              	 .align 1
+ 640              	 .global PIOA_Handler
+ 641              	 .syntax unified
+ 642              	 .thumb
+ 643              	 .thumb_func
+ 644              	 .fpu softvfp
+ 646              	PIOA_Handler:
+ 647              	.LFB72:
  198:.././hal/sam3u1c/pio_handler.c **** 
  199:.././hal/sam3u1c/pio_handler.c **** /**
  200:.././hal/sam3u1c/pio_handler.c ****  * \brief Parallel IO Controller A interrupt handler.
@@ -2133,45 +2171,45 @@
  202:.././hal/sam3u1c/pio_handler.c ****  */
  203:.././hal/sam3u1c/pio_handler.c **** void PIOA_Handler(void)
  204:.././hal/sam3u1c/pio_handler.c **** {
- 614              	 .loc 2 204 0
- 615              	 .cfi_startproc
- 616              	 
- 617              	 
- 618 0000 80B5     	 push {r7,lr}
- 619              	.LCFI39:
- 620              	 .cfi_def_cfa_offset 8
- 621              	 .cfi_offset 7,-8
- 622              	 .cfi_offset 14,-4
- 623 0002 00AF     	 add r7,sp,#0
- 624              	.LCFI40:
- 625              	 .cfi_def_cfa_register 7
+ 648              	 .loc 2 204 1
+ 649              	 .cfi_startproc
+ 650              	 
+ 651              	 
+ 652 0000 80B5     	 push {r7,lr}
+ 653              	.LCFI39:
+ 654              	 .cfi_def_cfa_offset 8
+ 655              	 .cfi_offset 7,-8
+ 656              	 .cfi_offset 14,-4
+ 657 0002 00AF     	 add r7,sp,#0
+ 658              	.LCFI40:
+ 659              	 .cfi_def_cfa_register 7
  205:.././hal/sam3u1c/pio_handler.c **** 	pio_handler_process(PIOA, ID_PIOA);
- 626              	 .loc 2 205 0
- 627 0004 0A21     	 movs r1,#10
- 628 0006 0248     	 ldr r0,.L36
- 629 0008 024B     	 ldr r3,.L36+4
- 630 000a 9847     	 blx r3
- 631              	.LVL8:
+ 660              	 .loc 2 205 2
+ 661 0004 0A21     	 movs r1,#10
+ 662 0006 0248     	 ldr r0,.L36
+ 663 0008 024B     	 ldr r3,.L36+4
+ 664 000a 9847     	 blx r3
+ 665              	.LVL8:
  206:.././hal/sam3u1c/pio_handler.c **** }
- 632              	 .loc 2 206 0
- 633 000c 00BF     	 nop
- 634 000e 80BD     	 pop {r7,pc}
- 635              	.L37:
- 636              	 .align 2
- 637              	.L36:
- 638 0010 000C0E40 	 .word 1074662400
- 639 0014 00000000 	 .word pio_handler_process
- 640              	 .cfi_endproc
- 641              	.LFE72:
- 643              	 .section .text.PIOB_Handler,"ax",%progbits
- 644              	 .align 1
- 645              	 .global PIOB_Handler
- 646              	 .syntax unified
- 647              	 .thumb
- 648              	 .thumb_func
- 649              	 .fpu softvfp
- 651              	PIOB_Handler:
- 652              	.LFB73:
+ 666              	 .loc 2 206 1
+ 667 000c 00BF     	 nop
+ 668 000e 80BD     	 pop {r7,pc}
+ 669              	.L37:
+ 670              	 .align 2
+ 671              	.L36:
+ 672 0010 000C0E40 	 .word 1074662400
+ 673 0014 00000000 	 .word pio_handler_process
+ 674              	 .cfi_endproc
+ 675              	.LFE72:
+ 677              	 .section .text.PIOB_Handler,"ax",%progbits
+ 678              	 .align 1
+ 679              	 .global PIOB_Handler
+ 680              	 .syntax unified
+ 681              	 .thumb
+ 682              	 .thumb_func
+ 683              	 .fpu softvfp
+ 685              	PIOB_Handler:
+ 686              	.LFB73:
  207:.././hal/sam3u1c/pio_handler.c **** #endif
  208:.././hal/sam3u1c/pio_handler.c **** 
  209:.././hal/sam3u1c/pio_handler.c **** #ifdef ID_PIOB
@@ -2181,45 +2219,45 @@
  213:.././hal/sam3u1c/pio_handler.c ****  */
  214:.././hal/sam3u1c/pio_handler.c **** void PIOB_Handler(void)
  215:.././hal/sam3u1c/pio_handler.c **** {
- 653              	 .loc 2 215 0
- 654              	 .cfi_startproc
- 655              	 
- 656              	 
- 657 0000 80B5     	 push {r7,lr}
- 658              	.LCFI41:
- 659              	 .cfi_def_cfa_offset 8
- 660              	 .cfi_offset 7,-8
- 661              	 .cfi_offset 14,-4
- 662 0002 00AF     	 add r7,sp,#0
- 663              	.LCFI42:
- 664              	 .cfi_def_cfa_register 7
+ 687              	 .loc 2 215 1
+ 688              	 .cfi_startproc
+ 689              	 
+ 690              	 
+ 691 0000 80B5     	 push {r7,lr}
+ 692              	.LCFI41:
+ 693              	 .cfi_def_cfa_offset 8
+ 694              	 .cfi_offset 7,-8
+ 695              	 .cfi_offset 14,-4
+ 696 0002 00AF     	 add r7,sp,#0
+ 697              	.LCFI42:
+ 698              	 .cfi_def_cfa_register 7
  216:.././hal/sam3u1c/pio_handler.c ****     pio_handler_process(PIOB, ID_PIOB);
- 665              	 .loc 2 216 0
- 666 0004 0B21     	 movs r1,#11
- 667 0006 0248     	 ldr r0,.L39
- 668 0008 024B     	 ldr r3,.L39+4
- 669 000a 9847     	 blx r3
- 670              	.LVL9:
+ 699              	 .loc 2 216 5
+ 700 0004 0B21     	 movs r1,#11
+ 701 0006 0248     	 ldr r0,.L39
+ 702 0008 024B     	 ldr r3,.L39+4
+ 703 000a 9847     	 blx r3
+ 704              	.LVL9:
  217:.././hal/sam3u1c/pio_handler.c **** }
- 671              	 .loc 2 217 0
- 672 000c 00BF     	 nop
- 673 000e 80BD     	 pop {r7,pc}
- 674              	.L40:
- 675              	 .align 2
- 676              	.L39:
- 677 0010 000E0E40 	 .word 1074662912
- 678 0014 00000000 	 .word pio_handler_process
- 679              	 .cfi_endproc
- 680              	.LFE73:
- 682              	 .section .text.pio_handler_set_priority,"ax",%progbits
- 683              	 .align 1
- 684              	 .global pio_handler_set_priority
- 685              	 .syntax unified
- 686              	 .thumb
- 687              	 .thumb_func
- 688              	 .fpu softvfp
- 690              	pio_handler_set_priority:
- 691              	.LFB74:
+ 705              	 .loc 2 217 1
+ 706 000c 00BF     	 nop
+ 707 000e 80BD     	 pop {r7,pc}
+ 708              	.L40:
+ 709              	 .align 2
+ 710              	.L39:
+ 711 0010 000E0E40 	 .word 1074662912
+ 712 0014 00000000 	 .word pio_handler_process
+ 713              	 .cfi_endproc
+ 714              	.LFE73:
+ 716              	 .section .text.pio_handler_set_priority,"ax",%progbits
+ 717              	 .align 1
+ 718              	 .global pio_handler_set_priority
+ 719              	 .syntax unified
+ 720              	 .thumb
+ 721              	 .thumb_func
+ 722              	 .fpu softvfp
+ 724              	pio_handler_set_priority:
+ 725              	.LFB74:
  218:.././hal/sam3u1c/pio_handler.c **** #endif
  219:.././hal/sam3u1c/pio_handler.c **** 
  220:.././hal/sam3u1c/pio_handler.c **** #ifdef ID_PIOC
@@ -2275,165 +2313,165 @@
  270:.././hal/sam3u1c/pio_handler.c ****  */
  271:.././hal/sam3u1c/pio_handler.c **** void pio_handler_set_priority(Pio *p_pio, IRQn_Type ul_irqn, uint32_t ul_priority)
  272:.././hal/sam3u1c/pio_handler.c **** {
- 692              	 .loc 2 272 0
- 693              	 .cfi_startproc
- 694              	 
- 695              	 
- 696 0000 80B5     	 push {r7,lr}
- 697              	.LCFI43:
- 698              	 .cfi_def_cfa_offset 8
- 699              	 .cfi_offset 7,-8
- 700              	 .cfi_offset 14,-4
- 701 0002 86B0     	 sub sp,sp,#24
- 702              	.LCFI44:
- 703              	 .cfi_def_cfa_offset 32
- 704 0004 00AF     	 add r7,sp,#0
- 705              	.LCFI45:
- 706              	 .cfi_def_cfa_register 7
- 707 0006 F860     	 str r0,[r7,#12]
- 708 0008 0B46     	 mov r3,r1
- 709 000a 7A60     	 str r2,[r7,#4]
- 710 000c FB72     	 strb r3,[r7,#11]
+ 726              	 .loc 2 272 1
+ 727              	 .cfi_startproc
+ 728              	 
+ 729              	 
+ 730 0000 80B5     	 push {r7,lr}
+ 731              	.LCFI43:
+ 732              	 .cfi_def_cfa_offset 8
+ 733              	 .cfi_offset 7,-8
+ 734              	 .cfi_offset 14,-4
+ 735 0002 86B0     	 sub sp,sp,#24
+ 736              	.LCFI44:
+ 737              	 .cfi_def_cfa_offset 32
+ 738 0004 00AF     	 add r7,sp,#0
+ 739              	.LCFI45:
+ 740              	 .cfi_def_cfa_register 7
+ 741 0006 F860     	 str r0,[r7,#12]
+ 742 0008 0B46     	 mov r3,r1
+ 743 000a 7A60     	 str r2,[r7,#4]
+ 744 000c FB72     	 strb r3,[r7,#11]
  273:.././hal/sam3u1c/pio_handler.c **** 	uint32_t bitmask = 0;
- 711              	 .loc 2 273 0
- 712 000e 0023     	 movs r3,#0
- 713 0010 7B61     	 str r3,[r7,#20]
+ 745              	 .loc 2 273 11
+ 746 000e 0023     	 movs r3,#0
+ 747 0010 7B61     	 str r3,[r7,#20]
  274:.././hal/sam3u1c/pio_handler.c **** 
  275:.././hal/sam3u1c/pio_handler.c **** 	bitmask = pio_get_interrupt_mask(p_pio);
- 714              	 .loc 2 275 0
- 715 0012 F868     	 ldr r0,[r7,#12]
- 716 0014 134B     	 ldr r3,.L42
- 717 0016 9847     	 blx r3
- 718              	.LVL10:
- 719 0018 7861     	 str r0,[r7,#20]
+ 748              	 .loc 2 275 12
+ 749 0012 F868     	 ldr r0,[r7,#12]
+ 750 0014 134B     	 ldr r3,.L42
+ 751 0016 9847     	 blx r3
+ 752              	.LVL10:
+ 753 0018 7861     	 str r0,[r7,#20]
  276:.././hal/sam3u1c/pio_handler.c **** 	pio_disable_interrupt(p_pio, 0xFFFFFFFF);
- 720              	 .loc 2 276 0
- 721 001a 4FF0FF31 	 mov r1,#-1
- 722 001e F868     	 ldr r0,[r7,#12]
- 723 0020 114B     	 ldr r3,.L42+4
- 724 0022 9847     	 blx r3
- 725              	.LVL11:
+ 754              	 .loc 2 276 2
+ 755 001a 4FF0FF31 	 mov r1,#-1
+ 756 001e F868     	 ldr r0,[r7,#12]
+ 757 0020 114B     	 ldr r3,.L42+4
+ 758 0022 9847     	 blx r3
+ 759              	.LVL11:
  277:.././hal/sam3u1c/pio_handler.c **** 	pio_get_interrupt_status(p_pio);
- 726              	 .loc 2 277 0
- 727 0024 F868     	 ldr r0,[r7,#12]
- 728 0026 114B     	 ldr r3,.L42+8
- 729 0028 9847     	 blx r3
- 730              	.LVL12:
+ 760              	 .loc 2 277 2
+ 761 0024 F868     	 ldr r0,[r7,#12]
+ 762 0026 114B     	 ldr r3,.L42+8
+ 763 0028 9847     	 blx r3
+ 764              	.LVL12:
  278:.././hal/sam3u1c/pio_handler.c **** 	NVIC_DisableIRQ(ul_irqn);
- 731              	 .loc 2 278 0
- 732 002a 97F90B30 	 ldrsb r3,[r7,#11]
- 733 002e 1846     	 mov r0,r3
- 734 0030 0F4B     	 ldr r3,.L42+12
- 735 0032 9847     	 blx r3
- 736              	.LVL13:
+ 765              	 .loc 2 278 2
+ 766 002a 97F90B30 	 ldrsb r3,[r7,#11]
+ 767 002e 1846     	 mov r0,r3
+ 768 0030 0F4B     	 ldr r3,.L42+12
+ 769 0032 9847     	 blx r3
+ 770              	.LVL13:
  279:.././hal/sam3u1c/pio_handler.c **** 	NVIC_ClearPendingIRQ(ul_irqn);
- 737              	 .loc 2 279 0
- 738 0034 97F90B30 	 ldrsb r3,[r7,#11]
- 739 0038 1846     	 mov r0,r3
- 740 003a 0E4B     	 ldr r3,.L42+16
- 741 003c 9847     	 blx r3
- 742              	.LVL14:
+ 771              	 .loc 2 279 2
+ 772 0034 97F90B30 	 ldrsb r3,[r7,#11]
+ 773 0038 1846     	 mov r0,r3
+ 774 003a 0E4B     	 ldr r3,.L42+16
+ 775 003c 9847     	 blx r3
+ 776              	.LVL14:
  280:.././hal/sam3u1c/pio_handler.c **** 	NVIC_SetPriority(ul_irqn, ul_priority);
- 743              	 .loc 2 280 0
- 744 003e 97F90B30 	 ldrsb r3,[r7,#11]
- 745 0042 7968     	 ldr r1,[r7,#4]
- 746 0044 1846     	 mov r0,r3
- 747 0046 0C4B     	 ldr r3,.L42+20
- 748 0048 9847     	 blx r3
- 749              	.LVL15:
+ 777              	 .loc 2 280 2
+ 778 003e 97F90B30 	 ldrsb r3,[r7,#11]
+ 779 0042 7968     	 ldr r1,[r7,#4]
+ 780 0044 1846     	 mov r0,r3
+ 781 0046 0C4B     	 ldr r3,.L42+20
+ 782 0048 9847     	 blx r3
+ 783              	.LVL15:
  281:.././hal/sam3u1c/pio_handler.c **** 	NVIC_EnableIRQ(ul_irqn);
- 750              	 .loc 2 281 0
- 751 004a 97F90B30 	 ldrsb r3,[r7,#11]
- 752 004e 1846     	 mov r0,r3
- 753 0050 0A4B     	 ldr r3,.L42+24
- 754 0052 9847     	 blx r3
- 755              	.LVL16:
+ 784              	 .loc 2 281 2
+ 785 004a 97F90B30 	 ldrsb r3,[r7,#11]
+ 786 004e 1846     	 mov r0,r3
+ 787 0050 0A4B     	 ldr r3,.L42+24
+ 788 0052 9847     	 blx r3
+ 789              	.LVL16:
  282:.././hal/sam3u1c/pio_handler.c **** 	pio_enable_interrupt(p_pio, bitmask);
- 756              	 .loc 2 282 0
- 757 0054 7969     	 ldr r1,[r7,#20]
- 758 0056 F868     	 ldr r0,[r7,#12]
- 759 0058 094B     	 ldr r3,.L42+28
- 760 005a 9847     	 blx r3
- 761              	.LVL17:
+ 790              	 .loc 2 282 2
+ 791 0054 7969     	 ldr r1,[r7,#20]
+ 792 0056 F868     	 ldr r0,[r7,#12]
+ 793 0058 094B     	 ldr r3,.L42+28
+ 794 005a 9847     	 blx r3
+ 795              	.LVL17:
  283:.././hal/sam3u1c/pio_handler.c **** }
- 762              	 .loc 2 283 0
- 763 005c 00BF     	 nop
- 764 005e 1837     	 adds r7,r7,#24
- 765              	.LCFI46:
- 766              	 .cfi_def_cfa_offset 8
- 767 0060 BD46     	 mov sp,r7
- 768              	.LCFI47:
- 769              	 .cfi_def_cfa_register 13
- 770              	 
- 771 0062 80BD     	 pop {r7,pc}
- 772              	.L43:
- 773              	 .align 2
- 774              	.L42:
- 775 0064 00000000 	 .word pio_get_interrupt_mask
- 776 0068 00000000 	 .word pio_disable_interrupt
- 777 006c 00000000 	 .word pio_get_interrupt_status
- 778 0070 00000000 	 .word NVIC_DisableIRQ
- 779 0074 00000000 	 .word NVIC_ClearPendingIRQ
- 780 0078 00000000 	 .word NVIC_SetPriority
- 781 007c 00000000 	 .word NVIC_EnableIRQ
- 782 0080 00000000 	 .word pio_enable_interrupt
- 783              	 .cfi_endproc
- 784              	.LFE74:
- 786              	 .text
- 787              	.Letext0:
- 788              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 789              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 790              	 .file 5 ".././hal/sam3u1c/inc/sam3u1c.h"
- 791              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
- 792              	 .file 7 ".././hal/sam3u1c/inc/component/component_pio.h"
- 793              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 794              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 795              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 796              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 797              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 798              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 799              	 .file 14 ".././hal/sam3u1c/inc/pio.h"
+ 796              	 .loc 2 283 1
+ 797 005c 00BF     	 nop
+ 798 005e 1837     	 adds r7,r7,#24
+ 799              	.LCFI46:
+ 800              	 .cfi_def_cfa_offset 8
+ 801 0060 BD46     	 mov sp,r7
+ 802              	.LCFI47:
+ 803              	 .cfi_def_cfa_register 13
+ 804              	 
+ 805 0062 80BD     	 pop {r7,pc}
+ 806              	.L43:
+ 807              	 .align 2
+ 808              	.L42:
+ 809 0064 00000000 	 .word pio_get_interrupt_mask
+ 810 0068 00000000 	 .word pio_disable_interrupt
+ 811 006c 00000000 	 .word pio_get_interrupt_status
+ 812 0070 00000000 	 .word NVIC_DisableIRQ
+ 813 0074 00000000 	 .word NVIC_ClearPendingIRQ
+ 814 0078 00000000 	 .word NVIC_SetPriority
+ 815 007c 00000000 	 .word NVIC_EnableIRQ
+ 816 0080 00000000 	 .word pio_enable_interrupt
+ 817              	 .cfi_endproc
+ 818              	.LFE74:
+ 820              	 .text
+ 821              	.Letext0:
+ 822              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 823              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 824              	 .file 5 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 825              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 826              	 .file 7 ".././hal/sam3u1c/inc/component/component_pio.h"
+ 827              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 828              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 829              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 830              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 831              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 832              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 833              	 .file 14 ".././hal/sam3u1c/inc/pio.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 pio_handler.c
     {standard input}:16     .text.NVIC_EnableIRQ:00000000 $t
-    {standard input}:22     .text.NVIC_EnableIRQ:00000000 NVIC_EnableIRQ
-    {standard input}:68     .text.NVIC_EnableIRQ:0000002c $d
-    {standard input}:73     .text.NVIC_DisableIRQ:00000000 $t
-    {standard input}:79     .text.NVIC_DisableIRQ:00000000 NVIC_DisableIRQ
-    {standard input}:125    .text.NVIC_DisableIRQ:00000030 $d
-    {standard input}:130    .text.NVIC_ClearPendingIRQ:00000000 $t
-    {standard input}:136    .text.NVIC_ClearPendingIRQ:00000000 NVIC_ClearPendingIRQ
-    {standard input}:182    .text.NVIC_ClearPendingIRQ:00000030 $d
-    {standard input}:187    .text.NVIC_SetPriority:00000000 $t
-    {standard input}:193    .text.NVIC_SetPriority:00000000 NVIC_SetPriority
-    {standard input}:258    .text.NVIC_SetPriority:0000004c $d
-    {standard input}:264    .bss.cpu_irq_critical_section_counter:00000000 $d
-    {standard input}:267    .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
-    {standard input}:272    .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
-    {standard input}:273    .bss.cpu_irq_prev_interrupt_state:00000000 $d
-    {standard input}:275    .bss.gs_interrupt_sources:00000000 $d
-    {standard input}:278    .bss.gs_interrupt_sources:00000000 gs_interrupt_sources
-    {standard input}:281    .bss.gs_ul_nb_sources:00000000 $d
-    {standard input}:284    .bss.gs_ul_nb_sources:00000000 gs_ul_nb_sources
-    {standard input}:287    .text.pio_handler_process:00000000 $t
-    {standard input}:294    .text.pio_handler_process:00000000 pio_handler_process
-    {standard input}:424    .text.pio_handler_process:000000a8 $d
-    {standard input}:431    .text.pio_handler_set:00000000 $t
-    {standard input}:438    .text.pio_handler_set:00000000 pio_handler_set
-    {standard input}:520    .text.pio_handler_set:0000005c $d
-    {standard input}:527    .text.pio_handler_set_pin:00000000 $t
-    {standard input}:534    .text.pio_handler_set_pin:00000000 pio_handler_set_pin
-    {standard input}:597    .text.pio_handler_set_pin:00000040 $d
-    {standard input}:605    .text.PIOA_Handler:00000000 $t
-    {standard input}:612    .text.PIOA_Handler:00000000 PIOA_Handler
-    {standard input}:638    .text.PIOA_Handler:00000010 $d
-    {standard input}:644    .text.PIOB_Handler:00000000 $t
-    {standard input}:651    .text.PIOB_Handler:00000000 PIOB_Handler
-    {standard input}:677    .text.PIOB_Handler:00000010 $d
-    {standard input}:683    .text.pio_handler_set_priority:00000000 $t
-    {standard input}:690    .text.pio_handler_set_priority:00000000 pio_handler_set_priority
-    {standard input}:775    .text.pio_handler_set_priority:00000064 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:23     .text.NVIC_EnableIRQ:00000000 NVIC_EnableIRQ
+    {standard input}:74     .text.NVIC_EnableIRQ:0000002c $d
+    {standard input}:79     .text.NVIC_DisableIRQ:00000000 $t
+    {standard input}:85     .text.NVIC_DisableIRQ:00000000 NVIC_DisableIRQ
+    {standard input}:136    .text.NVIC_DisableIRQ:00000030 $d
+    {standard input}:141    .text.NVIC_ClearPendingIRQ:00000000 $t
+    {standard input}:147    .text.NVIC_ClearPendingIRQ:00000000 NVIC_ClearPendingIRQ
+    {standard input}:198    .text.NVIC_ClearPendingIRQ:00000030 $d
+    {standard input}:203    .text.NVIC_SetPriority:00000000 $t
+    {standard input}:209    .text.NVIC_SetPriority:00000000 NVIC_SetPriority
+    {standard input}:283    .text.NVIC_SetPriority:0000004c $d
+    {standard input}:289    .bss.cpu_irq_critical_section_counter:00000000 $d
+    {standard input}:292    .bss.cpu_irq_critical_section_counter:00000000 cpu_irq_critical_section_counter
+    {standard input}:297    .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
+    {standard input}:298    .bss.cpu_irq_prev_interrupt_state:00000000 $d
+    {standard input}:300    .bss.gs_interrupt_sources:00000000 $d
+    {standard input}:303    .bss.gs_interrupt_sources:00000000 gs_interrupt_sources
+    {standard input}:306    .bss.gs_ul_nb_sources:00000000 $d
+    {standard input}:309    .bss.gs_ul_nb_sources:00000000 gs_ul_nb_sources
+    {standard input}:312    .text.pio_handler_process:00000000 $t
+    {standard input}:319    .text.pio_handler_process:00000000 pio_handler_process
+    {standard input}:456    .text.pio_handler_process:000000a8 $d
+    {standard input}:463    .text.pio_handler_set:00000000 $t
+    {standard input}:470    .text.pio_handler_set:00000000 pio_handler_set
+    {standard input}:554    .text.pio_handler_set:0000005c $d
+    {standard input}:561    .text.pio_handler_set_pin:00000000 $t
+    {standard input}:568    .text.pio_handler_set_pin:00000000 pio_handler_set_pin
+    {standard input}:631    .text.pio_handler_set_pin:00000040 $d
+    {standard input}:639    .text.PIOA_Handler:00000000 $t
+    {standard input}:646    .text.PIOA_Handler:00000000 PIOA_Handler
+    {standard input}:672    .text.PIOA_Handler:00000010 $d
+    {standard input}:678    .text.PIOB_Handler:00000000 $t
+    {standard input}:685    .text.PIOB_Handler:00000000 PIOB_Handler
+    {standard input}:711    .text.PIOB_Handler:00000010 $d
+    {standard input}:717    .text.pio_handler_set_priority:00000000 $t
+    {standard input}:724    .text.pio_handler_set_priority:00000000 pio_handler_set_priority
+    {standard input}:809    .text.pio_handler_set_priority:00000064 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -2507,12 +2545,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

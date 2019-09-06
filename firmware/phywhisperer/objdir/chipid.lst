@@ -22,13 +22,14 @@
   26              	 .section .text.chipid_read,"ax",%progbits
   27              	 .align 1
   28              	 .global chipid_read
-  29              	 .syntax unified
-  30              	 .thumb
-  31              	 .thumb_func
-  32              	 .fpu softvfp
-  34              	chipid_read:
-  35              	.LFB69:
-  36              	 .file 1 ".././hal/sam3u1c/chipid.c"
+  29              	 .arch armv7-m
+  30              	 .syntax unified
+  31              	 .thumb
+  32              	 .thumb_func
+  33              	 .fpu softvfp
+  35              	chipid_read:
+  36              	.LFB69:
+  37              	 .file 1 ".././hal/sam3u1c/chipid.c"
    1:.././hal/sam3u1c/chipid.c **** /**
    2:.././hal/sam3u1c/chipid.c ****  * \file
    3:.././hal/sam3u1c/chipid.c ****  *
@@ -120,176 +121,184 @@
   89:.././hal/sam3u1c/chipid.c ****  */
   90:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read(Chipid *p_chipid, chipid_data_t *p_chipid_data)
   91:.././hal/sam3u1c/chipid.c **** {
-  37              	 .loc 1 91 0
-  38              	 .cfi_startproc
-  39              	 
+  38              	 .loc 1 91 1
+  39              	 .cfi_startproc
   40              	 
   41              	 
-  42 0000 80B4     	 push {r7}
-  43              	.LCFI0:
-  44              	 .cfi_def_cfa_offset 4
-  45              	 .cfi_offset 7,-4
-  46 0002 83B0     	 sub sp,sp,#12
-  47              	.LCFI1:
-  48              	 .cfi_def_cfa_offset 16
-  49 0004 00AF     	 add r7,sp,#0
-  50              	.LCFI2:
-  51              	 .cfi_def_cfa_register 7
-  52 0006 7860     	 str r0,[r7,#4]
-  53 0008 3960     	 str r1,[r7]
+  42              	 
+  43 0000 80B4     	 push {r7}
+  44              	.LCFI0:
+  45              	 .cfi_def_cfa_offset 4
+  46              	 .cfi_offset 7,-4
+  47 0002 83B0     	 sub sp,sp,#12
+  48              	.LCFI1:
+  49              	 .cfi_def_cfa_offset 16
+  50 0004 00AF     	 add r7,sp,#0
+  51              	.LCFI2:
+  52              	 .cfi_def_cfa_register 7
+  53 0006 7860     	 str r0,[r7,#4]
+  54 0008 3960     	 str r1,[r7]
   92:.././hal/sam3u1c/chipid.c **** 	if (NULL == p_chipid_data) {
-  54              	 .loc 1 92 0
-  55 000a 3B68     	 ldr r3,[r7]
-  56 000c 002B     	 cmp r3,#0
-  57 000e 02D1     	 bne .L2
+  55              	 .loc 1 92 5
+  56 000a 3B68     	 ldr r3,[r7]
+  57 000c 002B     	 cmp r3,#0
+  58 000e 02D1     	 bne .L2
   93:.././hal/sam3u1c/chipid.c **** 		return 0xFFFFFFFF;
-  58              	 .loc 1 93 0
-  59 0010 4FF0FF33 	 mov r3,#-1
-  60 0014 3CE0     	 b .L3
-  61              	.L2:
+  59              	 .loc 1 93 10
+  60 0010 4FF0FF33 	 mov r3,#-1
+  61 0014 3CE0     	 b .L3
+  62              	.L2:
   94:.././hal/sam3u1c/chipid.c **** 	}
   95:.././hal/sam3u1c/chipid.c **** 	
   96:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_version =
   97:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_VERSION_Msk) >>
-  62              	 .loc 1 97 0
-  63 0016 7B68     	 ldr r3,[r7,#4]
-  64 0018 1B68     	 ldr r3,[r3]
-  65 001a 03F01F02 	 and r2,r3,#31
+  63              	 .loc 1 97 12
+  64 0016 7B68     	 ldr r3,[r7,#4]
+  65 0018 1B68     	 ldr r3,[r3]
+  66              	 .loc 1 97 53
+  67 001a 03F01F02 	 and r2,r3,#31
   96:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_VERSION_Msk) >>
-  66              	 .loc 1 96 0
-  67 001e 3B68     	 ldr r3,[r7]
-  68 0020 1A60     	 str r2,[r3]
+  68              	 .loc 1 96 28
+  69 001e 3B68     	 ldr r3,[r7]
+  70 0020 1A60     	 str r2,[r3]
   98:.././hal/sam3u1c/chipid.c **** 			CHIPID_CIDR_VERSION_Pos;
   99:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_eproc =
  100:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_EPROC_Msk) >>
-  69              	 .loc 1 100 0
-  70 0022 7B68     	 ldr r3,[r7,#4]
-  71 0024 1B68     	 ldr r3,[r3]
-  72 0026 5B09     	 lsrs r3,r3,#5
-  73 0028 03F00702 	 and r2,r3,#7
+  71              	 .loc 1 100 12
+  72 0022 7B68     	 ldr r3,[r7,#4]
+  73 0024 1B68     	 ldr r3,[r3]
+  74              	 .loc 1 100 51
+  75 0026 5B09     	 lsrs r3,r3,#5
+  76 0028 03F00702 	 and r2,r3,#7
   99:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_EPROC_Msk) >>
-  74              	 .loc 1 99 0
-  75 002c 3B68     	 ldr r3,[r7]
-  76 002e 5A60     	 str r2,[r3,#4]
+  77              	 .loc 1 99 26
+  78 002c 3B68     	 ldr r3,[r7]
+  79 002e 5A60     	 str r2,[r3,#4]
  101:.././hal/sam3u1c/chipid.c **** 			CHIPID_CIDR_EPROC_Pos;
  102:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_nvpsiz =
  103:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPSIZ_Msk) >>
-  77              	 .loc 1 103 0
-  78 0030 7B68     	 ldr r3,[r7,#4]
-  79 0032 1B68     	 ldr r3,[r3]
-  80 0034 1B0A     	 lsrs r3,r3,#8
-  81 0036 03F00F02 	 and r2,r3,#15
+  80              	 .loc 1 103 12
+  81 0030 7B68     	 ldr r3,[r7,#4]
+  82 0032 1B68     	 ldr r3,[r3]
+  83              	 .loc 1 103 52
+  84 0034 1B0A     	 lsrs r3,r3,#8
+  85 0036 03F00F02 	 and r2,r3,#15
  102:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPSIZ_Msk) >>
-  82              	 .loc 1 102 0
-  83 003a 3B68     	 ldr r3,[r7]
-  84 003c 9A60     	 str r2,[r3,#8]
+  86              	 .loc 1 102 27
+  87 003a 3B68     	 ldr r3,[r7]
+  88 003c 9A60     	 str r2,[r3,#8]
  104:.././hal/sam3u1c/chipid.c **** 			CHIPID_CIDR_NVPSIZ_Pos;
  105:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_nvpsiz2 =
  106:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPSIZ2_Pos) >>
-  85              	 .loc 1 106 0
-  86 003e 7B68     	 ldr r3,[r7,#4]
-  87 0040 1B68     	 ldr r3,[r3]
+  89              	 .loc 1 106 12
+  90 003e 7B68     	 ldr r3,[r7,#4]
+  91 0040 1B68     	 ldr r3,[r3]
  105:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPSIZ2_Pos) >>
-  88              	 .loc 1 105 0
-  89 0042 3B68     	 ldr r3,[r7]
-  90 0044 0022     	 movs r2,#0
-  91 0046 DA60     	 str r2,[r3,#12]
+  92              	 .loc 1 105 28
+  93 0042 3B68     	 ldr r3,[r7]
+  94 0044 0022     	 movs r2,#0
+  95 0046 DA60     	 str r2,[r3,#12]
  107:.././hal/sam3u1c/chipid.c **** 			CHIPID_CIDR_NVPSIZ2_Pos;
  108:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_sramsiz =
  109:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_SRAMSIZ_Msk) >>
-  92              	 .loc 1 109 0
-  93 0048 7B68     	 ldr r3,[r7,#4]
-  94 004a 1B68     	 ldr r3,[r3]
-  95 004c 1B0C     	 lsrs r3,r3,#16
-  96 004e 03F00F02 	 and r2,r3,#15
+  96              	 .loc 1 109 12
+  97 0048 7B68     	 ldr r3,[r7,#4]
+  98 004a 1B68     	 ldr r3,[r3]
+  99              	 .loc 1 109 53
+ 100 004c 1B0C     	 lsrs r3,r3,#16
+ 101 004e 03F00F02 	 and r2,r3,#15
  108:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_SRAMSIZ_Msk) >>
-  97              	 .loc 1 108 0
-  98 0052 3B68     	 ldr r3,[r7]
-  99 0054 1A61     	 str r2,[r3,#16]
+ 102              	 .loc 1 108 28
+ 103 0052 3B68     	 ldr r3,[r7]
+ 104 0054 1A61     	 str r2,[r3,#16]
  110:.././hal/sam3u1c/chipid.c **** 			CHIPID_CIDR_SRAMSIZ_Pos;
  111:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_arch =
  112:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_ARCH_Msk) >>
- 100              	 .loc 1 112 0
- 101 0056 7B68     	 ldr r3,[r7,#4]
- 102 0058 1B68     	 ldr r3,[r3]
- 103 005a 1B0D     	 lsrs r3,r3,#20
- 104 005c DAB2     	 uxtb r2,r3
+ 105              	 .loc 1 112 12
+ 106 0056 7B68     	 ldr r3,[r7,#4]
+ 107 0058 1B68     	 ldr r3,[r3]
+ 108              	 .loc 1 112 50
+ 109 005a 1B0D     	 lsrs r3,r3,#20
+ 110 005c DAB2     	 uxtb r2,r3
  111:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_ARCH_Msk) >>
- 105              	 .loc 1 111 0
- 106 005e 3B68     	 ldr r3,[r7]
- 107 0060 5A61     	 str r2,[r3,#20]
+ 111              	 .loc 1 111 25
+ 112 005e 3B68     	 ldr r3,[r7]
+ 113 0060 5A61     	 str r2,[r3,#20]
  113:.././hal/sam3u1c/chipid.c **** 			CHIPID_CIDR_ARCH_Pos;
  114:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_nvptyp =
  115:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPTYP_Msk) >>
- 108              	 .loc 1 115 0
- 109 0062 7B68     	 ldr r3,[r7,#4]
- 110 0064 1B68     	 ldr r3,[r3]
- 111 0066 1B0F     	 lsrs r3,r3,#28
- 112 0068 03F00702 	 and r2,r3,#7
+ 114              	 .loc 1 115 12
+ 115 0062 7B68     	 ldr r3,[r7,#4]
+ 116 0064 1B68     	 ldr r3,[r3]
+ 117              	 .loc 1 115 52
+ 118 0066 1B0F     	 lsrs r3,r3,#28
+ 119 0068 03F00702 	 and r2,r3,#7
  114:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPTYP_Msk) >>
- 113              	 .loc 1 114 0
- 114 006c 3B68     	 ldr r3,[r7]
- 115 006e 9A61     	 str r2,[r3,#24]
+ 120              	 .loc 1 114 27
+ 121 006c 3B68     	 ldr r3,[r7]
+ 122 006e 9A61     	 str r2,[r3,#24]
  116:.././hal/sam3u1c/chipid.c **** 			CHIPID_CIDR_NVPTYP_Pos;
  117:.././hal/sam3u1c/chipid.c **** 	p_chipid_data->ul_extflag =
  118:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_EXT) >> 31;
- 116              	 .loc 1 118 0
- 117 0070 7B68     	 ldr r3,[r7,#4]
- 118 0072 1B68     	 ldr r3,[r3]
- 119 0074 DB0F     	 lsrs r3,r3,#31
- 120 0076 03F00102 	 and r2,r3,#1
+ 123              	 .loc 1 118 12
+ 124 0070 7B68     	 ldr r3,[r7,#4]
+ 125 0072 1B68     	 ldr r3,[r3]
+ 126              	 .loc 1 118 45
+ 127 0074 DB0F     	 lsrs r3,r3,#31
+ 128 0076 03F00102 	 and r2,r3,#1
  117:.././hal/sam3u1c/chipid.c **** 		(p_chipid->CHIPID_CIDR & CHIPID_CIDR_EXT) >> 31;
- 121              	 .loc 1 117 0
- 122 007a 3B68     	 ldr r3,[r7]
- 123 007c DA61     	 str r2,[r3,#28]
+ 129              	 .loc 1 117 28
+ 130 007a 3B68     	 ldr r3,[r7]
+ 131 007c DA61     	 str r2,[r3,#28]
  119:.././hal/sam3u1c/chipid.c **** 		
  120:.././hal/sam3u1c/chipid.c **** 	if (p_chipid_data->ul_extflag) {
- 124              	 .loc 1 120 0
- 125 007e 3B68     	 ldr r3,[r7]
- 126 0080 DB69     	 ldr r3,[r3,#28]
- 127 0082 002B     	 cmp r3,#0
- 128 0084 03D0     	 beq .L4
+ 132              	 .loc 1 120 19
+ 133 007e 3B68     	 ldr r3,[r7]
+ 134 0080 DB69     	 ldr r3,[r3,#28]
+ 135              	 .loc 1 120 5
+ 136 0082 002B     	 cmp r3,#0
+ 137 0084 03D0     	 beq .L4
  121:.././hal/sam3u1c/chipid.c **** 		p_chipid_data->ul_extid =
  122:.././hal/sam3u1c/chipid.c **** 			p_chipid->CHIPID_EXID & CHIPID_EXID_EXID_Msk;
- 129              	 .loc 1 122 0
- 130 0086 7B68     	 ldr r3,[r7,#4]
- 131 0088 5A68     	 ldr r2,[r3,#4]
+ 138              	 .loc 1 122 12
+ 139 0086 7B68     	 ldr r3,[r7,#4]
+ 140 0088 5A68     	 ldr r2,[r3,#4]
  121:.././hal/sam3u1c/chipid.c **** 		p_chipid_data->ul_extid =
- 132              	 .loc 1 121 0
- 133 008a 3B68     	 ldr r3,[r7]
- 134 008c 1A62     	 str r2,[r3,#32]
- 135              	.L4:
+ 141              	 .loc 1 121 27
+ 142 008a 3B68     	 ldr r3,[r7]
+ 143 008c 1A62     	 str r2,[r3,#32]
+ 144              	.L4:
  123:.././hal/sam3u1c/chipid.c **** 	}
  124:.././hal/sam3u1c/chipid.c **** 	return 0;
- 136              	 .loc 1 124 0
- 137 008e 0023     	 movs r3,#0
- 138              	.L3:
+ 145              	 .loc 1 124 9
+ 146 008e 0023     	 movs r3,#0
+ 147              	.L3:
  125:.././hal/sam3u1c/chipid.c **** }
- 139              	 .loc 1 125 0
- 140 0090 1846     	 mov r0,r3
- 141 0092 0C37     	 adds r7,r7,#12
- 142              	.LCFI3:
- 143              	 .cfi_def_cfa_offset 4
- 144 0094 BD46     	 mov sp,r7
- 145              	.LCFI4:
- 146              	 .cfi_def_cfa_register 13
- 147              	 
- 148 0096 80BC     	 pop {r7}
- 149              	.LCFI5:
- 150              	 .cfi_restore 7
- 151              	 .cfi_def_cfa_offset 0
- 152 0098 7047     	 bx lr
- 153              	 .cfi_endproc
- 154              	.LFE69:
- 156              	 .section .text.chipid_read_version,"ax",%progbits
- 157              	 .align 1
- 158              	 .global chipid_read_version
- 159              	 .syntax unified
- 160              	 .thumb
- 161              	 .thumb_func
- 162              	 .fpu softvfp
- 164              	chipid_read_version:
- 165              	.LFB70:
+ 148              	 .loc 1 125 1
+ 149 0090 1846     	 mov r0,r3
+ 150 0092 0C37     	 adds r7,r7,#12
+ 151              	.LCFI3:
+ 152              	 .cfi_def_cfa_offset 4
+ 153 0094 BD46     	 mov sp,r7
+ 154              	.LCFI4:
+ 155              	 .cfi_def_cfa_register 13
+ 156              	 
+ 157 0096 80BC     	 pop {r7}
+ 158              	.LCFI5:
+ 159              	 .cfi_restore 7
+ 160              	 .cfi_def_cfa_offset 0
+ 161 0098 7047     	 bx lr
+ 162              	 .cfi_endproc
+ 163              	.LFE69:
+ 165              	 .section .text.chipid_read_version,"ax",%progbits
+ 166              	 .align 1
+ 167              	 .global chipid_read_version
+ 168              	 .syntax unified
+ 169              	 .thumb
+ 170              	 .thumb_func
+ 171              	 .fpu softvfp
+ 173              	chipid_read_version:
+ 174              	.LFB70:
  126:.././hal/sam3u1c/chipid.c **** 
  127:.././hal/sam3u1c/chipid.c **** /**
  128:.././hal/sam3u1c/chipid.c ****  * \brief Get the revision number of the silicon.
@@ -300,53 +309,54 @@
  133:.././hal/sam3u1c/chipid.c ****  */
  134:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_version(Chipid *p_chipid)
  135:.././hal/sam3u1c/chipid.c **** {
- 166              	 .loc 1 135 0
- 167              	 .cfi_startproc
- 168              	 
- 169              	 
- 170              	 
- 171 0000 80B4     	 push {r7}
- 172              	.LCFI6:
- 173              	 .cfi_def_cfa_offset 4
- 174              	 .cfi_offset 7,-4
- 175 0002 83B0     	 sub sp,sp,#12
- 176              	.LCFI7:
- 177              	 .cfi_def_cfa_offset 16
- 178 0004 00AF     	 add r7,sp,#0
- 179              	.LCFI8:
- 180              	 .cfi_def_cfa_register 7
- 181 0006 7860     	 str r0,[r7,#4]
+ 175              	 .loc 1 135 1
+ 176              	 .cfi_startproc
+ 177              	 
+ 178              	 
+ 179              	 
+ 180 0000 80B4     	 push {r7}
+ 181              	.LCFI6:
+ 182              	 .cfi_def_cfa_offset 4
+ 183              	 .cfi_offset 7,-4
+ 184 0002 83B0     	 sub sp,sp,#12
+ 185              	.LCFI7:
+ 186              	 .cfi_def_cfa_offset 16
+ 187 0004 00AF     	 add r7,sp,#0
+ 188              	.LCFI8:
+ 189              	 .cfi_def_cfa_register 7
+ 190 0006 7860     	 str r0,[r7,#4]
  136:.././hal/sam3u1c/chipid.c **** 	return p_chipid->CHIPID_CIDR & CHIPID_CIDR_VERSION_Msk;
- 182              	 .loc 1 136 0
- 183 0008 7B68     	 ldr r3,[r7,#4]
- 184 000a 1B68     	 ldr r3,[r3]
- 185 000c 03F01F03 	 and r3,r3,#31
+ 191              	 .loc 1 136 17
+ 192 0008 7B68     	 ldr r3,[r7,#4]
+ 193 000a 1B68     	 ldr r3,[r3]
+ 194              	 .loc 1 136 31
+ 195 000c 03F01F03 	 and r3,r3,#31
  137:.././hal/sam3u1c/chipid.c **** }
- 186              	 .loc 1 137 0
- 187 0010 1846     	 mov r0,r3
- 188 0012 0C37     	 adds r7,r7,#12
- 189              	.LCFI9:
- 190              	 .cfi_def_cfa_offset 4
- 191 0014 BD46     	 mov sp,r7
- 192              	.LCFI10:
- 193              	 .cfi_def_cfa_register 13
- 194              	 
- 195 0016 80BC     	 pop {r7}
- 196              	.LCFI11:
- 197              	 .cfi_restore 7
- 198              	 .cfi_def_cfa_offset 0
- 199 0018 7047     	 bx lr
- 200              	 .cfi_endproc
- 201              	.LFE70:
- 203              	 .section .text.chipid_read_processor,"ax",%progbits
- 204              	 .align 1
- 205              	 .global chipid_read_processor
- 206              	 .syntax unified
- 207              	 .thumb
- 208              	 .thumb_func
- 209              	 .fpu softvfp
- 211              	chipid_read_processor:
- 212              	.LFB71:
+ 196              	 .loc 1 137 1
+ 197 0010 1846     	 mov r0,r3
+ 198 0012 0C37     	 adds r7,r7,#12
+ 199              	.LCFI9:
+ 200              	 .cfi_def_cfa_offset 4
+ 201 0014 BD46     	 mov sp,r7
+ 202              	.LCFI10:
+ 203              	 .cfi_def_cfa_register 13
+ 204              	 
+ 205 0016 80BC     	 pop {r7}
+ 206              	.LCFI11:
+ 207              	 .cfi_restore 7
+ 208              	 .cfi_def_cfa_offset 0
+ 209 0018 7047     	 bx lr
+ 210              	 .cfi_endproc
+ 211              	.LFE70:
+ 213              	 .section .text.chipid_read_processor,"ax",%progbits
+ 214              	 .align 1
+ 215              	 .global chipid_read_processor
+ 216              	 .syntax unified
+ 217              	 .thumb
+ 218              	 .thumb_func
+ 219              	 .fpu softvfp
+ 221              	chipid_read_processor:
+ 222              	.LFB71:
  138:.././hal/sam3u1c/chipid.c **** 
  139:.././hal/sam3u1c/chipid.c **** /**
  140:.././hal/sam3u1c/chipid.c ****  * \brief Get the version of the embedded ARM processor.
@@ -357,53 +367,54 @@
  145:.././hal/sam3u1c/chipid.c ****  */
  146:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_processor(Chipid *p_chipid)
  147:.././hal/sam3u1c/chipid.c **** {
- 213              	 .loc 1 147 0
- 214              	 .cfi_startproc
- 215              	 
- 216              	 
- 217              	 
- 218 0000 80B4     	 push {r7}
- 219              	.LCFI12:
- 220              	 .cfi_def_cfa_offset 4
- 221              	 .cfi_offset 7,-4
- 222 0002 83B0     	 sub sp,sp,#12
- 223              	.LCFI13:
- 224              	 .cfi_def_cfa_offset 16
- 225 0004 00AF     	 add r7,sp,#0
- 226              	.LCFI14:
- 227              	 .cfi_def_cfa_register 7
- 228 0006 7860     	 str r0,[r7,#4]
+ 223              	 .loc 1 147 1
+ 224              	 .cfi_startproc
+ 225              	 
+ 226              	 
+ 227              	 
+ 228 0000 80B4     	 push {r7}
+ 229              	.LCFI12:
+ 230              	 .cfi_def_cfa_offset 4
+ 231              	 .cfi_offset 7,-4
+ 232 0002 83B0     	 sub sp,sp,#12
+ 233              	.LCFI13:
+ 234              	 .cfi_def_cfa_offset 16
+ 235 0004 00AF     	 add r7,sp,#0
+ 236              	.LCFI14:
+ 237              	 .cfi_def_cfa_register 7
+ 238 0006 7860     	 str r0,[r7,#4]
  148:.././hal/sam3u1c/chipid.c **** 	return p_chipid->CHIPID_CIDR & CHIPID_CIDR_EPROC_Msk;
- 229              	 .loc 1 148 0
- 230 0008 7B68     	 ldr r3,[r7,#4]
- 231 000a 1B68     	 ldr r3,[r3]
- 232 000c 03F0E003 	 and r3,r3,#224
+ 239              	 .loc 1 148 17
+ 240 0008 7B68     	 ldr r3,[r7,#4]
+ 241 000a 1B68     	 ldr r3,[r3]
+ 242              	 .loc 1 148 31
+ 243 000c 03F0E003 	 and r3,r3,#224
  149:.././hal/sam3u1c/chipid.c **** }
- 233              	 .loc 1 149 0
- 234 0010 1846     	 mov r0,r3
- 235 0012 0C37     	 adds r7,r7,#12
- 236              	.LCFI15:
- 237              	 .cfi_def_cfa_offset 4
- 238 0014 BD46     	 mov sp,r7
- 239              	.LCFI16:
- 240              	 .cfi_def_cfa_register 13
- 241              	 
- 242 0016 80BC     	 pop {r7}
- 243              	.LCFI17:
- 244              	 .cfi_restore 7
- 245              	 .cfi_def_cfa_offset 0
- 246 0018 7047     	 bx lr
- 247              	 .cfi_endproc
- 248              	.LFE71:
- 250              	 .section .text.chipid_read_arch,"ax",%progbits
- 251              	 .align 1
- 252              	 .global chipid_read_arch
- 253              	 .syntax unified
- 254              	 .thumb
- 255              	 .thumb_func
- 256              	 .fpu softvfp
- 258              	chipid_read_arch:
- 259              	.LFB72:
+ 244              	 .loc 1 149 1
+ 245 0010 1846     	 mov r0,r3
+ 246 0012 0C37     	 adds r7,r7,#12
+ 247              	.LCFI15:
+ 248              	 .cfi_def_cfa_offset 4
+ 249 0014 BD46     	 mov sp,r7
+ 250              	.LCFI16:
+ 251              	 .cfi_def_cfa_register 13
+ 252              	 
+ 253 0016 80BC     	 pop {r7}
+ 254              	.LCFI17:
+ 255              	 .cfi_restore 7
+ 256              	 .cfi_def_cfa_offset 0
+ 257 0018 7047     	 bx lr
+ 258              	 .cfi_endproc
+ 259              	.LFE71:
+ 261              	 .section .text.chipid_read_arch,"ax",%progbits
+ 262              	 .align 1
+ 263              	 .global chipid_read_arch
+ 264              	 .syntax unified
+ 265              	 .thumb
+ 266              	 .thumb_func
+ 267              	 .fpu softvfp
+ 269              	chipid_read_arch:
+ 270              	.LFB72:
  150:.././hal/sam3u1c/chipid.c **** 
  151:.././hal/sam3u1c/chipid.c **** /**
  152:.././hal/sam3u1c/chipid.c ****  * \brief Get the identifier of the architecture.
@@ -414,53 +425,54 @@
  157:.././hal/sam3u1c/chipid.c ****  */
  158:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_arch(Chipid *p_chipid)
  159:.././hal/sam3u1c/chipid.c **** {
- 260              	 .loc 1 159 0
- 261              	 .cfi_startproc
- 262              	 
- 263              	 
- 264              	 
- 265 0000 80B4     	 push {r7}
- 266              	.LCFI18:
- 267              	 .cfi_def_cfa_offset 4
- 268              	 .cfi_offset 7,-4
- 269 0002 83B0     	 sub sp,sp,#12
- 270              	.LCFI19:
- 271              	 .cfi_def_cfa_offset 16
- 272 0004 00AF     	 add r7,sp,#0
- 273              	.LCFI20:
- 274              	 .cfi_def_cfa_register 7
- 275 0006 7860     	 str r0,[r7,#4]
+ 271              	 .loc 1 159 1
+ 272              	 .cfi_startproc
+ 273              	 
+ 274              	 
+ 275              	 
+ 276 0000 80B4     	 push {r7}
+ 277              	.LCFI18:
+ 278              	 .cfi_def_cfa_offset 4
+ 279              	 .cfi_offset 7,-4
+ 280 0002 83B0     	 sub sp,sp,#12
+ 281              	.LCFI19:
+ 282              	 .cfi_def_cfa_offset 16
+ 283 0004 00AF     	 add r7,sp,#0
+ 284              	.LCFI20:
+ 285              	 .cfi_def_cfa_register 7
+ 286 0006 7860     	 str r0,[r7,#4]
  160:.././hal/sam3u1c/chipid.c **** 	return p_chipid->CHIPID_CIDR & CHIPID_CIDR_ARCH_Msk;
- 276              	 .loc 1 160 0
- 277 0008 7B68     	 ldr r3,[r7,#4]
- 278 000a 1B68     	 ldr r3,[r3]
- 279 000c 03F07F63 	 and r3,r3,#267386880
+ 287              	 .loc 1 160 17
+ 288 0008 7B68     	 ldr r3,[r7,#4]
+ 289 000a 1B68     	 ldr r3,[r3]
+ 290              	 .loc 1 160 31
+ 291 000c 03F07F63 	 and r3,r3,#267386880
  161:.././hal/sam3u1c/chipid.c **** }
- 280              	 .loc 1 161 0
- 281 0010 1846     	 mov r0,r3
- 282 0012 0C37     	 adds r7,r7,#12
- 283              	.LCFI21:
- 284              	 .cfi_def_cfa_offset 4
- 285 0014 BD46     	 mov sp,r7
- 286              	.LCFI22:
- 287              	 .cfi_def_cfa_register 13
- 288              	 
- 289 0016 80BC     	 pop {r7}
- 290              	.LCFI23:
- 291              	 .cfi_restore 7
- 292              	 .cfi_def_cfa_offset 0
- 293 0018 7047     	 bx lr
- 294              	 .cfi_endproc
- 295              	.LFE72:
- 297              	 .section .text.chipid_read_sramsize,"ax",%progbits
- 298              	 .align 1
- 299              	 .global chipid_read_sramsize
- 300              	 .syntax unified
- 301              	 .thumb
- 302              	 .thumb_func
- 303              	 .fpu softvfp
- 305              	chipid_read_sramsize:
- 306              	.LFB73:
+ 292              	 .loc 1 161 1
+ 293 0010 1846     	 mov r0,r3
+ 294 0012 0C37     	 adds r7,r7,#12
+ 295              	.LCFI21:
+ 296              	 .cfi_def_cfa_offset 4
+ 297 0014 BD46     	 mov sp,r7
+ 298              	.LCFI22:
+ 299              	 .cfi_def_cfa_register 13
+ 300              	 
+ 301 0016 80BC     	 pop {r7}
+ 302              	.LCFI23:
+ 303              	 .cfi_restore 7
+ 304              	 .cfi_def_cfa_offset 0
+ 305 0018 7047     	 bx lr
+ 306              	 .cfi_endproc
+ 307              	.LFE72:
+ 309              	 .section .text.chipid_read_sramsize,"ax",%progbits
+ 310              	 .align 1
+ 311              	 .global chipid_read_sramsize
+ 312              	 .syntax unified
+ 313              	 .thumb
+ 314              	 .thumb_func
+ 315              	 .fpu softvfp
+ 317              	chipid_read_sramsize:
+ 318              	.LFB73:
  162:.././hal/sam3u1c/chipid.c **** 
  163:.././hal/sam3u1c/chipid.c **** /**
  164:.././hal/sam3u1c/chipid.c ****  * \brief Get the size of the embedded SRAM.
@@ -471,53 +483,54 @@
  169:.././hal/sam3u1c/chipid.c ****  */
  170:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_sramsize(Chipid *p_chipid)
  171:.././hal/sam3u1c/chipid.c **** {
- 307              	 .loc 1 171 0
- 308              	 .cfi_startproc
- 309              	 
- 310              	 
- 311              	 
- 312 0000 80B4     	 push {r7}
- 313              	.LCFI24:
- 314              	 .cfi_def_cfa_offset 4
- 315              	 .cfi_offset 7,-4
- 316 0002 83B0     	 sub sp,sp,#12
- 317              	.LCFI25:
- 318              	 .cfi_def_cfa_offset 16
- 319 0004 00AF     	 add r7,sp,#0
- 320              	.LCFI26:
- 321              	 .cfi_def_cfa_register 7
- 322 0006 7860     	 str r0,[r7,#4]
+ 319              	 .loc 1 171 1
+ 320              	 .cfi_startproc
+ 321              	 
+ 322              	 
+ 323              	 
+ 324 0000 80B4     	 push {r7}
+ 325              	.LCFI24:
+ 326              	 .cfi_def_cfa_offset 4
+ 327              	 .cfi_offset 7,-4
+ 328 0002 83B0     	 sub sp,sp,#12
+ 329              	.LCFI25:
+ 330              	 .cfi_def_cfa_offset 16
+ 331 0004 00AF     	 add r7,sp,#0
+ 332              	.LCFI26:
+ 333              	 .cfi_def_cfa_register 7
+ 334 0006 7860     	 str r0,[r7,#4]
  172:.././hal/sam3u1c/chipid.c **** 	return p_chipid->CHIPID_CIDR & CHIPID_CIDR_SRAMSIZ_Msk;
- 323              	 .loc 1 172 0
- 324 0008 7B68     	 ldr r3,[r7,#4]
- 325 000a 1B68     	 ldr r3,[r3]
- 326 000c 03F47023 	 and r3,r3,#983040
+ 335              	 .loc 1 172 17
+ 336 0008 7B68     	 ldr r3,[r7,#4]
+ 337 000a 1B68     	 ldr r3,[r3]
+ 338              	 .loc 1 172 31
+ 339 000c 03F47023 	 and r3,r3,#983040
  173:.././hal/sam3u1c/chipid.c **** }
- 327              	 .loc 1 173 0
- 328 0010 1846     	 mov r0,r3
- 329 0012 0C37     	 adds r7,r7,#12
- 330              	.LCFI27:
- 331              	 .cfi_def_cfa_offset 4
- 332 0014 BD46     	 mov sp,r7
- 333              	.LCFI28:
- 334              	 .cfi_def_cfa_register 13
- 335              	 
- 336 0016 80BC     	 pop {r7}
- 337              	.LCFI29:
- 338              	 .cfi_restore 7
- 339              	 .cfi_def_cfa_offset 0
- 340 0018 7047     	 bx lr
- 341              	 .cfi_endproc
- 342              	.LFE73:
- 344              	 .section .text.chipid_read_nvpmsize,"ax",%progbits
- 345              	 .align 1
- 346              	 .global chipid_read_nvpmsize
- 347              	 .syntax unified
- 348              	 .thumb
- 349              	 .thumb_func
- 350              	 .fpu softvfp
- 352              	chipid_read_nvpmsize:
- 353              	.LFB74:
+ 340              	 .loc 1 173 1
+ 341 0010 1846     	 mov r0,r3
+ 342 0012 0C37     	 adds r7,r7,#12
+ 343              	.LCFI27:
+ 344              	 .cfi_def_cfa_offset 4
+ 345 0014 BD46     	 mov sp,r7
+ 346              	.LCFI28:
+ 347              	 .cfi_def_cfa_register 13
+ 348              	 
+ 349 0016 80BC     	 pop {r7}
+ 350              	.LCFI29:
+ 351              	 .cfi_restore 7
+ 352              	 .cfi_def_cfa_offset 0
+ 353 0018 7047     	 bx lr
+ 354              	 .cfi_endproc
+ 355              	.LFE73:
+ 357              	 .section .text.chipid_read_nvpmsize,"ax",%progbits
+ 358              	 .align 1
+ 359              	 .global chipid_read_nvpmsize
+ 360              	 .syntax unified
+ 361              	 .thumb
+ 362              	 .thumb_func
+ 363              	 .fpu softvfp
+ 365              	chipid_read_nvpmsize:
+ 366              	.LFB74:
  174:.././hal/sam3u1c/chipid.c **** 
  175:.././hal/sam3u1c/chipid.c **** /**
  176:.././hal/sam3u1c/chipid.c ****  * \brief Get the size of the first non-volatile program memory.
@@ -528,53 +541,54 @@
  181:.././hal/sam3u1c/chipid.c ****  */
  182:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_nvpmsize(Chipid *p_chipid)
  183:.././hal/sam3u1c/chipid.c **** {
- 354              	 .loc 1 183 0
- 355              	 .cfi_startproc
- 356              	 
- 357              	 
- 358              	 
- 359 0000 80B4     	 push {r7}
- 360              	.LCFI30:
- 361              	 .cfi_def_cfa_offset 4
- 362              	 .cfi_offset 7,-4
- 363 0002 83B0     	 sub sp,sp,#12
- 364              	.LCFI31:
- 365              	 .cfi_def_cfa_offset 16
- 366 0004 00AF     	 add r7,sp,#0
- 367              	.LCFI32:
- 368              	 .cfi_def_cfa_register 7
- 369 0006 7860     	 str r0,[r7,#4]
+ 367              	 .loc 1 183 1
+ 368              	 .cfi_startproc
+ 369              	 
+ 370              	 
+ 371              	 
+ 372 0000 80B4     	 push {r7}
+ 373              	.LCFI30:
+ 374              	 .cfi_def_cfa_offset 4
+ 375              	 .cfi_offset 7,-4
+ 376 0002 83B0     	 sub sp,sp,#12
+ 377              	.LCFI31:
+ 378              	 .cfi_def_cfa_offset 16
+ 379 0004 00AF     	 add r7,sp,#0
+ 380              	.LCFI32:
+ 381              	 .cfi_def_cfa_register 7
+ 382 0006 7860     	 str r0,[r7,#4]
  184:.././hal/sam3u1c/chipid.c **** 	return p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPSIZ_Msk;
- 370              	 .loc 1 184 0
- 371 0008 7B68     	 ldr r3,[r7,#4]
- 372 000a 1B68     	 ldr r3,[r3]
- 373 000c 03F47063 	 and r3,r3,#3840
+ 383              	 .loc 1 184 17
+ 384 0008 7B68     	 ldr r3,[r7,#4]
+ 385 000a 1B68     	 ldr r3,[r3]
+ 386              	 .loc 1 184 31
+ 387 000c 03F47063 	 and r3,r3,#3840
  185:.././hal/sam3u1c/chipid.c **** }
- 374              	 .loc 1 185 0
- 375 0010 1846     	 mov r0,r3
- 376 0012 0C37     	 adds r7,r7,#12
- 377              	.LCFI33:
- 378              	 .cfi_def_cfa_offset 4
- 379 0014 BD46     	 mov sp,r7
- 380              	.LCFI34:
- 381              	 .cfi_def_cfa_register 13
- 382              	 
- 383 0016 80BC     	 pop {r7}
- 384              	.LCFI35:
- 385              	 .cfi_restore 7
- 386              	 .cfi_def_cfa_offset 0
- 387 0018 7047     	 bx lr
- 388              	 .cfi_endproc
- 389              	.LFE74:
- 391              	 .section .text.chipid_read_nvpm2size,"ax",%progbits
- 392              	 .align 1
- 393              	 .global chipid_read_nvpm2size
- 394              	 .syntax unified
- 395              	 .thumb
- 396              	 .thumb_func
- 397              	 .fpu softvfp
- 399              	chipid_read_nvpm2size:
- 400              	.LFB75:
+ 388              	 .loc 1 185 1
+ 389 0010 1846     	 mov r0,r3
+ 390 0012 0C37     	 adds r7,r7,#12
+ 391              	.LCFI33:
+ 392              	 .cfi_def_cfa_offset 4
+ 393 0014 BD46     	 mov sp,r7
+ 394              	.LCFI34:
+ 395              	 .cfi_def_cfa_register 13
+ 396              	 
+ 397 0016 80BC     	 pop {r7}
+ 398              	.LCFI35:
+ 399              	 .cfi_restore 7
+ 400              	 .cfi_def_cfa_offset 0
+ 401 0018 7047     	 bx lr
+ 402              	 .cfi_endproc
+ 403              	.LFE74:
+ 405              	 .section .text.chipid_read_nvpm2size,"ax",%progbits
+ 406              	 .align 1
+ 407              	 .global chipid_read_nvpm2size
+ 408              	 .syntax unified
+ 409              	 .thumb
+ 410              	 .thumb_func
+ 411              	 .fpu softvfp
+ 413              	chipid_read_nvpm2size:
+ 414              	.LFB75:
  186:.././hal/sam3u1c/chipid.c **** 
  187:.././hal/sam3u1c/chipid.c **** /**
  188:.././hal/sam3u1c/chipid.c ****  * \brief Get the size of the second non-volatile program memory.
@@ -585,53 +599,54 @@
  193:.././hal/sam3u1c/chipid.c ****  */
  194:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_nvpm2size(Chipid *p_chipid)
  195:.././hal/sam3u1c/chipid.c **** {
- 401              	 .loc 1 195 0
- 402              	 .cfi_startproc
- 403              	 
- 404              	 
- 405              	 
- 406 0000 80B4     	 push {r7}
- 407              	.LCFI36:
- 408              	 .cfi_def_cfa_offset 4
- 409              	 .cfi_offset 7,-4
- 410 0002 83B0     	 sub sp,sp,#12
- 411              	.LCFI37:
- 412              	 .cfi_def_cfa_offset 16
- 413 0004 00AF     	 add r7,sp,#0
- 414              	.LCFI38:
- 415              	 .cfi_def_cfa_register 7
- 416 0006 7860     	 str r0,[r7,#4]
+ 415              	 .loc 1 195 1
+ 416              	 .cfi_startproc
+ 417              	 
+ 418              	 
+ 419              	 
+ 420 0000 80B4     	 push {r7}
+ 421              	.LCFI36:
+ 422              	 .cfi_def_cfa_offset 4
+ 423              	 .cfi_offset 7,-4
+ 424 0002 83B0     	 sub sp,sp,#12
+ 425              	.LCFI37:
+ 426              	 .cfi_def_cfa_offset 16
+ 427 0004 00AF     	 add r7,sp,#0
+ 428              	.LCFI38:
+ 429              	 .cfi_def_cfa_register 7
+ 430 0006 7860     	 str r0,[r7,#4]
  196:.././hal/sam3u1c/chipid.c **** 	return p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPSIZ2_Pos;
- 417              	 .loc 1 196 0
- 418 0008 7B68     	 ldr r3,[r7,#4]
- 419 000a 1B68     	 ldr r3,[r3]
- 420 000c 03F00C03 	 and r3,r3,#12
+ 431              	 .loc 1 196 17
+ 432 0008 7B68     	 ldr r3,[r7,#4]
+ 433 000a 1B68     	 ldr r3,[r3]
+ 434              	 .loc 1 196 31
+ 435 000c 03F00C03 	 and r3,r3,#12
  197:.././hal/sam3u1c/chipid.c **** }
- 421              	 .loc 1 197 0
- 422 0010 1846     	 mov r0,r3
- 423 0012 0C37     	 adds r7,r7,#12
- 424              	.LCFI39:
- 425              	 .cfi_def_cfa_offset 4
- 426 0014 BD46     	 mov sp,r7
- 427              	.LCFI40:
- 428              	 .cfi_def_cfa_register 13
- 429              	 
- 430 0016 80BC     	 pop {r7}
- 431              	.LCFI41:
- 432              	 .cfi_restore 7
- 433              	 .cfi_def_cfa_offset 0
- 434 0018 7047     	 bx lr
- 435              	 .cfi_endproc
- 436              	.LFE75:
- 438              	 .section .text.chipid_read_nvpmtype,"ax",%progbits
- 439              	 .align 1
- 440              	 .global chipid_read_nvpmtype
- 441              	 .syntax unified
- 442              	 .thumb
- 443              	 .thumb_func
- 444              	 .fpu softvfp
- 446              	chipid_read_nvpmtype:
- 447              	.LFB76:
+ 436              	 .loc 1 197 1
+ 437 0010 1846     	 mov r0,r3
+ 438 0012 0C37     	 adds r7,r7,#12
+ 439              	.LCFI39:
+ 440              	 .cfi_def_cfa_offset 4
+ 441 0014 BD46     	 mov sp,r7
+ 442              	.LCFI40:
+ 443              	 .cfi_def_cfa_register 13
+ 444              	 
+ 445 0016 80BC     	 pop {r7}
+ 446              	.LCFI41:
+ 447              	 .cfi_restore 7
+ 448              	 .cfi_def_cfa_offset 0
+ 449 0018 7047     	 bx lr
+ 450              	 .cfi_endproc
+ 451              	.LFE75:
+ 453              	 .section .text.chipid_read_nvpmtype,"ax",%progbits
+ 454              	 .align 1
+ 455              	 .global chipid_read_nvpmtype
+ 456              	 .syntax unified
+ 457              	 .thumb
+ 458              	 .thumb_func
+ 459              	 .fpu softvfp
+ 461              	chipid_read_nvpmtype:
+ 462              	.LFB76:
  198:.././hal/sam3u1c/chipid.c **** 
  199:.././hal/sam3u1c/chipid.c **** /**
  200:.././hal/sam3u1c/chipid.c ****  * \brief Get the type of non-volatile program memory.
@@ -642,53 +657,54 @@
  205:.././hal/sam3u1c/chipid.c ****  */
  206:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_nvpmtype(Chipid *p_chipid)
  207:.././hal/sam3u1c/chipid.c **** {
- 448              	 .loc 1 207 0
- 449              	 .cfi_startproc
- 450              	 
- 451              	 
- 452              	 
- 453 0000 80B4     	 push {r7}
- 454              	.LCFI42:
- 455              	 .cfi_def_cfa_offset 4
- 456              	 .cfi_offset 7,-4
- 457 0002 83B0     	 sub sp,sp,#12
- 458              	.LCFI43:
- 459              	 .cfi_def_cfa_offset 16
- 460 0004 00AF     	 add r7,sp,#0
- 461              	.LCFI44:
- 462              	 .cfi_def_cfa_register 7
- 463 0006 7860     	 str r0,[r7,#4]
+ 463              	 .loc 1 207 1
+ 464              	 .cfi_startproc
+ 465              	 
+ 466              	 
+ 467              	 
+ 468 0000 80B4     	 push {r7}
+ 469              	.LCFI42:
+ 470              	 .cfi_def_cfa_offset 4
+ 471              	 .cfi_offset 7,-4
+ 472 0002 83B0     	 sub sp,sp,#12
+ 473              	.LCFI43:
+ 474              	 .cfi_def_cfa_offset 16
+ 475 0004 00AF     	 add r7,sp,#0
+ 476              	.LCFI44:
+ 477              	 .cfi_def_cfa_register 7
+ 478 0006 7860     	 str r0,[r7,#4]
  208:.././hal/sam3u1c/chipid.c **** 	return p_chipid->CHIPID_CIDR & CHIPID_CIDR_NVPTYP_Msk;
- 464              	 .loc 1 208 0
- 465 0008 7B68     	 ldr r3,[r7,#4]
- 466 000a 1B68     	 ldr r3,[r3]
- 467 000c 03F0E043 	 and r3,r3,#1879048192
+ 479              	 .loc 1 208 17
+ 480 0008 7B68     	 ldr r3,[r7,#4]
+ 481 000a 1B68     	 ldr r3,[r3]
+ 482              	 .loc 1 208 31
+ 483 000c 03F0E043 	 and r3,r3,#1879048192
  209:.././hal/sam3u1c/chipid.c **** }
- 468              	 .loc 1 209 0
- 469 0010 1846     	 mov r0,r3
- 470 0012 0C37     	 adds r7,r7,#12
- 471              	.LCFI45:
- 472              	 .cfi_def_cfa_offset 4
- 473 0014 BD46     	 mov sp,r7
- 474              	.LCFI46:
- 475              	 .cfi_def_cfa_register 13
- 476              	 
- 477 0016 80BC     	 pop {r7}
- 478              	.LCFI47:
- 479              	 .cfi_restore 7
- 480              	 .cfi_def_cfa_offset 0
- 481 0018 7047     	 bx lr
- 482              	 .cfi_endproc
- 483              	.LFE76:
- 485              	 .section .text.chipid_read_extchipid,"ax",%progbits
- 486              	 .align 1
- 487              	 .global chipid_read_extchipid
- 488              	 .syntax unified
- 489              	 .thumb
- 490              	 .thumb_func
- 491              	 .fpu softvfp
- 493              	chipid_read_extchipid:
- 494              	.LFB77:
+ 484              	 .loc 1 209 1
+ 485 0010 1846     	 mov r0,r3
+ 486 0012 0C37     	 adds r7,r7,#12
+ 487              	.LCFI45:
+ 488              	 .cfi_def_cfa_offset 4
+ 489 0014 BD46     	 mov sp,r7
+ 490              	.LCFI46:
+ 491              	 .cfi_def_cfa_register 13
+ 492              	 
+ 493 0016 80BC     	 pop {r7}
+ 494              	.LCFI47:
+ 495              	 .cfi_restore 7
+ 496              	 .cfi_def_cfa_offset 0
+ 497 0018 7047     	 bx lr
+ 498              	 .cfi_endproc
+ 499              	.LFE76:
+ 501              	 .section .text.chipid_read_extchipid,"ax",%progbits
+ 502              	 .align 1
+ 503              	 .global chipid_read_extchipid
+ 504              	 .syntax unified
+ 505              	 .thumb
+ 506              	 .thumb_func
+ 507              	 .fpu softvfp
+ 509              	chipid_read_extchipid:
+ 510              	.LFB77:
  210:.././hal/sam3u1c/chipid.c **** 
  211:.././hal/sam3u1c/chipid.c **** /**
  212:.././hal/sam3u1c/chipid.c ****  * \brief Get the chip extension identifier.
@@ -699,71 +715,72 @@
  217:.././hal/sam3u1c/chipid.c ****  */
  218:.././hal/sam3u1c/chipid.c **** uint32_t chipid_read_extchipid(Chipid *p_chipid)
  219:.././hal/sam3u1c/chipid.c **** {
- 495              	 .loc 1 219 0
- 496              	 .cfi_startproc
- 497              	 
- 498              	 
- 499              	 
- 500 0000 80B4     	 push {r7}
- 501              	.LCFI48:
- 502              	 .cfi_def_cfa_offset 4
- 503              	 .cfi_offset 7,-4
- 504 0002 83B0     	 sub sp,sp,#12
- 505              	.LCFI49:
- 506              	 .cfi_def_cfa_offset 16
- 507 0004 00AF     	 add r7,sp,#0
- 508              	.LCFI50:
- 509              	 .cfi_def_cfa_register 7
- 510 0006 7860     	 str r0,[r7,#4]
+ 511              	 .loc 1 219 1
+ 512              	 .cfi_startproc
+ 513              	 
+ 514              	 
+ 515              	 
+ 516 0000 80B4     	 push {r7}
+ 517              	.LCFI48:
+ 518              	 .cfi_def_cfa_offset 4
+ 519              	 .cfi_offset 7,-4
+ 520 0002 83B0     	 sub sp,sp,#12
+ 521              	.LCFI49:
+ 522              	 .cfi_def_cfa_offset 16
+ 523 0004 00AF     	 add r7,sp,#0
+ 524              	.LCFI50:
+ 525              	 .cfi_def_cfa_register 7
+ 526 0006 7860     	 str r0,[r7,#4]
  220:.././hal/sam3u1c/chipid.c **** 	if ((p_chipid->CHIPID_CIDR) & CHIPID_CIDR_EXT)
- 511              	 .loc 1 220 0
- 512 0008 7B68     	 ldr r3,[r7,#4]
- 513 000a 1B68     	 ldr r3,[r3]
- 514 000c 002B     	 cmp r3,#0
- 515 000e 02DA     	 bge .L20
+ 527              	 .loc 1 220 15
+ 528 0008 7B68     	 ldr r3,[r7,#4]
+ 529 000a 1B68     	 ldr r3,[r3]
+ 530              	 .loc 1 220 5
+ 531 000c 002B     	 cmp r3,#0
+ 532 000e 02DA     	 bge .L20
  221:.././hal/sam3u1c/chipid.c **** 		return p_chipid->CHIPID_EXID & CHIPID_EXID_EXID_Msk;
- 516              	 .loc 1 221 0
- 517 0010 7B68     	 ldr r3,[r7,#4]
- 518 0012 5B68     	 ldr r3,[r3,#4]
- 519 0014 00E0     	 b .L21
- 520              	.L20:
+ 533              	 .loc 1 221 32
+ 534 0010 7B68     	 ldr r3,[r7,#4]
+ 535 0012 5B68     	 ldr r3,[r3,#4]
+ 536 0014 00E0     	 b .L21
+ 537              	.L20:
  222:.././hal/sam3u1c/chipid.c **** 	else
  223:.././hal/sam3u1c/chipid.c **** 		return 0;
- 521              	 .loc 1 223 0
- 522 0016 0023     	 movs r3,#0
- 523              	.L21:
+ 538              	 .loc 1 223 10
+ 539 0016 0023     	 movs r3,#0
+ 540              	.L21:
  224:.././hal/sam3u1c/chipid.c **** }
- 524              	 .loc 1 224 0
- 525 0018 1846     	 mov r0,r3
- 526 001a 0C37     	 adds r7,r7,#12
- 527              	.LCFI51:
- 528              	 .cfi_def_cfa_offset 4
- 529 001c BD46     	 mov sp,r7
- 530              	.LCFI52:
- 531              	 .cfi_def_cfa_register 13
- 532              	 
- 533 001e 80BC     	 pop {r7}
- 534              	.LCFI53:
- 535              	 .cfi_restore 7
- 536              	 .cfi_def_cfa_offset 0
- 537 0020 7047     	 bx lr
- 538              	 .cfi_endproc
- 539              	.LFE77:
- 541              	 .text
- 542              	.Letext0:
- 543              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 544              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 545              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
- 546              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
- 547              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
- 548              	 .file 7 ".././hal/sam3u1c/inc/component/component_chipid.h"
- 549              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 550              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 551              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 552              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 553              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 554              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 555              	 .file 14 ".././hal/sam3u1c/inc/chipid.h"
+ 541              	 .loc 1 224 1
+ 542 0018 1846     	 mov r0,r3
+ 543 001a 0C37     	 adds r7,r7,#12
+ 544              	.LCFI51:
+ 545              	 .cfi_def_cfa_offset 4
+ 546 001c BD46     	 mov sp,r7
+ 547              	.LCFI52:
+ 548              	 .cfi_def_cfa_register 13
+ 549              	 
+ 550 001e 80BC     	 pop {r7}
+ 551              	.LCFI53:
+ 552              	 .cfi_restore 7
+ 553              	 .cfi_def_cfa_offset 0
+ 554 0020 7047     	 bx lr
+ 555              	 .cfi_endproc
+ 556              	.LFE77:
+ 558              	 .text
+ 559              	.Letext0:
+ 560              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 561              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 562              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 563              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
+ 564              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 565              	 .file 7 ".././hal/sam3u1c/inc/component/component_chipid.h"
+ 566              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 567              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 568              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 569              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 570              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 571              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 572              	 .file 14 ".././hal/sam3u1c/inc/chipid.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 chipid.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -771,24 +788,24 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.chipid_read:00000000 $t
-    {standard input}:34     .text.chipid_read:00000000 chipid_read
-    {standard input}:157    .text.chipid_read_version:00000000 $t
-    {standard input}:164    .text.chipid_read_version:00000000 chipid_read_version
-    {standard input}:204    .text.chipid_read_processor:00000000 $t
-    {standard input}:211    .text.chipid_read_processor:00000000 chipid_read_processor
-    {standard input}:251    .text.chipid_read_arch:00000000 $t
-    {standard input}:258    .text.chipid_read_arch:00000000 chipid_read_arch
-    {standard input}:298    .text.chipid_read_sramsize:00000000 $t
-    {standard input}:305    .text.chipid_read_sramsize:00000000 chipid_read_sramsize
-    {standard input}:345    .text.chipid_read_nvpmsize:00000000 $t
-    {standard input}:352    .text.chipid_read_nvpmsize:00000000 chipid_read_nvpmsize
-    {standard input}:392    .text.chipid_read_nvpm2size:00000000 $t
-    {standard input}:399    .text.chipid_read_nvpm2size:00000000 chipid_read_nvpm2size
-    {standard input}:439    .text.chipid_read_nvpmtype:00000000 $t
-    {standard input}:446    .text.chipid_read_nvpmtype:00000000 chipid_read_nvpmtype
-    {standard input}:486    .text.chipid_read_extchipid:00000000 $t
-    {standard input}:493    .text.chipid_read_extchipid:00000000 chipid_read_extchipid
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:35     .text.chipid_read:00000000 chipid_read
+    {standard input}:166    .text.chipid_read_version:00000000 $t
+    {standard input}:173    .text.chipid_read_version:00000000 chipid_read_version
+    {standard input}:214    .text.chipid_read_processor:00000000 $t
+    {standard input}:221    .text.chipid_read_processor:00000000 chipid_read_processor
+    {standard input}:262    .text.chipid_read_arch:00000000 $t
+    {standard input}:269    .text.chipid_read_arch:00000000 chipid_read_arch
+    {standard input}:310    .text.chipid_read_sramsize:00000000 $t
+    {standard input}:317    .text.chipid_read_sramsize:00000000 chipid_read_sramsize
+    {standard input}:358    .text.chipid_read_nvpmsize:00000000 $t
+    {standard input}:365    .text.chipid_read_nvpmsize:00000000 chipid_read_nvpmsize
+    {standard input}:406    .text.chipid_read_nvpm2size:00000000 $t
+    {standard input}:413    .text.chipid_read_nvpm2size:00000000 chipid_read_nvpm2size
+    {standard input}:454    .text.chipid_read_nvpmtype:00000000 $t
+    {standard input}:461    .text.chipid_read_nvpmtype:00000000 chipid_read_nvpmtype
+    {standard input}:502    .text.chipid_read_extchipid:00000000 $t
+    {standard input}:509    .text.chipid_read_extchipid:00000000 chipid_read_extchipid
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -862,12 +879,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

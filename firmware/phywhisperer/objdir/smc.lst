@@ -22,13 +22,14 @@
   26              	 .section .text.smc_set_setup_timing,"ax",%progbits
   27              	 .align 1
   28              	 .global smc_set_setup_timing
-  29              	 .syntax unified
-  30              	 .thumb
-  31              	 .thumb_func
-  32              	 .fpu softvfp
-  34              	smc_set_setup_timing:
-  35              	.LFB69:
-  36              	 .file 1 ".././hal/sam3u1c/smc.c"
+  29              	 .arch armv7-m
+  30              	 .syntax unified
+  31              	 .thumb
+  32              	 .thumb_func
+  33              	 .fpu softvfp
+  35              	smc_set_setup_timing:
+  36              	.LFB69:
+  37              	 .file 1 ".././hal/sam3u1c/smc.c"
    1:.././hal/sam3u1c/smc.c **** /**
    2:.././hal/sam3u1c/smc.c ****  * \file
    3:.././hal/sam3u1c/smc.c ****  *
@@ -104,62 +105,62 @@
   73:.././hal/sam3u1c/smc.c **** void smc_set_setup_timing(Smc *p_smc, uint32_t ul_cs,
   74:.././hal/sam3u1c/smc.c **** 		uint32_t ul_setup_timing)
   75:.././hal/sam3u1c/smc.c **** {
-  37              	 .loc 1 75 0
-  38              	 .cfi_startproc
-  39              	 
+  38              	 .loc 1 75 1
+  39              	 .cfi_startproc
   40              	 
   41              	 
-  42 0000 80B4     	 push {r7}
-  43              	.LCFI0:
-  44              	 .cfi_def_cfa_offset 4
-  45              	 .cfi_offset 7,-4
-  46 0002 85B0     	 sub sp,sp,#20
-  47              	.LCFI1:
-  48              	 .cfi_def_cfa_offset 24
-  49 0004 00AF     	 add r7,sp,#0
-  50              	.LCFI2:
-  51              	 .cfi_def_cfa_register 7
-  52 0006 F860     	 str r0,[r7,#12]
-  53 0008 B960     	 str r1,[r7,#8]
-  54 000a 7A60     	 str r2,[r7,#4]
+  42              	 
+  43 0000 80B4     	 push {r7}
+  44              	.LCFI0:
+  45              	 .cfi_def_cfa_offset 4
+  46              	 .cfi_offset 7,-4
+  47 0002 85B0     	 sub sp,sp,#20
+  48              	.LCFI1:
+  49              	 .cfi_def_cfa_offset 24
+  50 0004 00AF     	 add r7,sp,#0
+  51              	.LCFI2:
+  52              	 .cfi_def_cfa_register 7
+  53 0006 F860     	 str r0,[r7,#12]
+  54 0008 B960     	 str r1,[r7,#8]
+  55 000a 7A60     	 str r2,[r7,#4]
   76:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CS_NUMBER[ul_cs].SMC_SETUP = ul_setup_timing;
-  55              	 .loc 1 76 0
-  56 000c F968     	 ldr r1,[r7,#12]
-  57 000e BA68     	 ldr r2,[r7,#8]
-  58 0010 1346     	 mov r3,r2
-  59 0012 9B00     	 lsls r3,r3,#2
-  60 0014 1344     	 add r3,r3,r2
-  61 0016 9B00     	 lsls r3,r3,#2
-  62 0018 0B44     	 add r3,r3,r1
-  63 001a 7033     	 adds r3,r3,#112
-  64 001c 7A68     	 ldr r2,[r7,#4]
-  65 001e 1A60     	 str r2,[r3]
+  56              	 .loc 1 76 40
+  57 000c F968     	 ldr r1,[r7,#12]
+  58 000e BA68     	 ldr r2,[r7,#8]
+  59 0010 1346     	 mov r3,r2
+  60 0012 9B00     	 lsls r3,r3,#2
+  61 0014 1344     	 add r3,r3,r2
+  62 0016 9B00     	 lsls r3,r3,#2
+  63 0018 0B44     	 add r3,r3,r1
+  64 001a 7033     	 adds r3,r3,#112
+  65 001c 7A68     	 ldr r2,[r7,#4]
+  66 001e 1A60     	 str r2,[r3]
   77:.././hal/sam3u1c/smc.c **** }
-  66              	 .loc 1 77 0
-  67 0020 00BF     	 nop
-  68 0022 1437     	 adds r7,r7,#20
-  69              	.LCFI3:
-  70              	 .cfi_def_cfa_offset 4
-  71 0024 BD46     	 mov sp,r7
-  72              	.LCFI4:
-  73              	 .cfi_def_cfa_register 13
-  74              	 
-  75 0026 80BC     	 pop {r7}
-  76              	.LCFI5:
-  77              	 .cfi_restore 7
-  78              	 .cfi_def_cfa_offset 0
-  79 0028 7047     	 bx lr
-  80              	 .cfi_endproc
-  81              	.LFE69:
-  83              	 .section .text.smc_set_pulse_timing,"ax",%progbits
-  84              	 .align 1
-  85              	 .global smc_set_pulse_timing
-  86              	 .syntax unified
-  87              	 .thumb
-  88              	 .thumb_func
-  89              	 .fpu softvfp
-  91              	smc_set_pulse_timing:
-  92              	.LFB70:
+  67              	 .loc 1 77 1
+  68 0020 00BF     	 nop
+  69 0022 1437     	 adds r7,r7,#20
+  70              	.LCFI3:
+  71              	 .cfi_def_cfa_offset 4
+  72 0024 BD46     	 mov sp,r7
+  73              	.LCFI4:
+  74              	 .cfi_def_cfa_register 13
+  75              	 
+  76 0026 80BC     	 pop {r7}
+  77              	.LCFI5:
+  78              	 .cfi_restore 7
+  79              	 .cfi_def_cfa_offset 0
+  80 0028 7047     	 bx lr
+  81              	 .cfi_endproc
+  82              	.LFE69:
+  84              	 .section .text.smc_set_pulse_timing,"ax",%progbits
+  85              	 .align 1
+  86              	 .global smc_set_pulse_timing
+  87              	 .syntax unified
+  88              	 .thumb
+  89              	 .thumb_func
+  90              	 .fpu softvfp
+  92              	smc_set_pulse_timing:
+  93              	.LFB70:
   78:.././hal/sam3u1c/smc.c **** 
   79:.././hal/sam3u1c/smc.c **** /**
   80:.././hal/sam3u1c/smc.c ****  * \brief Configure the SMC pulse timing for the specified Chip Select.
@@ -171,62 +172,62 @@
   86:.././hal/sam3u1c/smc.c **** void smc_set_pulse_timing(Smc *p_smc, uint32_t ul_cs,
   87:.././hal/sam3u1c/smc.c **** 		uint32_t ul_pulse_timing)
   88:.././hal/sam3u1c/smc.c **** {
-  93              	 .loc 1 88 0
-  94              	 .cfi_startproc
-  95              	 
+  94              	 .loc 1 88 1
+  95              	 .cfi_startproc
   96              	 
   97              	 
-  98 0000 80B4     	 push {r7}
-  99              	.LCFI6:
- 100              	 .cfi_def_cfa_offset 4
- 101              	 .cfi_offset 7,-4
- 102 0002 85B0     	 sub sp,sp,#20
- 103              	.LCFI7:
- 104              	 .cfi_def_cfa_offset 24
- 105 0004 00AF     	 add r7,sp,#0
- 106              	.LCFI8:
- 107              	 .cfi_def_cfa_register 7
- 108 0006 F860     	 str r0,[r7,#12]
- 109 0008 B960     	 str r1,[r7,#8]
- 110 000a 7A60     	 str r2,[r7,#4]
+  98              	 
+  99 0000 80B4     	 push {r7}
+ 100              	.LCFI6:
+ 101              	 .cfi_def_cfa_offset 4
+ 102              	 .cfi_offset 7,-4
+ 103 0002 85B0     	 sub sp,sp,#20
+ 104              	.LCFI7:
+ 105              	 .cfi_def_cfa_offset 24
+ 106 0004 00AF     	 add r7,sp,#0
+ 107              	.LCFI8:
+ 108              	 .cfi_def_cfa_register 7
+ 109 0006 F860     	 str r0,[r7,#12]
+ 110 0008 B960     	 str r1,[r7,#8]
+ 111 000a 7A60     	 str r2,[r7,#4]
   89:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CS_NUMBER[ul_cs].SMC_PULSE = ul_pulse_timing;
- 111              	 .loc 1 89 0
- 112 000c F968     	 ldr r1,[r7,#12]
- 113 000e BA68     	 ldr r2,[r7,#8]
- 114 0010 1346     	 mov r3,r2
- 115 0012 9B00     	 lsls r3,r3,#2
- 116 0014 1344     	 add r3,r3,r2
- 117 0016 9B00     	 lsls r3,r3,#2
- 118 0018 0B44     	 add r3,r3,r1
- 119 001a 7433     	 adds r3,r3,#116
- 120 001c 7A68     	 ldr r2,[r7,#4]
- 121 001e 1A60     	 str r2,[r3]
+ 112              	 .loc 1 89 40
+ 113 000c F968     	 ldr r1,[r7,#12]
+ 114 000e BA68     	 ldr r2,[r7,#8]
+ 115 0010 1346     	 mov r3,r2
+ 116 0012 9B00     	 lsls r3,r3,#2
+ 117 0014 1344     	 add r3,r3,r2
+ 118 0016 9B00     	 lsls r3,r3,#2
+ 119 0018 0B44     	 add r3,r3,r1
+ 120 001a 7433     	 adds r3,r3,#116
+ 121 001c 7A68     	 ldr r2,[r7,#4]
+ 122 001e 1A60     	 str r2,[r3]
   90:.././hal/sam3u1c/smc.c **** }
- 122              	 .loc 1 90 0
- 123 0020 00BF     	 nop
- 124 0022 1437     	 adds r7,r7,#20
- 125              	.LCFI9:
- 126              	 .cfi_def_cfa_offset 4
- 127 0024 BD46     	 mov sp,r7
- 128              	.LCFI10:
- 129              	 .cfi_def_cfa_register 13
- 130              	 
- 131 0026 80BC     	 pop {r7}
- 132              	.LCFI11:
- 133              	 .cfi_restore 7
- 134              	 .cfi_def_cfa_offset 0
- 135 0028 7047     	 bx lr
- 136              	 .cfi_endproc
- 137              	.LFE70:
- 139              	 .section .text.smc_set_cycle_timing,"ax",%progbits
- 140              	 .align 1
- 141              	 .global smc_set_cycle_timing
- 142              	 .syntax unified
- 143              	 .thumb
- 144              	 .thumb_func
- 145              	 .fpu softvfp
- 147              	smc_set_cycle_timing:
- 148              	.LFB71:
+ 123              	 .loc 1 90 1
+ 124 0020 00BF     	 nop
+ 125 0022 1437     	 adds r7,r7,#20
+ 126              	.LCFI9:
+ 127              	 .cfi_def_cfa_offset 4
+ 128 0024 BD46     	 mov sp,r7
+ 129              	.LCFI10:
+ 130              	 .cfi_def_cfa_register 13
+ 131              	 
+ 132 0026 80BC     	 pop {r7}
+ 133              	.LCFI11:
+ 134              	 .cfi_restore 7
+ 135              	 .cfi_def_cfa_offset 0
+ 136 0028 7047     	 bx lr
+ 137              	 .cfi_endproc
+ 138              	.LFE70:
+ 140              	 .section .text.smc_set_cycle_timing,"ax",%progbits
+ 141              	 .align 1
+ 142              	 .global smc_set_cycle_timing
+ 143              	 .syntax unified
+ 144              	 .thumb
+ 145              	 .thumb_func
+ 146              	 .fpu softvfp
+ 148              	smc_set_cycle_timing:
+ 149              	.LFB71:
   91:.././hal/sam3u1c/smc.c **** 
   92:.././hal/sam3u1c/smc.c **** /**
   93:.././hal/sam3u1c/smc.c ****  * \brief Configure the SMC cycle timing for the specified Chip Select.
@@ -238,62 +239,62 @@
   99:.././hal/sam3u1c/smc.c **** void smc_set_cycle_timing(Smc *p_smc, uint32_t ul_cs,
  100:.././hal/sam3u1c/smc.c **** 		uint32_t ul_cycle_timing)
  101:.././hal/sam3u1c/smc.c **** {
- 149              	 .loc 1 101 0
- 150              	 .cfi_startproc
- 151              	 
+ 150              	 .loc 1 101 1
+ 151              	 .cfi_startproc
  152              	 
  153              	 
- 154 0000 80B4     	 push {r7}
- 155              	.LCFI12:
- 156              	 .cfi_def_cfa_offset 4
- 157              	 .cfi_offset 7,-4
- 158 0002 85B0     	 sub sp,sp,#20
- 159              	.LCFI13:
- 160              	 .cfi_def_cfa_offset 24
- 161 0004 00AF     	 add r7,sp,#0
- 162              	.LCFI14:
- 163              	 .cfi_def_cfa_register 7
- 164 0006 F860     	 str r0,[r7,#12]
- 165 0008 B960     	 str r1,[r7,#8]
- 166 000a 7A60     	 str r2,[r7,#4]
+ 154              	 
+ 155 0000 80B4     	 push {r7}
+ 156              	.LCFI12:
+ 157              	 .cfi_def_cfa_offset 4
+ 158              	 .cfi_offset 7,-4
+ 159 0002 85B0     	 sub sp,sp,#20
+ 160              	.LCFI13:
+ 161              	 .cfi_def_cfa_offset 24
+ 162 0004 00AF     	 add r7,sp,#0
+ 163              	.LCFI14:
+ 164              	 .cfi_def_cfa_register 7
+ 165 0006 F860     	 str r0,[r7,#12]
+ 166 0008 B960     	 str r1,[r7,#8]
+ 167 000a 7A60     	 str r2,[r7,#4]
  102:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CS_NUMBER[ul_cs].SMC_CYCLE = ul_cycle_timing;
- 167              	 .loc 1 102 0
- 168 000c F968     	 ldr r1,[r7,#12]
- 169 000e BA68     	 ldr r2,[r7,#8]
- 170 0010 1346     	 mov r3,r2
- 171 0012 9B00     	 lsls r3,r3,#2
- 172 0014 1344     	 add r3,r3,r2
- 173 0016 9B00     	 lsls r3,r3,#2
- 174 0018 0B44     	 add r3,r3,r1
- 175 001a 7833     	 adds r3,r3,#120
- 176 001c 7A68     	 ldr r2,[r7,#4]
- 177 001e 1A60     	 str r2,[r3]
+ 168              	 .loc 1 102 40
+ 169 000c F968     	 ldr r1,[r7,#12]
+ 170 000e BA68     	 ldr r2,[r7,#8]
+ 171 0010 1346     	 mov r3,r2
+ 172 0012 9B00     	 lsls r3,r3,#2
+ 173 0014 1344     	 add r3,r3,r2
+ 174 0016 9B00     	 lsls r3,r3,#2
+ 175 0018 0B44     	 add r3,r3,r1
+ 176 001a 7833     	 adds r3,r3,#120
+ 177 001c 7A68     	 ldr r2,[r7,#4]
+ 178 001e 1A60     	 str r2,[r3]
  103:.././hal/sam3u1c/smc.c **** }
- 178              	 .loc 1 103 0
- 179 0020 00BF     	 nop
- 180 0022 1437     	 adds r7,r7,#20
- 181              	.LCFI15:
- 182              	 .cfi_def_cfa_offset 4
- 183 0024 BD46     	 mov sp,r7
- 184              	.LCFI16:
- 185              	 .cfi_def_cfa_register 13
- 186              	 
- 187 0026 80BC     	 pop {r7}
- 188              	.LCFI17:
- 189              	 .cfi_restore 7
- 190              	 .cfi_def_cfa_offset 0
- 191 0028 7047     	 bx lr
- 192              	 .cfi_endproc
- 193              	.LFE71:
- 195              	 .section .text.smc_set_mode,"ax",%progbits
- 196              	 .align 1
- 197              	 .global smc_set_mode
- 198              	 .syntax unified
- 199              	 .thumb
- 200              	 .thumb_func
- 201              	 .fpu softvfp
- 203              	smc_set_mode:
- 204              	.LFB72:
+ 179              	 .loc 1 103 1
+ 180 0020 00BF     	 nop
+ 181 0022 1437     	 adds r7,r7,#20
+ 182              	.LCFI15:
+ 183              	 .cfi_def_cfa_offset 4
+ 184 0024 BD46     	 mov sp,r7
+ 185              	.LCFI16:
+ 186              	 .cfi_def_cfa_register 13
+ 187              	 
+ 188 0026 80BC     	 pop {r7}
+ 189              	.LCFI17:
+ 190              	 .cfi_restore 7
+ 191              	 .cfi_def_cfa_offset 0
+ 192 0028 7047     	 bx lr
+ 193              	 .cfi_endproc
+ 194              	.LFE71:
+ 196              	 .section .text.smc_set_mode,"ax",%progbits
+ 197              	 .align 1
+ 198              	 .global smc_set_mode
+ 199              	 .syntax unified
+ 200              	 .thumb
+ 201              	 .thumb_func
+ 202              	 .fpu softvfp
+ 204              	smc_set_mode:
+ 205              	.LFB72:
  104:.././hal/sam3u1c/smc.c **** 
  105:.././hal/sam3u1c/smc.c **** /**
  106:.././hal/sam3u1c/smc.c ****  * \brief Configure the SMC mode for the specified Chip Select.
@@ -304,62 +305,62 @@
  111:.././hal/sam3u1c/smc.c ****  */
  112:.././hal/sam3u1c/smc.c **** void smc_set_mode(Smc *p_smc, uint32_t ul_cs, uint32_t ul_mode)
  113:.././hal/sam3u1c/smc.c **** {
- 205              	 .loc 1 113 0
- 206              	 .cfi_startproc
- 207              	 
+ 206              	 .loc 1 113 1
+ 207              	 .cfi_startproc
  208              	 
  209              	 
- 210 0000 80B4     	 push {r7}
- 211              	.LCFI18:
- 212              	 .cfi_def_cfa_offset 4
- 213              	 .cfi_offset 7,-4
- 214 0002 85B0     	 sub sp,sp,#20
- 215              	.LCFI19:
- 216              	 .cfi_def_cfa_offset 24
- 217 0004 00AF     	 add r7,sp,#0
- 218              	.LCFI20:
- 219              	 .cfi_def_cfa_register 7
- 220 0006 F860     	 str r0,[r7,#12]
- 221 0008 B960     	 str r1,[r7,#8]
- 222 000a 7A60     	 str r2,[r7,#4]
+ 210              	 
+ 211 0000 80B4     	 push {r7}
+ 212              	.LCFI18:
+ 213              	 .cfi_def_cfa_offset 4
+ 214              	 .cfi_offset 7,-4
+ 215 0002 85B0     	 sub sp,sp,#20
+ 216              	.LCFI19:
+ 217              	 .cfi_def_cfa_offset 24
+ 218 0004 00AF     	 add r7,sp,#0
+ 219              	.LCFI20:
+ 220              	 .cfi_def_cfa_register 7
+ 221 0006 F860     	 str r0,[r7,#12]
+ 222 0008 B960     	 str r1,[r7,#8]
+ 223 000a 7A60     	 str r2,[r7,#4]
  114:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CS_NUMBER[ul_cs].SMC_MODE = ul_mode;
- 223              	 .loc 1 114 0
- 224 000c F968     	 ldr r1,[r7,#12]
- 225 000e BA68     	 ldr r2,[r7,#8]
- 226 0010 1346     	 mov r3,r2
- 227 0012 9B00     	 lsls r3,r3,#2
- 228 0014 1344     	 add r3,r3,r2
- 229 0016 9B00     	 lsls r3,r3,#2
- 230 0018 0B44     	 add r3,r3,r1
- 231 001a 8033     	 adds r3,r3,#128
- 232 001c 7A68     	 ldr r2,[r7,#4]
- 233 001e 1A60     	 str r2,[r3]
+ 224              	 .loc 1 114 39
+ 225 000c F968     	 ldr r1,[r7,#12]
+ 226 000e BA68     	 ldr r2,[r7,#8]
+ 227 0010 1346     	 mov r3,r2
+ 228 0012 9B00     	 lsls r3,r3,#2
+ 229 0014 1344     	 add r3,r3,r2
+ 230 0016 9B00     	 lsls r3,r3,#2
+ 231 0018 0B44     	 add r3,r3,r1
+ 232 001a 8033     	 adds r3,r3,#128
+ 233 001c 7A68     	 ldr r2,[r7,#4]
+ 234 001e 1A60     	 str r2,[r3]
  115:.././hal/sam3u1c/smc.c **** }
- 234              	 .loc 1 115 0
- 235 0020 00BF     	 nop
- 236 0022 1437     	 adds r7,r7,#20
- 237              	.LCFI21:
- 238              	 .cfi_def_cfa_offset 4
- 239 0024 BD46     	 mov sp,r7
- 240              	.LCFI22:
- 241              	 .cfi_def_cfa_register 13
- 242              	 
- 243 0026 80BC     	 pop {r7}
- 244              	.LCFI23:
- 245              	 .cfi_restore 7
- 246              	 .cfi_def_cfa_offset 0
- 247 0028 7047     	 bx lr
- 248              	 .cfi_endproc
- 249              	.LFE72:
- 251              	 .section .text.smc_get_mode,"ax",%progbits
- 252              	 .align 1
- 253              	 .global smc_get_mode
- 254              	 .syntax unified
- 255              	 .thumb
- 256              	 .thumb_func
- 257              	 .fpu softvfp
- 259              	smc_get_mode:
- 260              	.LFB73:
+ 235              	 .loc 1 115 1
+ 236 0020 00BF     	 nop
+ 237 0022 1437     	 adds r7,r7,#20
+ 238              	.LCFI21:
+ 239              	 .cfi_def_cfa_offset 4
+ 240 0024 BD46     	 mov sp,r7
+ 241              	.LCFI22:
+ 242              	 .cfi_def_cfa_register 13
+ 243              	 
+ 244 0026 80BC     	 pop {r7}
+ 245              	.LCFI23:
+ 246              	 .cfi_restore 7
+ 247              	 .cfi_def_cfa_offset 0
+ 248 0028 7047     	 bx lr
+ 249              	 .cfi_endproc
+ 250              	.LFE72:
+ 252              	 .section .text.smc_get_mode,"ax",%progbits
+ 253              	 .align 1
+ 254              	 .global smc_get_mode
+ 255              	 .syntax unified
+ 256              	 .thumb
+ 257              	 .thumb_func
+ 258              	 .fpu softvfp
+ 260              	smc_get_mode:
+ 261              	.LFB73:
  116:.././hal/sam3u1c/smc.c **** 
  117:.././hal/sam3u1c/smc.c **** /**
  118:.././hal/sam3u1c/smc.c ****  * \brief Get the SMC mode of the specified Chip Select.
@@ -371,60 +372,60 @@
  124:.././hal/sam3u1c/smc.c ****  */
  125:.././hal/sam3u1c/smc.c **** uint32_t smc_get_mode(Smc *p_smc, uint32_t ul_cs)
  126:.././hal/sam3u1c/smc.c **** {
- 261              	 .loc 1 126 0
- 262              	 .cfi_startproc
- 263              	 
+ 262              	 .loc 1 126 1
+ 263              	 .cfi_startproc
  264              	 
  265              	 
- 266 0000 80B4     	 push {r7}
- 267              	.LCFI24:
- 268              	 .cfi_def_cfa_offset 4
- 269              	 .cfi_offset 7,-4
- 270 0002 83B0     	 sub sp,sp,#12
- 271              	.LCFI25:
- 272              	 .cfi_def_cfa_offset 16
- 273 0004 00AF     	 add r7,sp,#0
- 274              	.LCFI26:
- 275              	 .cfi_def_cfa_register 7
- 276 0006 7860     	 str r0,[r7,#4]
- 277 0008 3960     	 str r1,[r7]
+ 266              	 
+ 267 0000 80B4     	 push {r7}
+ 268              	.LCFI24:
+ 269              	 .cfi_def_cfa_offset 4
+ 270              	 .cfi_offset 7,-4
+ 271 0002 83B0     	 sub sp,sp,#12
+ 272              	.LCFI25:
+ 273              	 .cfi_def_cfa_offset 16
+ 274 0004 00AF     	 add r7,sp,#0
+ 275              	.LCFI26:
+ 276              	 .cfi_def_cfa_register 7
+ 277 0006 7860     	 str r0,[r7,#4]
+ 278 0008 3960     	 str r1,[r7]
  127:.././hal/sam3u1c/smc.c **** 	return p_smc->SMC_CS_NUMBER[ul_cs].SMC_MODE;
- 278              	 .loc 1 127 0
- 279 000a 7968     	 ldr r1,[r7,#4]
- 280 000c 3A68     	 ldr r2,[r7]
- 281 000e 1346     	 mov r3,r2
- 282 0010 9B00     	 lsls r3,r3,#2
- 283 0012 1344     	 add r3,r3,r2
- 284 0014 9B00     	 lsls r3,r3,#2
- 285 0016 0B44     	 add r3,r3,r1
- 286 0018 8033     	 adds r3,r3,#128
- 287 001a 1B68     	 ldr r3,[r3]
+ 279              	 .loc 1 127 36
+ 280 000a 7968     	 ldr r1,[r7,#4]
+ 281 000c 3A68     	 ldr r2,[r7]
+ 282 000e 1346     	 mov r3,r2
+ 283 0010 9B00     	 lsls r3,r3,#2
+ 284 0012 1344     	 add r3,r3,r2
+ 285 0014 9B00     	 lsls r3,r3,#2
+ 286 0016 0B44     	 add r3,r3,r1
+ 287 0018 8033     	 adds r3,r3,#128
+ 288 001a 1B68     	 ldr r3,[r3]
  128:.././hal/sam3u1c/smc.c **** }
- 288              	 .loc 1 128 0
- 289 001c 1846     	 mov r0,r3
- 290 001e 0C37     	 adds r7,r7,#12
- 291              	.LCFI27:
- 292              	 .cfi_def_cfa_offset 4
- 293 0020 BD46     	 mov sp,r7
- 294              	.LCFI28:
- 295              	 .cfi_def_cfa_register 13
- 296              	 
- 297 0022 80BC     	 pop {r7}
- 298              	.LCFI29:
- 299              	 .cfi_restore 7
- 300              	 .cfi_def_cfa_offset 0
- 301 0024 7047     	 bx lr
- 302              	 .cfi_endproc
- 303              	.LFE73:
- 305              	 .section .text.smc_enable_writeprotect,"ax",%progbits
- 306              	 .align 1
- 307              	 .global smc_enable_writeprotect
- 308              	 .syntax unified
- 309              	 .thumb
- 310              	 .thumb_func
- 311              	 .fpu softvfp
- 313              	smc_enable_writeprotect:
- 314              	.LFB74:
+ 289              	 .loc 1 128 1
+ 290 001c 1846     	 mov r0,r3
+ 291 001e 0C37     	 adds r7,r7,#12
+ 292              	.LCFI27:
+ 293              	 .cfi_def_cfa_offset 4
+ 294 0020 BD46     	 mov sp,r7
+ 295              	.LCFI28:
+ 296              	 .cfi_def_cfa_register 13
+ 297              	 
+ 298 0022 80BC     	 pop {r7}
+ 299              	.LCFI29:
+ 300              	 .cfi_restore 7
+ 301              	 .cfi_def_cfa_offset 0
+ 302 0024 7047     	 bx lr
+ 303              	 .cfi_endproc
+ 304              	.LFE73:
+ 306              	 .section .text.smc_enable_writeprotect,"ax",%progbits
+ 307              	 .align 1
+ 308              	 .global smc_enable_writeprotect
+ 309              	 .syntax unified
+ 310              	 .thumb
+ 311              	 .thumb_func
+ 312              	 .fpu softvfp
+ 314              	smc_enable_writeprotect:
+ 315              	.LFB74:
  129:.././hal/sam3u1c/smc.c **** 
  130:.././hal/sam3u1c/smc.c **** /**
  131:.././hal/sam3u1c/smc.c ****  * \brief Set write protection of SMC registers.
@@ -434,23 +435,23 @@
  135:.././hal/sam3u1c/smc.c ****  */
  136:.././hal/sam3u1c/smc.c **** void smc_enable_writeprotect(Smc *p_smc, uint32_t ul_enable)
  137:.././hal/sam3u1c/smc.c **** {
- 315              	 .loc 1 137 0
- 316              	 .cfi_startproc
- 317              	 
+ 316              	 .loc 1 137 1
+ 317              	 .cfi_startproc
  318              	 
  319              	 
- 320 0000 80B4     	 push {r7}
- 321              	.LCFI30:
- 322              	 .cfi_def_cfa_offset 4
- 323              	 .cfi_offset 7,-4
- 324 0002 83B0     	 sub sp,sp,#12
- 325              	.LCFI31:
- 326              	 .cfi_def_cfa_offset 16
- 327 0004 00AF     	 add r7,sp,#0
- 328              	.LCFI32:
- 329              	 .cfi_def_cfa_register 7
- 330 0006 7860     	 str r0,[r7,#4]
- 331 0008 3960     	 str r1,[r7]
+ 320              	 
+ 321 0000 80B4     	 push {r7}
+ 322              	.LCFI30:
+ 323              	 .cfi_def_cfa_offset 4
+ 324              	 .cfi_offset 7,-4
+ 325 0002 83B0     	 sub sp,sp,#12
+ 326              	.LCFI31:
+ 327              	 .cfi_def_cfa_offset 16
+ 328 0004 00AF     	 add r7,sp,#0
+ 329              	.LCFI32:
+ 330              	 .cfi_def_cfa_register 7
+ 331 0006 7860     	 str r0,[r7,#4]
+ 332 0008 3960     	 str r1,[r7]
  138:.././hal/sam3u1c/smc.c **** #if (SAM3S || SAM4S || SAM4E || SAM4C || SAM4CM)
  139:.././hal/sam3u1c/smc.c **** 	if (ul_enable) {
  140:.././hal/sam3u1c/smc.c **** 		p_smc->SMC_WPMR =
@@ -460,15 +461,15 @@
  144:.././hal/sam3u1c/smc.c **** 	}
  145:.././hal/sam3u1c/smc.c **** #else
  146:.././hal/sam3u1c/smc.c **** 	if (ul_enable) {
- 332              	 .loc 1 146 0
- 333 000a 3B68     	 ldr r3,[r7]
- 334 000c 002B     	 cmp r3,#0
- 335 000e 04D0     	 beq .L8
+ 333              	 .loc 1 146 5
+ 334 000a 3B68     	 ldr r3,[r7]
+ 335 000c 002B     	 cmp r3,#0
+ 336 000e 04D0     	 beq .L8
  147:.././hal/sam3u1c/smc.c **** 		p_smc->SMC_WPCR =
- 336              	 .loc 1 147 0
- 337 0010 7B68     	 ldr r3,[r7,#4]
- 338 0012 064A     	 ldr r2,.L11
- 339 0014 C3F8E421 	 str r2,[r3,#484]
+ 337              	 .loc 1 147 19
+ 338 0010 7B68     	 ldr r3,[r7,#4]
+ 339 0012 064A     	 ldr r2,.L11
+ 340 0014 C3F8E421 	 str r2,[r3,#484]
  148:.././hal/sam3u1c/smc.c **** 				SMC_WPCR_WP_KEY(SMC_WPKEY_VALUE) |
  149:.././hal/sam3u1c/smc.c **** 				SMC_WPCR_WP_EN;
  150:.././hal/sam3u1c/smc.c **** 	} else {
@@ -476,45 +477,45 @@
  152:.././hal/sam3u1c/smc.c **** 	}
  153:.././hal/sam3u1c/smc.c **** #endif
  154:.././hal/sam3u1c/smc.c **** }
- 340              	 .loc 1 154 0
- 341 0018 03E0     	 b .L10
- 342              	.L8:
+ 341              	 .loc 1 154 1
+ 342 0018 03E0     	 b .L10
+ 343              	.L8:
  151:.././hal/sam3u1c/smc.c **** 	}
- 343              	 .loc 1 151 0
- 344 001a 7B68     	 ldr r3,[r7,#4]
- 345 001c 044A     	 ldr r2,.L11+4
- 346 001e C3F8E421 	 str r2,[r3,#484]
- 347              	.L10:
- 348              	 .loc 1 154 0
- 349 0022 00BF     	 nop
- 350 0024 0C37     	 adds r7,r7,#12
- 351              	.LCFI33:
- 352              	 .cfi_def_cfa_offset 4
- 353 0026 BD46     	 mov sp,r7
- 354              	.LCFI34:
- 355              	 .cfi_def_cfa_register 13
- 356              	 
- 357 0028 80BC     	 pop {r7}
- 358              	.LCFI35:
- 359              	 .cfi_restore 7
- 360              	 .cfi_def_cfa_offset 0
- 361 002a 7047     	 bx lr
- 362              	.L12:
- 363              	 .align 2
- 364              	.L11:
- 365 002c 01434D53 	 .word 1397572353
- 366 0030 00434D53 	 .word 1397572352
- 367              	 .cfi_endproc
- 368              	.LFE74:
- 370              	 .section .text.smc_get_writeprotect_status,"ax",%progbits
- 371              	 .align 1
- 372              	 .global smc_get_writeprotect_status
- 373              	 .syntax unified
- 374              	 .thumb
- 375              	 .thumb_func
- 376              	 .fpu softvfp
- 378              	smc_get_writeprotect_status:
- 379              	.LFB75:
+ 344              	 .loc 1 151 19
+ 345 001a 7B68     	 ldr r3,[r7,#4]
+ 346 001c 044A     	 ldr r2,.L11+4
+ 347 001e C3F8E421 	 str r2,[r3,#484]
+ 348              	.L10:
+ 349              	 .loc 1 154 1
+ 350 0022 00BF     	 nop
+ 351 0024 0C37     	 adds r7,r7,#12
+ 352              	.LCFI33:
+ 353              	 .cfi_def_cfa_offset 4
+ 354 0026 BD46     	 mov sp,r7
+ 355              	.LCFI34:
+ 356              	 .cfi_def_cfa_register 13
+ 357              	 
+ 358 0028 80BC     	 pop {r7}
+ 359              	.LCFI35:
+ 360              	 .cfi_restore 7
+ 361              	 .cfi_def_cfa_offset 0
+ 362 002a 7047     	 bx lr
+ 363              	.L12:
+ 364              	 .align 2
+ 365              	.L11:
+ 366 002c 01434D53 	 .word 1397572353
+ 367 0030 00434D53 	 .word 1397572352
+ 368              	 .cfi_endproc
+ 369              	.LFE74:
+ 371              	 .section .text.smc_get_writeprotect_status,"ax",%progbits
+ 372              	 .align 1
+ 373              	 .global smc_get_writeprotect_status
+ 374              	 .syntax unified
+ 375              	 .thumb
+ 376              	 .thumb_func
+ 377              	 .fpu softvfp
+ 379              	smc_get_writeprotect_status:
+ 380              	.LFB75:
  155:.././hal/sam3u1c/smc.c **** 
  156:.././hal/sam3u1c/smc.c **** /**
  157:.././hal/sam3u1c/smc.c ****  * \brief Get the status of SMC write protection register.
@@ -525,52 +526,52 @@
  162:.././hal/sam3u1c/smc.c ****  */
  163:.././hal/sam3u1c/smc.c **** uint32_t smc_get_writeprotect_status(Smc *p_smc)
  164:.././hal/sam3u1c/smc.c **** {
- 380              	 .loc 1 164 0
- 381              	 .cfi_startproc
- 382              	 
+ 381              	 .loc 1 164 1
+ 382              	 .cfi_startproc
  383              	 
  384              	 
- 385 0000 80B4     	 push {r7}
- 386              	.LCFI36:
- 387              	 .cfi_def_cfa_offset 4
- 388              	 .cfi_offset 7,-4
- 389 0002 83B0     	 sub sp,sp,#12
- 390              	.LCFI37:
- 391              	 .cfi_def_cfa_offset 16
- 392 0004 00AF     	 add r7,sp,#0
- 393              	.LCFI38:
- 394              	 .cfi_def_cfa_register 7
- 395 0006 7860     	 str r0,[r7,#4]
+ 385              	 
+ 386 0000 80B4     	 push {r7}
+ 387              	.LCFI36:
+ 388              	 .cfi_def_cfa_offset 4
+ 389              	 .cfi_offset 7,-4
+ 390 0002 83B0     	 sub sp,sp,#12
+ 391              	.LCFI37:
+ 392              	 .cfi_def_cfa_offset 16
+ 393 0004 00AF     	 add r7,sp,#0
+ 394              	.LCFI38:
+ 395              	 .cfi_def_cfa_register 7
+ 396 0006 7860     	 str r0,[r7,#4]
  165:.././hal/sam3u1c/smc.c **** 	return p_smc->SMC_WPSR;
- 396              	 .loc 1 165 0
- 397 0008 7B68     	 ldr r3,[r7,#4]
- 398 000a D3F8E831 	 ldr r3,[r3,#488]
+ 397              	 .loc 1 165 14
+ 398 0008 7B68     	 ldr r3,[r7,#4]
+ 399 000a D3F8E831 	 ldr r3,[r3,#488]
  166:.././hal/sam3u1c/smc.c **** }
- 399              	 .loc 1 166 0
- 400 000e 1846     	 mov r0,r3
- 401 0010 0C37     	 adds r7,r7,#12
- 402              	.LCFI39:
- 403              	 .cfi_def_cfa_offset 4
- 404 0012 BD46     	 mov sp,r7
- 405              	.LCFI40:
- 406              	 .cfi_def_cfa_register 13
- 407              	 
- 408 0014 80BC     	 pop {r7}
- 409              	.LCFI41:
- 410              	 .cfi_restore 7
- 411              	 .cfi_def_cfa_offset 0
- 412 0016 7047     	 bx lr
- 413              	 .cfi_endproc
- 414              	.LFE75:
- 416              	 .section .text.smc_set_nand_timing,"ax",%progbits
- 417              	 .align 1
- 418              	 .global smc_set_nand_timing
- 419              	 .syntax unified
- 420              	 .thumb
- 421              	 .thumb_func
- 422              	 .fpu softvfp
- 424              	smc_set_nand_timing:
- 425              	.LFB76:
+ 400              	 .loc 1 166 1
+ 401 000e 1846     	 mov r0,r3
+ 402 0010 0C37     	 adds r7,r7,#12
+ 403              	.LCFI39:
+ 404              	 .cfi_def_cfa_offset 4
+ 405 0012 BD46     	 mov sp,r7
+ 406              	.LCFI40:
+ 407              	 .cfi_def_cfa_register 13
+ 408              	 
+ 409 0014 80BC     	 pop {r7}
+ 410              	.LCFI41:
+ 411              	 .cfi_restore 7
+ 412              	 .cfi_def_cfa_offset 0
+ 413 0016 7047     	 bx lr
+ 414              	 .cfi_endproc
+ 415              	.LFE75:
+ 417              	 .section .text.smc_set_nand_timing,"ax",%progbits
+ 418              	 .align 1
+ 419              	 .global smc_set_nand_timing
+ 420              	 .syntax unified
+ 421              	 .thumb
+ 422              	 .thumb_func
+ 423              	 .fpu softvfp
+ 425              	smc_set_nand_timing:
+ 426              	.LFB76:
  167:.././hal/sam3u1c/smc.c **** #endif
  168:.././hal/sam3u1c/smc.c **** 
  169:.././hal/sam3u1c/smc.c **** #if ((SAM3U) || (SAM3XA))
@@ -583,62 +584,62 @@
  176:.././hal/sam3u1c/smc.c **** void smc_set_nand_timing(Smc *p_smc, uint32_t ul_cs,
  177:.././hal/sam3u1c/smc.c **** 		uint32_t ul_nand_timing)
  178:.././hal/sam3u1c/smc.c **** {
- 426              	 .loc 1 178 0
- 427              	 .cfi_startproc
- 428              	 
+ 427              	 .loc 1 178 1
+ 428              	 .cfi_startproc
  429              	 
  430              	 
- 431 0000 80B4     	 push {r7}
- 432              	.LCFI42:
- 433              	 .cfi_def_cfa_offset 4
- 434              	 .cfi_offset 7,-4
- 435 0002 85B0     	 sub sp,sp,#20
- 436              	.LCFI43:
- 437              	 .cfi_def_cfa_offset 24
- 438 0004 00AF     	 add r7,sp,#0
- 439              	.LCFI44:
- 440              	 .cfi_def_cfa_register 7
- 441 0006 F860     	 str r0,[r7,#12]
- 442 0008 B960     	 str r1,[r7,#8]
- 443 000a 7A60     	 str r2,[r7,#4]
+ 431              	 
+ 432 0000 80B4     	 push {r7}
+ 433              	.LCFI42:
+ 434              	 .cfi_def_cfa_offset 4
+ 435              	 .cfi_offset 7,-4
+ 436 0002 85B0     	 sub sp,sp,#20
+ 437              	.LCFI43:
+ 438              	 .cfi_def_cfa_offset 24
+ 439 0004 00AF     	 add r7,sp,#0
+ 440              	.LCFI44:
+ 441              	 .cfi_def_cfa_register 7
+ 442 0006 F860     	 str r0,[r7,#12]
+ 443 0008 B960     	 str r1,[r7,#8]
+ 444 000a 7A60     	 str r2,[r7,#4]
  179:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CS_NUMBER[ul_cs].SMC_TIMINGS= ul_nand_timing;
- 444              	 .loc 1 179 0
- 445 000c F968     	 ldr r1,[r7,#12]
- 446 000e BA68     	 ldr r2,[r7,#8]
- 447 0010 1346     	 mov r3,r2
- 448 0012 9B00     	 lsls r3,r3,#2
- 449 0014 1344     	 add r3,r3,r2
- 450 0016 9B00     	 lsls r3,r3,#2
- 451 0018 0B44     	 add r3,r3,r1
- 452 001a 7C33     	 adds r3,r3,#124
- 453 001c 7A68     	 ldr r2,[r7,#4]
- 454 001e 1A60     	 str r2,[r3]
+ 445              	 .loc 1 179 41
+ 446 000c F968     	 ldr r1,[r7,#12]
+ 447 000e BA68     	 ldr r2,[r7,#8]
+ 448 0010 1346     	 mov r3,r2
+ 449 0012 9B00     	 lsls r3,r3,#2
+ 450 0014 1344     	 add r3,r3,r2
+ 451 0016 9B00     	 lsls r3,r3,#2
+ 452 0018 0B44     	 add r3,r3,r1
+ 453 001a 7C33     	 adds r3,r3,#124
+ 454 001c 7A68     	 ldr r2,[r7,#4]
+ 455 001e 1A60     	 str r2,[r3]
  180:.././hal/sam3u1c/smc.c **** }
- 455              	 .loc 1 180 0
- 456 0020 00BF     	 nop
- 457 0022 1437     	 adds r7,r7,#20
- 458              	.LCFI45:
- 459              	 .cfi_def_cfa_offset 4
- 460 0024 BD46     	 mov sp,r7
- 461              	.LCFI46:
- 462              	 .cfi_def_cfa_register 13
- 463              	 
- 464 0026 80BC     	 pop {r7}
- 465              	.LCFI47:
- 466              	 .cfi_restore 7
- 467              	 .cfi_def_cfa_offset 0
- 468 0028 7047     	 bx lr
- 469              	 .cfi_endproc
- 470              	.LFE76:
- 472              	 .section .text.smc_nfc_init,"ax",%progbits
- 473              	 .align 1
- 474              	 .global smc_nfc_init
- 475              	 .syntax unified
- 476              	 .thumb
- 477              	 .thumb_func
- 478              	 .fpu softvfp
- 480              	smc_nfc_init:
- 481              	.LFB77:
+ 456              	 .loc 1 180 1
+ 457 0020 00BF     	 nop
+ 458 0022 1437     	 adds r7,r7,#20
+ 459              	.LCFI45:
+ 460              	 .cfi_def_cfa_offset 4
+ 461 0024 BD46     	 mov sp,r7
+ 462              	.LCFI46:
+ 463              	 .cfi_def_cfa_register 13
+ 464              	 
+ 465 0026 80BC     	 pop {r7}
+ 466              	.LCFI47:
+ 467              	 .cfi_restore 7
+ 468              	 .cfi_def_cfa_offset 0
+ 469 0028 7047     	 bx lr
+ 470              	 .cfi_endproc
+ 471              	.LFE76:
+ 473              	 .section .text.smc_nfc_init,"ax",%progbits
+ 474              	 .align 1
+ 475              	 .global smc_nfc_init
+ 476              	 .syntax unified
+ 477              	 .thumb
+ 478              	 .thumb_func
+ 479              	 .fpu softvfp
+ 481              	smc_nfc_init:
+ 482              	.LFB77:
  181:.././hal/sam3u1c/smc.c **** 
  182:.././hal/sam3u1c/smc.c **** /**
  183:.././hal/sam3u1c/smc.c ****  * \brief Initialize NFC configuration.
@@ -647,54 +648,54 @@
  186:.././hal/sam3u1c/smc.c ****  */
  187:.././hal/sam3u1c/smc.c **** void smc_nfc_init(Smc *p_smc, uint32_t ul_config)
  188:.././hal/sam3u1c/smc.c **** {
- 482              	 .loc 1 188 0
- 483              	 .cfi_startproc
- 484              	 
+ 483              	 .loc 1 188 1
+ 484              	 .cfi_startproc
  485              	 
  486              	 
- 487 0000 80B4     	 push {r7}
- 488              	.LCFI48:
- 489              	 .cfi_def_cfa_offset 4
- 490              	 .cfi_offset 7,-4
- 491 0002 83B0     	 sub sp,sp,#12
- 492              	.LCFI49:
- 493              	 .cfi_def_cfa_offset 16
- 494 0004 00AF     	 add r7,sp,#0
- 495              	.LCFI50:
- 496              	 .cfi_def_cfa_register 7
- 497 0006 7860     	 str r0,[r7,#4]
- 498 0008 3960     	 str r1,[r7]
+ 487              	 
+ 488 0000 80B4     	 push {r7}
+ 489              	.LCFI48:
+ 490              	 .cfi_def_cfa_offset 4
+ 491              	 .cfi_offset 7,-4
+ 492 0002 83B0     	 sub sp,sp,#12
+ 493              	.LCFI49:
+ 494              	 .cfi_def_cfa_offset 16
+ 495 0004 00AF     	 add r7,sp,#0
+ 496              	.LCFI50:
+ 497              	 .cfi_def_cfa_register 7
+ 498 0006 7860     	 str r0,[r7,#4]
+ 499 0008 3960     	 str r1,[r7]
  189:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CFG = ul_config;
- 499              	 .loc 1 189 0
- 500 000a 7B68     	 ldr r3,[r7,#4]
- 501 000c 3A68     	 ldr r2,[r7]
- 502 000e 1A60     	 str r2,[r3]
+ 500              	 .loc 1 189 17
+ 501 000a 7B68     	 ldr r3,[r7,#4]
+ 502 000c 3A68     	 ldr r2,[r7]
+ 503 000e 1A60     	 str r2,[r3]
  190:.././hal/sam3u1c/smc.c **** }
- 503              	 .loc 1 190 0
- 504 0010 00BF     	 nop
- 505 0012 0C37     	 adds r7,r7,#12
- 506              	.LCFI51:
- 507              	 .cfi_def_cfa_offset 4
- 508 0014 BD46     	 mov sp,r7
- 509              	.LCFI52:
- 510              	 .cfi_def_cfa_register 13
- 511              	 
- 512 0016 80BC     	 pop {r7}
- 513              	.LCFI53:
- 514              	 .cfi_restore 7
- 515              	 .cfi_def_cfa_offset 0
- 516 0018 7047     	 bx lr
- 517              	 .cfi_endproc
- 518              	.LFE77:
- 520              	 .section .text.smc_nfc_set_page_size,"ax",%progbits
- 521              	 .align 1
- 522              	 .global smc_nfc_set_page_size
- 523              	 .syntax unified
- 524              	 .thumb
- 525              	 .thumb_func
- 526              	 .fpu softvfp
- 528              	smc_nfc_set_page_size:
- 529              	.LFB78:
+ 504              	 .loc 1 190 1
+ 505 0010 00BF     	 nop
+ 506 0012 0C37     	 adds r7,r7,#12
+ 507              	.LCFI51:
+ 508              	 .cfi_def_cfa_offset 4
+ 509 0014 BD46     	 mov sp,r7
+ 510              	.LCFI52:
+ 511              	 .cfi_def_cfa_register 13
+ 512              	 
+ 513 0016 80BC     	 pop {r7}
+ 514              	.LCFI53:
+ 515              	 .cfi_restore 7
+ 516              	 .cfi_def_cfa_offset 0
+ 517 0018 7047     	 bx lr
+ 518              	 .cfi_endproc
+ 519              	.LFE77:
+ 521              	 .section .text.smc_nfc_set_page_size,"ax",%progbits
+ 522              	 .align 1
+ 523              	 .global smc_nfc_set_page_size
+ 524              	 .syntax unified
+ 525              	 .thumb
+ 526              	 .thumb_func
+ 527              	 .fpu softvfp
+ 529              	smc_nfc_set_page_size:
+ 530              	.LFB78:
  191:.././hal/sam3u1c/smc.c **** 
  192:.././hal/sam3u1c/smc.c **** /**
  193:.././hal/sam3u1c/smc.c ****  * \brief Set NFC page size.
@@ -704,64 +705,64 @@
  197:.././hal/sam3u1c/smc.c ****  */
  198:.././hal/sam3u1c/smc.c **** void smc_nfc_set_page_size(Smc *p_smc, uint32_t ul_page_size)
  199:.././hal/sam3u1c/smc.c **** {
- 530              	 .loc 1 199 0
- 531              	 .cfi_startproc
- 532              	 
+ 531              	 .loc 1 199 1
+ 532              	 .cfi_startproc
  533              	 
  534              	 
- 535 0000 80B4     	 push {r7}
- 536              	.LCFI54:
- 537              	 .cfi_def_cfa_offset 4
- 538              	 .cfi_offset 7,-4
- 539 0002 83B0     	 sub sp,sp,#12
- 540              	.LCFI55:
- 541              	 .cfi_def_cfa_offset 16
- 542 0004 00AF     	 add r7,sp,#0
- 543              	.LCFI56:
- 544              	 .cfi_def_cfa_register 7
- 545 0006 7860     	 str r0,[r7,#4]
- 546 0008 3960     	 str r1,[r7]
+ 535              	 
+ 536 0000 80B4     	 push {r7}
+ 537              	.LCFI54:
+ 538              	 .cfi_def_cfa_offset 4
+ 539              	 .cfi_offset 7,-4
+ 540 0002 83B0     	 sub sp,sp,#12
+ 541              	.LCFI55:
+ 542              	 .cfi_def_cfa_offset 16
+ 543 0004 00AF     	 add r7,sp,#0
+ 544              	.LCFI56:
+ 545              	 .cfi_def_cfa_register 7
+ 546 0006 7860     	 str r0,[r7,#4]
+ 547 0008 3960     	 str r1,[r7]
  200:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CFG &= (~SMC_CFG_PAGESIZE_Msk);
- 547              	 .loc 1 200 0
- 548 000a 7B68     	 ldr r3,[r7,#4]
- 549 000c 1B68     	 ldr r3,[r3]
- 550 000e 23F00302 	 bic r2,r3,#3
- 551 0012 7B68     	 ldr r3,[r7,#4]
- 552 0014 1A60     	 str r2,[r3]
+ 548              	 .loc 1 200 17
+ 549 000a 7B68     	 ldr r3,[r7,#4]
+ 550 000c 1B68     	 ldr r3,[r3]
+ 551 000e 23F00302 	 bic r2,r3,#3
+ 552 0012 7B68     	 ldr r3,[r7,#4]
+ 553 0014 1A60     	 str r2,[r3]
  201:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CFG |= ul_page_size;
- 553              	 .loc 1 201 0
- 554 0016 7B68     	 ldr r3,[r7,#4]
- 555 0018 1A68     	 ldr r2,[r3]
- 556 001a 3B68     	 ldr r3,[r7]
- 557 001c 1A43     	 orrs r2,r2,r3
- 558 001e 7B68     	 ldr r3,[r7,#4]
- 559 0020 1A60     	 str r2,[r3]
+ 554              	 .loc 1 201 17
+ 555 0016 7B68     	 ldr r3,[r7,#4]
+ 556 0018 1A68     	 ldr r2,[r3]
+ 557 001a 3B68     	 ldr r3,[r7]
+ 558 001c 1A43     	 orrs r2,r2,r3
+ 559 001e 7B68     	 ldr r3,[r7,#4]
+ 560 0020 1A60     	 str r2,[r3]
  202:.././hal/sam3u1c/smc.c **** }
- 560              	 .loc 1 202 0
- 561 0022 00BF     	 nop
- 562 0024 0C37     	 adds r7,r7,#12
- 563              	.LCFI57:
- 564              	 .cfi_def_cfa_offset 4
- 565 0026 BD46     	 mov sp,r7
- 566              	.LCFI58:
- 567              	 .cfi_def_cfa_register 13
- 568              	 
- 569 0028 80BC     	 pop {r7}
- 570              	.LCFI59:
- 571              	 .cfi_restore 7
- 572              	 .cfi_def_cfa_offset 0
- 573 002a 7047     	 bx lr
- 574              	 .cfi_endproc
- 575              	.LFE78:
- 577              	 .section .text.smc_nfc_enable_spare_read,"ax",%progbits
- 578              	 .align 1
- 579              	 .global smc_nfc_enable_spare_read
- 580              	 .syntax unified
- 581              	 .thumb
- 582              	 .thumb_func
- 583              	 .fpu softvfp
- 585              	smc_nfc_enable_spare_read:
- 586              	.LFB79:
+ 561              	 .loc 1 202 1
+ 562 0022 00BF     	 nop
+ 563 0024 0C37     	 adds r7,r7,#12
+ 564              	.LCFI57:
+ 565              	 .cfi_def_cfa_offset 4
+ 566 0026 BD46     	 mov sp,r7
+ 567              	.LCFI58:
+ 568              	 .cfi_def_cfa_register 13
+ 569              	 
+ 570 0028 80BC     	 pop {r7}
+ 571              	.LCFI59:
+ 572              	 .cfi_restore 7
+ 573              	 .cfi_def_cfa_offset 0
+ 574 002a 7047     	 bx lr
+ 575              	 .cfi_endproc
+ 576              	.LFE78:
+ 578              	 .section .text.smc_nfc_enable_spare_read,"ax",%progbits
+ 579              	 .align 1
+ 580              	 .global smc_nfc_enable_spare_read
+ 581              	 .syntax unified
+ 582              	 .thumb
+ 583              	 .thumb_func
+ 584              	 .fpu softvfp
+ 586              	smc_nfc_enable_spare_read:
+ 587              	.LFB79:
  203:.././hal/sam3u1c/smc.c **** 
  204:.././hal/sam3u1c/smc.c **** /**
  205:.././hal/sam3u1c/smc.c ****  * \brief Enable NFC controller to read both main and spare area in read mode.
@@ -770,55 +771,55 @@
  208:.././hal/sam3u1c/smc.c ****  */
  209:.././hal/sam3u1c/smc.c **** void smc_nfc_enable_spare_read(Smc *p_smc)
  210:.././hal/sam3u1c/smc.c **** {
- 587              	 .loc 1 210 0
- 588              	 .cfi_startproc
- 589              	 
+ 588              	 .loc 1 210 1
+ 589              	 .cfi_startproc
  590              	 
  591              	 
- 592 0000 80B4     	 push {r7}
- 593              	.LCFI60:
- 594              	 .cfi_def_cfa_offset 4
- 595              	 .cfi_offset 7,-4
- 596 0002 83B0     	 sub sp,sp,#12
- 597              	.LCFI61:
- 598              	 .cfi_def_cfa_offset 16
- 599 0004 00AF     	 add r7,sp,#0
- 600              	.LCFI62:
- 601              	 .cfi_def_cfa_register 7
- 602 0006 7860     	 str r0,[r7,#4]
+ 592              	 
+ 593 0000 80B4     	 push {r7}
+ 594              	.LCFI60:
+ 595              	 .cfi_def_cfa_offset 4
+ 596              	 .cfi_offset 7,-4
+ 597 0002 83B0     	 sub sp,sp,#12
+ 598              	.LCFI61:
+ 599              	 .cfi_def_cfa_offset 16
+ 600 0004 00AF     	 add r7,sp,#0
+ 601              	.LCFI62:
+ 602              	 .cfi_def_cfa_register 7
+ 603 0006 7860     	 str r0,[r7,#4]
  211:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CFG |= SMC_CFG_RSPARE;
- 603              	 .loc 1 211 0
- 604 0008 7B68     	 ldr r3,[r7,#4]
- 605 000a 1B68     	 ldr r3,[r3]
- 606 000c 43F40072 	 orr r2,r3,#512
- 607 0010 7B68     	 ldr r3,[r7,#4]
- 608 0012 1A60     	 str r2,[r3]
+ 604              	 .loc 1 211 17
+ 605 0008 7B68     	 ldr r3,[r7,#4]
+ 606 000a 1B68     	 ldr r3,[r3]
+ 607 000c 43F40072 	 orr r2,r3,#512
+ 608 0010 7B68     	 ldr r3,[r7,#4]
+ 609 0012 1A60     	 str r2,[r3]
  212:.././hal/sam3u1c/smc.c **** }
- 609              	 .loc 1 212 0
- 610 0014 00BF     	 nop
- 611 0016 0C37     	 adds r7,r7,#12
- 612              	.LCFI63:
- 613              	 .cfi_def_cfa_offset 4
- 614 0018 BD46     	 mov sp,r7
- 615              	.LCFI64:
- 616              	 .cfi_def_cfa_register 13
- 617              	 
- 618 001a 80BC     	 pop {r7}
- 619              	.LCFI65:
- 620              	 .cfi_restore 7
- 621              	 .cfi_def_cfa_offset 0
- 622 001c 7047     	 bx lr
- 623              	 .cfi_endproc
- 624              	.LFE79:
- 626              	 .section .text.smc_nfc_disable_spare_read,"ax",%progbits
- 627              	 .align 1
- 628              	 .global smc_nfc_disable_spare_read
- 629              	 .syntax unified
- 630              	 .thumb
- 631              	 .thumb_func
- 632              	 .fpu softvfp
- 634              	smc_nfc_disable_spare_read:
- 635              	.LFB80:
+ 610              	 .loc 1 212 1
+ 611 0014 00BF     	 nop
+ 612 0016 0C37     	 adds r7,r7,#12
+ 613              	.LCFI63:
+ 614              	 .cfi_def_cfa_offset 4
+ 615 0018 BD46     	 mov sp,r7
+ 616              	.LCFI64:
+ 617              	 .cfi_def_cfa_register 13
+ 618              	 
+ 619 001a 80BC     	 pop {r7}
+ 620              	.LCFI65:
+ 621              	 .cfi_restore 7
+ 622              	 .cfi_def_cfa_offset 0
+ 623 001c 7047     	 bx lr
+ 624              	 .cfi_endproc
+ 625              	.LFE79:
+ 627              	 .section .text.smc_nfc_disable_spare_read,"ax",%progbits
+ 628              	 .align 1
+ 629              	 .global smc_nfc_disable_spare_read
+ 630              	 .syntax unified
+ 631              	 .thumb
+ 632              	 .thumb_func
+ 633              	 .fpu softvfp
+ 635              	smc_nfc_disable_spare_read:
+ 636              	.LFB80:
  213:.././hal/sam3u1c/smc.c **** 
  214:.././hal/sam3u1c/smc.c **** /**
  215:.././hal/sam3u1c/smc.c ****  * \brief Prevent NFC controller from reading the spare area in read mode.
@@ -827,55 +828,55 @@
  218:.././hal/sam3u1c/smc.c ****  */
  219:.././hal/sam3u1c/smc.c **** void smc_nfc_disable_spare_read(Smc *p_smc)
  220:.././hal/sam3u1c/smc.c **** {
- 636              	 .loc 1 220 0
- 637              	 .cfi_startproc
- 638              	 
+ 637              	 .loc 1 220 1
+ 638              	 .cfi_startproc
  639              	 
  640              	 
- 641 0000 80B4     	 push {r7}
- 642              	.LCFI66:
- 643              	 .cfi_def_cfa_offset 4
- 644              	 .cfi_offset 7,-4
- 645 0002 83B0     	 sub sp,sp,#12
- 646              	.LCFI67:
- 647              	 .cfi_def_cfa_offset 16
- 648 0004 00AF     	 add r7,sp,#0
- 649              	.LCFI68:
- 650              	 .cfi_def_cfa_register 7
- 651 0006 7860     	 str r0,[r7,#4]
+ 641              	 
+ 642 0000 80B4     	 push {r7}
+ 643              	.LCFI66:
+ 644              	 .cfi_def_cfa_offset 4
+ 645              	 .cfi_offset 7,-4
+ 646 0002 83B0     	 sub sp,sp,#12
+ 647              	.LCFI67:
+ 648              	 .cfi_def_cfa_offset 16
+ 649 0004 00AF     	 add r7,sp,#0
+ 650              	.LCFI68:
+ 651              	 .cfi_def_cfa_register 7
+ 652 0006 7860     	 str r0,[r7,#4]
  221:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CFG &= (~SMC_CFG_RSPARE);
- 652              	 .loc 1 221 0
- 653 0008 7B68     	 ldr r3,[r7,#4]
- 654 000a 1B68     	 ldr r3,[r3]
- 655 000c 23F40072 	 bic r2,r3,#512
- 656 0010 7B68     	 ldr r3,[r7,#4]
- 657 0012 1A60     	 str r2,[r3]
+ 653              	 .loc 1 221 17
+ 654 0008 7B68     	 ldr r3,[r7,#4]
+ 655 000a 1B68     	 ldr r3,[r3]
+ 656 000c 23F40072 	 bic r2,r3,#512
+ 657 0010 7B68     	 ldr r3,[r7,#4]
+ 658 0012 1A60     	 str r2,[r3]
  222:.././hal/sam3u1c/smc.c **** }
- 658              	 .loc 1 222 0
- 659 0014 00BF     	 nop
- 660 0016 0C37     	 adds r7,r7,#12
- 661              	.LCFI69:
- 662              	 .cfi_def_cfa_offset 4
- 663 0018 BD46     	 mov sp,r7
- 664              	.LCFI70:
- 665              	 .cfi_def_cfa_register 13
- 666              	 
- 667 001a 80BC     	 pop {r7}
- 668              	.LCFI71:
- 669              	 .cfi_restore 7
- 670              	 .cfi_def_cfa_offset 0
- 671 001c 7047     	 bx lr
- 672              	 .cfi_endproc
- 673              	.LFE80:
- 675              	 .section .text.smc_nfc_enable_spare_write,"ax",%progbits
- 676              	 .align 1
- 677              	 .global smc_nfc_enable_spare_write
- 678              	 .syntax unified
- 679              	 .thumb
- 680              	 .thumb_func
- 681              	 .fpu softvfp
- 683              	smc_nfc_enable_spare_write:
- 684              	.LFB81:
+ 659              	 .loc 1 222 1
+ 660 0014 00BF     	 nop
+ 661 0016 0C37     	 adds r7,r7,#12
+ 662              	.LCFI69:
+ 663              	 .cfi_def_cfa_offset 4
+ 664 0018 BD46     	 mov sp,r7
+ 665              	.LCFI70:
+ 666              	 .cfi_def_cfa_register 13
+ 667              	 
+ 668 001a 80BC     	 pop {r7}
+ 669              	.LCFI71:
+ 670              	 .cfi_restore 7
+ 671              	 .cfi_def_cfa_offset 0
+ 672 001c 7047     	 bx lr
+ 673              	 .cfi_endproc
+ 674              	.LFE80:
+ 676              	 .section .text.smc_nfc_enable_spare_write,"ax",%progbits
+ 677              	 .align 1
+ 678              	 .global smc_nfc_enable_spare_write
+ 679              	 .syntax unified
+ 680              	 .thumb
+ 681              	 .thumb_func
+ 682              	 .fpu softvfp
+ 684              	smc_nfc_enable_spare_write:
+ 685              	.LFB81:
  223:.././hal/sam3u1c/smc.c **** 
  224:.././hal/sam3u1c/smc.c **** /**
  225:.././hal/sam3u1c/smc.c ****  * \brief Enable NFC controller to write both main and spare area in write mode.
@@ -884,55 +885,55 @@
  228:.././hal/sam3u1c/smc.c ****  */
  229:.././hal/sam3u1c/smc.c **** void smc_nfc_enable_spare_write(Smc *p_smc)
  230:.././hal/sam3u1c/smc.c **** {
- 685              	 .loc 1 230 0
- 686              	 .cfi_startproc
- 687              	 
+ 686              	 .loc 1 230 1
+ 687              	 .cfi_startproc
  688              	 
  689              	 
- 690 0000 80B4     	 push {r7}
- 691              	.LCFI72:
- 692              	 .cfi_def_cfa_offset 4
- 693              	 .cfi_offset 7,-4
- 694 0002 83B0     	 sub sp,sp,#12
- 695              	.LCFI73:
- 696              	 .cfi_def_cfa_offset 16
- 697 0004 00AF     	 add r7,sp,#0
- 698              	.LCFI74:
- 699              	 .cfi_def_cfa_register 7
- 700 0006 7860     	 str r0,[r7,#4]
+ 690              	 
+ 691 0000 80B4     	 push {r7}
+ 692              	.LCFI72:
+ 693              	 .cfi_def_cfa_offset 4
+ 694              	 .cfi_offset 7,-4
+ 695 0002 83B0     	 sub sp,sp,#12
+ 696              	.LCFI73:
+ 697              	 .cfi_def_cfa_offset 16
+ 698 0004 00AF     	 add r7,sp,#0
+ 699              	.LCFI74:
+ 700              	 .cfi_def_cfa_register 7
+ 701 0006 7860     	 str r0,[r7,#4]
  231:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CFG |= SMC_CFG_WSPARE;
- 701              	 .loc 1 231 0
- 702 0008 7B68     	 ldr r3,[r7,#4]
- 703 000a 1B68     	 ldr r3,[r3]
- 704 000c 43F48072 	 orr r2,r3,#256
- 705 0010 7B68     	 ldr r3,[r7,#4]
- 706 0012 1A60     	 str r2,[r3]
+ 702              	 .loc 1 231 17
+ 703 0008 7B68     	 ldr r3,[r7,#4]
+ 704 000a 1B68     	 ldr r3,[r3]
+ 705 000c 43F48072 	 orr r2,r3,#256
+ 706 0010 7B68     	 ldr r3,[r7,#4]
+ 707 0012 1A60     	 str r2,[r3]
  232:.././hal/sam3u1c/smc.c **** }
- 707              	 .loc 1 232 0
- 708 0014 00BF     	 nop
- 709 0016 0C37     	 adds r7,r7,#12
- 710              	.LCFI75:
- 711              	 .cfi_def_cfa_offset 4
- 712 0018 BD46     	 mov sp,r7
- 713              	.LCFI76:
- 714              	 .cfi_def_cfa_register 13
- 715              	 
- 716 001a 80BC     	 pop {r7}
- 717              	.LCFI77:
- 718              	 .cfi_restore 7
- 719              	 .cfi_def_cfa_offset 0
- 720 001c 7047     	 bx lr
- 721              	 .cfi_endproc
- 722              	.LFE81:
- 724              	 .section .text.smc_nfc_disable_spare_write,"ax",%progbits
- 725              	 .align 1
- 726              	 .global smc_nfc_disable_spare_write
- 727              	 .syntax unified
- 728              	 .thumb
- 729              	 .thumb_func
- 730              	 .fpu softvfp
- 732              	smc_nfc_disable_spare_write:
- 733              	.LFB82:
+ 708              	 .loc 1 232 1
+ 709 0014 00BF     	 nop
+ 710 0016 0C37     	 adds r7,r7,#12
+ 711              	.LCFI75:
+ 712              	 .cfi_def_cfa_offset 4
+ 713 0018 BD46     	 mov sp,r7
+ 714              	.LCFI76:
+ 715              	 .cfi_def_cfa_register 13
+ 716              	 
+ 717 001a 80BC     	 pop {r7}
+ 718              	.LCFI77:
+ 719              	 .cfi_restore 7
+ 720              	 .cfi_def_cfa_offset 0
+ 721 001c 7047     	 bx lr
+ 722              	 .cfi_endproc
+ 723              	.LFE81:
+ 725              	 .section .text.smc_nfc_disable_spare_write,"ax",%progbits
+ 726              	 .align 1
+ 727              	 .global smc_nfc_disable_spare_write
+ 728              	 .syntax unified
+ 729              	 .thumb
+ 730              	 .thumb_func
+ 731              	 .fpu softvfp
+ 733              	smc_nfc_disable_spare_write:
+ 734              	.LFB82:
  233:.././hal/sam3u1c/smc.c **** 
  234:.././hal/sam3u1c/smc.c **** /**
  235:.././hal/sam3u1c/smc.c ****  * \brief Prevent NFC controller from writing the spare area in read mode.
@@ -941,55 +942,55 @@
  238:.././hal/sam3u1c/smc.c ****  */
  239:.././hal/sam3u1c/smc.c **** void smc_nfc_disable_spare_write(Smc *p_smc)
  240:.././hal/sam3u1c/smc.c **** {
- 734              	 .loc 1 240 0
- 735              	 .cfi_startproc
- 736              	 
+ 735              	 .loc 1 240 1
+ 736              	 .cfi_startproc
  737              	 
  738              	 
- 739 0000 80B4     	 push {r7}
- 740              	.LCFI78:
- 741              	 .cfi_def_cfa_offset 4
- 742              	 .cfi_offset 7,-4
- 743 0002 83B0     	 sub sp,sp,#12
- 744              	.LCFI79:
- 745              	 .cfi_def_cfa_offset 16
- 746 0004 00AF     	 add r7,sp,#0
- 747              	.LCFI80:
- 748              	 .cfi_def_cfa_register 7
- 749 0006 7860     	 str r0,[r7,#4]
+ 739              	 
+ 740 0000 80B4     	 push {r7}
+ 741              	.LCFI78:
+ 742              	 .cfi_def_cfa_offset 4
+ 743              	 .cfi_offset 7,-4
+ 744 0002 83B0     	 sub sp,sp,#12
+ 745              	.LCFI79:
+ 746              	 .cfi_def_cfa_offset 16
+ 747 0004 00AF     	 add r7,sp,#0
+ 748              	.LCFI80:
+ 749              	 .cfi_def_cfa_register 7
+ 750 0006 7860     	 str r0,[r7,#4]
  241:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CFG &= (~SMC_CFG_WSPARE);
- 750              	 .loc 1 241 0
- 751 0008 7B68     	 ldr r3,[r7,#4]
- 752 000a 1B68     	 ldr r3,[r3]
- 753 000c 23F48072 	 bic r2,r3,#256
- 754 0010 7B68     	 ldr r3,[r7,#4]
- 755 0012 1A60     	 str r2,[r3]
+ 751              	 .loc 1 241 17
+ 752 0008 7B68     	 ldr r3,[r7,#4]
+ 753 000a 1B68     	 ldr r3,[r3]
+ 754 000c 23F48072 	 bic r2,r3,#256
+ 755 0010 7B68     	 ldr r3,[r7,#4]
+ 756 0012 1A60     	 str r2,[r3]
  242:.././hal/sam3u1c/smc.c **** }
- 756              	 .loc 1 242 0
- 757 0014 00BF     	 nop
- 758 0016 0C37     	 adds r7,r7,#12
- 759              	.LCFI81:
- 760              	 .cfi_def_cfa_offset 4
- 761 0018 BD46     	 mov sp,r7
- 762              	.LCFI82:
- 763              	 .cfi_def_cfa_register 13
- 764              	 
- 765 001a 80BC     	 pop {r7}
- 766              	.LCFI83:
- 767              	 .cfi_restore 7
- 768              	 .cfi_def_cfa_offset 0
- 769 001c 7047     	 bx lr
- 770              	 .cfi_endproc
- 771              	.LFE82:
- 773              	 .section .text.smc_nfc_enable,"ax",%progbits
- 774              	 .align 1
- 775              	 .global smc_nfc_enable
- 776              	 .syntax unified
- 777              	 .thumb
- 778              	 .thumb_func
- 779              	 .fpu softvfp
- 781              	smc_nfc_enable:
- 782              	.LFB83:
+ 757              	 .loc 1 242 1
+ 758 0014 00BF     	 nop
+ 759 0016 0C37     	 adds r7,r7,#12
+ 760              	.LCFI81:
+ 761              	 .cfi_def_cfa_offset 4
+ 762 0018 BD46     	 mov sp,r7
+ 763              	.LCFI82:
+ 764              	 .cfi_def_cfa_register 13
+ 765              	 
+ 766 001a 80BC     	 pop {r7}
+ 767              	.LCFI83:
+ 768              	 .cfi_restore 7
+ 769              	 .cfi_def_cfa_offset 0
+ 770 001c 7047     	 bx lr
+ 771              	 .cfi_endproc
+ 772              	.LFE82:
+ 774              	 .section .text.smc_nfc_enable,"ax",%progbits
+ 775              	 .align 1
+ 776              	 .global smc_nfc_enable
+ 777              	 .syntax unified
+ 778              	 .thumb
+ 779              	 .thumb_func
+ 780              	 .fpu softvfp
+ 782              	smc_nfc_enable:
+ 783              	.LFB83:
  243:.././hal/sam3u1c/smc.c **** 
  244:.././hal/sam3u1c/smc.c **** /**
  245:.././hal/sam3u1c/smc.c ****  * \brief Enable NFC controller.
@@ -998,53 +999,53 @@
  248:.././hal/sam3u1c/smc.c ****  */
  249:.././hal/sam3u1c/smc.c **** void smc_nfc_enable(Smc *p_smc)
  250:.././hal/sam3u1c/smc.c **** {
- 783              	 .loc 1 250 0
- 784              	 .cfi_startproc
- 785              	 
+ 784              	 .loc 1 250 1
+ 785              	 .cfi_startproc
  786              	 
  787              	 
- 788 0000 80B4     	 push {r7}
- 789              	.LCFI84:
- 790              	 .cfi_def_cfa_offset 4
- 791              	 .cfi_offset 7,-4
- 792 0002 83B0     	 sub sp,sp,#12
- 793              	.LCFI85:
- 794              	 .cfi_def_cfa_offset 16
- 795 0004 00AF     	 add r7,sp,#0
- 796              	.LCFI86:
- 797              	 .cfi_def_cfa_register 7
- 798 0006 7860     	 str r0,[r7,#4]
+ 788              	 
+ 789 0000 80B4     	 push {r7}
+ 790              	.LCFI84:
+ 791              	 .cfi_def_cfa_offset 4
+ 792              	 .cfi_offset 7,-4
+ 793 0002 83B0     	 sub sp,sp,#12
+ 794              	.LCFI85:
+ 795              	 .cfi_def_cfa_offset 16
+ 796 0004 00AF     	 add r7,sp,#0
+ 797              	.LCFI86:
+ 798              	 .cfi_def_cfa_register 7
+ 799 0006 7860     	 str r0,[r7,#4]
  251:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CTRL = SMC_CTRL_NFCEN;
- 799              	 .loc 1 251 0
- 800 0008 7B68     	 ldr r3,[r7,#4]
- 801 000a 0122     	 movs r2,#1
- 802 000c 5A60     	 str r2,[r3,#4]
+ 800              	 .loc 1 251 18
+ 801 0008 7B68     	 ldr r3,[r7,#4]
+ 802 000a 0122     	 movs r2,#1
+ 803 000c 5A60     	 str r2,[r3,#4]
  252:.././hal/sam3u1c/smc.c **** }
- 803              	 .loc 1 252 0
- 804 000e 00BF     	 nop
- 805 0010 0C37     	 adds r7,r7,#12
- 806              	.LCFI87:
- 807              	 .cfi_def_cfa_offset 4
- 808 0012 BD46     	 mov sp,r7
- 809              	.LCFI88:
- 810              	 .cfi_def_cfa_register 13
- 811              	 
- 812 0014 80BC     	 pop {r7}
- 813              	.LCFI89:
- 814              	 .cfi_restore 7
- 815              	 .cfi_def_cfa_offset 0
- 816 0016 7047     	 bx lr
- 817              	 .cfi_endproc
- 818              	.LFE83:
- 820              	 .section .text.smc_nfc_disable,"ax",%progbits
- 821              	 .align 1
- 822              	 .global smc_nfc_disable
- 823              	 .syntax unified
- 824              	 .thumb
- 825              	 .thumb_func
- 826              	 .fpu softvfp
- 828              	smc_nfc_disable:
- 829              	.LFB84:
+ 804              	 .loc 1 252 1
+ 805 000e 00BF     	 nop
+ 806 0010 0C37     	 adds r7,r7,#12
+ 807              	.LCFI87:
+ 808              	 .cfi_def_cfa_offset 4
+ 809 0012 BD46     	 mov sp,r7
+ 810              	.LCFI88:
+ 811              	 .cfi_def_cfa_register 13
+ 812              	 
+ 813 0014 80BC     	 pop {r7}
+ 814              	.LCFI89:
+ 815              	 .cfi_restore 7
+ 816              	 .cfi_def_cfa_offset 0
+ 817 0016 7047     	 bx lr
+ 818              	 .cfi_endproc
+ 819              	.LFE83:
+ 821              	 .section .text.smc_nfc_disable,"ax",%progbits
+ 822              	 .align 1
+ 823              	 .global smc_nfc_disable
+ 824              	 .syntax unified
+ 825              	 .thumb
+ 826              	 .thumb_func
+ 827              	 .fpu softvfp
+ 829              	smc_nfc_disable:
+ 830              	.LFB84:
  253:.././hal/sam3u1c/smc.c **** 
  254:.././hal/sam3u1c/smc.c **** /**
  255:.././hal/sam3u1c/smc.c ****  * \brief Disable NFC controller.
@@ -1053,53 +1054,53 @@
  258:.././hal/sam3u1c/smc.c ****  */
  259:.././hal/sam3u1c/smc.c **** void smc_nfc_disable(Smc *p_smc)
  260:.././hal/sam3u1c/smc.c **** {
- 830              	 .loc 1 260 0
- 831              	 .cfi_startproc
- 832              	 
+ 831              	 .loc 1 260 1
+ 832              	 .cfi_startproc
  833              	 
  834              	 
- 835 0000 80B4     	 push {r7}
- 836              	.LCFI90:
- 837              	 .cfi_def_cfa_offset 4
- 838              	 .cfi_offset 7,-4
- 839 0002 83B0     	 sub sp,sp,#12
- 840              	.LCFI91:
- 841              	 .cfi_def_cfa_offset 16
- 842 0004 00AF     	 add r7,sp,#0
- 843              	.LCFI92:
- 844              	 .cfi_def_cfa_register 7
- 845 0006 7860     	 str r0,[r7,#4]
+ 835              	 
+ 836 0000 80B4     	 push {r7}
+ 837              	.LCFI90:
+ 838              	 .cfi_def_cfa_offset 4
+ 839              	 .cfi_offset 7,-4
+ 840 0002 83B0     	 sub sp,sp,#12
+ 841              	.LCFI91:
+ 842              	 .cfi_def_cfa_offset 16
+ 843 0004 00AF     	 add r7,sp,#0
+ 844              	.LCFI92:
+ 845              	 .cfi_def_cfa_register 7
+ 846 0006 7860     	 str r0,[r7,#4]
  261:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_CTRL = SMC_CTRL_NFCDIS;
- 846              	 .loc 1 261 0
- 847 0008 7B68     	 ldr r3,[r7,#4]
- 848 000a 0222     	 movs r2,#2
- 849 000c 5A60     	 str r2,[r3,#4]
+ 847              	 .loc 1 261 18
+ 848 0008 7B68     	 ldr r3,[r7,#4]
+ 849 000a 0222     	 movs r2,#2
+ 850 000c 5A60     	 str r2,[r3,#4]
  262:.././hal/sam3u1c/smc.c **** }
- 850              	 .loc 1 262 0
- 851 000e 00BF     	 nop
- 852 0010 0C37     	 adds r7,r7,#12
- 853              	.LCFI93:
- 854              	 .cfi_def_cfa_offset 4
- 855 0012 BD46     	 mov sp,r7
- 856              	.LCFI94:
- 857              	 .cfi_def_cfa_register 13
- 858              	 
- 859 0014 80BC     	 pop {r7}
- 860              	.LCFI95:
- 861              	 .cfi_restore 7
- 862              	 .cfi_def_cfa_offset 0
- 863 0016 7047     	 bx lr
- 864              	 .cfi_endproc
- 865              	.LFE84:
- 867              	 .section .text.smc_nfc_get_status,"ax",%progbits
- 868              	 .align 1
- 869              	 .global smc_nfc_get_status
- 870              	 .syntax unified
- 871              	 .thumb
- 872              	 .thumb_func
- 873              	 .fpu softvfp
- 875              	smc_nfc_get_status:
- 876              	.LFB85:
+ 851              	 .loc 1 262 1
+ 852 000e 00BF     	 nop
+ 853 0010 0C37     	 adds r7,r7,#12
+ 854              	.LCFI93:
+ 855              	 .cfi_def_cfa_offset 4
+ 856 0012 BD46     	 mov sp,r7
+ 857              	.LCFI94:
+ 858              	 .cfi_def_cfa_register 13
+ 859              	 
+ 860 0014 80BC     	 pop {r7}
+ 861              	.LCFI95:
+ 862              	 .cfi_restore 7
+ 863              	 .cfi_def_cfa_offset 0
+ 864 0016 7047     	 bx lr
+ 865              	 .cfi_endproc
+ 866              	.LFE84:
+ 868              	 .section .text.smc_nfc_get_status,"ax",%progbits
+ 869              	 .align 1
+ 870              	 .global smc_nfc_get_status
+ 871              	 .syntax unified
+ 872              	 .thumb
+ 873              	 .thumb_func
+ 874              	 .fpu softvfp
+ 876              	smc_nfc_get_status:
+ 877              	.LFB85:
  263:.././hal/sam3u1c/smc.c **** 
  264:.././hal/sam3u1c/smc.c **** /**
  265:.././hal/sam3u1c/smc.c ****  * \brief Get the NFC Status.
@@ -1112,52 +1113,52 @@
  272:.././hal/sam3u1c/smc.c ****  */
  273:.././hal/sam3u1c/smc.c **** uint32_t smc_nfc_get_status(Smc *p_smc)
  274:.././hal/sam3u1c/smc.c **** {
- 877              	 .loc 1 274 0
- 878              	 .cfi_startproc
- 879              	 
+ 878              	 .loc 1 274 1
+ 879              	 .cfi_startproc
  880              	 
  881              	 
- 882 0000 80B4     	 push {r7}
- 883              	.LCFI96:
- 884              	 .cfi_def_cfa_offset 4
- 885              	 .cfi_offset 7,-4
- 886 0002 83B0     	 sub sp,sp,#12
- 887              	.LCFI97:
- 888              	 .cfi_def_cfa_offset 16
- 889 0004 00AF     	 add r7,sp,#0
- 890              	.LCFI98:
- 891              	 .cfi_def_cfa_register 7
- 892 0006 7860     	 str r0,[r7,#4]
+ 882              	 
+ 883 0000 80B4     	 push {r7}
+ 884              	.LCFI96:
+ 885              	 .cfi_def_cfa_offset 4
+ 886              	 .cfi_offset 7,-4
+ 887 0002 83B0     	 sub sp,sp,#12
+ 888              	.LCFI97:
+ 889              	 .cfi_def_cfa_offset 16
+ 890 0004 00AF     	 add r7,sp,#0
+ 891              	.LCFI98:
+ 892              	 .cfi_def_cfa_register 7
+ 893 0006 7860     	 str r0,[r7,#4]
  275:.././hal/sam3u1c/smc.c **** 	return p_smc->SMC_SR;
- 893              	 .loc 1 275 0
- 894 0008 7B68     	 ldr r3,[r7,#4]
- 895 000a 9B68     	 ldr r3,[r3,#8]
+ 894              	 .loc 1 275 14
+ 895 0008 7B68     	 ldr r3,[r7,#4]
+ 896 000a 9B68     	 ldr r3,[r3,#8]
  276:.././hal/sam3u1c/smc.c **** }
- 896              	 .loc 1 276 0
- 897 000c 1846     	 mov r0,r3
- 898 000e 0C37     	 adds r7,r7,#12
- 899              	.LCFI99:
- 900              	 .cfi_def_cfa_offset 4
- 901 0010 BD46     	 mov sp,r7
- 902              	.LCFI100:
- 903              	 .cfi_def_cfa_register 13
- 904              	 
- 905 0012 80BC     	 pop {r7}
- 906              	.LCFI101:
- 907              	 .cfi_restore 7
- 908              	 .cfi_def_cfa_offset 0
- 909 0014 7047     	 bx lr
- 910              	 .cfi_endproc
- 911              	.LFE85:
- 913              	 .section .text.smc_nfc_enable_interrupt,"ax",%progbits
- 914              	 .align 1
- 915              	 .global smc_nfc_enable_interrupt
- 916              	 .syntax unified
- 917              	 .thumb
- 918              	 .thumb_func
- 919              	 .fpu softvfp
- 921              	smc_nfc_enable_interrupt:
- 922              	.LFB86:
+ 897              	 .loc 1 276 1
+ 898 000c 1846     	 mov r0,r3
+ 899 000e 0C37     	 adds r7,r7,#12
+ 900              	.LCFI99:
+ 901              	 .cfi_def_cfa_offset 4
+ 902 0010 BD46     	 mov sp,r7
+ 903              	.LCFI100:
+ 904              	 .cfi_def_cfa_register 13
+ 905              	 
+ 906 0012 80BC     	 pop {r7}
+ 907              	.LCFI101:
+ 908              	 .cfi_restore 7
+ 909              	 .cfi_def_cfa_offset 0
+ 910 0014 7047     	 bx lr
+ 911              	 .cfi_endproc
+ 912              	.LFE85:
+ 914              	 .section .text.smc_nfc_enable_interrupt,"ax",%progbits
+ 915              	 .align 1
+ 916              	 .global smc_nfc_enable_interrupt
+ 917              	 .syntax unified
+ 918              	 .thumb
+ 919              	 .thumb_func
+ 920              	 .fpu softvfp
+ 922              	smc_nfc_enable_interrupt:
+ 923              	.LFB86:
  277:.././hal/sam3u1c/smc.c **** 
  278:.././hal/sam3u1c/smc.c **** /**
  279:.././hal/sam3u1c/smc.c ****  * \brief Enable SMC interrupts.
@@ -1167,54 +1168,54 @@
  283:.././hal/sam3u1c/smc.c ****  */
  284:.././hal/sam3u1c/smc.c **** void smc_nfc_enable_interrupt(Smc *p_smc, uint32_t ul_sources)
  285:.././hal/sam3u1c/smc.c **** {
- 923              	 .loc 1 285 0
- 924              	 .cfi_startproc
- 925              	 
+ 924              	 .loc 1 285 1
+ 925              	 .cfi_startproc
  926              	 
  927              	 
- 928 0000 80B4     	 push {r7}
- 929              	.LCFI102:
- 930              	 .cfi_def_cfa_offset 4
- 931              	 .cfi_offset 7,-4
- 932 0002 83B0     	 sub sp,sp,#12
- 933              	.LCFI103:
- 934              	 .cfi_def_cfa_offset 16
- 935 0004 00AF     	 add r7,sp,#0
- 936              	.LCFI104:
- 937              	 .cfi_def_cfa_register 7
- 938 0006 7860     	 str r0,[r7,#4]
- 939 0008 3960     	 str r1,[r7]
+ 928              	 
+ 929 0000 80B4     	 push {r7}
+ 930              	.LCFI102:
+ 931              	 .cfi_def_cfa_offset 4
+ 932              	 .cfi_offset 7,-4
+ 933 0002 83B0     	 sub sp,sp,#12
+ 934              	.LCFI103:
+ 935              	 .cfi_def_cfa_offset 16
+ 936 0004 00AF     	 add r7,sp,#0
+ 937              	.LCFI104:
+ 938              	 .cfi_def_cfa_register 7
+ 939 0006 7860     	 str r0,[r7,#4]
+ 940 0008 3960     	 str r1,[r7]
  286:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_IER = ul_sources;
- 940              	 .loc 1 286 0
- 941 000a 7B68     	 ldr r3,[r7,#4]
- 942 000c 3A68     	 ldr r2,[r7]
- 943 000e DA60     	 str r2,[r3,#12]
+ 941              	 .loc 1 286 17
+ 942 000a 7B68     	 ldr r3,[r7,#4]
+ 943 000c 3A68     	 ldr r2,[r7]
+ 944 000e DA60     	 str r2,[r3,#12]
  287:.././hal/sam3u1c/smc.c **** }
- 944              	 .loc 1 287 0
- 945 0010 00BF     	 nop
- 946 0012 0C37     	 adds r7,r7,#12
- 947              	.LCFI105:
- 948              	 .cfi_def_cfa_offset 4
- 949 0014 BD46     	 mov sp,r7
- 950              	.LCFI106:
- 951              	 .cfi_def_cfa_register 13
- 952              	 
- 953 0016 80BC     	 pop {r7}
- 954              	.LCFI107:
- 955              	 .cfi_restore 7
- 956              	 .cfi_def_cfa_offset 0
- 957 0018 7047     	 bx lr
- 958              	 .cfi_endproc
- 959              	.LFE86:
- 961              	 .section .text.smc_nfc_disable_interrupt,"ax",%progbits
- 962              	 .align 1
- 963              	 .global smc_nfc_disable_interrupt
- 964              	 .syntax unified
- 965              	 .thumb
- 966              	 .thumb_func
- 967              	 .fpu softvfp
- 969              	smc_nfc_disable_interrupt:
- 970              	.LFB87:
+ 945              	 .loc 1 287 1
+ 946 0010 00BF     	 nop
+ 947 0012 0C37     	 adds r7,r7,#12
+ 948              	.LCFI105:
+ 949              	 .cfi_def_cfa_offset 4
+ 950 0014 BD46     	 mov sp,r7
+ 951              	.LCFI106:
+ 952              	 .cfi_def_cfa_register 13
+ 953              	 
+ 954 0016 80BC     	 pop {r7}
+ 955              	.LCFI107:
+ 956              	 .cfi_restore 7
+ 957              	 .cfi_def_cfa_offset 0
+ 958 0018 7047     	 bx lr
+ 959              	 .cfi_endproc
+ 960              	.LFE86:
+ 962              	 .section .text.smc_nfc_disable_interrupt,"ax",%progbits
+ 963              	 .align 1
+ 964              	 .global smc_nfc_disable_interrupt
+ 965              	 .syntax unified
+ 966              	 .thumb
+ 967              	 .thumb_func
+ 968              	 .fpu softvfp
+ 970              	smc_nfc_disable_interrupt:
+ 971              	.LFB87:
  288:.././hal/sam3u1c/smc.c **** 
  289:.././hal/sam3u1c/smc.c **** /**
  290:.././hal/sam3u1c/smc.c ****  * \brief Disable SMC interrupts.
@@ -1224,54 +1225,54 @@
  294:.././hal/sam3u1c/smc.c ****  */
  295:.././hal/sam3u1c/smc.c **** void smc_nfc_disable_interrupt(Smc *p_smc, uint32_t ul_sources)
  296:.././hal/sam3u1c/smc.c **** {
- 971              	 .loc 1 296 0
- 972              	 .cfi_startproc
- 973              	 
+ 972              	 .loc 1 296 1
+ 973              	 .cfi_startproc
  974              	 
  975              	 
- 976 0000 80B4     	 push {r7}
- 977              	.LCFI108:
- 978              	 .cfi_def_cfa_offset 4
- 979              	 .cfi_offset 7,-4
- 980 0002 83B0     	 sub sp,sp,#12
- 981              	.LCFI109:
- 982              	 .cfi_def_cfa_offset 16
- 983 0004 00AF     	 add r7,sp,#0
- 984              	.LCFI110:
- 985              	 .cfi_def_cfa_register 7
- 986 0006 7860     	 str r0,[r7,#4]
- 987 0008 3960     	 str r1,[r7]
+ 976              	 
+ 977 0000 80B4     	 push {r7}
+ 978              	.LCFI108:
+ 979              	 .cfi_def_cfa_offset 4
+ 980              	 .cfi_offset 7,-4
+ 981 0002 83B0     	 sub sp,sp,#12
+ 982              	.LCFI109:
+ 983              	 .cfi_def_cfa_offset 16
+ 984 0004 00AF     	 add r7,sp,#0
+ 985              	.LCFI110:
+ 986              	 .cfi_def_cfa_register 7
+ 987 0006 7860     	 str r0,[r7,#4]
+ 988 0008 3960     	 str r1,[r7]
  297:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_IDR = ul_sources;
- 988              	 .loc 1 297 0
- 989 000a 7B68     	 ldr r3,[r7,#4]
- 990 000c 3A68     	 ldr r2,[r7]
- 991 000e 1A61     	 str r2,[r3,#16]
+ 989              	 .loc 1 297 17
+ 990 000a 7B68     	 ldr r3,[r7,#4]
+ 991 000c 3A68     	 ldr r2,[r7]
+ 992 000e 1A61     	 str r2,[r3,#16]
  298:.././hal/sam3u1c/smc.c **** }
- 992              	 .loc 1 298 0
- 993 0010 00BF     	 nop
- 994 0012 0C37     	 adds r7,r7,#12
- 995              	.LCFI111:
- 996              	 .cfi_def_cfa_offset 4
- 997 0014 BD46     	 mov sp,r7
- 998              	.LCFI112:
- 999              	 .cfi_def_cfa_register 13
- 1000              	 
- 1001 0016 80BC     	 pop {r7}
- 1002              	.LCFI113:
- 1003              	 .cfi_restore 7
- 1004              	 .cfi_def_cfa_offset 0
- 1005 0018 7047     	 bx lr
- 1006              	 .cfi_endproc
- 1007              	.LFE87:
- 1009              	 .section .text.smc_nfc_get_interrupt_mask,"ax",%progbits
- 1010              	 .align 1
- 1011              	 .global smc_nfc_get_interrupt_mask
- 1012              	 .syntax unified
- 1013              	 .thumb
- 1014              	 .thumb_func
- 1015              	 .fpu softvfp
- 1017              	smc_nfc_get_interrupt_mask:
- 1018              	.LFB88:
+ 993              	 .loc 1 298 1
+ 994 0010 00BF     	 nop
+ 995 0012 0C37     	 adds r7,r7,#12
+ 996              	.LCFI111:
+ 997              	 .cfi_def_cfa_offset 4
+ 998 0014 BD46     	 mov sp,r7
+ 999              	.LCFI112:
+ 1000              	 .cfi_def_cfa_register 13
+ 1001              	 
+ 1002 0016 80BC     	 pop {r7}
+ 1003              	.LCFI113:
+ 1004              	 .cfi_restore 7
+ 1005              	 .cfi_def_cfa_offset 0
+ 1006 0018 7047     	 bx lr
+ 1007              	 .cfi_endproc
+ 1008              	.LFE87:
+ 1010              	 .section .text.smc_nfc_get_interrupt_mask,"ax",%progbits
+ 1011              	 .align 1
+ 1012              	 .global smc_nfc_get_interrupt_mask
+ 1013              	 .syntax unified
+ 1014              	 .thumb
+ 1015              	 .thumb_func
+ 1016              	 .fpu softvfp
+ 1018              	smc_nfc_get_interrupt_mask:
+ 1019              	.LFB88:
  299:.././hal/sam3u1c/smc.c **** 
  300:.././hal/sam3u1c/smc.c **** /**
  301:.././hal/sam3u1c/smc.c ****  * \brief Get the interrupt mask.
@@ -1282,52 +1283,52 @@
  306:.././hal/sam3u1c/smc.c ****  */
  307:.././hal/sam3u1c/smc.c **** uint32_t smc_nfc_get_interrupt_mask(Smc *p_smc)
  308:.././hal/sam3u1c/smc.c **** {
- 1019              	 .loc 1 308 0
- 1020              	 .cfi_startproc
- 1021              	 
+ 1020              	 .loc 1 308 1
+ 1021              	 .cfi_startproc
  1022              	 
  1023              	 
- 1024 0000 80B4     	 push {r7}
- 1025              	.LCFI114:
- 1026              	 .cfi_def_cfa_offset 4
- 1027              	 .cfi_offset 7,-4
- 1028 0002 83B0     	 sub sp,sp,#12
- 1029              	.LCFI115:
- 1030              	 .cfi_def_cfa_offset 16
- 1031 0004 00AF     	 add r7,sp,#0
- 1032              	.LCFI116:
- 1033              	 .cfi_def_cfa_register 7
- 1034 0006 7860     	 str r0,[r7,#4]
+ 1024              	 
+ 1025 0000 80B4     	 push {r7}
+ 1026              	.LCFI114:
+ 1027              	 .cfi_def_cfa_offset 4
+ 1028              	 .cfi_offset 7,-4
+ 1029 0002 83B0     	 sub sp,sp,#12
+ 1030              	.LCFI115:
+ 1031              	 .cfi_def_cfa_offset 16
+ 1032 0004 00AF     	 add r7,sp,#0
+ 1033              	.LCFI116:
+ 1034              	 .cfi_def_cfa_register 7
+ 1035 0006 7860     	 str r0,[r7,#4]
  309:.././hal/sam3u1c/smc.c **** 	return p_smc->SMC_IMR;
- 1035              	 .loc 1 309 0
- 1036 0008 7B68     	 ldr r3,[r7,#4]
- 1037 000a 5B69     	 ldr r3,[r3,#20]
+ 1036              	 .loc 1 309 14
+ 1037 0008 7B68     	 ldr r3,[r7,#4]
+ 1038 000a 5B69     	 ldr r3,[r3,#20]
  310:.././hal/sam3u1c/smc.c **** }
- 1038              	 .loc 1 310 0
- 1039 000c 1846     	 mov r0,r3
- 1040 000e 0C37     	 adds r7,r7,#12
- 1041              	.LCFI117:
- 1042              	 .cfi_def_cfa_offset 4
- 1043 0010 BD46     	 mov sp,r7
- 1044              	.LCFI118:
- 1045              	 .cfi_def_cfa_register 13
- 1046              	 
- 1047 0012 80BC     	 pop {r7}
- 1048              	.LCFI119:
- 1049              	 .cfi_restore 7
- 1050              	 .cfi_def_cfa_offset 0
- 1051 0014 7047     	 bx lr
- 1052              	 .cfi_endproc
- 1053              	.LFE88:
- 1055              	 .section .text.smc_nfc_set_address0,"ax",%progbits
- 1056              	 .align 1
- 1057              	 .global smc_nfc_set_address0
- 1058              	 .syntax unified
- 1059              	 .thumb
- 1060              	 .thumb_func
- 1061              	 .fpu softvfp
- 1063              	smc_nfc_set_address0:
- 1064              	.LFB89:
+ 1039              	 .loc 1 310 1
+ 1040 000c 1846     	 mov r0,r3
+ 1041 000e 0C37     	 adds r7,r7,#12
+ 1042              	.LCFI117:
+ 1043              	 .cfi_def_cfa_offset 4
+ 1044 0010 BD46     	 mov sp,r7
+ 1045              	.LCFI118:
+ 1046              	 .cfi_def_cfa_register 13
+ 1047              	 
+ 1048 0012 80BC     	 pop {r7}
+ 1049              	.LCFI119:
+ 1050              	 .cfi_restore 7
+ 1051              	 .cfi_def_cfa_offset 0
+ 1052 0014 7047     	 bx lr
+ 1053              	 .cfi_endproc
+ 1054              	.LFE88:
+ 1056              	 .section .text.smc_nfc_set_address0,"ax",%progbits
+ 1057              	 .align 1
+ 1058              	 .global smc_nfc_set_address0
+ 1059              	 .syntax unified
+ 1060              	 .thumb
+ 1061              	 .thumb_func
+ 1062              	 .fpu softvfp
+ 1064              	smc_nfc_set_address0:
+ 1065              	.LFB89:
  311:.././hal/sam3u1c/smc.c **** 
  312:.././hal/sam3u1c/smc.c **** /**
  313:.././hal/sam3u1c/smc.c ****  * \brief Set flash cycle 0 address.
@@ -1337,55 +1338,55 @@
  317:.././hal/sam3u1c/smc.c ****  */
  318:.././hal/sam3u1c/smc.c **** void smc_nfc_set_address0(Smc *p_smc, uint8_t uc_address0)
  319:.././hal/sam3u1c/smc.c **** {
- 1065              	 .loc 1 319 0
- 1066              	 .cfi_startproc
- 1067              	 
+ 1066              	 .loc 1 319 1
+ 1067              	 .cfi_startproc
  1068              	 
  1069              	 
- 1070 0000 80B4     	 push {r7}
- 1071              	.LCFI120:
- 1072              	 .cfi_def_cfa_offset 4
- 1073              	 .cfi_offset 7,-4
- 1074 0002 83B0     	 sub sp,sp,#12
- 1075              	.LCFI121:
- 1076              	 .cfi_def_cfa_offset 16
- 1077 0004 00AF     	 add r7,sp,#0
- 1078              	.LCFI122:
- 1079              	 .cfi_def_cfa_register 7
- 1080 0006 7860     	 str r0,[r7,#4]
- 1081 0008 0B46     	 mov r3,r1
- 1082 000a FB70     	 strb r3,[r7,#3]
+ 1070              	 
+ 1071 0000 80B4     	 push {r7}
+ 1072              	.LCFI120:
+ 1073              	 .cfi_def_cfa_offset 4
+ 1074              	 .cfi_offset 7,-4
+ 1075 0002 83B0     	 sub sp,sp,#12
+ 1076              	.LCFI121:
+ 1077              	 .cfi_def_cfa_offset 16
+ 1078 0004 00AF     	 add r7,sp,#0
+ 1079              	.LCFI122:
+ 1080              	 .cfi_def_cfa_register 7
+ 1081 0006 7860     	 str r0,[r7,#4]
+ 1082 0008 0B46     	 mov r3,r1
+ 1083 000a FB70     	 strb r3,[r7,#3]
  320:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_ADDR = uc_address0;
- 1083              	 .loc 1 320 0
- 1084 000c FA78     	 ldrb r2,[r7,#3]
- 1085 000e 7B68     	 ldr r3,[r7,#4]
- 1086 0010 9A61     	 str r2,[r3,#24]
+ 1084              	 .loc 1 320 18
+ 1085 000c FA78     	 ldrb r2,[r7,#3]
+ 1086 000e 7B68     	 ldr r3,[r7,#4]
+ 1087 0010 9A61     	 str r2,[r3,#24]
  321:.././hal/sam3u1c/smc.c **** }
- 1087              	 .loc 1 321 0
- 1088 0012 00BF     	 nop
- 1089 0014 0C37     	 adds r7,r7,#12
- 1090              	.LCFI123:
- 1091              	 .cfi_def_cfa_offset 4
- 1092 0016 BD46     	 mov sp,r7
- 1093              	.LCFI124:
- 1094              	 .cfi_def_cfa_register 13
- 1095              	 
- 1096 0018 80BC     	 pop {r7}
- 1097              	.LCFI125:
- 1098              	 .cfi_restore 7
- 1099              	 .cfi_def_cfa_offset 0
- 1100 001a 7047     	 bx lr
- 1101              	 .cfi_endproc
- 1102              	.LFE89:
- 1104              	 .section .text.smc_nfc_set_bank,"ax",%progbits
- 1105              	 .align 1
- 1106              	 .global smc_nfc_set_bank
- 1107              	 .syntax unified
- 1108              	 .thumb
- 1109              	 .thumb_func
- 1110              	 .fpu softvfp
- 1112              	smc_nfc_set_bank:
- 1113              	.LFB90:
+ 1088              	 .loc 1 321 1
+ 1089 0012 00BF     	 nop
+ 1090 0014 0C37     	 adds r7,r7,#12
+ 1091              	.LCFI123:
+ 1092              	 .cfi_def_cfa_offset 4
+ 1093 0016 BD46     	 mov sp,r7
+ 1094              	.LCFI124:
+ 1095              	 .cfi_def_cfa_register 13
+ 1096              	 
+ 1097 0018 80BC     	 pop {r7}
+ 1098              	.LCFI125:
+ 1099              	 .cfi_restore 7
+ 1100              	 .cfi_def_cfa_offset 0
+ 1101 001a 7047     	 bx lr
+ 1102              	 .cfi_endproc
+ 1103              	.LFE89:
+ 1105              	 .section .text.smc_nfc_set_bank,"ax",%progbits
+ 1106              	 .align 1
+ 1107              	 .global smc_nfc_set_bank
+ 1108              	 .syntax unified
+ 1109              	 .thumb
+ 1110              	 .thumb_func
+ 1111              	 .fpu softvfp
+ 1113              	smc_nfc_set_bank:
+ 1114              	.LFB90:
  322:.././hal/sam3u1c/smc.c **** 
  323:.././hal/sam3u1c/smc.c **** /**
  324:.././hal/sam3u1c/smc.c ****  * \brief Set NFC sram bank.
@@ -1395,55 +1396,56 @@
  328:.././hal/sam3u1c/smc.c ****  */
  329:.././hal/sam3u1c/smc.c **** void smc_nfc_set_bank(Smc *p_smc, uint32_t ul_bank)
  330:.././hal/sam3u1c/smc.c **** {
- 1114              	 .loc 1 330 0
- 1115              	 .cfi_startproc
- 1116              	 
+ 1115              	 .loc 1 330 1
+ 1116              	 .cfi_startproc
  1117              	 
  1118              	 
- 1119 0000 80B4     	 push {r7}
- 1120              	.LCFI126:
- 1121              	 .cfi_def_cfa_offset 4
- 1122              	 .cfi_offset 7,-4
- 1123 0002 83B0     	 sub sp,sp,#12
- 1124              	.LCFI127:
- 1125              	 .cfi_def_cfa_offset 16
- 1126 0004 00AF     	 add r7,sp,#0
- 1127              	.LCFI128:
- 1128              	 .cfi_def_cfa_register 7
- 1129 0006 7860     	 str r0,[r7,#4]
- 1130 0008 3960     	 str r1,[r7]
+ 1119              	 
+ 1120 0000 80B4     	 push {r7}
+ 1121              	.LCFI126:
+ 1122              	 .cfi_def_cfa_offset 4
+ 1123              	 .cfi_offset 7,-4
+ 1124 0002 83B0     	 sub sp,sp,#12
+ 1125              	.LCFI127:
+ 1126              	 .cfi_def_cfa_offset 16
+ 1127 0004 00AF     	 add r7,sp,#0
+ 1128              	.LCFI128:
+ 1129              	 .cfi_def_cfa_register 7
+ 1130 0006 7860     	 str r0,[r7,#4]
+ 1131 0008 3960     	 str r1,[r7]
  331:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_BANK = SMC_BANK_BANK(ul_bank);
- 1131              	 .loc 1 331 0
- 1132 000a 3B68     	 ldr r3,[r7]
- 1133 000c 03F00702 	 and r2,r3,#7
- 1134 0010 7B68     	 ldr r3,[r7,#4]
- 1135 0012 DA61     	 str r2,[r3,#28]
+ 1132              	 .loc 1 331 20
+ 1133 000a 3B68     	 ldr r3,[r7]
+ 1134 000c 03F00702 	 and r2,r3,#7
+ 1135              	 .loc 1 331 18
+ 1136 0010 7B68     	 ldr r3,[r7,#4]
+ 1137 0012 DA61     	 str r2,[r3,#28]
  332:.././hal/sam3u1c/smc.c **** }
- 1136              	 .loc 1 332 0
- 1137 0014 00BF     	 nop
- 1138 0016 0C37     	 adds r7,r7,#12
- 1139              	.LCFI129:
- 1140              	 .cfi_def_cfa_offset 4
- 1141 0018 BD46     	 mov sp,r7
- 1142              	.LCFI130:
- 1143              	 .cfi_def_cfa_register 13
- 1144              	 
- 1145 001a 80BC     	 pop {r7}
- 1146              	.LCFI131:
- 1147              	 .cfi_restore 7
- 1148              	 .cfi_def_cfa_offset 0
- 1149 001c 7047     	 bx lr
- 1150              	 .cfi_endproc
- 1151              	.LFE90:
- 1153              	 .section .text.smc_nfc_send_command,"ax",%progbits
- 1154              	 .align 1
- 1155              	 .global smc_nfc_send_command
- 1156              	 .syntax unified
- 1157              	 .thumb
- 1158              	 .thumb_func
- 1159              	 .fpu softvfp
- 1161              	smc_nfc_send_command:
- 1162              	.LFB91:
+ 1138              	 .loc 1 332 1
+ 1139 0014 00BF     	 nop
+ 1140 0016 0C37     	 adds r7,r7,#12
+ 1141              	.LCFI129:
+ 1142              	 .cfi_def_cfa_offset 4
+ 1143 0018 BD46     	 mov sp,r7
+ 1144              	.LCFI130:
+ 1145              	 .cfi_def_cfa_register 13
+ 1146              	 
+ 1147 001a 80BC     	 pop {r7}
+ 1148              	.LCFI131:
+ 1149              	 .cfi_restore 7
+ 1150              	 .cfi_def_cfa_offset 0
+ 1151 001c 7047     	 bx lr
+ 1152              	 .cfi_endproc
+ 1153              	.LFE90:
+ 1155              	 .section .text.smc_nfc_send_command,"ax",%progbits
+ 1156              	 .align 1
+ 1157              	 .global smc_nfc_send_command
+ 1158              	 .syntax unified
+ 1159              	 .thumb
+ 1160              	 .thumb_func
+ 1161              	 .fpu softvfp
+ 1163              	smc_nfc_send_command:
+ 1164              	.LFB91:
  333:.././hal/sam3u1c/smc.c **** 
  334:.././hal/sam3u1c/smc.c **** /**
  335:.././hal/sam3u1c/smc.c ****  * \brief Use the HOST nandflash controller to send a command.
@@ -1456,96 +1458,99 @@
  342:.././hal/sam3u1c/smc.c **** void smc_nfc_send_command(Smc *p_smc, uint32_t ul_cmd,
  343:.././hal/sam3u1c/smc.c **** 		uint32_t ul_address_cycle, uint32_t ul_cycle0)
  344:.././hal/sam3u1c/smc.c **** {
- 1163              	 .loc 1 344 0
- 1164              	 .cfi_startproc
- 1165              	 
- 1166              	 
+ 1165              	 .loc 1 344 1
+ 1166              	 .cfi_startproc
  1167              	 
- 1168 0000 80B4     	 push {r7}
- 1169              	.LCFI132:
- 1170              	 .cfi_def_cfa_offset 4
- 1171              	 .cfi_offset 7,-4
- 1172 0002 87B0     	 sub sp,sp,#28
- 1173              	.LCFI133:
- 1174              	 .cfi_def_cfa_offset 32
- 1175 0004 00AF     	 add r7,sp,#0
- 1176              	.LCFI134:
- 1177              	 .cfi_def_cfa_register 7
- 1178 0006 F860     	 str r0,[r7,#12]
- 1179 0008 B960     	 str r1,[r7,#8]
- 1180 000a 7A60     	 str r2,[r7,#4]
- 1181 000c 3B60     	 str r3,[r7]
+ 1168              	 
+ 1169              	 
+ 1170 0000 80B4     	 push {r7}
+ 1171              	.LCFI132:
+ 1172              	 .cfi_def_cfa_offset 4
+ 1173              	 .cfi_offset 7,-4
+ 1174 0002 87B0     	 sub sp,sp,#28
+ 1175              	.LCFI133:
+ 1176              	 .cfi_def_cfa_offset 32
+ 1177 0004 00AF     	 add r7,sp,#0
+ 1178              	.LCFI134:
+ 1179              	 .cfi_def_cfa_register 7
+ 1180 0006 F860     	 str r0,[r7,#12]
+ 1181 0008 B960     	 str r1,[r7,#8]
+ 1182 000a 7A60     	 str r2,[r7,#4]
+ 1183 000c 3B60     	 str r3,[r7]
  345:.././hal/sam3u1c/smc.c **** 	volatile uint32_t *p_command_address;
  346:.././hal/sam3u1c/smc.c **** 
  347:.././hal/sam3u1c/smc.c **** 	/* Wait until host controller is not busy. */
  348:.././hal/sam3u1c/smc.c **** 	while (((*((volatile uint32_t *)(BOARD_NF_DATA_ADDR + NFCADDR_CMD_NFCCMD)))
- 1182              	 .loc 1 348 0
- 1183 000e 00BF     	 nop
- 1184              	.L33:
- 1185              	 .loc 1 348 0 is_stmt 0 discriminator 1
- 1186 0010 4FF0D243 	 mov r3,#1761607680
- 1187 0014 1B68     	 ldr r3,[r3]
+ 1184              	 .loc 1 348 8
+ 1185 000e 00BF     	 nop
+ 1186              	.L33:
+ 1187              	 .loc 1 348 11 discriminator 1
+ 1188 0010 4FF0D243 	 mov r3,#1761607680
+ 1189 0014 1B68     	 ldr r3,[r3]
  349:.././hal/sam3u1c/smc.c **** 			& NFC_BUSY_FLAG) == NFC_BUSY_FLAG) {
- 1188              	 .loc 1 349 0 is_stmt 1 discriminator 1
- 1189 0016 03F00063 	 and r3,r3,#134217728
+ 1190              	 .loc 1 349 4 discriminator 1
+ 1191 0016 03F00063 	 and r3,r3,#134217728
  348:.././hal/sam3u1c/smc.c **** 			& NFC_BUSY_FLAG) == NFC_BUSY_FLAG) {
- 1190              	 .loc 1 348 0 discriminator 1
- 1191 001a B3F1006F 	 cmp r3,#134217728
- 1192 001e F7D0     	 beq .L33
+ 1192              	 .loc 1 348 8 discriminator 1
+ 1193 001a B3F1006F 	 cmp r3,#134217728
+ 1194 001e F7D0     	 beq .L33
  350:.././hal/sam3u1c/smc.c **** 	}
  351:.././hal/sam3u1c/smc.c **** 	/* Send the command plus the ADDR_CYCLE. */
  352:.././hal/sam3u1c/smc.c **** 	p_command_address = (volatile uint32_t *)(ul_cmd + BOARD_NF_DATA_ADDR);
- 1193              	 .loc 1 352 0
- 1194 0020 BB68     	 ldr r3,[r7,#8]
- 1195 0022 03F1C243 	 add r3,r3,#1627389952
- 1196 0026 7B61     	 str r3,[r7,#20]
+ 1195              	 .loc 1 352 51
+ 1196 0020 BB68     	 ldr r3,[r7,#8]
+ 1197 0022 03F1C243 	 add r3,r3,#1627389952
+ 1198              	 .loc 1 352 20
+ 1199 0026 7B61     	 str r3,[r7,#20]
  353:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_ADDR = ul_cycle0;
- 1197              	 .loc 1 353 0
- 1198 0028 FB68     	 ldr r3,[r7,#12]
- 1199 002a 3A68     	 ldr r2,[r7]
- 1200 002c 9A61     	 str r2,[r3,#24]
+ 1200              	 .loc 1 353 18
+ 1201 0028 FB68     	 ldr r3,[r7,#12]
+ 1202 002a 3A68     	 ldr r2,[r7]
+ 1203 002c 9A61     	 str r2,[r3,#24]
  354:.././hal/sam3u1c/smc.c **** 	*p_command_address = ul_address_cycle;
- 1201              	 .loc 1 354 0
- 1202 002e 7B69     	 ldr r3,[r7,#20]
- 1203 0030 7A68     	 ldr r2,[r7,#4]
- 1204 0032 1A60     	 str r2,[r3]
+ 1204              	 .loc 1 354 21
+ 1205 002e 7B69     	 ldr r3,[r7,#20]
+ 1206 0030 7A68     	 ldr r2,[r7,#4]
+ 1207 0032 1A60     	 str r2,[r3]
  355:.././hal/sam3u1c/smc.c **** 	while (!((p_smc->SMC_SR & SMC_SR_CMDDONE) == SMC_SR_CMDDONE)) {
- 1205              	 .loc 1 355 0
- 1206 0034 00BF     	 nop
- 1207              	.L34:
- 1208              	 .loc 1 355 0 is_stmt 0 discriminator 1
- 1209 0036 FB68     	 ldr r3,[r7,#12]
- 1210 0038 9B68     	 ldr r3,[r3,#8]
- 1211 003a 03F40033 	 and r3,r3,#131072
- 1212 003e B3F5003F 	 cmp r3,#131072
- 1213 0042 F8D1     	 bne .L34
+ 1208              	 .loc 1 355 8
+ 1209 0034 00BF     	 nop
+ 1210              	.L34:
+ 1211              	 .loc 1 355 17 discriminator 1
+ 1212 0036 FB68     	 ldr r3,[r7,#12]
+ 1213 0038 9B68     	 ldr r3,[r3,#8]
+ 1214              	 .loc 1 355 26 discriminator 1
+ 1215 003a 03F40033 	 and r3,r3,#131072
+ 1216              	 .loc 1 355 8 discriminator 1
+ 1217 003e B3F5003F 	 cmp r3,#131072
+ 1218 0042 F8D1     	 bne .L34
  356:.././hal/sam3u1c/smc.c **** 	}
  357:.././hal/sam3u1c/smc.c **** }
- 1214              	 .loc 1 357 0 is_stmt 1
- 1215 0044 00BF     	 nop
- 1216 0046 1C37     	 adds r7,r7,#28
- 1217              	.LCFI135:
- 1218              	 .cfi_def_cfa_offset 4
- 1219 0048 BD46     	 mov sp,r7
- 1220              	.LCFI136:
- 1221              	 .cfi_def_cfa_register 13
- 1222              	 
- 1223 004a 80BC     	 pop {r7}
- 1224              	.LCFI137:
- 1225              	 .cfi_restore 7
- 1226              	 .cfi_def_cfa_offset 0
- 1227 004c 7047     	 bx lr
- 1228              	 .cfi_endproc
- 1229              	.LFE91:
- 1231              	 .section .text.smc_ecc_init,"ax",%progbits
- 1232              	 .align 1
- 1233              	 .global smc_ecc_init
- 1234              	 .syntax unified
- 1235              	 .thumb
- 1236              	 .thumb_func
- 1237              	 .fpu softvfp
- 1239              	smc_ecc_init:
- 1240              	.LFB92:
+ 1219              	 .loc 1 357 1
+ 1220 0044 00BF     	 nop
+ 1221 0046 1C37     	 adds r7,r7,#28
+ 1222              	.LCFI135:
+ 1223              	 .cfi_def_cfa_offset 4
+ 1224 0048 BD46     	 mov sp,r7
+ 1225              	.LCFI136:
+ 1226              	 .cfi_def_cfa_register 13
+ 1227              	 
+ 1228 004a 80BC     	 pop {r7}
+ 1229              	.LCFI137:
+ 1230              	 .cfi_restore 7
+ 1231              	 .cfi_def_cfa_offset 0
+ 1232 004c 7047     	 bx lr
+ 1233              	 .cfi_endproc
+ 1234              	.LFE91:
+ 1236              	 .section .text.smc_ecc_init,"ax",%progbits
+ 1237              	 .align 1
+ 1238              	 .global smc_ecc_init
+ 1239              	 .syntax unified
+ 1240              	 .thumb
+ 1241              	 .thumb_func
+ 1242              	 .fpu softvfp
+ 1244              	smc_ecc_init:
+ 1245              	.LFB92:
  358:.././hal/sam3u1c/smc.c **** 
  359:.././hal/sam3u1c/smc.c **** /**
  360:.././hal/sam3u1c/smc.c ****  * \brief Initialize ECC mode.
@@ -1557,63 +1562,64 @@
  366:.././hal/sam3u1c/smc.c ****  */
  367:.././hal/sam3u1c/smc.c **** void smc_ecc_init(Smc *p_smc, uint32_t ul_type, uint32_t ul_pagesize)
  368:.././hal/sam3u1c/smc.c **** {
- 1241              	 .loc 1 368 0
- 1242              	 .cfi_startproc
- 1243              	 
- 1244              	 
- 1245              	 
- 1246 0000 80B4     	 push {r7}
- 1247              	.LCFI138:
- 1248              	 .cfi_def_cfa_offset 4
- 1249              	 .cfi_offset 7,-4
- 1250 0002 85B0     	 sub sp,sp,#20
- 1251              	.LCFI139:
- 1252              	 .cfi_def_cfa_offset 24
- 1253 0004 00AF     	 add r7,sp,#0
- 1254              	.LCFI140:
- 1255              	 .cfi_def_cfa_register 7
- 1256 0006 F860     	 str r0,[r7,#12]
- 1257 0008 B960     	 str r1,[r7,#8]
- 1258 000a 7A60     	 str r2,[r7,#4]
+ 1246              	 .loc 1 368 1
+ 1247              	 .cfi_startproc
+ 1248              	 
+ 1249              	 
+ 1250              	 
+ 1251 0000 80B4     	 push {r7}
+ 1252              	.LCFI138:
+ 1253              	 .cfi_def_cfa_offset 4
+ 1254              	 .cfi_offset 7,-4
+ 1255 0002 85B0     	 sub sp,sp,#20
+ 1256              	.LCFI139:
+ 1257              	 .cfi_def_cfa_offset 24
+ 1258 0004 00AF     	 add r7,sp,#0
+ 1259              	.LCFI140:
+ 1260              	 .cfi_def_cfa_register 7
+ 1261 0006 F860     	 str r0,[r7,#12]
+ 1262 0008 B960     	 str r1,[r7,#8]
+ 1263 000a 7A60     	 str r2,[r7,#4]
  369:.././hal/sam3u1c/smc.c **** 	/* Software Reset ECC. */
  370:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_ECC_CTRL = SMC_ECC_CTRL_SWRST;
- 1259              	 .loc 1 370 0
- 1260 000c FB68     	 ldr r3,[r7,#12]
- 1261 000e 0222     	 movs r2,#2
- 1262 0010 1A62     	 str r2,[r3,#32]
+ 1264              	 .loc 1 370 22
+ 1265 000c FB68     	 ldr r3,[r7,#12]
+ 1266 000e 0222     	 movs r2,#2
+ 1267 0010 1A62     	 str r2,[r3,#32]
  371:.././hal/sam3u1c/smc.c **** 	p_smc->SMC_ECC_MD = ul_type | ul_pagesize;
- 1263              	 .loc 1 371 0
- 1264 0012 BA68     	 ldr r2,[r7,#8]
- 1265 0014 7B68     	 ldr r3,[r7,#4]
- 1266 0016 1A43     	 orrs r2,r2,r3
- 1267 0018 FB68     	 ldr r3,[r7,#12]
- 1268 001a 5A62     	 str r2,[r3,#36]
+ 1268              	 .loc 1 371 30
+ 1269 0012 BA68     	 ldr r2,[r7,#8]
+ 1270 0014 7B68     	 ldr r3,[r7,#4]
+ 1271 0016 1A43     	 orrs r2,r2,r3
+ 1272              	 .loc 1 371 20
+ 1273 0018 FB68     	 ldr r3,[r7,#12]
+ 1274 001a 5A62     	 str r2,[r3,#36]
  372:.././hal/sam3u1c/smc.c **** }
- 1269              	 .loc 1 372 0
- 1270 001c 00BF     	 nop
- 1271 001e 1437     	 adds r7,r7,#20
- 1272              	.LCFI141:
- 1273              	 .cfi_def_cfa_offset 4
- 1274 0020 BD46     	 mov sp,r7
- 1275              	.LCFI142:
- 1276              	 .cfi_def_cfa_register 13
- 1277              	 
- 1278 0022 80BC     	 pop {r7}
- 1279              	.LCFI143:
- 1280              	 .cfi_restore 7
- 1281              	 .cfi_def_cfa_offset 0
- 1282 0024 7047     	 bx lr
- 1283              	 .cfi_endproc
- 1284              	.LFE92:
- 1286              	 .section .text.smc_ecc_get_status,"ax",%progbits
- 1287              	 .align 1
- 1288              	 .global smc_ecc_get_status
- 1289              	 .syntax unified
- 1290              	 .thumb
- 1291              	 .thumb_func
- 1292              	 .fpu softvfp
- 1294              	smc_ecc_get_status:
- 1295              	.LFB93:
+ 1275              	 .loc 1 372 1
+ 1276 001c 00BF     	 nop
+ 1277 001e 1437     	 adds r7,r7,#20
+ 1278              	.LCFI141:
+ 1279              	 .cfi_def_cfa_offset 4
+ 1280 0020 BD46     	 mov sp,r7
+ 1281              	.LCFI142:
+ 1282              	 .cfi_def_cfa_register 13
+ 1283              	 
+ 1284 0022 80BC     	 pop {r7}
+ 1285              	.LCFI143:
+ 1286              	 .cfi_restore 7
+ 1287              	 .cfi_def_cfa_offset 0
+ 1288 0024 7047     	 bx lr
+ 1289              	 .cfi_endproc
+ 1290              	.LFE92:
+ 1292              	 .section .text.smc_ecc_get_status,"ax",%progbits
+ 1293              	 .align 1
+ 1294              	 .global smc_ecc_get_status
+ 1295              	 .syntax unified
+ 1296              	 .thumb
+ 1297              	 .thumb_func
+ 1298              	 .fpu softvfp
+ 1300              	smc_ecc_get_status:
+ 1301              	.LFB93:
  373:.././hal/sam3u1c/smc.c **** 
  374:.././hal/sam3u1c/smc.c **** /**
  375:.././hal/sam3u1c/smc.c ****  * \brief Get ECC status by giving ecc number.
@@ -1625,84 +1631,86 @@
  381:.././hal/sam3u1c/smc.c ****  */
  382:.././hal/sam3u1c/smc.c **** uint32_t smc_ecc_get_status(Smc *p_smc, uint32_t ul_parity_number)
  383:.././hal/sam3u1c/smc.c **** {
- 1296              	 .loc 1 383 0
- 1297              	 .cfi_startproc
- 1298              	 
- 1299              	 
- 1300              	 
- 1301 0000 80B4     	 push {r7}
- 1302              	.LCFI144:
- 1303              	 .cfi_def_cfa_offset 4
- 1304              	 .cfi_offset 7,-4
- 1305 0002 85B0     	 sub sp,sp,#20
- 1306              	.LCFI145:
- 1307              	 .cfi_def_cfa_offset 24
- 1308 0004 00AF     	 add r7,sp,#0
- 1309              	.LCFI146:
- 1310              	 .cfi_def_cfa_register 7
- 1311 0006 7860     	 str r0,[r7,#4]
- 1312 0008 3960     	 str r1,[r7]
+ 1302              	 .loc 1 383 1
+ 1303              	 .cfi_startproc
+ 1304              	 
+ 1305              	 
+ 1306              	 
+ 1307 0000 80B4     	 push {r7}
+ 1308              	.LCFI144:
+ 1309              	 .cfi_def_cfa_offset 4
+ 1310              	 .cfi_offset 7,-4
+ 1311 0002 85B0     	 sub sp,sp,#20
+ 1312              	.LCFI145:
+ 1313              	 .cfi_def_cfa_offset 24
+ 1314 0004 00AF     	 add r7,sp,#0
+ 1315              	.LCFI146:
+ 1316              	 .cfi_def_cfa_register 7
+ 1317 0006 7860     	 str r0,[r7,#4]
+ 1318 0008 3960     	 str r1,[r7]
  384:.././hal/sam3u1c/smc.c **** 	uint32_t status;
  385:.././hal/sam3u1c/smc.c **** 
  386:.././hal/sam3u1c/smc.c **** 	if (ul_parity_number < 8) {
- 1313              	 .loc 1 386 0
- 1314 000a 3B68     	 ldr r3,[r7]
- 1315 000c 072B     	 cmp r3,#7
- 1316 000e 03D8     	 bhi .L37
+ 1319              	 .loc 1 386 5
+ 1320 000a 3B68     	 ldr r3,[r7]
+ 1321 000c 072B     	 cmp r3,#7
+ 1322 000e 03D8     	 bhi .L37
  387:.././hal/sam3u1c/smc.c **** 		status = p_smc->SMC_ECC_SR1;
- 1317              	 .loc 1 387 0
- 1318 0010 7B68     	 ldr r3,[r7,#4]
- 1319 0012 9B6A     	 ldr r3,[r3,#40]
- 1320 0014 FB60     	 str r3,[r7,#12]
- 1321 0016 05E0     	 b .L38
- 1322              	.L37:
+ 1323              	 .loc 1 387 10
+ 1324 0010 7B68     	 ldr r3,[r7,#4]
+ 1325 0012 9B6A     	 ldr r3,[r3,#40]
+ 1326 0014 FB60     	 str r3,[r7,#12]
+ 1327 0016 05E0     	 b .L38
+ 1328              	.L37:
  388:.././hal/sam3u1c/smc.c **** 	} else {
  389:.././hal/sam3u1c/smc.c **** 		status = p_smc->SMC_ECC_SR2;
- 1323              	 .loc 1 389 0
- 1324 0018 7B68     	 ldr r3,[r7,#4]
- 1325 001a 5B6B     	 ldr r3,[r3,#52]
- 1326 001c FB60     	 str r3,[r7,#12]
+ 1329              	 .loc 1 389 10
+ 1330 0018 7B68     	 ldr r3,[r7,#4]
+ 1331 001a 5B6B     	 ldr r3,[r3,#52]
+ 1332 001c FB60     	 str r3,[r7,#12]
  390:.././hal/sam3u1c/smc.c **** 		ul_parity_number -= 8;
- 1327              	 .loc 1 390 0
- 1328 001e 3B68     	 ldr r3,[r7]
- 1329 0020 083B     	 subs r3,r3,#8
- 1330 0022 3B60     	 str r3,[r7]
- 1331              	.L38:
+ 1333              	 .loc 1 390 20
+ 1334 001e 3B68     	 ldr r3,[r7]
+ 1335 0020 083B     	 subs r3,r3,#8
+ 1336 0022 3B60     	 str r3,[r7]
+ 1337              	.L38:
  391:.././hal/sam3u1c/smc.c **** 	}
  392:.././hal/sam3u1c/smc.c **** 
  393:.././hal/sam3u1c/smc.c **** 	return ((status >> (ul_parity_number * 4)) & ECC_STATUS_MASK);
- 1332              	 .loc 1 393 0
- 1333 0024 3B68     	 ldr r3,[r7]
- 1334 0026 9B00     	 lsls r3,r3,#2
- 1335 0028 FA68     	 ldr r2,[r7,#12]
- 1336 002a 22FA03F3 	 lsr r3,r2,r3
- 1337 002e 03F00703 	 and r3,r3,#7
+ 1338              	 .loc 1 393 39
+ 1339 0024 3B68     	 ldr r3,[r7]
+ 1340 0026 9B00     	 lsls r3,r3,#2
+ 1341              	 .loc 1 393 18
+ 1342 0028 FA68     	 ldr r2,[r7,#12]
+ 1343 002a 22FA03F3 	 lsr r3,r2,r3
+ 1344              	 .loc 1 393 45
+ 1345 002e 03F00703 	 and r3,r3,#7
  394:.././hal/sam3u1c/smc.c **** }
- 1338              	 .loc 1 394 0
- 1339 0032 1846     	 mov r0,r3
- 1340 0034 1437     	 adds r7,r7,#20
- 1341              	.LCFI147:
- 1342              	 .cfi_def_cfa_offset 4
- 1343 0036 BD46     	 mov sp,r7
- 1344              	.LCFI148:
- 1345              	 .cfi_def_cfa_register 13
- 1346              	 
- 1347 0038 80BC     	 pop {r7}
- 1348              	.LCFI149:
- 1349              	 .cfi_restore 7
- 1350              	 .cfi_def_cfa_offset 0
- 1351 003a 7047     	 bx lr
- 1352              	 .cfi_endproc
- 1353              	.LFE93:
- 1355              	 .section .text.smc_ecc_get_value,"ax",%progbits
- 1356              	 .align 1
- 1357              	 .global smc_ecc_get_value
- 1358              	 .syntax unified
- 1359              	 .thumb
- 1360              	 .thumb_func
- 1361              	 .fpu softvfp
- 1363              	smc_ecc_get_value:
- 1364              	.LFB94:
+ 1346              	 .loc 1 394 1
+ 1347 0032 1846     	 mov r0,r3
+ 1348 0034 1437     	 adds r7,r7,#20
+ 1349              	.LCFI147:
+ 1350              	 .cfi_def_cfa_offset 4
+ 1351 0036 BD46     	 mov sp,r7
+ 1352              	.LCFI148:
+ 1353              	 .cfi_def_cfa_register 13
+ 1354              	 
+ 1355 0038 80BC     	 pop {r7}
+ 1356              	.LCFI149:
+ 1357              	 .cfi_restore 7
+ 1358              	 .cfi_def_cfa_offset 0
+ 1359 003a 7047     	 bx lr
+ 1360              	 .cfi_endproc
+ 1361              	.LFE93:
+ 1363              	 .section .text.smc_ecc_get_value,"ax",%progbits
+ 1364              	 .align 1
+ 1365              	 .global smc_ecc_get_value
+ 1366              	 .syntax unified
+ 1367              	 .thumb
+ 1368              	 .thumb_func
+ 1369              	 .fpu softvfp
+ 1371              	smc_ecc_get_value:
+ 1372              	.LFB94:
  395:.././hal/sam3u1c/smc.c **** 
  396:.././hal/sam3u1c/smc.c **** /**
  397:.././hal/sam3u1c/smc.c ****  * \brief Get all ECC parity registers value.
@@ -1712,165 +1720,196 @@
  401:.././hal/sam3u1c/smc.c ****  */
  402:.././hal/sam3u1c/smc.c **** void smc_ecc_get_value(Smc *p_smc, uint32_t *p_ecc)
  403:.././hal/sam3u1c/smc.c **** {
- 1365              	 .loc 1 403 0
- 1366              	 .cfi_startproc
- 1367              	 
- 1368              	 
- 1369              	 
- 1370 0000 80B4     	 push {r7}
- 1371              	.LCFI150:
- 1372              	 .cfi_def_cfa_offset 4
- 1373              	 .cfi_offset 7,-4
- 1374 0002 83B0     	 sub sp,sp,#12
- 1375              	.LCFI151:
- 1376              	 .cfi_def_cfa_offset 16
- 1377 0004 00AF     	 add r7,sp,#0
- 1378              	.LCFI152:
- 1379              	 .cfi_def_cfa_register 7
- 1380 0006 7860     	 str r0,[r7,#4]
- 1381 0008 3960     	 str r1,[r7]
+ 1373              	 .loc 1 403 1
+ 1374              	 .cfi_startproc
+ 1375              	 
+ 1376              	 
+ 1377              	 
+ 1378 0000 80B4     	 push {r7}
+ 1379              	.LCFI150:
+ 1380              	 .cfi_def_cfa_offset 4
+ 1381              	 .cfi_offset 7,-4
+ 1382 0002 83B0     	 sub sp,sp,#12
+ 1383              	.LCFI151:
+ 1384              	 .cfi_def_cfa_offset 16
+ 1385 0004 00AF     	 add r7,sp,#0
+ 1386              	.LCFI152:
+ 1387              	 .cfi_def_cfa_register 7
+ 1388 0006 7860     	 str r0,[r7,#4]
+ 1389 0008 3960     	 str r1,[r7]
  404:.././hal/sam3u1c/smc.c **** 	p_ecc[0] = p_smc->SMC_ECC_PR0;
- 1382              	 .loc 1 404 0
- 1383 000a 7B68     	 ldr r3,[r7,#4]
- 1384 000c DA6A     	 ldr r2,[r3,#44]
- 1385 000e 3B68     	 ldr r3,[r7]
- 1386 0010 1A60     	 str r2,[r3]
+ 1390              	 .loc 1 404 18
+ 1391 000a 7B68     	 ldr r3,[r7,#4]
+ 1392 000c DA6A     	 ldr r2,[r3,#44]
+ 1393              	 .loc 1 404 11
+ 1394 000e 3B68     	 ldr r3,[r7]
+ 1395 0010 1A60     	 str r2,[r3]
  405:.././hal/sam3u1c/smc.c **** 	p_ecc[1] = p_smc->SMC_ECC_PR1;
- 1387              	 .loc 1 405 0
- 1388 0012 3B68     	 ldr r3,[r7]
- 1389 0014 0433     	 adds r3,r3,#4
- 1390 0016 7A68     	 ldr r2,[r7,#4]
- 1391 0018 126B     	 ldr r2,[r2,#48]
- 1392 001a 1A60     	 str r2,[r3]
+ 1396              	 .loc 1 405 7
+ 1397 0012 3B68     	 ldr r3,[r7]
+ 1398 0014 0433     	 adds r3,r3,#4
+ 1399              	 .loc 1 405 18
+ 1400 0016 7A68     	 ldr r2,[r7,#4]
+ 1401 0018 126B     	 ldr r2,[r2,#48]
+ 1402              	 .loc 1 405 11
+ 1403 001a 1A60     	 str r2,[r3]
  406:.././hal/sam3u1c/smc.c **** 	p_ecc[2] = p_smc->SMC_ECC_PR2;
- 1393              	 .loc 1 406 0
- 1394 001c 3B68     	 ldr r3,[r7]
- 1395 001e 0833     	 adds r3,r3,#8
- 1396 0020 7A68     	 ldr r2,[r7,#4]
- 1397 0022 926B     	 ldr r2,[r2,#56]
- 1398 0024 1A60     	 str r2,[r3]
+ 1404              	 .loc 1 406 7
+ 1405 001c 3B68     	 ldr r3,[r7]
+ 1406 001e 0833     	 adds r3,r3,#8
+ 1407              	 .loc 1 406 18
+ 1408 0020 7A68     	 ldr r2,[r7,#4]
+ 1409 0022 926B     	 ldr r2,[r2,#56]
+ 1410              	 .loc 1 406 11
+ 1411 0024 1A60     	 str r2,[r3]
  407:.././hal/sam3u1c/smc.c **** 	p_ecc[3] = p_smc->SMC_ECC_PR3;
- 1399              	 .loc 1 407 0
- 1400 0026 3B68     	 ldr r3,[r7]
- 1401 0028 0C33     	 adds r3,r3,#12
- 1402 002a 7A68     	 ldr r2,[r7,#4]
- 1403 002c D26B     	 ldr r2,[r2,#60]
- 1404 002e 1A60     	 str r2,[r3]
+ 1412              	 .loc 1 407 7
+ 1413 0026 3B68     	 ldr r3,[r7]
+ 1414 0028 0C33     	 adds r3,r3,#12
+ 1415              	 .loc 1 407 18
+ 1416 002a 7A68     	 ldr r2,[r7,#4]
+ 1417 002c D26B     	 ldr r2,[r2,#60]
+ 1418              	 .loc 1 407 11
+ 1419 002e 1A60     	 str r2,[r3]
  408:.././hal/sam3u1c/smc.c **** 	p_ecc[4] = p_smc->SMC_ECC_PR4;
- 1405              	 .loc 1 408 0
- 1406 0030 3B68     	 ldr r3,[r7]
- 1407 0032 1033     	 adds r3,r3,#16
- 1408 0034 7A68     	 ldr r2,[r7,#4]
- 1409 0036 126C     	 ldr r2,[r2,#64]
- 1410 0038 1A60     	 str r2,[r3]
+ 1420              	 .loc 1 408 7
+ 1421 0030 3B68     	 ldr r3,[r7]
+ 1422 0032 1033     	 adds r3,r3,#16
+ 1423              	 .loc 1 408 18
+ 1424 0034 7A68     	 ldr r2,[r7,#4]
+ 1425 0036 126C     	 ldr r2,[r2,#64]
+ 1426              	 .loc 1 408 11
+ 1427 0038 1A60     	 str r2,[r3]
  409:.././hal/sam3u1c/smc.c **** 	p_ecc[5] = p_smc->SMC_ECC_PR5;
- 1411              	 .loc 1 409 0
- 1412 003a 3B68     	 ldr r3,[r7]
- 1413 003c 1433     	 adds r3,r3,#20
- 1414 003e 7A68     	 ldr r2,[r7,#4]
- 1415 0040 526C     	 ldr r2,[r2,#68]
- 1416 0042 1A60     	 str r2,[r3]
+ 1428              	 .loc 1 409 7
+ 1429 003a 3B68     	 ldr r3,[r7]
+ 1430 003c 1433     	 adds r3,r3,#20
+ 1431              	 .loc 1 409 18
+ 1432 003e 7A68     	 ldr r2,[r7,#4]
+ 1433 0040 526C     	 ldr r2,[r2,#68]
+ 1434              	 .loc 1 409 11
+ 1435 0042 1A60     	 str r2,[r3]
  410:.././hal/sam3u1c/smc.c **** 	p_ecc[6] = p_smc->SMC_ECC_PR6;
- 1417              	 .loc 1 410 0
- 1418 0044 3B68     	 ldr r3,[r7]
- 1419 0046 1833     	 adds r3,r3,#24
- 1420 0048 7A68     	 ldr r2,[r7,#4]
- 1421 004a 926C     	 ldr r2,[r2,#72]
- 1422 004c 1A60     	 str r2,[r3]
+ 1436              	 .loc 1 410 7
+ 1437 0044 3B68     	 ldr r3,[r7]
+ 1438 0046 1833     	 adds r3,r3,#24
+ 1439              	 .loc 1 410 18
+ 1440 0048 7A68     	 ldr r2,[r7,#4]
+ 1441 004a 926C     	 ldr r2,[r2,#72]
+ 1442              	 .loc 1 410 11
+ 1443 004c 1A60     	 str r2,[r3]
  411:.././hal/sam3u1c/smc.c **** 	p_ecc[7] = p_smc->SMC_ECC_PR7;
- 1423              	 .loc 1 411 0
- 1424 004e 3B68     	 ldr r3,[r7]
- 1425 0050 1C33     	 adds r3,r3,#28
- 1426 0052 7A68     	 ldr r2,[r7,#4]
- 1427 0054 D26C     	 ldr r2,[r2,#76]
- 1428 0056 1A60     	 str r2,[r3]
+ 1444              	 .loc 1 411 7
+ 1445 004e 3B68     	 ldr r3,[r7]
+ 1446 0050 1C33     	 adds r3,r3,#28
+ 1447              	 .loc 1 411 18
+ 1448 0052 7A68     	 ldr r2,[r7,#4]
+ 1449 0054 D26C     	 ldr r2,[r2,#76]
+ 1450              	 .loc 1 411 11
+ 1451 0056 1A60     	 str r2,[r3]
  412:.././hal/sam3u1c/smc.c **** 	p_ecc[8] = p_smc->SMC_ECC_PR8;
- 1429              	 .loc 1 412 0
- 1430 0058 3B68     	 ldr r3,[r7]
- 1431 005a 2033     	 adds r3,r3,#32
- 1432 005c 7A68     	 ldr r2,[r7,#4]
- 1433 005e 126D     	 ldr r2,[r2,#80]
- 1434 0060 1A60     	 str r2,[r3]
+ 1452              	 .loc 1 412 7
+ 1453 0058 3B68     	 ldr r3,[r7]
+ 1454 005a 2033     	 adds r3,r3,#32
+ 1455              	 .loc 1 412 18
+ 1456 005c 7A68     	 ldr r2,[r7,#4]
+ 1457 005e 126D     	 ldr r2,[r2,#80]
+ 1458              	 .loc 1 412 11
+ 1459 0060 1A60     	 str r2,[r3]
  413:.././hal/sam3u1c/smc.c **** 	p_ecc[9] = p_smc->SMC_ECC_PR9;
- 1435              	 .loc 1 413 0
- 1436 0062 3B68     	 ldr r3,[r7]
- 1437 0064 2433     	 adds r3,r3,#36
- 1438 0066 7A68     	 ldr r2,[r7,#4]
- 1439 0068 526D     	 ldr r2,[r2,#84]
- 1440 006a 1A60     	 str r2,[r3]
+ 1460              	 .loc 1 413 7
+ 1461 0062 3B68     	 ldr r3,[r7]
+ 1462 0064 2433     	 adds r3,r3,#36
+ 1463              	 .loc 1 413 18
+ 1464 0066 7A68     	 ldr r2,[r7,#4]
+ 1465 0068 526D     	 ldr r2,[r2,#84]
+ 1466              	 .loc 1 413 11
+ 1467 006a 1A60     	 str r2,[r3]
  414:.././hal/sam3u1c/smc.c **** 	p_ecc[10] = p_smc->SMC_ECC_PR10;
- 1441              	 .loc 1 414 0
- 1442 006c 3B68     	 ldr r3,[r7]
- 1443 006e 2833     	 adds r3,r3,#40
- 1444 0070 7A68     	 ldr r2,[r7,#4]
- 1445 0072 926D     	 ldr r2,[r2,#88]
- 1446 0074 1A60     	 str r2,[r3]
+ 1468              	 .loc 1 414 7
+ 1469 006c 3B68     	 ldr r3,[r7]
+ 1470 006e 2833     	 adds r3,r3,#40
+ 1471              	 .loc 1 414 19
+ 1472 0070 7A68     	 ldr r2,[r7,#4]
+ 1473 0072 926D     	 ldr r2,[r2,#88]
+ 1474              	 .loc 1 414 12
+ 1475 0074 1A60     	 str r2,[r3]
  415:.././hal/sam3u1c/smc.c **** 	p_ecc[11] = p_smc->SMC_ECC_PR11;
- 1447              	 .loc 1 415 0
- 1448 0076 3B68     	 ldr r3,[r7]
- 1449 0078 2C33     	 adds r3,r3,#44
- 1450 007a 7A68     	 ldr r2,[r7,#4]
- 1451 007c D26D     	 ldr r2,[r2,#92]
- 1452 007e 1A60     	 str r2,[r3]
+ 1476              	 .loc 1 415 7
+ 1477 0076 3B68     	 ldr r3,[r7]
+ 1478 0078 2C33     	 adds r3,r3,#44
+ 1479              	 .loc 1 415 19
+ 1480 007a 7A68     	 ldr r2,[r7,#4]
+ 1481 007c D26D     	 ldr r2,[r2,#92]
+ 1482              	 .loc 1 415 12
+ 1483 007e 1A60     	 str r2,[r3]
  416:.././hal/sam3u1c/smc.c **** 	p_ecc[12] = p_smc->SMC_ECC_PR12;
- 1453              	 .loc 1 416 0
- 1454 0080 3B68     	 ldr r3,[r7]
- 1455 0082 3033     	 adds r3,r3,#48
- 1456 0084 7A68     	 ldr r2,[r7,#4]
- 1457 0086 126E     	 ldr r2,[r2,#96]
- 1458 0088 1A60     	 str r2,[r3]
+ 1484              	 .loc 1 416 7
+ 1485 0080 3B68     	 ldr r3,[r7]
+ 1486 0082 3033     	 adds r3,r3,#48
+ 1487              	 .loc 1 416 19
+ 1488 0084 7A68     	 ldr r2,[r7,#4]
+ 1489 0086 126E     	 ldr r2,[r2,#96]
+ 1490              	 .loc 1 416 12
+ 1491 0088 1A60     	 str r2,[r3]
  417:.././hal/sam3u1c/smc.c **** 	p_ecc[13] = p_smc->SMC_ECC_PR13;
- 1459              	 .loc 1 417 0
- 1460 008a 3B68     	 ldr r3,[r7]
- 1461 008c 3433     	 adds r3,r3,#52
- 1462 008e 7A68     	 ldr r2,[r7,#4]
- 1463 0090 526E     	 ldr r2,[r2,#100]
- 1464 0092 1A60     	 str r2,[r3]
+ 1492              	 .loc 1 417 7
+ 1493 008a 3B68     	 ldr r3,[r7]
+ 1494 008c 3433     	 adds r3,r3,#52
+ 1495              	 .loc 1 417 19
+ 1496 008e 7A68     	 ldr r2,[r7,#4]
+ 1497 0090 526E     	 ldr r2,[r2,#100]
+ 1498              	 .loc 1 417 12
+ 1499 0092 1A60     	 str r2,[r3]
  418:.././hal/sam3u1c/smc.c **** 	p_ecc[14] = p_smc->SMC_ECC_PR14;
- 1465              	 .loc 1 418 0
- 1466 0094 3B68     	 ldr r3,[r7]
- 1467 0096 3833     	 adds r3,r3,#56
- 1468 0098 7A68     	 ldr r2,[r7,#4]
- 1469 009a 926E     	 ldr r2,[r2,#104]
- 1470 009c 1A60     	 str r2,[r3]
+ 1500              	 .loc 1 418 7
+ 1501 0094 3B68     	 ldr r3,[r7]
+ 1502 0096 3833     	 adds r3,r3,#56
+ 1503              	 .loc 1 418 19
+ 1504 0098 7A68     	 ldr r2,[r7,#4]
+ 1505 009a 926E     	 ldr r2,[r2,#104]
+ 1506              	 .loc 1 418 12
+ 1507 009c 1A60     	 str r2,[r3]
  419:.././hal/sam3u1c/smc.c **** 	p_ecc[15] = p_smc->SMC_ECC_PR15;
- 1471              	 .loc 1 419 0
- 1472 009e 3B68     	 ldr r3,[r7]
- 1473 00a0 3C33     	 adds r3,r3,#60
- 1474 00a2 7A68     	 ldr r2,[r7,#4]
- 1475 00a4 D26E     	 ldr r2,[r2,#108]
- 1476 00a6 1A60     	 str r2,[r3]
+ 1508              	 .loc 1 419 7
+ 1509 009e 3B68     	 ldr r3,[r7]
+ 1510 00a0 3C33     	 adds r3,r3,#60
+ 1511              	 .loc 1 419 19
+ 1512 00a2 7A68     	 ldr r2,[r7,#4]
+ 1513 00a4 D26E     	 ldr r2,[r2,#108]
+ 1514              	 .loc 1 419 12
+ 1515 00a6 1A60     	 str r2,[r3]
  420:.././hal/sam3u1c/smc.c **** }
- 1477              	 .loc 1 420 0
- 1478 00a8 00BF     	 nop
- 1479 00aa 0C37     	 adds r7,r7,#12
- 1480              	.LCFI153:
- 1481              	 .cfi_def_cfa_offset 4
- 1482 00ac BD46     	 mov sp,r7
- 1483              	.LCFI154:
- 1484              	 .cfi_def_cfa_register 13
- 1485              	 
- 1486 00ae 80BC     	 pop {r7}
- 1487              	.LCFI155:
- 1488              	 .cfi_restore 7
- 1489              	 .cfi_def_cfa_offset 0
- 1490 00b0 7047     	 bx lr
- 1491              	 .cfi_endproc
- 1492              	.LFE94:
- 1494              	 .text
- 1495              	.Letext0:
- 1496              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 1497              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 1498              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
- 1499              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
- 1500              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
- 1501              	 .file 7 ".././hal/sam3u1c/inc/component/component_smc.h"
- 1502              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 1503              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 1504              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 1505              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 1506              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 1507              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 1516              	 .loc 1 420 1
+ 1517 00a8 00BF     	 nop
+ 1518 00aa 0C37     	 adds r7,r7,#12
+ 1519              	.LCFI153:
+ 1520              	 .cfi_def_cfa_offset 4
+ 1521 00ac BD46     	 mov sp,r7
+ 1522              	.LCFI154:
+ 1523              	 .cfi_def_cfa_register 13
+ 1524              	 
+ 1525 00ae 80BC     	 pop {r7}
+ 1526              	.LCFI155:
+ 1527              	 .cfi_restore 7
+ 1528              	 .cfi_def_cfa_offset 0
+ 1529 00b0 7047     	 bx lr
+ 1530              	 .cfi_endproc
+ 1531              	.LFE94:
+ 1533              	 .text
+ 1534              	.Letext0:
+ 1535              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1536              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1537              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 1538              	 .file 5 ".././hal/sam3u1c/inc/core_cm3.h"
+ 1539              	 .file 6 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 1540              	 .file 7 ".././hal/sam3u1c/inc/component/component_smc.h"
+ 1541              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 1542              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 1543              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 1544              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 1545              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 1546              	 .file 13 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 smc.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1878,59 +1917,59 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.smc_set_setup_timing:00000000 $t
-    {standard input}:34     .text.smc_set_setup_timing:00000000 smc_set_setup_timing
-    {standard input}:84     .text.smc_set_pulse_timing:00000000 $t
-    {standard input}:91     .text.smc_set_pulse_timing:00000000 smc_set_pulse_timing
-    {standard input}:140    .text.smc_set_cycle_timing:00000000 $t
-    {standard input}:147    .text.smc_set_cycle_timing:00000000 smc_set_cycle_timing
-    {standard input}:196    .text.smc_set_mode:00000000 $t
-    {standard input}:203    .text.smc_set_mode:00000000 smc_set_mode
-    {standard input}:252    .text.smc_get_mode:00000000 $t
-    {standard input}:259    .text.smc_get_mode:00000000 smc_get_mode
-    {standard input}:306    .text.smc_enable_writeprotect:00000000 $t
-    {standard input}:313    .text.smc_enable_writeprotect:00000000 smc_enable_writeprotect
-    {standard input}:365    .text.smc_enable_writeprotect:0000002c $d
-    {standard input}:371    .text.smc_get_writeprotect_status:00000000 $t
-    {standard input}:378    .text.smc_get_writeprotect_status:00000000 smc_get_writeprotect_status
-    {standard input}:417    .text.smc_set_nand_timing:00000000 $t
-    {standard input}:424    .text.smc_set_nand_timing:00000000 smc_set_nand_timing
-    {standard input}:473    .text.smc_nfc_init:00000000 $t
-    {standard input}:480    .text.smc_nfc_init:00000000 smc_nfc_init
-    {standard input}:521    .text.smc_nfc_set_page_size:00000000 $t
-    {standard input}:528    .text.smc_nfc_set_page_size:00000000 smc_nfc_set_page_size
-    {standard input}:578    .text.smc_nfc_enable_spare_read:00000000 $t
-    {standard input}:585    .text.smc_nfc_enable_spare_read:00000000 smc_nfc_enable_spare_read
-    {standard input}:627    .text.smc_nfc_disable_spare_read:00000000 $t
-    {standard input}:634    .text.smc_nfc_disable_spare_read:00000000 smc_nfc_disable_spare_read
-    {standard input}:676    .text.smc_nfc_enable_spare_write:00000000 $t
-    {standard input}:683    .text.smc_nfc_enable_spare_write:00000000 smc_nfc_enable_spare_write
-    {standard input}:725    .text.smc_nfc_disable_spare_write:00000000 $t
-    {standard input}:732    .text.smc_nfc_disable_spare_write:00000000 smc_nfc_disable_spare_write
-    {standard input}:774    .text.smc_nfc_enable:00000000 $t
-    {standard input}:781    .text.smc_nfc_enable:00000000 smc_nfc_enable
-    {standard input}:821    .text.smc_nfc_disable:00000000 $t
-    {standard input}:828    .text.smc_nfc_disable:00000000 smc_nfc_disable
-    {standard input}:868    .text.smc_nfc_get_status:00000000 $t
-    {standard input}:875    .text.smc_nfc_get_status:00000000 smc_nfc_get_status
-    {standard input}:914    .text.smc_nfc_enable_interrupt:00000000 $t
-    {standard input}:921    .text.smc_nfc_enable_interrupt:00000000 smc_nfc_enable_interrupt
-    {standard input}:962    .text.smc_nfc_disable_interrupt:00000000 $t
-    {standard input}:969    .text.smc_nfc_disable_interrupt:00000000 smc_nfc_disable_interrupt
-    {standard input}:1010   .text.smc_nfc_get_interrupt_mask:00000000 $t
-    {standard input}:1017   .text.smc_nfc_get_interrupt_mask:00000000 smc_nfc_get_interrupt_mask
-    {standard input}:1056   .text.smc_nfc_set_address0:00000000 $t
-    {standard input}:1063   .text.smc_nfc_set_address0:00000000 smc_nfc_set_address0
-    {standard input}:1105   .text.smc_nfc_set_bank:00000000 $t
-    {standard input}:1112   .text.smc_nfc_set_bank:00000000 smc_nfc_set_bank
-    {standard input}:1154   .text.smc_nfc_send_command:00000000 $t
-    {standard input}:1161   .text.smc_nfc_send_command:00000000 smc_nfc_send_command
-    {standard input}:1232   .text.smc_ecc_init:00000000 $t
-    {standard input}:1239   .text.smc_ecc_init:00000000 smc_ecc_init
-    {standard input}:1287   .text.smc_ecc_get_status:00000000 $t
-    {standard input}:1294   .text.smc_ecc_get_status:00000000 smc_ecc_get_status
-    {standard input}:1356   .text.smc_ecc_get_value:00000000 $t
-    {standard input}:1363   .text.smc_ecc_get_value:00000000 smc_ecc_get_value
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:35     .text.smc_set_setup_timing:00000000 smc_set_setup_timing
+    {standard input}:85     .text.smc_set_pulse_timing:00000000 $t
+    {standard input}:92     .text.smc_set_pulse_timing:00000000 smc_set_pulse_timing
+    {standard input}:141    .text.smc_set_cycle_timing:00000000 $t
+    {standard input}:148    .text.smc_set_cycle_timing:00000000 smc_set_cycle_timing
+    {standard input}:197    .text.smc_set_mode:00000000 $t
+    {standard input}:204    .text.smc_set_mode:00000000 smc_set_mode
+    {standard input}:253    .text.smc_get_mode:00000000 $t
+    {standard input}:260    .text.smc_get_mode:00000000 smc_get_mode
+    {standard input}:307    .text.smc_enable_writeprotect:00000000 $t
+    {standard input}:314    .text.smc_enable_writeprotect:00000000 smc_enable_writeprotect
+    {standard input}:366    .text.smc_enable_writeprotect:0000002c $d
+    {standard input}:372    .text.smc_get_writeprotect_status:00000000 $t
+    {standard input}:379    .text.smc_get_writeprotect_status:00000000 smc_get_writeprotect_status
+    {standard input}:418    .text.smc_set_nand_timing:00000000 $t
+    {standard input}:425    .text.smc_set_nand_timing:00000000 smc_set_nand_timing
+    {standard input}:474    .text.smc_nfc_init:00000000 $t
+    {standard input}:481    .text.smc_nfc_init:00000000 smc_nfc_init
+    {standard input}:522    .text.smc_nfc_set_page_size:00000000 $t
+    {standard input}:529    .text.smc_nfc_set_page_size:00000000 smc_nfc_set_page_size
+    {standard input}:579    .text.smc_nfc_enable_spare_read:00000000 $t
+    {standard input}:586    .text.smc_nfc_enable_spare_read:00000000 smc_nfc_enable_spare_read
+    {standard input}:628    .text.smc_nfc_disable_spare_read:00000000 $t
+    {standard input}:635    .text.smc_nfc_disable_spare_read:00000000 smc_nfc_disable_spare_read
+    {standard input}:677    .text.smc_nfc_enable_spare_write:00000000 $t
+    {standard input}:684    .text.smc_nfc_enable_spare_write:00000000 smc_nfc_enable_spare_write
+    {standard input}:726    .text.smc_nfc_disable_spare_write:00000000 $t
+    {standard input}:733    .text.smc_nfc_disable_spare_write:00000000 smc_nfc_disable_spare_write
+    {standard input}:775    .text.smc_nfc_enable:00000000 $t
+    {standard input}:782    .text.smc_nfc_enable:00000000 smc_nfc_enable
+    {standard input}:822    .text.smc_nfc_disable:00000000 $t
+    {standard input}:829    .text.smc_nfc_disable:00000000 smc_nfc_disable
+    {standard input}:869    .text.smc_nfc_get_status:00000000 $t
+    {standard input}:876    .text.smc_nfc_get_status:00000000 smc_nfc_get_status
+    {standard input}:915    .text.smc_nfc_enable_interrupt:00000000 $t
+    {standard input}:922    .text.smc_nfc_enable_interrupt:00000000 smc_nfc_enable_interrupt
+    {standard input}:963    .text.smc_nfc_disable_interrupt:00000000 $t
+    {standard input}:970    .text.smc_nfc_disable_interrupt:00000000 smc_nfc_disable_interrupt
+    {standard input}:1011   .text.smc_nfc_get_interrupt_mask:00000000 $t
+    {standard input}:1018   .text.smc_nfc_get_interrupt_mask:00000000 smc_nfc_get_interrupt_mask
+    {standard input}:1057   .text.smc_nfc_set_address0:00000000 $t
+    {standard input}:1064   .text.smc_nfc_set_address0:00000000 smc_nfc_set_address0
+    {standard input}:1106   .text.smc_nfc_set_bank:00000000 $t
+    {standard input}:1113   .text.smc_nfc_set_bank:00000000 smc_nfc_set_bank
+    {standard input}:1156   .text.smc_nfc_send_command:00000000 $t
+    {standard input}:1163   .text.smc_nfc_send_command:00000000 smc_nfc_send_command
+    {standard input}:1237   .text.smc_ecc_init:00000000 $t
+    {standard input}:1244   .text.smc_ecc_init:00000000 smc_ecc_init
+    {standard input}:1293   .text.smc_ecc_get_status:00000000 $t
+    {standard input}:1300   .text.smc_ecc_get_status:00000000 smc_ecc_get_status
+    {standard input}:1364   .text.smc_ecc_get_value:00000000 $t
+    {standard input}:1371   .text.smc_ecc_get_value:00000000 smc_ecc_get_value
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -2004,12 +2043,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

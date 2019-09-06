@@ -21,13 +21,14 @@
   25 0000 00       	 .space 1
   26              	 .section .text.sysclk_enable_peripheral_clock,"ax",%progbits
   27              	 .align 1
-  28              	 .syntax unified
-  29              	 .thumb
-  30              	 .thumb_func
-  31              	 .fpu softvfp
-  33              	sysclk_enable_peripheral_clock:
-  34              	.LFB87:
-  35              	 .file 1 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
+  28              	 .arch armv7-m
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	sysclk_enable_peripheral_clock:
+  35              	.LFB87:
+  36              	 .file 1 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
    1:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \file
    3:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
@@ -360,54 +361,54 @@
  330:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
  331:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline void sysclk_enable_peripheral_clock(uint32_t ul_id)
  332:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
-  36              	 .loc 1 332 0
-  37              	 .cfi_startproc
-  38              	 
+  37              	 .loc 1 332 1
+  38              	 .cfi_startproc
   39              	 
-  40 0000 80B5     	 push {r7,lr}
-  41              	.LCFI0:
-  42              	 .cfi_def_cfa_offset 8
-  43              	 .cfi_offset 7,-8
-  44              	 .cfi_offset 14,-4
-  45 0002 82B0     	 sub sp,sp,#8
-  46              	.LCFI1:
-  47              	 .cfi_def_cfa_offset 16
-  48 0004 00AF     	 add r7,sp,#0
-  49              	.LCFI2:
-  50              	 .cfi_def_cfa_register 7
-  51 0006 7860     	 str r0,[r7,#4]
+  40              	 
+  41 0000 80B5     	 push {r7,lr}
+  42              	.LCFI0:
+  43              	 .cfi_def_cfa_offset 8
+  44              	 .cfi_offset 7,-8
+  45              	 .cfi_offset 14,-4
+  46 0002 82B0     	 sub sp,sp,#8
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 16
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52 0006 7860     	 str r0,[r7,#4]
  333:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	pmc_enable_periph_clk(ul_id);
-  52              	 .loc 1 333 0
-  53 0008 7868     	 ldr r0,[r7,#4]
-  54 000a 034B     	 ldr r3,.L2
-  55 000c 9847     	 blx r3
-  56              	.LVL0:
+  53              	 .loc 1 333 2
+  54 0008 7868     	 ldr r0,[r7,#4]
+  55 000a 034B     	 ldr r3,.L2
+  56 000c 9847     	 blx r3
+  57              	.LVL0:
  334:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
-  57              	 .loc 1 334 0
-  58 000e 00BF     	 nop
-  59 0010 0837     	 adds r7,r7,#8
-  60              	.LCFI3:
-  61              	 .cfi_def_cfa_offset 8
-  62 0012 BD46     	 mov sp,r7
-  63              	.LCFI4:
-  64              	 .cfi_def_cfa_register 13
-  65              	 
-  66 0014 80BD     	 pop {r7,pc}
-  67              	.L3:
-  68 0016 00BF     	 .align 2
-  69              	.L2:
-  70 0018 00000000 	 .word pmc_enable_periph_clk
-  71              	 .cfi_endproc
-  72              	.LFE87:
-  74              	 .section .text.ioport_init,"ax",%progbits
-  75              	 .align 1
-  76              	 .syntax unified
-  77              	 .thumb
-  78              	 .thumb_func
-  79              	 .fpu softvfp
-  81              	ioport_init:
-  82              	.LFB110:
-  83              	 .file 2 ".././hal/sam3u1c/inc/ioport.h"
+  58              	 .loc 1 334 1
+  59 000e 00BF     	 nop
+  60 0010 0837     	 adds r7,r7,#8
+  61              	.LCFI3:
+  62              	 .cfi_def_cfa_offset 8
+  63 0012 BD46     	 mov sp,r7
+  64              	.LCFI4:
+  65              	 .cfi_def_cfa_register 13
+  66              	 
+  67 0014 80BD     	 pop {r7,pc}
+  68              	.L3:
+  69 0016 00BF     	 .align 2
+  70              	.L2:
+  71 0018 00000000 	 .word pmc_enable_periph_clk
+  72              	 .cfi_endproc
+  73              	.LFE87:
+  75              	 .section .text.ioport_init,"ax",%progbits
+  76              	 .align 1
+  77              	 .syntax unified
+  78              	 .thumb
+  79              	 .thumb_func
+  80              	 .fpu softvfp
+  82              	ioport_init:
+  83              	.LFB110:
+  84              	 .file 2 ".././hal/sam3u1c/inc/ioport.h"
    1:.././hal/sam3u1c/inc/ioport.h **** /**
    2:.././hal/sam3u1c/inc/ioport.h ****  * \file
    3:.././hal/sam3u1c/inc/ioport.h ****  *
@@ -554,21 +555,21 @@
  144:.././hal/sam3u1c/inc/ioport.h ****  */
  145:.././hal/sam3u1c/inc/ioport.h **** static inline void ioport_init(void)
  146:.././hal/sam3u1c/inc/ioport.h **** {
-  84              	 .loc 2 146 0
-  85              	 .cfi_startproc
-  86              	 
+  85              	 .loc 2 146 1
+  86              	 .cfi_startproc
   87              	 
-  88 0000 80B5     	 push {r7,lr}
-  89              	.LCFI5:
-  90              	 .cfi_def_cfa_offset 8
-  91              	 .cfi_offset 7,-8
-  92              	 .cfi_offset 14,-4
-  93 0002 00AF     	 add r7,sp,#0
-  94              	.LCFI6:
-  95              	 .cfi_def_cfa_register 7
-  96              	.LBB4:
-  97              	.LBB5:
-  98              	 .file 3 ".././hal/sam3u1c/inc/sam/ioport_pio.h"
+  88              	 
+  89 0000 80B5     	 push {r7,lr}
+  90              	.LCFI5:
+  91              	 .cfi_def_cfa_offset 8
+  92              	 .cfi_offset 7,-8
+  93              	 .cfi_offset 14,-4
+  94 0002 00AF     	 add r7,sp,#0
+  95              	.LCFI6:
+  96              	 .cfi_def_cfa_register 7
+  97              	.LBB4:
+  98              	.LBB5:
+  99              	 .file 3 ".././hal/sam3u1c/inc/sam/ioport_pio.h"
    1:.././hal/sam3u1c/inc/sam/ioport_pio.h **** /**
    2:.././hal/sam3u1c/inc/sam/ioport_pio.h ****  * \file
    3:.././hal/sam3u1c/inc/sam/ioport_pio.h ****  *
@@ -710,42 +711,42 @@
  139:.././hal/sam3u1c/inc/sam/ioport_pio.h **** {
  140:.././hal/sam3u1c/inc/sam/ioport_pio.h **** #ifdef ID_PIOA
  141:.././hal/sam3u1c/inc/sam/ioport_pio.h **** 	sysclk_enable_peripheral_clock(ID_PIOA);
-  99              	 .loc 3 141 0
- 100 0004 0A20     	 movs r0,#10
- 101 0006 034B     	 ldr r3,.L5
- 102 0008 9847     	 blx r3
- 103              	.LVL1:
+ 100              	 .loc 3 141 2
+ 101 0004 0A20     	 movs r0,#10
+ 102 0006 034B     	 ldr r3,.L5
+ 103 0008 9847     	 blx r3
+ 104              	.LVL1:
  142:.././hal/sam3u1c/inc/sam/ioport_pio.h **** #endif
  143:.././hal/sam3u1c/inc/sam/ioport_pio.h **** #ifdef ID_PIOB
  144:.././hal/sam3u1c/inc/sam/ioport_pio.h **** 	sysclk_enable_peripheral_clock(ID_PIOB);
- 104              	 .loc 3 144 0
- 105 000a 0B20     	 movs r0,#11
- 106 000c 014B     	 ldr r3,.L5
- 107 000e 9847     	 blx r3
- 108              	.LVL2:
- 109              	.LBE5:
- 110              	.LBE4:
+ 105              	 .loc 3 144 2
+ 106 000a 0B20     	 movs r0,#11
+ 107 000c 014B     	 ldr r3,.L5
+ 108 000e 9847     	 blx r3
+ 109              	.LVL2:
+ 110              	.LBE5:
+ 111              	.LBE4:
  147:.././hal/sam3u1c/inc/ioport.h **** 	arch_ioport_init();
  148:.././hal/sam3u1c/inc/ioport.h **** }
- 111              	 .loc 2 148 0
- 112 0010 00BF     	 nop
- 113 0012 80BD     	 pop {r7,pc}
- 114              	.L6:
- 115              	 .align 2
- 116              	.L5:
- 117 0014 00000000 	 .word sysclk_enable_peripheral_clock
- 118              	 .cfi_endproc
- 119              	.LFE110:
- 121              	 .section .text.iopins_sleep,"ax",%progbits
- 122              	 .align 1
- 123              	 .global iopins_sleep
- 124              	 .syntax unified
- 125              	 .thumb
- 126              	 .thumb_func
- 127              	 .fpu softvfp
- 129              	iopins_sleep:
- 130              	.LFB131:
- 131              	 .file 4 ".././hal/sam3u1c/init.c"
+ 112              	 .loc 2 148 1
+ 113 0010 00BF     	 nop
+ 114 0012 80BD     	 pop {r7,pc}
+ 115              	.L6:
+ 116              	 .align 2
+ 117              	.L5:
+ 118 0014 00000000 	 .word sysclk_enable_peripheral_clock
+ 119              	 .cfi_endproc
+ 120              	.LFE110:
+ 122              	 .section .text.iopins_sleep,"ax",%progbits
+ 123              	 .align 1
+ 124              	 .global iopins_sleep
+ 125              	 .syntax unified
+ 126              	 .thumb
+ 127              	 .thumb_func
+ 128              	 .fpu softvfp
+ 130              	iopins_sleep:
+ 131              	.LFB131:
+ 132              	 .file 4 ".././hal/sam3u1c/init.c"
    1:.././hal/sam3u1c/init.c **** /**
    2:.././hal/sam3u1c/init.c ****  * \file
    3:.././hal/sam3u1c/init.c ****  *
@@ -801,98 +802,98 @@
   53:.././hal/sam3u1c/init.c **** 
   54:.././hal/sam3u1c/init.c **** void iopins_sleep(void)
   55:.././hal/sam3u1c/init.c **** {
- 132              	 .loc 4 55 0
- 133              	 .cfi_startproc
- 134              	 
+ 133              	 .loc 4 55 1
+ 134              	 .cfi_startproc
  135              	 
  136              	 
- 137 0000 80B4     	 push {r7}
- 138              	.LCFI7:
- 139              	 .cfi_def_cfa_offset 4
- 140              	 .cfi_offset 7,-4
- 141 0002 00AF     	 add r7,sp,#0
- 142              	.LCFI8:
- 143              	 .cfi_def_cfa_register 7
+ 137              	 
+ 138 0000 80B4     	 push {r7}
+ 139              	.LCFI7:
+ 140              	 .cfi_def_cfa_offset 4
+ 141              	 .cfi_offset 7,-4
+ 142 0002 00AF     	 add r7,sp,#0
+ 143              	.LCFI8:
+ 144              	 .cfi_def_cfa_register 7
   56:.././hal/sam3u1c/init.c **** 	/* LEDs Off */
   57:.././hal/sam3u1c/init.c **** 	
   58:.././hal/sam3u1c/init.c **** 	/* FPGA Program low */
   59:.././hal/sam3u1c/init.c **** 	
   60:.././hal/sam3u1c/init.c **** 	/* */
   61:.././hal/sam3u1c/init.c **** }
- 144              	 .loc 4 61 0
- 145 0004 00BF     	 nop
- 146 0006 BD46     	 mov sp,r7
- 147              	.LCFI9:
- 148              	 .cfi_def_cfa_register 13
- 149              	 
- 150 0008 80BC     	 pop {r7}
- 151              	.LCFI10:
- 152              	 .cfi_restore 7
- 153              	 .cfi_def_cfa_offset 0
- 154 000a 7047     	 bx lr
- 155              	 .cfi_endproc
- 156              	.LFE131:
- 158              	 .section .text.iopins_normal,"ax",%progbits
- 159              	 .align 1
- 160              	 .global iopins_normal
- 161              	 .syntax unified
- 162              	 .thumb
- 163              	 .thumb_func
- 164              	 .fpu softvfp
- 166              	iopins_normal:
- 167              	.LFB132:
+ 145              	 .loc 4 61 1
+ 146 0004 00BF     	 nop
+ 147 0006 BD46     	 mov sp,r7
+ 148              	.LCFI9:
+ 149              	 .cfi_def_cfa_register 13
+ 150              	 
+ 151 0008 80BC     	 pop {r7}
+ 152              	.LCFI10:
+ 153              	 .cfi_restore 7
+ 154              	 .cfi_def_cfa_offset 0
+ 155 000a 7047     	 bx lr
+ 156              	 .cfi_endproc
+ 157              	.LFE131:
+ 159              	 .section .text.iopins_normal,"ax",%progbits
+ 160              	 .align 1
+ 161              	 .global iopins_normal
+ 162              	 .syntax unified
+ 163              	 .thumb
+ 164              	 .thumb_func
+ 165              	 .fpu softvfp
+ 167              	iopins_normal:
+ 168              	.LFB132:
   62:.././hal/sam3u1c/init.c **** 
   63:.././hal/sam3u1c/init.c **** void iopins_normal(void)
   64:.././hal/sam3u1c/init.c **** {
- 168              	 .loc 4 64 0
- 169              	 .cfi_startproc
- 170              	 
+ 169              	 .loc 4 64 1
+ 170              	 .cfi_startproc
  171              	 
- 172 0000 80B5     	 push {r7,lr}
- 173              	.LCFI11:
- 174              	 .cfi_def_cfa_offset 8
- 175              	 .cfi_offset 7,-8
- 176              	 .cfi_offset 14,-4
- 177 0002 00AF     	 add r7,sp,#0
- 178              	.LCFI12:
- 179              	 .cfi_def_cfa_register 7
+ 172              	 
+ 173 0000 80B5     	 push {r7,lr}
+ 174              	.LCFI11:
+ 175              	 .cfi_def_cfa_offset 8
+ 176              	 .cfi_offset 7,-8
+ 177              	 .cfi_offset 14,-4
+ 178 0002 00AF     	 add r7,sp,#0
+ 179              	.LCFI12:
+ 180              	 .cfi_def_cfa_register 7
   65:.././hal/sam3u1c/init.c **** 	/* Configure LED pins */
   66:.././hal/sam3u1c/init.c **** 	gpio_configure_pin(LED0_GPIO, LED0_FLAGS);
- 180              	 .loc 4 66 0
- 181 0004 4FF06051 	 mov r1,#939524096
- 182 0008 1D20     	 movs r0,#29
- 183 000a 0D4B     	 ldr r3,.L9
- 184 000c 9847     	 blx r3
- 185              	.LVL3:
+ 181              	 .loc 4 66 2
+ 182 0004 4FF06051 	 mov r1,#939524096
+ 183 0008 1D20     	 movs r0,#29
+ 184 000a 0D4B     	 ldr r3,.L9
+ 185 000c 9847     	 blx r3
+ 186              	.LVL3:
   67:.././hal/sam3u1c/init.c **** 	gpio_configure_pin(LED1_GPIO, LED1_FLAGS);
- 186              	 .loc 4 67 0
- 187 000e 4FF06051 	 mov r1,#939524096
- 188 0012 1F20     	 movs r0,#31
- 189 0014 0A4B     	 ldr r3,.L9
- 190 0016 9847     	 blx r3
- 191              	.LVL4:
+ 187              	 .loc 4 67 2
+ 188 000e 4FF06051 	 mov r1,#939524096
+ 189 0012 1F20     	 movs r0,#31
+ 190 0014 0A4B     	 ldr r3,.L9
+ 191 0016 9847     	 blx r3
+ 192              	.LVL4:
   68:.././hal/sam3u1c/init.c **** 	//gpio_configure_pin(LED2_GPIO, LED2_FLAGS);
   69:.././hal/sam3u1c/init.c **** 	
   70:.././hal/sam3u1c/init.c **** 	/* Configure MOSFET for turning on-off system */
   71:.././hal/sam3u1c/init.c **** 	gpio_configure_pin(PIN_PWRON_GPIO, PIN_PWRON_FLAGS);
- 192              	 .loc 4 71 0
- 193 0018 4FF04051 	 mov r1,#805306368
- 194 001c 1820     	 movs r0,#24
- 195 001e 084B     	 ldr r3,.L9
- 196 0020 9847     	 blx r3
- 197              	.LVL5:
+ 193              	 .loc 4 71 2
+ 194 0018 4FF04051 	 mov r1,#805306368
+ 195 001c 1820     	 movs r0,#24
+ 196 001e 084B     	 ldr r3,.L9
+ 197 0020 9847     	 blx r3
+ 198              	.LVL5:
   72:.././hal/sam3u1c/init.c **** 	//board_sram_pwron();
   73:.././hal/sam3u1c/init.c **** 
   74:.././hal/sam3u1c/init.c **** #ifdef CONF_BOARD_UART_CONSOLE
   75:.././hal/sam3u1c/init.c **** 	/* Configure UART pins */
   76:.././hal/sam3u1c/init.c **** 	gpio_configure_group(PINS_UART_PIO, PINS_UART, PINS_UART_FLAGS);
- 198              	 .loc 4 76 0
- 199 0022 4FF00062 	 mov r2,#134217728
- 200 0026 4FF4C051 	 mov r1,#6144
- 201 002a 0648     	 ldr r0,.L9+4
- 202 002c 064B     	 ldr r3,.L9+8
- 203 002e 9847     	 blx r3
- 204              	.LVL6:
+ 199              	 .loc 4 76 2
+ 200 0022 4FF00062 	 mov r2,#134217728
+ 201 0026 4FF4C051 	 mov r1,#6144
+ 202 002a 0648     	 ldr r0,.L9+4
+ 203 002c 064B     	 ldr r3,.L9+8
+ 204 002e 9847     	 blx r3
+ 205              	.LVL6:
   77:.././hal/sam3u1c/init.c **** #endif
   78:.././hal/sam3u1c/init.c **** 
   79:.././hal/sam3u1c/init.c **** #ifdef CONF_BOARD_PWM_LED0
@@ -1011,12 +1012,12 @@
  192:.././hal/sam3u1c/init.c **** 
  193:.././hal/sam3u1c/init.c **** #ifdef CONF_BOARD_PCK1
  194:.././hal/sam3u1c/init.c **** gpio_configure_pin(PIN_PCK1, PIN_PCK1_FLAGS);
- 205              	 .loc 4 194 0
- 206 0030 4FF08051 	 mov r1,#268435456
- 207 0034 3820     	 movs r0,#56
- 208 0036 024B     	 ldr r3,.L9
- 209 0038 9847     	 blx r3
- 210              	.LVL7:
+ 206              	 .loc 4 194 1
+ 207 0030 4FF08051 	 mov r1,#268435456
+ 208 0034 3820     	 movs r0,#56
+ 209 0036 024B     	 ldr r3,.L9
+ 210 0038 9847     	 blx r3
+ 211              	.LVL7:
  195:.././hal/sam3u1c/init.c **** #endif
  196:.././hal/sam3u1c/init.c **** 
  197:.././hal/sam3u1c/init.c **** #if defined(CONF_BOARD_USB_PORT)
@@ -1025,48 +1026,49 @@
  200:.././hal/sam3u1c/init.c **** #  endif
  201:.././hal/sam3u1c/init.c **** #endif	
  202:.././hal/sam3u1c/init.c **** }
- 211              	 .loc 4 202 0
- 212 003a 00BF     	 nop
- 213 003c 80BD     	 pop {r7,pc}
- 214              	.L10:
- 215 003e 00BF     	 .align 2
- 216              	.L9:
- 217 0040 00000000 	 .word pio_configure_pin
- 218 0044 000C0E40 	 .word 1074662400
- 219 0048 00000000 	 .word pio_configure_pin_group
- 220              	 .cfi_endproc
- 221              	.LFE132:
- 223              	 .section .text.board_init,"ax",%progbits
- 224              	 .align 1
- 225              	 .global board_init
- 226              	 .syntax unified
- 227              	 .thumb
- 228              	 .thumb_func
- 229              	 .fpu softvfp
- 231              	board_init:
- 232              	.LFB133:
+ 212              	 .loc 4 202 1
+ 213 003a 00BF     	 nop
+ 214 003c 80BD     	 pop {r7,pc}
+ 215              	.L10:
+ 216 003e 00BF     	 .align 2
+ 217              	.L9:
+ 218 0040 00000000 	 .word pio_configure_pin
+ 219 0044 000C0E40 	 .word 1074662400
+ 220 0048 00000000 	 .word pio_configure_pin_group
+ 221              	 .cfi_endproc
+ 222              	.LFE132:
+ 224              	 .section .text.board_init,"ax",%progbits
+ 225              	 .align 1
+ 226              	 .global board_init
+ 227              	 .syntax unified
+ 228              	 .thumb
+ 229              	 .thumb_func
+ 230              	 .fpu softvfp
+ 232              	board_init:
+ 233              	.LFB133:
  203:.././hal/sam3u1c/init.c **** 
  204:.././hal/sam3u1c/init.c **** void board_init(void)
  205:.././hal/sam3u1c/init.c **** {
- 233              	 .loc 4 205 0
- 234              	 .cfi_startproc
- 235              	 
+ 234              	 .loc 4 205 1
+ 235              	 .cfi_startproc
  236              	 
- 237 0000 80B5     	 push {r7,lr}
- 238              	.LCFI13:
- 239              	 .cfi_def_cfa_offset 8
- 240              	 .cfi_offset 7,-8
- 241              	 .cfi_offset 14,-4
- 242 0002 00AF     	 add r7,sp,#0
- 243              	.LCFI14:
- 244              	 .cfi_def_cfa_register 7
+ 237              	 
+ 238 0000 80B5     	 push {r7,lr}
+ 239              	.LCFI13:
+ 240              	 .cfi_def_cfa_offset 8
+ 241              	 .cfi_offset 7,-8
+ 242              	 .cfi_offset 14,-4
+ 243 0002 00AF     	 add r7,sp,#0
+ 244              	.LCFI14:
+ 245              	 .cfi_def_cfa_register 7
  206:.././hal/sam3u1c/init.c **** #ifndef CONF_BOARD_KEEP_WATCHDOG_AT_INIT
  207:.././hal/sam3u1c/init.c **** 	/* Disable the watchdog */
  208:.././hal/sam3u1c/init.c **** 	WDT->WDT_MR = WDT_MR_WDDIS;
- 245              	 .loc 4 208 0
- 246 0004 044B     	 ldr r3,.L12
- 247 0006 4FF40042 	 mov r2,#32768
- 248 000a 5A60     	 str r2,[r3,#4]
+ 246              	 .loc 4 208 5
+ 247 0004 044B     	 ldr r3,.L12
+ 248              	 .loc 4 208 14
+ 249 0006 4FF40042 	 mov r2,#32768
+ 250 000a 5A60     	 str r2,[r3,#4]
  209:.././hal/sam3u1c/init.c **** #endif
  210:.././hal/sam3u1c/init.c **** 
  211:.././hal/sam3u1c/init.c **** 	/* GPIO has been deprecated, the old code just keeps it for compatibility.
@@ -1074,46 +1076,46 @@
  213:.././hal/sam3u1c/init.c **** 	 * Here IOPORT must be initialized for others to use before setting up IO.
  214:.././hal/sam3u1c/init.c **** 	 */
  215:.././hal/sam3u1c/init.c **** 	ioport_init();
- 249              	 .loc 4 215 0
- 250 000c 034B     	 ldr r3,.L12+4
- 251 000e 9847     	 blx r3
- 252              	.LVL8:
+ 251              	 .loc 4 215 2
+ 252 000c 034B     	 ldr r3,.L12+4
+ 253 000e 9847     	 blx r3
+ 254              	.LVL8:
  216:.././hal/sam3u1c/init.c **** 
  217:.././hal/sam3u1c/init.c **** 	iopins_normal();
- 253              	 .loc 4 217 0
- 254 0010 034B     	 ldr r3,.L12+8
- 255 0012 9847     	 blx r3
- 256              	.LVL9:
+ 255              	 .loc 4 217 2
+ 256 0010 034B     	 ldr r3,.L12+8
+ 257 0012 9847     	 blx r3
+ 258              	.LVL9:
  218:.././hal/sam3u1c/init.c **** 
  219:.././hal/sam3u1c/init.c **** }
- 257              	 .loc 4 219 0
- 258 0014 00BF     	 nop
- 259 0016 80BD     	 pop {r7,pc}
- 260              	.L13:
- 261              	 .align 2
- 262              	.L12:
- 263 0018 50120E40 	 .word 1074664016
- 264 001c 00000000 	 .word ioport_init
- 265 0020 00000000 	 .word iopins_normal
- 266              	 .cfi_endproc
- 267              	.LFE133:
- 269              	 .text
- 270              	.Letext0:
- 271              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 272              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 273              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
- 274              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
- 275              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
- 276              	 .file 10 ".././hal/sam3u1c/inc/component/component_pio.h"
- 277              	 .file 11 ".././hal/sam3u1c/inc/component/component_wdt.h"
- 278              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 279              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 280              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 281              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 282              	 .file 16 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 283              	 .file 17 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 284              	 .file 18 ".././hal/sam3u1c/inc/pio.h"
- 285              	 .file 19 ".././hal/sam3u1c/inc/pmc.h"
+ 259              	 .loc 4 219 1
+ 260 0014 00BF     	 nop
+ 261 0016 80BD     	 pop {r7,pc}
+ 262              	.L13:
+ 263              	 .align 2
+ 264              	.L12:
+ 265 0018 50120E40 	 .word 1074664016
+ 266 001c 00000000 	 .word ioport_init
+ 267 0020 00000000 	 .word iopins_normal
+ 268              	 .cfi_endproc
+ 269              	.LFE133:
+ 271              	 .text
+ 272              	.Letext0:
+ 273              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 274              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 275              	 .file 7 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 276              	 .file 8 ".././hal/sam3u1c/inc/core_cm3.h"
+ 277              	 .file 9 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 278              	 .file 10 ".././hal/sam3u1c/inc/component/component_pio.h"
+ 279              	 .file 11 ".././hal/sam3u1c/inc/component/component_wdt.h"
+ 280              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 281              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 282              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 283              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 284              	 .file 16 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 285              	 .file 17 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 286              	 .file 18 ".././hal/sam3u1c/inc/pio.h"
+ 287              	 .file 19 ".././hal/sam3u1c/inc/pmc.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1121,20 +1123,20 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.sysclk_enable_peripheral_clock:00000000 $t
-    {standard input}:33     .text.sysclk_enable_peripheral_clock:00000000 sysclk_enable_peripheral_clock
-    {standard input}:70     .text.sysclk_enable_peripheral_clock:00000018 $d
-    {standard input}:75     .text.ioport_init:00000000 $t
-    {standard input}:81     .text.ioport_init:00000000 ioport_init
-    {standard input}:117    .text.ioport_init:00000014 $d
-    {standard input}:122    .text.iopins_sleep:00000000 $t
-    {standard input}:129    .text.iopins_sleep:00000000 iopins_sleep
-    {standard input}:159    .text.iopins_normal:00000000 $t
-    {standard input}:166    .text.iopins_normal:00000000 iopins_normal
-    {standard input}:217    .text.iopins_normal:00000040 $d
-    {standard input}:224    .text.board_init:00000000 $t
-    {standard input}:231    .text.board_init:00000000 board_init
-    {standard input}:263    .text.board_init:00000018 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:34     .text.sysclk_enable_peripheral_clock:00000000 sysclk_enable_peripheral_clock
+    {standard input}:71     .text.sysclk_enable_peripheral_clock:00000018 $d
+    {standard input}:76     .text.ioport_init:00000000 $t
+    {standard input}:82     .text.ioport_init:00000000 ioport_init
+    {standard input}:118    .text.ioport_init:00000014 $d
+    {standard input}:123    .text.iopins_sleep:00000000 $t
+    {standard input}:130    .text.iopins_sleep:00000000 iopins_sleep
+    {standard input}:160    .text.iopins_normal:00000000 $t
+    {standard input}:167    .text.iopins_normal:00000000 iopins_normal
+    {standard input}:218    .text.iopins_normal:00000040 $d
+    {standard input}:225    .text.board_init:00000000 $t
+    {standard input}:232    .text.board_init:00000000 board_init
+    {standard input}:265    .text.board_init:00000018 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -1208,12 +1210,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

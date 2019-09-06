@@ -22,13 +22,14 @@
   26              	 .section .ramfunc,"ax",%progbits
   27              	 .align 1
   28              	 .global portable_delay_cycles
-  29              	 .syntax unified
-  30              	 .thumb
-  31              	 .thumb_func
-  32              	 .fpu softvfp
-  34              	portable_delay_cycles:
-  35              	.LFB69:
-  36              	 .file 1 ".././hal/sam3u1c/cycle_counter.c"
+  29              	 .arch armv7-m
+  30              	 .syntax unified
+  31              	 .thumb
+  32              	 .thumb_func
+  33              	 .fpu softvfp
+  35              	portable_delay_cycles:
+  36              	.LFB69:
+  37              	 .file 1 ".././hal/sam3u1c/cycle_counter.c"
    1:.././hal/sam3u1c/cycle_counter.c **** /**
    2:.././hal/sam3u1c/cycle_counter.c ****  * \file
    3:.././hal/sam3u1c/cycle_counter.c ****  *
@@ -79,44 +80,44 @@
   48:.././hal/sam3u1c/cycle_counter.c **** RAMFUNC
   49:.././hal/sam3u1c/cycle_counter.c **** void portable_delay_cycles(unsigned long n)
   50:.././hal/sam3u1c/cycle_counter.c **** {
-  37              	 .loc 1 50 0
-  38              	 .cfi_startproc
-  39              	 
+  38              	 .loc 1 50 1
+  39              	 .cfi_startproc
   40              	 
   41              	 
+  42              	 
   51:.././hal/sam3u1c/cycle_counter.c **** 	UNUSED(n);
   52:.././hal/sam3u1c/cycle_counter.c **** 
   53:.././hal/sam3u1c/cycle_counter.c **** 	__asm (
-  42              	 .loc 1 53 0
-  43              	 .syntax unified
-  44              	
-  45 0000 BFF35F8F 	 loop:DMB 
-  46 0004 0138     	SUBS R0,R0,#1
-  47 0006 FBD1     	BNE.N loop
-  48              	
+  43              	 .loc 1 53 2
+  44              	 .syntax unified
+  45              	
+  46 0000 BFF35F8F 	 loop:DMB 
+  47 0004 0138     	SUBS R0,R0,#1
+  48 0006 FBD1     	BNE.N loop
+  49              	
   54:.././hal/sam3u1c/cycle_counter.c **** 		"loop: DMB	\n"
   55:.././hal/sam3u1c/cycle_counter.c **** 		"SUBS R0, R0, #1  \n"
   56:.././hal/sam3u1c/cycle_counter.c **** 		"BNE.N loop         "
   57:.././hal/sam3u1c/cycle_counter.c **** 	);
   58:.././hal/sam3u1c/cycle_counter.c **** }
-  49              	 .loc 1 58 0
-  50              	 .thumb
-  51              	 .syntax unified
-  52 0008 7047     	 bx lr
-  53              	 .cfi_endproc
-  54              	.LFE69:
-  56              	 .text
-  57              	.Letext0:
-  58              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
-  59              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
-  60              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
-  61              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
-  62              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
-  63              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
-  64              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
-  65              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
-  66              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
-  67              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+  50              	 .loc 1 58 1
+  51              	 .thumb
+  52              	 .syntax unified
+  53 0008 7047     	 bx lr
+  54              	 .cfi_endproc
+  55              	.LFE69:
+  57              	 .text
+  58              	.Letext0:
+  59              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+  60              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+  61              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
+  62              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
+  63              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+  64              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+  65              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+  66              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+  67              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+  68              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 cycle_counter.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -124,9 +125,9 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .ramfunc:00000000 $t
-    {standard input}:34     .ramfunc:00000000 portable_delay_cycles
-    {standard input}:45     .ramfunc:00000000 loop
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:35     .ramfunc:00000000 portable_delay_cycles
+    {standard input}:46     .ramfunc:00000000 loop
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -200,12 +201,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

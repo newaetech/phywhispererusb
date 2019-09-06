@@ -20,20 +20,21 @@
   24              	cpu_irq_prev_interrupt_state:
   25 0000 00       	 .space 1
   26              	 .global SystemCoreClock
-  27              	 .section .data.SystemCoreClock,"aw",%progbits
+  27              	 .section .data.SystemCoreClock,"aw"
   28              	 .align 2
   31              	SystemCoreClock:
   32 0000 00093D00 	 .word 4000000
   33              	 .section .ramfunc,"ax",%progbits
   34              	 .align 1
   35              	 .global SystemInit
-  36              	 .syntax unified
-  37              	 .thumb
-  38              	 .thumb_func
-  39              	 .fpu softvfp
-  41              	SystemInit:
-  42              	.LFB69:
-  43              	 .file 1 ".././hal/sam3u1c/system_sam3u.c"
+  36              	 .arch armv7-m
+  37              	 .syntax unified
+  38              	 .thumb
+  39              	 .thumb_func
+  40              	 .fpu softvfp
+  42              	SystemInit:
+  43              	.LFB69:
+  44              	 .file 1 ".././hal/sam3u1c/system_sam3u.c"
    1:.././hal/sam3u1c/system_sam3u.c **** /**
    2:.././hal/sam3u1c/system_sam3u.c ****  * \file
    3:.././hal/sam3u1c/system_sam3u.c ****  *
@@ -113,265 +114,296 @@
   77:.././hal/sam3u1c/system_sam3u.c **** RAMFUNC
   78:.././hal/sam3u1c/system_sam3u.c **** void SystemInit(void)
   79:.././hal/sam3u1c/system_sam3u.c **** {
-  44              	 .loc 1 79 0
-  45              	 .cfi_startproc
-  46              	 
+  45              	 .loc 1 79 1
+  46              	 .cfi_startproc
   47              	 
   48              	 
-  49 0000 80B4     	 push {r7}
-  50              	.LCFI0:
-  51              	 .cfi_def_cfa_offset 4
-  52              	 .cfi_offset 7,-4
-  53 0002 00AF     	 add r7,sp,#0
-  54              	.LCFI1:
-  55              	 .cfi_def_cfa_register 7
+  49              	 
+  50 0000 80B4     	 push {r7}
+  51              	.LCFI0:
+  52              	 .cfi_def_cfa_offset 4
+  53              	 .cfi_offset 7,-4
+  54 0002 00AF     	 add r7,sp,#0
+  55              	.LCFI1:
+  56              	 .cfi_def_cfa_register 7
   80:.././hal/sam3u1c/system_sam3u.c **** 	/* Set FWS according to SYS_BOARD_MCKR configuration */
   81:.././hal/sam3u1c/system_sam3u.c **** 	EFC0->EEFC_FMR = EEFC_FMR_FWS(4);
-  56              	 .loc 1 81 0
-  57 0004 2A4B     	 ldr r3,.L9
-  58 0006 4FF48062 	 mov r2,#1024
-  59 000a 1A60     	 str r2,[r3]
+  57              	 .loc 1 81 6
+  58 0004 2A4B     	 ldr r3,.L9
+  59              	 .loc 1 81 17
+  60 0006 4FF48062 	 mov r2,#1024
+  61 000a 1A60     	 str r2,[r3]
   82:.././hal/sam3u1c/system_sam3u.c **** 	EFC1->EEFC_FMR = EEFC_FMR_FWS(4);
-  60              	 .loc 1 82 0
-  61 000c 294B     	 ldr r3,.L9+4
-  62 000e 4FF48062 	 mov r2,#1024
-  63 0012 1A60     	 str r2,[r3]
+  62              	 .loc 1 82 6
+  63 000c 294B     	 ldr r3,.L9+4
+  64              	 .loc 1 82 17
+  65 000e 4FF48062 	 mov r2,#1024
+  66 0012 1A60     	 str r2,[r3]
   83:.././hal/sam3u1c/system_sam3u.c **** 
   84:.././hal/sam3u1c/system_sam3u.c **** 	/* Initialize main oscillator */
   85:.././hal/sam3u1c/system_sam3u.c **** 	if (!(PMC->CKGR_MOR & CKGR_MOR_MOSCSEL)) {
-  64              	 .loc 1 85 0
-  65 0014 284B     	 ldr r3,.L9+8
-  66 0016 1B6A     	 ldr r3,[r3,#32]
-  67 0018 03F08073 	 and r3,r3,#16777216
-  68 001c 002B     	 cmp r3,#0
-  69 001e 09D1     	 bne .L2
+  67              	 .loc 1 85 11
+  68 0014 284B     	 ldr r3,.L9+8
+  69 0016 1B6A     	 ldr r3,[r3,#32]
+  70              	 .loc 1 85 22
+  71 0018 03F08073 	 and r3,r3,#16777216
+  72              	 .loc 1 85 5
+  73 001c 002B     	 cmp r3,#0
+  74 001e 09D1     	 bne .L2
   86:.././hal/sam3u1c/system_sam3u.c **** 		PMC->CKGR_MOR = SYS_CKGR_MOR_KEY_VALUE | SYS_BOARD_OSCOUNT | 
-  70              	 .loc 1 86 0
-  71 0020 254B     	 ldr r3,.L9+8
-  72 0022 264A     	 ldr r2,.L9+12
-  73 0024 1A62     	 str r2,[r3,#32]
+  75              	 .loc 1 86 6
+  76 0020 254B     	 ldr r3,.L9+8
+  77              	 .loc 1 86 17
+  78 0022 264A     	 ldr r2,.L9+12
+  79 0024 1A62     	 str r2,[r3,#32]
   87:.././hal/sam3u1c/system_sam3u.c **** 			                    CKGR_MOR_MOSCRCEN | CKGR_MOR_MOSCXTEN;
   88:.././hal/sam3u1c/system_sam3u.c **** 		while (!(PMC->PMC_SR & PMC_SR_MOSCXTS)) {
-  74              	 .loc 1 88 0
-  75 0026 00BF     	 nop
-  76              	.L3:
-  77              	 .loc 1 88 0 is_stmt 0 discriminator 1
-  78 0028 234B     	 ldr r3,.L9+8
-  79 002a 9B6E     	 ldr r3,[r3,#104]
-  80 002c 03F00103 	 and r3,r3,#1
-  81 0030 002B     	 cmp r3,#0
-  82 0032 F9D0     	 beq .L3
-  83              	.L2:
+  80              	 .loc 1 88 9
+  81 0026 00BF     	 nop
+  82              	.L3:
+  83              	 .loc 1 88 15 discriminator 1
+  84 0028 234B     	 ldr r3,.L9+8
+  85 002a 9B6E     	 ldr r3,[r3,#104]
+  86              	 .loc 1 88 24 discriminator 1
+  87 002c 03F00103 	 and r3,r3,#1
+  88              	 .loc 1 88 9 discriminator 1
+  89 0030 002B     	 cmp r3,#0
+  90 0032 F9D0     	 beq .L3
+  91              	.L2:
   89:.././hal/sam3u1c/system_sam3u.c **** 		}
   90:.././hal/sam3u1c/system_sam3u.c **** 	}
   91:.././hal/sam3u1c/system_sam3u.c **** 
   92:.././hal/sam3u1c/system_sam3u.c **** 	/* Switch to 3-20MHz Xtal oscillator */
   93:.././hal/sam3u1c/system_sam3u.c **** 	PMC->CKGR_MOR = SYS_CKGR_MOR_KEY_VALUE | SYS_BOARD_OSCOUNT | 
-  84              	 .loc 1 93 0 is_stmt 1
-  85 0034 204B     	 ldr r3,.L9+8
-  86 0036 224A     	 ldr r2,.L9+16
-  87 0038 1A62     	 str r2,[r3,#32]
+  92              	 .loc 1 93 5
+  93 0034 204B     	 ldr r3,.L9+8
+  94              	 .loc 1 93 16
+  95 0036 224A     	 ldr r2,.L9+16
+  96 0038 1A62     	 str r2,[r3,#32]
   94:.././hal/sam3u1c/system_sam3u.c **** 	                           CKGR_MOR_MOSCRCEN | CKGR_MOR_MOSCXTEN | CKGR_MOR_MOSCSEL;
   95:.././hal/sam3u1c/system_sam3u.c **** 
   96:.././hal/sam3u1c/system_sam3u.c **** 	while (!(PMC->PMC_SR & PMC_SR_MOSCSELS)) {
-  88              	 .loc 1 96 0
-  89 003a 00BF     	 nop
-  90              	.L4:
-  91              	 .loc 1 96 0 is_stmt 0 discriminator 1
-  92 003c 1E4B     	 ldr r3,.L9+8
-  93 003e 9B6E     	 ldr r3,[r3,#104]
-  94 0040 03F48033 	 and r3,r3,#65536
-  95 0044 002B     	 cmp r3,#0
-  96 0046 F9D0     	 beq .L4
+  97              	 .loc 1 96 8
+  98 003a 00BF     	 nop
+  99              	.L4:
+ 100              	 .loc 1 96 14 discriminator 1
+ 101 003c 1E4B     	 ldr r3,.L9+8
+ 102 003e 9B6E     	 ldr r3,[r3,#104]
+ 103              	 .loc 1 96 23 discriminator 1
+ 104 0040 03F48033 	 and r3,r3,#65536
+ 105              	 .loc 1 96 8 discriminator 1
+ 106 0044 002B     	 cmp r3,#0
+ 107 0046 F9D0     	 beq .L4
   97:.././hal/sam3u1c/system_sam3u.c **** 	}
   98:.././hal/sam3u1c/system_sam3u.c **** 	PMC->PMC_MCKR = (PMC->PMC_MCKR & ~(uint32_t)PMC_MCKR_CSS_Msk) | 
-  97              	 .loc 1 98 0 is_stmt 1
-  98 0048 1B4B     	 ldr r3,.L9+8
-  99 004a 1B6B     	 ldr r3,[r3,#48]
- 100 004c 23F00303 	 bic r3,r3,#3
- 101 0050 194A     	 ldr r2,.L9+8
- 102 0052 43F00103 	 orr r3,r3,#1
- 103 0056 1363     	 str r3,[r2,#48]
+ 108              	 .loc 1 98 22
+ 109 0048 1B4B     	 ldr r3,.L9+8
+ 110 004a 1B6B     	 ldr r3,[r3,#48]
+ 111              	 .loc 1 98 33
+ 112 004c 23F00303 	 bic r3,r3,#3
+ 113              	 .loc 1 98 5
+ 114 0050 194A     	 ldr r2,.L9+8
+ 115              	 .loc 1 98 64
+ 116 0052 43F00103 	 orr r3,r3,#1
+ 117              	 .loc 1 98 16
+ 118 0056 1363     	 str r3,[r2,#48]
   99:.././hal/sam3u1c/system_sam3u.c **** 		                      PMC_MCKR_CSS_MAIN_CLK;
  100:.././hal/sam3u1c/system_sam3u.c **** 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY)) {
- 104              	 .loc 1 100 0
- 105 0058 00BF     	 nop
- 106              	.L5:
- 107              	 .loc 1 100 0 is_stmt 0 discriminator 1
- 108 005a 174B     	 ldr r3,.L9+8
- 109 005c 9B6E     	 ldr r3,[r3,#104]
- 110 005e 03F00803 	 and r3,r3,#8
- 111 0062 002B     	 cmp r3,#0
- 112 0064 F9D0     	 beq .L5
+ 119              	 .loc 1 100 8
+ 120 0058 00BF     	 nop
+ 121              	.L5:
+ 122              	 .loc 1 100 14 discriminator 1
+ 123 005a 174B     	 ldr r3,.L9+8
+ 124 005c 9B6E     	 ldr r3,[r3,#104]
+ 125              	 .loc 1 100 23 discriminator 1
+ 126 005e 03F00803 	 and r3,r3,#8
+ 127              	 .loc 1 100 8 discriminator 1
+ 128 0062 002B     	 cmp r3,#0
+ 129 0064 F9D0     	 beq .L5
  101:.././hal/sam3u1c/system_sam3u.c **** 	}
  102:.././hal/sam3u1c/system_sam3u.c **** 
  103:.././hal/sam3u1c/system_sam3u.c **** 	/* Initialize PLLA */
  104:.././hal/sam3u1c/system_sam3u.c **** 	PMC->CKGR_PLLAR = SYS_BOARD_PLLAR;
- 113              	 .loc 1 104 0 is_stmt 1
- 114 0066 144B     	 ldr r3,.L9+8
- 115 0068 164A     	 ldr r2,.L9+20
- 116 006a 9A62     	 str r2,[r3,#40]
+ 130              	 .loc 1 104 5
+ 131 0066 144B     	 ldr r3,.L9+8
+ 132              	 .loc 1 104 18
+ 133 0068 164A     	 ldr r2,.L9+20
+ 134 006a 9A62     	 str r2,[r3,#40]
  105:.././hal/sam3u1c/system_sam3u.c **** 	while (!(PMC->PMC_SR & PMC_SR_LOCKA)) {
- 117              	 .loc 1 105 0
- 118 006c 00BF     	 nop
- 119              	.L6:
- 120              	 .loc 1 105 0 is_stmt 0 discriminator 1
- 121 006e 124B     	 ldr r3,.L9+8
- 122 0070 9B6E     	 ldr r3,[r3,#104]
- 123 0072 03F00203 	 and r3,r3,#2
- 124 0076 002B     	 cmp r3,#0
- 125 0078 F9D0     	 beq .L6
+ 135              	 .loc 1 105 8
+ 136 006c 00BF     	 nop
+ 137              	.L6:
+ 138              	 .loc 1 105 14 discriminator 1
+ 139 006e 124B     	 ldr r3,.L9+8
+ 140 0070 9B6E     	 ldr r3,[r3,#104]
+ 141              	 .loc 1 105 23 discriminator 1
+ 142 0072 03F00203 	 and r3,r3,#2
+ 143              	 .loc 1 105 8 discriminator 1
+ 144 0076 002B     	 cmp r3,#0
+ 145 0078 F9D0     	 beq .L6
  106:.././hal/sam3u1c/system_sam3u.c **** 	}
  107:.././hal/sam3u1c/system_sam3u.c **** 
  108:.././hal/sam3u1c/system_sam3u.c **** 	/* Switch to main clock */
  109:.././hal/sam3u1c/system_sam3u.c **** 	PMC->PMC_MCKR = (SYS_BOARD_MCKR & ~PMC_MCKR_CSS_Msk) | PMC_MCKR_CSS_MAIN_CLK;
- 126              	 .loc 1 109 0 is_stmt 1
- 127 007a 0F4B     	 ldr r3,.L9+8
- 128 007c 1122     	 movs r2,#17
- 129 007e 1A63     	 str r2,[r3,#48]
+ 146              	 .loc 1 109 5
+ 147 007a 0F4B     	 ldr r3,.L9+8
+ 148              	 .loc 1 109 16
+ 149 007c 1122     	 movs r2,#17
+ 150 007e 1A63     	 str r2,[r3,#48]
  110:.././hal/sam3u1c/system_sam3u.c **** 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY)) {
- 130              	 .loc 1 110 0
- 131 0080 00BF     	 nop
- 132              	.L7:
- 133              	 .loc 1 110 0 is_stmt 0 discriminator 1
- 134 0082 0D4B     	 ldr r3,.L9+8
- 135 0084 9B6E     	 ldr r3,[r3,#104]
- 136 0086 03F00803 	 and r3,r3,#8
- 137 008a 002B     	 cmp r3,#0
- 138 008c F9D0     	 beq .L7
+ 151              	 .loc 1 110 8
+ 152 0080 00BF     	 nop
+ 153              	.L7:
+ 154              	 .loc 1 110 14 discriminator 1
+ 155 0082 0D4B     	 ldr r3,.L9+8
+ 156 0084 9B6E     	 ldr r3,[r3,#104]
+ 157              	 .loc 1 110 23 discriminator 1
+ 158 0086 03F00803 	 and r3,r3,#8
+ 159              	 .loc 1 110 8 discriminator 1
+ 160 008a 002B     	 cmp r3,#0
+ 161 008c F9D0     	 beq .L7
  111:.././hal/sam3u1c/system_sam3u.c **** 	}
  112:.././hal/sam3u1c/system_sam3u.c **** 
  113:.././hal/sam3u1c/system_sam3u.c **** 	/* Switch to PLLA */
  114:.././hal/sam3u1c/system_sam3u.c **** 	PMC->PMC_MCKR = SYS_BOARD_MCKR;
- 139              	 .loc 1 114 0 is_stmt 1
- 140 008e 0A4B     	 ldr r3,.L9+8
- 141 0090 1222     	 movs r2,#18
- 142 0092 1A63     	 str r2,[r3,#48]
+ 162              	 .loc 1 114 5
+ 163 008e 0A4B     	 ldr r3,.L9+8
+ 164              	 .loc 1 114 16
+ 165 0090 1222     	 movs r2,#18
+ 166 0092 1A63     	 str r2,[r3,#48]
  115:.././hal/sam3u1c/system_sam3u.c **** 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY)) {
- 143              	 .loc 1 115 0
- 144 0094 00BF     	 nop
- 145              	.L8:
- 146              	 .loc 1 115 0 is_stmt 0 discriminator 1
- 147 0096 084B     	 ldr r3,.L9+8
- 148 0098 9B6E     	 ldr r3,[r3,#104]
- 149 009a 03F00803 	 and r3,r3,#8
- 150 009e 002B     	 cmp r3,#0
- 151 00a0 F9D0     	 beq .L8
+ 167              	 .loc 1 115 8
+ 168 0094 00BF     	 nop
+ 169              	.L8:
+ 170              	 .loc 1 115 14 discriminator 1
+ 171 0096 084B     	 ldr r3,.L9+8
+ 172 0098 9B6E     	 ldr r3,[r3,#104]
+ 173              	 .loc 1 115 23 discriminator 1
+ 174 009a 03F00803 	 and r3,r3,#8
+ 175              	 .loc 1 115 8 discriminator 1
+ 176 009e 002B     	 cmp r3,#0
+ 177 00a0 F9D0     	 beq .L8
  116:.././hal/sam3u1c/system_sam3u.c **** 	}
  117:.././hal/sam3u1c/system_sam3u.c **** 
  118:.././hal/sam3u1c/system_sam3u.c **** 	SystemCoreClock = CHIP_FREQ_CPU_MAX;
- 152              	 .loc 1 118 0 is_stmt 1
- 153 00a2 094B     	 ldr r3,.L9+24
- 154 00a4 094A     	 ldr r2,.L9+28
- 155 00a6 1A60     	 str r2,[r3]
+ 178              	 .loc 1 118 18
+ 179 00a2 094B     	 ldr r3,.L9+24
+ 180 00a4 094A     	 ldr r2,.L9+28
+ 181 00a6 1A60     	 str r2,[r3]
  119:.././hal/sam3u1c/system_sam3u.c **** }
- 156              	 .loc 1 119 0
- 157 00a8 00BF     	 nop
- 158 00aa BD46     	 mov sp,r7
- 159              	.LCFI2:
- 160              	 .cfi_def_cfa_register 13
- 161              	 
- 162 00ac 80BC     	 pop {r7}
- 163              	.LCFI3:
- 164              	 .cfi_restore 7
- 165              	 .cfi_def_cfa_offset 0
- 166 00ae 7047     	 bx lr
- 167              	.L10:
- 168              	 .align 2
- 169              	.L9:
- 170 00b0 00080E40 	 .word 1074661376
- 171 00b4 000A0E40 	 .word 1074661888
- 172 00b8 00040E40 	 .word 1074660352
- 173 00bc 09083700 	 .word 3606537
- 174 00c0 09083701 	 .word 20383753
- 175 00c4 013F0F20 	 .word 537870081
- 176 00c8 00000000 	 .word SystemCoreClock
- 177 00cc 00D8B805 	 .word 96000000
- 178              	 .cfi_endproc
- 179              	.LFE69:
- 181              	 .section .text.SystemCoreClockUpdate,"ax",%progbits
- 182              	 .align 1
- 183              	 .global SystemCoreClockUpdate
- 184              	 .syntax unified
- 185              	 .thumb
- 186              	 .thumb_func
- 187              	 .fpu softvfp
- 189              	SystemCoreClockUpdate:
- 190              	.LFB70:
+ 182              	 .loc 1 119 1
+ 183 00a8 00BF     	 nop
+ 184 00aa BD46     	 mov sp,r7
+ 185              	.LCFI2:
+ 186              	 .cfi_def_cfa_register 13
+ 187              	 
+ 188 00ac 80BC     	 pop {r7}
+ 189              	.LCFI3:
+ 190              	 .cfi_restore 7
+ 191              	 .cfi_def_cfa_offset 0
+ 192 00ae 7047     	 bx lr
+ 193              	.L10:
+ 194              	 .align 2
+ 195              	.L9:
+ 196 00b0 00080E40 	 .word 1074661376
+ 197 00b4 000A0E40 	 .word 1074661888
+ 198 00b8 00040E40 	 .word 1074660352
+ 199 00bc 09083700 	 .word 3606537
+ 200 00c0 09083701 	 .word 20383753
+ 201 00c4 013F0F20 	 .word 537870081
+ 202 00c8 00000000 	 .word SystemCoreClock
+ 203 00cc 00D8B805 	 .word 96000000
+ 204              	 .cfi_endproc
+ 205              	.LFE69:
+ 207              	 .section .text.SystemCoreClockUpdate,"ax",%progbits
+ 208              	 .align 1
+ 209              	 .global SystemCoreClockUpdate
+ 210              	 .syntax unified
+ 211              	 .thumb
+ 212              	 .thumb_func
+ 213              	 .fpu softvfp
+ 215              	SystemCoreClockUpdate:
+ 216              	.LFB70:
  120:.././hal/sam3u1c/system_sam3u.c **** 
  121:.././hal/sam3u1c/system_sam3u.c **** void SystemCoreClockUpdate(void)
  122:.././hal/sam3u1c/system_sam3u.c **** {
- 191              	 .loc 1 122 0
- 192              	 .cfi_startproc
- 193              	 
- 194              	 
- 195              	 
- 196 0000 80B4     	 push {r7}
- 197              	.LCFI4:
- 198              	 .cfi_def_cfa_offset 4
- 199              	 .cfi_offset 7,-4
- 200 0002 00AF     	 add r7,sp,#0
- 201              	.LCFI5:
- 202              	 .cfi_def_cfa_register 7
+ 217              	 .loc 1 122 1
+ 218              	 .cfi_startproc
+ 219              	 
+ 220              	 
+ 221              	 
+ 222 0000 80B4     	 push {r7}
+ 223              	.LCFI4:
+ 224              	 .cfi_def_cfa_offset 4
+ 225              	 .cfi_offset 7,-4
+ 226 0002 00AF     	 add r7,sp,#0
+ 227              	.LCFI5:
+ 228              	 .cfi_def_cfa_register 7
  123:.././hal/sam3u1c/system_sam3u.c **** 	/* Determine clock frequency according to clock register values */
  124:.././hal/sam3u1c/system_sam3u.c **** 	switch (PMC->PMC_MCKR & PMC_MCKR_CSS_Msk) {
- 203              	 .loc 1 124 0
- 204 0004 574B     	 ldr r3,.L39
- 205 0006 1B6B     	 ldr r3,[r3,#48]
- 206 0008 03F00303 	 and r3,r3,#3
- 207 000c 032B     	 cmp r3,#3
- 208 000e 00F28A80 	 bhi .L12
- 209 0012 01A2     	 adr r2,.L14
- 210 0014 52F823F0 	 ldr pc,[r2,r3,lsl#2]
- 211              	 .p2align 2
- 212              	.L14:
- 213 0018 29000000 	 .word .L13+1
- 214 001c 49000000 	 .word .L15+1
- 215 0020 99000000 	 .word .L16+1
- 216 0024 99000000 	 .word .L16+1
- 217              	 .p2align 1
- 218              	.L13:
+ 229              	 .loc 1 124 13
+ 230 0004 554B     	 ldr r3,.L35
+ 231 0006 1B6B     	 ldr r3,[r3,#48]
+ 232              	 .loc 1 124 24
+ 233 0008 03F00303 	 and r3,r3,#3
+ 234              	 .loc 1 124 2
+ 235 000c 032B     	 cmp r3,#3
+ 236 000e 00F28680 	 bhi .L12
+ 237 0012 01A2     	 adr r2,.L14
+ 238 0014 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+ 239              	 .p2align 2
+ 240              	.L14:
+ 241 0018 29000000 	 .word .L16+1
+ 242 001c 49000000 	 .word .L15+1
+ 243 0020 95000000 	 .word .L13+1
+ 244 0024 95000000 	 .word .L13+1
+ 245              	 .p2align 1
+ 246              	.L16:
  125:.././hal/sam3u1c/system_sam3u.c **** 	case PMC_MCKR_CSS_SLOW_CLK:	/* Slow clock */
  126:.././hal/sam3u1c/system_sam3u.c **** 		if (SUPC->SUPC_SR & SUPC_SR_OSCSEL) {
- 219              	 .loc 1 126 0
- 220 0028 4F4B     	 ldr r3,.L39+4
- 221 002a 5B69     	 ldr r3,[r3,#20]
- 222 002c 03F08003 	 and r3,r3,#128
- 223 0030 002B     	 cmp r3,#0
- 224 0032 04D0     	 beq .L17
+ 247              	 .loc 1 126 11
+ 248 0028 4D4B     	 ldr r3,.L35+4
+ 249 002a 5B69     	 ldr r3,[r3,#20]
+ 250              	 .loc 1 126 21
+ 251 002c 03F08003 	 and r3,r3,#128
+ 252              	 .loc 1 126 6
+ 253 0030 002B     	 cmp r3,#0
+ 254 0032 04D0     	 beq .L17
  127:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock = CHIP_FREQ_XTAL_32K;
- 225              	 .loc 1 127 0
- 226 0034 4D4B     	 ldr r3,.L39+8
- 227 0036 4FF40042 	 mov r2,#32768
- 228 003a 1A60     	 str r2,[r3]
+ 255              	 .loc 1 127 20
+ 256 0034 4B4B     	 ldr r3,.L35+8
+ 257 0036 4FF40042 	 mov r2,#32768
+ 258 003a 1A60     	 str r2,[r3]
  128:.././hal/sam3u1c/system_sam3u.c **** 		} else {
  129:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock = CHIP_FREQ_SLCK_RC;
  130:.././hal/sam3u1c/system_sam3u.c **** 		}
  131:.././hal/sam3u1c/system_sam3u.c **** 		break;
- 229              	 .loc 1 131 0
- 230 003c 73E0     	 b .L12
- 231              	.L17:
+ 259              	 .loc 1 131 3
+ 260 003c 6FE0     	 b .L12
+ 261              	.L17:
  129:.././hal/sam3u1c/system_sam3u.c **** 		}
- 232              	 .loc 1 129 0
- 233 003e 4B4B     	 ldr r3,.L39+8
- 234 0040 4FF4FA42 	 mov r2,#32000
- 235 0044 1A60     	 str r2,[r3]
- 236              	 .loc 1 131 0
- 237 0046 6EE0     	 b .L12
- 238              	.L15:
+ 262              	 .loc 1 129 20
+ 263 003e 494B     	 ldr r3,.L35+8
+ 264 0040 4FF4FA42 	 mov r2,#32000
+ 265 0044 1A60     	 str r2,[r3]
+ 266              	 .loc 1 131 3
+ 267 0046 6AE0     	 b .L12
+ 268              	.L15:
  132:.././hal/sam3u1c/system_sam3u.c **** 	case PMC_MCKR_CSS_MAIN_CLK:	/* Main clock */
  133:.././hal/sam3u1c/system_sam3u.c **** 		if (PMC->CKGR_MOR & CKGR_MOR_MOSCSEL) {
- 239              	 .loc 1 133 0
- 240 0048 464B     	 ldr r3,.L39
- 241 004a 1B6A     	 ldr r3,[r3,#32]
- 242 004c 03F08073 	 and r3,r3,#16777216
- 243 0050 002B     	 cmp r3,#0
- 244 0052 03D0     	 beq .L19
+ 269              	 .loc 1 133 10
+ 270 0048 444B     	 ldr r3,.L35
+ 271 004a 1B6A     	 ldr r3,[r3,#32]
+ 272              	 .loc 1 133 21
+ 273 004c 03F08073 	 and r3,r3,#16777216
+ 274              	 .loc 1 133 6
+ 275 0050 002B     	 cmp r3,#0
+ 276 0052 03D0     	 beq .L19
  134:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock = CHIP_FREQ_XTAL_12M;
- 245              	 .loc 1 134 0
- 246 0054 454B     	 ldr r3,.L39+8
- 247 0056 464A     	 ldr r2,.L39+12
- 248 0058 1A60     	 str r2,[r3]
+ 277              	 .loc 1 134 20
+ 278 0054 434B     	 ldr r3,.L35+8
+ 279 0056 444A     	 ldr r2,.L35+12
+ 280 0058 1A60     	 str r2,[r3]
  135:.././hal/sam3u1c/system_sam3u.c **** 		} else {
  136:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock = CHIP_FREQ_MAINCK_RC_4MHZ;
  137:.././hal/sam3u1c/system_sam3u.c **** 
@@ -389,94 +421,93 @@
  149:.././hal/sam3u1c/system_sam3u.c **** 			}
  150:.././hal/sam3u1c/system_sam3u.c **** 		}
  151:.././hal/sam3u1c/system_sam3u.c **** 		break;
- 249              	 .loc 1 151 0
- 250 005a 64E0     	 b .L12
- 251              	.L19:
+ 281              	 .loc 1 151 3
+ 282 005a 60E0     	 b .L12
+ 283              	.L19:
  136:.././hal/sam3u1c/system_sam3u.c **** 
- 252              	 .loc 1 136 0
- 253 005c 434B     	 ldr r3,.L39+8
- 254 005e 454A     	 ldr r2,.L39+16
- 255 0060 1A60     	 str r2,[r3]
+ 284              	 .loc 1 136 20
+ 285 005c 414B     	 ldr r3,.L35+8
+ 286 005e 434A     	 ldr r2,.L35+16
+ 287 0060 1A60     	 str r2,[r3]
  138:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_4_MHz:
- 256              	 .loc 1 138 0
- 257 0062 404B     	 ldr r3,.L39
- 258 0064 1B6A     	 ldr r3,[r3,#32]
- 259 0066 03F07003 	 and r3,r3,#112
- 260 006a 102B     	 cmp r3,#16
- 261 006c 04D0     	 beq .L22
- 262 006e 202B     	 cmp r3,#32
- 263 0070 08D0     	 beq .L23
- 264 0072 002B     	 cmp r3,#0
- 265 0074 0ED0     	 beq .L35
+ 288              	 .loc 1 138 15
+ 289 0062 3E4B     	 ldr r3,.L35
+ 290 0064 1B6A     	 ldr r3,[r3,#32]
+ 138:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_4_MHz:
+ 291              	 .loc 1 138 26
+ 292 0066 03F07003 	 and r3,r3,#112
+ 293 006a 102B     	 cmp r3,#16
+ 294 006c 03D0     	 beq .L21
+ 295 006e 202B     	 cmp r3,#32
+ 296 0070 07D0     	 beq .L22
+ 297 0072 002B     	 cmp r3,#0
  148:.././hal/sam3u1c/system_sam3u.c **** 			}
- 266              	 .loc 1 148 0
- 267 0076 0EE0     	 b .L20
- 268              	.L22:
+ 298              	 .loc 1 148 5
+ 299 0074 0DE0     	 b .L20
+ 300              	.L21:
  142:.././hal/sam3u1c/system_sam3u.c **** 				break;
- 269              	 .loc 1 142 0
- 270 0078 3C4B     	 ldr r3,.L39+8
- 271 007a 1B68     	 ldr r3,[r3]
- 272 007c 5B00     	 lsls r3,r3,#1
- 273 007e 3B4A     	 ldr r2,.L39+8
- 274 0080 1360     	 str r3,[r2]
+ 301              	 .loc 1 142 21
+ 302 0076 3B4B     	 ldr r3,.L35+8
+ 303 0078 1B68     	 ldr r3,[r3]
+ 304 007a 5B00     	 lsls r3,r3,#1
+ 305 007c 394A     	 ldr r2,.L35+8
+ 306 007e 1360     	 str r3,[r2]
  143:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_12_MHz:
- 275              	 .loc 1 143 0
- 276 0082 08E0     	 b .L20
- 277              	.L23:
+ 307              	 .loc 1 143 5
+ 308 0080 07E0     	 b .L20
+ 309              	.L22:
  145:.././hal/sam3u1c/system_sam3u.c **** 				break;
- 278              	 .loc 1 145 0
- 279 0084 394B     	 ldr r3,.L39+8
- 280 0086 1A68     	 ldr r2,[r3]
- 281 0088 1346     	 mov r3,r2
- 282 008a 5B00     	 lsls r3,r3,#1
- 283 008c 1344     	 add r3,r3,r2
- 284 008e 374A     	 ldr r2,.L39+8
- 285 0090 1360     	 str r3,[r2]
+ 310              	 .loc 1 145 21
+ 311 0082 384B     	 ldr r3,.L35+8
+ 312 0084 1A68     	 ldr r2,[r3]
+ 313 0086 1346     	 mov r3,r2
+ 314 0088 5B00     	 lsls r3,r3,#1
+ 315 008a 1344     	 add r3,r3,r2
+ 316 008c 354A     	 ldr r2,.L35+8
+ 317 008e 1360     	 str r3,[r2]
  146:.././hal/sam3u1c/system_sam3u.c **** 			default:
- 286              	 .loc 1 146 0
- 287 0092 00E0     	 b .L20
- 288              	.L35:
- 140:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_8_MHz:
- 289              	 .loc 1 140 0
- 290 0094 00BF     	 nop
- 291              	.L20:
- 292              	 .loc 1 151 0
- 293 0096 46E0     	 b .L12
- 294              	.L16:
+ 318              	 .loc 1 146 5
+ 319 0090 00BF     	 nop
+ 320              	.L20:
+ 321              	 .loc 1 151 3
+ 322 0092 44E0     	 b .L12
+ 323              	.L13:
  152:.././hal/sam3u1c/system_sam3u.c **** 	case PMC_MCKR_CSS_PLLA_CLK:	/* PLLA clock */
  153:.././hal/sam3u1c/system_sam3u.c **** 	case PMC_MCKR_CSS_UPLL_CLK:	/* UPLL clock */
  154:.././hal/sam3u1c/system_sam3u.c **** 		if (PMC->CKGR_MOR & CKGR_MOR_MOSCSEL) {
- 295              	 .loc 1 154 0
- 296 0098 324B     	 ldr r3,.L39
- 297 009a 1B6A     	 ldr r3,[r3,#32]
- 298 009c 03F08073 	 and r3,r3,#16777216
- 299 00a0 002B     	 cmp r3,#0
- 300 00a2 03D0     	 beq .L25
+ 324              	 .loc 1 154 10
+ 325 0094 314B     	 ldr r3,.L35
+ 326 0096 1B6A     	 ldr r3,[r3,#32]
+ 327              	 .loc 1 154 21
+ 328 0098 03F08073 	 and r3,r3,#16777216
+ 329              	 .loc 1 154 6
+ 330 009c 002B     	 cmp r3,#0
+ 331 009e 03D0     	 beq .L24
  155:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock = CHIP_FREQ_XTAL_12M;
- 301              	 .loc 1 155 0
- 302 00a4 314B     	 ldr r3,.L39+8
- 303 00a6 324A     	 ldr r2,.L39+12
- 304 00a8 1A60     	 str r2,[r3]
- 305 00aa 1CE0     	 b .L26
- 306              	.L25:
+ 332              	 .loc 1 155 20
+ 333 00a0 304B     	 ldr r3,.L35+8
+ 334 00a2 314A     	 ldr r2,.L35+12
+ 335 00a4 1A60     	 str r2,[r3]
+ 336 00a6 1AE0     	 b .L25
+ 337              	.L24:
  156:.././hal/sam3u1c/system_sam3u.c **** 		} else {
  157:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock = CHIP_FREQ_MAINCK_RC_4MHZ;
- 307              	 .loc 1 157 0
- 308 00ac 2F4B     	 ldr r3,.L39+8
- 309 00ae 314A     	 ldr r2,.L39+16
- 310 00b0 1A60     	 str r2,[r3]
+ 338              	 .loc 1 157 20
+ 339 00a8 2E4B     	 ldr r3,.L35+8
+ 340 00aa 304A     	 ldr r2,.L35+16
+ 341 00ac 1A60     	 str r2,[r3]
  158:.././hal/sam3u1c/system_sam3u.c **** 
  159:.././hal/sam3u1c/system_sam3u.c **** 			switch (PMC->CKGR_MOR & CKGR_MOR_MOSCRCF_Msk) {
- 311              	 .loc 1 159 0
- 312 00b2 2C4B     	 ldr r3,.L39
- 313 00b4 1B6A     	 ldr r3,[r3,#32]
- 314 00b6 03F07003 	 and r3,r3,#112
- 315 00ba 102B     	 cmp r3,#16
- 316 00bc 04D0     	 beq .L28
- 317 00be 202B     	 cmp r3,#32
- 318 00c0 08D0     	 beq .L29
- 319 00c2 002B     	 cmp r3,#0
- 320 00c4 0ED0     	 beq .L36
+ 342              	 .loc 1 159 15
+ 343 00ae 2B4B     	 ldr r3,.L35
+ 344 00b0 1B6A     	 ldr r3,[r3,#32]
+ 345              	 .loc 1 159 26
+ 346 00b2 03F07003 	 and r3,r3,#112
+ 347 00b6 102B     	 cmp r3,#16
+ 348 00b8 03D0     	 beq .L26
+ 349 00ba 202B     	 cmp r3,#32
+ 350 00bc 07D0     	 beq .L27
+ 351 00be 002B     	 cmp r3,#0
  160:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_4_MHz:
  161:.././hal/sam3u1c/system_sam3u.c **** 				break;
  162:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_8_MHz:
@@ -487,159 +518,166 @@
  167:.././hal/sam3u1c/system_sam3u.c **** 				break;
  168:.././hal/sam3u1c/system_sam3u.c **** 			default:
  169:.././hal/sam3u1c/system_sam3u.c **** 				break;
- 321              	 .loc 1 169 0
- 322 00c6 0EE0     	 b .L26
- 323              	.L28:
+ 352              	 .loc 1 169 5
+ 353 00c0 0DE0     	 b .L25
+ 354              	.L26:
  163:.././hal/sam3u1c/system_sam3u.c **** 				break;
- 324              	 .loc 1 163 0
- 325 00c8 284B     	 ldr r3,.L39+8
- 326 00ca 1B68     	 ldr r3,[r3]
- 327 00cc 5B00     	 lsls r3,r3,#1
- 328 00ce 274A     	 ldr r2,.L39+8
- 329 00d0 1360     	 str r3,[r2]
+ 355              	 .loc 1 163 21
+ 356 00c2 284B     	 ldr r3,.L35+8
+ 357 00c4 1B68     	 ldr r3,[r3]
+ 358 00c6 5B00     	 lsls r3,r3,#1
+ 359 00c8 264A     	 ldr r2,.L35+8
+ 360 00ca 1360     	 str r3,[r2]
  164:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_12_MHz:
- 330              	 .loc 1 164 0
- 331 00d2 08E0     	 b .L26
- 332              	.L29:
+ 361              	 .loc 1 164 5
+ 362 00cc 07E0     	 b .L25
+ 363              	.L27:
  166:.././hal/sam3u1c/system_sam3u.c **** 				break;
- 333              	 .loc 1 166 0
- 334 00d4 254B     	 ldr r3,.L39+8
- 335 00d6 1A68     	 ldr r2,[r3]
- 336 00d8 1346     	 mov r3,r2
- 337 00da 5B00     	 lsls r3,r3,#1
- 338 00dc 1344     	 add r3,r3,r2
- 339 00de 234A     	 ldr r2,.L39+8
- 340 00e0 1360     	 str r3,[r2]
+ 364              	 .loc 1 166 21
+ 365 00ce 254B     	 ldr r3,.L35+8
+ 366 00d0 1A68     	 ldr r2,[r3]
+ 367 00d2 1346     	 mov r3,r2
+ 368 00d4 5B00     	 lsls r3,r3,#1
+ 369 00d6 1344     	 add r3,r3,r2
+ 370 00d8 224A     	 ldr r2,.L35+8
+ 371 00da 1360     	 str r3,[r2]
  167:.././hal/sam3u1c/system_sam3u.c **** 			default:
- 341              	 .loc 1 167 0
- 342 00e2 00E0     	 b .L26
- 343              	.L36:
- 161:.././hal/sam3u1c/system_sam3u.c **** 			case CKGR_MOR_MOSCRCF_8_MHz:
- 344              	 .loc 1 161 0
- 345 00e4 00BF     	 nop
- 346              	.L26:
+ 372              	 .loc 1 167 5
+ 373 00dc 00BF     	 nop
+ 374              	.L25:
  170:.././hal/sam3u1c/system_sam3u.c **** 			}
  171:.././hal/sam3u1c/system_sam3u.c **** 		}
  172:.././hal/sam3u1c/system_sam3u.c **** 		if ((PMC->PMC_MCKR & PMC_MCKR_CSS_Msk) == PMC_MCKR_CSS_PLLA_CLK) {
- 347              	 .loc 1 172 0
- 348 00e6 1F4B     	 ldr r3,.L39
- 349 00e8 1B6B     	 ldr r3,[r3,#48]
- 350 00ea 03F00303 	 and r3,r3,#3
- 351 00ee 022B     	 cmp r3,#2
- 352 00f0 15D1     	 bne .L31
+ 375              	 .loc 1 172 11
+ 376 00de 1F4B     	 ldr r3,.L35
+ 377 00e0 1B6B     	 ldr r3,[r3,#48]
+ 378              	 .loc 1 172 22
+ 379 00e2 03F00303 	 and r3,r3,#3
+ 380              	 .loc 1 172 6
+ 381 00e6 022B     	 cmp r3,#2
+ 382 00e8 15D1     	 bne .L29
  173:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock *= ((((PMC->CKGR_PLLAR) & CKGR_PLLAR_MULA_Msk) >> 
- 353              	 .loc 1 173 0
- 354 00f2 1C4B     	 ldr r3,.L39
- 355 00f4 9B6A     	 ldr r3,[r3,#40]
- 356 00f6 1B0C     	 lsrs r3,r3,#16
- 357 00f8 C3F30A03 	 ubfx r3,r3,#0,#11
+ 383              	 .loc 1 173 30
+ 384 00ea 1C4B     	 ldr r3,.L35
+ 385 00ec 9B6A     	 ldr r3,[r3,#40]
+ 386              	 .loc 1 173 67
+ 387 00ee 1B0C     	 lsrs r3,r3,#16
+ 388 00f0 C3F30A03 	 ubfx r3,r3,#0,#11
  174:.././hal/sam3u1c/system_sam3u.c **** 				                          CKGR_PLLAR_MULA_Pos) + 1U);
- 358              	 .loc 1 174 0
- 359 00fc 0133     	 adds r3,r3,#1
+ 389              	 .loc 1 174 52
+ 390 00f4 0133     	 adds r3,r3,#1
  173:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock *= ((((PMC->CKGR_PLLAR) & CKGR_PLLAR_MULA_Msk) >> 
- 360              	 .loc 1 173 0
- 361 00fe 1B4A     	 ldr r2,.L39+8
- 362 0100 1268     	 ldr r2,[r2]
- 363 0102 02FB03F3 	 mul r3,r2,r3
- 364 0106 194A     	 ldr r2,.L39+8
- 365 0108 1360     	 str r3,[r2]
+ 391              	 .loc 1 173 20
+ 392 00f6 1B4A     	 ldr r2,.L35+8
+ 393 00f8 1268     	 ldr r2,[r2]
+ 394 00fa 02FB03F3 	 mul r3,r2,r3
+ 395 00fe 194A     	 ldr r2,.L35+8
+ 396 0100 1360     	 str r3,[r2]
  175:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock /= ((((PMC->CKGR_PLLAR) & CKGR_PLLAR_DIVA_Msk) >>
- 366              	 .loc 1 175 0
- 367 010a 164B     	 ldr r3,.L39
- 368 010c 9B6A     	 ldr r3,[r3,#40]
- 369 010e DBB2     	 uxtb r3,r3
- 370 0110 164A     	 ldr r2,.L39+8
- 371 0112 1268     	 ldr r2,[r2]
- 372 0114 B2FBF3F3 	 udiv r3,r2,r3
- 373 0118 144A     	 ldr r2,.L39+8
- 374 011a 1360     	 str r3,[r2]
+ 397              	 .loc 1 175 30
+ 398 0102 164B     	 ldr r3,.L35
+ 399 0104 9B6A     	 ldr r3,[r3,#40]
+ 400              	 .loc 1 175 67
+ 401 0106 DBB2     	 uxtb r3,r3
+ 402              	 .loc 1 175 20
+ 403 0108 164A     	 ldr r2,.L35+8
+ 404 010a 1268     	 ldr r2,[r2]
+ 405 010c B2FBF3F3 	 udiv r3,r2,r3
+ 406 0110 144A     	 ldr r2,.L35+8
+ 407 0112 1360     	 str r3,[r2]
  176:.././hal/sam3u1c/system_sam3u.c **** 				                           CKGR_PLLAR_DIVA_Pos));
  177:.././hal/sam3u1c/system_sam3u.c **** 		} else {
  178:.././hal/sam3u1c/system_sam3u.c **** 			SystemCoreClock = SYS_UTMIPLL / 2U;
  179:.././hal/sam3u1c/system_sam3u.c **** 		}
  180:.././hal/sam3u1c/system_sam3u.c **** 		break;
- 375              	 .loc 1 180 0
- 376 011c 02E0     	 b .L37
- 377              	.L31:
+ 408              	 .loc 1 180 3
+ 409 0114 02E0     	 b .L33
+ 410              	.L29:
  178:.././hal/sam3u1c/system_sam3u.c **** 		}
- 378              	 .loc 1 178 0
- 379 011e 134B     	 ldr r3,.L39+8
- 380 0120 154A     	 ldr r2,.L39+20
- 381 0122 1A60     	 str r2,[r3]
- 382              	.L37:
- 383              	 .loc 1 180 0
- 384 0124 00BF     	 nop
- 385              	.L12:
+ 411              	 .loc 1 178 20
+ 412 0116 134B     	 ldr r3,.L35+8
+ 413 0118 154A     	 ldr r2,.L35+20
+ 414 011a 1A60     	 str r2,[r3]
+ 415              	.L33:
+ 416              	 .loc 1 180 3
+ 417 011c 00BF     	 nop
+ 418              	.L12:
  181:.././hal/sam3u1c/system_sam3u.c **** 	}
  182:.././hal/sam3u1c/system_sam3u.c **** 
  183:.././hal/sam3u1c/system_sam3u.c **** 	if ((PMC->PMC_MCKR & PMC_MCKR_PRES_Msk) == PMC_MCKR_PRES_CLK_3) {
- 386              	 .loc 1 183 0
- 387 0126 0F4B     	 ldr r3,.L39
- 388 0128 1B6B     	 ldr r3,[r3,#48]
- 389 012a 03F07003 	 and r3,r3,#112
- 390 012e 702B     	 cmp r3,#112
- 391 0130 08D1     	 bne .L33
+ 419              	 .loc 1 183 10
+ 420 011e 0F4B     	 ldr r3,.L35
+ 421 0120 1B6B     	 ldr r3,[r3,#48]
+ 422              	 .loc 1 183 21
+ 423 0122 03F07003 	 and r3,r3,#112
+ 424              	 .loc 1 183 5
+ 425 0126 702B     	 cmp r3,#112
+ 426 0128 08D1     	 bne .L31
  184:.././hal/sam3u1c/system_sam3u.c **** 		SystemCoreClock /= 3U;
- 392              	 .loc 1 184 0
- 393 0132 0E4B     	 ldr r3,.L39+8
- 394 0134 1B68     	 ldr r3,[r3]
- 395 0136 114A     	 ldr r2,.L39+24
- 396 0138 A2FB0323 	 umull r2,r3,r2,r3
- 397 013c 5B08     	 lsrs r3,r3,#1
- 398 013e 0B4A     	 ldr r2,.L39+8
- 399 0140 1360     	 str r3,[r2]
+ 427              	 .loc 1 184 19
+ 428 012a 0E4B     	 ldr r3,.L35+8
+ 429 012c 1B68     	 ldr r3,[r3]
+ 430 012e 114A     	 ldr r2,.L35+24
+ 431 0130 A2FB0323 	 umull r2,r3,r2,r3
+ 432 0134 5B08     	 lsrs r3,r3,#1
+ 433 0136 0B4A     	 ldr r2,.L35+8
+ 434 0138 1360     	 str r3,[r2]
  185:.././hal/sam3u1c/system_sam3u.c **** 	} else {
  186:.././hal/sam3u1c/system_sam3u.c **** 		SystemCoreClock >>= ((PMC->PMC_MCKR & PMC_MCKR_PRES_Msk) >> 
  187:.././hal/sam3u1c/system_sam3u.c **** 			                           PMC_MCKR_PRES_Pos);
  188:.././hal/sam3u1c/system_sam3u.c **** 	}
  189:.././hal/sam3u1c/system_sam3u.c **** }
- 400              	 .loc 1 189 0
- 401 0142 0AE0     	 b .L38
- 402              	.L33:
+ 435              	 .loc 1 189 1
+ 436 013a 0AE0     	 b .L34
+ 437              	.L31:
  186:.././hal/sam3u1c/system_sam3u.c **** 			                           PMC_MCKR_PRES_Pos);
- 403              	 .loc 1 186 0
- 404 0144 074B     	 ldr r3,.L39
- 405 0146 1B6B     	 ldr r3,[r3,#48]
- 406 0148 1B09     	 lsrs r3,r3,#4
- 407 014a 03F00703 	 and r3,r3,#7
- 408 014e 074A     	 ldr r2,.L39+8
- 409 0150 1268     	 ldr r2,[r2]
- 410 0152 22FA03F3 	 lsr r3,r2,r3
- 411 0156 054A     	 ldr r2,.L39+8
- 412 0158 1360     	 str r3,[r2]
- 413              	.L38:
- 414              	 .loc 1 189 0
- 415 015a 00BF     	 nop
- 416 015c BD46     	 mov sp,r7
- 417              	.LCFI6:
- 418              	 .cfi_def_cfa_register 13
- 419              	 
- 420 015e 80BC     	 pop {r7}
- 421              	.LCFI7:
- 422              	 .cfi_restore 7
- 423              	 .cfi_def_cfa_offset 0
- 424 0160 7047     	 bx lr
- 425              	.L40:
- 426 0162 00BF     	 .align 2
- 427              	.L39:
- 428 0164 00040E40 	 .word 1074660352
- 429 0168 10120E40 	 .word 1074663952
- 430 016c 00000000 	 .word SystemCoreClock
- 431 0170 001BB700 	 .word 12000000
- 432 0174 00093D00 	 .word 4000000
- 433 0178 001C4E0E 	 .word 240000000
- 434 017c ABAAAAAA 	 .word -1431655765
- 435              	 .cfi_endproc
- 436              	.LFE70:
- 438              	 .section .ramfunc
- 439              	 .align 1
- 440              	 .global system_init_flash
- 441              	 .syntax unified
- 442              	 .thumb
- 443              	 .thumb_func
- 444              	 .fpu softvfp
- 446              	system_init_flash:
- 447              	.LFB71:
+ 438              	 .loc 1 186 28
+ 439 013c 074B     	 ldr r3,.L35
+ 440 013e 1B6B     	 ldr r3,[r3,#48]
+ 186:.././hal/sam3u1c/system_sam3u.c **** 			                           PMC_MCKR_PRES_Pos);
+ 441              	 .loc 1 186 60
+ 442 0140 1B09     	 lsrs r3,r3,#4
+ 443 0142 03F00703 	 and r3,r3,#7
+ 186:.././hal/sam3u1c/system_sam3u.c **** 			                           PMC_MCKR_PRES_Pos);
+ 444              	 .loc 1 186 19
+ 445 0146 074A     	 ldr r2,.L35+8
+ 446 0148 1268     	 ldr r2,[r2]
+ 447 014a 22FA03F3 	 lsr r3,r2,r3
+ 448 014e 054A     	 ldr r2,.L35+8
+ 449 0150 1360     	 str r3,[r2]
+ 450              	.L34:
+ 451              	 .loc 1 189 1
+ 452 0152 00BF     	 nop
+ 453 0154 BD46     	 mov sp,r7
+ 454              	.LCFI6:
+ 455              	 .cfi_def_cfa_register 13
+ 456              	 
+ 457 0156 80BC     	 pop {r7}
+ 458              	.LCFI7:
+ 459              	 .cfi_restore 7
+ 460              	 .cfi_def_cfa_offset 0
+ 461 0158 7047     	 bx lr
+ 462              	.L36:
+ 463 015a 00BF     	 .align 2
+ 464              	.L35:
+ 465 015c 00040E40 	 .word 1074660352
+ 466 0160 10120E40 	 .word 1074663952
+ 467 0164 00000000 	 .word SystemCoreClock
+ 468 0168 001BB700 	 .word 12000000
+ 469 016c 00093D00 	 .word 4000000
+ 470 0170 001C4E0E 	 .word 240000000
+ 471 0174 ABAAAAAA 	 .word -1431655765
+ 472              	 .cfi_endproc
+ 473              	.LFE70:
+ 475              	 .section .ramfunc
+ 476              	 .align 1
+ 477              	 .global system_init_flash
+ 478              	 .syntax unified
+ 479              	 .thumb
+ 480              	 .thumb_func
+ 481              	 .fpu softvfp
+ 483              	system_init_flash:
+ 484              	.LFB71:
  190:.././hal/sam3u1c/system_sam3u.c **** 
  191:.././hal/sam3u1c/system_sam3u.c **** /** 
  192:.././hal/sam3u1c/system_sam3u.c ****  * Initialize flash.
@@ -648,39 +686,41 @@
  195:.././hal/sam3u1c/system_sam3u.c **** RAMFUNC
  196:.././hal/sam3u1c/system_sam3u.c **** void system_init_flash(uint32_t ul_clk)
  197:.././hal/sam3u1c/system_sam3u.c **** {
- 448              	 .loc 1 197 0
- 449              	 .cfi_startproc
- 450              	 
- 451              	 
- 452              	 
- 453 00d0 80B4     	 push {r7}
- 454              	.LCFI8:
- 455              	 .cfi_def_cfa_offset 4
- 456              	 .cfi_offset 7,-4
- 457 00d2 83B0     	 sub sp,sp,#12
- 458              	.LCFI9:
- 459              	 .cfi_def_cfa_offset 16
- 460 00d4 00AF     	 add r7,sp,#0
- 461              	.LCFI10:
- 462              	 .cfi_def_cfa_register 7
- 463 00d6 7860     	 str r0,[r7,#4]
+ 485              	 .loc 1 197 1
+ 486              	 .cfi_startproc
+ 487              	 
+ 488              	 
+ 489              	 
+ 490 00d0 80B4     	 push {r7}
+ 491              	.LCFI8:
+ 492              	 .cfi_def_cfa_offset 4
+ 493              	 .cfi_offset 7,-4
+ 494 00d2 83B0     	 sub sp,sp,#12
+ 495              	.LCFI9:
+ 496              	 .cfi_def_cfa_offset 16
+ 497 00d4 00AF     	 add r7,sp,#0
+ 498              	.LCFI10:
+ 499              	 .cfi_def_cfa_register 7
+ 500 00d6 7860     	 str r0,[r7,#4]
  198:.././hal/sam3u1c/system_sam3u.c **** 	/* Set FWS for embedded Flash access according to operating frequency */
  199:.././hal/sam3u1c/system_sam3u.c **** 	if (ul_clk < CHIP_FREQ_FWS_0) {
- 464              	 .loc 1 199 0
- 465 00d8 7B68     	 ldr r3,[r7,#4]
- 466 00da 1F4A     	 ldr r2,.L48
- 467 00dc 9342     	 cmp r3,r2
- 468 00de 06D8     	 bhi .L42
+ 501              	 .loc 1 199 5
+ 502 00d8 7B68     	 ldr r3,[r7,#4]
+ 503 00da 1F4A     	 ldr r2,.L44
+ 504 00dc 9342     	 cmp r3,r2
+ 505 00de 06D8     	 bhi .L38
  200:.././hal/sam3u1c/system_sam3u.c **** 		EFC0->EEFC_FMR = EEFC_FMR_FWS(0);
- 469              	 .loc 1 200 0
- 470 00e0 1E4B     	 ldr r3,.L48+4
- 471 00e2 0022     	 movs r2,#0
- 472 00e4 1A60     	 str r2,[r3]
+ 506              	 .loc 1 200 7
+ 507 00e0 1E4B     	 ldr r3,.L44+4
+ 508              	 .loc 1 200 18
+ 509 00e2 0022     	 movs r2,#0
+ 510 00e4 1A60     	 str r2,[r3]
  201:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(0);
- 473              	 .loc 1 201 0
- 474 00e6 1E4B     	 ldr r3,.L48+8
- 475 00e8 0022     	 movs r2,#0
- 476 00ea 1A60     	 str r2,[r3]
+ 511              	 .loc 1 201 7
+ 512 00e6 1E4B     	 ldr r3,.L44+8
+ 513              	 .loc 1 201 18
+ 514 00e8 0022     	 movs r2,#0
+ 515 00ea 1A60     	 str r2,[r3]
  202:.././hal/sam3u1c/system_sam3u.c **** 	} else if (ul_clk < CHIP_FREQ_FWS_1) {
  203:.././hal/sam3u1c/system_sam3u.c **** 		EFC0->EEFC_FMR = EEFC_FMR_FWS(1);
  204:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(1);
@@ -695,118 +735,134 @@
  213:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(4);
  214:.././hal/sam3u1c/system_sam3u.c **** 	}
  215:.././hal/sam3u1c/system_sam3u.c **** }
- 477              	 .loc 1 215 0
- 478 00ec 2EE0     	 b .L47
- 479              	.L42:
+ 516              	 .loc 1 215 1
+ 517 00ec 2EE0     	 b .L43
+ 518              	.L38:
  202:.././hal/sam3u1c/system_sam3u.c **** 	} else if (ul_clk < CHIP_FREQ_FWS_1) {
- 480              	 .loc 1 202 0
- 481 00ee 7B68     	 ldr r3,[r7,#4]
- 482 00f0 1C4A     	 ldr r2,.L48+12
- 483 00f2 9342     	 cmp r3,r2
- 484 00f4 08D8     	 bhi .L44
+ 519              	 .loc 1 202 12
+ 520 00ee 7B68     	 ldr r3,[r7,#4]
+ 521 00f0 1C4A     	 ldr r2,.L44+12
+ 522 00f2 9342     	 cmp r3,r2
+ 523 00f4 08D8     	 bhi .L40
  203:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(1);
- 485              	 .loc 1 203 0
- 486 00f6 194B     	 ldr r3,.L48+4
- 487 00f8 4FF48072 	 mov r2,#256
- 488 00fc 1A60     	 str r2,[r3]
+ 524              	 .loc 1 203 7
+ 525 00f6 194B     	 ldr r3,.L44+4
+ 203:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(1);
+ 526              	 .loc 1 203 18
+ 527 00f8 4FF48072 	 mov r2,#256
+ 528 00fc 1A60     	 str r2,[r3]
  204:.././hal/sam3u1c/system_sam3u.c **** 	} else if (ul_clk < CHIP_FREQ_FWS_2) {
- 489              	 .loc 1 204 0
- 490 00fe 184B     	 ldr r3,.L48+8
- 491 0100 4FF48072 	 mov r2,#256
- 492 0104 1A60     	 str r2,[r3]
- 493              	 .loc 1 215 0
- 494 0106 21E0     	 b .L47
- 495              	.L44:
+ 529              	 .loc 1 204 7
+ 530 00fe 184B     	 ldr r3,.L44+8
+ 204:.././hal/sam3u1c/system_sam3u.c **** 	} else if (ul_clk < CHIP_FREQ_FWS_2) {
+ 531              	 .loc 1 204 18
+ 532 0100 4FF48072 	 mov r2,#256
+ 533 0104 1A60     	 str r2,[r3]
+ 534              	 .loc 1 215 1
+ 535 0106 21E0     	 b .L43
+ 536              	.L40:
  205:.././hal/sam3u1c/system_sam3u.c **** 		EFC0->EEFC_FMR = EEFC_FMR_FWS(2);
- 496              	 .loc 1 205 0
- 497 0108 7B68     	 ldr r3,[r7,#4]
- 498 010a 174A     	 ldr r2,.L48+16
- 499 010c 9342     	 cmp r3,r2
- 500 010e 08D8     	 bhi .L45
+ 537              	 .loc 1 205 12
+ 538 0108 7B68     	 ldr r3,[r7,#4]
+ 539 010a 174A     	 ldr r2,.L44+16
+ 540 010c 9342     	 cmp r3,r2
+ 541 010e 08D8     	 bhi .L41
  206:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(2);
- 501              	 .loc 1 206 0
- 502 0110 124B     	 ldr r3,.L48+4
- 503 0112 4FF40072 	 mov r2,#512
- 504 0116 1A60     	 str r2,[r3]
+ 542              	 .loc 1 206 7
+ 543 0110 124B     	 ldr r3,.L44+4
+ 206:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(2);
+ 544              	 .loc 1 206 18
+ 545 0112 4FF40072 	 mov r2,#512
+ 546 0116 1A60     	 str r2,[r3]
  207:.././hal/sam3u1c/system_sam3u.c **** 	} else if (ul_clk < CHIP_FREQ_FWS_3) {
- 505              	 .loc 1 207 0
- 506 0118 114B     	 ldr r3,.L48+8
- 507 011a 4FF40072 	 mov r2,#512
- 508 011e 1A60     	 str r2,[r3]
- 509              	 .loc 1 215 0
- 510 0120 14E0     	 b .L47
- 511              	.L45:
+ 547              	 .loc 1 207 7
+ 548 0118 114B     	 ldr r3,.L44+8
+ 207:.././hal/sam3u1c/system_sam3u.c **** 	} else if (ul_clk < CHIP_FREQ_FWS_3) {
+ 549              	 .loc 1 207 18
+ 550 011a 4FF40072 	 mov r2,#512
+ 551 011e 1A60     	 str r2,[r3]
+ 552              	 .loc 1 215 1
+ 553 0120 14E0     	 b .L43
+ 554              	.L41:
  208:.././hal/sam3u1c/system_sam3u.c **** 		EFC0->EEFC_FMR = EEFC_FMR_FWS(3);
- 512              	 .loc 1 208 0
- 513 0122 7B68     	 ldr r3,[r7,#4]
- 514 0124 114A     	 ldr r2,.L48+20
- 515 0126 9342     	 cmp r3,r2
- 516 0128 08D8     	 bhi .L46
+ 555              	 .loc 1 208 12
+ 556 0122 7B68     	 ldr r3,[r7,#4]
+ 557 0124 114A     	 ldr r2,.L44+20
+ 558 0126 9342     	 cmp r3,r2
+ 559 0128 08D8     	 bhi .L42
  209:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(3);
- 517              	 .loc 1 209 0
- 518 012a 0C4B     	 ldr r3,.L48+4
- 519 012c 4FF44072 	 mov r2,#768
- 520 0130 1A60     	 str r2,[r3]
+ 560              	 .loc 1 209 7
+ 561 012a 0C4B     	 ldr r3,.L44+4
+ 209:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(3);
+ 562              	 .loc 1 209 18
+ 563 012c 4FF44072 	 mov r2,#768
+ 564 0130 1A60     	 str r2,[r3]
  210:.././hal/sam3u1c/system_sam3u.c **** 	} else {
- 521              	 .loc 1 210 0
- 522 0132 0B4B     	 ldr r3,.L48+8
- 523 0134 4FF44072 	 mov r2,#768
- 524 0138 1A60     	 str r2,[r3]
- 525              	 .loc 1 215 0
- 526 013a 07E0     	 b .L47
- 527              	.L46:
+ 565              	 .loc 1 210 7
+ 566 0132 0B4B     	 ldr r3,.L44+8
+ 210:.././hal/sam3u1c/system_sam3u.c **** 	} else {
+ 567              	 .loc 1 210 18
+ 568 0134 4FF44072 	 mov r2,#768
+ 569 0138 1A60     	 str r2,[r3]
+ 570              	 .loc 1 215 1
+ 571 013a 07E0     	 b .L43
+ 572              	.L42:
  212:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(4);
- 528              	 .loc 1 212 0
- 529 013c 074B     	 ldr r3,.L48+4
- 530 013e 4FF48062 	 mov r2,#1024
- 531 0142 1A60     	 str r2,[r3]
+ 573              	 .loc 1 212 7
+ 574 013c 074B     	 ldr r3,.L44+4
+ 212:.././hal/sam3u1c/system_sam3u.c **** 		EFC1->EEFC_FMR = EEFC_FMR_FWS(4);
+ 575              	 .loc 1 212 18
+ 576 013e 4FF48062 	 mov r2,#1024
+ 577 0142 1A60     	 str r2,[r3]
  213:.././hal/sam3u1c/system_sam3u.c **** 	}
- 532              	 .loc 1 213 0
- 533 0144 064B     	 ldr r3,.L48+8
- 534 0146 4FF48062 	 mov r2,#1024
- 535 014a 1A60     	 str r2,[r3]
- 536              	.L47:
- 537              	 .loc 1 215 0
- 538 014c 00BF     	 nop
- 539 014e 0C37     	 adds r7,r7,#12
- 540              	.LCFI11:
- 541              	 .cfi_def_cfa_offset 4
- 542 0150 BD46     	 mov sp,r7
- 543              	.LCFI12:
- 544              	 .cfi_def_cfa_register 13
- 545              	 
- 546 0152 80BC     	 pop {r7}
- 547              	.LCFI13:
- 548              	 .cfi_restore 7
- 549              	 .cfi_def_cfa_offset 0
- 550 0154 7047     	 bx lr
- 551              	.L49:
- 552 0156 00BF     	 .align 2
- 553              	.L48:
- 554 0158 FF356E01 	 .word 23999999
- 555 015c 00080E40 	 .word 1074661376
- 556 0160 000A0E40 	 .word 1074661888
- 557 0164 FF596202 	 .word 39999999
- 558 0168 FFA14A04 	 .word 71999999
- 559 016c FFBC0105 	 .word 83999999
- 560              	 .cfi_endproc
- 561              	.LFE71:
- 563              	 .text
- 564              	.Letext0:
- 565              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 566              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 567              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
- 568              	 .file 5 ".././hal/sam3u1c/inc/component/component_efc.h"
- 569              	 .file 6 ".././hal/sam3u1c/inc/component/component_pmc.h"
- 570              	 .file 7 ".././hal/sam3u1c/inc/component/component_supc.h"
- 571              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 572              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 573              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 574              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 575              	 .file 12 ".././hal/sam3u1c/inc/core_cm3.h"
- 576              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 577              	 .file 14 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 578              	 .file 15 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 578              	 .loc 1 213 7
+ 579 0144 064B     	 ldr r3,.L44+8
+ 213:.././hal/sam3u1c/system_sam3u.c **** 	}
+ 580              	 .loc 1 213 18
+ 581 0146 4FF48062 	 mov r2,#1024
+ 582 014a 1A60     	 str r2,[r3]
+ 583              	.L43:
+ 584              	 .loc 1 215 1
+ 585 014c 00BF     	 nop
+ 586 014e 0C37     	 adds r7,r7,#12
+ 587              	.LCFI11:
+ 588              	 .cfi_def_cfa_offset 4
+ 589 0150 BD46     	 mov sp,r7
+ 590              	.LCFI12:
+ 591              	 .cfi_def_cfa_register 13
+ 592              	 
+ 593 0152 80BC     	 pop {r7}
+ 594              	.LCFI13:
+ 595              	 .cfi_restore 7
+ 596              	 .cfi_def_cfa_offset 0
+ 597 0154 7047     	 bx lr
+ 598              	.L45:
+ 599 0156 00BF     	 .align 2
+ 600              	.L44:
+ 601 0158 FF356E01 	 .word 23999999
+ 602 015c 00080E40 	 .word 1074661376
+ 603 0160 000A0E40 	 .word 1074661888
+ 604 0164 FF596202 	 .word 39999999
+ 605 0168 FFA14A04 	 .word 71999999
+ 606 016c FFBC0105 	 .word 83999999
+ 607              	 .cfi_endproc
+ 608              	.LFE71:
+ 610              	 .text
+ 611              	.Letext0:
+ 612              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 613              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 614              	 .file 4 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 615              	 .file 5 ".././hal/sam3u1c/inc/component/component_efc.h"
+ 616              	 .file 6 ".././hal/sam3u1c/inc/component/component_pmc.h"
+ 617              	 .file 7 ".././hal/sam3u1c/inc/component/component_supc.h"
+ 618              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 619              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 620              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 621              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 622              	 .file 12 ".././hal/sam3u1c/inc/core_cm3.h"
+ 623              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 624              	 .file 14 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 625              	 .file 15 ".././hal/sam3u1c/inc/system_sam3u.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 system_sam3u.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -816,17 +872,17 @@ DEFINED SYMBOLS
     {standard input}:31     .data.SystemCoreClock:00000000 SystemCoreClock
     {standard input}:28     .data.SystemCoreClock:00000000 $d
     {standard input}:34     .ramfunc:00000000 $t
-    {standard input}:41     .ramfunc:00000000 SystemInit
-    {standard input}:170    .ramfunc:000000b0 $d
-    {standard input}:182    .text.SystemCoreClockUpdate:00000000 $t
-    {standard input}:189    .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
-    {standard input}:213    .text.SystemCoreClockUpdate:00000018 $d
-    {standard input}:217    .text.SystemCoreClockUpdate:00000028 $t
-    {standard input}:428    .text.SystemCoreClockUpdate:00000164 $d
-    {standard input}:439    .ramfunc:000000d0 $t
-    {standard input}:446    .ramfunc:000000d0 system_init_flash
-    {standard input}:554    .ramfunc:00000158 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:42     .ramfunc:00000000 SystemInit
+    {standard input}:196    .ramfunc:000000b0 $d
+    {standard input}:208    .text.SystemCoreClockUpdate:00000000 $t
+    {standard input}:215    .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
+    {standard input}:241    .text.SystemCoreClockUpdate:00000018 $d
+    {standard input}:245    .text.SystemCoreClockUpdate:00000028 $t
+    {standard input}:465    .text.SystemCoreClockUpdate:0000015c $d
+    {standard input}:476    .ramfunc:000000d0 $t
+    {standard input}:483    .ramfunc:000000d0 system_init_flash
+    {standard input}:601    .ramfunc:00000158 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
                            .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
                            .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
@@ -900,12 +956,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

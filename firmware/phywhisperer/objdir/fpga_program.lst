@@ -21,13 +21,14 @@
   25 0000 00       	 .space 1
   26              	 .section .text.osc_get_rate,"ax",%progbits
   27              	 .align 1
-  28              	 .syntax unified
-  29              	 .thumb
-  30              	 .thumb_func
-  31              	 .fpu softvfp
-  33              	osc_get_rate:
-  34              	.LFB72:
-  35              	 .file 1 ".././hal/sam3u1c/inc/sam3u/osc.h"
+  28              	 .arch armv7-m
+  29              	 .syntax unified
+  30              	 .thumb
+  31              	 .thumb_func
+  32              	 .fpu softvfp
+  34              	osc_get_rate:
+  35              	.LFB72:
+  36              	 .file 1 ".././hal/sam3u1c/inc/sam3u/osc.h"
    1:.././hal/sam3u1c/inc/sam3u/osc.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/osc.h ****  * \file
    3:.././hal/sam3u1c/inc/sam3u/osc.h ****  *
@@ -231,134 +232,134 @@
  201:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  202:.././hal/sam3u1c/inc/sam3u/osc.h **** static inline uint32_t osc_get_rate(uint32_t ul_id)
  203:.././hal/sam3u1c/inc/sam3u/osc.h **** {
-  36              	 .loc 1 203 0
-  37              	 .cfi_startproc
-  38              	 
+  37              	 .loc 1 203 1
+  38              	 .cfi_startproc
   39              	 
   40              	 
-  41 0000 80B4     	 push {r7}
-  42              	.LCFI0:
-  43              	 .cfi_def_cfa_offset 4
-  44              	 .cfi_offset 7,-4
-  45 0002 83B0     	 sub sp,sp,#12
-  46              	.LCFI1:
-  47              	 .cfi_def_cfa_offset 16
-  48 0004 00AF     	 add r7,sp,#0
-  49              	.LCFI2:
-  50              	 .cfi_def_cfa_register 7
-  51 0006 7860     	 str r0,[r7,#4]
+  41              	 
+  42 0000 80B4     	 push {r7}
+  43              	.LCFI0:
+  44              	 .cfi_def_cfa_offset 4
+  45              	 .cfi_offset 7,-4
+  46 0002 83B0     	 sub sp,sp,#12
+  47              	.LCFI1:
+  48              	 .cfi_def_cfa_offset 16
+  49 0004 00AF     	 add r7,sp,#0
+  50              	.LCFI2:
+  51              	 .cfi_def_cfa_register 7
+  52 0006 7860     	 str r0,[r7,#4]
  204:.././hal/sam3u1c/inc/sam3u/osc.h **** 	switch (ul_id) {
-  52              	 .loc 1 204 0
-  53 0008 7B68     	 ldr r3,[r7,#4]
-  54 000a 072B     	 cmp r3,#7
-  55 000c 23D8     	 bhi .L2
-  56 000e 01A2     	 adr r2,.L4
-  57 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
-  58              	 .p2align 2
-  59              	.L4:
-  60 0014 35000000 	 .word .L3+1
-  61 0018 3B000000 	 .word .L5+1
-  62 001c 3F000000 	 .word .L6+1
-  63 0020 43000000 	 .word .L7+1
-  64 0024 47000000 	 .word .L8+1
-  65 0028 4B000000 	 .word .L9+1
-  66 002c 4F000000 	 .word .L10+1
-  67 0030 53000000 	 .word .L11+1
-  68              	 .p2align 1
-  69              	.L3:
+  53              	 .loc 1 204 2
+  54 0008 7B68     	 ldr r3,[r7,#4]
+  55 000a 072B     	 cmp r3,#7
+  56 000c 23D8     	 bhi .L2
+  57 000e 01A2     	 adr r2,.L4
+  58 0010 52F823F0 	 ldr pc,[r2,r3,lsl#2]
+  59              	 .p2align 2
+  60              	.L4:
+  61 0014 35000000 	 .word .L11+1
+  62 0018 3B000000 	 .word .L10+1
+  63 001c 3F000000 	 .word .L9+1
+  64 0020 43000000 	 .word .L8+1
+  65 0024 47000000 	 .word .L7+1
+  66 0028 4B000000 	 .word .L6+1
+  67 002c 4F000000 	 .word .L5+1
+  68 0030 53000000 	 .word .L3+1
+  69              	 .p2align 1
+  70              	.L11:
  205:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_RC:
  206:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_SLCK_32K_RC_HZ;
-  70              	 .loc 1 206 0
-  71 0034 4FF4FA43 	 mov r3,#32000
-  72 0038 0EE0     	 b .L12
-  73              	.L5:
+  71              	 .loc 1 206 10
+  72 0034 4FF4FA43 	 mov r3,#32000
+  73 0038 0EE0     	 b .L12
+  74              	.L10:
  207:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  208:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_XTAL:
  209:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_SLCK_XTAL;
-  74              	 .loc 1 209 0
-  75 003a 0023     	 movs r3,#0
-  76 003c 0CE0     	 b .L12
-  77              	.L6:
+  75              	 .loc 1 209 10
+  76 003a 0023     	 movs r3,#0
+  77 003c 0CE0     	 b .L12
+  78              	.L9:
  210:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  211:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_SLCK_32K_BYPASS:
  212:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_SLCK_BYPASS;
-  78              	 .loc 1 212 0
-  79 003e 0023     	 movs r3,#0
-  80 0040 0AE0     	 b .L12
-  81              	.L7:
+  79              	 .loc 1 212 10
+  80 003e 0023     	 movs r3,#0
+  81 0040 0AE0     	 b .L12
+  82              	.L8:
  213:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  214:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_4M_RC:
  215:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_MAINCK_4M_RC_HZ;
-  82              	 .loc 1 215 0
-  83 0042 084B     	 ldr r3,.L13
-  84 0044 08E0     	 b .L12
-  85              	.L8:
+  83              	 .loc 1 215 10
+  84 0042 084B     	 ldr r3,.L13
+  85 0044 08E0     	 b .L12
+  86              	.L7:
  216:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  217:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_8M_RC:
  218:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_MAINCK_8M_RC_HZ;
-  86              	 .loc 1 218 0
-  87 0046 084B     	 ldr r3,.L13+4
-  88 0048 06E0     	 b .L12
-  89              	.L9:
+  87              	 .loc 1 218 10
+  88 0046 084B     	 ldr r3,.L13+4
+  89 0048 06E0     	 b .L12
+  90              	.L6:
  219:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  220:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_12M_RC:
  221:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return OSC_MAINCK_12M_RC_HZ;
-  90              	 .loc 1 221 0
-  91 004a 084B     	 ldr r3,.L13+8
-  92 004c 04E0     	 b .L12
-  93              	.L10:
+  91              	 .loc 1 221 10
+  92 004a 084B     	 ldr r3,.L13+8
+  93 004c 04E0     	 b .L12
+  94              	.L5:
  222:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  223:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_XTAL:
  224:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_MAINCK_XTAL;
-  94              	 .loc 1 224 0
-  95 004e 074B     	 ldr r3,.L13+8
-  96 0050 02E0     	 b .L12
-  97              	.L11:
+  95              	 .loc 1 224 10
+  96 004e 074B     	 ldr r3,.L13+8
+  97 0050 02E0     	 b .L12
+  98              	.L3:
  225:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  226:.././hal/sam3u1c/inc/sam3u/osc.h **** 	case OSC_MAINCK_BYPASS:
  227:.././hal/sam3u1c/inc/sam3u/osc.h **** 		return BOARD_FREQ_MAINCK_BYPASS;
-  98              	 .loc 1 227 0
-  99 0052 064B     	 ldr r3,.L13+8
- 100 0054 00E0     	 b .L12
- 101              	.L2:
+  99              	 .loc 1 227 10
+ 100 0052 064B     	 ldr r3,.L13+8
+ 101 0054 00E0     	 b .L12
+ 102              	.L2:
  228:.././hal/sam3u1c/inc/sam3u/osc.h **** 	}
  229:.././hal/sam3u1c/inc/sam3u/osc.h **** 
  230:.././hal/sam3u1c/inc/sam3u/osc.h **** 	return 0;
- 102              	 .loc 1 230 0
- 103 0056 0023     	 movs r3,#0
- 104              	.L12:
+ 103              	 .loc 1 230 9
+ 104 0056 0023     	 movs r3,#0
+ 105              	.L12:
  231:.././hal/sam3u1c/inc/sam3u/osc.h **** }
- 105              	 .loc 1 231 0
- 106 0058 1846     	 mov r0,r3
- 107 005a 0C37     	 adds r7,r7,#12
- 108              	.LCFI3:
- 109              	 .cfi_def_cfa_offset 4
- 110 005c BD46     	 mov sp,r7
- 111              	.LCFI4:
- 112              	 .cfi_def_cfa_register 13
- 113              	 
- 114 005e 80BC     	 pop {r7}
- 115              	.LCFI5:
- 116              	 .cfi_restore 7
- 117              	 .cfi_def_cfa_offset 0
- 118 0060 7047     	 bx lr
- 119              	.L14:
- 120 0062 00BF     	 .align 2
- 121              	.L13:
- 122 0064 00093D00 	 .word 4000000
- 123 0068 00127A00 	 .word 8000000
- 124 006c 001BB700 	 .word 12000000
- 125              	 .cfi_endproc
- 126              	.LFE72:
- 128              	 .section .text.sysclk_get_main_hz,"ax",%progbits
- 129              	 .align 1
- 130              	 .syntax unified
- 131              	 .thumb
- 132              	 .thumb_func
- 133              	 .fpu softvfp
- 135              	sysclk_get_main_hz:
- 136              	.LFB83:
- 137              	 .file 2 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
+ 106              	 .loc 1 231 1
+ 107 0058 1846     	 mov r0,r3
+ 108 005a 0C37     	 adds r7,r7,#12
+ 109              	.LCFI3:
+ 110              	 .cfi_def_cfa_offset 4
+ 111 005c BD46     	 mov sp,r7
+ 112              	.LCFI4:
+ 113              	 .cfi_def_cfa_register 13
+ 114              	 
+ 115 005e 80BC     	 pop {r7}
+ 116              	.LCFI5:
+ 117              	 .cfi_restore 7
+ 118              	 .cfi_def_cfa_offset 0
+ 119 0060 7047     	 bx lr
+ 120              	.L14:
+ 121 0062 00BF     	 .align 2
+ 122              	.L13:
+ 123 0064 00093D00 	 .word 4000000
+ 124 0068 00127A00 	 .word 8000000
+ 125 006c 001BB700 	 .word 12000000
+ 126              	 .cfi_endproc
+ 127              	.LFE72:
+ 129              	 .section .text.sysclk_get_main_hz,"ax",%progbits
+ 130              	 .align 1
+ 131              	 .syntax unified
+ 132              	 .thumb
+ 133              	 .thumb_func
+ 134              	 .fpu softvfp
+ 136              	sysclk_get_main_hz:
+ 137              	.LFB83:
+ 138              	 .file 2 ".././hal/sam3u1c/inc/sam3u/sysclk.h"
    1:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
    2:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \file
    3:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  *
@@ -591,18 +592,18 @@
  230:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
  231:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_main_hz(void)
  232:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
- 138              	 .loc 2 232 0
- 139              	 .cfi_startproc
- 140              	 
+ 139              	 .loc 2 232 1
+ 140              	 .cfi_startproc
  141              	 
- 142 0000 80B5     	 push {r7,lr}
- 143              	.LCFI6:
- 144              	 .cfi_def_cfa_offset 8
- 145              	 .cfi_offset 7,-8
- 146              	 .cfi_offset 14,-4
- 147 0002 00AF     	 add r7,sp,#0
- 148              	.LCFI7:
- 149              	 .cfi_def_cfa_register 7
+ 142              	 
+ 143 0000 80B5     	 push {r7,lr}
+ 144              	.LCFI6:
+ 145              	 .cfi_def_cfa_offset 8
+ 146              	 .cfi_offset 7,-8
+ 147              	 .cfi_offset 14,-4
+ 148 0002 00AF     	 add r7,sp,#0
+ 149              	.LCFI7:
+ 150              	 .cfi_def_cfa_register 7
  233:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #if (defined CONFIG_SYSCLK_DEFAULT_RETURNS_SLOW_OSC)
  234:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	if (!sysclk_initialized ) {
  235:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return OSC_MAINCK_4M_RC_HZ;
@@ -630,13 +631,13 @@
  257:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #ifdef CONFIG_PLL0_SOURCE
  258:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	else if (CONFIG_SYSCLK_SOURCE == SYSCLK_SRC_PLLACK) {
  259:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return pll_get_default_rate(0);
- 150              	 .loc 2 259 0
- 151 0004 0620     	 movs r0,#6
- 152 0006 034B     	 ldr r3,.L17
- 153 0008 9847     	 blx r3
- 154              	.LVL0:
- 155 000a 0346     	 mov r3,r0
- 156 000c 1B01     	 lsls r3,r3,#4
+ 151              	 .loc 2 259 10
+ 152 0004 0620     	 movs r0,#6
+ 153 0006 034B     	 ldr r3,.L17
+ 154 0008 9847     	 blx r3
+ 155              	.LVL0:
+ 156 000a 0346     	 mov r3,r0
+ 157 000c 1B01     	 lsls r3,r3,#4
  260:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
  261:.././hal/sam3u1c/inc/sam3u/sysclk.h **** #endif
  262:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
@@ -650,23 +651,23 @@
  270:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		return 0;
  271:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	}
  272:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
- 157              	 .loc 2 272 0
- 158 000e 1846     	 mov r0,r3
- 159 0010 80BD     	 pop {r7,pc}
- 160              	.L18:
- 161 0012 00BF     	 .align 2
- 162              	.L17:
- 163 0014 00000000 	 .word osc_get_rate
- 164              	 .cfi_endproc
- 165              	.LFE83:
- 167              	 .section .text.sysclk_get_cpu_hz,"ax",%progbits
- 168              	 .align 1
- 169              	 .syntax unified
- 170              	 .thumb
- 171              	 .thumb_func
- 172              	 .fpu softvfp
- 174              	sysclk_get_cpu_hz:
- 175              	.LFB84:
+ 158              	 .loc 2 272 1
+ 159 000e 1846     	 mov r0,r3
+ 160 0010 80BD     	 pop {r7,pc}
+ 161              	.L18:
+ 162 0012 00BF     	 .align 2
+ 163              	.L17:
+ 164 0014 00000000 	 .word osc_get_rate
+ 165              	 .cfi_endproc
+ 166              	.LFE83:
+ 168              	 .section .text.sysclk_get_cpu_hz,"ax",%progbits
+ 169              	 .align 1
+ 170              	 .syntax unified
+ 171              	 .thumb
+ 172              	 .thumb_func
+ 173              	 .fpu softvfp
+ 175              	sysclk_get_cpu_hz:
+ 176              	.LFB84:
  273:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
  274:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
  275:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Return the current rate in Hz of the CPU clock
@@ -681,47 +682,48 @@
  284:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
  285:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline uint32_t sysclk_get_cpu_hz(void)
  286:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
- 176              	 .loc 2 286 0
- 177              	 .cfi_startproc
- 178              	 
+ 177              	 .loc 2 286 1
+ 178              	 .cfi_startproc
  179              	 
- 180 0000 80B5     	 push {r7,lr}
- 181              	.LCFI8:
- 182              	 .cfi_def_cfa_offset 8
- 183              	 .cfi_offset 7,-8
- 184              	 .cfi_offset 14,-4
- 185 0002 00AF     	 add r7,sp,#0
- 186              	.LCFI9:
- 187              	 .cfi_def_cfa_register 7
+ 180              	 
+ 181 0000 80B5     	 push {r7,lr}
+ 182              	.LCFI8:
+ 183              	 .cfi_def_cfa_offset 8
+ 184              	 .cfi_offset 7,-8
+ 185              	 .cfi_offset 14,-4
+ 186 0002 00AF     	 add r7,sp,#0
+ 187              	.LCFI9:
+ 188              	 .cfi_def_cfa_register 7
  287:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* CONFIG_SYSCLK_PRES is the register value for setting the expected */
  288:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	/* prescaler, not an immediate value. */
  289:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	return sysclk_get_main_hz() /
- 188              	 .loc 2 289 0
- 189 0004 024B     	 ldr r3,.L21
- 190 0006 9847     	 blx r3
- 191              	.LVL1:
- 192 0008 0346     	 mov r3,r0
- 193 000a 5B08     	 lsrs r3,r3,#1
+ 189              	 .loc 2 289 9
+ 190 0004 024B     	 ldr r3,.L21
+ 191 0006 9847     	 blx r3
+ 192              	.LVL1:
+ 193 0008 0346     	 mov r3,r0
+ 194              	 .loc 2 289 30
+ 195 000a 5B08     	 lsrs r3,r3,#1
  290:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 		((CONFIG_SYSCLK_PRES == SYSCLK_PRES_3) ? 3 :
  291:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 			(1 << (CONFIG_SYSCLK_PRES >> PMC_MCKR_PRES_Pos)));
  292:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
- 194              	 .loc 2 292 0
- 195 000c 1846     	 mov r0,r3
- 196 000e 80BD     	 pop {r7,pc}
- 197              	.L22:
- 198              	 .align 2
- 199              	.L21:
- 200 0010 00000000 	 .word sysclk_get_main_hz
- 201              	 .cfi_endproc
- 202              	.LFE84:
- 204              	 .section .text.sysclk_enable_peripheral_clock,"ax",%progbits
- 205              	 .align 1
- 206              	 .syntax unified
- 207              	 .thumb
- 208              	 .thumb_func
- 209              	 .fpu softvfp
- 211              	sysclk_enable_peripheral_clock:
- 212              	.LFB87:
+ 196              	 .loc 2 292 1
+ 197 000c 1846     	 mov r0,r3
+ 198 000e 80BD     	 pop {r7,pc}
+ 199              	.L22:
+ 200              	 .align 2
+ 201              	.L21:
+ 202 0010 00000000 	 .word sysclk_get_main_hz
+ 203              	 .cfi_endproc
+ 204              	.LFE84:
+ 206              	 .section .text.sysclk_enable_peripheral_clock,"ax",%progbits
+ 207              	 .align 1
+ 208              	 .syntax unified
+ 209              	 .thumb
+ 210              	 .thumb_func
+ 211              	 .fpu softvfp
+ 213              	sysclk_enable_peripheral_clock:
+ 214              	.LFB87:
  293:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 
  294:.././hal/sam3u1c/inc/sam3u/sysclk.h **** /**
  295:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  * \brief Retrieves the current rate in Hz of the peripheral clocks.
@@ -762,55 +764,55 @@
  330:.././hal/sam3u1c/inc/sam3u/sysclk.h ****  */
  331:.././hal/sam3u1c/inc/sam3u/sysclk.h **** static inline void sysclk_enable_peripheral_clock(uint32_t ul_id)
  332:.././hal/sam3u1c/inc/sam3u/sysclk.h **** {
- 213              	 .loc 2 332 0
- 214              	 .cfi_startproc
- 215              	 
- 216              	 
- 217 0000 80B5     	 push {r7,lr}
- 218              	.LCFI10:
- 219              	 .cfi_def_cfa_offset 8
- 220              	 .cfi_offset 7,-8
- 221              	 .cfi_offset 14,-4
- 222 0002 82B0     	 sub sp,sp,#8
- 223              	.LCFI11:
- 224              	 .cfi_def_cfa_offset 16
- 225 0004 00AF     	 add r7,sp,#0
- 226              	.LCFI12:
- 227              	 .cfi_def_cfa_register 7
- 228 0006 7860     	 str r0,[r7,#4]
+ 215              	 .loc 2 332 1
+ 216              	 .cfi_startproc
+ 217              	 
+ 218              	 
+ 219 0000 80B5     	 push {r7,lr}
+ 220              	.LCFI10:
+ 221              	 .cfi_def_cfa_offset 8
+ 222              	 .cfi_offset 7,-8
+ 223              	 .cfi_offset 14,-4
+ 224 0002 82B0     	 sub sp,sp,#8
+ 225              	.LCFI11:
+ 226              	 .cfi_def_cfa_offset 16
+ 227 0004 00AF     	 add r7,sp,#0
+ 228              	.LCFI12:
+ 229              	 .cfi_def_cfa_register 7
+ 230 0006 7860     	 str r0,[r7,#4]
  333:.././hal/sam3u1c/inc/sam3u/sysclk.h **** 	pmc_enable_periph_clk(ul_id);
- 229              	 .loc 2 333 0
- 230 0008 7868     	 ldr r0,[r7,#4]
- 231 000a 034B     	 ldr r3,.L24
- 232 000c 9847     	 blx r3
- 233              	.LVL2:
+ 231              	 .loc 2 333 2
+ 232 0008 7868     	 ldr r0,[r7,#4]
+ 233 000a 034B     	 ldr r3,.L24
+ 234 000c 9847     	 blx r3
+ 235              	.LVL2:
  334:.././hal/sam3u1c/inc/sam3u/sysclk.h **** }
- 234              	 .loc 2 334 0
- 235 000e 00BF     	 nop
- 236 0010 0837     	 adds r7,r7,#8
- 237              	.LCFI13:
- 238              	 .cfi_def_cfa_offset 8
- 239 0012 BD46     	 mov sp,r7
- 240              	.LCFI14:
- 241              	 .cfi_def_cfa_register 13
- 242              	 
- 243 0014 80BD     	 pop {r7,pc}
- 244              	.L25:
- 245 0016 00BF     	 .align 2
- 246              	.L24:
- 247 0018 00000000 	 .word pmc_enable_periph_clk
- 248              	 .cfi_endproc
- 249              	.LFE87:
- 251              	 .section .text.fpga_program_init,"ax",%progbits
- 252              	 .align 1
- 253              	 .global fpga_program_init
- 254              	 .syntax unified
- 255              	 .thumb
- 256              	 .thumb_func
- 257              	 .fpu softvfp
- 259              	fpga_program_init:
- 260              	.LFB181:
- 261              	 .file 3 "fpga_program.c"
+ 236              	 .loc 2 334 1
+ 237 000e 00BF     	 nop
+ 238 0010 0837     	 adds r7,r7,#8
+ 239              	.LCFI13:
+ 240              	 .cfi_def_cfa_offset 8
+ 241 0012 BD46     	 mov sp,r7
+ 242              	.LCFI14:
+ 243              	 .cfi_def_cfa_register 13
+ 244              	 
+ 245 0014 80BD     	 pop {r7,pc}
+ 246              	.L25:
+ 247 0016 00BF     	 .align 2
+ 248              	.L24:
+ 249 0018 00000000 	 .word pmc_enable_periph_clk
+ 250              	 .cfi_endproc
+ 251              	.LFE87:
+ 253              	 .section .text.fpga_program_init,"ax",%progbits
+ 254              	 .align 1
+ 255              	 .global fpga_program_init
+ 256              	 .syntax unified
+ 257              	 .thumb
+ 258              	 .thumb_func
+ 259              	 .fpu softvfp
+ 261              	fpga_program_init:
+ 262              	.LFB181:
+ 263              	 .file 3 "fpga_program.c"
    1:fpga_program.c **** /*
    2:fpga_program.c ****   Xilinx Spartan 6 FPGA Programming Routines
    3:fpga_program.c **** 
@@ -836,216 +838,217 @@
   23:fpga_program.c **** /* FPGA Programming: Init pins, set to standby state */
   24:fpga_program.c **** void fpga_program_init(void)
   25:fpga_program.c **** {
- 262              	 .loc 3 25 0
- 263              	 .cfi_startproc
- 264              	 
- 265              	 
- 266 0000 80B5     	 push {r7,lr}
- 267              	.LCFI15:
- 268              	 .cfi_def_cfa_offset 8
- 269              	 .cfi_offset 7,-8
- 270              	 .cfi_offset 14,-4
- 271 0002 00AF     	 add r7,sp,#0
- 272              	.LCFI16:
- 273              	 .cfi_def_cfa_register 7
+ 264              	 .loc 3 25 1
+ 265              	 .cfi_startproc
+ 266              	 
+ 267              	 
+ 268 0000 80B5     	 push {r7,lr}
+ 269              	.LCFI15:
+ 270              	 .cfi_def_cfa_offset 8
+ 271              	 .cfi_offset 7,-8
+ 272              	 .cfi_offset 14,-4
+ 273 0002 00AF     	 add r7,sp,#0
+ 274              	.LCFI16:
+ 275              	 .cfi_def_cfa_register 7
   26:fpga_program.c ****     FPGA_NPROG_SETUP();
- 274              	 .loc 3 26 0
- 275 0004 4FF06051 	 mov r1,#939524096
- 276 0008 1420     	 movs r0,#20
- 277 000a 034B     	 ldr r3,.L27
- 278 000c 9847     	 blx r3
- 279              	.LVL3:
+ 276              	 .loc 3 26 5
+ 277 0004 4FF06051 	 mov r1,#939524096
+ 278 0008 1420     	 movs r0,#20
+ 279 000a 034B     	 ldr r3,.L27
+ 280 000c 9847     	 blx r3
+ 281              	.LVL3:
   27:fpga_program.c ****     FPGA_NPROG_HIGH();
- 280              	 .loc 3 27 0
- 281 000e 1420     	 movs r0,#20
- 282 0010 024B     	 ldr r3,.L27+4
- 283 0012 9847     	 blx r3
- 284              	.LVL4:
+ 282              	 .loc 3 27 5
+ 283 000e 1420     	 movs r0,#20
+ 284 0010 024B     	 ldr r3,.L27+4
+ 285 0012 9847     	 blx r3
+ 286              	.LVL4:
   28:fpga_program.c **** }
- 285              	 .loc 3 28 0
- 286 0014 00BF     	 nop
- 287 0016 80BD     	 pop {r7,pc}
- 288              	.L28:
- 289              	 .align 2
- 290              	.L27:
- 291 0018 00000000 	 .word pio_configure_pin
- 292 001c 00000000 	 .word pio_set_pin_high
- 293              	 .cfi_endproc
- 294              	.LFE181:
- 296              	 .section .text.fpga_program_setup1,"ax",%progbits
- 297              	 .align 1
- 298              	 .global fpga_program_setup1
- 299              	 .syntax unified
- 300              	 .thumb
- 301              	 .thumb_func
- 302              	 .fpu softvfp
- 304              	fpga_program_setup1:
- 305              	.LFB182:
+ 287              	 .loc 3 28 1
+ 288 0014 00BF     	 nop
+ 289 0016 80BD     	 pop {r7,pc}
+ 290              	.L28:
+ 291              	 .align 2
+ 292              	.L27:
+ 293 0018 00000000 	 .word pio_configure_pin
+ 294 001c 00000000 	 .word pio_set_pin_high
+ 295              	 .cfi_endproc
+ 296              	.LFE181:
+ 298              	 .section .text.fpga_program_setup1,"ax",%progbits
+ 299              	 .align 1
+ 300              	 .global fpga_program_setup1
+ 301              	 .syntax unified
+ 302              	 .thumb
+ 303              	 .thumb_func
+ 304              	 .fpu softvfp
+ 306              	fpga_program_setup1:
+ 307              	.LFB182:
   29:fpga_program.c **** 
   30:fpga_program.c **** /* FPGA Programming Step 1: Erase FPGA, setup SPI interface */
   31:fpga_program.c **** void fpga_program_setup1(void)
   32:fpga_program.c **** {
- 306              	 .loc 3 32 0
- 307              	 .cfi_startproc
- 308              	 
- 309              	 
- 310 0000 80B5     	 push {r7,lr}
- 311              	.LCFI17:
- 312              	 .cfi_def_cfa_offset 8
- 313              	 .cfi_offset 7,-8
- 314              	 .cfi_offset 14,-4
- 315 0002 84B0     	 sub sp,sp,#16
- 316              	.LCFI18:
- 317              	 .cfi_def_cfa_offset 24
- 318 0004 00AF     	 add r7,sp,#0
- 319              	.LCFI19:
- 320              	 .cfi_def_cfa_register 7
+ 308              	 .loc 3 32 1
+ 309              	 .cfi_startproc
+ 310              	 
+ 311              	 
+ 312 0000 80B5     	 push {r7,lr}
+ 313              	.LCFI17:
+ 314              	 .cfi_def_cfa_offset 8
+ 315              	 .cfi_offset 7,-8
+ 316              	 .cfi_offset 14,-4
+ 317 0002 84B0     	 sub sp,sp,#16
+ 318              	.LCFI18:
+ 319              	 .cfi_def_cfa_offset 24
+ 320 0004 00AF     	 add r7,sp,#0
+ 321              	.LCFI19:
+ 322              	 .cfi_def_cfa_register 7
   33:fpga_program.c ****     /* Init - set program low to erase FPGA */
   34:fpga_program.c ****     FPGA_NPROG_LOW();
- 321              	 .loc 3 34 0
- 322 0006 1420     	 movs r0,#20
- 323 0008 144B     	 ldr r3,.L30
- 324 000a 9847     	 blx r3
- 325              	.LVL5:
+ 323              	 .loc 3 34 5
+ 324 0006 1420     	 movs r0,#20
+ 325 0008 144B     	 ldr r3,.L30
+ 326 000a 9847     	 blx r3
+ 327              	.LVL5:
   35:fpga_program.c **** 
   36:fpga_program.c ****     usart_spi_opt_t spiopts;
   37:fpga_program.c ****     spiopts.baudrate = 10000000UL;
- 326              	 .loc 3 37 0
- 327 000c 144B     	 ldr r3,.L30+4
- 328 000e 3B60     	 str r3,[r7]
+ 328              	 .loc 3 37 22
+ 329 000c 144B     	 ldr r3,.L30+4
+ 330 000e 3B60     	 str r3,[r7]
   38:fpga_program.c ****     spiopts.char_length = US_MR_CHRL_8_BIT;
- 329              	 .loc 3 38 0
- 330 0010 C023     	 movs r3,#192
- 331 0012 7B60     	 str r3,[r7,#4]
+ 331              	 .loc 3 38 25
+ 332 0010 C023     	 movs r3,#192
+ 333 0012 7B60     	 str r3,[r7,#4]
   39:fpga_program.c ****     spiopts.channel_mode = US_MR_CHMODE_NORMAL;
- 332              	 .loc 3 39 0
- 333 0014 0023     	 movs r3,#0
- 334 0016 FB60     	 str r3,[r7,#12]
+ 334              	 .loc 3 39 26
+ 335 0014 0023     	 movs r3,#0
+ 336 0016 FB60     	 str r3,[r7,#12]
   40:fpga_program.c ****     spiopts.spi_mode = SPI_MODE_0;
- 335              	 .loc 3 40 0
- 336 0018 0023     	 movs r3,#0
- 337 001a BB60     	 str r3,[r7,#8]
+ 337              	 .loc 3 40 22
+ 338 0018 0023     	 movs r3,#0
+ 339 001a BB60     	 str r3,[r7,#8]
   41:fpga_program.c **** 
   42:fpga_program.c ****     sysclk_enable_peripheral_clock(FPGA_PROG_USART_ID);
- 338              	 .loc 3 42 0
- 339 001c 0D20     	 movs r0,#13
- 340 001e 114B     	 ldr r3,.L30+8
- 341 0020 9847     	 blx r3
- 342              	.LVL6:
+ 340              	 .loc 3 42 5
+ 341 001c 0D20     	 movs r0,#13
+ 342 001e 114B     	 ldr r3,.L30+8
+ 343 0020 9847     	 blx r3
+ 344              	.LVL6:
   43:fpga_program.c ****     usart_init_spi_master(FPGA_PROG_USART, &spiopts, sysclk_get_cpu_hz());
- 343              	 .loc 3 43 0
- 344 0022 114B     	 ldr r3,.L30+12
- 345 0024 9847     	 blx r3
- 346              	.LVL7:
- 347 0026 0246     	 mov r2,r0
- 348 0028 3B46     	 mov r3,r7
- 349 002a 1946     	 mov r1,r3
- 350 002c 0F48     	 ldr r0,.L30+16
- 351 002e 104B     	 ldr r3,.L30+20
- 352 0030 9847     	 blx r3
- 353              	.LVL8:
+ 345              	 .loc 3 43 5
+ 346 0022 114B     	 ldr r3,.L30+12
+ 347 0024 9847     	 blx r3
+ 348              	.LVL7:
+ 349 0026 0246     	 mov r2,r0
+ 350 0028 3B46     	 mov r3,r7
+ 351 002a 1946     	 mov r1,r3
+ 352 002c 0F48     	 ldr r0,.L30+16
+ 353 002e 104B     	 ldr r3,.L30+20
+ 354 0030 9847     	 blx r3
+ 355              	.LVL8:
   44:fpga_program.c ****     FPGA_DO_SETUP();
- 354              	 .loc 3 44 0
- 355 0032 4FF04051 	 mov r1,#805306368
- 356 0036 1220     	 movs r0,#18
- 357 0038 0E4B     	 ldr r3,.L30+24
- 358 003a 9847     	 blx r3
- 359              	.LVL9:
+ 356              	 .loc 3 44 5
+ 357 0032 4FF04051 	 mov r1,#805306368
+ 358 0036 1220     	 movs r0,#18
+ 359 0038 0E4B     	 ldr r3,.L30+24
+ 360 003a 9847     	 blx r3
+ 361              	.LVL9:
   45:fpga_program.c ****     FPGA_CCLK_SETUP();
- 360              	 .loc 3 45 0
- 361 003c 4FF04051 	 mov r1,#805306368
- 362 0040 1120     	 movs r0,#17
- 363 0042 0C4B     	 ldr r3,.L30+24
- 364 0044 9847     	 blx r3
- 365              	.LVL10:
+ 362              	 .loc 3 45 5
+ 363 003c 4FF04051 	 mov r1,#805306368
+ 364 0040 1120     	 movs r0,#17
+ 365 0042 0C4B     	 ldr r3,.L30+24
+ 366 0044 9847     	 blx r3
+ 367              	.LVL10:
   46:fpga_program.c **** 
   47:fpga_program.c ****     //pin setup doesn't transfer control over to USART, so have to do it manually
   48:fpga_program.c ****     PIOA->PIO_PDR = (1 << PIN_FPGA_DO_GPIO) | (1 << PIN_FPGA_CCLK_GPIO);
- 366              	 .loc 3 48 0
- 367 0046 0C4B     	 ldr r3,.L30+28
- 368 0048 4FF4C022 	 mov r2,#393216
- 369 004c 5A60     	 str r2,[r3,#4]
+ 368              	 .loc 3 48 9
+ 369 0046 0C4B     	 ldr r3,.L30+28
+ 370              	 .loc 3 48 19
+ 371 0048 4FF4C022 	 mov r2,#393216
+ 372 004c 5A60     	 str r2,[r3,#4]
   49:fpga_program.c ****     usart_enable_tx(FPGA_PROG_USART);
- 370              	 .loc 3 49 0
- 371 004e 0748     	 ldr r0,.L30+16
- 372 0050 0A4B     	 ldr r3,.L30+32
- 373 0052 9847     	 blx r3
- 374              	.LVL11:
+ 373              	 .loc 3 49 5
+ 374 004e 0748     	 ldr r0,.L30+16
+ 375 0050 0A4B     	 ldr r3,.L30+32
+ 376 0052 9847     	 blx r3
+ 377              	.LVL11:
   50:fpga_program.c **** }
- 375              	 .loc 3 50 0
- 376 0054 00BF     	 nop
- 377 0056 1037     	 adds r7,r7,#16
- 378              	.LCFI20:
- 379              	 .cfi_def_cfa_offset 8
- 380 0058 BD46     	 mov sp,r7
- 381              	.LCFI21:
- 382              	 .cfi_def_cfa_register 13
- 383              	 
- 384 005a 80BD     	 pop {r7,pc}
- 385              	.L31:
- 386              	 .align 2
- 387              	.L30:
- 388 005c 00000000 	 .word pio_set_pin_low
- 389 0060 80969800 	 .word 10000000
- 390 0064 00000000 	 .word sysclk_enable_peripheral_clock
- 391 0068 00000000 	 .word sysclk_get_cpu_hz
- 392 006c 00000940 	 .word 1074331648
- 393 0070 00000000 	 .word usart_init_spi_master
- 394 0074 00000000 	 .word pio_configure_pin
- 395 0078 000C0E40 	 .word 1074662400
- 396 007c 00000000 	 .word usart_enable_tx
- 397              	 .cfi_endproc
- 398              	.LFE182:
- 400              	 .section .text.fpga_program_setup2,"ax",%progbits
- 401              	 .align 1
- 402              	 .global fpga_program_setup2
- 403              	 .syntax unified
- 404              	 .thumb
- 405              	 .thumb_func
- 406              	 .fpu softvfp
- 408              	fpga_program_setup2:
- 409              	.LFB183:
+ 378              	 .loc 3 50 1
+ 379 0054 00BF     	 nop
+ 380 0056 1037     	 adds r7,r7,#16
+ 381              	.LCFI20:
+ 382              	 .cfi_def_cfa_offset 8
+ 383 0058 BD46     	 mov sp,r7
+ 384              	.LCFI21:
+ 385              	 .cfi_def_cfa_register 13
+ 386              	 
+ 387 005a 80BD     	 pop {r7,pc}
+ 388              	.L31:
+ 389              	 .align 2
+ 390              	.L30:
+ 391 005c 00000000 	 .word pio_set_pin_low
+ 392 0060 80969800 	 .word 10000000
+ 393 0064 00000000 	 .word sysclk_enable_peripheral_clock
+ 394 0068 00000000 	 .word sysclk_get_cpu_hz
+ 395 006c 00000940 	 .word 1074331648
+ 396 0070 00000000 	 .word usart_init_spi_master
+ 397 0074 00000000 	 .word pio_configure_pin
+ 398 0078 000C0E40 	 .word 1074662400
+ 399 007c 00000000 	 .word usart_enable_tx
+ 400              	 .cfi_endproc
+ 401              	.LFE182:
+ 403              	 .section .text.fpga_program_setup2,"ax",%progbits
+ 404              	 .align 1
+ 405              	 .global fpga_program_setup2
+ 406              	 .syntax unified
+ 407              	 .thumb
+ 408              	 .thumb_func
+ 409              	 .fpu softvfp
+ 411              	fpga_program_setup2:
+ 412              	.LFB183:
   51:fpga_program.c **** 
   52:fpga_program.c **** /* FPGA Programming Step 2: Prepare FPGA for receiving programming data */
   53:fpga_program.c **** void fpga_program_setup2(void)
   54:fpga_program.c **** {
- 410              	 .loc 3 54 0
- 411              	 .cfi_startproc
- 412              	 
- 413              	 
- 414 0000 80B5     	 push {r7,lr}
- 415              	.LCFI22:
- 416              	 .cfi_def_cfa_offset 8
- 417              	 .cfi_offset 7,-8
- 418              	 .cfi_offset 14,-4
- 419 0002 00AF     	 add r7,sp,#0
- 420              	.LCFI23:
- 421              	 .cfi_def_cfa_register 7
+ 413              	 .loc 3 54 1
+ 414              	 .cfi_startproc
+ 415              	 
+ 416              	 
+ 417 0000 80B5     	 push {r7,lr}
+ 418              	.LCFI22:
+ 419              	 .cfi_def_cfa_offset 8
+ 420              	 .cfi_offset 7,-8
+ 421              	 .cfi_offset 14,-4
+ 422 0002 00AF     	 add r7,sp,#0
+ 423              	.LCFI23:
+ 424              	 .cfi_def_cfa_register 7
   55:fpga_program.c ****     FPGA_NPROG_HIGH();
- 422              	 .loc 3 55 0
- 423 0004 1420     	 movs r0,#20
- 424 0006 024B     	 ldr r3,.L33
- 425 0008 9847     	 blx r3
- 426              	.LVL12:
+ 425              	 .loc 3 55 5
+ 426 0004 1420     	 movs r0,#20
+ 427 0006 024B     	 ldr r3,.L33
+ 428 0008 9847     	 blx r3
+ 429              	.LVL12:
   56:fpga_program.c **** }
- 427              	 .loc 3 56 0
- 428 000a 00BF     	 nop
- 429 000c 80BD     	 pop {r7,pc}
- 430              	.L34:
- 431 000e 00BF     	 .align 2
- 432              	.L33:
- 433 0010 00000000 	 .word pio_set_pin_high
- 434              	 .cfi_endproc
- 435              	.LFE183:
- 437              	 .section .text.fpga_program_sendbyte,"ax",%progbits
- 438              	 .align 1
- 439              	 .global fpga_program_sendbyte
- 440              	 .syntax unified
- 441              	 .thumb
- 442              	 .thumb_func
- 443              	 .fpu softvfp
- 445              	fpga_program_sendbyte:
- 446              	.LFB184:
+ 430              	 .loc 3 56 1
+ 431 000a 00BF     	 nop
+ 432 000c 80BD     	 pop {r7,pc}
+ 433              	.L34:
+ 434 000e 00BF     	 .align 2
+ 435              	.L33:
+ 436 0010 00000000 	 .word pio_set_pin_high
+ 437              	 .cfi_endproc
+ 438              	.LFE183:
+ 440              	 .section .text.fpga_program_sendbyte,"ax",%progbits
+ 441              	 .align 1
+ 442              	 .global fpga_program_sendbyte
+ 443              	 .syntax unified
+ 444              	 .thumb
+ 445              	 .thumb_func
+ 446              	 .fpu softvfp
+ 448              	fpga_program_sendbyte:
+ 449              	.LFB184:
   57:fpga_program.c **** 
   58:fpga_program.c **** //For debug only
   59:fpga_program.c **** //uint32_t fpga_total_bs_len;
@@ -1053,79 +1056,79 @@
   61:fpga_program.c **** /* FPGA Programming Step 3: Send data until done */
   62:fpga_program.c **** void fpga_program_sendbyte(uint8_t databyte)
   63:fpga_program.c **** {
- 447              	 .loc 3 63 0
- 448              	 .cfi_startproc
- 449              	 
- 450              	 
- 451 0000 80B5     	 push {r7,lr}
- 452              	.LCFI24:
- 453              	 .cfi_def_cfa_offset 8
- 454              	 .cfi_offset 7,-8
- 455              	 .cfi_offset 14,-4
- 456 0002 82B0     	 sub sp,sp,#8
- 457              	.LCFI25:
- 458              	 .cfi_def_cfa_offset 16
- 459 0004 00AF     	 add r7,sp,#0
- 460              	.LCFI26:
- 461              	 .cfi_def_cfa_register 7
- 462 0006 0346     	 mov r3,r0
- 463 0008 FB71     	 strb r3,[r7,#7]
+ 450              	 .loc 3 63 1
+ 451              	 .cfi_startproc
+ 452              	 
+ 453              	 
+ 454 0000 80B5     	 push {r7,lr}
+ 455              	.LCFI24:
+ 456              	 .cfi_def_cfa_offset 8
+ 457              	 .cfi_offset 7,-8
+ 458              	 .cfi_offset 14,-4
+ 459 0002 82B0     	 sub sp,sp,#8
+ 460              	.LCFI25:
+ 461              	 .cfi_def_cfa_offset 16
+ 462 0004 00AF     	 add r7,sp,#0
+ 463              	.LCFI26:
+ 464              	 .cfi_def_cfa_register 7
+ 465 0006 0346     	 mov r3,r0
+ 466 0008 FB71     	 strb r3,[r7,#7]
   64:fpga_program.c ****     //For debug only
   65:fpga_program.c ****     //fpga_total_bs_len++;
   66:fpga_program.c ****     usart_putchar(FPGA_PROG_USART, databyte);
- 464              	 .loc 3 66 0
- 465 000a FB79     	 ldrb r3,[r7,#7]
- 466 000c 1946     	 mov r1,r3
- 467 000e 0348     	 ldr r0,.L36
- 468 0010 034B     	 ldr r3,.L36+4
- 469 0012 9847     	 blx r3
- 470              	.LVL13:
+ 467              	 .loc 3 66 5
+ 468 000a FB79     	 ldrb r3,[r7,#7]
+ 469 000c 1946     	 mov r1,r3
+ 470 000e 0348     	 ldr r0,.L36
+ 471 0010 034B     	 ldr r3,.L36+4
+ 472 0012 9847     	 blx r3
+ 473              	.LVL13:
   67:fpga_program.c **** }
- 471              	 .loc 3 67 0
- 472 0014 00BF     	 nop
- 473 0016 0837     	 adds r7,r7,#8
- 474              	.LCFI27:
- 475              	 .cfi_def_cfa_offset 8
- 476 0018 BD46     	 mov sp,r7
- 477              	.LCFI28:
- 478              	 .cfi_def_cfa_register 13
- 479              	 
- 480 001a 80BD     	 pop {r7,pc}
- 481              	.L37:
- 482              	 .align 2
- 483              	.L36:
- 484 001c 00000940 	 .word 1074331648
- 485 0020 00000000 	 .word usart_putchar
- 486              	 .cfi_endproc
- 487              	.LFE184:
- 489              	 .text
- 490              	.Letext0:
- 491              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 492              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 493              	 .file 6 ".././hal/sam3u1c/inc/sam3u1c.h"
- 494              	 .file 7 ".././hal/sam3u1c/inc/core_cm3.h"
- 495              	 .file 8 ".././hal/sam3u1c/inc/system_sam3u.h"
- 496              	 .file 9 ".././hal/sam3u1c/inc/component/component_pio.h"
- 497              	 .file 10 ".././hal/sam3u1c/inc/component/component_usart.h"
- 498              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 499              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 500              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 501              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 502              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 503              	 .file 16 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 504              	 .file 17 ".././hal/sam3u1c/inc/compiler.h"
- 505              	 .file 18 ".././hal/sam3u1c/inc/sam/sleepmgr.h"
- 506              	 .file 19 ".././hal/sam3u1c/inc/usart.h"
- 507              	 .file 20 "./conf_usb.h"
- 508              	 .file 21 ".././hal/sam3u1c/inc/usb_protocol.h"
- 509              	 .file 22 ".././hal/sam3u1c/inc/udi.h"
- 510              	 .file 23 ".././hal/sam3u1c/inc/udc_desc.h"
- 511              	 .file 24 ".././hal/sam3u1c/inc/udd.h"
- 512              	 .file 25 ".././hal/sam3u1c/inc/udi_vendor.h"
- 513              	 .file 26 "fpga_program.h"
- 514              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
- 515              	 .file 28 ".././hal/sam3u1c/inc/pmc.h"
- 516              	 .file 29 ".././hal/sam3u1c/inc/sam3u/pll.h"
+ 474              	 .loc 3 67 1
+ 475 0014 00BF     	 nop
+ 476 0016 0837     	 adds r7,r7,#8
+ 477              	.LCFI27:
+ 478              	 .cfi_def_cfa_offset 8
+ 479 0018 BD46     	 mov sp,r7
+ 480              	.LCFI28:
+ 481              	 .cfi_def_cfa_register 13
+ 482              	 
+ 483 001a 80BD     	 pop {r7,pc}
+ 484              	.L37:
+ 485              	 .align 2
+ 486              	.L36:
+ 487 001c 00000940 	 .word 1074331648
+ 488 0020 00000000 	 .word usart_putchar
+ 489              	 .cfi_endproc
+ 490              	.LFE184:
+ 492              	 .text
+ 493              	.Letext0:
+ 494              	 .file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 495              	 .file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 496              	 .file 6 ".././hal/sam3u1c/inc/sam3u1c.h"
+ 497              	 .file 7 ".././hal/sam3u1c/inc/core_cm3.h"
+ 498              	 .file 8 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 499              	 .file 9 ".././hal/sam3u1c/inc/component/component_pio.h"
+ 500              	 .file 10 ".././hal/sam3u1c/inc/component/component_usart.h"
+ 501              	 .file 11 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 502              	 .file 12 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 503              	 .file 13 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 504              	 .file 14 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 505              	 .file 15 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 506              	 .file 16 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 507              	 .file 17 ".././hal/sam3u1c/inc/compiler.h"
+ 508              	 .file 18 ".././hal/sam3u1c/inc/sam/sleepmgr.h"
+ 509              	 .file 19 ".././hal/sam3u1c/inc/usart.h"
+ 510              	 .file 20 "./conf_usb.h"
+ 511              	 .file 21 ".././hal/sam3u1c/inc/usb_protocol.h"
+ 512              	 .file 22 ".././hal/sam3u1c/inc/udi.h"
+ 513              	 .file 23 ".././hal/sam3u1c/inc/udc_desc.h"
+ 514              	 .file 24 ".././hal/sam3u1c/inc/udd.h"
+ 515              	 .file 25 ".././hal/sam3u1c/inc/udi_vendor.h"
+ 516              	 .file 26 "fpga_program.h"
+ 517              	 .file 27 ".././hal/sam3u1c/inc/pio.h"
+ 518              	 .file 28 ".././hal/sam3u1c/inc/pmc.h"
+ 519              	 .file 29 ".././hal/sam3u1c/inc/sam3u/pll.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 fpga_program.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -1133,32 +1136,32 @@ DEFINED SYMBOLS
     {standard input}:24     .bss.cpu_irq_prev_interrupt_state:00000000 cpu_irq_prev_interrupt_state
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:27     .text.osc_get_rate:00000000 $t
-    {standard input}:33     .text.osc_get_rate:00000000 osc_get_rate
-    {standard input}:60     .text.osc_get_rate:00000014 $d
-    {standard input}:68     .text.osc_get_rate:00000034 $t
-    {standard input}:122    .text.osc_get_rate:00000064 $d
-    {standard input}:129    .text.sysclk_get_main_hz:00000000 $t
-    {standard input}:135    .text.sysclk_get_main_hz:00000000 sysclk_get_main_hz
-    {standard input}:163    .text.sysclk_get_main_hz:00000014 $d
-    {standard input}:168    .text.sysclk_get_cpu_hz:00000000 $t
-    {standard input}:174    .text.sysclk_get_cpu_hz:00000000 sysclk_get_cpu_hz
-    {standard input}:200    .text.sysclk_get_cpu_hz:00000010 $d
-    {standard input}:205    .text.sysclk_enable_peripheral_clock:00000000 $t
-    {standard input}:211    .text.sysclk_enable_peripheral_clock:00000000 sysclk_enable_peripheral_clock
-    {standard input}:247    .text.sysclk_enable_peripheral_clock:00000018 $d
-    {standard input}:252    .text.fpga_program_init:00000000 $t
-    {standard input}:259    .text.fpga_program_init:00000000 fpga_program_init
-    {standard input}:291    .text.fpga_program_init:00000018 $d
-    {standard input}:297    .text.fpga_program_setup1:00000000 $t
-    {standard input}:304    .text.fpga_program_setup1:00000000 fpga_program_setup1
-    {standard input}:388    .text.fpga_program_setup1:0000005c $d
-    {standard input}:401    .text.fpga_program_setup2:00000000 $t
-    {standard input}:408    .text.fpga_program_setup2:00000000 fpga_program_setup2
-    {standard input}:433    .text.fpga_program_setup2:00000010 $d
-    {standard input}:438    .text.fpga_program_sendbyte:00000000 $t
-    {standard input}:445    .text.fpga_program_sendbyte:00000000 fpga_program_sendbyte
-    {standard input}:484    .text.fpga_program_sendbyte:0000001c $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:34     .text.osc_get_rate:00000000 osc_get_rate
+    {standard input}:61     .text.osc_get_rate:00000014 $d
+    {standard input}:69     .text.osc_get_rate:00000034 $t
+    {standard input}:123    .text.osc_get_rate:00000064 $d
+    {standard input}:130    .text.sysclk_get_main_hz:00000000 $t
+    {standard input}:136    .text.sysclk_get_main_hz:00000000 sysclk_get_main_hz
+    {standard input}:164    .text.sysclk_get_main_hz:00000014 $d
+    {standard input}:169    .text.sysclk_get_cpu_hz:00000000 $t
+    {standard input}:175    .text.sysclk_get_cpu_hz:00000000 sysclk_get_cpu_hz
+    {standard input}:202    .text.sysclk_get_cpu_hz:00000010 $d
+    {standard input}:207    .text.sysclk_enable_peripheral_clock:00000000 $t
+    {standard input}:213    .text.sysclk_enable_peripheral_clock:00000000 sysclk_enable_peripheral_clock
+    {standard input}:249    .text.sysclk_enable_peripheral_clock:00000018 $d
+    {standard input}:254    .text.fpga_program_init:00000000 $t
+    {standard input}:261    .text.fpga_program_init:00000000 fpga_program_init
+    {standard input}:293    .text.fpga_program_init:00000018 $d
+    {standard input}:299    .text.fpga_program_setup1:00000000 $t
+    {standard input}:306    .text.fpga_program_setup1:00000000 fpga_program_setup1
+    {standard input}:391    .text.fpga_program_setup1:0000005c $d
+    {standard input}:404    .text.fpga_program_setup2:00000000 $t
+    {standard input}:411    .text.fpga_program_setup2:00000000 fpga_program_setup2
+    {standard input}:436    .text.fpga_program_setup2:00000010 $d
+    {standard input}:441    .text.fpga_program_sendbyte:00000000 $t
+    {standard input}:448    .text.fpga_program_sendbyte:00000000 fpga_program_sendbyte
+    {standard input}:487    .text.fpga_program_sendbyte:0000001c $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -1232,12 +1235,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

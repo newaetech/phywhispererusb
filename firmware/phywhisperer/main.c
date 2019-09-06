@@ -71,6 +71,9 @@ void phywhisperer_setup_pins(void)
     PIOA->PIO_OER = (1 << F_VB5V) | (1 << F_VBHOST); //enable output mode on VBHOST/VBSNIFF pins
 
     phywhisperer_host_pwr();
+    
+    //Configure FPGA to allow programming via USB
+    fpga_program_init();
 
     /* Enable SMC */
     pmc_enable_periph_clk(ID_SMC);

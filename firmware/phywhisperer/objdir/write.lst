@@ -24,13 +24,14 @@
   28              	 .section .text._write,"ax",%progbits
   29              	 .align 1
   30              	 .weak _write
-  31              	 .syntax unified
-  32              	 .thumb
-  33              	 .thumb_func
-  34              	 .fpu softvfp
-  36              	_write:
-  37              	.LFB69:
-  38              	 .file 1 ".././hal/sam3u1c/write.c"
+  31              	 .arch armv7-m
+  32              	 .syntax unified
+  33              	 .thumb
+  34              	 .thumb_func
+  35              	 .fpu softvfp
+  37              	_write:
+  38              	.LFB69:
+  39              	 .file 1 ".././hal/sam3u1c/write.c"
    1:.././hal/sam3u1c/write.c **** /**
    2:.././hal/sam3u1c/write.c ****  * \file
    3:.././hal/sam3u1c/write.c ****  *
@@ -143,123 +144,126 @@
  110:.././hal/sam3u1c/write.c **** int __attribute__((weak))
  111:.././hal/sam3u1c/write.c **** _write (int file, const char *ptr, int len)
  112:.././hal/sam3u1c/write.c **** {
-  39              	 .loc 1 112 0
-  40              	 .cfi_startproc
-  41              	 
+  40              	 .loc 1 112 1
+  41              	 .cfi_startproc
   42              	 
-  43 0000 80B5     	 push {r7,lr}
-  44              	.LCFI0:
-  45              	 .cfi_def_cfa_offset 8
-  46              	 .cfi_offset 7,-8
-  47              	 .cfi_offset 14,-4
-  48 0002 86B0     	 sub sp,sp,#24
-  49              	.LCFI1:
-  50              	 .cfi_def_cfa_offset 32
-  51 0004 00AF     	 add r7,sp,#0
-  52              	.LCFI2:
-  53              	 .cfi_def_cfa_register 7
-  54 0006 F860     	 str r0,[r7,#12]
-  55 0008 B960     	 str r1,[r7,#8]
-  56 000a 7A60     	 str r2,[r7,#4]
+  43              	 
+  44 0000 80B5     	 push {r7,lr}
+  45              	.LCFI0:
+  46              	 .cfi_def_cfa_offset 8
+  47              	 .cfi_offset 7,-8
+  48              	 .cfi_offset 14,-4
+  49 0002 86B0     	 sub sp,sp,#24
+  50              	.LCFI1:
+  51              	 .cfi_def_cfa_offset 32
+  52 0004 00AF     	 add r7,sp,#0
+  53              	.LCFI2:
+  54              	 .cfi_def_cfa_register 7
+  55 0006 F860     	 str r0,[r7,#12]
+  56 0008 B960     	 str r1,[r7,#8]
+  57 000a 7A60     	 str r2,[r7,#4]
  113:.././hal/sam3u1c/write.c **** 	int nChars = 0;
-  57              	 .loc 1 113 0
-  58 000c 0023     	 movs r3,#0
-  59 000e 7B61     	 str r3,[r7,#20]
+  58              	 .loc 1 113 6
+  59 000c 0023     	 movs r3,#0
+  60 000e 7B61     	 str r3,[r7,#20]
  114:.././hal/sam3u1c/write.c **** 
  115:.././hal/sam3u1c/write.c **** 	if ((file != 1) && (file != 2) && (file!=3)) {
-  60              	 .loc 1 115 0
-  61 0010 FB68     	 ldr r3,[r7,#12]
-  62 0012 012B     	 cmp r3,#1
-  63 0014 1ED0     	 beq .L4
-  64              	 .loc 1 115 0 is_stmt 0 discriminator 1
-  65 0016 FB68     	 ldr r3,[r7,#12]
-  66 0018 022B     	 cmp r3,#2
-  67 001a 1BD0     	 beq .L4
-  68              	 .loc 1 115 0 discriminator 2
-  69 001c FB68     	 ldr r3,[r7,#12]
-  70 001e 032B     	 cmp r3,#3
-  71 0020 18D0     	 beq .L4
+  61              	 .loc 1 115 5
+  62 0010 FB68     	 ldr r3,[r7,#12]
+  63 0012 012B     	 cmp r3,#1
+  64 0014 1ED0     	 beq .L4
+  65              	 .loc 1 115 18 discriminator 1
+  66 0016 FB68     	 ldr r3,[r7,#12]
+  67 0018 022B     	 cmp r3,#2
+  68 001a 1BD0     	 beq .L4
+  69              	 .loc 1 115 33 discriminator 2
+  70 001c FB68     	 ldr r3,[r7,#12]
+  71 001e 032B     	 cmp r3,#3
+  72 0020 18D0     	 beq .L4
  116:.././hal/sam3u1c/write.c **** 		return -1;
-  72              	 .loc 1 116 0 is_stmt 1
-  73 0022 4FF0FF33 	 mov r3,#-1
-  74 0026 19E0     	 b .L3
-  75              	.L6:
+  73              	 .loc 1 116 10
+  74 0022 4FF0FF33 	 mov r3,#-1
+  75 0026 19E0     	 b .L3
+  76              	.L6:
  117:.././hal/sam3u1c/write.c **** 	}
  118:.././hal/sam3u1c/write.c **** 
  119:.././hal/sam3u1c/write.c **** 	for (; len != 0; --len) {
  120:.././hal/sam3u1c/write.c **** 		if (ptr_put(stdio_base, *ptr++) < 0) {
-  76              	 .loc 1 120 0
-  77 0028 0E4B     	 ldr r3,.L7
-  78 002a 1A68     	 ldr r2,[r3]
-  79 002c 0E4B     	 ldr r3,.L7+4
-  80 002e 1868     	 ldr r0,[r3]
-  81 0030 BB68     	 ldr r3,[r7,#8]
-  82 0032 591C     	 adds r1,r3,#1
-  83 0034 B960     	 str r1,[r7,#8]
-  84 0036 1B78     	 ldrb r3,[r3]
-  85 0038 1946     	 mov r1,r3
-  86 003a 9047     	 blx r2
-  87              	.LVL0:
-  88 003c 0346     	 mov r3,r0
-  89 003e 002B     	 cmp r3,#0
-  90 0040 02DA     	 bge .L5
+  77              	 .loc 1 120 7
+  78 0028 0E4B     	 ldr r3,.L7
+  79 002a 1A68     	 ldr r2,[r3]
+  80 002c 0E4B     	 ldr r3,.L7+4
+  81 002e 1868     	 ldr r0,[r3]
+  82              	 .loc 1 120 31
+  83 0030 BB68     	 ldr r3,[r7,#8]
+  84 0032 591C     	 adds r1,r3,#1
+  85 0034 B960     	 str r1,[r7,#8]
+  86              	 .loc 1 120 7
+  87 0036 1B78     	 ldrb r3,[r3]
+  88 0038 1946     	 mov r1,r3
+  89 003a 9047     	 blx r2
+  90              	.LVL0:
+  91 003c 0346     	 mov r3,r0
+  92              	 .loc 1 120 6
+  93 003e 002B     	 cmp r3,#0
+  94 0040 02DA     	 bge .L5
  121:.././hal/sam3u1c/write.c **** 			return -1;
-  91              	 .loc 1 121 0
-  92 0042 4FF0FF33 	 mov r3,#-1
-  93 0046 09E0     	 b .L3
-  94              	.L5:
+  95              	 .loc 1 121 11
+  96 0042 4FF0FF33 	 mov r3,#-1
+  97 0046 09E0     	 b .L3
+  98              	.L5:
  122:.././hal/sam3u1c/write.c **** 		}
  123:.././hal/sam3u1c/write.c **** 		++nChars;
-  95              	 .loc 1 123 0
-  96 0048 7B69     	 ldr r3,[r7,#20]
-  97 004a 0133     	 adds r3,r3,#1
-  98 004c 7B61     	 str r3,[r7,#20]
+  99              	 .loc 1 123 3
+ 100 0048 7B69     	 ldr r3,[r7,#20]
+ 101 004a 0133     	 adds r3,r3,#1
+ 102 004c 7B61     	 str r3,[r7,#20]
  119:.././hal/sam3u1c/write.c **** 		if (ptr_put(stdio_base, *ptr++) < 0) {
-  99              	 .loc 1 119 0
- 100 004e 7B68     	 ldr r3,[r7,#4]
- 101 0050 013B     	 subs r3,r3,#1
- 102 0052 7B60     	 str r3,[r7,#4]
- 103              	.L4:
+ 103              	 .loc 1 119 19
+ 104 004e 7B68     	 ldr r3,[r7,#4]
+ 105 0050 013B     	 subs r3,r3,#1
+ 106 0052 7B60     	 str r3,[r7,#4]
+ 107              	.L4:
  119:.././hal/sam3u1c/write.c **** 		if (ptr_put(stdio_base, *ptr++) < 0) {
- 104              	 .loc 1 119 0 is_stmt 0 discriminator 1
- 105 0054 7B68     	 ldr r3,[r7,#4]
- 106 0056 002B     	 cmp r3,#0
- 107 0058 E6D1     	 bne .L6
+ 108              	 .loc 1 119 2 discriminator 1
+ 109 0054 7B68     	 ldr r3,[r7,#4]
+ 110 0056 002B     	 cmp r3,#0
+ 111 0058 E6D1     	 bne .L6
  124:.././hal/sam3u1c/write.c **** 	}
  125:.././hal/sam3u1c/write.c **** 	return nChars;
- 108              	 .loc 1 125 0 is_stmt 1
- 109 005a 7B69     	 ldr r3,[r7,#20]
- 110              	.L3:
+ 112              	 .loc 1 125 9
+ 113 005a 7B69     	 ldr r3,[r7,#20]
+ 114              	.L3:
  126:.././hal/sam3u1c/write.c **** }
- 111              	 .loc 1 126 0
- 112 005c 1846     	 mov r0,r3
- 113 005e 1837     	 adds r7,r7,#24
- 114              	.LCFI3:
- 115              	 .cfi_def_cfa_offset 8
- 116 0060 BD46     	 mov sp,r7
- 117              	.LCFI4:
- 118              	 .cfi_def_cfa_register 13
- 119              	 
- 120 0062 80BD     	 pop {r7,pc}
- 121              	.L8:
- 122              	 .align 2
- 123              	.L7:
- 124 0064 00000000 	 .word ptr_put
- 125 0068 00000000 	 .word stdio_base
- 126              	 .cfi_endproc
- 127              	.LFE69:
- 129              	 .text
- 130              	.Letext0:
- 131              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 132              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 133              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
- 134              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
- 135              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 136              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 137              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 138              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 139              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 140              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 115              	 .loc 1 126 1
+ 116 005c 1846     	 mov r0,r3
+ 117 005e 1837     	 adds r7,r7,#24
+ 118              	.LCFI3:
+ 119              	 .cfi_def_cfa_offset 8
+ 120 0060 BD46     	 mov sp,r7
+ 121              	.LCFI4:
+ 122              	 .cfi_def_cfa_register 13
+ 123              	 
+ 124 0062 80BD     	 pop {r7,pc}
+ 125              	.L8:
+ 126              	 .align 2
+ 127              	.L7:
+ 128 0064 00000000 	 .word ptr_put
+ 129 0068 00000000 	 .word stdio_base
+ 130              	 .cfi_endproc
+ 131              	.LFE69:
+ 133              	 .text
+ 134              	.Letext0:
+ 135              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 136              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 137              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
+ 138              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 139              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 140              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 141              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 142              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 143              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 144              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 write.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -269,9 +273,9 @@ DEFINED SYMBOLS
                             *COM*:00000004 stdio_base
                             *COM*:00000004 ptr_put
     {standard input}:29     .text._write:00000000 $t
-    {standard input}:36     .text._write:00000000 _write
-    {standard input}:124    .text._write:00000064 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:37     .text._write:00000000 _write
+    {standard input}:128    .text._write:00000064 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -345,12 +349,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068

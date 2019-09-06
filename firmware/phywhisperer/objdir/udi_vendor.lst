@@ -20,7 +20,7 @@
   24              	cpu_irq_prev_interrupt_state:
   25 0000 00       	 .space 1
   26              	 .global udi_api_vendor
-  27              	 .section .data.udi_api_vendor,"aw",%progbits
+  27              	 .section .data.udi_api_vendor,"aw"
   28              	 .align 2
   31              	udi_api_vendor:
   32 0000 00000000 	 .word udi_vendor_enable
@@ -34,13 +34,14 @@
   42              	 .section .text.udi_vendor_enable,"ax",%progbits
   43              	 .align 1
   44              	 .global udi_vendor_enable
-  45              	 .syntax unified
-  46              	 .thumb
-  47              	 .thumb_func
-  48              	 .fpu softvfp
-  50              	udi_vendor_enable:
-  51              	.LFB73:
-  52              	 .file 1 ".././hal/sam3u1c/udi_vendor.c"
+  45              	 .arch armv7-m
+  46              	 .syntax unified
+  47              	 .thumb
+  48              	 .thumb_func
+  49              	 .fpu softvfp
+  51              	udi_vendor_enable:
+  52              	.LFB73:
+  53              	 .file 1 ".././hal/sam3u1c/udi_vendor.c"
    1:.././hal/sam3u1c/udi_vendor.c **** /**
    2:.././hal/sam3u1c/udi_vendor.c ****  * \file
    3:.././hal/sam3u1c/udi_vendor.c ****  *
@@ -141,260 +142,270 @@
   98:.././hal/sam3u1c/udi_vendor.c **** //@{
   99:.././hal/sam3u1c/udi_vendor.c **** bool udi_vendor_enable(void)
  100:.././hal/sam3u1c/udi_vendor.c **** {
-  53              	 .loc 1 100 0
-  54              	 .cfi_startproc
-  55              	 
+  54              	 .loc 1 100 1
+  55              	 .cfi_startproc
   56              	 
-  57 0000 80B5     	 push {r7,lr}
-  58              	.LCFI0:
-  59              	 .cfi_def_cfa_offset 8
-  60              	 .cfi_offset 7,-8
-  61              	 .cfi_offset 14,-4
-  62 0002 00AF     	 add r7,sp,#0
-  63              	.LCFI1:
-  64              	 .cfi_def_cfa_register 7
+  57              	 
+  58 0000 80B5     	 push {r7,lr}
+  59              	.LCFI0:
+  60              	 .cfi_def_cfa_offset 8
+  61              	 .cfi_offset 7,-8
+  62              	 .cfi_offset 14,-4
+  63 0002 00AF     	 add r7,sp,#0
+  64              	.LCFI1:
+  65              	 .cfi_def_cfa_register 7
  101:.././hal/sam3u1c/udi_vendor.c **** 	udi_vendor_alternate_setting = udc_get_interface_desc()->bAlternateSetting;
-  65              	 .loc 1 101 0
-  66 0004 0B4B     	 ldr r3,.L4
-  67 0006 9847     	 blx r3
-  68              	.LVL0:
-  69 0008 0346     	 mov r3,r0
-  70 000a DA78     	 ldrb r2,[r3,#3]
-  71 000c 0A4B     	 ldr r3,.L4+4
-  72 000e 1A70     	 strb r2,[r3]
+  66              	 .loc 1 101 33
+  67 0004 0B4B     	 ldr r3,.L4
+  68 0006 9847     	 blx r3
+  69              	.LVL0:
+  70 0008 0346     	 mov r3,r0
+  71              	 .loc 1 101 57
+  72 000a DA78     	 ldrb r2,[r3,#3]
+  73              	 .loc 1 101 31
+  74 000c 0A4B     	 ldr r3,.L4+4
+  75 000e 1A70     	 strb r2,[r3]
  102:.././hal/sam3u1c/udi_vendor.c **** 	if (0 == udi_vendor_alternate_setting) {
-  73              	 .loc 1 102 0
-  74 0010 094B     	 ldr r3,.L4+4
-  75 0012 1B78     	 ldrb r3,[r3]
-  76 0014 002B     	 cmp r3,#0
-  77 0016 09D1     	 bne .L2
+  76              	 .loc 1 102 8
+  77 0010 094B     	 ldr r3,.L4+4
+  78 0012 1B78     	 ldrb r3,[r3]
+  79              	 .loc 1 102 5
+  80 0014 002B     	 cmp r3,#0
+  81 0016 09D1     	 bne .L2
  103:.././hal/sam3u1c/udi_vendor.c **** 		// Call application callback
  104:.././hal/sam3u1c/udi_vendor.c **** 		// to notify that interface is enabled
  105:.././hal/sam3u1c/udi_vendor.c **** 		if (!UDI_VENDOR_ENABLE_EXT()) {
-  78              	 .loc 1 105 0
-  79 0018 084B     	 ldr r3,.L4+8
-  80 001a 9847     	 blx r3
-  81              	.LVL1:
-  82 001c 0346     	 mov r3,r0
-  83 001e 83F00103 	 eor r3,r3,#1
-  84 0022 DBB2     	 uxtb r3,r3
-  85 0024 002B     	 cmp r3,#0
-  86 0026 01D0     	 beq .L2
+  82              	 .loc 1 105 8
+  83 0018 084B     	 ldr r3,.L4+8
+  84 001a 9847     	 blx r3
+  85              	.LVL1:
+  86 001c 0346     	 mov r3,r0
+  87              	 .loc 1 105 7
+  88 001e 83F00103 	 eor r3,r3,#1
+  89 0022 DBB2     	 uxtb r3,r3
+  90              	 .loc 1 105 6
+  91 0024 002B     	 cmp r3,#0
+  92 0026 01D0     	 beq .L2
  106:.././hal/sam3u1c/udi_vendor.c **** 			return false;
-  87              	 .loc 1 106 0
-  88 0028 0023     	 movs r3,#0
-  89 002a 00E0     	 b .L3
-  90              	.L2:
+  93              	 .loc 1 106 11
+  94 0028 0023     	 movs r3,#0
+  95 002a 00E0     	 b .L3
+  96              	.L2:
  107:.././hal/sam3u1c/udi_vendor.c **** 		}
  108:.././hal/sam3u1c/udi_vendor.c **** 	}
  109:.././hal/sam3u1c/udi_vendor.c **** 	return true;
-  91              	 .loc 1 109 0
-  92 002c 0123     	 movs r3,#1
-  93              	.L3:
+  97              	 .loc 1 109 9
+  98 002c 0123     	 movs r3,#1
+  99              	.L3:
  110:.././hal/sam3u1c/udi_vendor.c **** }
-  94              	 .loc 1 110 0
-  95 002e 1846     	 mov r0,r3
-  96 0030 80BD     	 pop {r7,pc}
-  97              	.L5:
-  98 0032 00BF     	 .align 2
-  99              	.L4:
- 100 0034 00000000 	 .word udc_get_interface_desc
- 101 0038 00000000 	 .word udi_vendor_alternate_setting
- 102 003c 00000000 	 .word main_vendor_enable
- 103              	 .cfi_endproc
- 104              	.LFE73:
- 106              	 .section .text.udi_vendor_disable,"ax",%progbits
- 107              	 .align 1
- 108              	 .global udi_vendor_disable
- 109              	 .syntax unified
- 110              	 .thumb
- 111              	 .thumb_func
- 112              	 .fpu softvfp
- 114              	udi_vendor_disable:
- 115              	.LFB74:
+ 100              	 .loc 1 110 1
+ 101 002e 1846     	 mov r0,r3
+ 102 0030 80BD     	 pop {r7,pc}
+ 103              	.L5:
+ 104 0032 00BF     	 .align 2
+ 105              	.L4:
+ 106 0034 00000000 	 .word udc_get_interface_desc
+ 107 0038 00000000 	 .word udi_vendor_alternate_setting
+ 108 003c 00000000 	 .word main_vendor_enable
+ 109              	 .cfi_endproc
+ 110              	.LFE73:
+ 112              	 .section .text.udi_vendor_disable,"ax",%progbits
+ 113              	 .align 1
+ 114              	 .global udi_vendor_disable
+ 115              	 .syntax unified
+ 116              	 .thumb
+ 117              	 .thumb_func
+ 118              	 .fpu softvfp
+ 120              	udi_vendor_disable:
+ 121              	.LFB74:
  111:.././hal/sam3u1c/udi_vendor.c **** 
  112:.././hal/sam3u1c/udi_vendor.c **** 
  113:.././hal/sam3u1c/udi_vendor.c **** void udi_vendor_disable(void)
  114:.././hal/sam3u1c/udi_vendor.c **** {
- 116              	 .loc 1 114 0
- 117              	 .cfi_startproc
- 118              	 
- 119              	 
- 120 0000 80B5     	 push {r7,lr}
- 121              	.LCFI2:
- 122              	 .cfi_def_cfa_offset 8
- 123              	 .cfi_offset 7,-8
- 124              	 .cfi_offset 14,-4
- 125 0002 00AF     	 add r7,sp,#0
- 126              	.LCFI3:
- 127              	 .cfi_def_cfa_register 7
+ 122              	 .loc 1 114 1
+ 123              	 .cfi_startproc
+ 124              	 
+ 125              	 
+ 126 0000 80B5     	 push {r7,lr}
+ 127              	.LCFI2:
+ 128              	 .cfi_def_cfa_offset 8
+ 129              	 .cfi_offset 7,-8
+ 130              	 .cfi_offset 14,-4
+ 131 0002 00AF     	 add r7,sp,#0
+ 132              	.LCFI3:
+ 133              	 .cfi_def_cfa_register 7
  115:.././hal/sam3u1c/udi_vendor.c **** 	if (0 == udi_vendor_alternate_setting) {
- 128              	 .loc 1 115 0
- 129 0004 034B     	 ldr r3,.L9
- 130 0006 1B78     	 ldrb r3,[r3]
- 131 0008 002B     	 cmp r3,#0
- 132 000a 01D1     	 bne .L8
+ 134              	 .loc 1 115 8
+ 135 0004 034B     	 ldr r3,.L9
+ 136 0006 1B78     	 ldrb r3,[r3]
+ 137              	 .loc 1 115 5
+ 138 0008 002B     	 cmp r3,#0
+ 139 000a 01D1     	 bne .L8
  116:.././hal/sam3u1c/udi_vendor.c **** 		UDI_VENDOR_DISABLE_EXT();
- 133              	 .loc 1 116 0
- 134 000c 024B     	 ldr r3,.L9+4
- 135 000e 9847     	 blx r3
- 136              	.LVL2:
- 137              	.L8:
+ 140              	 .loc 1 116 3
+ 141 000c 024B     	 ldr r3,.L9+4
+ 142 000e 9847     	 blx r3
+ 143              	.LVL2:
+ 144              	.L8:
  117:.././hal/sam3u1c/udi_vendor.c **** 	}
  118:.././hal/sam3u1c/udi_vendor.c **** }
- 138              	 .loc 1 118 0
- 139 0010 00BF     	 nop
- 140 0012 80BD     	 pop {r7,pc}
- 141              	.L10:
- 142              	 .align 2
- 143              	.L9:
- 144 0014 00000000 	 .word udi_vendor_alternate_setting
- 145 0018 00000000 	 .word main_vendor_disable
- 146              	 .cfi_endproc
- 147              	.LFE74:
- 149              	 .section .text.udi_vendor_setup,"ax",%progbits
- 150              	 .align 1
- 151              	 .global udi_vendor_setup
- 152              	 .syntax unified
- 153              	 .thumb
- 154              	 .thumb_func
- 155              	 .fpu softvfp
- 157              	udi_vendor_setup:
- 158              	.LFB75:
+ 145              	 .loc 1 118 1
+ 146 0010 00BF     	 nop
+ 147 0012 80BD     	 pop {r7,pc}
+ 148              	.L10:
+ 149              	 .align 2
+ 150              	.L9:
+ 151 0014 00000000 	 .word udi_vendor_alternate_setting
+ 152 0018 00000000 	 .word main_vendor_disable
+ 153              	 .cfi_endproc
+ 154              	.LFE74:
+ 156              	 .section .text.udi_vendor_setup,"ax",%progbits
+ 157              	 .align 1
+ 158              	 .global udi_vendor_setup
+ 159              	 .syntax unified
+ 160              	 .thumb
+ 161              	 .thumb_func
+ 162              	 .fpu softvfp
+ 164              	udi_vendor_setup:
+ 165              	.LFB75:
  119:.././hal/sam3u1c/udi_vendor.c **** 
  120:.././hal/sam3u1c/udi_vendor.c **** bool udi_vendor_setup(void)
  121:.././hal/sam3u1c/udi_vendor.c **** {
- 159              	 .loc 1 121 0
- 160              	 .cfi_startproc
- 161              	 
- 162              	 
- 163 0000 80B5     	 push {r7,lr}
- 164              	.LCFI4:
- 165              	 .cfi_def_cfa_offset 8
- 166              	 .cfi_offset 7,-8
- 167              	 .cfi_offset 14,-4
- 168 0002 00AF     	 add r7,sp,#0
- 169              	.LCFI5:
- 170              	 .cfi_def_cfa_register 7
+ 166              	 .loc 1 121 1
+ 167              	 .cfi_startproc
+ 168              	 
+ 169              	 
+ 170 0000 80B5     	 push {r7,lr}
+ 171              	.LCFI4:
+ 172              	 .cfi_def_cfa_offset 8
+ 173              	 .cfi_offset 7,-8
+ 174              	 .cfi_offset 14,-4
+ 175 0002 00AF     	 add r7,sp,#0
+ 176              	.LCFI5:
+ 177              	 .cfi_def_cfa_register 7
  122:.././hal/sam3u1c/udi_vendor.c **** 	if (Udd_setup_is_in()) {
- 171              	 .loc 1 122 0
- 172 0004 104B     	 ldr r3,.L15
- 173 0006 1B78     	 ldrb r3,[r3]
- 174 0008 5BB2     	 sxtb r3,r3
- 175 000a 002B     	 cmp r3,#0
- 176 000c 09DA     	 bge .L12
+ 178              	 .loc 1 122 6
+ 179 0004 104B     	 ldr r3,.L15
+ 180 0006 1B78     	 ldrb r3,[r3]
+ 181 0008 5BB2     	 sxtb r3,r3
+ 182              	 .loc 1 122 5
+ 183 000a 002B     	 cmp r3,#0
+ 184 000c 09DA     	 bge .L12
  123:.././hal/sam3u1c/udi_vendor.c **** 		if (Udd_setup_type() == USB_REQ_TYPE_VENDOR) {
- 177              	 .loc 1 123 0
- 178 000e 0E4B     	 ldr r3,.L15
- 179 0010 1B78     	 ldrb r3,[r3]
- 180 0012 03F06003 	 and r3,r3,#96
- 181 0016 402B     	 cmp r3,#64
- 182 0018 03D1     	 bne .L12
+ 185              	 .loc 1 123 7
+ 186 000e 0E4B     	 ldr r3,.L15
+ 187 0010 1B78     	 ldrb r3,[r3]
+ 188 0012 03F06003 	 and r3,r3,#96
+ 189              	 .loc 1 123 6
+ 190 0016 402B     	 cmp r3,#64
+ 191 0018 03D1     	 bne .L12
  124:.././hal/sam3u1c/udi_vendor.c **** 			return UDI_VENDOR_SETUP_IN_RECEIVED();
- 183              	 .loc 1 124 0
- 184 001a 0C4B     	 ldr r3,.L15+4
- 185 001c 9847     	 blx r3
- 186              	.LVL3:
- 187 001e 0346     	 mov r3,r0
- 188 0020 0FE0     	 b .L13
- 189              	.L12:
+ 192              	 .loc 1 124 11
+ 193 001a 0C4B     	 ldr r3,.L15+4
+ 194 001c 9847     	 blx r3
+ 195              	.LVL3:
+ 196 001e 0346     	 mov r3,r0
+ 197 0020 0FE0     	 b .L13
+ 198              	.L12:
  125:.././hal/sam3u1c/udi_vendor.c **** 		}
  126:.././hal/sam3u1c/udi_vendor.c **** 	}
  127:.././hal/sam3u1c/udi_vendor.c **** 	if (Udd_setup_is_out()) {
- 190              	 .loc 1 127 0
- 191 0022 094B     	 ldr r3,.L15
- 192 0024 1B78     	 ldrb r3,[r3]
- 193 0026 5BB2     	 sxtb r3,r3
- 194 0028 002B     	 cmp r3,#0
- 195 002a 09DB     	 blt .L14
+ 199              	 .loc 1 127 6
+ 200 0022 094B     	 ldr r3,.L15
+ 201 0024 1B78     	 ldrb r3,[r3]
+ 202 0026 5BB2     	 sxtb r3,r3
+ 203              	 .loc 1 127 5
+ 204 0028 002B     	 cmp r3,#0
+ 205 002a 09DB     	 blt .L14
  128:.././hal/sam3u1c/udi_vendor.c **** 		if (Udd_setup_type() == USB_REQ_TYPE_VENDOR) {
- 196              	 .loc 1 128 0
- 197 002c 064B     	 ldr r3,.L15
- 198 002e 1B78     	 ldrb r3,[r3]
- 199 0030 03F06003 	 and r3,r3,#96
- 200 0034 402B     	 cmp r3,#64
- 201 0036 03D1     	 bne .L14
+ 206              	 .loc 1 128 7
+ 207 002c 064B     	 ldr r3,.L15
+ 208 002e 1B78     	 ldrb r3,[r3]
+ 209 0030 03F06003 	 and r3,r3,#96
+ 210              	 .loc 1 128 6
+ 211 0034 402B     	 cmp r3,#64
+ 212 0036 03D1     	 bne .L14
  129:.././hal/sam3u1c/udi_vendor.c **** 			return UDI_VENDOR_SETUP_OUT_RECEIVED();
- 202              	 .loc 1 129 0
- 203 0038 054B     	 ldr r3,.L15+8
- 204 003a 9847     	 blx r3
- 205              	.LVL4:
- 206 003c 0346     	 mov r3,r0
- 207 003e 00E0     	 b .L13
- 208              	.L14:
+ 213              	 .loc 1 129 11
+ 214 0038 054B     	 ldr r3,.L15+8
+ 215 003a 9847     	 blx r3
+ 216              	.LVL4:
+ 217 003c 0346     	 mov r3,r0
+ 218 003e 00E0     	 b .L13
+ 219              	.L14:
  130:.././hal/sam3u1c/udi_vendor.c **** 		}
  131:.././hal/sam3u1c/udi_vendor.c **** 	}
  132:.././hal/sam3u1c/udi_vendor.c **** 	return false; // Not supported request
- 209              	 .loc 1 132 0
- 210 0040 0023     	 movs r3,#0
- 211              	.L13:
+ 220              	 .loc 1 132 9
+ 221 0040 0023     	 movs r3,#0
+ 222              	.L13:
  133:.././hal/sam3u1c/udi_vendor.c **** }
- 212              	 .loc 1 133 0
- 213 0042 1846     	 mov r0,r3
- 214 0044 80BD     	 pop {r7,pc}
- 215              	.L16:
- 216 0046 00BF     	 .align 2
- 217              	.L15:
- 218 0048 00000000 	 .word udd_g_ctrlreq
- 219 004c 00000000 	 .word main_setup_in_received
- 220 0050 00000000 	 .word main_setup_out_received
- 221              	 .cfi_endproc
- 222              	.LFE75:
- 224              	 .section .text.udi_vendor_getsetting,"ax",%progbits
- 225              	 .align 1
- 226              	 .global udi_vendor_getsetting
- 227              	 .syntax unified
- 228              	 .thumb
- 229              	 .thumb_func
- 230              	 .fpu softvfp
- 232              	udi_vendor_getsetting:
- 233              	.LFB76:
+ 223              	 .loc 1 133 1
+ 224 0042 1846     	 mov r0,r3
+ 225 0044 80BD     	 pop {r7,pc}
+ 226              	.L16:
+ 227 0046 00BF     	 .align 2
+ 228              	.L15:
+ 229 0048 00000000 	 .word udd_g_ctrlreq
+ 230 004c 00000000 	 .word main_setup_in_received
+ 231 0050 00000000 	 .word main_setup_out_received
+ 232              	 .cfi_endproc
+ 233              	.LFE75:
+ 235              	 .section .text.udi_vendor_getsetting,"ax",%progbits
+ 236              	 .align 1
+ 237              	 .global udi_vendor_getsetting
+ 238              	 .syntax unified
+ 239              	 .thumb
+ 240              	 .thumb_func
+ 241              	 .fpu softvfp
+ 243              	udi_vendor_getsetting:
+ 244              	.LFB76:
  134:.././hal/sam3u1c/udi_vendor.c **** 
  135:.././hal/sam3u1c/udi_vendor.c **** uint8_t udi_vendor_getsetting(void)
  136:.././hal/sam3u1c/udi_vendor.c **** {
- 234              	 .loc 1 136 0
- 235              	 .cfi_startproc
- 236              	 
- 237              	 
- 238              	 
- 239 0000 80B4     	 push {r7}
- 240              	.LCFI6:
- 241              	 .cfi_def_cfa_offset 4
- 242              	 .cfi_offset 7,-4
- 243 0002 00AF     	 add r7,sp,#0
- 244              	.LCFI7:
- 245              	 .cfi_def_cfa_register 7
+ 245              	 .loc 1 136 1
+ 246              	 .cfi_startproc
+ 247              	 
+ 248              	 
+ 249              	 
+ 250 0000 80B4     	 push {r7}
+ 251              	.LCFI6:
+ 252              	 .cfi_def_cfa_offset 4
+ 253              	 .cfi_offset 7,-4
+ 254 0002 00AF     	 add r7,sp,#0
+ 255              	.LCFI7:
+ 256              	 .cfi_def_cfa_register 7
  137:.././hal/sam3u1c/udi_vendor.c **** 	return udi_vendor_alternate_setting;
- 246              	 .loc 1 137 0
- 247 0004 024B     	 ldr r3,.L19
- 248 0006 1B78     	 ldrb r3,[r3]
+ 257              	 .loc 1 137 9
+ 258 0004 024B     	 ldr r3,.L19
+ 259 0006 1B78     	 ldrb r3,[r3]
  138:.././hal/sam3u1c/udi_vendor.c **** }
- 249              	 .loc 1 138 0
- 250 0008 1846     	 mov r0,r3
- 251 000a BD46     	 mov sp,r7
- 252              	.LCFI8:
- 253              	 .cfi_def_cfa_register 13
- 254              	 
- 255 000c 80BC     	 pop {r7}
- 256              	.LCFI9:
- 257              	 .cfi_restore 7
- 258              	 .cfi_def_cfa_offset 0
- 259 000e 7047     	 bx lr
- 260              	.L20:
- 261              	 .align 2
- 262              	.L19:
- 263 0010 00000000 	 .word udi_vendor_alternate_setting
- 264              	 .cfi_endproc
- 265              	.LFE76:
- 267              	 .section .text.udi_vendor_bulk_in_run,"ax",%progbits
- 268              	 .align 1
- 269              	 .global udi_vendor_bulk_in_run
- 270              	 .syntax unified
- 271              	 .thumb
- 272              	 .thumb_func
- 273              	 .fpu softvfp
- 275              	udi_vendor_bulk_in_run:
- 276              	.LFB77:
+ 260              	 .loc 1 138 1
+ 261 0008 1846     	 mov r0,r3
+ 262 000a BD46     	 mov sp,r7
+ 263              	.LCFI8:
+ 264              	 .cfi_def_cfa_register 13
+ 265              	 
+ 266 000c 80BC     	 pop {r7}
+ 267              	.LCFI9:
+ 268              	 .cfi_restore 7
+ 269              	 .cfi_def_cfa_offset 0
+ 270 000e 7047     	 bx lr
+ 271              	.L20:
+ 272              	 .align 2
+ 273              	.L19:
+ 274 0010 00000000 	 .word udi_vendor_alternate_setting
+ 275              	 .cfi_endproc
+ 276              	.LFE76:
+ 278              	 .section .text.udi_vendor_bulk_in_run,"ax",%progbits
+ 279              	 .align 1
+ 280              	 .global udi_vendor_bulk_in_run
+ 281              	 .syntax unified
+ 282              	 .thumb
+ 283              	 .thumb_func
+ 284              	 .fpu softvfp
+ 286              	udi_vendor_bulk_in_run:
+ 287              	.LFB77:
  139:.././hal/sam3u1c/udi_vendor.c **** //@}
  140:.././hal/sam3u1c/udi_vendor.c **** 
  141:.././hal/sam3u1c/udi_vendor.c **** #if UDI_VENDOR_EPS_SIZE_INT_FS
@@ -463,67 +474,67 @@
  204:.././hal/sam3u1c/udi_vendor.c **** bool udi_vendor_bulk_in_run(uint8_t * buf, iram_size_t buf_size,
  205:.././hal/sam3u1c/udi_vendor.c **** 		udd_callback_trans_t callback)
  206:.././hal/sam3u1c/udi_vendor.c **** {
- 277              	 .loc 1 206 0
- 278              	 .cfi_startproc
- 279              	 
- 280              	 
- 281 0000 90B5     	 push {r4,r7,lr}
- 282              	.LCFI10:
- 283              	 .cfi_def_cfa_offset 12
- 284              	 .cfi_offset 4,-12
- 285              	 .cfi_offset 7,-8
- 286              	 .cfi_offset 14,-4
- 287 0002 87B0     	 sub sp,sp,#28
- 288              	.LCFI11:
- 289              	 .cfi_def_cfa_offset 40
- 290 0004 02AF     	 add r7,sp,#8
- 291              	.LCFI12:
- 292              	 .cfi_def_cfa 7,32
- 293 0006 F860     	 str r0,[r7,#12]
- 294 0008 B960     	 str r1,[r7,#8]
- 295 000a 7A60     	 str r2,[r7,#4]
+ 288              	 .loc 1 206 1
+ 289              	 .cfi_startproc
+ 290              	 
+ 291              	 
+ 292 0000 90B5     	 push {r4,r7,lr}
+ 293              	.LCFI10:
+ 294              	 .cfi_def_cfa_offset 12
+ 295              	 .cfi_offset 4,-12
+ 296              	 .cfi_offset 7,-8
+ 297              	 .cfi_offset 14,-4
+ 298 0002 87B0     	 sub sp,sp,#28
+ 299              	.LCFI11:
+ 300              	 .cfi_def_cfa_offset 40
+ 301 0004 02AF     	 add r7,sp,#8
+ 302              	.LCFI12:
+ 303              	 .cfi_def_cfa 7,32
+ 304 0006 F860     	 str r0,[r7,#12]
+ 305 0008 B960     	 str r1,[r7,#8]
+ 306 000a 7A60     	 str r2,[r7,#4]
  207:.././hal/sam3u1c/udi_vendor.c **** 	return udd_ep_run(UDI_VENDOR_EP_BULK_IN,
- 296              	 .loc 1 207 0
- 297 000c 7B68     	 ldr r3,[r7,#4]
- 298 000e 0093     	 str r3,[sp]
- 299 0010 BB68     	 ldr r3,[r7,#8]
- 300 0012 FA68     	 ldr r2,[r7,#12]
- 301 0014 0021     	 movs r1,#0
- 302 0016 8120     	 movs r0,#129
- 303 0018 034C     	 ldr r4,.L23
- 304 001a A047     	 blx r4
- 305              	.LVL5:
- 306 001c 0346     	 mov r3,r0
+ 307              	 .loc 1 207 9
+ 308 000c 7B68     	 ldr r3,[r7,#4]
+ 309 000e 0093     	 str r3,[sp]
+ 310 0010 BB68     	 ldr r3,[r7,#8]
+ 311 0012 FA68     	 ldr r2,[r7,#12]
+ 312 0014 0021     	 movs r1,#0
+ 313 0016 8120     	 movs r0,#129
+ 314 0018 034C     	 ldr r4,.L23
+ 315 001a A047     	 blx r4
+ 316              	.LVL5:
+ 317 001c 0346     	 mov r3,r0
  208:.././hal/sam3u1c/udi_vendor.c **** 			false,
  209:.././hal/sam3u1c/udi_vendor.c **** 			buf,
  210:.././hal/sam3u1c/udi_vendor.c **** 			buf_size,
  211:.././hal/sam3u1c/udi_vendor.c **** 			callback);
  212:.././hal/sam3u1c/udi_vendor.c **** }
- 307              	 .loc 1 212 0
- 308 001e 1846     	 mov r0,r3
- 309 0020 1437     	 adds r7,r7,#20
- 310              	.LCFI13:
- 311              	 .cfi_def_cfa_offset 12
- 312 0022 BD46     	 mov sp,r7
- 313              	.LCFI14:
- 314              	 .cfi_def_cfa_register 13
- 315              	 
- 316 0024 90BD     	 pop {r4,r7,pc}
- 317              	.L24:
- 318 0026 00BF     	 .align 2
- 319              	.L23:
- 320 0028 00000000 	 .word udd_ep_run
- 321              	 .cfi_endproc
- 322              	.LFE77:
- 324              	 .section .text.udi_vendor_bulk_out_run,"ax",%progbits
- 325              	 .align 1
- 326              	 .global udi_vendor_bulk_out_run
- 327              	 .syntax unified
- 328              	 .thumb
- 329              	 .thumb_func
- 330              	 .fpu softvfp
- 332              	udi_vendor_bulk_out_run:
- 333              	.LFB78:
+ 318              	 .loc 1 212 1
+ 319 001e 1846     	 mov r0,r3
+ 320 0020 1437     	 adds r7,r7,#20
+ 321              	.LCFI13:
+ 322              	 .cfi_def_cfa_offset 12
+ 323 0022 BD46     	 mov sp,r7
+ 324              	.LCFI14:
+ 325              	 .cfi_def_cfa_register 13
+ 326              	 
+ 327 0024 90BD     	 pop {r4,r7,pc}
+ 328              	.L24:
+ 329 0026 00BF     	 .align 2
+ 330              	.L23:
+ 331 0028 00000000 	 .word udd_ep_run
+ 332              	 .cfi_endproc
+ 333              	.LFE77:
+ 335              	 .section .text.udi_vendor_bulk_out_run,"ax",%progbits
+ 336              	 .align 1
+ 337              	 .global udi_vendor_bulk_out_run
+ 338              	 .syntax unified
+ 339              	 .thumb
+ 340              	 .thumb_func
+ 341              	 .fpu softvfp
+ 343              	udi_vendor_bulk_out_run:
+ 344              	.LFB78:
  213:.././hal/sam3u1c/udi_vendor.c **** 
  214:.././hal/sam3u1c/udi_vendor.c **** 
  215:.././hal/sam3u1c/udi_vendor.c **** /**
@@ -542,79 +553,79 @@
  228:.././hal/sam3u1c/udi_vendor.c **** bool udi_vendor_bulk_out_run(uint8_t * buf, iram_size_t buf_size,
  229:.././hal/sam3u1c/udi_vendor.c **** 		udd_callback_trans_t callback)
  230:.././hal/sam3u1c/udi_vendor.c **** {
- 334              	 .loc 1 230 0
- 335              	 .cfi_startproc
- 336              	 
- 337              	 
- 338 0000 90B5     	 push {r4,r7,lr}
- 339              	.LCFI15:
- 340              	 .cfi_def_cfa_offset 12
- 341              	 .cfi_offset 4,-12
- 342              	 .cfi_offset 7,-8
- 343              	 .cfi_offset 14,-4
- 344 0002 87B0     	 sub sp,sp,#28
- 345              	.LCFI16:
- 346              	 .cfi_def_cfa_offset 40
- 347 0004 02AF     	 add r7,sp,#8
- 348              	.LCFI17:
- 349              	 .cfi_def_cfa 7,32
- 350 0006 F860     	 str r0,[r7,#12]
- 351 0008 B960     	 str r1,[r7,#8]
- 352 000a 7A60     	 str r2,[r7,#4]
+ 345              	 .loc 1 230 1
+ 346              	 .cfi_startproc
+ 347              	 
+ 348              	 
+ 349 0000 90B5     	 push {r4,r7,lr}
+ 350              	.LCFI15:
+ 351              	 .cfi_def_cfa_offset 12
+ 352              	 .cfi_offset 4,-12
+ 353              	 .cfi_offset 7,-8
+ 354              	 .cfi_offset 14,-4
+ 355 0002 87B0     	 sub sp,sp,#28
+ 356              	.LCFI16:
+ 357              	 .cfi_def_cfa_offset 40
+ 358 0004 02AF     	 add r7,sp,#8
+ 359              	.LCFI17:
+ 360              	 .cfi_def_cfa 7,32
+ 361 0006 F860     	 str r0,[r7,#12]
+ 362 0008 B960     	 str r1,[r7,#8]
+ 363 000a 7A60     	 str r2,[r7,#4]
  231:.././hal/sam3u1c/udi_vendor.c **** 	return udd_ep_run(UDI_VENDOR_EP_BULK_OUT,
- 353              	 .loc 1 231 0
- 354 000c 7B68     	 ldr r3,[r7,#4]
- 355 000e 0093     	 str r3,[sp]
- 356 0010 BB68     	 ldr r3,[r7,#8]
- 357 0012 FA68     	 ldr r2,[r7,#12]
- 358 0014 0021     	 movs r1,#0
- 359 0016 0220     	 movs r0,#2
- 360 0018 034C     	 ldr r4,.L27
- 361 001a A047     	 blx r4
- 362              	.LVL6:
- 363 001c 0346     	 mov r3,r0
+ 364              	 .loc 1 231 9
+ 365 000c 7B68     	 ldr r3,[r7,#4]
+ 366 000e 0093     	 str r3,[sp]
+ 367 0010 BB68     	 ldr r3,[r7,#8]
+ 368 0012 FA68     	 ldr r2,[r7,#12]
+ 369 0014 0021     	 movs r1,#0
+ 370 0016 0220     	 movs r0,#2
+ 371 0018 034C     	 ldr r4,.L27
+ 372 001a A047     	 blx r4
+ 373              	.LVL6:
+ 374 001c 0346     	 mov r3,r0
  232:.././hal/sam3u1c/udi_vendor.c **** 			false,
  233:.././hal/sam3u1c/udi_vendor.c **** 			buf,
  234:.././hal/sam3u1c/udi_vendor.c **** 			buf_size,
  235:.././hal/sam3u1c/udi_vendor.c **** 			callback);
  236:.././hal/sam3u1c/udi_vendor.c **** }
- 364              	 .loc 1 236 0
- 365 001e 1846     	 mov r0,r3
- 366 0020 1437     	 adds r7,r7,#20
- 367              	.LCFI18:
- 368              	 .cfi_def_cfa_offset 12
- 369 0022 BD46     	 mov sp,r7
- 370              	.LCFI19:
- 371              	 .cfi_def_cfa_register 13
- 372              	 
- 373 0024 90BD     	 pop {r4,r7,pc}
- 374              	.L28:
- 375 0026 00BF     	 .align 2
- 376              	.L27:
- 377 0028 00000000 	 .word udd_ep_run
- 378              	 .cfi_endproc
- 379              	.LFE78:
- 381              	 .text
- 382              	.Letext0:
- 383              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 384              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 385              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
- 386              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
- 387              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 388              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 389              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\stddef.h"
- 390              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 391              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
- 392              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
- 393              	 .file 12 ".././hal/sam3u1c/inc/compiler.h"
- 394              	 .file 13 "./conf_usb.h"
- 395              	 .file 14 ".././hal/sam3u1c/inc/usb_protocol.h"
- 396              	 .file 15 ".././hal/sam3u1c/inc/udi.h"
- 397              	 .file 16 ".././hal/sam3u1c/inc/udc_desc.h"
- 398              	 .file 17 ".././hal/sam3u1c/inc/udd.h"
- 399              	 .file 18 ".././hal/sam3u1c/inc/udi_vendor.h"
- 400              	 .file 19 ".././hal/sam3u1c/inc/main.h"
- 401              	 .file 20 ".././hal/sam3u1c/inc/udc.h"
+ 375              	 .loc 1 236 1
+ 376 001e 1846     	 mov r0,r3
+ 377 0020 1437     	 adds r7,r7,#20
+ 378              	.LCFI18:
+ 379              	 .cfi_def_cfa_offset 12
+ 380 0022 BD46     	 mov sp,r7
+ 381              	.LCFI19:
+ 382              	 .cfi_def_cfa_register 13
+ 383              	 
+ 384 0024 90BD     	 pop {r4,r7,pc}
+ 385              	.L28:
+ 386 0026 00BF     	 .align 2
+ 387              	.L27:
+ 388 0028 00000000 	 .word udd_ep_run
+ 389              	 .cfi_endproc
+ 390              	.LFE78:
+ 392              	 .text
+ 393              	.Letext0:
+ 394              	 .file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 395              	 .file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 396              	 .file 4 ".././hal/sam3u1c/inc/core_cm3.h"
+ 397              	 .file 5 ".././hal/sam3u1c/inc/system_sam3u.h"
+ 398              	 .file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\lock.h"
+ 399              	 .file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\_types.h"
+ 400              	 .file 8 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi\\8.2.1\\include\\stddef.h"
+ 401              	 .file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\sys\\reent.h"
+ 402              	 .file 10 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\\stdlib.h"
+ 403              	 .file 11 ".././hal/sam3u1c/inc/interrupt/interrupt_sam_nvic.h"
+ 404              	 .file 12 ".././hal/sam3u1c/inc/compiler.h"
+ 405              	 .file 13 "./conf_usb.h"
+ 406              	 .file 14 ".././hal/sam3u1c/inc/usb_protocol.h"
+ 407              	 .file 15 ".././hal/sam3u1c/inc/udi.h"
+ 408              	 .file 16 ".././hal/sam3u1c/inc/udc_desc.h"
+ 409              	 .file 17 ".././hal/sam3u1c/inc/udd.h"
+ 410              	 .file 18 ".././hal/sam3u1c/inc/udi_vendor.h"
+ 411              	 .file 19 ".././hal/sam3u1c/inc/main.h"
+ 412              	 .file 20 ".././hal/sam3u1c/inc/udc.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 udi_vendor.c
     {standard input}:16     .bss.cpu_irq_critical_section_counter:00000000 $d
@@ -623,27 +634,27 @@ DEFINED SYMBOLS
     {standard input}:25     .bss.cpu_irq_prev_interrupt_state:00000000 $d
     {standard input}:31     .data.udi_api_vendor:00000000 udi_api_vendor
     {standard input}:28     .data.udi_api_vendor:00000000 $d
-    {standard input}:50     .text.udi_vendor_enable:00000000 udi_vendor_enable
-    {standard input}:114    .text.udi_vendor_disable:00000000 udi_vendor_disable
-    {standard input}:157    .text.udi_vendor_setup:00000000 udi_vendor_setup
-    {standard input}:232    .text.udi_vendor_getsetting:00000000 udi_vendor_getsetting
+    {standard input}:51     .text.udi_vendor_enable:00000000 udi_vendor_enable
+    {standard input}:120    .text.udi_vendor_disable:00000000 udi_vendor_disable
+    {standard input}:164    .text.udi_vendor_setup:00000000 udi_vendor_setup
+    {standard input}:243    .text.udi_vendor_getsetting:00000000 udi_vendor_getsetting
     {standard input}:40     .bss.udi_vendor_alternate_setting:00000000 udi_vendor_alternate_setting
     {standard input}:41     .bss.udi_vendor_alternate_setting:00000000 $d
     {standard input}:43     .text.udi_vendor_enable:00000000 $t
-    {standard input}:100    .text.udi_vendor_enable:00000034 $d
-    {standard input}:107    .text.udi_vendor_disable:00000000 $t
-    {standard input}:144    .text.udi_vendor_disable:00000014 $d
-    {standard input}:150    .text.udi_vendor_setup:00000000 $t
-    {standard input}:218    .text.udi_vendor_setup:00000048 $d
-    {standard input}:225    .text.udi_vendor_getsetting:00000000 $t
-    {standard input}:263    .text.udi_vendor_getsetting:00000010 $d
-    {standard input}:268    .text.udi_vendor_bulk_in_run:00000000 $t
-    {standard input}:275    .text.udi_vendor_bulk_in_run:00000000 udi_vendor_bulk_in_run
-    {standard input}:320    .text.udi_vendor_bulk_in_run:00000028 $d
-    {standard input}:325    .text.udi_vendor_bulk_out_run:00000000 $t
-    {standard input}:332    .text.udi_vendor_bulk_out_run:00000000 udi_vendor_bulk_out_run
-    {standard input}:377    .text.udi_vendor_bulk_out_run:00000028 $d
-                           .group:00000000 wm4.0.7d8dd4860124405c65f5049e8a79afcb
+    {standard input}:106    .text.udi_vendor_enable:00000034 $d
+    {standard input}:113    .text.udi_vendor_disable:00000000 $t
+    {standard input}:151    .text.udi_vendor_disable:00000014 $d
+    {standard input}:157    .text.udi_vendor_setup:00000000 $t
+    {standard input}:229    .text.udi_vendor_setup:00000048 $d
+    {standard input}:236    .text.udi_vendor_getsetting:00000000 $t
+    {standard input}:274    .text.udi_vendor_getsetting:00000010 $d
+    {standard input}:279    .text.udi_vendor_bulk_in_run:00000000 $t
+    {standard input}:286    .text.udi_vendor_bulk_in_run:00000000 udi_vendor_bulk_in_run
+    {standard input}:331    .text.udi_vendor_bulk_in_run:00000028 $d
+    {standard input}:336    .text.udi_vendor_bulk_out_run:00000000 $t
+    {standard input}:343    .text.udi_vendor_bulk_out_run:00000000 udi_vendor_bulk_out_run
+    {standard input}:388    .text.udi_vendor_bulk_out_run:00000028 $d
+                           .group:00000000 wm4.0.bacf6c85951b42af729d707f36a7fff6
                            .group:00000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
                            .group:00000000 wm4.parts.h.45.afc900689b2c82332e69d798acedc875
                            .group:00000000 wm4.tpaste.h.45.af3ee36765243b162c88f7f944858426
@@ -717,12 +728,12 @@ DEFINED SYMBOLS
                            .group:00000000 wm4.pio_sam3u1c.h.43.18b24f16e1710ff2a400d88fe33c5107
                            .group:00000000 wm4.sam3u1c.h.442.cd4bbc3af493e98bc9b60c2905132ed0
                            .group:00000000 wm4.newlib.h.8.f6e543eac3f2f65163ba2ffe3b04987b
-                           .group:00000000 wm4.ieeefp.h.77.220d9cccac42cd58761758bee2df4ce6
+                           .group:00000000 wm4.ieeefp.h.77.d5685ba212d3ed6e914898d045f873e3
                            .group:00000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
                            .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
                            .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
                            .group:00000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
-                           .group:00000000 wm4.cdefs.h.47.14fad0b327eb9dcf106599b738d85132
+                           .group:00000000 wm4.cdefs.h.49.2bf373aedffd8b393ccd11dc057e8547
                            .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
                            .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
                            .group:00000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
