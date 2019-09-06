@@ -295,7 +295,7 @@ class Usb(object):
                 time_commands += 1
                 if verbose:
                    print("%8d" % timestep)
-            elif (command == self.FE_FIFO_CMD_STAT):
+            elif (command == self.FE_FIFO_CMD_STRM):
                 if not stream:
                    raise Exception('Received empty stream status: attempted to read empty FIFO.')
                 status += 1
