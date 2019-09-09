@@ -28,6 +28,7 @@ module reg_pw #(
    parameter pPATTERN_BYTES = 8,
    parameter pTRIGGER_DELAY_WIDTH = 20,
    parameter pTRIGGER_WIDTH_WIDTH = 16,
+   parameter pCAPTURE_DELAY_WIDTH = 18,
    parameter pBYTECNT_SIZE = 7
 )(
    input  wire         reset_i,
@@ -67,6 +68,7 @@ module reg_pw #(
 // Interface to trigger generator:
    output wire [pTRIGGER_DELAY_WIDTH-1:0] O_trigger_delay,
    output wire [pTRIGGER_WIDTH_WIDTH-1:0] O_trigger_width,
+   output wire [pCAPTURE_DELAY_WIDTH-1:0] O_capture_delay,
 
 // Interface to USB autodetect:
    output reg  O_usb_auto_restart,
@@ -88,6 +90,7 @@ module reg_pw #(
    reg [1:0] reg_pattern_action;
    reg [7:0] reg_pattern_bytes;
    reg [15:0] reg_capture_len;
+   reg [pCAPTURE_DELAY_WIDTH-1:0] reg_capture_delay;
    reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
    reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
    reg [1:0] reg_usb_speed;
@@ -126,6 +129,7 @@ module reg_pw #(
    assign O_capture_len = reg_capture_len;
    assign O_trigger_delay = reg_trigger_delay;
    assign O_trigger_width = reg_trigger_width;
+   assign O_capture_delay = reg_capture_delay;
    assign O_usb_speed = (reg_usb_speed == `USB_SPEED_AUTO)? usb_speed_auto : reg_usb_speed;
    assign O_usb_xcvrsel_auto = reg_usb_auto_defaults[1:0];
    assign O_usb_termsel_auto = reg_usb_auto_defaults[2];
@@ -182,6 +186,7 @@ module reg_pw #(
          reg_pattern_action <= 0;
          reg_pattern_bytes <= 8'd0;
          reg_capture_len <= 0;
+         reg_capture_delay <= 0;
          reg_trigger_delay <= 0;
          reg_trigger_width <= 0;
          reg_usb_speed <= `USB_SPEED_AUTO;
@@ -201,6 +206,7 @@ module reg_pw #(
                `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_SPEED: reg_usb_speed <= write_data;
                `REG_USB_AUTO_DEFAULTS: reg_usb_auto_defaults <= write_data[2:0];
+               `REG_CAPTURE_DELAY: reg_capture_delay[reg_bytecnt*8 +: 8] <= write_data;
             endcase
          end
 

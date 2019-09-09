@@ -176,6 +176,7 @@ module tb_pw();
    int rx_trigger_width;
    int trigger_delay;
    int trigger_width;
+   int capture_delay;
 
    reg fifo_stat_empty;
    reg fifo_stat_underflow;
@@ -510,6 +511,7 @@ module tb_pw();
    task set_trigger;
       trigger_delay = $urandom_range(pTRIGGER_DELAY_MIN, pTRIGGER_DELAY_MAX);
       trigger_width = $urandom_range(pTRIGGER_WIDTH_MIN, pTRIGGER_WIDTH_MAX);
+      capture_delay = trigger_delay >> 2;
       $display("Programming trigger #%0d delay=%0d, width=%0d cycles", send_iteration, trigger_delay, trigger_width);
       rw_lots_bytes(`REG_TRIGGER_DELAY);
       write_next_byte(trigger_delay & 255);
@@ -519,6 +521,10 @@ module tb_pw();
       write_next_byte(trigger_width & 255);
       write_next_byte((trigger_width >> 8) & 255);
       write_next_byte((trigger_width >> 16) & 255);
+      rw_lots_bytes(`REG_CAPTURE_DELAY);
+      write_next_byte(capture_delay & 255);
+      write_next_byte((capture_delay >> 8) & 255);
+      write_next_byte((capture_delay >> 16) & 255);
    endtask
 
 

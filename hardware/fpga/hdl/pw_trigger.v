@@ -22,6 +22,7 @@
 
 
 module pw_trigger #(
+   parameter pCAPTURE_DELAY_WIDTH = 18,
    parameter pTRIGGER_DELAY_WIDTH = 20,
    parameter pTRIGGER_WIDTH_WIDTH = 17
 
@@ -32,6 +33,7 @@ module pw_trigger #(
    output reg          O_trigger,
 
    // from register block:
+   input  wire [pCAPTURE_DELAY_WIDTH-1:0] I_capture_delay,
    input  wire [pTRIGGER_DELAY_WIDTH-1:0] I_trigger_delay,
    input  wire [pTRIGGER_WIDTH_WIDTH-1:0] I_trigger_width,
 
@@ -164,7 +166,7 @@ module pw_trigger #(
          if (capture_done)
             capture_enable_reg <= 1'b0;
          else if (I_match || delay_counter_fe_running) begin
-            if ((delay_counter_fe < I_trigger_delay[pTRIGGER_DELAY_WIDTH-1:2]) & ~O_capture_enable)
+            if ((delay_counter_fe < I_capture_delay) & ~O_capture_enable)
                delay_counter_fe <= delay_counter_fe + 1;
             else begin
                delay_counter_fe <= 0;
@@ -176,7 +178,7 @@ module pw_trigger #(
    end
 
    assign match = I_match | delay_counter_fe_running;
-   assign capture_enable_start = match & (delay_counter_fe == I_trigger_delay[pTRIGGER_DELAY_WIDTH-1:2]);
+   assign capture_enable_start = match & (delay_counter_fe == I_capture_delay);
    assign O_capture_enable = capture_enable_start | capture_enable_reg;
 
 

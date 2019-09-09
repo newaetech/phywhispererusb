@@ -90,6 +90,7 @@ module phywhisperer_top(
    parameter pTRIGGER_DELAY_WIDTH = 20;
    parameter pTRIGGER_WIDTH_WIDTH = 17;
    parameter pBYTECNT_SIZE = 7;
+   parameter pCAPTURE_DELAY_WIDTH = pTRIGGER_DELAY_WIDTH-2;
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -133,6 +134,7 @@ module phywhisperer_top(
    wire capturing;
    wire trigger_capture_enable;
 
+   wire [pCAPTURE_DELAY_WIDTH-1:0] capture_delay;
    wire [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay;
    wire [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width;
 
@@ -207,6 +209,7 @@ module phywhisperer_top(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pPATTERN_BYTES           (pPATTERN_BYTES),
+      .pCAPTURE_DELAY_WIDTH     (pCAPTURE_DELAY_WIDTH),
       .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
       .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH),
       .pBYTECNT_SIZE            (pBYTECNT_SIZE)
@@ -235,6 +238,7 @@ module phywhisperer_top(
       .O_fifo_overflow_blocked  (fifo_overflow_blocked),
 
       // Trigger:
+      .O_capture_delay          (capture_delay),
       .O_trigger_delay          (trigger_delay),
       .O_trigger_width          (trigger_width),
 
@@ -424,6 +428,7 @@ module phywhisperer_top(
 
 
    pw_trigger #(
+      .pCAPTURE_DELAY_WIDTH     (pCAPTURE_DELAY_WIDTH),
       .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
       .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH)
    ) U_trigger (
@@ -431,6 +436,7 @@ module phywhisperer_top(
       .trigger_clk      (trigger_clk),
       .fe_clk           (clk_fe_buf),
       .O_trigger        (cw_trig),
+      .I_capture_delay  (capture_delay),
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),
       .I_match          (trigger_match),

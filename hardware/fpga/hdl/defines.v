@@ -31,6 +31,7 @@
 `define REG_TRIGGER_WIDTH            6'h0b
 `define REG_USB_SPEED                6'h0c
 `define REG_USB_AUTO_DEFAULTS        6'h0d
+`define REG_CAPTURE_DELAY            6'h0e
 
 
 // FIFO bitfields:
