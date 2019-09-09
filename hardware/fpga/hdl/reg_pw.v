@@ -120,6 +120,8 @@ module reg_pw #(
    reg  empty_fifo_read;
    reg  sniff_fifo_empty_r;
 
+   wire [31:0] buildtime;
+
    assign O_arm = reg_arm_r & ~flushing;
    assign O_timestamps_disable = reg_timestamps_disable;
    assign O_pattern = reg_pattern;
@@ -146,7 +148,7 @@ module reg_pw #(
             `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
             `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
-            6'h3f: reg_read_data <= 8'h88; //TEMP/debug
+            `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
          endcase
       end
       else
@@ -427,6 +429,17 @@ module reg_pw #(
 
 
    `endif
+
+   `ifndef __ICARUS__
+      USR_ACCESSE2 U_buildtime (
+         .CFGCLK(),
+         .DATA(buildtime),
+         .DATAVALID()
+      );
+   `else
+      assign buildtime = 0;
+   `endif
+
 
 
 endmodule

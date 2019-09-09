@@ -328,6 +328,8 @@ class Usb(object):
 
     def set_trigger(self, delay, width):
         """Program the output trigger delay and width. Both are measured in clock cycles of USB-derived 240 MHz clock.
+           The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
+           different value.
         delay: int
                range: [0, 2^20-1]
         width: int
@@ -341,6 +343,18 @@ class Usb(object):
         width_bytes = [width & 255, (width >> 8) & 255, (width >> 16) & 255]
         self.usb.cmdWriteMem(self.REG_TRIGGER_DELAY, delay_bytes)
         self.usb.cmdWriteMem(self.REG_TRIGGER_WIDTH, width_bytes)
+        self.set_capture_delay(int(delay/4))
+
+
+    def set_capture_delay(self, delay):
+        """Program the capture delay, measured in clock cycles of USB-derived 60 MHz clock.
+        delay: int
+               range: [0, 2^18-1]
+        """
+        if (delay >= 2**18) or (delay < 0):
+            raise ValueError('Illegal delay value.')
+        delay_bytes = [delay & 255, (delay >> 8) & 255, (delay >> 16) & 255]
+        self.usb.cmdWriteMem(self.REG_CAPTURE_DELAY, delay_bytes)
 
 
     def set_pattern(self, pattern, mask):
@@ -411,4 +425,14 @@ class Usb(object):
             pass
 
 
+    def get_fpga_buildtime(self):
+        """Returns date and time when FPGA bitfile was generated.
+        """
+        raw = self.usb.cmdReadMem(self.REG_BUILDTIME,4)
+        day = raw[3] >> 3
+        month = ((raw[3] & 0x7) << 1) + (raw[2] >> 7)
+        year = ((raw[2] >> 1) & 0x3f) + 2000
+        hour = ((raw[2] & 0x1) << 4) + (raw[1] >> 4)
+        minute = ((raw[1] & 0xf) << 2) + (raw[0] >> 6)
+        return "FPGA build time: {}/{}/{}, {}:{}".format(day, month, year, hour, minute)
 

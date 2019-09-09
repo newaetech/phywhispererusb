@@ -14,6 +14,7 @@ set_clock_groups -asynchronous \
                  -group [get_clocks trigger_clk] \
                  -group [get_clocks fe_clk]
 
+set_property BITSTREAM.CONFIG.USR_ACCESS TIMESTAMP [current_design]
 
 set_property IOSTANDARD LVCMOS33 [get_ports *]
 
