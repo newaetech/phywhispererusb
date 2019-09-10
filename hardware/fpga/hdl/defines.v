@@ -23,7 +23,7 @@
 `define REG_ARM                      6'h03
 `define REG_PATTERN                  6'h04
 `define REG_PATTERN_MASK             6'h05
-`define REG_PATTERN_ACTION           6'h06
+`define REG_TRIGGER_ENABLE           6'h06
 `define REG_PATTERN_BYTES            6'h07
 `define REG_CAPTURE_LEN              6'h08
 `define REG_SNIFF_FIFO_STAT          6'h09
@@ -60,11 +60,6 @@
 `define FE_FIFO_DATA_LEN 8
 
 `define FE_FIFO_STRM_EMPTY 8'h0
-
-// pattern match action definitions:
-`define PM_NOP 0
-`define PM_CAPTURE 1
-`define PM_TRIGGER 2
 
 // FIFO status register bits:
 `define FIFO_STAT_EMPTY 0

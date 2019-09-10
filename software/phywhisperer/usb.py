@@ -326,7 +326,7 @@ class Usb(object):
         self.usb.cmdWriteMem(self.REG_CAPTURE_LEN, size_bytes)
 
 
-    def set_trigger(self, delay, width):
+    def set_trigger(self, delay=0, width=1, enable=True):
         """Program the output trigger delay and width. Both are measured in clock cycles of USB-derived 240 MHz clock.
            The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
            different value.
@@ -334,6 +334,7 @@ class Usb(object):
                range: [0, 2^20-1]
         width: int
                range: [1, 2^17-1]
+        enable: set to 'False' to disable trigger generation.
         """
         if (delay >= 2**20) or (delay < 0):
             raise ValueError('Illegal delay value.')
@@ -344,6 +345,10 @@ class Usb(object):
         self.usb.cmdWriteMem(self.REG_TRIGGER_DELAY, delay_bytes)
         self.usb.cmdWriteMem(self.REG_TRIGGER_WIDTH, width_bytes)
         self.set_capture_delay(int(delay/4))
+        if enable == True:
+            self.usb.cmdWriteMem(self.REG_TRIGGER_ENABLE, [1])
+        else:
+            self.usb.cmdWriteMem(self.REG_TRIGGER_ENABLE, [0])
 
 
     def set_capture_delay(self, delay):
@@ -371,19 +376,13 @@ class Usb(object):
         self.usb.cmdWriteMem(self.REG_PATTERN_BYTES, [len(pattern)])
 
 
-    def arm(self, action):
-        """Arm PhyWhisperer for capture or trigger.
-        action: string
-                values: 'capture', 'trigger', or 'NOP'
+    def arm(self):
+        """Arm PhyWhisperer for capture and optionally generating a trigger.
+        Use set_pattern to program the pattern and bitmask which will initiate
+        the capture and/or trigger operation.
+        Use set_trigger to program the trigger parameters.
+        Use set_capture_size and set_capture_delay to program the capture parameters.
         """
-        if action == 'capture':
-           self.usb.cmdWriteMem(self.REG_PATTERN_ACTION, [self.PM_CAPTURE])
-        elif action == 'trigger':
-           self.usb.cmdWriteMem(self.REG_PATTERN_ACTION, [self.PM_TRIGGER])
-        elif action == 'NOP':
-           self.usb.cmdWriteMem(self.REG_PATTERN_ACTION, [self.PM_NOP])
-        else:
-            raise ValueError('Invalid action.')
         self.usb.cmdWriteMem(self.REG_ARM, [1])
 
 
@@ -434,5 +433,5 @@ class Usb(object):
         year = ((raw[2] >> 1) & 0x3f) + 2000
         hour = ((raw[2] & 0x1) << 4) + (raw[1] >> 4)
         minute = ((raw[1] & 0xf) << 2) + (raw[0] >> 6)
-        return "FPGA build time: {}/{}/{}, {}:{}".format(day, month, year, hour, minute)
+        return "FPGA build time: {}/{}/{}, {}:{}".format(month, day, year, hour, minute)
 

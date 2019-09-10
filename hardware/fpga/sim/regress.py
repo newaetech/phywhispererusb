@@ -99,7 +99,7 @@ tests.append(dict(name  = 'trigger',
              frequency = 1,
              description = 'Basic trigger test.',
              NUM_REPEATS = 10,
-             ACTION = 2))
+             TRIGGER_ENABLE = 1))
 
 tests.append(dict(name  = 'trigger_corner',
              frequency = 2,
@@ -107,7 +107,7 @@ tests.append(dict(name  = 'trigger_corner',
              NUM_REPEATS = 10,
              TRIGGER_DELAY_MAX = 4,
              MAX_DELAY = 2,
-             ACTION = 2))
+             TRIGGER_ENABLE = 1))
 
 tests.append(dict(name  = 'short_trigger',
              frequency = 2,
@@ -117,7 +117,7 @@ tests.append(dict(name  = 'short_trigger',
              TRIGGER_WIDTH_MIN = 1,
              TRIGGER_WIDTH_MAX = 4,
              NUM_REPEATS = 10,
-             ACTION = 2))
+             TRIGGER_ENABLE = 1))
 
 tests.append(dict(name  = 'long_trigger',
              frequency = 10,
@@ -128,7 +128,7 @@ tests.append(dict(name  = 'long_trigger',
              TRIGGER_WIDTH_MIN = 256,
              TRIGGER_WIDTH_MAX = 2**17-1,
              NUM_REPEATS = 2,
-             ACTION = 2))
+             TRIGGER_ENABLE = 1))
 
 tests.append(dict(name  = 'shortcorner_timestamps',
              frequency = 5,

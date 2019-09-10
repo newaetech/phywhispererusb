@@ -32,7 +32,6 @@ module pw_pattern_matcher #(
    input  wire  I_arm,
    input  wire  [pPATTERN_BYTES*8-1:0] I_pattern,
    input  wire  [pPATTERN_BYTES*8-1:0] I_mask,
-   input  wire  [1:0] I_action,
    input  wire  [7:0] I_pattern_bytes,
 
    // from capture block:
@@ -40,18 +39,9 @@ module pw_pattern_matcher #(
    input  wire  I_fe_data_valid,
    input  wire  I_capturing,
 
-   // to register block:
-   output wire  O_match,
-
-   // to capture block:
-   output wire  O_match_capture,
-
    // to trigger block:
    output wire  O_match_trigger
 );
-
-   // simple: use a pattern match counter! just keep the logic generic for
-   // re-use into DesignStart trace trigger
 
    reg  [6:0] match_counter;
    reg  match_trigger;
@@ -70,7 +60,6 @@ module pw_pattern_matcher #(
    (* ASYNC_REG = "TRUE" *) reg  [1:0] arm_pipe;
    (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] pattern_r;
    (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] mask_r;
-   (* ASYNC_REG = "TRUE" *) reg  [1:0] action_r;
    (* ASYNC_REG = "TRUE" *) reg  [7:0] pattern_bytes_r;
 
    assign masked_pattern_byte = pattern_r[8*match_counter +: 8] & mask_r[8*match_counter +: 8];
@@ -115,9 +104,7 @@ module pw_pattern_matcher #(
       end
    end
 
-   assign O_match = match_trigger;// & !match_trigger_r;
-   assign O_match_capture = O_match & (action_r == `PM_CAPTURE);
-   assign O_match_trigger = match_trigger & !match_trigger_r & (action_r == `PM_TRIGGER);
+   assign O_match_trigger = match_trigger & !match_trigger_r;
 
 
    // CDC for inputs from register block. Single flop for quasi-static signals,
@@ -126,7 +113,6 @@ module pw_pattern_matcher #(
       if (reset_i) begin
          pattern_r <= 0;
          mask_r <= 0;
-         action_r <= 0;
          pattern_bytes_r <= 0;
          arm_pipe <= 0;
          arm_r <= 0;
@@ -134,7 +120,6 @@ module pw_pattern_matcher #(
       else begin
          pattern_r <= I_pattern;
          mask_r <= I_mask;
-         action_r <= I_action;
          pattern_bytes_r <= I_pattern_bytes;
          {arm_r, arm_pipe} <= {arm_pipe, I_arm};
       end

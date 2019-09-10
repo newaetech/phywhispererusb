@@ -123,16 +123,15 @@ module phywhisperer_top(
    wire psincdec;
    wire psdone;
    wire trigger_clk_locked;
-   wire match;
+   wire capture_enable_pulse;
    wire trigger_match;
-   wire capture_match;
    wire timestamps_disable;
    wire [15:0] capture_len;
    wire fifo_full;
    wire fifo_overflow_blocked;
    wire arm;
    wire capturing;
-   wire trigger_capture_enable;
+   wire capture_enable;
 
    wire [pCAPTURE_DELAY_WIDTH-1:0] capture_delay;
    wire [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay;
@@ -140,7 +139,7 @@ module phywhisperer_top(
 
    wire [pPATTERN_BYTES*8-1:0] pattern;
    wire [pPATTERN_BYTES*8-1:0] pattern_mask;
-   wire [1:0] pattern_action;
+   wire trigger_enable;
    wire [7:0] pattern_bytes;
 
    wire [1:0] usb_speed;
@@ -246,9 +245,9 @@ module phywhisperer_top(
       .O_arm                    (arm),
       .O_pattern                (pattern),
       .O_pattern_mask           (pattern_mask),
-      .O_pattern_action         (pattern_action),
+      .O_trigger_enable         (trigger_enable),
       .O_pattern_bytes          (pattern_bytes),
-      .I_match                  (match),
+      .I_capture_enable_pulse   (capture_enable_pulse),
 
       .O_usb_speed              (usb_speed),
       .O_usb_xcvrsel_auto       (usb_xcvrsel_auto),
@@ -269,7 +268,6 @@ module phywhisperer_top(
       .fe_clk                   (clk_fe_buf), 
       .I_arm                    (arm),
       .I_timestamps_disable     (timestamps_disable),
-      .I_capture_enable         (capture_match),
       .I_capture_len            (capture_len),
       .I_fifo_full              (fifo_full),
       .I_fifo_overflow_blocked  (fifo_overflow_blocked),
@@ -288,8 +286,7 @@ module phywhisperer_top(
       .O_pm_data                (fe_capture_pm_data),
       .O_pm_wr                  (fe_capture_pm_wr),
       .O_capturing              (capturing),
-      .I_trigger_capture_enable (trigger_capture_enable)
-
+      .I_capture_enable         (capture_enable)
    );
 
 
@@ -416,13 +413,10 @@ module phywhisperer_top(
       .I_arm            (arm),
       .I_pattern        (pattern),
       .I_mask           (pattern_mask),
-      .I_action         (pattern_action),
       .I_pattern_bytes  (pattern_bytes),
       .I_fe_data        (fe_capture_pm_data),
       .I_fe_data_valid  (fe_capture_pm_wr),
       .I_capturing      (capturing),
-      .O_match          (match),
-      .O_match_capture  (capture_match),
       .O_match_trigger  (trigger_match)
    );
 
@@ -439,10 +433,11 @@ module phywhisperer_top(
       .I_capture_delay  (capture_delay),
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),
+      .I_trigger_enable (trigger_enable),
+      .O_capture_enable_pulse (capture_enable_pulse),
       .I_match          (trigger_match),
       .I_capturing      (capturing),
-      .O_capture_enable (trigger_capture_enable)
-
+      .O_capture_enable (capture_enable)
    );
 
 

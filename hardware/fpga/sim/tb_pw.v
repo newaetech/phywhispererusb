@@ -44,7 +44,7 @@ module tb_pw();
     parameter pFIFO_DEPTH = 8192;
     parameter pMAX_EVENTS = pFIFO_DEPTH * 4; // arbitrary
     parameter pTIMEOUT = 50000;
-    parameter pACTION = `PM_CAPTURE;
+    parameter pTRIGGER_ENABLE = 0;
     parameter pTRIGGER_DELAY_MIN= 0;
     parameter pTRIGGER_DELAY_MAX= 2**20-1;
     parameter pTRIGGER_WIDTH_MIN= 1;
@@ -209,7 +209,7 @@ module tb_pw();
       pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
-      write_1byte(`REG_PATTERN_ACTION, pACTION);
+      write_1byte(`REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
       rw_lots_bytes(`REG_CAPTURE_LEN);
       write_next_byte(pNUM_EVENTS & 255);
       write_next_byte(pNUM_EVENTS >> 8);
@@ -225,7 +225,7 @@ module tb_pw();
          $display("\nTx Iteration %d:", send_iteration);
 
          set_pattern();
-         if (pACTION == `PM_TRIGGER)
+         if (pTRIGGER_ENABLE)
             set_trigger();
 
          write_1byte(`REG_ARM, 8'h01);
@@ -244,7 +244,7 @@ module tb_pw();
 
          // sync up with receive block:
          wait (rx_readindex >= pNUM_EVENTS);
-         if (pACTION == `PM_TRIGGER)
+         if (pTRIGGER_ENABLE)
             wait (trigger_receive_iteration == send_iteration + 1); // needed for very long triggers!
 
       end
@@ -270,7 +270,7 @@ module tb_pw();
 
    // Trigger check thread:
    initial begin
-      if (pACTION == `PM_TRIGGER) begin
+      if (pTRIGGER_ENABLE) begin
          for (trigger_receive_iteration = 0; trigger_receive_iteration < pNUM_REPEATS; trigger_receive_iteration = trigger_receive_iteration + 1) begin
             wait (pattern_match_marker == 1'b1);
             matchtime = $time;

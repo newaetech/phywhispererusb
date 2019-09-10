@@ -52,23 +52,23 @@ module reg_pw #(
    output wire [15:0]  O_capture_len,
    output wire         O_fifo_full,
    output wire         O_fifo_overflow_blocked,
-   input  wire [pTIMESTAMP_FULL_WIDTH-1:0]   I_fe_capture_time,
+   input  wire         [pTIMESTAMP_FULL_WIDTH-1:0] I_fe_capture_time,
    input  wire [7:0]   I_fe_capture_data,
    input  wire [4:0]   I_fe_capture_stat,
    input  wire [1:0]   I_fe_capture_cmd,
    input  wire         I_fe_capture_data_wr,
 
 // Interface to pattern matcher:
-   output wire [8*pPATTERN_BYTES-1:0] O_pattern,
-   output wire [8*pPATTERN_BYTES-1:0] O_pattern_mask,
-   output wire [1:0] O_pattern_action,
-   output wire [7:0] O_pattern_bytes,
-   input  wire         I_match,
+   output wire         [8*pPATTERN_BYTES-1:0] O_pattern,
+   output wire         [8*pPATTERN_BYTES-1:0] O_pattern_mask,
+   output wire         [7:0] O_pattern_bytes,
+   output wire         O_trigger_enable,
 
 // Interface to trigger generator:
    output wire [pTRIGGER_DELAY_WIDTH-1:0] O_trigger_delay,
    output wire [pTRIGGER_WIDTH_WIDTH-1:0] O_trigger_width,
    output wire [pCAPTURE_DELAY_WIDTH-1:0] O_capture_delay,
+   input  wire         I_capture_enable_pulse,
 
 // Interface to USB autodetect:
    output reg  O_usb_auto_restart,
@@ -87,7 +87,7 @@ module reg_pw #(
    reg reg_timestamps_disable;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
-   reg [1:0] reg_pattern_action;
+   reg reg_trigger_enable;
    reg [7:0] reg_pattern_bytes;
    reg [15:0] reg_capture_len;
    reg [pCAPTURE_DELAY_WIDTH-1:0] reg_capture_delay;
@@ -121,12 +121,13 @@ module reg_pw #(
    reg  sniff_fifo_empty_r;
 
    wire [31:0] buildtime;
+   wire capture_enable_pulse;
 
    assign O_arm = reg_arm_r & ~flushing;
    assign O_timestamps_disable = reg_timestamps_disable;
    assign O_pattern = reg_pattern;
    assign O_pattern_mask = reg_pattern_mask;
-   assign O_pattern_action = reg_pattern_action;
+   assign O_trigger_enable = reg_trigger_enable;
    assign O_pattern_bytes = reg_pattern_bytes;
    assign O_capture_len = reg_capture_len;
    assign O_trigger_delay = reg_trigger_delay;
@@ -144,7 +145,7 @@ module reg_pw #(
             `REG_ARM: reg_read_data <= reg_arm;
             `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
             `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
-            `REG_PATTERN_ACTION: reg_read_data <= reg_pattern_action[reg_bytecnt*8 +: 8];
+            `REG_TRIGGER_ENABLE: reg_read_data <= reg_trigger_enable;
             `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
             `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
@@ -185,7 +186,7 @@ module reg_pw #(
          reg_timestamps_disable <= 1'b0;
          reg_pattern <= 0;
          reg_pattern_mask <= 64'h0;
-         reg_pattern_action <= 0;
+         reg_trigger_enable <= 0;
          reg_pattern_bytes <= 8'd0;
          reg_capture_len <= 0;
          reg_capture_delay <= 0;
@@ -201,7 +202,7 @@ module reg_pw #(
                `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
                `REG_PATTERN: reg_pattern[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_MASK: reg_pattern_mask[reg_bytecnt*8 +: 8] <= write_data;
-               `REG_PATTERN_ACTION: reg_pattern_action[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_TRIGGER_ENABLE: reg_trigger_enable <= write_data;
                `REG_PATTERN_BYTES: reg_pattern_bytes <= write_data;
                `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
                `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data;
@@ -214,7 +215,7 @@ module reg_pw #(
 
          if (reg_addrvalid && reg_write && (reg_address == `REG_ARM))
             reg_arm <= write_data[0];
-         else if (match)
+         else if (capture_enable_pulse)
             reg_arm <= 1'b0;
 
          if (reg_addrvalid && reg_write && (reg_address == `REG_USB_SPEED) && (write_data == `USB_SPEED_AUTO))
@@ -225,8 +226,6 @@ module reg_pw #(
       end
    end
 
-   reg  match;
-   (* ASYNC_REG = "TRUE" *) reg  [1:0] match_pipe;
    reg reg_arm_feclk;
    (* ASYNC_REG = "TRUE" *) reg  [1:0] reg_arm_pipe;
 
@@ -241,7 +240,6 @@ module reg_pw #(
    // CDC:
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
-         match_pipe <= 0;
          sniff_fifo_full_usbclk <= 0;
          sniff_fifo_overflow_blocked_usbclk <= 0;
          sniff_fifo_full_threshold_usbclk <= 0;
@@ -252,12 +250,19 @@ module reg_pw #(
       end
       else begin
          usb_speed_auto <= I_usb_auto_speed;
-         {match, match_pipe} <= {match_pipe, I_match};
          {sniff_fifo_full_usbclk, sniff_fifo_full_pipe} <= {sniff_fifo_full_pipe, sniff_fifo_full};
          {sniff_fifo_overflow_blocked_usbclk, sniff_fifo_overflow_blocked_pipe} <= {sniff_fifo_overflow_blocked_pipe, sniff_fifo_overflow_blocked};
          {sniff_fifo_full_threshold_usbclk, sniff_fifo_full_threshold_pipe} <= {sniff_fifo_full_threshold_pipe, sniff_fifo_full_threshold};
       end
    end
+
+   cdc_pulse U_match_cdc (
+      .reset_i       (reset_i),
+      .src_clk       (fe_clk),
+      .src_pulse     (I_capture_enable_pulse),
+      .dst_clk       (cwusb_clk),
+      .dst_pulse     (capture_enable_pulse)
+   );
 
 
    // FIFO write logic.
