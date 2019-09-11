@@ -19,6 +19,15 @@ TRIGGER_DELAY_MAX=512
 TRIGGER_WIDTH_MIN=1
 TRIGGER_WIDTH_MAX=512
 WAVEFORMAT=fst
+TOP=tb_pw
+
+# This here is a bit clumsy, but necessary because iverilog fails to compile
+# the Xilinx FIFO if the -s switch is used on the tb_pw testbench:
+ifneq ($(TOP),tb_pw)
+	TESTBENCH=$(TOP).v
+	S=-s $(TOP)
+endif
+
 
 all: compile run
 
@@ -28,6 +37,8 @@ compile:
 	-Wportbind \
 	-Wselect-range \
 	-I../hdl \
+	$(TESTBENCH) \
+	$(S) \
 	-P tb_pw.pNUM_EVENTS=$(NUM_EVENTS) \
 	-P tb_pw.pNUM_REPEATS=$(NUM_REPEATS) \
 	-P tb_pw.pDELAY_MODE=$(DELAY_MODE) \
@@ -46,7 +57,7 @@ compile:
 	-P tb_pw.pTRIGGER_DELAY_MAX=$(TRIGGER_DELAY_MAX) \
 	-P tb_pw.pTRIGGER_WIDTH_MIN=$(TRIGGER_WIDTH_MIN) \
 	-P tb_pw.pTRIGGER_WIDTH_MAX=$(TRIGGER_WIDTH_MAX) \
-	-P tb_pw.pVERBOSE=$(VERBOSE)
+	-P tb_pw.pVERBOSE=$(VERBOSE) \
 
 run:
 	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)

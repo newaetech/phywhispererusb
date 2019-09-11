@@ -28,6 +28,13 @@ tests.append(dict(name  = 'short_timestamps',
              MIN_DELAY  = 0,
              MAX_DELAY  = 7))
 
+
+tests.append(dict(name  = 'usb_autodetect',
+             frequency = 100,
+             description = 'Simple USB autodetect test.',
+             TOP = 'tb_usb_autodetect'))
+
+
 tests.append(dict(name  = 'stream_short',
              frequency = 1,
              description = 'Stream mode, test empty FIFO reads.',

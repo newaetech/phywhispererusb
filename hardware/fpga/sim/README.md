@@ -80,9 +80,7 @@ parameter because each parameter has a default value):
    * 1: the delay is randomly chosen to be either `MIN_DELAY` or `MAX_DELAY`
      (useful to simulate bursty traffic).
 * `VALID`: percentage (from 0 to 100) of USB events that have rxvalid set.
-* `ACTION`: what the FPGA does upon a pattern match:
-   * 1: capture USB events only; 
-   * 2: issue a programmable trigger and capture USB events.
+* `TRIGGER_ENABLE`: if set, a trigger will be issued after a pattern match.
 * `TRIGGER_DELAY_MIN`, `TRIGGER_DELAY_MAX`: after a pattern match, delay
   until trigger is asserted.
 * `TRIGGER_WIDTH_MIN`, `TRIGGER_WIDTH_MAX`: width of trigger.
@@ -96,6 +94,8 @@ parameter because each parameter has a default value):
    * 1: read captured data continuously, even if data isn't available. 
 * `VERBOSE`: always set.
 * `TIMEOUT`: global timeout.
+* `TOP`: specify top-level Verilog file. Allows a testcase to use a different
+  Verilog testbench altogether (this is used by the USB autodetect testcase).
 
 
 ## Randomization
