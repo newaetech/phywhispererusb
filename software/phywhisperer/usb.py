@@ -17,29 +17,34 @@ class Usb(object):
     def __init__ (self):
         self.short_timestamps = [0] * 2**3
         self.long_timestamps = [0] * 2**16
-        # parse Verilog defines file so we can access register definitions by name and avoid 'magic numbers':
+        # parse Verilog defines file so we can access register and bit definitions by name and avoid 'magic numbers':
         self.verilog_define_matches = 0
-        defines = open('../../hardware/fpga/hdl/defines.v', 'r')
+        defines_file = '../../hardware/fpga/hdl/defines.v'
+        defines = open(defines_file, 'r')
+        define_regex_base  =   re.compile(r'`define')
         define_regex_radix =   re.compile(r'`define\s+?(\w+).+?\'([bdh])([0-9a-fA-F]+)')
         define_regex_noradix = re.compile(r'`define\s+?(\w+?)\s+?(\d+?)')
         for define in defines:
-            match = define_regex_radix.search(define)
-            if match:
-                self.verilog_define_matches += 1
-                if match.group(2) == 'b':
-                    radix = 2
-                elif match.group(2) == 'h':
-                    radix = 16
-                else:
-                    radix = 10
-                #self.registers.append(dict(name=match.group(1), value=int(match.group(3),radix)))
-                setattr(self, match.group(1), int(match.group(3),radix))
-            else:
-                match = define_regex_noradix.search(define)
+            if define_regex_base.search(define):
+                match = define_regex_radix.search(define)
                 if match:
                     self.verilog_define_matches += 1
-                    #self.registers.append(dict(name=match.group(1), value=int(match.group(2),10)))
-                    setattr(self, match.group(1), int(match.group(2),10))
+                    if match.group(2) == 'b':
+                        radix = 2
+                    elif match.group(2) == 'h':
+                        radix = 16
+                    else:
+                        radix = 10
+                    setattr(self, match.group(1), int(match.group(3),radix))
+                else:
+                    match = define_regex_noradix.search(define)
+                    if match:
+                        self.verilog_define_matches += 1
+                        setattr(self, match.group(1), int(match.group(2),10))
+                    else:
+                        logging.warning("Couldn't parse line: %s", define)
+        # make sure everything is cool:
+        assert self.verilog_define_matches == 44, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
         defines.close()
 
 
