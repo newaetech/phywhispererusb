@@ -4,6 +4,7 @@ import sys
 import os
 import re
 import logging
+import pkg_resources
 from phywhisperer.interface.bootloader_sam3u import Samba
 from zipfile import ZipFile
 
@@ -19,7 +20,7 @@ class Usb(object):
         self.long_timestamps = [0] * 2**16
         # parse Verilog defines file so we can access register and bit definitions by name and avoid 'magic numbers':
         self.verilog_define_matches = 0
-        defines_file = '../../hardware/fpga/hdl/defines.v'
+        defines_file = pkg_resources.resource_filename('phywhisperer', 'firmware/defines.v')
         defines = open(defines_file, 'r')
         define_regex_base  =   re.compile(r'`define')
         define_regex_radix =   re.compile(r'`define\s+?(\w+).+?\'([bdh])([0-9a-fA-F]+)')
@@ -235,7 +236,7 @@ class Usb(object):
                     raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)
                     command = raw[2] & 0x3
                     status += 1
-                    if (status % 1000 == 0) and status > 0:
+                    if (status % 10000 == 0) and status > 0:
                        print("%d empty status read..." % status)
                 rawburst = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
 
@@ -243,7 +244,7 @@ class Usb(object):
                 rawburst = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
 
         while (entries_read < entries) and not done_reading:
-            if (entries_read % 500 == 0) and entries_read > 0:
+            if (entries_read % 1000 == 0) and entries_read > 0:
                 print("%d entries read..." % entries_read)
             if single_burst:
                 raw = rawburst[entries_read*4:entries_read*4+3]
@@ -305,8 +306,10 @@ class Usb(object):
                    raise Exception('Received empty stream status: attempted to read empty FIFO.')
                 status += 1
                 if stream and single_burst:
+                   # increment the read count, *** because the data has already been read, in a single burst of pre-determined size! ***
+                   # (which is why this doesn't work so great)
                    entries_read += 1
-                if (status % 1000 == 0) and status > 0:
+                if (status % 10000 == 0) and status > 0:
                    print("%d empty status read..." % status)
             else:
                 print ("ERROR: unknown command (%d)" % command) 

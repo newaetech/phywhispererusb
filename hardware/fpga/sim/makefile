@@ -37,6 +37,7 @@ compile:
 	-Wportbind \
 	-Wselect-range \
 	-I../hdl \
+	-I../../../software/phywhisperer/firmware \
 	$(TESTBENCH) \
 	$(S) \
 	-P tb_pw.pNUM_EVENTS=$(NUM_EVENTS) \

@@ -15,6 +15,7 @@ setup(
                 'phywhisperer.interface',
                 'phywhisperer.firmware'
                 ],
+    include_package_data=True,
     install_requires = [
 
         # pyusb could be removed from required list, but for most people it's needed
