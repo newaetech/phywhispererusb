@@ -194,7 +194,7 @@ class Usb(object):
         pass
 
 
-    def read_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False, stream=False):
+    def read_only_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False, stream=False):
         """Read from USB capture memory.
         entries: integer
                  values: 1 to 8188 if stream=False; no upper limit if stream=True
@@ -210,13 +210,7 @@ class Usb(object):
         status = 0
         entries_read = 0
         timestep = 0
-        data_bytes = []
-        data_times = []
-        stat_bytes = []
-        stat_times = []
-        data_commands = 0
-        stat_commands = 0
-        time_commands = 0
+        data = []
         underflowed = False
         overflowed = False
         done_reading = False
@@ -226,7 +220,6 @@ class Usb(object):
         if single_burst:
             if blocking:
                raise ValueError ('Cannot do blocking reads in a single burst.')
-
             elif stream:
             # TODO: for now using poor man's approach to support streaming with a burst read:
             # read one word at a time until a non-empty status is encountered, then start the
@@ -238,32 +231,63 @@ class Usb(object):
                     status += 1
                     if (status % 10000 == 0) and status > 0:
                        print("%d empty status read..." % status)
-                rawburst = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
-
+                raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
             else:
-                rawburst = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
+                raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
+            for i in range(entries):
+                data.append(raw[i*4:i*4+3])
 
-        while (entries_read < entries) and not done_reading:
-            if (entries_read % 1000 == 0) and entries_read > 0:
-                print("%d entries read..." % entries_read)
-            if single_burst:
-                raw = rawburst[entries_read*4:entries_read*4+3]
-            else:
+        else:
+            while (entries_read < entries) and not done_reading:
+                if (entries_read % 1000 == 0) and entries_read > 0:
+                    print("%d entries read..." % entries_read)
                 while blocking and self.fifo_empty():
                     pass
                 raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)
+                data.append(raw[0:3])
+                command = raw[2] & 0x3
+                if (raw[2] & 8) and not underflowed:
+                    logging.warning("Capture FIFO underflowed!")
+                    underflowed = True
+                    done_reading = True
+                if (raw[2] & 64) and not overflowed:
+                    logging.warning("Capture FIFO overflow blocked!")
+                    overflowed = True
+                    if not stream:
+                       done_reading = True
+                if (command == self.FE_FIFO_CMD_STRM):
+                    if not stream:
+                       raise Exception('Received empty stream status: attempted to read empty FIFO.')
+                    status += 1
+                    if (status % 10000 == 0) and status > 0:
+                       print("%d empty status read..." % status)
+                else:
+                    entries_read += 1
+
+                if stream and self.fifo_empty() and overflowed:
+                    print('Emptied FIFO after overflow, done reading.')
+                    done_reading = True
+
+        if verbose:
+            print("Received stream empty status %d times." % status)
+        return data
+
+
+    def split_data(self, rawdata, verbose=False):
+        """Split raw USB capture data into data events and times, stat events and times
+        """
+        timestep = 0
+        data_bytes = []
+        data_times = []
+        stat_bytes = []
+        stat_times = []
+        data_commands = 0
+        stat_commands = 0
+        time_commands = 0
+
+        for raw in rawdata:
             command = raw[2] & 0x3
-            if (raw[2] & 8) and not underflowed:
-                logging.warning("Capture FIFO underflowed!")
-                underflowed = True
-                done_reading = True
-            if (raw[2] & 64) and not overflowed:
-                logging.warning("Capture FIFO overflow blocked!")
-                overflowed = True
-                if not stream:
-                   done_reading = True
             if (command == self.FE_FIFO_CMD_DATA):
-                entries_read += 1
                 data = raw[1]
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
@@ -278,7 +302,6 @@ class Usb(object):
                 data_bytes.append(data)
                 data_times.append(timestep)
             elif (command == self.FE_FIFO_CMD_STAT):
-                entries_read += 1
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
                 timestep += (ts+1)
@@ -289,7 +312,6 @@ class Usb(object):
                 stat_bytes.append(flags)
                 stat_times.append(timestep)
             elif (command == self.FE_FIFO_CMD_TIME):
-                entries_read += 1
                 ts = raw[0] + (raw[1] << 8)
                 self.long_timestamps[ts] += 1
                 #Unlike stat and data commands, we don't add one here; if we did
@@ -302,24 +324,84 @@ class Usb(object):
                 if verbose:
                    print("%8d" % timestep)
             elif (command == self.FE_FIFO_CMD_STRM):
-                if not stream:
-                   raise Exception('Received empty stream status: attempted to read empty FIFO.')
-                status += 1
-                if stream and single_burst:
-                   # increment the read count, *** because the data has already been read, in a single burst of pre-determined size! ***
-                   # (which is why this doesn't work so great)
-                   entries_read += 1
-                if (status % 10000 == 0) and status > 0:
-                   print("%d empty status read..." % status)
+                # nothing to do or report
+                pass
             else:
                 print ("ERROR: unknown command (%d)" % command) 
 
-            if stream and self.fifo_empty() and overflowed:
-                print('Emptied FIFO after overflow, done reading.')
-                done_reading = True
-
-        print("Received stream empty status %d times." % status)
         return (data_times, data_bytes, stat_times, stat_bytes)
+
+
+    def split_packets(self, rawdata, verbose=False):
+        """Split raw USB capture data into packets.
+        """
+        timestep = 0
+        in_packet = False
+        rx_active = 0
+        packet_size = 0
+        packet_start_time = 0
+        packets = []
+        packet_bytes = []
+
+        for raw in rawdata:
+            command = raw[2] & 0x3
+            if (command == self.FE_FIFO_CMD_TIME):
+                ts = raw[0] + (raw[1] << 8)
+                #Unlike stat and data commands, we don't add one here; if we did
+                #we'd be overcounting in the common case where a time command immediately
+                #preceeds a stat or data command. Consequence is that timestep will be off
+                #by one in the case of lone time commands (which is rare, and inconsequential
+                #in practice).
+                timestep += ts
+            elif (command == self.FE_FIFO_CMD_STRM):
+                # nothing to do or report
+                pass
+            elif (command == self.FE_FIFO_CMD_DATA) or (command == self.FE_FIFO_CMD_STAT):
+                rx_active = (raw[0] & 8) >> 3
+                ts = raw[0] & 0x7
+                #hardware reports the number of cycles between events, so to
+                #obtain elapsed time we add one:
+                timestep += (ts+1)
+                if rx_active and not in_packet:
+                    in_packet = True
+                    packet_start_time = timestep
+                elif not rx_active and in_packet:
+                    in_packet = False
+                    packets.append({"timestamp": packet_start_time,
+                                    "size": packet_size,
+                                    "contents": packet_bytes
+                                })
+                    if verbose:
+                        print("%d-byte packet at time %d: " % (packet_size, packet_start_time), end = '')
+                        for byte in packet_bytes:
+                            print(hex(byte), end=' ')
+                        print()
+                    packet_bytes = []
+                    packet_size = 0
+                if (command == self.FE_FIFO_CMD_DATA):
+                    packet_bytes.append(raw[1])
+                    packet_size += 1
+            else:
+                print ("ERROR: unknown command (%d)" % command) 
+
+        return packets
+
+
+    def read_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False, stream=False):
+        """Read from USB capture memory.
+        entries: integer
+                 values: 1 to 8188 if stream=False; no upper limit if stream=True
+        single_burst: True: read capture memory in a single burst (much faster).
+                      False: read capture memory in 3-byte bursts (much slower).
+        blocking: True: wait for data to be available before reading. Slower and not available
+                        with single_burst=True.
+                  False: read requested number of entries without checking for availability.
+        stream: True:
+                False: regular read operation, as defined by 'single_burst' and 'blocking'
+        verbose: True or False
+        """
+        rawdata = self.read_only_from_fifo(entries=entries, verbose=verbose, single_burst=single_burst, blocking=blocking, stream=stream)
+        return self.split_data(rawdata, verbose=verbose)
 
 
     def set_capture_size(self, size=8192):
@@ -436,10 +518,12 @@ class Usb(object):
         """Returns date and time when FPGA bitfile was generated.
         """
         raw = self.usb.cmdReadMem(self.REG_BUILDTIME,4)
+        # definitions: Xilinx XAPP1232
         day = raw[3] >> 3
         month = ((raw[3] & 0x7) << 1) + (raw[2] >> 7)
         year = ((raw[2] >> 1) & 0x3f) + 2000
         hour = ((raw[2] & 0x1) << 4) + (raw[1] >> 4)
         minute = ((raw[1] & 0xf) << 2) + (raw[0] >> 6)
         return "FPGA build time: {}/{}/{}, {}:{}".format(month, day, year, hour, minute)
+
 
