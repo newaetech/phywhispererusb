@@ -1,24 +1,24 @@
 #
-# Copyright (c) 2014-2018, NewAE Technology Inc
+# Copyright (c) 2014-2019, NewAE Technology Inc
 # All rights reserved.
 #
-# Find this and more at newae.com - this file is part of the chipwhisperer
-# project, http://www.chipwhisperer.com
+# Find this and more at newae.com - this file is part of the PhyWhisperer
+# project, http://www.phywhisperer.com
 #
-#    This file is part of chipwhisperer.
+#    This file is part of PhyWhisperer.
 #
-#    chipwhisperer is free software: you can redistribute it and/or modify
+#    PhyWhisperer is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    chipwhisperer is distributed in the hope that it will be useful,
+#    PhyWhisperer is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with chipwhisperer.  If not, see <http://www.gnu.org/licenses/>.
+#    along with PhyWhisperer.  If not, see <http://www.gnu.org/licenses/>.
 # ChipWhisperer is a trademark of NewAE Technology Inc., registered in the
 # United States of America, the European Union, and other jurisdictions.
 # ==========================================================================
@@ -34,9 +34,7 @@ from usb.backend import libusb0
 import usb.core
 import usb.util
 
-from chipwhisperer.hardware.firmware import cwlite as fw_cwlite
-from chipwhisperer.hardware.firmware import cw1200 as fw_cw1200
-from chipwhisperer.hardware.firmware import cw305  as fw_cw305
+from phywhisperer.firmware import phywhisperer as fw_phywhisperer
 
 
 
@@ -66,9 +64,7 @@ def packuint16(data):
 #List of all NewAE PID's
 NEWAE_VID = 0x2B3E
 NEWAE_PIDS = {
-    0xACE2: {'name': "ChipWhisperer-Lite",     'fwver': fw_cwlite.fwver},
-    0xACE3: {'name': "ChipWhisperer-CW1200",   'fwver': fw_cw1200.fwver},
-    0xC305: {'name': "CW305 Artix FPGA Board", 'fwver': fw_cw305.fwver},
+    0xC610: {'name': "PhyWhisperer-USB", 'fwver': fw_phywhisperer.fwver}
 }
 
 class NAEUSB_Serializer_base(object):
@@ -758,27 +754,25 @@ class NAEUSB(object):
 
 
 if __name__ == '__main__':
-    from chipwhisperer.hardware.naeusb.fpga import FPGA
-    from chipwhisperer.hardware.naeusb.programmer_avr import AVRISP
-    from chipwhisperer.hardware.naeusb.programmer_xmega import XMEGAPDI, supported_xmega
-    from chipwhisperer.hardware.naeusb.serial import USART
+    import phywhisperer.interface.program_fpga as LLINT
 
-    cwtestusb = NAEUSB()
-    cwtestusb.con()
+    pwtestusb = NAEUSB()
+    pwtestusb.con(idProduct=[0xC521])
 
     #Connect required modules up here
-    fpga = FPGA(cwtestusb)
-    xmega = XMEGAPDI(cwtestusb)
-    avr = AVRISP(cwtestusb)
-    usart = USART(cwtestusb)
+    fpga = LLINT.PhyWhispererUSB(pwtestusb)
 
     force = True
     if fpga.isFPGAProgrammed() == False or force:
         from datetime import datetime
         starttime = datetime.now()
-        fpga.FPGAProgram(open(r"C:\E\Documents\academic\sidechannel\chipwhisperer\hardware\capture\chipwhisperer-lite\hdl\cwlite_ise\cwlite_interface.bit", "rb"))
-        # fpga.FPGAProgram(open(r"C:\Users\colin\dropbox\engineering\git_repos\CW305_ArtixTarget\temp\artix7test\artix7test.runs\impl_1\cw305_top.bit", "rb"))
-        # fpga.FPGAProgram(open(r"C:\E\Documents\academic\sidechannel\chipwhisperer\hardware\api\chipwhisperer-lite\hdl\cwlite_ise_spifake\cwlite_interface.bit", "rb"))
+
+        from phywhisperer.firmware.phywhisperer import getsome
+        from zipfile import ZipFile
+        with ZipFile(getsome("phywhisperer-firmware.zip")) as myzip:
+            with myzip.open('phywhisperer_top.bit') as bitstream:
+                fpga.FPGAProgram(bitstream)
+
         stoptime = datetime.now()
         print("FPGA Config time: %s" % str(stoptime - starttime))
 
@@ -787,64 +781,7 @@ if __name__ == '__main__':
     # fpga.cmdWriteMem(0x1A, [235, 126, 5, 4])
     # print fpga.cmdReadMem(0x1A, 4)
 
-    avrprogram = False
-    if avrprogram:
-        avr.enableISP(True)
-        avr.enableISP(False)
-
-    xmegaprogram = True
-    if xmegaprogram:
-        xmega.setChip(supported_xmega[0])
-        # Worst-case is 75mS for chip erase, so give us some head-room
-        xmega.setParamTimeout(200)
-
-        try:
-            print("Enable")
-            xmega.enablePDI(True)
-
-            print("Read sig")
-            # Read signature bytes
-            data = xmega.readMemory(0x01000090, 3, "signature")
-
-            print(data)
-
-            if data[0] != 0x1E or data[1] != 0x97 or data[2] != 0x46:
-                print("Signature bytes failed: %02x %02x %02x != 1E 97 46" % (data[0], data[1], data[2]))
-            else:
-                print("Detected XMEGA128A4U")
-
-            print("Erasing")
-            # Chip erase
-            try:
-                xmega.eraseChip()
-            except IOError:
-                xmega.enablePDI(False)
-                xmega.enablePDI(True)
-
-            fakedata = [i & 0xff for i in range(0, 2048)]
-            print("Programming FLASH Memory")
-            xmega.writeMemory(0x0800000, fakedata, memname="flash")
-
-            print("Verifying")
-            test = xmega.readMemory(0x0800000, 512)
-
-            print(test)
-
-
-        except TypeError as e:
-            print(str(e))
-
-        except IOError as e:
-            print(str(e))
-
-        xmega.enablePDI(False)
 
     print("Let's Rock and Roll baby")
 
-    sertest = True
 
-    if sertest:
-        usart.init()
-        usart.write("hello\n")
-        time.sleep(0.1)
-        print(usart.read())
