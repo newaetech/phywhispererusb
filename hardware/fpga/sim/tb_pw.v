@@ -34,6 +34,7 @@ module tb_pw();
     parameter pVERBOSE = 1;
     parameter pSHOW_TIME_EVENTS = 0;
     parameter pNUM_EVENTS = 20;
+    parameter pNO_CAPTURE_LIMIT = 0;
     parameter pNUM_REPEATS = 2;
     parameter pPRETRIG_BYTES_MIN = 0;
     parameter pPRETRIG_BYTES_MAX = 200;
@@ -211,8 +212,14 @@ module tb_pw();
 
       write_1byte(`REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
       rw_lots_bytes(`REG_CAPTURE_LEN);
-      write_next_byte(pNUM_EVENTS & 255);
-      write_next_byte(pNUM_EVENTS >> 8);
+      if (pNO_CAPTURE_LIMIT) begin
+         write_next_byte(0);
+         write_next_byte(0);
+      end
+      else begin
+      end
+         write_next_byte(pNUM_EVENTS & 255);
+         write_next_byte(pNUM_EVENTS >> 8);
 
       if (pVERBOSE) begin
          $display("---------------------------------------------|-------------------------------");

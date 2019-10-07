@@ -288,7 +288,7 @@ module fe_capture #(
 
     assign O_capturing = capture_allowed;
 
-    assign capture_allowed = I_capture_enable & (capture_count < capture_len_r) & 
+    assign capture_allowed = I_capture_enable & ((capture_count < capture_len_r) || (capture_len_r == 0)) & 
                             !I_fifo_full & !I_fifo_overflow_blocked;
 
     // strictly for easier visualization/debug:

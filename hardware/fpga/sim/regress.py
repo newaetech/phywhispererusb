@@ -204,6 +204,18 @@ tests.append(dict(name  = 'longcapture_burst_fifo_read',
              MIN_DELAY=0,
              MAX_DELAY=3))
 
+tests.append(dict(name  = 'no_capture_limits',
+             frequency = 10,
+             description = 'FIFO captures until overflow',
+             TIMEOUT = 250000,
+             NUM_EVENTS = 8192*2,
+             NO_CAPTURE_LIMIT = 1,
+             #NUM_REPEATS = 2,
+             NUM_REPEATS = 1,
+             DELAY_MODE = 0,
+             STREAM_MODE = 1,
+             MIN_DELAY=0,
+             MAX_DELAY=2))
 
 
 """ 
