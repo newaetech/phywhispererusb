@@ -5,20 +5,41 @@ import os
 import re
 import logging
 import pkg_resources
+import threading
+import time
 from phywhisperer.interface.bootloader_sam3u import Samba
+from phywhisperer.sniffer import USBSniffer, USBSimplePrintSink
+from phywhisperer.protocol import PWPacketDispatcher, PWPacketHandler, IncompletePacket
 from zipfile import ZipFile
+import pdb
 
 #include once implemented
 # from phywhisperer.firmware.phywhisperer import getsome
 
-class Usb(object):
+class Usb(PWPacketDispatcher):
     """PhyWhisperer-USB Interface"""
 
 
-    def __init__ (self):
+    def __init__ (self, viewsb=False):
+        """ Set up PhyWhisperer-USB device.
+        viewsb should only be set when this is called by ViewSB.
+        """
+        self.viewsb = viewsb
+        self.addpattern = False
         self.short_timestamps = [0] * 2**3
         self.long_timestamps = [0] * 2**16
-        # parse Verilog defines file so we can access register and bit definitions by name and avoid 'magic numbers':
+        self.slurp_defines()
+        # Set up the PW device to handle packets in ViewSB:
+        if viewsb:
+            super().__init__(verbose=False)
+            self.sniffer = USBSniffer()
+            self.register_packet_handler(self.sniffer)
+
+
+    def slurp_defines(self):
+        """ Parse Verilog defines file so we can access register and bit
+        definitions by name and avoid 'magic numbers'.
+        """
         self.verilog_define_matches = 0
         defines_file = pkg_resources.resource_filename('phywhisperer', 'firmware/defines.v')
         defines = open(defines_file, 'r')
@@ -332,58 +353,22 @@ class Usb(object):
         return (data_times, data_bytes, stat_times, stat_bytes)
 
 
-    def split_packets(self, rawdata, verbose=False):
+    def split_packets(self, rawdata):
         """Split raw USB capture data into packets.
         """
-        timestep = 0
-        in_packet = False
-        rx_active = 0
-        packet_size = 0
-        packet_start_time = 0
+        from phywhisperer.protocol import IncompletePacket
+        # operates destructively so make a copy:
+        rawdata_copy = rawdata[:]
+        handler = PWPacketHandler()
         packets = []
-        packet_bytes = []
-
-        for raw in rawdata:
-            command = raw[2] & 0x3
-            if (command == self.FE_FIFO_CMD_TIME):
-                ts = raw[0] + (raw[1] << 8)
-                #Unlike stat and data commands, we don't add one here; if we did
-                #we'd be overcounting in the common case where a time command immediately
-                #preceeds a stat or data command. Consequence is that timestep will be off
-                #by one in the case of lone time commands (which is rare, and inconsequential
-                #in practice).
-                timestep += ts
-            elif (command == self.FE_FIFO_CMD_STRM):
-                # nothing to do or report
-                pass
-            elif (command == self.FE_FIFO_CMD_DATA) or (command == self.FE_FIFO_CMD_STAT):
-                rx_active = (raw[0] & 8) >> 3
-                ts = raw[0] & 0x7
-                #hardware reports the number of cycles between events, so to
-                #obtain elapsed time we add one:
-                timestep += (ts+1)
-                if rx_active and not in_packet:
-                    in_packet = True
-                    packet_start_time = timestep
-                elif not rx_active and in_packet:
-                    in_packet = False
-                    packets.append({"timestamp": packet_start_time,
-                                    "size": packet_size,
-                                    "contents": packet_bytes
-                                })
-                    if verbose:
-                        print("%d-byte packet at time %d: " % (packet_size, packet_start_time), end = '')
-                        for byte in packet_bytes:
-                            print(hex(byte), end=' ')
-                        print()
-                    packet_bytes = []
-                    packet_size = 0
-                if (command == self.FE_FIFO_CMD_DATA):
-                    packet_bytes.append(raw[1])
-                    packet_size += 1
-            else:
-                print ("ERROR: unknown command (%d)" % command) 
-
+        incomplete = False
+        while rawdata_copy and not incomplete:
+            # use ViewSB to avoid duplicating it here:
+            try:
+                packets.append(handler.handle_bytes_received(defines=self, data=rawdata_copy))
+            except IncompletePacket:
+                incomplete = True
+                continue
         return packets
 
 
@@ -406,12 +391,12 @@ class Usb(object):
 
     def set_capture_size(self, size=8192):
         """Set how many events to capture (events include data, USB status, and timestamps).
-        size: int
-               range: [1, 8192]
-        TODO: stream mode supports larger size, how to handle?
-        if (size > 8192) or (size < 1):
-            raise ValueError('Illegal size value.')
+        size: number of events to capture. 0 = unlimited. Max = 65535. Since the capture FIFO 
+              can hold 8188 events, setting this to > 8188 may result in overflow.
+
         """
+        if (size >= 2**16) or (size < 0):
+            raise ValueError('Illegal size value.')
         size_bytes = [size & 255, (size >> 8) & 255]
         self.usb.cmdWriteMem(self.REG_CAPTURE_LEN, size_bytes)
 
@@ -464,6 +449,8 @@ class Usb(object):
         self.usb.cmdWriteMem(self.REG_PATTERN, pattern)
         self.usb.cmdWriteMem(self.REG_PATTERN_MASK, mask)
         self.usb.cmdWriteMem(self.REG_PATTERN_BYTES, [len(pattern)])
+        self.pattern = pattern
+        self.mask = mask
 
 
     def arm(self):
@@ -498,6 +485,18 @@ class Usb(object):
             return False
 
 
+    def fifo_over_empty_threshold(self):
+        """Returns True if the capture FIFO has more entries than the empty threshold (128).
+        """
+        fifo_stat = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_STAT,1)[0]
+        fifo_empty = fifo_stat & 1
+        fifo_empty_threshold = fifo_stat & 4
+        if fifo_empty or fifo_empty_threshold:
+            return False
+        else:
+            return True
+
+
     def armed(self):
         """Returns True if the PhyWhisperer is armed.
         """
@@ -525,5 +524,133 @@ class Usb(object):
         hour = ((raw[2] & 0x1) << 4) + (raw[1] >> 4)
         minute = ((raw[1] & 0xf) << 2) + (raw[0] >> 6)
         return "FPGA build time: {}/{}/{}, {}:{}".format(month, day, year, hour, minute)
+
+
+    def register_sink(self, event_sink):
+        """ ViewSB: Registers a USBEventSink to receive any USB events. 
+        
+        Args:
+            event_sink -- The sniffer.USBEventSink object to receive any USB events that occur.
+        """
+        self.sniffer.register_sink(event_sink)
+
+
+    def _device_stop_capture(self):
+        # nothing to do?
+        pass
+
+
+    def run_capture(self, size=8188, burst=True, pattern=[0], mask=[0], statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
+        """ Runs a capture for ViewSB.
+        """
+
+        self.reset_fpga()
+        self.set_power_source("host")
+        self.set_power_source("off")
+        time.sleep(0.5)
+        self.set_usb_mode("auto")
+        self.set_capture_size(size)
+        self.arm()
+        self.set_trigger(enable=False)
+        self.set_pattern(pattern=pattern, mask=mask)
+        self.set_power_source("host")
+        time.sleep(1.0)
+
+        self._start_comms_thread(size, burst)
+
+        elapsed_time = 0.0
+        try:
+
+            # Continue until the user-supplied halt condition is met.
+            while not halt_callback(elapsed_time): 
+
+                # If we have a statistics callback, call it.
+                if callable(statistics_callback):
+                    statistics_callback(self, elapsed_time)
+
+                # Wait for the next statistics-interval to occur.
+                time.sleep(statistics_period)
+                elapsed_time = elapsed_time + statistics_period
+
+        finally:
+            self._device_stop_capture()
+
+
+    def __comms_thread_body(self, size, burst):
+        """ ViewSB internal function that executes as our comms thread.
+        Args:
+            size -- Number of capture FIFO entries to read.
+            burst -- if set, read all FIFO at once, then pass on to decoder and frontend;
+                     otherwise, read a few words at a time and process them concurrently.
+        """
+        if burst:
+            self.wait_disarmed()
+            rawdata = self.read_only_from_fifo(entries=size)
+            self.handle_incoming_bytes(rawdata)
+
+        else:
+            entries_read = 0
+            # wait for data to be available:
+            #ForkedPdb().set_trace()
+            while not self.__comm_term and ((entries_read < size) or (size == 0)):
+                under_threshold = 0
+                overflow = 0
+
+                while not self.fifo_over_empty_threshold():
+                    pass
+
+                while not (under_threshold or overflow):
+                    rawdata = self.read_only_from_fifo(entries=128)
+                    entries_read += 128
+                    # when reading the FIFO, we get its status flags included for free:
+                    empty = rawdata[-1][2] & 4
+                    empty_threshold = rawdata[-1][2] & 16
+                    if (size - entries_read) <= 128:
+                        under_threshold = not empty and not empty_threshold
+                    else:
+                        under_threshold = not empty
+                    overflow = rawdata[-1][2] & 64
+                    if overflow:
+                        # TODO: handle overflow
+                        print("overflowed!")
+                        quit()
+                    self.handle_incoming_bytes(rawdata)
+
+
+    def _start_comms_thread(self, size, burst):
+        """ ViewSB: start the background thread that handles our core communication. """
+
+        self.commthread = threading.Thread(target=self.__comms_thread_body, args=[size, burst], daemon=True)
+        self.__comm_term = False
+        self.__comm_exc = None
+
+        self.commthread.start()
+
+        self.__comm_term = False
+
+
+    def close(self):
+        """ Terminates our connection to the PhyWhisperer device. """
+
+        if self.viewsb:
+            self.__comm_term = True
+            self.commthread.join()
+        self.usb.close()
+
+
+
+class ForkedPdb(pdb.Pdb):
+    """A Pdb subclass that may be used
+    from a forked multiprocessing child
+
+    """
+    def interaction(self, *args, **kwargs):
+        _stdin = sys.stdin
+        try:
+            sys.stdin = open('/dev/stdin')
+            pdb.Pdb.interaction(self, *args, **kwargs)
+        finally:
+            sys.stdin = _stdin
+
 
 
