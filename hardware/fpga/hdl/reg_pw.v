@@ -29,7 +29,9 @@ module reg_pw #(
    parameter pTRIGGER_DELAY_WIDTH = 20,
    parameter pTRIGGER_WIDTH_WIDTH = 16,
    parameter pCAPTURE_DELAY_WIDTH = 18,
-   parameter pBYTECNT_SIZE = 7
+   parameter pBYTECNT_SIZE = 7,
+   parameter pUSB_AUTO_COUNTER_WIDTH = 24
+
 )(
    input  wire         reset_i,
 
@@ -72,6 +74,8 @@ module reg_pw #(
 
 // Interface to USB autodetect:
    output reg  O_usb_auto_restart,
+   output wire [pUSB_AUTO_COUNTER_WIDTH-1:0] O_usb_auto_wait1,
+   output wire [pUSB_AUTO_COUNTER_WIDTH-1:0] O_usb_auto_wait2,
    input  wire [1:0] I_usb_auto_speed,
 
 // To top-level:
@@ -94,6 +98,9 @@ module reg_pw #(
    reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
    reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
    reg [1:0] reg_usb_speed;
+   reg [pUSB_AUTO_COUNTER_WIDTH-1:0] reg_usb_auto_wait1;
+   reg [pUSB_AUTO_COUNTER_WIDTH-1:0] reg_usb_auto_wait2;
+
    reg [2:0] reg_usb_auto_defaults;
    (* ASYNC_REG = "TRUE" *) reg [1:0] usb_speed_auto;
 
@@ -136,6 +143,8 @@ module reg_pw #(
    assign O_usb_speed = (reg_usb_speed == `USB_SPEED_AUTO)? usb_speed_auto : reg_usb_speed;
    assign O_usb_xcvrsel_auto = reg_usb_auto_defaults[1:0];
    assign O_usb_termsel_auto = reg_usb_auto_defaults[2];
+   assign O_usb_auto_wait1 = reg_usb_auto_wait1;
+   assign O_usb_auto_wait2 = reg_usb_auto_wait2;
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -195,6 +204,8 @@ module reg_pw #(
          reg_usb_speed <= `USB_SPEED_AUTO;
          O_usb_auto_restart <= 1'b0;
          reg_usb_auto_defaults <= {1'b1, 2'b01}; // for USB_SPEED_FS
+         reg_usb_auto_wait1 <= 60000; // 1ms
+         reg_usb_auto_wait2 <= 3600000; // 60ms
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -210,6 +221,8 @@ module reg_pw #(
                `REG_USB_SPEED: reg_usb_speed <= write_data;
                `REG_USB_AUTO_DEFAULTS: reg_usb_auto_defaults <= write_data[2:0];
                `REG_CAPTURE_DELAY: reg_capture_delay[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_USB_AUTO_WAIT1: reg_usb_auto_wait1[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_USB_AUTO_WAIT2: reg_usb_auto_wait2[reg_bytecnt*8 +: 8] <= write_data;
             endcase
          end
 
@@ -411,7 +424,7 @@ module reg_pw #(
 
    `endif
 
-   `ifdef ILA_FIFO
+   `ifdef ILA
        ila_3 U_fe_fifo_wr_ila (
           .clk          (fe_clk),
           .probe0       (sniff_fifo_wr_en),
@@ -422,7 +435,7 @@ module reg_pw #(
        );
    `endif
 
-   `ifdef ILA_FIFO
+   `ifdef ILA
        ila_3 U_fe_fifo_rd_ila (
           .clk          (cwusb_clk),
           .probe0       (sniff_fifo_rd_en),

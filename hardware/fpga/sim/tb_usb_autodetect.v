@@ -26,6 +26,7 @@ module tb_usb_autodetect;
 
    parameter pUSB_CLOCK_PERIOD = 10;
    parameter pFE_CLOCK_PERIOD = 16;
+   parameter pCOUNTER_WIDTH = 24;
    parameter pWAIT_0_START = 8;
    parameter pWAIT_1_LINEHIGH = 32;
    parameter pWAIT_2_LINELOW = 32;
@@ -36,8 +37,13 @@ module tb_usb_autodetect;
    reg  [1:0] linestate;
    reg  restart;
    wire [1:0] speed;
+   wire [pCOUNTER_WIDTH-1:0] wait1;
+   wire [pCOUNTER_WIDTH-1:0] wait2;
 
    int errors;
+   
+   assign wait1 = pWAIT_1_LINEHIGH;
+   assign wait2 = pWAIT_2_LINELOW;
 
    initial begin
       $dumpfile("results/tb_usb_autodetect.fst");
@@ -146,7 +152,7 @@ module tb_usb_autodetect;
 
 
     usb_autodetect #(
-        .pCOUNTER_WIDTH     (21),
+        .pCOUNTER_WIDTH     (pCOUNTER_WIDTH)
         .pWAIT_1_LINEHIGH (pWAIT_1_LINEHIGH),
         .pWAIT_2_LINELOW  (pWAIT_2_LINELOW)
     ) U_dut (
@@ -156,6 +162,8 @@ module tb_usb_autodetect;
         .fe_linestate0      (linestate[0]),
         .fe_linestate1      (linestate[1]),
         .I_restart          (restart),
+        .I_wait1            (wait1),
+        .I_wait2            (wait2),
         .O_speed            (speed)
     );
 

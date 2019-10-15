@@ -91,6 +91,7 @@ module phywhisperer_top(
    parameter pTRIGGER_WIDTH_WIDTH = 17;
    parameter pBYTECNT_SIZE = 7;
    parameter pCAPTURE_DELAY_WIDTH = pTRIGGER_DELAY_WIDTH-2;
+   parameter pUSB_AUTO_COUNTER_WIDTH = 24;
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -148,6 +149,8 @@ module phywhisperer_top(
    wire [1:0] usb_auto_speed;
    wire [1:0] usb_xcvrsel_auto;
    wire usb_termsel_auto;
+   wire [pUSB_AUTO_COUNTER_WIDTH-1:0] usb_auto_wait1;
+   wire [pUSB_AUTO_COUNTER_WIDTH-1:0] usb_auto_wait2;
 
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
@@ -211,7 +214,8 @@ module phywhisperer_top(
       .pCAPTURE_DELAY_WIDTH     (pCAPTURE_DELAY_WIDTH),
       .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
       .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH),
-      .pBYTECNT_SIZE            (pBYTECNT_SIZE)
+      .pBYTECNT_SIZE            (pBYTECNT_SIZE),
+      .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH)
    ) U_reg_pw (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -255,6 +259,9 @@ module phywhisperer_top(
 
       // USB autodetect:
       .O_usb_auto_restart       (usb_auto_restart),
+      .O_usb_auto_wait1         (usb_auto_wait1),
+      .O_usb_auto_wait2         (usb_auto_wait2),
+
       .I_usb_auto_speed         (usb_auto_speed)
 
    );
@@ -360,7 +367,7 @@ module phywhisperer_top(
        ila_0 ila_0_inst (clk_fe_buf, ila_probe);
     `endif
 
-    `ifdef ILA
+    `ifdef ILA_USB
        ila_1 I_ila_usbreg (
           .clk          (clk_usb_buf),          // input wire clk
           .probe0       (USB_Data),             // input wire [7:0]  probe0  
@@ -441,14 +448,18 @@ module phywhisperer_top(
    );
 
 
-    usb_autodetect U_usb_autodetect (
+    usb_autodetect #(
+        .pCOUNTER_WIDTH     (pUSB_AUTO_COUNTER_WIDTH)
+    ) U_usb_autodetect (
         .reset_i            (reset_i),
         .fe_clk             (clk_fe_buf),
         .cwusb_clk          (clk_usb_buf),
         .fe_linestate0      (fe_linestate0),
         .fe_linestate1      (fe_linestate1),
-    
+
         .I_restart          (usb_auto_restart),
+        .I_wait1            (usb_auto_wait1),
+        .I_wait2            (usb_auto_wait2),
         .O_speed            (usb_auto_speed)
     );
 

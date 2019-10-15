@@ -23,9 +23,7 @@
 `include "defines.v"
 
 module usb_autodetect #(
-    parameter pCOUNTER_WIDTH = 21,
-    parameter pWAIT_1_LINEHIGH = 60000,  // 1ms
-    parameter pWAIT_2_LINELOW = 1500000  // 25ms
+    parameter pCOUNTER_WIDTH = 24
 )(
     /* FRONT END CONNECTIONS */
     input  wire reset_i,
@@ -36,6 +34,8 @@ module usb_autodetect #(
 
     /* REGISTER CONNECTIONS */
     input  wire I_restart,
+    input  wire [pCOUNTER_WIDTH-1:0] I_wait1,
+    input  wire [pCOUNTER_WIDTH-1:0] I_wait2,
     output reg  [1:0] O_speed
 );
 
@@ -53,6 +53,9 @@ module usb_autodetect #(
     wire restart;
 
     wire [1:0] linestate = {fe_linestate1, fe_linestate0};
+
+    (* ASYNC_REG = "TRUE" *) reg [pCOUNTER_WIDTH-1:0] wait1;
+    (* ASYNC_REG = "TRUE" *) reg [pCOUNTER_WIDTH-1:0] wait2;
 
     // strictly for easier visualization/debug:
     wire state_idle = (state == pS_IDLE);
@@ -88,7 +91,7 @@ module usb_autodetect #(
           pS_LS: begin
              if (linestate != 2'b10)
                 next_state = pS_ERROR;
-             else if (timer == pWAIT_1_LINEHIGH)
+             else if (timer == wait1)
                 next_state = pS_DONE;
              else
                 next_state = pS_LS;
@@ -98,7 +101,7 @@ module usb_autodetect #(
           pS_FSHS: begin
              if (linestate != 2'b01)
                 next_state = pS_ERROR;
-             else if (timer == pWAIT_1_LINEHIGH)
+             else if (timer == wait1)
                 next_state = pS_WAIT_LOW;
              else
                 next_state = pS_FSHS;
@@ -116,7 +119,7 @@ module usb_autodetect #(
 
 
           pS_HS: begin
-             if (timer == pWAIT_2_LINELOW)
+             if (timer == wait2)
                 next_state = pS_DONE;
              else if (linestate == 2'b01)
                 next_state = pS_FS;
@@ -198,8 +201,13 @@ module usb_autodetect #(
        .dst_pulse     (restart)
     );
 
+    always @ (posedge fe_clk) begin
+       wait1 <= I_wait1;
+       wait2 <= I_wait2;
+    end
 
-   `ifdef ILA_AUTO
+
+   `ifdef ILA
       ila_5 I_ila_autodetect (
          .clk          (fe_clk),           // input wire clk
          .probe0       (state_idle),            // input wire [0:0]  probe0  
@@ -211,7 +219,7 @@ module usb_autodetect #(
          .probe6       (fe_linestate0),         // input wire [0:0]  probe6 
          .probe7       (fe_linestate1),         // input wire [0:0]  probe7 
          .probe8       (O_speed),               // input wire [1:0]  probe8 
-         .probe9       (timer),                 // input wire [15:0]  probe9 
+         .probe9       (timer[15:0]),           // input wire [15:0]  probe9 
          .probe10      (state_fshs),            // input wire [0:0]  probe10 
          .probe11      (state_wait),            // input wire [0:0]  probe11 
          .probe12      (restart)                // input wire [0:0]  probe12 
