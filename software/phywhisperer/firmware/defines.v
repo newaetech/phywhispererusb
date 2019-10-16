@@ -35,6 +35,7 @@
 `define REG_BUILDTIME                6'h0f
 `define REG_USB_AUTO_WAIT1           6'h10
 `define REG_USB_AUTO_WAIT2           6'h11
+`define REG_TRIG_CLK_PHASE_SHIFT     6'h12
 
 
 // FIFO bitfields:

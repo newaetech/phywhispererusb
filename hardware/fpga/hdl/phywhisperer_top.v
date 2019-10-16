@@ -262,6 +262,11 @@ module phywhisperer_top(
       .O_usb_auto_wait1         (usb_auto_wait1),
       .O_usb_auto_wait2         (usb_auto_wait2),
 
+      // Trigger clock phase shift:
+      .O_psincdec               (psincdec),
+      .O_psen                   (psen),
+      .I_psdone                 (psdone),
+
       .I_usb_auto_speed         (usb_auto_speed)
 
    );
@@ -376,7 +381,8 @@ module phywhisperer_top(
           .probe3       (USB_nWE),              // input wire [0:0]  probe3 
           .probe4       (USB_nCS),              // input wire [0:0]  probe4 
           .probe5       (reg_address),          // input wire [5:0]  probe5 
-          .probe6       ({9'b0, reg_bytecnt}),  // input wire [15:0]  probe6 
+          //.probe6       ({9'b0, reg_bytecnt}),  // input wire [15:0]  probe6 
+          .probe6       ({6'b0, psen, psdone, psincdec, reg_bytecnt}),  // input wire [15:0]  probe6 
           .probe7       (write_data),           // input wire [7:0]  probe7 
           .probe8       (read_data),            // input wire [15:0]  probe8 
           .probe9       (reg_read),             // input wire [0:0]  probe9 
@@ -386,10 +392,6 @@ module phywhisperer_top(
           .probe13      (USB_SPARE1)            // input wire [0:0]  probe13 
        );
     `endif
-
-    // TODO: phase shift
-    assign psen = 1'b0;
-    assign psincdec = 1'b0;
 
     `ifndef __ICARUS__
         clk_wiz_0 U_trigger_clock (

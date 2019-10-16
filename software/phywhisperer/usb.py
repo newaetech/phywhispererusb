@@ -66,7 +66,7 @@ class Usb(PWPacketDispatcher):
                     else:
                         logging.warning("Couldn't parse line: %s", define)
         # make sure everything is cool:
-        assert self.verilog_define_matches == 46, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
+        assert self.verilog_define_matches == 47, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
         defines.close()
 
 
@@ -524,6 +524,25 @@ class Usb(PWPacketDispatcher):
         hour = ((raw[2] & 0x1) << 4) + (raw[1] >> 4)
         minute = ((raw[1] & 0xf) << 2) + (raw[0] >> 6)
         return "FPGA build time: {}/{}/{}, {}:{}".format(month, day, year, hour, minute)
+
+
+    def trigger_clock_phase_shift(self, steps=1):
+        """Shifts the trigger clock phase (and by extension the output trigger) in steps
+        of 18.6ps (18.6 ps = 1/960 MHz / 56)
+        Args:
+            steps -- Number of steps to shift the phase (positive or negative integer).
+        """
+        if not type(steps) == int or steps == 0:
+            raise ValueError('Illegal steps value, must be non-zero integer.')
+        if steps > 0:
+            value = [1]
+        else:
+            value = [0]
+        for i in range(abs(steps)):
+            self.usb.cmdWriteMem(self.REG_TRIG_CLK_PHASE_SHIFT, value)
+            while (self.usb.cmdReadMem(self.REG_TRIG_CLK_PHASE_SHIFT, 1)[0] == 1):
+                # phase shift incomplete
+                pass
 
 
     def register_sink(self, event_sink):

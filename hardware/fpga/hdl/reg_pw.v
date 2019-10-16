@@ -78,6 +78,11 @@ module reg_pw #(
    output wire [pUSB_AUTO_COUNTER_WIDTH-1:0] O_usb_auto_wait2,
    input  wire [1:0] I_usb_auto_speed,
 
+// Interface to trigger clock phase shift:
+   output reg  O_psincdec,
+   output reg  O_psen,
+   input  wire I_psdone,  
+
 // To top-level:
    output wire [1:0] O_usb_speed,
    output wire [1:0] O_usb_xcvrsel_auto,
@@ -127,6 +132,8 @@ module reg_pw #(
    reg  empty_fifo_read;
    reg  sniff_fifo_empty_r;
 
+   reg  phaseshift_active;
+
    wire [31:0] buildtime;
    wire capture_enable_pulse;
 
@@ -159,6 +166,7 @@ module reg_pw #(
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
             `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
             `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
+            `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
          endcase
       end
       else
@@ -206,6 +214,8 @@ module reg_pw #(
          reg_usb_auto_defaults <= {1'b1, 2'b01}; // for USB_SPEED_FS
          reg_usb_auto_wait1 <= 60000; // 1ms
          reg_usb_auto_wait2 <= 3600000; // 60ms
+         phaseshift_active <= 1'b0;
+         O_psen <= 1'b0;
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -226,15 +236,29 @@ module reg_pw #(
             endcase
          end
 
+         // ARM register is special:
          if (reg_addrvalid && reg_write && (reg_address == `REG_ARM))
             reg_arm <= write_data[0];
          else if (capture_enable_pulse)
             reg_arm <= 1'b0;
 
+         // USB auto restart register is special:
          if (reg_addrvalid && reg_write && (reg_address == `REG_USB_SPEED) && (write_data == `USB_SPEED_AUTO))
             O_usb_auto_restart <= 1'b1;
          else
             O_usb_auto_restart <= 1'b0;
+
+         // Phase shift for trigger clock register is special: (reference: Xilinx UG472)
+         if (reg_addrvalid && reg_write && (reg_address == `REG_TRIG_CLK_PHASE_SHIFT) && ~phaseshift_active) begin
+            O_psincdec <= write_data[0];
+            O_psen <= 1'b1;
+            phaseshift_active <= 1'b1;
+         end
+         else begin
+            O_psen <= 1'b0;
+            if (I_psdone)
+               phaseshift_active <= 1'b0;
+         end
 
       end
    end
