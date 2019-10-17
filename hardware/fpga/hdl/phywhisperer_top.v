@@ -352,6 +352,7 @@ module phywhisperer_top(
     //assign userio_d[7:4] = USB_Addr[3:0];
     assign userio_d[0] = fe_linestate0;
     assign userio_d[1] = fe_linestate1;
+    assign userio_d[2] = trigger_clk;
 
 
     `ifdef ILA

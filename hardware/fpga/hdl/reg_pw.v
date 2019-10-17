@@ -105,6 +105,14 @@ module reg_pw #(
    reg [1:0] reg_usb_speed;
    reg [pUSB_AUTO_COUNTER_WIDTH-1:0] reg_usb_auto_wait1;
    reg [pUSB_AUTO_COUNTER_WIDTH-1:0] reg_usb_auto_wait2;
+   reg [15:0] reg_stat_pattern;
+   reg stat_match_captured;
+   reg [4:0] stat_match;
+   wire [15:0] reg_stat_matched;
+   (* ASYNC_REG = "TRUE" *) reg  [4:0] stat_pattern;
+   (* ASYNC_REG = "TRUE" *) reg  [4:0] stat_mask;
+   reg  stat_match_update_pulse;
+   wire stat_match_update_pulse_fe;
 
    reg [2:0] reg_usb_auto_defaults;
    (* ASYNC_REG = "TRUE" *) reg [1:0] usb_speed_auto;
@@ -167,6 +175,7 @@ module reg_pw #(
             `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
             `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
             `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
+            `REG_STAT_MATCH: reg_read_data <= reg_stat_matched[reg_bytecnt*8 +: 8];
          endcase
       end
       else
@@ -216,6 +225,9 @@ module reg_pw #(
          reg_usb_auto_wait2 <= 3600000; // 60ms
          phaseshift_active <= 1'b0;
          O_psen <= 1'b0;
+         reg_stat_pattern <= 10'b11111_00000;
+         stat_match_update_pulse <= 1'b0;
+
       end
       else begin
          if (reg_addrvalid && reg_write) begin
@@ -260,10 +272,20 @@ module reg_pw #(
                phaseshift_active <= 1'b0;
          end
 
+         // STAT match register is special:
+         if (reg_addrvalid && reg_write && (reg_address == `REG_STAT_PATTERN)) begin
+            reg_stat_pattern[reg_bytecnt*5 +: 5] <= write_data[4:0];
+            if (reg_bytecnt == 0)
+               stat_match_update_pulse <= 1'b1;
+         end
+         else
+            stat_match_update_pulse <= 1'b0;
+
       end
    end
 
    reg reg_arm_feclk;
+   reg reg_arm_feclk_r;
    (* ASYNC_REG = "TRUE" *) reg  [1:0] reg_arm_pipe;
 
    reg sniff_fifo_full_usbclk;
@@ -301,6 +323,41 @@ module reg_pw #(
       .dst_pulse     (capture_enable_pulse)
    );
 
+   cdc_pulse U_stat_update_cdc (
+      .reset_i       (reset_i),
+      .src_clk       (cwusb_clk),
+      .src_pulse     (stat_match_update_pulse),
+      .dst_clk       (fe_clk),
+      .dst_pulse     (stat_match_update_pulse_fe)
+   );
+
+
+
+   // USB STAT monitor logic:
+   always @(posedge fe_clk) begin
+      if (reset_i) begin
+         stat_pattern <= 0;
+         stat_mask <= 0;
+      end
+      else begin
+         // CDC:
+         stat_pattern <= reg_stat_pattern[4:0];
+         stat_mask <= reg_stat_pattern[9:5];
+
+         // reset stat match upon arming:
+         if (reg_arm_feclk && ~reg_arm_feclk_r || stat_match_update_pulse_fe)
+            stat_match_captured <= 1'b0;
+         else if (~stat_match_captured && ((stat_pattern & stat_mask) == (I_fe_capture_stat & stat_mask))) begin
+            stat_match_captured <= 1'b1;
+            stat_match <= I_fe_capture_stat;
+         end
+
+      end
+   end
+
+   assign reg_stat_matched = {3'b0, stat_match, 7'b0, stat_match_captured};
+
+
 
    // FIFO write logic.
    // TODO: could maybe get away with combinatorial logic here? but don't bother unless tight on LUTs.
@@ -314,7 +371,8 @@ module reg_pw #(
       end
       else begin
          // CDC:
-         {reg_arm_feclk, reg_arm_pipe} <= {reg_arm_pipe, reg_arm};
+         {reg_arm_feclk_r, reg_arm_feclk, reg_arm_pipe} <= {reg_arm_feclk, reg_arm_pipe, reg_arm};
+
          // don't overflow the FIFO:
          // Because back-to-back writes are possible, checking sniff_fifo_full may not prevent overflow,
          // and so the last few FIFO entries are wasted :-(

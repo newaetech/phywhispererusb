@@ -36,6 +36,8 @@
 `define REG_USB_AUTO_WAIT1           6'h10
 `define REG_USB_AUTO_WAIT2           6'h11
 `define REG_TRIG_CLK_PHASE_SHIFT     6'h12
+`define REG_STAT_PATTERN             6'h13
+`define REG_STAT_MATCH               6'h14
 
 
 // FIFO bitfields:

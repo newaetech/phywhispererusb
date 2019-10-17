@@ -28,6 +28,7 @@ class Usb(PWPacketDispatcher):
         self.addpattern = False
         self.short_timestamps = [0] * 2**3
         self.long_timestamps = [0] * 2**16
+        self.stat_pattern_match_value = 0
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -66,7 +67,7 @@ class Usb(PWPacketDispatcher):
                     else:
                         logging.warning("Couldn't parse line: %s", define)
         # make sure everything is cool:
-        assert self.verilog_define_matches == 47, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
+        assert self.verilog_define_matches == 49, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
         defines.close()
 
 
@@ -543,6 +544,29 @@ class Usb(PWPacketDispatcher):
             while (self.usb.cmdReadMem(self.REG_TRIG_CLK_PHASE_SHIFT, 1)[0] == 1):
                 # phase shift incomplete
                 pass
+
+
+    def set_stat_pattern(self, pattern, mask=0x1f):
+        """ Set a 5-bit pattern and mask for the USB status lines.
+        Args:
+            pattern -- 5-bit number
+            mask -- non-zero 5-bit number (default: 0x1f)
+        """
+        if pattern < 0 or pattern > 0x1f:
+            raise ValueError('Illegal pattern value, must be <= 0x1f.')
+        if mask < 1 or mask > 0x1f:
+            raise ValueError('Illegal mask value, must be <= 0x1f and > 0.')
+        self.usb.cmdWriteMem(self.REG_STAT_PATTERN, [pattern, mask])
+
+
+    def stat_pattern_matched(self):
+        """ Returns 1 if a stat pattern match occurred (automatically resets to 0 when armed,
+        and when a new match pattern is written).
+        Actual match value is stored in self.stat_pattern_match_value.
+        """
+        matched, value = self.usb.cmdReadMem(self.REG_STAT_MATCH, 2)
+        self.stat_pattern_match_value = value
+        return matched
 
 
     def register_sink(self, event_sink):

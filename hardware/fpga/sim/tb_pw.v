@@ -170,6 +170,10 @@ module tb_pw();
    bit armed;
    bit overflow_noted;
    bit pattern_match_marker;
+   reg [7:0] stat_pattern;
+   reg [7:0] stat_mask;
+   reg stat_matched;
+   reg [4:0] stat_matched_value;
 
    int matchtime;
    int triggertime;
@@ -227,10 +231,13 @@ module tb_pw();
          $display("---------------------------------------------|-------------------------------");
       end
 
+      last_stat = 0;
       for (send_iteration = 0; send_iteration < pNUM_REPEATS; send_iteration = send_iteration + 1) begin
          armed = 0;
          $display("\nTx Iteration %d:", send_iteration);
 
+         stat_matched = 0;
+         set_stat_pattern();
          set_pattern();
          if (pTRIGGER_ENABLE)
             set_trigger();
@@ -251,6 +258,7 @@ module tb_pw();
 
          // sync up with receive block:
          wait (rx_readindex >= pNUM_EVENTS);
+         check_stat_pattern();
          if (pTRIGGER_ENABLE)
             wait (trigger_receive_iteration == send_iteration + 1); // needed for very long triggers!
 
@@ -484,6 +492,12 @@ module tb_pw();
       repeat (delay) @(posedge fe_clk);
 
       last_stat = stat;
+      if (~stat_matched && ((stat & stat_mask) == (stat_pattern[4:0] & stat_mask[4:0])) ) begin
+         stat_matched = 1;
+         stat_matched_value = stat;
+         if (pVERBOSE)
+            $display("Matching stat pattern: %h", stat);
+      end
 
       if (pVERBOSE)
          if (rxvalid)
@@ -563,6 +577,41 @@ module tb_pw();
          $write("%h ", match_mask[i]);
       $write("\n");
 
+   endtask
+
+
+   task set_stat_pattern;
+      stat_pattern = $urandom_range(0, 2**5-1);
+      stat_mask = $urandom_range(1, 2**5-1);
+      //stat_mask = 5'h1f;
+      if (pVERBOSE)
+         $display("Stat pattern=%h, mask=%h", stat_pattern, stat_mask);
+      rw_lots_bytes(`REG_STAT_PATTERN);
+      write_next_byte(stat_pattern);
+      write_next_byte(stat_mask);
+      if ((last_stat & stat_mask) == (stat_pattern[4:0] & stat_mask[4:0])) begin
+         stat_matched = 1;
+         stat_matched_value = last_stat;
+         if (pVERBOSE)
+            $display("Matching stat pattern immediately upon arming, from previous stat: %h", last_stat);
+      end
+
+
+   endtask
+
+
+   task check_stat_pattern;
+      rw_lots_bytes(`REG_STAT_MATCH);
+      read_next_byte(read_data[7:0]);
+      read_next_byte(read_data[15:8]);
+      if (stat_matched != read_data[0]) begin
+         $display("*** ERROR: expected stat_matched=%b, got %b", stat_matched, read_data[0]);
+         errors += 1;
+      end
+      if (stat_matched_value != read_data[12:8]) begin
+         $display("*** ERROR: expected stat_matched_value=%h, got %h", stat_matched_value, read_data[12:8]);
+         errors += 1;
+      end
    endtask
 
 
