@@ -30,7 +30,8 @@ module reg_pw #(
    parameter pTRIGGER_WIDTH_WIDTH = 16,
    parameter pCAPTURE_DELAY_WIDTH = 18,
    parameter pBYTECNT_SIZE = 7,
-   parameter pUSB_AUTO_COUNTER_WIDTH = 24
+   parameter pUSB_AUTO_COUNTER_WIDTH = 24,
+   parameter pCAPTURE_LEN_WIDTH = 24
 
 )(
    input  wire         reset_i,
@@ -42,16 +43,16 @@ module reg_pw #(
    output reg  [7:0]   read_data,    //
    input  wire [7:0]   write_data,   //
    input  wire         reg_read,     // Read flag. One clock cycle AFTER this flag is high
-                                     // valid data must be present on the write_data bus
+                                     // valid data must be present on the read_data bus
    input  wire         reg_write,    // Write flag. When high on rising edge valid data is
-                                     // present on read_data
+                                     // present on write_data
    input  wire         reg_addrvalid,// Address valid flag
 
 // Interface to front end capture:
    input  wire         fe_clk,
    output wire         O_timestamps_disable,
    output wire         O_arm,
-   output wire [15:0]  O_capture_len,
+   output wire [pCAPTURE_LEN_WIDTH-1:0]  O_capture_len,
    output wire         O_fifo_full,
    output wire         O_fifo_overflow_blocked,
    input  wire         [pTIMESTAMP_FULL_WIDTH-1:0] I_fe_capture_time,
@@ -59,6 +60,7 @@ module reg_pw #(
    input  wire [4:0]   I_fe_capture_stat,
    input  wire [1:0]   I_fe_capture_cmd,
    input  wire         I_fe_capture_data_wr,
+   input  wire         I_fe_capturing,
 
 // Interface to pattern matcher:
    output wire         [8*pPATTERN_BYTES-1:0] O_pattern,
@@ -98,7 +100,7 @@ module reg_pw #(
    reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
    reg reg_trigger_enable;
    reg [7:0] reg_pattern_bytes;
-   reg [15:0] reg_capture_len;
+   reg [pCAPTURE_LEN_WIDTH-1:0] reg_capture_len;
    reg [pCAPTURE_DELAY_WIDTH-1:0] reg_capture_delay;
    reg [pTRIGGER_DELAY_WIDTH-1:0] reg_trigger_delay;
    reg [pTRIGGER_WIDTH_WIDTH-1:0] reg_trigger_width;
@@ -130,9 +132,9 @@ module reg_pw #(
    wire sniff_fifo_empty_threshold_xilinx;
    wire sniff_fifo_empty_threshold;
    wire sniff_fifo_full_threshold_xilinx;
-   wire sniff_fifo_full_threshold;
    wire fifo_read_condition;
    wire fifo_flush_condition;
+   wire capture_done;
 
    reg  [7:0] reg_read_data;
    reg  flushing;
@@ -290,10 +292,10 @@ module reg_pw #(
 
    reg sniff_fifo_full_usbclk;
    reg sniff_fifo_overflow_blocked_usbclk;
-   reg sniff_fifo_full_threshold_usbclk;
+   reg capturing;
    (* ASYNC_REG = "TRUE" *) reg [1:0] sniff_fifo_full_pipe;
    (* ASYNC_REG = "TRUE" *) reg [1:0] sniff_fifo_overflow_blocked_pipe;
-   (* ASYNC_REG = "TRUE" *) reg [1:0] sniff_fifo_full_threshold_pipe;
+   (* ASYNC_REG = "TRUE" *) reg [1:0] capturing_pipe;
 
 
    // CDC:
@@ -301,17 +303,17 @@ module reg_pw #(
       if (reset_i) begin
          sniff_fifo_full_usbclk <= 0;
          sniff_fifo_overflow_blocked_usbclk <= 0;
-         sniff_fifo_full_threshold_usbclk <= 0;
+         capturing <= 0;
          sniff_fifo_full_pipe <= 0;
          sniff_fifo_overflow_blocked_pipe <= 0;
-         sniff_fifo_full_threshold_pipe <= 0;
+         capturing_pipe <= 0;
          usb_speed_auto <= 0;
       end
       else begin
          usb_speed_auto <= I_usb_auto_speed;
+         {capturing, capturing_pipe} <= {capturing_pipe, I_fe_capturing};
          {sniff_fifo_full_usbclk, sniff_fifo_full_pipe} <= {sniff_fifo_full_pipe, sniff_fifo_full};
          {sniff_fifo_overflow_blocked_usbclk, sniff_fifo_overflow_blocked_pipe} <= {sniff_fifo_overflow_blocked_pipe, sniff_fifo_overflow_blocked};
-         {sniff_fifo_full_threshold_usbclk, sniff_fifo_full_threshold_pipe} <= {sniff_fifo_full_threshold_pipe, sniff_fifo_full_threshold};
       end
    end
 
@@ -474,7 +476,7 @@ module reg_pw #(
 
    // these definitions are more useful:
    assign sniff_fifo_empty_threshold = sniff_fifo_empty_threshold_xilinx & !sniff_fifo_empty;
-   assign sniff_fifo_full_threshold = sniff_fifo_full_threshold_xilinx & !sniff_fifo_full;
+   assign capture_done = ~(reg_arm || capturing);
 
    assign O_fifo_full = sniff_fifo_full;
    assign O_fifo_overflow_blocked = sniff_fifo_overflow_blocked;
@@ -483,7 +485,7 @@ module reg_pw #(
    assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = sniff_fifo_empty_threshold;
    assign fifo_status[`FIFO_STAT_FULL] = sniff_fifo_full_usbclk;
    assign fifo_status[`FIFO_STAT_OVERFLOW_BLOCKED] = sniff_fifo_overflow_blocked_usbclk;
-   assign fifo_status[`FIFO_STAT_FULL_THRESHOLD] = sniff_fifo_full_threshold_usbclk;
+   assign fifo_status[`FIFO_STAT_CAPTURE_DONE] = capture_done;
 
 
    `ifdef ILA_REG

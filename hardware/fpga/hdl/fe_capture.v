@@ -24,7 +24,8 @@
 
 module fe_capture #(
     parameter pTIMESTAMP_FULL_WIDTH = 16,
-    parameter pTIMESTAMP_SHORT_WIDTH = 3
+    parameter pTIMESTAMP_SHORT_WIDTH = 3,
+    parameter pCAPTURE_LEN_WIDTH = 24
 )(
     /* FRONT END CONNECTIONS */
     input  wire reset_i,
@@ -40,7 +41,7 @@ module fe_capture #(
     /* REGISTER CONNECTIONS */
     input  wire I_timestamps_disable,
     input  wire I_arm,
-    input  wire [15:0] I_capture_len,
+    input  wire [pCAPTURE_LEN_WIDTH-1:0] I_capture_len,
     input  wire I_fifo_full,
     input  wire I_fifo_overflow_blocked,
     output reg  [1:0] O_command,
@@ -84,10 +85,10 @@ module fe_capture #(
 
     wire usb_event; // rxvalid=1 or status bits changed
     reg  usb_event_reg;
-    reg  [15:0] capture_count;
+    reg  [pCAPTURE_LEN_WIDTH-1:0] capture_count;
     wire capture_allowed;
 
-    (* ASYNC_REG = "TRUE" *) reg [15:0] capture_len_r;
+    (* ASYNC_REG = "TRUE" *) reg [pCAPTURE_LEN_WIDTH-1:0] capture_len_r;
     (* ASYNC_REG = "TRUE" *) reg timestamps_disable_r;
     (* ASYNC_REG = "TRUE" *) reg  [1:0] arm_pipe;
     reg  arm_r;
@@ -276,11 +277,11 @@ module fe_capture #(
     // manage capture mode:
     always @ (posedge fe_clk) begin
        if (reset_i) begin
-          capture_count <= 16'd0;
+          capture_count <= 24'd0;
        end
        else begin
           if (arm_r & !arm_r2)
-             capture_count <= 16'd0;
+             capture_count <= 24'd0;
           else if (O_data_wr)
              capture_count <= capture_count + 1;
        end

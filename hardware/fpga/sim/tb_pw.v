@@ -188,7 +188,8 @@ module tb_pw();
    reg fifo_stat_empty_threshold;
    reg fifo_stat_full;
    reg fifo_stat_overflow_blocked;
-   reg fifo_stat_full_threshold;
+   //reg fifo_stat_full_threshold;
+   reg fifo_stat_capture_done;
 
    // timeout thread:
    initial begin
@@ -627,7 +628,8 @@ module tb_pw();
       fifo_stat_empty_threshold = read_data[18+`FIFO_STAT_EMPTY_THRESHOLD];
       fifo_stat_full =            read_data[18+`FIFO_STAT_FULL];
       fifo_stat_overflow_blocked= read_data[18+`FIFO_STAT_OVERFLOW_BLOCKED];
-      fifo_stat_full_threshold =  read_data[18+`FIFO_STAT_FULL_THRESHOLD];
+      //fifo_stat_full_threshold =  read_data[18+`FIFO_STAT_FULL_THRESHOLD];
+      fifo_stat_capture_done =    read_data[18+`FIFO_STAT_CAPTURE_DONE];
    endtask
 
 

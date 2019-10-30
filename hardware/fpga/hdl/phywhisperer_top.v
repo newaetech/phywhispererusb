@@ -92,6 +92,7 @@ module phywhisperer_top(
    parameter pBYTECNT_SIZE = 7;
    parameter pCAPTURE_DELAY_WIDTH = pTRIGGER_DELAY_WIDTH-2;
    parameter pUSB_AUTO_COUNTER_WIDTH = 24;
+   parameter pCAPTURE_LEN_WIDTH = 24;
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -127,7 +128,7 @@ module phywhisperer_top(
    wire capture_enable_pulse;
    wire trigger_match;
    wire timestamps_disable;
-   wire [15:0] capture_len;
+   wire [pCAPTURE_LEN_WIDTH-1:0] capture_len;
    wire fifo_full;
    wire fifo_overflow_blocked;
    wire arm;
@@ -215,7 +216,8 @@ module phywhisperer_top(
       .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
       .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH),
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
-      .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH)
+      .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH),
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
    ) U_reg_pw (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -234,6 +236,7 @@ module phywhisperer_top(
       .I_fe_capture_cmd         (fe_capture_cmd),
       .I_fe_capture_time        (fe_capture_time),
       .I_fe_capture_data_wr     (fe_capture_data_wr),
+      .I_fe_capturing           (capturing),
 
       .O_timestamps_disable     (timestamps_disable),
       .O_capture_len            (capture_len),
@@ -274,7 +277,8 @@ module phywhisperer_top(
 
    fe_capture #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
-      .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH)
+      .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
    ) U_fe_capture (
       .reset_i                  (reset_i), 
       .fe_clk                   (clk_fe_buf), 
@@ -355,7 +359,7 @@ module phywhisperer_top(
     assign userio_d[2] = trigger_clk;
 
 
-    `ifdef ILA
+    `ifdef ILA_FE
        wire [17:0] ila_probe;
 
        assign ila_probe[7:0] = fe_data;
@@ -373,7 +377,7 @@ module phywhisperer_top(
        ila_0 ila_0_inst (clk_fe_buf, ila_probe);
     `endif
 
-    `ifdef ILA_USB
+    `ifdef ILA
        ila_1 I_ila_usbreg (
           .clk          (clk_usb_buf),          // input wire clk
           .probe0       (USB_Data),             // input wire [7:0]  probe0  

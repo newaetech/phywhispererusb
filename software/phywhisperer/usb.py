@@ -29,6 +29,7 @@ class Usb(PWPacketDispatcher):
         self.short_timestamps = [0] * 2**3
         self.long_timestamps = [0] * 2**16
         self.stat_pattern_match_value = 0
+        self.capture_size = 8188 # default to FIFO size
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -200,103 +201,82 @@ class Usb(PWPacketDispatcher):
         """
         value = self.usb.cmdReadMem(self.REG_USB_SPEED, 1)[0]
         if value == self.USB_SPEED_AUTO:
-           return 'auto'
+            return 'auto'
         elif value == self.USB_SPEED_LS:
-           return 'LS'
+            return 'LS'
         elif value == self.USB_SPEED_FS:
-           return 'FS'
+            return 'FS'
         elif value == self.USB_SPEED_HS:
-           return 'HS'
+            return 'HS'
         else:
-           raise ValueError('Internal error: REG_USB_SPEED register contains invalid value %d.' % value)
+            raise ValueError('Internal error: REG_USB_SPEED register contains invalid value %d.' % value)
 
 
-    def sniff_usb_traffic(self, bytes):
-        """Set USB Sniffer Mode"""
-        pass
-
-
-    def read_only_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False, stream=False):
+    def read_capture_data(self, entries=0, verbose=False, blocking=False, burst_size=8192, timeout=10):
         """Read from USB capture memory.
-        entries: integer
-                 values: 1 to 8188 if stream=False; no upper limit if stream=True
-        single_burst: True: read capture memory in a single burst (much faster).
-                      False: read capture memory in 3-byte bursts (much slower).
-        blocking: True: wait for data to be available before reading. Slower and not available
-                        with single_burst=True.
-                  False: read requested number of entries without checking for availability.
-        stream: True:
-                False: regular read operation, as defined by 'single_burst' and 'blocking'
+        blocking: True: wait for data to be available before reading (slower).
+                  False: read immediately, with underflow protection, all of the captured
+                  data, until PW tells us we've read everything ('entries' is ignored).
+        entries: When blocking=True, number of capture entries to read. If not specified, 
+                 read all the captured data. Cannot be greater than capture size, as set 
+                 by set_capture_size().
+        burst_size: When blocking=False, size of burst FIFO reads.
+        timeout: timeout in seconds (ignored if 0)
         verbose: True or False
+        Returns: List of captured entries. Each list element is itself a 3-element list,
+        containing the 3 bytes that make up a capture entry. Can be parsed by split_packets()
+        or split_data().
         """
-        status = 0
-        entries_read = 0
-        timestep = 0
         data = []
-        underflowed = False
-        overflowed = False
-        done_reading = False
-        if (stream == False) and (entries < 1 or entries > 8188):
-           raise ValueError ('entries must be in range [1,8188] when stream=False.')
+        starttime = time.time()
 
-        if single_burst:
-            if blocking:
-               raise ValueError ('Cannot do blocking reads in a single burst.')
-            elif stream:
-            # TODO: for now using poor man's approach to support streaming with a burst read:
-            # read one word at a time until a non-empty status is encountered, then start the
-            # burst.
-                command = self.FE_FIFO_CMD_STRM
-                while (command == self.FE_FIFO_CMD_STRM):
-                    raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)
-                    command = raw[2] & 0x3
-                    status += 1
-                    if (status % 10000 == 0) and status > 0:
-                       print("%d empty status read..." % status)
-                raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
-            else:
-                raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*entries)
-            for i in range(entries):
-                data.append(raw[i*4:i*4+3])
+        if blocking:
+            entries_read = 0
+
+            if not entries:
+                entries = self.capture_size
+            elif entries > self.capture_size:
+                raise ValueError('Error: requested to read %d entries but only %d were captured.' % (entries, self.capture_size))
+
+            while entries_read < entries:
+                while self.fifo_empty():
+                    if time.time() - starttime > timeout:
+                        logging.warning("Capture timed out!")
+                        break
+                data.append(self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)[0:3])
+                entries_read += 1
 
         else:
-            while (entries_read < entries) and not done_reading:
-                if (entries_read % 1000 == 0) and entries_read > 0:
-                    print("%d entries read..." % entries_read)
-                while blocking and self.fifo_empty():
-                    pass
-                raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)
-                data.append(raw[0:3])
-                command = raw[2] & 0x3
-                if (raw[2] & 8) and not underflowed:
-                    logging.warning("Capture FIFO underflowed!")
-                    underflowed = True
-                    done_reading = True
-                if (raw[2] & 64) and not overflowed:
-                    logging.warning("Capture FIFO overflow blocked!")
-                    overflowed = True
-                    if not stream:
-                       done_reading = True
-                if (command == self.FE_FIFO_CMD_STRM):
-                    if not stream:
-                       raise Exception('Received empty stream status: attempted to read empty FIFO.')
-                    status += 1
-                    if (status % 10000 == 0) and status > 0:
-                       print("%d empty status read..." % status)
-                else:
-                    entries_read += 1
+            notdone = True
+            raw = []
+            while notdone:
+                raw.extend(self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*burst_size))
+                if raw[-2] & (128 + 4) == (128 + 4):
+                    notdone = False
+                if time.time() - starttime > timeout:
+                    logging.warning("Capture timed out!")
+                    notdone = False
+            # reformat the return array and at the same time, filter out the (possibly numerous) empty FIFO reads:
+            for i in range(int(len(raw)/4)):
+                if raw[i*4+2] & 3 != self.FE_FIFO_CMD_STRM:
+                    data.append(raw[i*4:i*4+3])
 
-                if stream and self.fifo_empty() and overflowed:
-                    print('Emptied FIFO after overflow, done reading.')
-                    done_reading = True
+        if len(data): # maybe we only got empty reads
+            if data[-1][2] & 8:
+                logging.warning("Capture FIFO underflowed!")
+            if data[-1][2] & 64:
+                logging.warning("Capture FIFO overflow. Capture stopped when overflow detected.")
 
-        if verbose:
-            print("Received stream empty status %d times." % status)
         return data
 
 
     def split_data(self, rawdata, verbose=False):
-        """Split raw USB capture data into data events and times, stat events and times
+        """Split raw USB capture data into data events and times, stat events and times.
+        Returns 4 lists:
+            1- data event times
+            2- data bytes corresponding to data event times
+            3- USB status update times
+            4- USB status bytes corresponding to status update times
         """
         timestep = 0
         data_bytes = []
@@ -356,6 +336,11 @@ class Usb(PWPacketDispatcher):
 
     def split_packets(self, rawdata):
         """Split raw USB capture data into packets.
+        Returns: list of packets. Each list element is one packet and is presented in a
+        dictionary with the following keys:
+            - timestamp
+            - size (in bytes)
+            - contents (list of bytes)
         """
         from phywhisperer.protocol import IncompletePacket
         # operates destructively so make a copy:
@@ -373,32 +358,16 @@ class Usb(PWPacketDispatcher):
         return packets
 
 
-    def read_from_fifo(self, entries=1, verbose=False, single_burst=True, blocking=False, stream=False):
-        """Read from USB capture memory.
-        entries: integer
-                 values: 1 to 8188 if stream=False; no upper limit if stream=True
-        single_burst: True: read capture memory in a single burst (much faster).
-                      False: read capture memory in 3-byte bursts (much slower).
-        blocking: True: wait for data to be available before reading. Slower and not available
-                        with single_burst=True.
-                  False: read requested number of entries without checking for availability.
-        stream: True:
-                False: regular read operation, as defined by 'single_burst' and 'blocking'
-        verbose: True or False
-        """
-        rawdata = self.read_only_from_fifo(entries=entries, verbose=verbose, single_burst=single_burst, blocking=blocking, stream=stream)
-        return self.split_data(rawdata, verbose=verbose)
-
-
-    def set_capture_size(self, size=8192):
+    def set_capture_size(self, size=8188):
         """Set how many events to capture (events include data, USB status, and timestamps).
-        size: number of events to capture. 0 = unlimited. Max = 65535. Since the capture FIFO 
+        size: number of events to capture. 0 = unlimited (until overflow). Max = 2^24-1. Since the capture FIFO 
               can hold 8188 events, setting this to > 8188 may result in overflow.
 
         """
-        if (size >= 2**16) or (size < 0):
+        if (size >= 2**24) or (size < 0):
             raise ValueError('Illegal size value.')
-        size_bytes = [size & 255, (size >> 8) & 255]
+        self.capture_size = size
+        size_bytes = [size & 255, (size >> 8) & 255, (size >> 16) & 255]
         self.usb.cmdWriteMem(self.REG_CAPTURE_LEN, size_bytes)
 
 
@@ -587,6 +556,7 @@ class Usb(PWPacketDispatcher):
         """ Runs a capture for ViewSB.
         """
 
+
         self.reset_fpga()
         self.set_power_source("host")
         self.set_power_source("off")
@@ -597,9 +567,18 @@ class Usb(PWPacketDispatcher):
         self.set_trigger(enable=False)
         self.set_pattern(pattern=pattern, mask=mask)
         self.set_power_source("host")
-        time.sleep(1.0)
+        time.sleep(0.25)
 
-        self._start_comms_thread(size, burst)
+        #self.reset_fpga()
+        #self.set_usb_mode("HS")
+        #self.set_capture_size(size)
+        #self.set_trigger(enable=False)
+        #self.set_pattern(pattern=pattern, mask=mask)
+        #time.sleep(5)
+        #print("GO!!!!!!!!!!!!!!!!!!!")
+        #self.arm()
+
+        self._start_comms_thread(burst)
 
         elapsed_time = 0.0
         try:
@@ -619,51 +598,44 @@ class Usb(PWPacketDispatcher):
             self._device_stop_capture()
 
 
-    def __comms_thread_body(self, size, burst):
+    def __comms_thread_body(self, burst, burst_size=8192, timeout=10):
         """ ViewSB internal function that executes as our comms thread.
         Args:
-            size -- Number of capture FIFO entries to read.
             burst -- if set, read all FIFO at once, then pass on to decoder and frontend;
-                     otherwise, read a few words at a time and process them concurrently.
+                     otherwise, read smaller chunks and process them concurrently.
+            burst_size -- number of entries to read at a time when burst=False
         """
+
         if burst:
             self.wait_disarmed()
-            rawdata = self.read_only_from_fifo(entries=size)
+            rawdata = self.read_capture_data()
+            #logging.warning("*** received %d entries!" % len(rawdata))
             self.handle_incoming_bytes(rawdata)
 
         else:
-            entries_read = 0
-            # wait for data to be available:
-            #ForkedPdb().set_trace()
-            while not self.__comm_term and ((entries_read < size) or (size == 0)):
-                under_threshold = 0
-                overflow = 0
-
-                while not self.fifo_over_empty_threshold():
-                    pass
-
-                while not (under_threshold or overflow):
-                    rawdata = self.read_only_from_fifo(entries=128)
-                    entries_read += 128
-                    # when reading the FIFO, we get its status flags included for free:
-                    empty = rawdata[-1][2] & 4
-                    empty_threshold = rawdata[-1][2] & 16
-                    if (size - entries_read) <= 128:
-                        under_threshold = not empty and not empty_threshold
-                    else:
-                        under_threshold = not empty
-                    overflow = rawdata[-1][2] & 64
-                    if overflow:
-                        # TODO: handle overflow
-                        print("overflowed!")
-                        quit()
-                    self.handle_incoming_bytes(rawdata)
+            notdone = True
+            starttime = time.time()
+            while notdone:
+                raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*burst_size)
+                if raw[-2] & (128 + 4) == (128 + 4):
+                    notdone = False
+                if time.time() - starttime > timeout:
+                    logging.warning("Capture timed out!")
+                    notdone = False
+                # filter out the empty FIFO reads:
+                rawdata = []
+                for i in range(int(len(raw)/4)):
+                    if raw[i*4+2] & 3 != self.FE_FIFO_CMD_STRM:
+                        rawdata.append(raw[i*4:i*4+3])
+                #logging.warning("Handling %d entries. Notdone=%d" % (len(rawdata), notdone))
+                self.handle_incoming_bytes(rawdata)
+            #logging.warning("Capture done.")
 
 
-    def _start_comms_thread(self, size, burst):
+    def _start_comms_thread(self, burst):
         """ ViewSB: start the background thread that handles our core communication. """
 
-        self.commthread = threading.Thread(target=self.__comms_thread_body, args=[size, burst], daemon=True)
+        self.commthread = threading.Thread(target=self.__comms_thread_body, args=[burst], daemon=True)
         self.__comm_term = False
         self.__comm_exc = None
 
