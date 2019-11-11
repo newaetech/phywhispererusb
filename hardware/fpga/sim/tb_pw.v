@@ -40,6 +40,7 @@ module tb_pw();
     parameter pPRETRIG_BYTES_MAX = 200;
     parameter pPATTERN_BYTES_MIN = 2;
     parameter pPATTERN_BYTES_MAX = 64;
+    parameter pPATTERN_ACTUAL_SIZE = 64;
     parameter pPVALID = 50;
     parameter pSEED = 1;
     parameter pFIFO_DEPTH = 8192;
@@ -164,7 +165,7 @@ module tb_pw();
    reg [15:0] last_pattern_match_delay;
    reg [7:0] sniff_bytes [0:7];
    reg [7:0] match_pattern [0:pPATTERN_BYTES_MAX-1];
-   reg [7:0] match_mask [0:pPATTERN_BYTES_MAX-1];
+   reg [7:0] match_mask [0:pPATTERN_ACTUAL_SIZE-1];
    int pattern_bytes;
    int pretrig_bytes;
    bit armed;
@@ -553,28 +554,37 @@ module tb_pw();
    task set_pattern;
       int i;
       pattern_bytes = $urandom_range(pPATTERN_BYTES_MIN, pPATTERN_BYTES_MAX);
+      // first, zero out the full mask:
+      for (i = 0; i < pPATTERN_ACTUAL_SIZE; i = i + 1)
+         match_mask[i] = 0;
+
       rw_lots_bytes(`REG_PATTERN);
-      for (i = 0; i < pattern_bytes; i = i + 1) begin
+      for (i = 0; i < pattern_bytes; i = i + 1)
          match_pattern[i] = $urandom;
+      for (i = pattern_bytes-1; i >= 0; i = i - 1)
          write_next_byte(match_pattern[i]);
-      end
-      rw_lots_bytes(`REG_PATTERN_MASK);
-      for (i = 0; i < pattern_bytes; i = i + 1) begin
+
+      // generating and writing the mask is a bit convoluted, to make the hardware easier...
+      // the actual mask needs to be *preceeded* by padded zeros
+      for (i = pPATTERN_ACTUAL_SIZE-pattern_bytes; i < pPATTERN_ACTUAL_SIZE; i = i + 1) begin
          match_mask[i] = $urandom;
          // things would get unnecessarily complex if the first mask byte could be 0, so prevent that:
-         if (i == 0) begin
-            while (match_mask[0] == 0)
-               match_mask[0] = $urandom;
+         if (i == pPATTERN_ACTUAL_SIZE-pattern_bytes) begin
+            while (match_mask[i] == 0)
+               match_mask[i] = $urandom;
          end
-         write_next_byte(match_mask[i]);
       end
+      rw_lots_bytes(`REG_PATTERN_MASK);
+      for (i = pPATTERN_ACTUAL_SIZE-1; i >= 0; i = i - 1)
+         write_next_byte(match_mask[i]);
+
       write_1byte(`REG_PATTERN_BYTES, pattern_bytes);
 
       $write("Pattern: ");
       for (i = 0; i < pattern_bytes; i = i + 1)
          $write("%h ", match_pattern[i]);
       $write("\nMask:    ");
-      for (i = 0; i < pattern_bytes; i = i + 1)
+      for (i = 0; i < pPATTERN_ACTUAL_SIZE; i = i + 1)
          $write("%h ", match_mask[i]);
       $write("\n");
 
@@ -694,7 +704,8 @@ module tb_pw();
       for (txindex = 0; txindex < pretrig_bytes; txindex = txindex + 1) begin
          fe_bytes[0] = $urandom;
          // ensure we aren't randomly matching the programmed pattern:
-         while ((fe_bytes[0] & match_mask[0]) == (match_pattern[0] & match_mask[0]))
+         while ( (fe_bytes[0] & match_mask[pPATTERN_ACTUAL_SIZE-pattern_bytes]) == 
+                 (match_pattern[0] & match_mask[pPATTERN_ACTUAL_SIZE-pattern_bytes]) )
             fe_bytes[0] = $urandom;
          fe_stat[0] = $urandom;
          get_delay(fe_times[0]);
@@ -706,6 +717,7 @@ module tb_pw();
 
 
    task send_pattern_match_data;
+      int bitindex;
       $display("\nSending matching pattern (%0d bytes):", pattern_bytes);
       txindex = 0;
       while (txindex < pattern_bytes) begin
@@ -714,6 +726,11 @@ module tb_pw();
          get_valid(fe_data_event[0]);
          if (fe_data_event[0]) begin
             fe_bytes[0] = match_pattern[txindex];
+            // randomly flip bits that are masked out:
+            for (bitindex = 0; bitindex < 7; bitindex = bitindex + 1) begin
+               if (match_mask[pPATTERN_ACTUAL_SIZE-pattern_bytes+txindex][bitindex] == 1'b0)
+                  fe_bytes[0][bitindex] = $urandom;
+            end
             txindex = txindex + 1;
             if (txindex == pattern_bytes)
                pattern_match_marker = 1;

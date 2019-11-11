@@ -43,6 +43,8 @@ class Usb(PWPacketDispatcher):
     """PhyWhisperer-USB Interface"""
 
 
+    MAX_PATTERN_LENGTH = 64
+
     def __init__ (self, viewsb=False):
         """ Set up PhyWhisperer-USB device.
         viewsb should only be set when this is called by ViewSB.
@@ -454,10 +456,12 @@ class Usb(PWPacketDispatcher):
         """
         if len(pattern) != len(mask):
             raise ValueError('pattern and mask must be of same size.')
-        elif len(pattern) > 64:
+        elif len(pattern) > self.MAX_PATTERN_LENGTH:
             raise ValueError('pattern and mask cannot be more than 64 bytes.')
-        self.usb.cmdWriteMem(self.REG_PATTERN, pattern)
-        self.usb.cmdWriteMem(self.REG_PATTERN_MASK, mask)
+        # extend the mask to full width (cheaper to do here than in HW):
+        mask = [0]* (self.MAX_PATTERN_LENGTH - len(mask)) + mask
+        self.usb.cmdWriteMem(self.REG_PATTERN, pattern[::-1])
+        self.usb.cmdWriteMem(self.REG_PATTERN_MASK, mask[::-1])
         self.usb.cmdWriteMem(self.REG_PATTERN_BYTES, [len(pattern)])
         self.pattern = pattern
         self.mask = mask

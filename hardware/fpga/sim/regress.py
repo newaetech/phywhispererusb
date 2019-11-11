@@ -182,6 +182,15 @@ tests.append(dict(name  = 'longpattern',
              PATTERN_MIN = 16,
              PATTERN_MAX = 64))
 
+tests.append(dict(name  = 'vlongpattern',
+             frequency = 4,
+             description = 'Pattern of 60-64 bytes.',
+             NUM_EVENTS = 10,
+             NUM_REPEATS = 5,
+             DELAY_MODE = 0,
+             PATTERN_MIN = 60,
+             PATTERN_MAX = 64))
+
 tests.append(dict(name  = 'longcapture',
              frequency = 10,
              description = 'Read full FIFO.',
