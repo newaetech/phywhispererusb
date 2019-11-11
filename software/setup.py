@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name = 'phywhisperer',
-    version = '0.0.1',
+    version = '0.1.0',
     description = "PhyWhisperer USB Hardware Trigger",
     author = "Colin O'Flynn",
     author_email = 'coflynn@newae.com',
@@ -17,9 +17,7 @@ setup(
                 ],
     include_package_data=True,
     install_requires = [
-
-        # pyusb could be removed from required list, but for most people it's needed
-        # and it's not "too" bad (i.e., won't hurt on a cloud platform I think)
+        'crcmod',
         'pyusb',
     ],
     scripts=[

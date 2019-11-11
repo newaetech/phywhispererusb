@@ -96,7 +96,7 @@ class Usb(PWPacketDispatcher):
         defines.close()
 
 
-    def con(self, PID=0xC521, sn=None, program_fpga=True):
+    def con(self, PID=0xC610, sn=None, program_fpga=True):
         """Connect to PhyWhisperer-USB. Raises error if multiple detected
 
         PID : int
