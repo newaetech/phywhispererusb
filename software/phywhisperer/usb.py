@@ -53,6 +53,7 @@ class Usb(PWPacketDispatcher):
         self.long_timestamps = [0] * 2**16
         self.stat_pattern_match_value = 0
         self.capture_size = 8188 # default to FIFO size
+        self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -394,10 +395,26 @@ class Usb(PWPacketDispatcher):
         self.usb.cmdWriteMem(self.REG_CAPTURE_LEN, size_bytes)
 
 
+    def ns_trigger(self, delay_in_ns):
+        """Convert a nS number to delay or width cycles for set_trigger()"""
+        cycles = (float(delay_in_ns) * 1.0E-9) / (1.0 / float(self.usb_trigger_freq))
+        return round(cycles)
+
+    def us_trigger(self, delay_in_us):
+        """Convert a uS number to delay or width cycles for set_trigger()"""
+        cycles = (float(delay_in_us) * 1.0E-6) / (1.0 / float(self.usb_trigger_freq))
+        return round(cycles)
+
+    def ms_trigger(self, delay_in_ms):
+        """Convert a mS number to delay or width cycles for set_trigger()"""
+        cycles = (float(delay_in_ms) * 1.0E-3) / (1.0 / float(self.usb_trigger_freq))
+        return round(cycles)
+
+
     def set_trigger(self, delay=0, width=1, enable=True):
         """Program the output trigger delay and width. Both are measured in clock cycles of USB-derived 240 MHz clock.
            The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
-           different value.
+           different value. Use ns_trigger(), us_trigger(), and ms_trigger() to convert values as needed.
         delay: int
                range: [0, 2^20-1]
         width: int
