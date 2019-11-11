@@ -284,6 +284,14 @@ DItemRevisionGUID=
 DocumentPath=Project Outputs for cwtrigger_usb\Design Rule Check - ct_mainpcb.html
 DItemRevisionGUID=
 
+[GeneratedDocument20]
+DocumentPath=OUTPUT\FILES\Pick Place\Pick Place for ct_mainpcb.csv
+DItemRevisionGUID=
+
+[GeneratedDocument21]
+DocumentPath=OUTPUT\FILES\Pick Place\Pick Place for ct_mainpcb.txt
+DItemRevisionGUID=
+
 [Parameter1]
 Name=PrjLicense
 Value=GPL
