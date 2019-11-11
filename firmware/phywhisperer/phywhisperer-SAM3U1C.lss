@@ -29,9 +29,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  12 .debug_line   00013e4d  00000000  00000000  00066fe7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    00058e5e  00000000  00000000  0007ae34  2**0
+ 13 .debug_str    00058e5b  00000000  00000000  0007ae34  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_frame  0000435c  00000000  00000000  000d3c94  2**2
+ 14 .debug_frame  0000435c  00000000  00000000  000d3c90  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -12989,7 +12989,7 @@ static bool udc_req_std_dev_get_str_desc(void)
 #ifdef USB_DEVICE_PRODUCT_NAME
 	case 2:
 		str_length = USB_DEVICE_PRODUCT_NAME_SIZE;
-   84c50:	2313      	movs	r3, #19
+   84c50:	2310      	movs	r3, #16
    84c52:	71fb      	strb	r3, [r7, #7]
 		str = udc_string_product_name;
    84c54:	4b1e      	ldr	r3, [pc, #120]	; (84cd0 <udc_req_std_dev_get_str_desc+0xc0>)
@@ -16117,8 +16117,8 @@ void system_init_flash(uint32_t ul_clk)
 200002bc:	636e4920 0000002e                        Inc....
 
 200002c4 <udc_string_product_name>:
-200002c4:	6c6c6142 69747369 65472063 5743206c     Ballistic Gel CW
-200002d4:	00313235                                521.
+200002c4:	57796850 70736968 72657265 4253552d     PhyWhisperer-USB
+200002d4:	00000000                                ....
 
 200002d8 <udc_string_desc>:
 200002d8:	00000300 00000000 00000000 00000000     ................
@@ -16131,7 +16131,7 @@ void system_init_flash(uint32_t ul_clk)
 2000031a:	                                         ..
 
 2000031c <udc_device_desc>:
-2000031c:	02000112 40000000 c5212b3e 02010100     .......@>+!.....
+2000031c:	02000112 40000000 c6012b3e 02010100     .......@>+......
 2000032c:	00000103                                ....
 
 20000330 <udc_device_qual>:

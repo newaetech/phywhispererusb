@@ -9,3 +9,5 @@
 *.vcd
 *.gtkw
 a.out
+/firmware/phywhisperer/objdir/
+/firmware/phywhisperer/objdir/

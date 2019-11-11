@@ -54,7 +54,7 @@
 
 //! Device definition (mandatory)
 #define  USB_DEVICE_VENDOR_ID             0x2B3E
-#define  USB_DEVICE_PRODUCT_ID            0xC521
+#define  USB_DEVICE_PRODUCT_ID            0xC601
 #define  USB_DEVICE_MAJOR_VERSION         1
 #define  USB_DEVICE_MINOR_VERSION         0
 #define  USB_DEVICE_POWER                 500 // Consumption on Vbus line (mA)
@@ -69,7 +69,7 @@
 extern char usb_serial_number[33];
 
 #define  USB_DEVICE_MANUFACTURE_NAME      "NewAE Technology Inc."
-#define  USB_DEVICE_PRODUCT_NAME          "Ballistic Gel CW521"
+#define  USB_DEVICE_PRODUCT_NAME          "PhyWhisperer-USB"
 #define  USB_DEVICE_GET_SERIAL_NAME_POINTER usb_serial_number
 #define  USB_DEVICE_GET_SERIAL_NAME_LENGTH 32
 //We get serial number from unique ID buitl into chip

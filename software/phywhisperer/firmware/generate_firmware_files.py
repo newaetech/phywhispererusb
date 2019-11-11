@@ -8,10 +8,6 @@ import binascii
 
 hwdir = r"../../../firmware"
 
-# cwlite_v = [0, 11]
-# cwlite_files = [("cwlite_firmware.zip", os.path.join(hwdir, r"capture/chipwhisperer-lite/cwlite_firmware.zip")),
-#                 ("SAM3U_CW1173.bin", os.path.join(hwdir, r"capture/chipwhisperer-lite/sam3u_fw/SAM3U_VendorExample/Debug/SAM3U_CW1173.bin"))]
-
 
 phywhisperer_v = [0, 0]
 phywhisperer_files = [("phywhisperer-firmware.zip", os.path.join(hwdir, r"fpga/phywhisperer.zip")),
