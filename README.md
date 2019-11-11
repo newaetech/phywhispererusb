@@ -2,7 +2,7 @@
 
 What is this thing? This is a hardware trigger for FI or SCA, which triggers on the USB phy.
 
-## Get a PhyWhisperer-USB (EARLY)
+## Get a PhyWhisperer-USB
 
 Check out https://www.crowdsupply.com/newae/phywhisperer-usb for the Crowd Supply!
 
@@ -14,7 +14,7 @@ Check out https://www.crowdsupply.com/newae/phywhisperer-usb for the Crowd Suppl
 
 ## Status
 
-The current PCB (-03) is approaching the final design to be released to manufacture. It's mostly there - a few changes in the final version (length-matching some of the spare I/O, minor cleanup) but you should be good to use the -03 rev (no promise still!!).
+The current PCB (-04) is the final design released to manufacture, and software is considered mostly stable.
 
 ## Comparison to Other Projects
 
@@ -34,5 +34,5 @@ The PhyWhisperer-USB adds features a glitch-master would find useful, such as an
 
 Compared to GreatFET or FaceWhisperer this tool cannot perform tasks such as fuzzing or complex state machines (which are relatively easy with those tools).
 
-The PhyWhisperer hardware could be used as a USB analyzer or logic analyzer, but the software/firmware/fpga does not support this yet. Basic USB sniffing capability will be added for release, as it's useful when deciding on the effect your glitch is having. If you require a more robust USB analyzer the TotalPhase Beagle 480 comes highly recommended by Colin (no connection - he just really likes them).
+Basic USB sniffing capability exists in this tool, as it's useful when deciding on the effect your glitch is having. If you require a more robust USB analyzer the TotalPhase Beagle 480 comes highly recommended by Colin (no connection - he just really likes them).
 
