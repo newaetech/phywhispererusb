@@ -43,37 +43,39 @@ module pw_pattern_matcher #(
    output wire  O_match_trigger
 );
 
-   reg  [6:0] match_counter;
+   // -1 here because we compare the incoming data byte immediately:
+   reg  [(pPATTERN_BYTES-1)*8-1:0] input_data;
+   wire [(pPATTERN_BYTES-1)*8-1:0] masked_input;
+
+   wire [pPATTERN_BYTES*8-1:0] masked_pattern;
+
    reg  match_trigger;
    reg  match_trigger_r;
    reg  capturing_r;
    reg  arm_r;
 
-   wire [7:0] masked_pattern_byte;
-   wire [7:0] masked_pattern_first_byte;
    wire [7:0] masked_input_byte;
-   wire [7:0] masked_input_first_byte;
 
    wire capture_done;
-   wire trigger_pulse;
 
    (* ASYNC_REG = "TRUE" *) reg  [1:0] arm_pipe;
    (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] pattern_r;
    (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] mask_r;
    (* ASYNC_REG = "TRUE" *) reg  [7:0] pattern_bytes_r;
 
-   assign masked_pattern_byte = pattern_r[8*match_counter +: 8] & mask_r[8*match_counter +: 8];
-   assign masked_input_byte = I_fe_data & mask_r[8*match_counter +: 8];
-   assign masked_pattern_first_byte = pattern_r[7:0] & mask_r[7:0];
-   assign masked_input_first_byte = I_fe_data & mask_r[7:0];
+   assign masked_input_byte = I_fe_data & mask_r[7:0];
 
    assign capture_done = (!I_capturing & capturing_r);
+
+   assign masked_input = input_data & mask_r[pPATTERN_BYTES*8-1:8];
+   assign masked_pattern = pattern_r & mask_r;
+
    always @ (posedge fe_clk) begin
       if (reset_i) begin
-         match_counter <= 0;
          match_trigger <= 1'b0;
          match_trigger_r <= 1'b0;
          capturing_r <= 1'b0;
+         input_data <= 0;
       end
       else begin
          match_trigger_r <= match_trigger;
@@ -81,26 +83,17 @@ module pw_pattern_matcher #(
 
          // end of capture is a good time to reset these:
          if (match_trigger && capture_done) begin
-            match_counter <= 0;
             match_trigger <= 1'b0;
          end
 
-         else if (I_fe_data_valid && arm_r && (match_counter < pattern_bytes_r)) begin
-            if (masked_pattern_byte == masked_input_byte)
-               match_counter <= match_counter + 1;
-            // maybe we thought we were onto a pattern match but actually the pattern match is starting NOW:
-            else if (masked_pattern_first_byte == masked_input_first_byte)
-               match_counter <= 1;
-            else
-               match_counter <= 0;
-
-            if ( (match_counter == (pattern_bytes_r-1)) && 
-                 ((masked_pattern_byte == masked_input_byte) || (masked_pattern_byte == masked_input_byte)) )
+         else if (I_fe_data_valid && arm_r) begin
+            input_data <= {input_data[pPATTERN_BYTES*8-17:0], I_fe_data};
+            // don't wait for the incoming data byte to be stored, compare immediately:
+            if ({masked_input, masked_input_byte} == masked_pattern)
                match_trigger <= 1'b1;
             else
                match_trigger <= 1'b0;
          end
-
       end
    end
 
