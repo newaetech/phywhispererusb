@@ -156,6 +156,13 @@ int main(void)
 #else
     system_init();
 #endif
+
+	//Convert serial number to ASCII for USB Serial number
+	for(unsigned int i = 0; i < 4; i++){
+		sprintf(usb_serial_number+(i*8), "%08x", (unsigned int)serial_number[i]);	
+	}
+	usb_serial_number[32] = 0;
+
     genclk_enable_config(GENCLK_PCK_1, GENCLK_PCK_SRC_MCK, GENCLK_PCK_PRES_1);
     udc_start();
     gpio_set_pin_high(LED0_GPIO);
