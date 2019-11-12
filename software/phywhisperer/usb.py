@@ -627,19 +627,21 @@ class Usb(PWPacketDispatcher):
 
 
     def run_capture(self, size=8188, burst=True, pattern=[0], mask=[0], statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
-        """ Runs a capture for ViewSB, including power cycling the device to catch the descriptors. Runs following internally::
+        """ Runs a capture for ViewSB, including power cycling the device to catch the descriptors.
         
-                self.reset_fpga()
-                self.set_power_source("host")
-                self.set_power_source("off")
-                time.sleep(0.5)
-                self.set_usb_mode("auto")
-                self.set_capture_size(size)
-                self.arm()
-                self.set_trigger(enable=False)
-                self.set_pattern(pattern=pattern, mask=mask)
-                self.set_power_source("host")
-                time.sleep(0.25)
+        Runs following internally::
+        
+            self.reset_fpga()
+            self.set_power_source("host")
+            self.set_power_source("off")
+            time.sleep(0.5)
+            self.set_usb_mode("auto")
+            self.set_capture_size(size)
+            self.arm()
+            self.set_trigger(enable=False)
+            self.set_pattern(pattern=pattern, mask=mask)
+            self.set_power_source("host")
+            time.sleep(0.25)
         
         """
 
