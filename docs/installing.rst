@@ -1,13 +1,8 @@
-.. _prerequisites:
+.. _installing:
 
 #############
 Prerequisites
 #############
-
-One for installing ChipWhisperer do not require prior installation of
-the following prerequisites (:ref:`install-virtual-machine`). However,
-if you want more control over where, and how you install the prerequisites,
-the prerequisite installation process for your operating system is detailed below.
 
  * :ref:`GNU/Linux <prerequisites-linux>`
  * :ref:`Windows <prerequisites-windows>`
@@ -38,7 +33,7 @@ On Ubuntu or similar:
 Packages
 ========
 
-There are some packages required for **chipwhisperer** and its dependencies such
+There are some packages required for **phywhisperer** and its dependencies such
 as **pyusb** to work. Install using:
 
 .. code:: bash
@@ -46,38 +41,11 @@ as **pyusb** to work. Install using:
     sudo apt install libusb-dev make
 
 
-Compilers
-=========
-
-The AVR Toolchain can be installed using:
-
-.. code:: bash
-
-    sudo apt install avr-libc gcc-avr
-
-The Arm Toolchain can be installed using:
-
-.. code:: bash
-
-    sudo apt install gcc-arm-none-eabi
-
-.. note::
-
-    Some versions of Ubuntu (Ubuntu Bionic Beaver and likely before) provide
-    a GNU Arm toolchain that links to incorrect files during the build process.
-    To install a working version of the toolchain.
-
-    .. code:: bash
-
-        wget https://mirrors.kernel.org/ubuntu/pool/universe/n/newlib/libnewlib-dev_3.0.0.20180802-2_all.deb
-        wget https://mirrors.kernel.org/ubuntu/pool/universe/n/newlib/libnewlib-arm-none-eabi_3.0.0.20180802-2_all.deb
-        sudo dpkg -i libnewlib-arm-none-eabi_3.0.0.20180802-2_all.deb libnewlib-dev_3.0.0.20180802-2_all.deb
-
-
 Hardware Drivers
 ================
 
-The driver for Linux is built in; however, you need to allow your user account to access the peripheral. To do so, you'll have to make a file called :code:`/etc/udev/rules.d/99-newae.rules`. The contents of this file should be:
+The driver for Linux is built in; however, you need to allow your user account to access the peripheral. To do so, you'll have to make a file called :code:`/etc/udev/rules.d/99-newae.rules`. The contents of this file should be (this includes other NewAE
+products, you only really need the PhyWhisperer line):
 
 .. code::
 
@@ -92,12 +60,15 @@ The driver for Linux is built in; however, you need to allow your user account t
 
     # CW-305 (Artix Target)
     SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="c305", MODE="0664", GROUP="plugdev"
+    
+    # PhyWhisperer
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="c610", MODE="0664", GROUP="plugdev"
 
     # CW-CR2
     SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="8613", MODE="0664", GROUP="plugdev"
     SUBSYSTEM=="usb", ATTRS{idVendor}=="221a", ATTRS{idProduct}=="0100", MODE="0664", GROUP="plugdev"
 
-Alternatively, you can just copy :code:`chipwhisperer/hardware/99-newae.rules`
+Alternatively, you can just copy :code:`phywhispererusb/drivers/99-newae.rules`
 to :code:`/etc/udev/rules.d/`.
 
 Then add your username to the plugdev group:
@@ -115,12 +86,7 @@ And reset the udev system:
 Finally log out & in again for the group change to take effect.
 
 You can always find the latest version of this file on
-`Github <https://github.com/newaetech/chipwhisperer/blob/master/hardware/99-newae.rules>`_.
-
-ChipWhisperer
-=============
-
-You are now ready to move on to :ref:`install-repo`.
+`Github <https://raw.githubusercontent.com/newaetech/chipwhisperer/master/hardware/99-newae.rules>`_.
 
 
 .. _prerequisites-windows:
@@ -129,20 +95,9 @@ You are now ready to move on to :ref:`install-repo`.
 Windows Manual
 **************
 
-.. attention:: Installing ChipWhisperer prerequisites on Windows presents
-    additional challenges compared to other installation methods. It's
-    assumed that you're comfortable with modifying your path and
-    potentially replacing .dll files.
-
 
 Python
 ======
-
-For any of the other installation methods, you'll need to have Python
-3 installed on your computer. If you already a recent version of
-Python installed (3.5.x+), you can skip this step. Note that Python
-2.x will **not** work with this codebase. There's also a bit of setup
-that's needed to get other tools and prepare other drivers.
 
 The recommend method of installing Python is to use a distribution
 called `WinPython`_. This setup avoids installing Python globally, and
@@ -180,49 +135,24 @@ notebooks.
 Installing Hardware Drivers
 ===========================
 
-Details of driver installation are on specific pages for supported
-hardware (such as cwcapturerev2 and naecw1173_cwlite). Drivers are
-available from ChipWhisperer `releases`_ section.
+Drivers can be downloaded as a .zip file for Windows. To install them:
 
-.. _releases: https://github.com/newaetech/chipwhisperer/releases
+1. Unzip the zip-file somewhere. Also remember where.
+2. Open your Device Manager.
+3. Find the device in the list, it should appear with a yellow exclamation mark under "Other devices".
+4. Double-click on the device.
+5. Hit "Update Driver"
+6. Select "Browse my computer for driver software".
+7. Point the wizard to the folder you unzipped, ensure the "look in subfolders" option is selected.
 
-
-Make
-====
-To build firmware for target boards, you'll need to install GNU Make. There's
-a couple of ways you can install make:
-
- * Install WinAVR. If you're running Windows 8 or later, this will require
-    replacing a .dll file in WinAVR.
- * Install MinGW and add :code:`MinGW/bin` to your path.
- * Install Cygwin, install make, and add :code:`cygwin/bin` to your path.
-
-
-Compilers
-=========
-
-It assumed any time the :code:`make` command is run, that the
-appropriate compiler is on the path, whether that is the `ARM toolchain`_ or
-AVRGCC. AVRGCC can be installed:
-
- * Through `AVRGCC standalone`_. You'll need to add
-   :code:`avr8-gnu-toolchain-win32_x88/bin` to your path
- * Through `WinAVR`_. If you're on Windows 8 or later, you'll need to replace
-   :code:`WinAVR/utils/bin/mysys0.dll` with an `updated version`_
-
-.. _ARM toolchain: https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads
-.. _AVRGCC standalone: https://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en607654
-.. _WinAVR: https://sourceforge.net/projects/winavr/
-.. _updated version: http://www.madwizard.org/download/electronics/msys-1.0-vista64.zip
+.. _releases: https://github.com/newaetech/phywhispererusb/tree/master/drivers
 
 
 ChipWhisperer
 =============
 
 Remember that any time you install packages for python during the installation,
-use the *WinPython Command Prompt.exe*.You are ready to move on to
-:ref:`install-repo`.
-
+use the *WinPython Command Prompt.exe*.
 
 .. _prerequisites-mac:
 

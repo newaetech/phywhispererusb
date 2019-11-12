@@ -51,32 +51,8 @@ Documentation
     :maxdepth: 2
 
     getting-started
-    prerequisites
     installing
-    starting
-
-
-Jupyter Notebook Tutorials
-==========================
-
-Jupyter notebook tutorials with output included so you can follow along,
-or just check out what the ChipWhisperer tool-chain is capable of.
-
-
-.. toctree::
-    :maxdepth: 4
-
-    tutorials
-
-
-API
-===
-
-Documentation specific to api functions, classes, and modules live here.
-
-.. toctree::
-    :maxdepth: 3
-
+    viewsb
     api
 
 
@@ -89,5 +65,4 @@ Here is more information about changes, and contribution.
     :maxdepth: 2
     :glob:
 
-    contributing
     Change Log <changes.rst>
