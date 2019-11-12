@@ -9,7 +9,7 @@ build:
   image: stable
 
 python:
-  version: 3.6
+  version: 3.7
   install:
     - requirements: software/requirements.txt
     - method: setuptools
