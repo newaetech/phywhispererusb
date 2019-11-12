@@ -47,7 +47,9 @@ class Usb(PWPacketDispatcher):
 
     def __init__ (self, viewsb=False):
         """ Set up PhyWhisperer-USB device.
-        viewsb should only be set when this is called by ViewSB.
+        
+        Args:
+            viewsb: Should only be set to 'True' when this is called by ViewSB.
         """
         self.viewsb = viewsb
         self.addpattern = False
@@ -101,12 +103,12 @@ class Usb(PWPacketDispatcher):
     def con(self, PID=0xC610, sn=None, program_fpga=True):
         """Connect to PhyWhisperer-USB. Raises error if multiple detected
 
-        PID : int
-              Product ID of PhyWhisperer
-        sn : int
-             Serial Number of PhyWhisperer, required when multiple PhyWhisperers are connected.
-        program_fpga : bool
-                       Specifies whether or not to program the FPGA with the default firmware when we connect
+        Args:
+            PID (int, optional): USB PID of PhyWhisperer, defaults to 0xC610 (NewAE standard).
+            sn (int, option):  Serial Number of PhyWhisperer, required when multiple
+                PhyWhisperers are connected.
+            program_fpga (bool, option): Specifies whether or not to program the FPGA with
+                the default firmware when we connect. Set to False if using custom bitstream.
         """
 
         self.usb = NAE.NAEUSB()
@@ -125,10 +127,11 @@ class Usb(PWPacketDispatcher):
     def set_power_source(self, src):
         """Set power source for target.
 
-        src : str
-              "5V" for power from this computer
-              "host" for power from the host of the connection we're sniffing
-              "off" for USB power off
+        Args:
+            src (str):
+              * "5V" for power from this computer (via 'Control' USB port).
+              * "host" for power from the host of the connection we're sniffing.
+              * "off" for no power.
         """
         if src == "5V":
             self._llint.changePowerSource(self._llint.PWR_SRC_5V)
@@ -144,7 +147,7 @@ class Usb(PWPacketDispatcher):
 
 
     def reset_fpga(self):
-        """ Pulse FPGA reset pin.
+        """ Reset FPGA registers to defaults, use liberally to clear incorrect states.
         """
         self._llint.resetFPGA()
 
@@ -159,11 +162,16 @@ class Usb(PWPacketDispatcher):
 
 
     def erase_sam3u(self):
-        """Erase the SAM3U Firmware, which forces it into bootloader mode"""
+        """Erase the SAM3U Firmware, which forces it into bootloader mode."""
         self._llint.eraseFW(confirm=True)
 
     def program_sam3u(self, port, fw_path=None):
-        """Program the SAM3U Firmware assuming device is in bootloader mode"""
+        """Program the SAM3U Firmware assuming device is in bootloader mode.
+        
+        Args:
+            port (str): Serial port name, such as 'COM36' or '/dev/ttyACM0'.        
+        """
+
         fw_data = None
         print("Opening firmware...")
 
@@ -196,11 +204,13 @@ class Usb(PWPacketDispatcher):
 
     def set_usb_mode(self, mode='auto'):
         """Set USB PHY speed.
-           mode: string
-                 LS: manually set the PHY to low speed.
-                 FS: manually set the PHY to full speed.
-                 HS: manually set the PHY to high speed.
-                 auto: Default. PW will attempt to automatically determine the
+        
+        Args:
+            mode (str):
+                 * "LS": manually set the PHY to low speed.
+                 * "FS": manually set the PHY to full speed.
+                 * "HS": manually set the PHY to high speed.
+                 * "auto": Default. PW will attempt to automatically determine the
                        speed when the target is connected. Mode must be set to
                        'auto' prior to connecting the target, otherwise speed
                        cannot be determined correctly. Setting the mode to
@@ -240,15 +250,19 @@ class Usb(PWPacketDispatcher):
 
     def read_capture_data(self, entries=0, verbose=False, blocking=False, burst_size=8192, timeout=10):
         """Read from USB capture memory.
-        blocking: True: wait for data to be available before reading (slower).
-                  False: read immediately, with underflow protection, all of the captured
+        
+        Args:
+            blocking (bool, optional):
+                * True: wait for data to be available before reading (slower).
+                * False: read immediately, with underflow protection, all of the captured
                   data, until PW tells us we've read everything ('entries' is ignored).
-        entries: When blocking=True, number of capture entries to read. If not specified, 
+            entries (int, optional): When blocking=True, number of capture entries to read. If not specified, 
                  read all the captured data. Cannot be greater than capture size, as set 
                  by set_capture_size().
-        burst_size: When blocking=False, size of burst FIFO reads.
-        timeout: timeout in seconds (ignored if 0)
-        verbose: True or False
+            burst_size (int, optional): When blocking=False, size of burst FIFO reads, defaults to 8192.
+            timeout (int, optional): timeout in seconds (ignored if 0, defaults to 10)
+            verbose (bool, optional): Print extra debug info.
+        
         Returns: List of captured entries. Each list element is itself a 3-element list,
         containing the 3 bytes that make up a capture entry. Can be parsed by split_packets()
         or split_data().
@@ -298,11 +312,13 @@ class Usb(PWPacketDispatcher):
 
     def split_data(self, rawdata, verbose=False):
         """Split raw USB capture data into data events and times, stat events and times.
-        Returns 4 lists:
-            1- data event times
-            2- data bytes corresponding to data event times
-            3- USB status update times
-            4- USB status bytes corresponding to status update times
+        
+        Returns:
+            4-tuple of lists:
+                0. data event times
+                1. data bytes corresponding to data event times
+                2. USB status update times
+                3. USB status bytes corresponding to status update times
         """
         timestep = 0
         data_bytes = []
@@ -362,11 +378,13 @@ class Usb(PWPacketDispatcher):
 
     def split_packets(self, rawdata):
         """Split raw USB capture data into packets.
-        Returns: list of packets. Each list element is one packet and is presented in a
-        dictionary with the following keys:
-            - timestamp
-            - size (in bytes)
-            - contents (list of bytes)
+        
+        Returns:
+            list
+                Each list element is one packet and is presented in a dictionary with the following keys:
+                    * 'timestamp'
+                    * 'size' in bytes
+                    * 'contents' list of bytes
         """
         from phywhisperer.protocol import IncompletePacket
         # operates destructively so make a copy:
@@ -386,8 +404,9 @@ class Usb(PWPacketDispatcher):
 
     def set_capture_size(self, size=8188):
         """Set how many events to capture (events include data, USB status, and timestamps).
-        size: number of events to capture. 0 = unlimited (until overflow). Max = 2^24-1. Since the capture FIFO 
-              can hold 8188 events, setting this to > 8188 may result in overflow.
+        
+        Args:
+            size(int, option): number of events to capture. 0 = unlimited (until overflow). Max = 2^24-1. Since the capture FIFO can hold 8188 events, setting this to > 8188 may result in overflow.
 
         """
         if (size >= 2**24) or (size < 0):
@@ -417,11 +436,11 @@ class Usb(PWPacketDispatcher):
         """Program the output trigger delay and width. Both are measured in clock cycles of USB-derived 240 MHz clock.
            The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
            different value. Use ns_trigger(), us_trigger(), and ms_trigger() to convert values as needed.
-        delay: int
-               range: [0, 2^20-1]
-        width: int
-               range: [1, 2^17-1]
-        enable: set to 'False' to disable trigger generation.
+        
+        Args:
+            delay (int): range in [0, 2^20-1] cycles.
+            width (int): range in [1, 2^17-1] cycles.
+            enable (bool, optional): set to 'False' to disable trigger generation on hardware pins.
         """
         if (delay >= 2**20) or (delay < 0):
             raise ValueError('Illegal delay value.')
@@ -440,8 +459,9 @@ class Usb(PWPacketDispatcher):
 
     def set_capture_delay(self, delay):
         """Program the capture delay, measured in clock cycles of USB-derived 60 MHz clock.
-        delay: int
-               range: [0, 2^18-1]
+        
+        Args:
+            delay (int): range in [0, 2^18-1] cycles of 60 MHz clock.
         """
         if (delay >= 2**18) or (delay < 0):
             raise ValueError('Illegal delay value.')
@@ -449,11 +469,17 @@ class Usb(PWPacketDispatcher):
         self.usb.cmdWriteMem(self.REG_CAPTURE_DELAY, delay_bytes)
 
 
-    def set_pattern(self, pattern, mask):
-        """Set the pattern and its bitmask.
-        pattern: list of between 1 and 64 bytes 
-        mask: list of bytes, must have same size as 'pattern'
+    def set_pattern(self, pattern, mask=None):
+        """Set the pattern and its bitmask used for capture and trigger output.
+        
+        Args:
+            pattern (list of ints): list of between 1 and 64 bytes 
+            mask (list, optional): list of bytes, must have same size as 'pattern' if
+                set. Defaults to [0xff]*len(pattern) if not set.
         """
+        if mask is None:
+            mask = [0xFF] * len(pattern)
+        
         if len(pattern) != len(mask):
             raise ValueError('pattern and mask must be of same size.')
         elif len(pattern) > self.MAX_PATTERN_LENGTH:
@@ -480,8 +506,10 @@ class Usb(PWPacketDispatcher):
     def check_fifo_errors(self, underflow=0, overflow_blocked=0):
         """Check whether an underflow or overflow occured on the capture FIFO.
         (Overflows are blocked, underflows are not.)
-        underflow: expected status, 0 or 1
-        overflow_blocked: expected status, 0 or 1
+        
+        Args:
+            underflow (int, optional): expected status, 0 or 1
+            overflow_blocked (int, optional): expected status, 0 or 1
         """
         status = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_STAT,1)[0]
         fifo_underflow = (status & 2) >> 1
@@ -543,8 +571,9 @@ class Usb(PWPacketDispatcher):
     def trigger_clock_phase_shift(self, steps=1):
         """Shifts the trigger clock phase (and by extension the output trigger) in steps
         of 18.6ps (18.6 ps = 1/960 MHz / 56)
+        
         Args:
-            steps -- Number of steps to shift the phase (positive or negative integer).
+            steps (int): Number of steps to shift the phase (positive or negative integer).
         """
         if not type(steps) == int or steps == 0:
             raise ValueError('Illegal steps value, must be non-zero integer.')
@@ -561,9 +590,10 @@ class Usb(PWPacketDispatcher):
 
     def set_stat_pattern(self, pattern, mask=0x1f):
         """ Set a 5-bit pattern and mask for the USB status lines.
+        
         Args:
-            pattern -- 5-bit number
-            mask -- non-zero 5-bit number (default: 0x1f)
+            pattern (int): 5-bit number
+            mask (int): non-zero 5-bit number (default: 0x1f)
         """
         if pattern < 0 or pattern > 0x1f:
             raise ValueError('Illegal pattern value, must be <= 0x1f.')
@@ -586,7 +616,7 @@ class Usb(PWPacketDispatcher):
         """ ViewSB: Registers a USBEventSink to receive any USB events. 
         
         Args:
-            event_sink -- The sniffer.USBEventSink object to receive any USB events that occur.
+            event_sink (sniffer.USBEventSink): The sniffer.USBEventSink object to receive any USB events that occur.
         """
         self.sniffer.register_sink(event_sink)
 
@@ -597,7 +627,20 @@ class Usb(PWPacketDispatcher):
 
 
     def run_capture(self, size=8188, burst=True, pattern=[0], mask=[0], statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
-        """ Runs a capture for ViewSB.
+        """ Runs a capture for ViewSB, including power cycling the device to catch the descriptors. Runs following internally::
+        
+            self.reset_fpga()
+            self.set_power_source("host")
+            self.set_power_source("off")
+            time.sleep(0.5)
+            self.set_usb_mode("auto")
+            self.set_capture_size(size)
+            self.arm()
+            self.set_trigger(enable=False)
+            self.set_pattern(pattern=pattern, mask=mask)
+            self.set_power_source("host")
+            time.sleep(0.25)
+        
         """
 
 
@@ -644,10 +687,11 @@ class Usb(PWPacketDispatcher):
 
     def __comms_thread_body(self, burst, burst_size=8192, timeout=10):
         """ ViewSB internal function that executes as our comms thread.
+        
         Args:
-            burst -- if set, read all FIFO at once, then pass on to decoder and frontend;
+            burst (bool): If True, read all FIFO at once, then pass on to decoder and frontend;
                      otherwise, read smaller chunks and process them concurrently.
-            burst_size -- number of entries to read at a time when burst=False
+            burst_size (int): Number of entries to read at a time when burst=False
         """
 
         if burst:

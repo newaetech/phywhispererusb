@@ -14,6 +14,7 @@ setup(
     url='http://www.PhyWhisperer.com',
     packages=find_packages('software'),
     package_dir={'': 'software'},
+    package_data={'': ['firmware/defines.v']},
     install_requires=[
         'pyserial',
         'crcmod',
