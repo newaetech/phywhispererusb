@@ -1,6 +1,6 @@
 # PhyWhisperer-USB
 
-What is this thing? This is a hardware trigger for FI or SCA, which triggers on the USB phy.
+What is this thing? This is a hardware trigger for FI or SCA, which triggers on the USB phy. Be sure to read the documentation at http://phywhispererusb.readthedocs.io/ as well!
 
 ## Get a PhyWhisperer-USB
 
