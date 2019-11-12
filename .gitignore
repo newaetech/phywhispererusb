@@ -12,3 +12,7 @@ a.out
 /firmware/phywhisperer/objdir/
 /firmware/phywhisperer/objdir/
 /docs/_build/
+/drivers/phywhisperer_windows_drivers/
+/software/phywhisperer.egg-info/
+/software/phywhisperer.egg-info/
+/software/phywhisperer/firmware/__pycache__/
