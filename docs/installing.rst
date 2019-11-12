@@ -217,27 +217,3 @@ be available on the bash terminal after installation as:
 
 or the equivalent for your version.
 
-Compilers
-=========
-
-The compilers are also available on Mac OSx. The ARM compiler can be found
-on the `ARM website`_. If needed, the AVR compiler can be installed as well
-using:
-
-.. code:: bash
-
-    brew tap osx-cross/avr
-    brew install avr-gcc
-
-This brew install does not work for some older versions of Mac OS X. You will
-have to find a different way to install the compilers.
-
-ChipWhisperer
-=============
-
-You are now ready for :ref:`installing <install-repo>` ChipWhisperer.
-
-.. _Python Software Foundation's website: https://www.python.org/downloads/mac-osx/
-.. _ARM website: https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads
-
-

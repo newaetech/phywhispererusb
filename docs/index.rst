@@ -7,7 +7,7 @@ USB 2.0 hardware inspection tool. The PhyWhisperer-USB is designed to allow
 you to perform complex triggering operations based on physical-layer USB 2.0
 traffic.
 
-After :ref:`installing <install>` PhyWhisperer-USB and setting up your
+After :ref:`installing <installing>` PhyWhisperer-USB and setting up your
 `hardware`_, you could perform a simple sniffing of USB descriptors being
 read with the following:
 
@@ -37,8 +37,7 @@ interface you can interface between other tools, as well as toggling the power o
 the device and triggering on specific byte patterns.
 
 You now have access to an object-oriented interface to configure the attached
-hardware. To see what is possible with this interface check out the
-:ref:`scope section <api-scope>` of the API documentation.
+hardware.
 
 If you only want to use the sniffing capability, you can also use the open-source
 ViewSB software started by Kate Temkin https://github.com/usb-tools/ViewSB. See the
@@ -54,15 +53,3 @@ Documentation
     installing
     viewsb
     api
-
-
-Additional Information
-======================
-
-Here is more information about changes, and contribution.
-
-.. toctree::
-    :maxdepth: 2
-    :glob:
-
-    Change Log <changes.rst>
