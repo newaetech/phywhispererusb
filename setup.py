@@ -25,5 +25,5 @@ setup(
         'Source': 'https://github.com/newaetech/phywhispererusb',
         'Issue Tracker': 'https://github.com/newaetech/phywhispererusb/issues',
     },
-    python_requires='~=3.4',
+    python_requires='>3.4',
 )
