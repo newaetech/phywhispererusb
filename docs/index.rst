@@ -8,7 +8,7 @@ you to perform complex triggering operations based on physical-layer USB 2.0
 traffic.
 
 After :ref:`installing <installing>` PhyWhisperer-USB and setting up your
-`hardware`_, you could perform a simple sniffing of USB descriptors being
+hardware, you could perform a simple sniffing of USB descriptors being
 read with the following:
 
 .. code:: python
