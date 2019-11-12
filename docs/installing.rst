@@ -192,7 +192,7 @@ Python
 ======
 
 You will require a python version >= to 3.5. You can get the binary from the
-`Python Software Foundation's website`_. Choose one of the stable versions that
+Python Software Foundation's website. Choose one of the stable versions that
 has an installer for your machine. You can also run this command in your terminal:
 
 .. code:: bash
@@ -207,7 +207,7 @@ You will have to check the version this downloads. It is best to have python 3.7
     python --version
 
 If this installs a version lower than 3.5, just download and manually install the
-Python interpreter from the `Python Software Foundation's website`_. If you
+Python interpreter from the Python Software Foundation's website. If you
 download and install the python interpreter manually from the website it should
 be available on the bash terminal after installation as:
 
