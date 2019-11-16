@@ -33,9 +33,7 @@ from phywhisperer.interface.bootloader_sam3u import Samba
 from phywhisperer.sniffer import USBSniffer, USBSimplePrintSink
 from phywhisperer.protocol import PWPacketDispatcher, PWPacketHandler, IncompletePacket
 from zipfile import ZipFile
-
-#include once implemented
-# from phywhisperer.firmware.phywhisperer import getsome
+from phywhisperer.firmware.phywhisperer import getsome
 
 class Usb(PWPacketDispatcher):
     """PhyWhisperer-USB Interface"""
@@ -114,7 +112,6 @@ class Usb(PWPacketDispatcher):
         self._llint = LLINT.PhyWhispererUSB(self.usb)
 
         if program_fpga:
-            from phywhisperer.firmware.phywhisperer import getsome
             with ZipFile(getsome("phywhisperer-firmware.zip")) as myzip:
                 with myzip.open('phywhisperer_top.bit') as bitstream:
                     self._llint.FPGAProgram(bitstream)
@@ -175,7 +172,6 @@ class Usb(PWPacketDispatcher):
 
         if fw_path is None:
             print("Firmware not specified. Using firmware/phywhisperer.py")
-            from phywhisperer.firmware.phywhisperer import getsome
             fw_data = getsome("phywhisperer-SAM3U1C.bin").read()
         else:
             if not os.path.isfile(fw_path):
@@ -375,6 +371,8 @@ class Usb(PWPacketDispatcher):
                    print("%8d" % timestep)
             elif (command == self.FE_FIFO_CMD_STRM):
                 # nothing to do or report
+                # CAUTION: don't even print a status in verbose mode because we can be
+                # receiving TONS of these!
                 pass
             else:
                 print ("ERROR: unknown command (%d)" % command) 
@@ -392,14 +390,13 @@ class Usb(PWPacketDispatcher):
                     * 'size' in bytes
                     * 'contents' list of bytes
         """
-        from phywhisperer.protocol import IncompletePacket
         # operates destructively so make a copy:
         rawdata_copy = rawdata[:]
         handler = PWPacketHandler()
         packets = []
         incomplete = False
         while rawdata_copy and not incomplete:
-            # use ViewSB to avoid duplicating it here:
+            # use ViewSB code to avoid duplicating it here:
             try:
                 packets.append(handler.handle_bytes_received(defines=self, data=rawdata_copy))
             except IncompletePacket:
@@ -589,7 +586,7 @@ class Usb(PWPacketDispatcher):
         for i in range(abs(steps)):
             self.usb.cmdWriteMem(self.REG_TRIG_CLK_PHASE_SHIFT, value)
             while (self.usb.cmdReadMem(self.REG_TRIG_CLK_PHASE_SHIFT, 1)[0] == 1):
-                # phase shift incomplete
+                # phase shift incomplete; wait:
                 pass
 
 
@@ -663,15 +660,6 @@ class Usb(PWPacketDispatcher):
         self.set_power_source("host")
         time.sleep(0.25)
 
-        #self.reset_fpga()
-        #self.set_usb_mode("HS")
-        #self.set_capture_size(size)
-        #self.set_trigger(enable=False)
-        #self.set_pattern(pattern=pattern, mask=mask)
-        #time.sleep(5)
-        #print("GO!!!!!!!!!!!!!!!!!!!")
-        #self.arm()
-
         self._start_comms_thread(burst)
 
         elapsed_time = 0.0
@@ -704,7 +692,6 @@ class Usb(PWPacketDispatcher):
         if burst:
             self.wait_disarmed()
             rawdata = self.read_capture_data()
-            #logging.warning("*** received %d entries!" % len(rawdata))
             self.handle_incoming_bytes(rawdata)
 
         else:
@@ -722,9 +709,7 @@ class Usb(PWPacketDispatcher):
                 for i in range(int(len(raw)/4)):
                     if raw[i*4+2] & 3 != self.FE_FIFO_CMD_STRM:
                         rawdata.append(raw[i*4:i*4+3])
-                #logging.warning("Handling %d entries. Notdone=%d" % (len(rawdata), notdone))
                 self.handle_incoming_bytes(rawdata)
-            #logging.warning("Capture done.")
 
 
     def _start_comms_thread(self, burst):
