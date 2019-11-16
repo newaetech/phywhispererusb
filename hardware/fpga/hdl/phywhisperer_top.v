@@ -377,7 +377,7 @@ module phywhisperer_top(
        ila_0 ila_0_inst (clk_fe_buf, ila_probe);
     `endif
 
-    `ifdef ILA
+    `ifdef ILA_USBREG
        ila_1 I_ila_usbreg (
           .clk          (clk_usb_buf),          // input wire clk
           .probe0       (USB_Data),             // input wire [7:0]  probe0  

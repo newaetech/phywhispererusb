@@ -152,7 +152,7 @@ module tb_usb_autodetect;
 
 
     usb_autodetect #(
-        .pCOUNTER_WIDTH     (pCOUNTER_WIDTH)
+        .pCOUNTER_WIDTH     (pCOUNTER_WIDTH),
         .pWAIT_1_LINEHIGH (pWAIT_1_LINEHIGH),
         .pWAIT_2_LINELOW  (pWAIT_2_LINELOW)
     ) U_dut (

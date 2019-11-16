@@ -27,7 +27,6 @@ PhyWhisperer services -- asynchronous objects that receive data from the device
 
 import collections
 from enum import Enum
-import pdb, sys
 
 
 class IncompletePacket(IOError):
@@ -125,7 +124,6 @@ class PWPacketHandler:
             raise IncompletePacket()
 
         while len(data):
-            #ForkedPdb().set_trace()
             entry = data.pop(0)
             command = entry[2] & 0x3
 
@@ -182,21 +180,5 @@ class PWPacketHandler:
 
         # if we get here, packet in buffer isn't complete yet:
         raise IncompletePacket()
-
-
-
-class ForkedPdb(pdb.Pdb):
-    """A Pdb subclass that may be used
-    from a forked multiprocessing child
-
-    """
-    def interaction(self, *args, **kwargs):
-        _stdin = sys.stdin
-        try:
-            sys.stdin = open('/dev/stdin')
-            pdb.Pdb.interaction(self, *args, **kwargs)
-        finally:
-            sys.stdin = _stdin
-
 
 

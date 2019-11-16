@@ -27,24 +27,9 @@ Core USB packet sniffer packet backend for PhyWhisperer.
 
 import crcmod
 from .protocol import PWPacketHandler
-import pdb, sys
 
 def hd(x):
     return " ".join("%02x" % i for i in x)
-
-
-class ForkedPdb(pdb.Pdb):
-    """A Pdb subclass that may be used
-    from a forked multiprocessing child
-
-    """
-    def interaction(self, *args, **kwargs):
-        _stdin = sys.stdin
-        try:
-            sys.stdin = open('/dev/stdin')
-            pdb.Pdb.interaction(self, *args, **kwargs)
-        finally:
-            sys.stdin = _stdin
 
 
 class USBEventSink:
@@ -87,7 +72,6 @@ class USBSniffer(PWPacketHandler):
         """ Separates the input flags from the core meta-data extracted from the OV USB packet. """
 
         flags = 0 # TODO(?)
-        #ForkedPdb().set_trace()
         self.emit_usb_packet(buf['timestamp'], bytearray(buf['contents']), flags)
 
 

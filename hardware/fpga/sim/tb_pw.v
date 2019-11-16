@@ -480,11 +480,11 @@ module tb_pw();
       input [15:0] delay;
       fe_rxvalid = rxvalid;
       fe_wdata = data;
-      fe_rxactive = stat[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_STATUS_BITS_START];
-      fe_rxerror = stat[`FE_FIFO_RXERROR_BIT - `FE_FIFO_STATUS_BITS_START];
-      fe_sessvld = stat[`FE_FIFO_SESSVLD_BIT - `FE_FIFO_STATUS_BITS_START];
-      fe_sessend = stat[`FE_FIFO_SESSEND_BIT - `FE_FIFO_STATUS_BITS_START];
-      fe_vbusvld = stat[`FE_FIFO_VBUSVLD_BIT - `FE_FIFO_STATUS_BITS_START];
+      fe_rxactive = stat[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_USB_STATUS_BITS_START];
+      fe_rxerror = stat[`FE_FIFO_RXERROR_BIT - `FE_FIFO_USB_STATUS_BITS_START];
+      fe_sessvld = stat[`FE_FIFO_SESSVLD_BIT - `FE_FIFO_USB_STATUS_BITS_START];
+      fe_sessend = stat[`FE_FIFO_SESSEND_BIT - `FE_FIFO_USB_STATUS_BITS_START];
+      fe_vbusvld = stat[`FE_FIFO_VBUSVLD_BIT - `FE_FIFO_USB_STATUS_BITS_START];
 
       @(posedge fe_clk);
       if (delay > 0) begin
@@ -667,7 +667,7 @@ module tb_pw();
       dut_sessvld = read_data[`FE_FIFO_SESSVLD_BIT];
       dut_sessend = read_data[`FE_FIFO_SESSEND_BIT];
       dut_vbusvld = read_data[`FE_FIFO_VBUSVLD_BIT];
-      dut_usbstat = read_data[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN];
+      dut_usbstat = read_data[`FE_FIFO_USB_STATUS_BITS_START +: `FE_FIFO_USB_STATUS_BITS_LEN];
 
       if (command == `FE_FIFO_CMD_DATA) begin
          expected_data = fe_bytes[rx_dataindex];

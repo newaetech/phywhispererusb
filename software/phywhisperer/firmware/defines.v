@@ -41,6 +41,16 @@
 
 
 // FIFO bitfields:
+//                   31 30 29 28 27 26 25 24   23 22 21 20 19 18 17 16   15 14 13 12 11 10  9  8   7  6  5  4  3  2  1  0
+//                 +------------------------++------------------+-----++------------------------++---------------+--------+
+// data command:   |         zeros          ||    FIFO status   | 0 0 ||    USB  data  byte     ||  USB status   |  time  |
+//                 +------------------------++------------------+-----++------------------------++---------------+--------+
+// stat command:   |         zeros          ||    FIFO status   | 0 1 ||        zeros           ||  USB status   |  time  |
+//                 +------------------------++------------------+-----++------------------------++---------------+--------+
+// time command:   |         zeros          ||    FIFO status   | 1 0 ||              long     time      stamp            |
+//                 +------------------------++------------------+-----++------------------------++---------------+--------+
+// stream command: |         zeros          ||    FIFO status   | 1 1 ||      stream status     ||    zeros      |  time  |
+//                 +------------------------++------------------+-----++------------------------++---------------+--------+
 `define FE_FIFO_CMD_DATA 2'b00
 `define FE_FIFO_CMD_STAT 2'b01
 `define FE_FIFO_CMD_TIME 2'b10
@@ -53,8 +63,8 @@
 `define FE_FIFO_SHORTTIME_LEN 3
 `define FE_FIFO_FULLTIME_LEN 16
 
-`define FE_FIFO_STATUS_BITS_START 3
-`define FE_FIFO_STATUS_BITS_LEN 5
+`define FE_FIFO_USB_STATUS_BITS_START 3
+`define FE_FIFO_USB_STATUS_BITS_LEN 5
 `define FE_FIFO_RXACTIVE_BIT 3
 `define FE_FIFO_RXERROR_BIT 4
 `define FE_FIFO_SESSVLD_BIT 5
@@ -73,6 +83,18 @@
 `define FIFO_STAT_FULL 3
 `define FIFO_STAT_OVERFLOW_BLOCKED 4
 `define FIFO_STAT_CAPTURE_DONE 5
+
+// and this is where those FIFO status bits show up in the FIFO read,
+// as opposed to register read:
+// (avoiding refering to `FIFO_STAT_* to keep our Python parser stupid simple)
+`define FE_FIFO_STAT_START 18
+`define FE_FIFO_STAT_OFFSET 2
+`define FE_FIFO_STAT_EMPTY 2
+`define FE_FIFO_STAT_UNDERFLOW 3
+`define FE_FIFO_STAT_EMPTY_THRESHOLD 4
+`define FE_FIFO_STAT_FULL 5
+`define FE_FIFO_STAT_OVERFLOW_BLOCKED 6
+`define FE_FIFO_STAT_CAPTURE_DONE 7
 
 // USB speed definitions
 `define USB_SPEED_AUTO 0

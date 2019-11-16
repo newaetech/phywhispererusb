@@ -58,7 +58,7 @@ module usb_reg_main #(
    reg cwusb_wrn_rs, cwusb_wrn_rs_dly;
    reg reg_write_dly;
 
-   // TODO: simplify... also I feel delays could be reduced
+   // note: could possibly be simplified, and delays reduced?
    always @(posedge cwusb_clk) begin
       cwusb_alen_rs <= cwusb_alen;
       cwusb_alen_rs_dly <= cwusb_alen_rs;
@@ -90,9 +90,9 @@ module usb_reg_main #(
       end
    end
 
-//Address valid from ALEn until transaction done marked OR next falling edge of ALEn
+//Address valid from ALEn until next falling edge of ALEn
    always @(posedge cwusb_clk) begin
-      if (cwusb_alen_rs == 1'b0) begin //TODO: Add 'transaction done' flag
+      if (cwusb_alen_rs == 1'b0) begin
          reg_addrvalid <= 1'b0;
       end else if ((cwusb_alen_rs == 1'b1) &&(cwusb_alen_rs_dly == 1'b0)) begin
          reg_addrvalid <= 1'b1;

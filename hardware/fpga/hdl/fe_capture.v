@@ -78,10 +78,10 @@ module fe_capture #(
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_reg;
     reg  ctr_running;
 
-    wire [`FE_FIFO_STATUS_BITS_LEN-1:0] fe_status_bits;
-    reg  [`FE_FIFO_STATUS_BITS_LEN-1:0] fe_status_bits_reg;
-    reg  [`FE_FIFO_STATUS_BITS_LEN-1:0] fe_status_bits_reg2;
-    reg  [`FE_FIFO_STATUS_BITS_LEN-1:0] fe_status_bits_reg3;
+    wire [`FE_FIFO_USB_STATUS_BITS_LEN-1:0] fe_status_bits;
+    reg  [`FE_FIFO_USB_STATUS_BITS_LEN-1:0] fe_status_bits_reg;
+    reg  [`FE_FIFO_USB_STATUS_BITS_LEN-1:0] fe_status_bits_reg2;
+    reg  [`FE_FIFO_USB_STATUS_BITS_LEN-1:0] fe_status_bits_reg3;
 
     wire usb_event; // rxvalid=1 or status bits changed
     reg  usb_event_reg;
@@ -95,11 +95,11 @@ module fe_capture #(
     reg  arm_r2;
 
 
-    assign fe_status_bits[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_STATUS_BITS_START] = fe_rxactive;
-    assign fe_status_bits[`FE_FIFO_RXERROR_BIT  - `FE_FIFO_STATUS_BITS_START] = fe_rxerror;
-    assign fe_status_bits[`FE_FIFO_SESSVLD_BIT  - `FE_FIFO_STATUS_BITS_START] = fe_sessvld;
-    assign fe_status_bits[`FE_FIFO_SESSEND_BIT  - `FE_FIFO_STATUS_BITS_START] = fe_sessend;
-    assign fe_status_bits[`FE_FIFO_VBUSVLD_BIT  - `FE_FIFO_STATUS_BITS_START] = fe_vbusvld;
+    assign fe_status_bits[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_USB_STATUS_BITS_START] = fe_rxactive;
+    assign fe_status_bits[`FE_FIFO_RXERROR_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_rxerror;
+    assign fe_status_bits[`FE_FIFO_SESSVLD_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_sessvld;
+    assign fe_status_bits[`FE_FIFO_SESSEND_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_sessend;
+    assign fe_status_bits[`FE_FIFO_VBUSVLD_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_vbusvld;
 
     assign usb_event = fe_rxvalid || (fe_status_bits != fe_status_bits_reg);
 
@@ -222,7 +222,7 @@ module fe_capture #(
 
 
     // write captured data:
-    // (TODO: could save a stage of buffering on input data by using next_state instead of state?
+    // note: could possibly save a stage of buffering on input data by using next_state instead of state?
     always @ (posedge fe_clk) begin
        if (reset_i) begin
           O_command <= 2'd0;
@@ -252,7 +252,7 @@ module fe_capture #(
           O_time = timestamp_reg;
     end
 
-    // TODO: can I tweak the FSM timing to avoid needing 3 sync stages?
+    // note: it may be possible to tweak the FSM timing to avoid needing 3 sync stages?
     assign O_data = fe_data_reg3;
     assign O_status = fe_status_bits_reg3;
 

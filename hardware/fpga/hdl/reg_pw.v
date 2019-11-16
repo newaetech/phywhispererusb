@@ -166,7 +166,6 @@ module reg_pw #(
    // read logic:
    always @(posedge cwusb_clk) begin
       if (reg_addrvalid && reg_read) begin
-         // TODO: make all registers readable? or only those that are strictly necessary?
          case (reg_address)
             `REG_ARM: reg_read_data <= reg_arm;
             `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
@@ -178,11 +177,21 @@ module reg_pw #(
             `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
             `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
             `REG_STAT_MATCH: reg_read_data <= reg_stat_matched[reg_bytecnt*8 +: 8];
+            `REG_TIMESTAMPS_DISABLE: reg_read_data <= reg_timestamps_disable;
+            `REG_CAPTURE_LEN: reg_read_data <= reg_capture_len[reg_bytecnt*8 +: 8];
+            `REG_TRIGGER_DELAY: reg_read_data <= reg_trigger_delay[reg_bytecnt*8 +: 8];
+            `REG_TRIGGER_WIDTH: reg_read_data <= reg_trigger_width[reg_bytecnt*8 +: 8];
+            `REG_USB_AUTO_DEFAULTS: reg_read_data <= reg_usb_auto_defaults;
+            `REG_CAPTURE_DELAY: reg_read_data <= reg_capture_delay[reg_bytecnt*8 +: 8];
+            `REG_USB_AUTO_WAIT1: reg_read_data <= reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
+            `REG_USB_AUTO_WAIT2: reg_read_data <= reg_usb_auto_wait2[reg_bytecnt*8 +: 8];
+            `REG_STAT_PATTERN: reg_read_data <= reg_stat_pattern[reg_bytecnt*5 +: 5];
          endcase
       end
       else
          reg_read_data <= 8'b0;
    end
+
 
    // MUX read output between registers and FIFO output:
    always @(*) begin
@@ -340,6 +349,8 @@ module reg_pw #(
       if (reset_i) begin
          stat_pattern <= 0;
          stat_mask <= 0;
+         stat_match <= 0;
+         stat_match_captured <= 0;
       end
       else begin
          // CDC:
@@ -362,7 +373,7 @@ module reg_pw #(
 
 
    // FIFO write logic.
-   // TODO: could maybe get away with combinatorial logic here? but don't bother unless tight on LUTs.
+   // note: could maybe get away with combinatorial logic here?
    always @(posedge fe_clk) begin
       if (reset_i) begin
          sniff_fifo_wr_en <= 1'b0;
@@ -385,12 +396,12 @@ module reg_pw #(
                `FE_FIFO_CMD_DATA: begin
                   sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
                   sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= I_fe_capture_data;
-                  sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
+                  sniff_fifo_din[`FE_FIFO_USB_STATUS_BITS_START +: `FE_FIFO_USB_STATUS_BITS_LEN] <= I_fe_capture_stat;
                end
                `FE_FIFO_CMD_STAT: begin
                   sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
                   sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= 8'd0;
-                  sniff_fifo_din[`FE_FIFO_STATUS_BITS_START +: `FE_FIFO_STATUS_BITS_LEN] <= I_fe_capture_stat;
+                  sniff_fifo_din[`FE_FIFO_USB_STATUS_BITS_START +: `FE_FIFO_USB_STATUS_BITS_LEN] <= I_fe_capture_stat;
                end
                `FE_FIFO_CMD_TIME: begin
                   sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN] <= I_fe_capture_time;
@@ -508,7 +519,7 @@ module reg_pw #(
 
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_FIFO
        ila_3 U_fe_fifo_wr_ila (
           .clk          (fe_clk),
           .probe0       (sniff_fifo_wr_en),
@@ -519,7 +530,7 @@ module reg_pw #(
        );
    `endif
 
-   `ifdef ILA
+   `ifdef ILA_FIFO
        ila_3 U_fe_fifo_rd_ila (
           .clk          (cwusb_clk),
           .probe0       (sniff_fifo_rd_en),

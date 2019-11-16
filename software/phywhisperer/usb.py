@@ -23,7 +23,6 @@
 
 import phywhisperer.interface.naeusb as NAE
 import phywhisperer.interface.program_fpga as LLINT
-import sys
 import os
 import re
 import logging
@@ -34,7 +33,6 @@ from phywhisperer.interface.bootloader_sam3u import Samba
 from phywhisperer.sniffer import USBSniffer, USBSimplePrintSink
 from phywhisperer.protocol import PWPacketDispatcher, PWPacketHandler, IncompletePacket
 from zipfile import ZipFile
-import pdb
 
 #include once implemented
 # from phywhisperer.firmware.phywhisperer import getsome
@@ -96,7 +94,7 @@ class Usb(PWPacketDispatcher):
                     else:
                         logging.warning("Couldn't parse line: %s", define)
         # make sure everything is cool:
-        assert self.verilog_define_matches == 49, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
+        assert self.verilog_define_matches == 57, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
         defines.close()
 
 
@@ -212,9 +210,10 @@ class Usb(PWPacketDispatcher):
                  * "HS": manually set the PHY to high speed.
                  * "auto": Default. PW will attempt to automatically determine the
                        speed when the target is connected. Mode must be set to
-                       'auto' prior to connecting the target, otherwise speed
-                       cannot be determined correctly. Setting the mode to
-                       'auto' actively causes PW to try to determine the speed.
+                       'auto' prior to connecting or powering up the target,
+                       otherwise speed cannot be determined correctly. Setting
+                       the mode to 'auto' actively causes PW to try to
+                       determine the speed.
         """
         if mode == 'auto':
            self.usb.cmdWriteMem(self.REG_USB_SPEED, [self.USB_SPEED_AUTO])
@@ -231,9 +230,12 @@ class Usb(PWPacketDispatcher):
 
     def get_usb_mode(self):
         """Returns USB PHY speed.
-           A return value of 'auto' means that the speed has not been
-           determined yet (was the mode set to 'auto' _before_ the target was
-           connected or powered up?).
+           Return values:
+               'auto': the speed has not been determined yet (was the mode set
+                   to 'auto' _before_ the target was connected or powered up?).
+               'LS': low speed
+               'FS': full speed
+               'HS: high speed
         """
         value = self.usb.cmdReadMem(self.REG_USB_SPEED, 1)[0]
         if value == self.USB_SPEED_AUTO:
@@ -255,7 +257,7 @@ class Usb(PWPacketDispatcher):
             blocking (bool, optional):
                 * True: wait for data to be available before reading (slower).
                 * False: read immediately, with underflow protection, all of the captured
-                  data, until PW tells us we've read everything ('entries' is ignored).
+                  data, until PW tells us we've read everything that it captured ('entries' is ignored).
             entries (int, optional): When blocking=True, number of capture entries to read. If not specified, 
                  read all the captured data. Cannot be greater than capture size, as set 
                  by set_capture_size().
@@ -265,7 +267,9 @@ class Usb(PWPacketDispatcher):
         
         Returns: List of captured entries. Each list element is itself a 3-element list,
         containing the 3 bytes that make up a capture entry. Can be parsed by split_packets()
-        or split_data().
+        or split_data(). See software/phywhisperer/firmware/defines.v for definition of the FIFO
+        data fields.
+
         """
         data = []
         starttime = time.time()
@@ -291,7 +295,9 @@ class Usb(PWPacketDispatcher):
             raw = []
             while notdone:
                 raw.extend(self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*burst_size))
-                if raw[-2] & (128 + 4) == (128 + 4):
+                # check CAPTURE_DONE and EMPTY flags on last entry read:
+                bitmask = 2**self.FE_FIFO_STAT_CAPTURE_DONE + 2**self.FE_FIFO_STAT_EMPTY
+                if raw[-2] & bitmask == bitmask:
                     notdone = False
                 if time.time() - starttime > timeout:
                     logging.warning("Capture timed out!")
@@ -302,9 +308,9 @@ class Usb(PWPacketDispatcher):
                     data.append(raw[i*4:i*4+3])
 
         if len(data): # maybe we only got empty reads
-            if data[-1][2] & 8:
+            if data[-1][2] & 2**self.FE_FIFO_STAT_UNDERFLOW:
                 logging.warning("Capture FIFO underflowed!")
-            if data[-1][2] & 64:
+            if data[-1][2] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
                 logging.warning("Capture FIFO overflow. Capture stopped when overflow detected.")
 
         return data
@@ -503,19 +509,18 @@ class Usb(PWPacketDispatcher):
         self.usb.cmdWriteMem(self.REG_ARM, [1])
 
 
-    def check_fifo_errors(self, underflow=0, overflow_blocked=0):
+    def check_fifo_errors(self, underflow=0, overflow=0):
         """Check whether an underflow or overflow occured on the capture FIFO.
-        (Overflows are blocked, underflows are not.)
         
         Args:
             underflow (int, optional): expected status, 0 or 1
-            overflow_blocked (int, optional): expected status, 0 or 1
+            overflow (int, optional): expected status, 0 or 1
         """
         status = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_STAT,1)[0]
         fifo_underflow = (status & 2) >> 1
-        fifo_overflow_blocked = (status & 16) >> 4
+        fifo_overflow = (status & 16) >> 4
         assert fifo_underflow == underflow
-        assert fifo_overflow_blocked == overflow_blocked
+        assert fifo_overflow == overflow
 
 
     def fifo_empty(self):
@@ -741,21 +746,5 @@ class Usb(PWPacketDispatcher):
             self.__comm_term = True
             self.commthread.join()
         self.usb.close()
-
-
-
-class ForkedPdb(pdb.Pdb):
-    """A Pdb subclass that may be used
-    from a forked multiprocessing child
-
-    """
-    def interaction(self, *args, **kwargs):
-        _stdin = sys.stdin
-        try:
-            sys.stdin = open('/dev/stdin')
-            pdb.Pdb.interaction(self, *args, **kwargs)
-        finally:
-            sys.stdin = _stdin
-
 
 
