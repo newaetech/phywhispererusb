@@ -54,6 +54,7 @@ class Usb(PWPacketDispatcher):
         self.stat_pattern_match_value = 0
         self.capture_size = 8188 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
+        self.entries_captured = 0
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -246,7 +247,7 @@ class Usb(PWPacketDispatcher):
             raise ValueError('Internal error: REG_USB_SPEED register contains invalid value %d.' % value)
 
 
-    def read_capture_data(self, entries=0, verbose=False, blocking=False, burst_size=8192, timeout=10):
+    def read_capture_data(self, entries=0, verbose=False, blocking=False, burst_size=8192, timeout=5):
         """Read from USB capture memory.
         
         Args:
@@ -258,7 +259,7 @@ class Usb(PWPacketDispatcher):
                  read all the captured data. Cannot be greater than capture size, as set 
                  by set_capture_size().
             burst_size (int, optional): When blocking=False, size of burst FIFO reads, defaults to 8192.
-            timeout (int, optional): timeout in seconds (ignored if 0, defaults to 10)
+            timeout (int, optional): timeout in seconds (ignored if 0, defaults to 5)
             verbose (bool, optional): Print extra debug info.
         
         Returns: List of captured entries. Each list element is itself a 3-element list,
@@ -269,6 +270,7 @@ class Usb(PWPacketDispatcher):
         """
         data = []
         starttime = time.time()
+        self.entries_captured = 0
 
         if blocking:
             entries_read = 0
@@ -280,7 +282,7 @@ class Usb(PWPacketDispatcher):
 
             while entries_read < entries:
                 while self.fifo_empty():
-                    if time.time() - starttime > timeout:
+                    if timeout and time.time() - starttime > timeout:
                         logging.warning("Capture timed out!")
                         break
                 data.append(self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4)[0:3])
@@ -288,6 +290,7 @@ class Usb(PWPacketDispatcher):
 
         else:
             notdone = True
+            early_exit = False
             raw = []
             while notdone:
                 raw.extend(self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*burst_size))
@@ -295,19 +298,25 @@ class Usb(PWPacketDispatcher):
                 bitmask = 2**self.FE_FIFO_STAT_CAPTURE_DONE + 2**self.FE_FIFO_STAT_EMPTY
                 if raw[-2] & bitmask == bitmask:
                     notdone = False
-                if time.time() - starttime > timeout:
+                    # did we also overflow?
+                    if raw[-2] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
+                        logging.warning("FIFO overflowed, capture stopped.")
+                        early_exit = True
+                elif timeout and time.time() - starttime > timeout:
                     logging.warning("Capture timed out!")
                     notdone = False
+                    early_exit = True
             # reformat the return array and at the same time, filter out the (possibly numerous) empty FIFO reads:
             for i in range(int(len(raw)/4)):
                 if raw[i*4+2] & 3 != self.FE_FIFO_CMD_STRM:
                     data.append(raw[i*4:i*4+3])
+            self.entries_captured = len(data)
+            if early_exit:
+                logging.warning("%d entries captured." % self.entries_captured)
 
         if len(data): # maybe we only got empty reads
             if data[-1][2] & 2**self.FE_FIFO_STAT_UNDERFLOW:
                 logging.warning("Capture FIFO underflowed!")
-            if data[-1][2] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
-                logging.warning("Capture FIFO overflow. Capture stopped when overflow detected.")
 
         return data
 
@@ -628,7 +637,7 @@ class Usb(PWPacketDispatcher):
         pass
 
 
-    def run_capture(self, size=8188, burst=True, pattern=[0], mask=[0], statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
+    def run_capture(self, size=8188, burst=True, pattern=[0], mask=[0], timeout=5, statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
         """ Runs a capture for ViewSB, including power cycling the device to catch the descriptors.
         
         Runs following internally::
@@ -659,8 +668,9 @@ class Usb(PWPacketDispatcher):
         self.set_pattern(pattern=pattern, mask=mask)
         self.set_power_source("host")
         time.sleep(0.25)
+        self.entries_captured = 0
 
-        self._start_comms_thread(burst)
+        self._start_comms_thread(burst, timeout)
 
         elapsed_time = 0.0
         try:
@@ -680,7 +690,7 @@ class Usb(PWPacketDispatcher):
             self._device_stop_capture()
 
 
-    def __comms_thread_body(self, burst, burst_size=8192, timeout=10):
+    def __comms_thread_body(self, burst, timeout=5, burst_size=8192):
         """ ViewSB internal function that executes as our comms thread.
         
         Args:
@@ -696,13 +706,19 @@ class Usb(PWPacketDispatcher):
 
         else:
             notdone = True
+            early_exit = False
             starttime = time.time()
             while notdone:
                 raw = self.usb.cmdReadMem(self.REG_SNIFF_FIFO_RD, 4*burst_size)
-                if raw[-2] & (128 + 4) == (128 + 4):
+                bitmask = 2**self.FE_FIFO_STAT_CAPTURE_DONE + 2**self.FE_FIFO_STAT_EMPTY
+                if raw[-2] & bitmask == bitmask:
                     notdone = False
-                if time.time() - starttime > timeout:
+                    if raw[-2] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
+                        logging.warning("FIFO overflowed, capture stopped")
+                        early_exit = True
+                elif timeout and time.time() - starttime > timeout:
                     logging.warning("Capture timed out!")
+                    early_exit = True
                     notdone = False
                 # filter out the empty FIFO reads:
                 rawdata = []
@@ -710,12 +726,15 @@ class Usb(PWPacketDispatcher):
                     if raw[i*4+2] & 3 != self.FE_FIFO_CMD_STRM:
                         rawdata.append(raw[i*4:i*4+3])
                 self.handle_incoming_bytes(rawdata)
+                self.entries_captured += len(rawdata)
+                if early_exit:
+                    logging.warning("%d entries captured." % self.entries_captured)
 
 
-    def _start_comms_thread(self, burst):
+    def _start_comms_thread(self, burst, timeout):
         """ ViewSB: start the background thread that handles our core communication. """
 
-        self.commthread = threading.Thread(target=self.__comms_thread_body, args=[burst], daemon=True)
+        self.commthread = threading.Thread(target=self.__comms_thread_body, args=[burst, timeout], daemon=True)
         self.__comm_term = False
         self.__comm_exc = None
 
