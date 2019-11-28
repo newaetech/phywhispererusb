@@ -323,7 +323,9 @@ class Usb(PWPacketDispatcher):
 
     def split_data(self, rawdata, verbose=False):
         """Split raw USB capture data into data events and times, stat events and times.
-        
+
+        Args:
+            rawdata: list of lists, e.g. obtained from read_capture_data()
         Returns:
             4-tuple of lists:
                 0. data event times
@@ -392,6 +394,8 @@ class Usb(PWPacketDispatcher):
     def split_packets(self, rawdata):
         """Split raw USB capture data into packets.
         
+        Args:
+            rawdata: list of lists, e.g. obtained from read_capture_data()
         Returns:
             list
                 Each list element is one packet and is presented in a dictionary with the following keys:
@@ -412,6 +416,27 @@ class Usb(PWPacketDispatcher):
                 incomplete = True
                 continue
         return packets
+
+
+    def print_packets(self, packets):
+        """Print packets using USBSimplePrintSink from ViewSB.
+        Args:
+            packets: list of dictionaries, e.g. obtained from split_packets()
+        """
+        printer = USBSimplePrintSink(highspeed=self.get_usb_mode() == 'HS')
+        for packet in packets:
+            printer.handle_usb_packet(ts=packet['timestamp'], buf=bytearray(packet['contents']), flags=(packet['flags']))
+
+
+    @staticmethod
+    def print_flags(stat_byte):
+        """Print bitfields of USB status flags byte.
+        """
+        print('vbus_valid = %d' % (1 if stat_byte & 0x10 else 0))
+        print('sess_end   = %d' % (1 if stat_byte & 0x08 else 0))
+        print('sess_valid = %d' % (1 if stat_byte & 0x04 else 0))
+        print('rx_error   = %d' % (1 if stat_byte & 0x02 else 0))
+        print('rx_active  = %d' % (1 if stat_byte & 0x01 else 0))
 
 
     def set_capture_size(self, size=8188):

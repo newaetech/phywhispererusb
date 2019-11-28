@@ -69,10 +69,8 @@ class USBSniffer(PWPacketHandler):
 
 
     def handle_packet(self, buf):
-        """ Separates the input flags from the core meta-data extracted from the OV USB packet. """
-
-        flags = 0 # TODO(?)
-        self.emit_usb_packet(buf['timestamp'], bytearray(buf['contents']), flags)
+        """ Separates the input flags from the core meta-data extracted from the PW USB packet. """
+        self.emit_usb_packet(buf['timestamp'], bytearray(buf['contents']), buf['flags'])
 
 
 class USBSimplePrintSink(USBEventSink):
@@ -199,13 +197,11 @@ class USBSimplePrintSink(USBEventSink):
                 CRC_NONE: ' '
             }
 
-            flag_field = "[  %s%s%s%s%s%s]" % (
-                'L' if flags & 0x20 else ' ',
-                'F' if flags & 0x10 else ' ',
-                'T' if flags & 0x08 else ' ',
-                'C' if flags & 0x04 else ' ',
-                'O' if flags & 0x02 else ' ',
-                'E' if flags & 0x01 else ' ')
+            flag_field = "[  %s%s%s%s]" % (
+                'B' if flags & 0x08 else ' ',   # vbus_valid
+                'e' if flags & 0x04 else ' ',   # sess_end
+                'V' if flags & 0x02 else ' ',   # sess_valid
+                'E' if flags & 0x01 else ' ')   # rx_error
             delta_subframe = ts - self.last_ts_frame
             delta_print = ts - self.last_ts_print
             self.last_ts_print = ts

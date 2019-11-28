@@ -63,7 +63,12 @@ class PWPacketDispatcher:
 
 
     def handle_incoming_bytes(self, rawdata):
-        """ Handles receipt of new bytes from an I/O channel. """
+        """ Handles receipt of new bytes from an I/O channel, passes
+        assembled packets to registered packet handlers.
+
+        Args: 
+            rawdata: data read from PhyWhisperer (list of lists)
+        """
 
         incomplete = False
 
@@ -116,9 +121,23 @@ class PWPacketHandler:
         self._packet_size = 0
         self._firstpacket = True
 
+        # expected flag values:
+        self._rx_error_expected = 0
+        self._sess_valid_expected = 1
+        self._sess_end_expected = 0
+        self._vbus_valid_expected = 1
+
 
     def handle_bytes_received(self, defines, data, verbose=False):
-        """ Attempts to handle a set of bytes received from the PW. """
+        """ Attempts to handle a set of bytes received from the PW.
+        Args:
+            defines: phywhisperer.usb.Usb object
+            data: raw data captured from PhyWhisperer (list of lists),
+                which is consumed as packets are assembled from it
+        Returns:
+            A single packet (dictionary) if there is a complete packet in
+            the input data; otherwise IncompletePacket() is raised.
+        """
 
         if len(data) < 1:
             raise IncompletePacket()
@@ -142,6 +161,10 @@ class PWPacketHandler:
 
             elif (command == defines.FE_FIFO_CMD_DATA) or (command == defines.FE_FIFO_CMD_STAT):
                 rx_active = (entry[0] & 8) >> 3
+                rx_error = (entry[0] & 16) >> 4
+                sess_valid = (entry[0] & 32) >> 5
+                sess_end = (entry[0] & 64) >> 6
+                vbus_valid = (entry[0] & 128) >> 7
                 ts = entry[0] & 0x7
                 #hardware reports the number of cycles between events, so to
                 #obtain elapsed time we add one:
@@ -149,6 +172,10 @@ class PWPacketHandler:
                 if rx_active and not self._in_packet:
                     self._in_packet = True
                     self._packet_start_time = self._timestep
+                    self._rx_error_event = 0
+                    self._sess_valid_event = 0
+                    self._sess_end_event = 0
+                    self._vbus_valid_event = 0
                 elif not rx_active and self._in_packet:
                     self._in_packet = False
                     if self._firstpacket and defines.addpattern:
@@ -161,9 +188,22 @@ class PWPacketHandler:
                             print(hex(byte), end=' ')
                         print()
 
+                    # build up observed flags field:
+                    flags = 0
+                    if self._rx_error_event:
+                        flags += 0x1
+                    if self._sess_valid_event:
+                        flags += 0x2
+                    if self._sess_end_event:
+                        flags += 0x4
+                    if self._vbus_valid_event:
+                        flags += 0x8
+
+                    # build packet:
                     packet = {"timestamp": self._packet_start_time,
                               "size": self._packet_size,
-                              "contents": self._packet_bytes}
+                              "contents": self._packet_bytes,
+                              "flags": flags}
 
                     # reset for next packet:
                     self._packet_bytes = []
@@ -171,6 +211,20 @@ class PWPacketHandler:
                     # Don't call handle_packet here, for non-ViewSB use of this method.
                     # Each call of handle_bytes_received is meant to handle 0 or 1 packets, so we're done:
                     return packet
+
+                # status flags: for each flag, there is an expected value; if during the packet we observe
+                # a flag isn't set to its expected value, that's what will get shown when the packet is
+                # printed
+                if rx_active and self._in_packet:
+                    if self._rx_error_expected != rx_error:
+                        self._rx_error_event = 1
+                    if self._sess_valid_expected != sess_valid:
+                        self._sess_valid_event = 1
+                    if self._sess_end_expected != sess_end:
+                        self._sess_end_event = 1
+                    if self._vbus_valid_expected != vbus_valid:
+                        self._vbus_valid_event = 1
+
                 if (command == defines.FE_FIFO_CMD_DATA):
                     self._packet_bytes.append(entry[1])
                     self._packet_size += 1
