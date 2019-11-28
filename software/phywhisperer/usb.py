@@ -336,9 +336,7 @@ class Usb(PWPacketDispatcher):
         data_times = []
         stat_bytes = []
         stat_times = []
-        data_commands = 0
-        stat_commands = 0
-        time_commands = 0
+        last_flags = 0xff
 
         for raw in rawdata:
             command = raw[2] & 0x3
@@ -352,8 +350,11 @@ class Usb(PWPacketDispatcher):
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
                    print("%8d   flags=%02x data=%02x"%(timestep, flags, data))
-                # TODO: log flags
-                data_commands += 1
+                # only log flags if they've changed:
+                if flags != last_flags:
+                   stat_bytes.append(flags)
+                   stat_times.append(timestep)
+                   last_flags = flags
                 data_bytes.append(data)
                 data_times.append(timestep)
             elif (command == self.FE_FIFO_CMD_STAT):
@@ -363,9 +364,9 @@ class Usb(PWPacketDispatcher):
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
                    print("%8d   flags=%02x"%(timestep, flags))
-                stat_commands += 1
                 stat_bytes.append(flags)
                 stat_times.append(timestep)
+                last_flags = flags
             elif (command == self.FE_FIFO_CMD_TIME):
                 ts = raw[0] + (raw[1] << 8)
                 self.long_timestamps[ts] += 1
@@ -375,7 +376,6 @@ class Usb(PWPacketDispatcher):
                 #by one in the case of lone time commands (which is rare, and inconsequential
                 #in practice).
                 timestep += ts
-                time_commands += 1
                 if verbose:
                    print("%8d" % timestep)
             elif (command == self.FE_FIFO_CMD_STRM):
