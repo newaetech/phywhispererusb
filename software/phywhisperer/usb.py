@@ -449,8 +449,7 @@ class Usb(PWPacketDispatcher):
         if (size >= 2**24) or (size < 0):
             raise ValueError('Illegal size value.')
         self.capture_size = size
-        size_bytes = [size & 255, (size >> 8) & 255, (size >> 16) & 255]
-        self.usb.cmdWriteMem(self.REG_CAPTURE_LEN, size_bytes)
+        self.usb.cmdWriteMem(self.REG_CAPTURE_LEN, int.to_bytes(size, length=2, byteorder='little'))
 
 
     def ns_trigger(self, delay_in_ns):
@@ -471,6 +470,7 @@ class Usb(PWPacketDispatcher):
 
     def set_trigger(self, delay=0, width=1, enable=True):
         """Program the output trigger delay and width. Both are measured in clock cycles of USB-derived 240 MHz clock.
+           Note that this is a different time base than set_capture_delay(), which uses a 60 MHz clock!
            The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
            different value. Use ns_trigger(), us_trigger(), and ms_trigger() to convert values as needed.
         
@@ -483,10 +483,8 @@ class Usb(PWPacketDispatcher):
             raise ValueError('Illegal delay value.')
         if (width >= 2**17) or (width < 1):
             raise ValueError('Illegal width value.')
-        delay_bytes = [delay & 255, (delay >> 8) & 255, (delay >> 16) & 255]
-        width_bytes = [width & 255, (width >> 8) & 255, (width >> 16) & 255]
-        self.usb.cmdWriteMem(self.REG_TRIGGER_DELAY, delay_bytes)
-        self.usb.cmdWriteMem(self.REG_TRIGGER_WIDTH, width_bytes)
+        self.usb.cmdWriteMem(self.REG_TRIGGER_DELAY, int.to_bytes(delay, length=3, byteorder='little'))
+        self.usb.cmdWriteMem(self.REG_TRIGGER_WIDTH, int.to_bytes(width, length=3, byteorder='little'))
         self.set_capture_delay(int(delay/4))
         if enable == True:
             self.usb.cmdWriteMem(self.REG_TRIGGER_ENABLE, [1])
@@ -496,14 +494,14 @@ class Usb(PWPacketDispatcher):
 
     def set_capture_delay(self, delay):
         """Program the capture delay, measured in clock cycles of USB-derived 60 MHz clock.
+        Note that this is a different time base than set_trigger(), which uses a 240 MHz clock!
         
         Args:
             delay (int): range in [0, 2^18-1] cycles of 60 MHz clock.
         """
         if (delay >= 2**18) or (delay < 0):
             raise ValueError('Illegal delay value.')
-        delay_bytes = [delay & 255, (delay >> 8) & 255, (delay >> 16) & 255]
-        self.usb.cmdWriteMem(self.REG_CAPTURE_DELAY, delay_bytes)
+        self.usb.cmdWriteMem(self.REG_CAPTURE_DELAY, int.to_bytes(delay, length=3, byteorder='little'))
 
 
     def set_pattern(self, pattern, mask=None):
