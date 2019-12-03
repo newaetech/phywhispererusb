@@ -93,7 +93,7 @@ class Usb(PWPacketDispatcher):
                     else:
                         logging.warning("Couldn't parse line: %s", define)
         # make sure everything is cool:
-        assert self.verilog_define_matches == 57, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
+        assert self.verilog_define_matches == 58, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
         defines.close()
 
 
@@ -468,23 +468,50 @@ class Usb(PWPacketDispatcher):
         return round(cycles)
 
 
-    def set_trigger(self, delay=0, width=1, enable=True):
-        """Program the output trigger delay and width. Both are measured in clock cycles of USB-derived 240 MHz clock.
-           Note that this is a different time base than set_capture_delay(), which uses a 60 MHz clock!
+    def set_trigger(self, num_triggers=1, delays=[0], widths=[1], enable=True):
+        """Program the output trigger pulse(s) delay and width. Both are measured in clock cycles of USB-derived 
+           240 MHz clock. Note that this is a different time base than set_capture_delay(), which uses a 60 MHz 
+           clock! Up to 8 pulses may be issued.
            The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
            different value. Use ns_trigger(), us_trigger(), and ms_trigger() to convert values as needed.
         
         Args:
-            delay (int): range in [0, 2^20-1] cycles.
-            width (int): range in [1, 2^17-1] cycles.
+            num_triggers (int): number of trigger pulses, from 1 to 8.
+            delay (list of ints): delay for each trigger pulse; each element in range [0, 2^20-1] cycles 
+                (only first element can be zero).
+            width (list of ints): width for each trigger pulse; each element in range [1, 2^17-1] cycles.
             enable (bool, optional): set to 'False' to disable trigger generation on hardware pins.
+
+        Examples:
+            (a) To set obtain three 2-cycle-wide pulses, each 3 cycles apart, starting immediately after a
+                pattern match:
+                set_trigger(num_triggers=3, delays=[0,3,3], widths=[2,2,2])
+            (b) To set obtain a 1-cycle wide pulse 10 cycles after a pattern match, followed by a 2-cycle wide
+                pulse 20 cycles later:
+                set_trigger(num_triggers=2, delays=[10,20], widths=[1,2])
         """
-        if (delay >= 2**20) or (delay < 0):
-            raise ValueError('Illegal delay value.')
-        if (width >= 2**17) or (width < 1):
-            raise ValueError('Illegal width value.')
-        self.usb.cmdWriteMem(self.REG_TRIGGER_DELAY, int.to_bytes(delay, length=3, byteorder='little'))
-        self.usb.cmdWriteMem(self.REG_TRIGGER_WIDTH, int.to_bytes(width, length=3, byteorder='little'))
+        if num_triggers > 8:
+            raise ValueError('Maximum 8 trigger pulses.')
+        if len(delays) != num_triggers or len(widths) != num_triggers:
+            raise ValueError('Number of elements in delays and widths must match num_triggers.')
+
+        data = 0
+        for i in range(num_triggers):
+            delay = delays[i]
+            if (delay >= 2**20) or (delay < 0) or (delay < 1 and i > 0):
+                raise ValueError('Illegal delay value.')
+            data += delay << i*24
+        self.usb.cmdWriteMem(self.REG_TRIGGER_DELAY, int.to_bytes(data, length=3*num_triggers, byteorder='little'))
+
+        data = 0
+        for i in range(num_triggers):
+            width = widths[i]
+            if (width >= 2**17) or (width < 1):
+                raise ValueError('Illegal width value.')
+            data += width << i*24
+        self.usb.cmdWriteMem(self.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num_triggers, byteorder='little'))
+
+        self.usb.cmdWriteMem(self.REG_NUM_TRIGGERS, [num_triggers])
         self.set_capture_delay(int(delay/4))
         if enable == True:
             self.usb.cmdWriteMem(self.REG_TRIGGER_ENABLE, [1])

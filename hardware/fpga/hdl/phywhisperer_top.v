@@ -89,10 +89,16 @@ module phywhisperer_top(
    parameter pPATTERN_BYTES = 64;
    parameter pTRIGGER_DELAY_WIDTH = 20;
    parameter pTRIGGER_WIDTH_WIDTH = 17;
+   parameter pNUM_TRIGGER_PULSES = 8;
+   parameter pNUM_TRIGGER_WIDTH = 4;
+
    parameter pBYTECNT_SIZE = 7;
    parameter pCAPTURE_DELAY_WIDTH = pTRIGGER_DELAY_WIDTH-2;
    parameter pUSB_AUTO_COUNTER_WIDTH = 24;
    parameter pCAPTURE_LEN_WIDTH = 24;
+   
+   parameter pALL_TRIGGER_DELAY_WIDTHS = 24*pNUM_TRIGGER_PULSES;
+   parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES;
 
    wire cmdfifo_isout;
    wire [7:0] cmdfifo_din;
@@ -136,12 +142,13 @@ module phywhisperer_top(
    wire capture_enable;
 
    wire [pCAPTURE_DELAY_WIDTH-1:0] capture_delay;
-   wire [pTRIGGER_DELAY_WIDTH-1:0] trigger_delay;
-   wire [pTRIGGER_WIDTH_WIDTH-1:0] trigger_width;
+   wire [pALL_TRIGGER_DELAY_WIDTHS-1:0] trigger_delay;
+   wire [pALL_TRIGGER_WIDTH_WIDTHS-1:0] trigger_width;
 
    wire [pPATTERN_BYTES*8-1:0] pattern;
    wire [pPATTERN_BYTES*8-1:0] pattern_mask;
    wire trigger_enable;
+   wire [pNUM_TRIGGER_WIDTH-1:0] num_triggers;
    wire [7:0] pattern_bytes;
 
    wire [1:0] usb_speed;
@@ -213,11 +220,12 @@ module phywhisperer_top(
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pPATTERN_BYTES           (pPATTERN_BYTES),
       .pCAPTURE_DELAY_WIDTH     (pCAPTURE_DELAY_WIDTH),
-      .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
-      .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH),
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
       .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH),
-      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH),
+      .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
+      .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
+
    ) U_reg_pw (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -247,12 +255,13 @@ module phywhisperer_top(
       .O_capture_delay          (capture_delay),
       .O_trigger_delay          (trigger_delay),
       .O_trigger_width          (trigger_width),
+      .O_trigger_enable         (trigger_enable),
+      .O_num_triggers           (num_triggers),
 
       // PM:
       .O_arm                    (arm),
       .O_pattern                (pattern),
       .O_pattern_mask           (pattern_mask),
-      .O_trigger_enable         (trigger_enable),
       .O_pattern_bytes          (pattern_bytes),
       .I_capture_enable_pulse   (capture_enable_pulse),
 
@@ -438,7 +447,11 @@ module phywhisperer_top(
    pw_trigger #(
       .pCAPTURE_DELAY_WIDTH     (pCAPTURE_DELAY_WIDTH),
       .pTRIGGER_DELAY_WIDTH     (pTRIGGER_DELAY_WIDTH),
-      .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH)
+      .pTRIGGER_WIDTH_WIDTH     (pTRIGGER_WIDTH_WIDTH),
+      .pALL_TRIGGER_DELAY_WIDTHS(pALL_TRIGGER_DELAY_WIDTHS),
+      .pALL_TRIGGER_WIDTH_WIDTHS(pALL_TRIGGER_WIDTH_WIDTHS),
+      .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
+      .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
    ) U_trigger (
       .reset_i          (reset_i),
       .trigger_clk      (trigger_clk),
@@ -448,6 +461,7 @@ module phywhisperer_top(
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),
       .I_trigger_enable (trigger_enable),
+      .I_num_triggers   (num_triggers),
       .O_capture_enable_pulse (capture_enable_pulse),
       .I_match          (trigger_match),
       .I_capturing      (capturing),

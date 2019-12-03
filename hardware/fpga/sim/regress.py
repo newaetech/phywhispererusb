@@ -28,12 +28,10 @@ tests.append(dict(name  = 'short_timestamps',
              MIN_DELAY  = 0,
              MAX_DELAY  = 7))
 
-
 tests.append(dict(name  = 'usb_autodetect',
              frequency = 100,
              description = 'Simple USB autodetect test.',
              TOP = 'tb_usb_autodetect'))
-
 
 tests.append(dict(name  = 'stream_short',
              frequency = 1,
@@ -129,11 +127,12 @@ tests.append(dict(name  = 'short_trigger',
 tests.append(dict(name  = 'long_trigger',
              frequency = 10,
              description = 'Large trigger delay and width.',
-             TIMEOUT = 500000,
+             TIMEOUT = 1000000,
              TRIGGER_DELAY_MIN = 256,
              TRIGGER_DELAY_MAX = 2**20-1,
              TRIGGER_WIDTH_MIN = 256,
              TRIGGER_WIDTH_MAX = 2**17-1,
+             NUM_TRIGGERS_MAX = 2,
              NUM_REPEATS = 2,
              TRIGGER_ENABLE = 1))
 

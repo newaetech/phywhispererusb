@@ -38,6 +38,7 @@
 `define REG_TRIG_CLK_PHASE_SHIFT     6'h12
 `define REG_STAT_PATTERN             6'h13
 `define REG_STAT_MATCH               6'h14
+`define REG_NUM_TRIGGERS             6'h15
 
 
 // FIFO bitfields:

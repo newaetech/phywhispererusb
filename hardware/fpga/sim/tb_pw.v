@@ -51,6 +51,8 @@ module tb_pw();
     parameter pTRIGGER_DELAY_MAX= 2**20-1;
     parameter pTRIGGER_WIDTH_MIN= 1;
     parameter pTRIGGER_WIDTH_MAX= 2**17-1;
+    parameter pNUM_TRIGGERS_MIN = 1;
+    parameter pNUM_TRIGGERS_MAX = 8;
     parameter pREAD_CONCURRENTLY = 1;
     parameter pSTREAM_MODE = 0;
 
@@ -107,6 +109,8 @@ module tb_pw();
     reg  reset;
     int  seed;
 
+    parameter pNUM_TRIGGER_PULSES = 8;
+
 
    initial begin
       seed = pSEED;
@@ -118,6 +122,7 @@ module tb_pw();
       fe_clk = 1'b1;
       trigger_clk = 1'b1;
       reset = 1'b0;
+      num_triggers = $urandom_range(pNUM_TRIGGERS_MIN, pNUM_TRIGGERS_MAX);
 
       USB_wdata = 0;
       USB_Addr = 0;
@@ -171,6 +176,7 @@ module tb_pw();
    bit armed;
    bit overflow_noted;
    bit pattern_match_marker;
+   bit checking_pulses;
    reg [7:0] stat_pattern;
    reg [7:0] stat_mask;
    reg stat_matched;
@@ -180,9 +186,10 @@ module tb_pw();
    int triggertime;
    int rx_trigger_delay;
    int rx_trigger_width;
-   int trigger_delay;
-   int trigger_width;
+   int trigger_delay [0:pNUM_TRIGGER_PULSES-1];
+   int trigger_width [0:pNUM_TRIGGER_PULSES-1];
    int capture_delay;
+   int num_triggers;
 
    reg fifo_stat_empty;
    reg fifo_stat_underflow;
@@ -287,25 +294,44 @@ module tb_pw();
 
    // Trigger check thread:
    initial begin
+      int i;
+      checking_pulses = 0;
       if (pTRIGGER_ENABLE) begin
+         # 1; // wait for num_triggers to get set
          for (trigger_receive_iteration = 0; trigger_receive_iteration < pNUM_REPEATS; trigger_receive_iteration = trigger_receive_iteration + 1) begin
             wait (pattern_match_marker == 1'b1);
+            checking_pulses = 1;
             matchtime = $time;
-            wait (cw_trig == 1'b1);
-            triggertime = $time;
-            wait (cw_trig == 1'b0);
-            rx_trigger_delay = (triggertime - matchtime) / (pFE_CLOCK_PERIOD/4);
-            rx_trigger_delay -= 18; // Additional 18 cycle delay is inherent to the current design. 8 of the 18 is because
-                                    // we start measuring time when the pattern match data is *sent*.
-            rx_trigger_width = ($time - triggertime) / (pFE_CLOCK_PERIOD/4);
-            if ( (rx_trigger_delay == trigger_delay) && (rx_trigger_width == trigger_width) )
-               $display("%sTrigger #%0d: delay=%0d, width=%0d", rxalign, trigger_receive_iteration, rx_trigger_delay, rx_trigger_width);
-            else begin
-               $display("%s*** ERROR Trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", rxalign, trigger_receive_iteration, rx_trigger_delay,
-                                                                                                       trigger_delay, rx_trigger_width, trigger_width);
-               errors += 1;
+            for (i = 0; i < num_triggers; i = i + 1) begin
+               wait (cw_trig == 1'b1);
+               triggertime = $time;
+               wait (cw_trig == 1'b0);
+               rx_trigger_delay = (triggertime - matchtime) / (pFE_CLOCK_PERIOD/4);
+               if (i == 0)
+                  rx_trigger_delay -= 18; // Additional 18 cycle delay is inherent to the current design. 8 of the 18 is because
+                                          // we start measuring time when the pattern match data is *sent*.
+               rx_trigger_width = ($time - triggertime) / (pFE_CLOCK_PERIOD/4);
+               if ( (rx_trigger_delay == trigger_delay[i]) && (rx_trigger_width == trigger_width[i]) )
+                  $display("%sTrigger #%0d: delay=%0d, width=%0d", rxalign, trigger_receive_iteration, rx_trigger_delay, rx_trigger_width);
+               else begin
+                  $display("%s*** ERROR Trigger #%0d: delay=%0d (expected %0d) width=%0d (expected %0d)", rxalign, trigger_receive_iteration, rx_trigger_delay,
+                                                                                                          trigger_delay[i], rx_trigger_width, trigger_width[i]);
+                  errors += 1;
+               end
+               matchtime = $time;
             end
             wait (pattern_match_marker == 1'b0);
+            checking_pulses = 0;
+         end
+      end
+   end
+
+   // check cw_trig outside of trigger pulses:
+   always @(*) begin
+      if (checking_pulses == 0) begin
+         if (cw_trig) begin
+            $display("ERROR: cw_trig is high when it shouldn't be, time=%0t", $time);
+            errors += 1;
          end
       end
    end
@@ -532,22 +558,43 @@ module tb_pw();
 
 
    task set_trigger;
-      trigger_delay = $urandom_range(pTRIGGER_DELAY_MIN, pTRIGGER_DELAY_MAX);
-      trigger_width = $urandom_range(pTRIGGER_WIDTH_MIN, pTRIGGER_WIDTH_MAX);
-      capture_delay = trigger_delay >> 2;
-      $display("Programming trigger #%0d delay=%0d, width=%0d cycles", send_iteration, trigger_delay, trigger_width);
+      int i;
+      $display("Programming %0d trigger parameters for iteration #%0d", num_triggers, send_iteration);
+      write_1byte(`REG_NUM_TRIGGERS, num_triggers);
+
+      // trigger delays:
       rw_lots_bytes(`REG_TRIGGER_DELAY);
-      write_next_byte(trigger_delay & 255);
-      write_next_byte((trigger_delay >> 8) & 255);
-      write_next_byte((trigger_delay >> 16) & 255);
-      rw_lots_bytes(`REG_TRIGGER_WIDTH);
-      write_next_byte(trigger_width & 255);
-      write_next_byte((trigger_width >> 8) & 255);
-      write_next_byte((trigger_width >> 16) & 255);
+      for (i = 0; i < num_triggers; i = i + 1) begin
+         trigger_delay[i] = $urandom_range(pTRIGGER_DELAY_MIN, pTRIGGER_DELAY_MAX);
+         // zero-delay not allowed after first trigger:
+         if ((i > 0) && (trigger_delay[i] == 0))
+            trigger_delay[i] = 1;
+         write_next_byte(trigger_delay[i] & 255);
+         write_next_byte((trigger_delay[i] >> 8) & 255);
+         write_next_byte((trigger_delay[i] >> 16) & 255);
+         if (i == 0) begin
+         end
+      end
+
+      // TODO: capture_delay independent of trigger_delay
+      capture_delay = trigger_delay[0] >> 2;
       rw_lots_bytes(`REG_CAPTURE_DELAY);
       write_next_byte(capture_delay & 255);
       write_next_byte((capture_delay >> 8) & 255);
       write_next_byte((capture_delay >> 16) & 255);
+
+      // trigger widths:
+      rw_lots_bytes(`REG_TRIGGER_WIDTH);
+      for (i = 0; i < num_triggers; i = i + 1) begin
+         trigger_width[i] = $urandom_range(pTRIGGER_WIDTH_MIN, pTRIGGER_WIDTH_MAX);
+         write_next_byte(trigger_width[i] & 255);
+         write_next_byte((trigger_width[i] >> 8) & 255);
+         write_next_byte((trigger_width[i] >> 16) & 255);
+      end
+
+      for (i = 0; i < num_triggers; i = i + 1)
+         $display("Programming trigger #%0d: delay=%0d, width=%0d cycles", i, trigger_delay[i], trigger_width[i]);
+
    endtask
 
 
@@ -568,6 +615,7 @@ module tb_pw();
       // the actual mask needs to be *preceeded* by padded zeros
       for (i = pPATTERN_ACTUAL_SIZE-pattern_bytes; i < pPATTERN_ACTUAL_SIZE; i = i + 1) begin
          match_mask[i] = $urandom;
+         //match_mask[i] = 8'h0f; // TODO: temp
          // things would get unnecessarily complex if the first mask byte could be 0, so prevent that:
          if (i == pPATTERN_ACTUAL_SIZE-pattern_bytes) begin
             while (match_mask[i] == 0)
@@ -749,8 +797,8 @@ module tb_pw();
       // send data that won't be captured because trigger hasn't occured yet:
       int remaining_cycles;
       txindex = 0;
-      remaining_cycles = trigger_delay/4 - last_pattern_match_delay;
-      if (trigger_delay > 0) begin
+      remaining_cycles = trigger_delay[0]/4 - last_pattern_match_delay;
+      if (trigger_delay[0] > 0) begin
          $display("\nSending pre-trigger data (not captured):");
          // send data until the trigger activates:
          while (remaining_cycles > 0) begin
