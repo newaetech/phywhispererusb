@@ -63,6 +63,12 @@ module pw_pattern_matcher #(
    (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] mask_r;
    (* ASYNC_REG = "TRUE" *) reg  [7:0] pattern_bytes_r;
 
+   reg  [7:0] bytes_received;
+
+   // just for easier debugging:
+   wire [31:0]  masked_input_first_bytes = {masked_input[24:0], masked_input_byte};
+   wire [31:0]  masked_pattern_first_bytes = masked_pattern[31:0];
+
    assign masked_input_byte = I_fe_data & mask_r[7:0];
 
    assign capture_done = (!I_capturing & capturing_r);
@@ -76,6 +82,7 @@ module pw_pattern_matcher #(
          match_trigger_r <= 1'b0;
          capturing_r <= 1'b0;
          input_data <= 0;
+         bytes_received <= 0;
       end
       else begin
          match_trigger_r <= match_trigger;
@@ -84,12 +91,17 @@ module pw_pattern_matcher #(
          // end of capture is a good time to reset these:
          if (match_trigger && capture_done) begin
             match_trigger <= 1'b0;
+            input_data <= 0;
+            bytes_received <= 0;
          end
 
          else if (I_fe_data_valid && arm_r) begin
             input_data <= {input_data[pPATTERN_BYTES*8-17:0], I_fe_data};
+            if (bytes_received < 8'hff)
+               bytes_received <= bytes_received + 1;
             // don't wait for the incoming data byte to be stored, compare immediately:
-            if ({masked_input, masked_input_byte} == masked_pattern)
+            if ( ({masked_input, masked_input_byte} == masked_pattern) &&
+                 (bytes_received >= pattern_bytes_r-1) )
                match_trigger <= 1'b1;
             else
                match_trigger <= 1'b0;
