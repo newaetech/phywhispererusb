@@ -2,8 +2,8 @@
 # Vivado v2018.3 (64-bit)
 # SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Mon Jul 29 19:34:26 2019
-# Process ID: 5988
+# Start of session at: Thu Dec  5 14:51:28 2019
+# Process ID: 4008
 # Current directory: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03
 # Command line: vivado.exe -log phywhisperer_top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source phywhisperer_top.tcl -notrace
 # Log file: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03/phywhisperer_top.vdi

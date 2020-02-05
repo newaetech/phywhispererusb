@@ -138,7 +138,7 @@ wire clk_in2_clk_wiz_0;
     .CLKOUT0_DIVIDE_F     (4.000),
     .CLKOUT0_PHASE        (0.000),
     .CLKOUT0_DUTY_CYCLE   (0.500),
-    .CLKOUT0_USE_FINE_PS  ("FALSE"),
+    .CLKOUT0_USE_FINE_PS  ("TRUE"),
     .CLKIN1_PERIOD        (16.667))
   mmcm_adv_inst
     // Output clocks

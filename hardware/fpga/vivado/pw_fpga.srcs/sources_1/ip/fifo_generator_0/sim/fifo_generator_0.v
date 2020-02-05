@@ -62,16 +62,17 @@ module fifo_generator_0 (
   rd_en,
   dout,
   full,
-  overflow,
   empty,
-  underflow
+  underflow,
+  prog_full,
+  prog_empty
 );
 
 input wire rst;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME write_clk, FREQ_HZ 60000000, PHASE 0.000, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME write_clk, FREQ_HZ 1000000, PHASE 0.000, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 write_clk CLK" *)
 input wire wr_clk;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME read_clk, FREQ_HZ 60000000, PHASE 0.000, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME read_clk, FREQ_HZ 1000000, PHASE 0.000, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 read_clk CLK" *)
 input wire rd_clk;
 (* X_INTERFACE_INFO = "xilinx.com:interface:fifo_write:1.0 FIFO_WRITE WR_DATA" *)
@@ -84,16 +85,17 @@ input wire rd_en;
 output wire [17 : 0] dout;
 (* X_INTERFACE_INFO = "xilinx.com:interface:fifo_write:1.0 FIFO_WRITE FULL" *)
 output wire full;
-output wire overflow;
 (* X_INTERFACE_INFO = "xilinx.com:interface:fifo_read:1.0 FIFO_READ EMPTY" *)
 output wire empty;
 output wire underflow;
+output wire prog_full;
+output wire prog_empty;
 
   fifo_generator_v13_2_3 #(
     .C_COMMON_CLOCK(0),
     .C_SELECT_XPM(0),
     .C_COUNT_TYPE(0),
-    .C_DATA_COUNT_WIDTH(10),
+    .C_DATA_COUNT_WIDTH(13),
     .C_DEFAULT_VALUE("BlankString"),
     .C_DIN_WIDTH(18),
     .C_DOUT_RST_VAL("0"),
@@ -107,7 +109,7 @@ output wire underflow;
     .C_HAS_DATA_COUNT(0),
     .C_HAS_INT_CLK(0),
     .C_HAS_MEMINIT_FILE(0),
-    .C_HAS_OVERFLOW(1),
+    .C_HAS_OVERFLOW(0),
     .C_HAS_RD_DATA_COUNT(0),
     .C_HAS_RD_RST(0),
     .C_HAS_RST(1),
@@ -125,17 +127,17 @@ output wire underflow;
     .C_OVERFLOW_LOW(0),
     .C_PRELOAD_LATENCY(1),
     .C_PRELOAD_REGS(0),
-    .C_PRIM_FIFO_TYPE("1kx18"),
-    .C_PROG_EMPTY_THRESH_ASSERT_VAL(5),
-    .C_PROG_EMPTY_THRESH_NEGATE_VAL(6),
-    .C_PROG_EMPTY_TYPE(0),
-    .C_PROG_FULL_THRESH_ASSERT_VAL(1017),
-    .C_PROG_FULL_THRESH_NEGATE_VAL(1016),
-    .C_PROG_FULL_TYPE(0),
-    .C_RD_DATA_COUNT_WIDTH(10),
-    .C_RD_DEPTH(1024),
-    .C_RD_FREQ(60),
-    .C_RD_PNTR_WIDTH(10),
+    .C_PRIM_FIFO_TYPE("2kx18"),
+    .C_PROG_EMPTY_THRESH_ASSERT_VAL(128),
+    .C_PROG_EMPTY_THRESH_NEGATE_VAL(129),
+    .C_PROG_EMPTY_TYPE(1),
+    .C_PROG_FULL_THRESH_ASSERT_VAL(8188),
+    .C_PROG_FULL_THRESH_NEGATE_VAL(8187),
+    .C_PROG_FULL_TYPE(1),
+    .C_RD_DATA_COUNT_WIDTH(13),
+    .C_RD_DEPTH(8192),
+    .C_RD_FREQ(1),
+    .C_RD_PNTR_WIDTH(13),
     .C_UNDERFLOW_LOW(0),
     .C_USE_DOUT_RST(0),
     .C_USE_ECC(0),
@@ -146,10 +148,10 @@ output wire underflow;
     .C_USE_FWFT_DATA_COUNT(0),
     .C_VALID_LOW(0),
     .C_WR_ACK_LOW(0),
-    .C_WR_DATA_COUNT_WIDTH(10),
-    .C_WR_DEPTH(1024),
-    .C_WR_FREQ(60),
-    .C_WR_PNTR_WIDTH(10),
+    .C_WR_DATA_COUNT_WIDTH(13),
+    .C_WR_DEPTH(8192),
+    .C_WR_FREQ(1),
+    .C_WR_PNTR_WIDTH(13),
     .C_WR_RESPONSE_LATENCY(1),
     .C_MSGON_VAL(1),
     .C_ENABLE_RST_SYNC(1),
@@ -305,12 +307,12 @@ output wire underflow;
     .din(din),
     .wr_en(wr_en),
     .rd_en(rd_en),
-    .prog_empty_thresh(10'B0),
-    .prog_empty_thresh_assert(10'B0),
-    .prog_empty_thresh_negate(10'B0),
-    .prog_full_thresh(10'B0),
-    .prog_full_thresh_assert(10'B0),
-    .prog_full_thresh_negate(10'B0),
+    .prog_empty_thresh(13'B0),
+    .prog_empty_thresh_assert(13'B0),
+    .prog_empty_thresh_negate(13'B0),
+    .prog_full_thresh(13'B0),
+    .prog_full_thresh_assert(13'B0),
+    .prog_full_thresh_negate(13'B0),
     .int_clk(1'D0),
     .injectdbiterr(1'D0),
     .injectsbiterr(1'D0),
@@ -319,7 +321,7 @@ output wire underflow;
     .full(full),
     .almost_full(),
     .wr_ack(),
-    .overflow(overflow),
+    .overflow(),
     .empty(empty),
     .almost_empty(),
     .valid(),
@@ -327,8 +329,8 @@ output wire underflow;
     .data_count(),
     .rd_data_count(),
     .wr_data_count(),
-    .prog_full(),
-    .prog_empty(),
+    .prog_full(prog_full),
+    .prog_empty(prog_empty),
     .sbiterr(),
     .dbiterr(),
     .wr_rst_busy(),

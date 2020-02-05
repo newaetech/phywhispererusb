@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Mon Jul 29 19:35:34 2019
+| Date         : Thu Dec  5 14:38:56 2019
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_drc -file phywhisperer_top_drc_opted.rpt -pb phywhisperer_top_drc_opted.pb -rpx phywhisperer_top_drc_opted.rpx
 | Design       : phywhisperer_top
@@ -24,53 +24,28 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 8
+             Violations found: 3
 +--------+----------+---------------------------------+------------+
 | Rule   | Severity | Description                     | Violations |
 +--------+----------+---------------------------------+------------+
-| RPBF-3 | Warning  | IO port buffering is incomplete | 8          |
+| RPBF-3 | Warning  | IO port buffering is incomplete | 3          |
 +--------+----------+---------------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
 RPBF-3#1 Warning
 IO port buffering is incomplete  
-Device port fe_data[0] expects both input and output buffering but the buffers are incomplete.
+Device port userio_d[0] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#2 Warning
 IO port buffering is incomplete  
-Device port fe_data[1] expects both input and output buffering but the buffers are incomplete.
+Device port userio_d[1] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 RPBF-3#3 Warning
 IO port buffering is incomplete  
-Device port fe_data[2] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
-RPBF-3#4 Warning
-IO port buffering is incomplete  
-Device port fe_data[3] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
-RPBF-3#5 Warning
-IO port buffering is incomplete  
-Device port fe_data[4] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
-RPBF-3#6 Warning
-IO port buffering is incomplete  
-Device port fe_data[5] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
-RPBF-3#7 Warning
-IO port buffering is incomplete  
-Device port fe_data[6] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
-RPBF-3#8 Warning
-IO port buffering is incomplete  
-Device port fe_data[7] expects both input and output buffering but the buffers are incomplete.
+Device port userio_d[2] expects both input and output buffering but the buffers are incomplete.
 Related violations: <none>
 
 
