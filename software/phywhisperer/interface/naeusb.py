@@ -385,6 +385,7 @@ class NAEUSB_Backend(NAEUSB_Serializer_base):
         
         
         libusb_backend = libusb0.get_backend()
+        # print(libusb_backend)
         for _ in range(2): #1 try for each backend
             try:
                 for id in idProduct:
@@ -395,10 +396,13 @@ class NAEUSB_Backend(NAEUSB_Serializer_base):
                     if len(dev) > 0:
                         devlist.extend(dev)
                 if dictonly:
+                    for d in devlist:
+                      d._langids=(1033,)
                     devlist = [{'sn': d.serial_number, 'product': d.product, 'pid': d.idProduct, 'vid': d.idVendor} for d in devlist]
                     
                 return devlist
             except (usb.core.NoBackendError, ValueError):
+                # print(traceback.format_exc())
                 # An error in the previous find is often caused by Windows 64-bit not detecting the correct library, attempt to force this with paths
                 # that often work so user isn't aware
                 #from usb.backend import libusb0

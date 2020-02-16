@@ -97,7 +97,7 @@ class Usb(PWPacketDispatcher):
         defines.close()
 
 
-    def con(self, PID=0xC610, sn=None, program_fpga=True):
+    def con(self, PID=0xC610, sn=None, program_fpga=True, bitstream_file=None):
         """Connect to PhyWhisperer-USB. Raises error if multiple detected
 
         Args:
@@ -113,11 +113,15 @@ class Usb(PWPacketDispatcher):
         self._llint = LLINT.PhyWhispererUSB(self.usb)
 
         if program_fpga:
-            with ZipFile(getsome("phywhisperer-firmware.zip")) as myzip:
-                with myzip.open('phywhisperer_top.bit') as bitstream:
-                    self._llint.FPGAProgram(bitstream)
-            pass
-        pass
+            if bitstream_file is None:
+                with ZipFile(getsome("phywhisperer-firmware.zip")) as myzip:
+                    with myzip.open('phywhisperer_top.bit') as bitstream:
+                        self._llint.FPGAProgram(bitstream)
+                pass
+            else:
+                print("Programming custom bit stream '%s'" % bitstream_file)
+                with open(bitstream_file,"rb") as bitstream:
+                    self._llint.FPGAProgram(bitstream) 
 
 
     def set_power_source(self, src):
