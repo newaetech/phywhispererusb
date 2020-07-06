@@ -111,6 +111,9 @@ module phywhisperer_top(
    wire [pBYTECNT_SIZE-1:0]  reg_bytecnt;
    wire [7:0]   write_data;
    wire [7:0]   read_data;
+   wire [7:0]   read_data_pw;
+   wire [7:0]   read_data_main;
+   wire [5:0]   fifo_status;
    wire         reg_read;
    wire         reg_write;
    wire         reg_addrvalid;
@@ -136,8 +139,9 @@ module phywhisperer_top(
    wire timestamps_disable;
    wire [pCAPTURE_LEN_WIDTH-1:0] capture_len;
    wire fifo_full;
-   wire fifo_overflow_blocked;
    wire arm;
+   wire reg_arm;
+   wire reg_arm_feclk;
    wire capturing;
    wire capture_enable;
 
@@ -159,6 +163,20 @@ module phywhisperer_top(
    wire usb_termsel_auto;
    wire [pUSB_AUTO_COUNTER_WIDTH-1:0] usb_auto_wait1;
    wire [pUSB_AUTO_COUNTER_WIDTH-1:0] usb_auto_wait2;
+   
+   wire [`FE_SELECT_WIDTH-1:0] fe_select;
+   wire main_active_read;
+
+   wire [17:0] fifo_in_data;
+   wire [17:0] fifo_out_data;
+   wire fifo_wr;
+   wire fifo_read;
+   wire fifo_flush;
+   wire fifo_write_allowed;
+   wire fifo_overflow_blocked;
+   wire fifo_empty;
+   wire capture_done;
+
 
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
@@ -214,6 +232,31 @@ module phywhisperer_top(
       .reg_addrvalid    (reg_addrvalid)
    );
 
+   reg_main #(
+      .pBYTECNT_SIZE            (pBYTECNT_SIZE)
+   ) U_reg_main (
+      .reset_i          (reset_i), 
+      .cwusb_clk        (clk_usb_buf), 
+      .reg_address      (reg_address), 
+      .reg_bytecnt      (reg_bytecnt), 
+      .read_data        (read_data_main), 
+      .write_data       (write_data),
+      .reg_read         (reg_read), 
+      .reg_write        (reg_write), 
+      .reg_addrvalid    (reg_addrvalid),
+
+      .fe_select        (fe_select),
+
+      .I_fifo_data      (fifo_out_data),
+      .I_fifo_empty     (fifo_empty),
+      .O_fifo_read      (fifo_read),
+      .I_fifo_status    (fifo_status),
+
+      .O_active_read    (main_active_read)
+   );
+
+   assign read_data = main_active_read? read_data_main : read_data_pw;
+
 
    reg_pw #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
@@ -227,29 +270,25 @@ module phywhisperer_top(
       .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
 
    ) U_reg_pw (
-      .reset_i          (reset_i), 
-      .cwusb_clk        (clk_usb_buf), 
-      .reg_address      (reg_address), 
-      .reg_bytecnt      (reg_bytecnt), 
-      .read_data        (read_data), 
-      .write_data       (write_data),
-      .reg_read         (reg_read), 
-      .reg_write        (reg_write), 
-      .reg_addrvalid    (reg_addrvalid),
+      .reset_i                  (reset_i), 
+      .cwusb_clk                (clk_usb_buf), 
+      .reg_address              (reg_address), 
+      .reg_bytecnt              (reg_bytecnt), 
+      .read_data                (read_data_pw), 
+      .write_data               (write_data),
+      .reg_read                 (reg_read), 
+      .reg_write                (reg_write), 
+      .reg_addrvalid            (reg_addrvalid),
 
       // FE:
       .fe_clk                   (clk_fe_buf),
-      .I_fe_capture_data        (fe_capture_data),
       .I_fe_capture_stat        (fe_capture_stat),
-      .I_fe_capture_cmd         (fe_capture_cmd),
-      .I_fe_capture_time        (fe_capture_time),
-      .I_fe_capture_data_wr     (fe_capture_data_wr),
-      .I_fe_capturing           (capturing),
-
       .O_timestamps_disable     (timestamps_disable),
+      .O_arm                    (arm),
+      .O_reg_arm                (reg_arm),
+      .O_reg_arm_feclk          (reg_arm_feclk),
       .O_capture_len            (capture_len),
-      .O_fifo_full              (fifo_full),
-      .O_fifo_overflow_blocked  (fifo_overflow_blocked),
+      .I_flushing               (fifo_flush),
 
       // Trigger:
       .O_capture_delay          (capture_delay),
@@ -259,7 +298,6 @@ module phywhisperer_top(
       .O_num_triggers           (num_triggers),
 
       // PM:
-      .O_arm                    (arm),
       .O_pattern                (pattern),
       .O_pattern_mask           (pattern_mask),
       .O_pattern_bytes          (pattern_bytes),
@@ -284,18 +322,38 @@ module phywhisperer_top(
    );
 
 
+   fifo U_fifo (
+      .reset_i                  (reset_i),
+      .cwusb_clk                (clk_usb_buf),
+      .fe_clk                   (clk_fe_buf),
+
+      .O_fifo_full              (fifo_full),
+      .O_fifo_overflow_blocked  (fifo_overflow_blocked),
+      .I_data                   (fifo_in_data),
+      .I_wr                     (fifo_wr),
+
+      .I_fifo_read              (fifo_read),
+      .I_fifo_flush             (fifo_flush),
+      .I_clear_read_flags       (reg_arm),
+      .I_clear_write_flags      (reg_arm_feclk),
+
+      .O_data                   (fifo_out_data),
+      .O_fifo_status            (fifo_status),
+      .O_fifo_write_allowed     (fifo_write_allowed),
+      .O_fifo_empty             (fifo_empty),
+
+      .I_custom_fifo_stat_flag  (capture_done)
+   );
+
+
    fe_capture #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
    ) U_fe_capture (
       .reset_i                  (reset_i), 
+      .cwusb_clk                (clk_usb_buf),
       .fe_clk                   (clk_fe_buf), 
-      .I_arm                    (arm),
-      .I_timestamps_disable     (timestamps_disable),
-      .I_capture_len            (capture_len),
-      .I_fifo_full              (fifo_full),
-      .I_fifo_overflow_blocked  (fifo_overflow_blocked),
       .fe_data                  (fe_data),
       .fe_rxvalid               (fe_rxvalid),
       .fe_rxactive              (fe_rxactive),
@@ -303,11 +361,22 @@ module phywhisperer_top(
       .fe_sessvld               (fe_sessvld ),
       .fe_vbusvld               (fe_vbusvld ),
       .fe_sessend               (fe_sessend ),
-      .O_time                   (fe_capture_time),
-      .O_data                   (fe_capture_data),
-      .O_status                 (fe_capture_stat),
-      .O_command                (fe_capture_cmd),
-      .O_data_wr                (fe_capture_data_wr),
+
+      .I_arm                    (arm),
+      .I_reg_arm                (reg_arm),
+      .I_timestamps_disable     (timestamps_disable),
+      .I_capture_len            (capture_len),
+      .O_capture_done           (capture_done),
+      .O_fifo_fe_status         (fe_capture_stat),
+
+      .O_fifo_data              (fifo_in_data),
+      .O_fifo_wr                (fifo_wr),
+      .O_fifo_flush             (fifo_flush),
+      .I_fifo_full              (fifo_full),
+      .I_fifo_overflow_blocked  (fifo_overflow_blocked),
+      .I_fifo_empty             (fifo_empty),
+      .I_fifo_write_allowed     (fifo_write_allowed),
+
       .O_pm_data                (fe_capture_pm_data),
       .O_pm_wr                  (fe_capture_pm_wr),
       .O_capturing              (capturing),

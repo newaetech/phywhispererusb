@@ -8,7 +8,7 @@
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Register block for PW-USB frontend.
 // 
 // Dependencies: 
 // 
@@ -38,66 +38,64 @@ module reg_pw #(
 )(
    input  wire         reset_i,
 
-// Interface to reg_main_cwlite:
-   input  wire         cwusb_clk,
-   input  wire [5:0]   reg_address,  // Address of register
-   input  wire [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
-   output reg  [7:0]   read_data,    //
-   input  wire [7:0]   write_data,   //
-   input  wire         reg_read,     // Read flag. One clock cycle AFTER this flag is high
-                                     // valid data must be present on the read_data bus
-   input  wire         reg_write,    // Write flag. When high on rising edge valid data is
-                                     // present on write_data
-   input  wire         reg_addrvalid,// Address valid flag
+// Interface to usb_reg_main:
+   input  wire                                  cwusb_clk,
+   input  wire [5:0]                            reg_address,  // Address of register
+   input  wire [pBYTECNT_SIZE-1:0]              reg_bytecnt,  // Current byte count
+   output wire [7:0]                            read_data,    //
+   input  wire [7:0]                            write_data,   //
+   input  wire                                  reg_read,     // Read flag. One clock cycle AFTER this flag is high
+                                                              // valid data must be present on the read_data bus
+   input  wire                                  reg_write,    // Write flag. When high on rising edge valid data is
+                                                              // present on write_data
+   input  wire                                  reg_addrvalid,// Address valid flag
 
 // Interface to front end capture:
-   input  wire         fe_clk,
-   output wire         O_timestamps_disable,
-   output wire         O_arm,
-   output wire [pCAPTURE_LEN_WIDTH-1:0]  O_capture_len,
-   output wire         O_fifo_full,
-   output wire         O_fifo_overflow_blocked,
-   input  wire         [pTIMESTAMP_FULL_WIDTH-1:0] I_fe_capture_time,
-   input  wire [7:0]   I_fe_capture_data,
-   input  wire [4:0]   I_fe_capture_stat,
-   input  wire [1:0]   I_fe_capture_cmd,
-   input  wire         I_fe_capture_data_wr,
-   input  wire         I_fe_capturing,
+   input  wire                                  fe_clk,
+   output wire                                  O_timestamps_disable,
+   output wire                                  O_arm,
+   output wire                                  O_reg_arm,
+   output wire                                  O_reg_arm_feclk,
+   output wire [pCAPTURE_LEN_WIDTH-1:0]         O_capture_len,
+   input  wire [4:0]                            I_fe_capture_stat,
+   input  wire                                  I_flushing,
 
 // Interface to pattern matcher:
-   output wire         [8*pPATTERN_BYTES-1:0] O_pattern,
-   output wire         [8*pPATTERN_BYTES-1:0] O_pattern_mask,
-   output wire         [7:0] O_pattern_bytes,
+   output wire         [8*pPATTERN_BYTES-1:0]   O_pattern,
+   output wire         [8*pPATTERN_BYTES-1:0]   O_pattern_mask,
+   output wire         [7:0]                    O_pattern_bytes,
 
 // Interface to trigger generator:
-   output wire [pALL_TRIGGER_DELAY_WIDTHS-1:0] O_trigger_delay,
-   output wire [pALL_TRIGGER_WIDTH_WIDTHS-1:0] O_trigger_width,
-   output wire [pCAPTURE_DELAY_WIDTH-1:0] O_capture_delay,
-   output wire [pNUM_TRIGGER_WIDTH-1:0] O_num_triggers,
-   output wire         O_trigger_enable,
-   input  wire         I_capture_enable_pulse,
+   output wire [pALL_TRIGGER_DELAY_WIDTHS-1:0]  O_trigger_delay,
+   output wire [pALL_TRIGGER_WIDTH_WIDTHS-1:0]  O_trigger_width,
+   output wire [pCAPTURE_DELAY_WIDTH-1:0]       O_capture_delay,
+   output wire [pNUM_TRIGGER_WIDTH-1:0]         O_num_triggers,
+   output wire                                  O_trigger_enable,
+   input  wire                                  I_capture_enable_pulse,
 
 // Interface to USB autodetect:
-   output reg  O_usb_auto_restart,
-   output wire [pUSB_AUTO_COUNTER_WIDTH-1:0] O_usb_auto_wait1,
-   output wire [pUSB_AUTO_COUNTER_WIDTH-1:0] O_usb_auto_wait2,
-   input  wire [1:0] I_usb_auto_speed,
+   output reg                                   O_usb_auto_restart,
+   output wire [pUSB_AUTO_COUNTER_WIDTH-1:0]    O_usb_auto_wait1,
+   output wire [pUSB_AUTO_COUNTER_WIDTH-1:0]    O_usb_auto_wait2,
+   input  wire [1:0]                            I_usb_auto_speed,
 
 // Interface to trigger clock phase shift:
-   output reg  O_psincdec,
-   output reg  O_psen,
-   input  wire I_psdone,  
+   output reg                                   O_psincdec,
+   output reg                                   O_psen,
+   input  wire                                  I_psdone,  
 
 // To top-level:
-   output wire [1:0] O_usb_speed,
-   output wire [1:0] O_usb_xcvrsel_auto,
-   output wire O_usb_termsel_auto
+   output wire [1:0]                            O_usb_speed,
+   output wire [1:0]                            O_usb_xcvrsel_auto,
+   output wire                                  O_usb_termsel_auto
 
 );
 
 
    reg reg_arm;
    reg reg_arm_r;
+   reg reg_arm_feclk;
+   reg reg_arm_feclk_r;
    reg reg_timestamps_disable;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
@@ -123,35 +121,14 @@ module reg_pw #(
    reg [2:0] reg_usb_auto_defaults;
    (* ASYNC_REG = "TRUE" *) reg [1:0] usb_speed_auto;
 
-   wire sniff_fifo_full;
-   wire sniff_fifo_empty;
-   reg  sniff_fifo_overflow_blocked;
-   wire sniff_fifo_underflow;
-   reg  sniff_fifo_underflow_sticky;
-   reg  sniff_fifo_wr_en;
-   wire sniff_fifo_rd_en;
-   reg  [17:0] sniff_fifo_din;
-   wire [17:0] sniff_fifo_dout;
-   reg  [17:0] fifo_read_data;
-   wire sniff_fifo_empty_threshold_xilinx;
-   wire sniff_fifo_empty_threshold;
-   wire sniff_fifo_full_threshold_xilinx;
-   wire fifo_read_condition;
-   wire fifo_flush_condition;
-   wire capture_done;
-
    reg  [7:0] reg_read_data;
-   reg  flushing;
-   wire [5:0] fifo_status;
-   reg  empty_fifo_read;
-   reg  sniff_fifo_empty_r;
 
    reg  phaseshift_active;
 
-   wire [31:0] buildtime;
    wire capture_enable_pulse;
 
-   assign O_arm = reg_arm_r & ~flushing;
+   assign O_arm = reg_arm_r & ~I_flushing;
+   assign O_reg_arm = reg_arm;
    assign O_timestamps_disable = reg_timestamps_disable;
    assign O_pattern = reg_pattern;
    assign O_pattern_mask = reg_pattern_mask;
@@ -177,9 +154,7 @@ module reg_pw #(
             `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
             `REG_TRIGGER_ENABLE: reg_read_data <= reg_trigger_enable;
             `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
-            `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, fifo_status};
             `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
-            `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
             `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
             `REG_STAT_MATCH: reg_read_data <= reg_stat_matched[reg_bytecnt*8 +: 8];
             `REG_TIMESTAMPS_DISABLE: reg_read_data <= reg_timestamps_disable;
@@ -195,31 +170,10 @@ module reg_pw #(
          endcase
       end
       else
-         reg_read_data <= 8'b0;
+         reg_read_data <= 8'h0;
    end
 
-
-   // MUX read output between registers and FIFO output:
-   always @(*) begin
-      if (empty_fifo_read) begin
-         fifo_read_data = 0; // prevent uninentional latch inference
-         fifo_read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] = `FE_FIFO_CMD_STRM;
-         fifo_read_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] = `FE_FIFO_STRM_EMPTY;
-      end
-      else
-         fifo_read_data = sniff_fifo_dout;
-      
-      if (reg_address == `REG_SNIFF_FIFO_RD) begin
-         case (reg_bytecnt % 4)
-            0: read_data = fifo_read_data[7:0];
-            1: read_data = fifo_read_data[15:8];
-            2: read_data = {fifo_status, fifo_read_data[17:16]};
-            default: read_data = 0;
-         endcase
-      end
-      else
-         read_data = reg_read_data;
-   end
+   assign read_data = reg_read_data;
 
 
    // write logic (USB clock domain):
@@ -303,36 +257,7 @@ module reg_pw #(
       end
    end
 
-   reg reg_arm_feclk;
-   reg reg_arm_feclk_r;
    (* ASYNC_REG = "TRUE" *) reg  [1:0] reg_arm_pipe;
-
-   reg sniff_fifo_full_usbclk;
-   reg sniff_fifo_overflow_blocked_usbclk;
-   reg capturing;
-   (* ASYNC_REG = "TRUE" *) reg [1:0] sniff_fifo_full_pipe;
-   (* ASYNC_REG = "TRUE" *) reg [1:0] sniff_fifo_overflow_blocked_pipe;
-   (* ASYNC_REG = "TRUE" *) reg [1:0] capturing_pipe;
-
-
-   // CDC:
-   always @(posedge cwusb_clk) begin
-      if (reset_i) begin
-         sniff_fifo_full_usbclk <= 0;
-         sniff_fifo_overflow_blocked_usbclk <= 0;
-         capturing <= 0;
-         sniff_fifo_full_pipe <= 0;
-         sniff_fifo_overflow_blocked_pipe <= 0;
-         capturing_pipe <= 0;
-         usb_speed_auto <= 0;
-      end
-      else begin
-         usb_speed_auto <= I_usb_auto_speed;
-         {capturing, capturing_pipe} <= {capturing_pipe, I_fe_capturing};
-         {sniff_fifo_full_usbclk, sniff_fifo_full_pipe} <= {sniff_fifo_full_pipe, sniff_fifo_full};
-         {sniff_fifo_overflow_blocked_usbclk, sniff_fifo_overflow_blocked_pipe} <= {sniff_fifo_overflow_blocked_pipe, sniff_fifo_overflow_blocked};
-      end
-   end
 
    cdc_pulse U_match_cdc (
       .reset_i       (reset_i),
@@ -359,11 +284,14 @@ module reg_pw #(
          stat_mask <= 0;
          stat_match <= 0;
          stat_match_captured <= 0;
+         reg_arm_feclk <= 0;
+         reg_arm_pipe <= 0;
       end
       else begin
          // CDC:
          stat_pattern <= reg_stat_pattern[4:0];
          stat_mask <= reg_stat_pattern[9:5];
+         {reg_arm_feclk_r, reg_arm_feclk, reg_arm_pipe} <= {reg_arm_feclk, reg_arm_pipe, reg_arm};
 
          // reset stat match upon arming:
          if (reg_arm_feclk && ~reg_arm_feclk_r || stat_match_update_pulse_fe)
@@ -379,134 +307,17 @@ module reg_pw #(
    assign reg_stat_matched = {3'b0, stat_match, 7'b0, stat_match_captured};
 
 
-
-   // FIFO write logic.
-   // note: could maybe get away with combinatorial logic here?
-   always @(posedge fe_clk) begin
-      if (reset_i) begin
-         sniff_fifo_wr_en <= 1'b0;
-         sniff_fifo_din <= 0;
-         sniff_fifo_overflow_blocked <= 1'b0;
-         reg_arm_feclk <= 0;
-         reg_arm_pipe <= 0;
-      end
-      else begin
-         // CDC:
-         {reg_arm_feclk_r, reg_arm_feclk, reg_arm_pipe} <= {reg_arm_feclk, reg_arm_pipe, reg_arm};
-
-         // don't overflow the FIFO:
-         // Because back-to-back writes are possible, checking sniff_fifo_full may not prevent overflow,
-         // and so the last few FIFO entries are wasted :-(
-         if (I_fe_capture_data_wr & !sniff_fifo_full_threshold_xilinx) begin
-            sniff_fifo_wr_en <= 1'b1;
-            sniff_fifo_din[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] <= I_fe_capture_cmd;
-            case (I_fe_capture_cmd)
-               `FE_FIFO_CMD_DATA: begin
-                  sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
-                  sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= I_fe_capture_data;
-                  sniff_fifo_din[`FE_FIFO_USB_STATUS_BITS_START +: `FE_FIFO_USB_STATUS_BITS_LEN] <= I_fe_capture_stat;
-               end
-               `FE_FIFO_CMD_STAT: begin
-                  sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= I_fe_capture_time[`FE_FIFO_SHORTTIME_LEN-1:0];
-                  sniff_fifo_din[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= 8'd0;
-                  sniff_fifo_din[`FE_FIFO_USB_STATUS_BITS_START +: `FE_FIFO_USB_STATUS_BITS_LEN] <= I_fe_capture_stat;
-               end
-               `FE_FIFO_CMD_TIME: begin
-                  sniff_fifo_din[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN] <= I_fe_capture_time;
-               end
-            endcase
-         end
-         else
-            sniff_fifo_wr_en <= 1'b0;
-
-         // if a write WOULD have overflowed the FIFO, log it:
-         if (I_fe_capture_data_wr & sniff_fifo_full_threshold_xilinx)
-            sniff_fifo_overflow_blocked <= 1'b1;
-         else if (reg_arm_feclk)
-            sniff_fifo_overflow_blocked <= 1'b0;
-
-      end
-   end
-
-   // FIFO read logic:
-   // perform a FIFO read on first read access to FIFO register, or when flushing:
-   assign fifo_read_condition = reg_addrvalid && reg_read && ~sniff_fifo_empty_r &&
-                               (reg_address == `REG_SNIFF_FIFO_RD) &&
-                              ((reg_bytecnt % 4) == 0) && ~empty_fifo_read;
-   assign fifo_flush_condition = (flushing & ~sniff_fifo_empty);
-   assign sniff_fifo_rd_en = fifo_read_condition || fifo_flush_condition;
-
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
-         sniff_fifo_underflow_sticky <= 1'b0;
-         empty_fifo_read <= 1'b0;
-         sniff_fifo_empty_r <= 1'b0;
-      end
-      else begin
-         // Xilinx FIFO underflow flag isn't sticky, so create our own:
-         if (sniff_fifo_underflow)
-            sniff_fifo_underflow_sticky <= 1'b1;
-         else if (reg_arm)
-            sniff_fifo_underflow_sticky <= 1'b0;
-
-         sniff_fifo_empty_r <= sniff_fifo_empty;
-         if (reg_addrvalid && reg_read && (reg_address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && sniff_fifo_empty_r)
-            empty_fifo_read <= 1'b1;
-         // NOTE: this works because the 4th byte of a FIFO read is dummy data; it
-         // will have to be tweaked if the 4th byte contains valid data 
-         else if (reg_addrvalid && reg_read && (reg_address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 3) && ~sniff_fifo_empty_r)
-            empty_fifo_read <= 1'b0;
-
-      end
-   end
-
-   always @(posedge cwusb_clk) begin
-      if (reset_i) begin
-         flushing <= 1'b0;
          reg_arm_r <= 1'b0;
       end
       else begin
          reg_arm_r <= reg_arm;
-         if (sniff_fifo_empty)
-            flushing <= 1'b0;
-         else if (reg_arm & ~flushing)
-            flushing <= 1'b1;
       end
    end
 
-   fifo_generator_0 U_sniff_fifo (
-     .rst            (reset_i),
 
-     // Write port:
-     .wr_clk         (fe_clk),
-     .wr_en          (sniff_fifo_wr_en),
-     .din            (sniff_fifo_din),
-     .full           (sniff_fifo_full),
-     .prog_full      (sniff_fifo_full_threshold_xilinx),
-
-     // Read port:
-     .rd_clk         (cwusb_clk),
-     .rd_en          (sniff_fifo_rd_en),
-     .dout           (sniff_fifo_dout),
-     .underflow      (sniff_fifo_underflow),
-     .empty          (sniff_fifo_empty),
-     .prog_empty     (sniff_fifo_empty_threshold_xilinx)
-   );
-
-   // these definitions are more useful:
-   assign sniff_fifo_empty_threshold = sniff_fifo_empty_threshold_xilinx & !sniff_fifo_empty;
-   assign capture_done = ~(reg_arm || capturing);
-
-   assign O_fifo_full = sniff_fifo_full;
-   assign O_fifo_overflow_blocked = sniff_fifo_overflow_blocked;
-   assign fifo_status[`FIFO_STAT_EMPTY] = sniff_fifo_empty;
-   assign fifo_status[`FIFO_STAT_UNDERFLOW] = sniff_fifo_underflow_sticky;
-   assign fifo_status[`FIFO_STAT_EMPTY_THRESHOLD] = sniff_fifo_empty_threshold;
-   assign fifo_status[`FIFO_STAT_FULL] = sniff_fifo_full_usbclk;
-   assign fifo_status[`FIFO_STAT_OVERFLOW_BLOCKED] = sniff_fifo_overflow_blocked_usbclk;
-   assign fifo_status[`FIFO_STAT_CAPTURE_DONE] = capture_done;
-
-
+   // TODO: sort out these ILAs
    `ifdef ILA_REG
        wire [63:0] ila_probe;
        assign ila_probe[5:0] = reg_address;
@@ -550,17 +361,6 @@ module reg_pw #(
 
 
    `endif
-
-   `ifndef __ICARUS__
-      USR_ACCESSE2 U_buildtime (
-         .CFGCLK(),
-         .DATA(buildtime),
-         .DATAVALID()
-      );
-   `else
-      assign buildtime = 0;
-   `endif
-
 
 
 endmodule

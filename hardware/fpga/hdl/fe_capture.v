@@ -27,8 +27,10 @@ module fe_capture #(
     parameter pTIMESTAMP_SHORT_WIDTH = 3,
     parameter pCAPTURE_LEN_WIDTH = 24
 )(
-    /* FRONT END CONNECTIONS */
+    input  wire cwusb_clk,
     input  wire reset_i,
+
+    /* FRONT END CONNECTIONS */
     input  wire fe_clk,
     input  wire [7:0] fe_data,
     input  wire fe_rxvalid,
@@ -41,15 +43,22 @@ module fe_capture #(
     /* REGISTER CONNECTIONS */
     input  wire I_timestamps_disable,
     input  wire I_arm,
+    input  wire I_reg_arm, // TODO: yes this is confusing but there are two different arms..
+                           // maybe there's a better way?
     input  wire [pCAPTURE_LEN_WIDTH-1:0] I_capture_len,
-    input  wire I_fifo_full,
-    input  wire I_fifo_overflow_blocked,
-    output reg  [1:0] O_command,
-    output reg  [pTIMESTAMP_FULL_WIDTH-1:0] O_time,
-    output wire [7:0] O_data,
-    output wire [4:0] O_status,
-    output reg  O_data_wr,
+    output wire [4:0] O_fifo_fe_status,
 
+    /* FIFO CONNECTIONS */
+    output reg [17:0] O_fifo_data,
+    output reg  O_fifo_wr,
+    output reg  O_fifo_flush,
+    output wire O_capture_done,
+    input  wire I_fifo_overflow_blocked,
+    input  wire I_fifo_write_allowed,
+    input  wire I_fifo_empty,
+    input  wire I_fifo_full,
+
+    /* PATTERN MATCHER CONNECTIONS */
     output reg  [7:0] O_pm_data,
     output reg  O_pm_wr,
 
@@ -62,6 +71,7 @@ module fe_capture #(
 
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_ctr;
     reg  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp;
+
 
     reg [1:0] state, next_state, state_r, state_r2;
     localparam pS_IDLE = 0;
@@ -90,10 +100,20 @@ module fe_capture #(
 
     (* ASYNC_REG = "TRUE" *) reg [pCAPTURE_LEN_WIDTH-1:0] capture_len_r;
     (* ASYNC_REG = "TRUE" *) reg timestamps_disable_r;
-    (* ASYNC_REG = "TRUE" *) reg  [1:0] arm_pipe;
+    (* ASYNC_REG = "TRUE" *) reg [1:0] arm_pipe;
+    (* ASYNC_REG = "TRUE" *) reg [1:0] capturing_pipe;
     reg  arm_r;
     reg  arm_r2;
+    reg  capturing;
 
+    reg  [1:0] fifo_command;
+    reg  [pTIMESTAMP_FULL_WIDTH-1:0] fifo_time;
+    reg  fifo_wr;
+    wire [7:0] fifo_data;
+    wire [4:0] fifo_fe_status;
+
+    assign O_fifo_fe_status = fifo_fe_status;
+    
 
     assign fe_status_bits[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_USB_STATUS_BITS_START] = fe_rxactive;
     assign fe_status_bits[`FE_FIFO_RXERROR_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_rxerror;
@@ -225,36 +245,36 @@ module fe_capture #(
     // note: could possibly save a stage of buffering on input data by using next_state instead of state?
     always @ (posedge fe_clk) begin
        if (reset_i) begin
-          O_command <= 2'd0;
-          O_data_wr <= 1'b0;
+          fifo_command <= 2'd0;
+          fifo_wr <= 1'b0;
        end
        else begin
           if (state == pS_DATA) begin
-             O_command <= fe_rxvalid_reg2? `FE_FIFO_CMD_DATA : `FE_FIFO_CMD_STAT;
-             O_data_wr <= 1'b1;
+             fifo_command <= fe_rxvalid_reg2? `FE_FIFO_CMD_DATA : `FE_FIFO_CMD_STAT;
+             fifo_wr <= 1'b1;
           end
           else if (state == pS_TIME) begin
-             O_command <= `FE_FIFO_CMD_TIME;
-             O_data_wr <= 1'b1;
+             fifo_command <= `FE_FIFO_CMD_TIME;
+             fifo_wr <= 1'b1;
           end
           else begin
-             O_data_wr <= 1'b0;
+             fifo_wr <= 1'b0;
           end
        end
     end
 
     always @(*) begin
        if (state_r == pS_TIME)
-          O_time = timestamp;
+          fifo_time = timestamp;
        else if (state_r2 == pS_TIME)
-          O_time = 0;
+          fifo_time = 0;
        else
-          O_time = timestamp_reg;
+          fifo_time = timestamp_reg;
     end
 
     // note: it may be possible to tweak the FSM timing to avoid needing 3 sync stages?
-    assign O_data = fe_data_reg3;
-    assign O_status = fe_status_bits_reg3;
+    assign fifo_data = fe_data_reg3;
+    assign fifo_fe_status = fe_status_bits_reg3;
 
 
     // data output to pattern matcher;
@@ -282,7 +302,7 @@ module fe_capture #(
        else begin
           if (arm_r & !arm_r2)
              capture_count <= 24'd0;
-          else if (O_data_wr)
+          else if (fifo_wr)
              capture_count <= capture_count + 1;
        end
     end
@@ -291,6 +311,20 @@ module fe_capture #(
 
     assign capture_allowed = I_capture_enable & ((capture_count < capture_len_r) || (capture_len_r == 0)) & 
                             !I_fifo_full & !I_fifo_overflow_blocked;
+
+
+   // CDC:
+   always @(posedge cwusb_clk) begin
+      if (reset_i) begin
+         capturing <= 0;
+         capturing_pipe <= 0;
+      end
+      else begin
+         {capturing, capturing_pipe} <= {capturing_pipe, capture_allowed};
+      end
+   end
+
+   assign O_capture_done = ~(I_reg_arm || capturing);
 
     // strictly for easier visualization/debug:
     wire state_idle = (state == pS_IDLE);
@@ -312,6 +346,58 @@ module fe_capture #(
          {arm_r2, arm_r, arm_pipe} <= {arm_r, arm_pipe, I_arm};
       end
    end
+
+   // FIFO write logic.
+   // note: could maybe get away with combinatorial logic here?
+   // TODO-later: move to FE-specific block
+   always @(posedge fe_clk) begin
+      if (reset_i) begin
+         O_fifo_wr <= 1'b0;
+         O_fifo_data <= 0;
+      end
+      else begin
+         // don't overflow the FIFO:
+         // Because back-to-back writes are possible, checking sniff_fifo_full may not prevent overflow,
+         // and so the last few FIFO entries are wasted :-(
+         if (fifo_wr & I_fifo_write_allowed) begin
+            O_fifo_wr <= 1'b1;
+            O_fifo_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] <= fifo_command;
+            case (fifo_command)
+               `FE_FIFO_CMD_DATA: begin
+                  O_fifo_data[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= fifo_time[`FE_FIFO_SHORTTIME_LEN-1:0];
+                  O_fifo_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= fifo_data;
+                  O_fifo_data[`FE_FIFO_USB_STATUS_BITS_START +: `FE_FIFO_USB_STATUS_BITS_LEN] <= fifo_fe_status;
+               end
+               `FE_FIFO_CMD_STAT: begin
+                  O_fifo_data[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN] <= fifo_time[`FE_FIFO_SHORTTIME_LEN-1:0];
+                  O_fifo_data[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] <= 8'd0;
+                  O_fifo_data[`FE_FIFO_USB_STATUS_BITS_START +: `FE_FIFO_USB_STATUS_BITS_LEN] <= fifo_fe_status;
+               end
+               `FE_FIFO_CMD_TIME: begin
+                  O_fifo_data[`FE_FIFO_TIME_START +: `FE_FIFO_FULLTIME_LEN] <= fifo_time;
+               end
+            endcase
+         end
+         else
+            O_fifo_wr <= 1'b0;
+      end
+   end
+
+
+   // TODO-later: move to FE-specific block
+   always @(posedge cwusb_clk) begin
+      if (reset_i) begin
+         O_fifo_flush <= 1'b0;
+      end
+      else begin
+         if (I_fifo_empty)
+            O_fifo_flush <= 1'b0;
+         else if (I_reg_arm & ~O_fifo_flush)
+            O_fifo_flush <= 1'b1;
+      end
+   end
+
+
 
 
 endmodule

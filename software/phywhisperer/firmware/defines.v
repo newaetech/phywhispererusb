@@ -39,6 +39,7 @@
 `define REG_STAT_PATTERN             6'h13
 `define REG_STAT_MATCH               6'h14
 `define REG_NUM_TRIGGERS             6'h15
+`define REG_FE_SELECT                6'h16
 
 
 // FIFO bitfields:
@@ -84,6 +85,7 @@
 `define FIFO_STAT_FULL 3
 `define FIFO_STAT_OVERFLOW_BLOCKED 4
 `define FIFO_STAT_CAPTURE_DONE 5
+`define FIFO_STAT_CUSTOM_FLAG 5
 
 // and this is where those FIFO status bits show up in the FIFO read,
 // as opposed to register read:
@@ -102,4 +104,8 @@
 `define USB_SPEED_LS 1
 `define USB_SPEED_FS 2
 `define USB_SPEED_HS 3
+
+// front end select definitions
+`define FE_SELECT_WIDTH 2
+`define FE_USB 0
 
