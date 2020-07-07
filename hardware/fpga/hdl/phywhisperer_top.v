@@ -126,9 +126,6 @@ module phywhisperer_top(
    wire [pTIMESTAMP_FULL_WIDTH-1:0] fe_capture_time;
    wire fe_capture_data_wr;
 
-   wire [7:0] fe_capture_pm_data;
-   wire fe_capture_pm_wr;
-
    wire trigger_clk;
    wire psen;
    wire psincdec;
@@ -377,8 +374,6 @@ module phywhisperer_top(
       .I_fifo_empty             (fifo_empty),
       .I_fifo_write_allowed     (fifo_write_allowed),
 
-      .O_pm_data                (fe_capture_pm_data),
-      .O_pm_wr                  (fe_capture_pm_wr),
       .O_capturing              (capturing),
       .I_capture_enable         (capture_enable)
    );
@@ -506,8 +501,8 @@ module phywhisperer_top(
       .I_pattern        (pattern),
       .I_mask           (pattern_mask),
       .I_pattern_bytes  (pattern_bytes),
-      .I_fe_data        (fe_capture_pm_data),
-      .I_fe_data_valid  (fe_capture_pm_wr),
+      .I_fe_data        (fe_data),
+      .I_fe_data_valid  (fe_rxvalid),
       .I_capturing      (capturing),
       .O_match_trigger  (trigger_match)
    );

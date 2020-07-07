@@ -58,10 +58,6 @@ module fe_capture #(
     input  wire I_fifo_empty,
     input  wire I_fifo_full,
 
-    /* PATTERN MATCHER CONNECTIONS */
-    output reg  [7:0] O_pm_data,
-    output reg  O_pm_wr,
-
     /* PATTERN MATCH CONNECTIONS */
     output wire O_capturing,
 
@@ -115,12 +111,14 @@ module fe_capture #(
     assign O_fifo_fe_status = fifo_fe_status;
     
 
+    // TODO: move!
     assign fe_status_bits[`FE_FIFO_RXACTIVE_BIT - `FE_FIFO_USB_STATUS_BITS_START] = fe_rxactive;
     assign fe_status_bits[`FE_FIFO_RXERROR_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_rxerror;
     assign fe_status_bits[`FE_FIFO_SESSVLD_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_sessvld;
     assign fe_status_bits[`FE_FIFO_SESSEND_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_sessend;
     assign fe_status_bits[`FE_FIFO_VBUSVLD_BIT  - `FE_FIFO_USB_STATUS_BITS_START] = fe_vbusvld;
 
+    // TODO: move; here it should be a generic "capture" and "pre-capture" input
     assign usb_event = fe_rxvalid || (fe_status_bits != fe_status_bits_reg);
 
     assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr < 2**`FE_FIFO_SHORTTIME_LEN);
@@ -276,24 +274,6 @@ module fe_capture #(
     assign fifo_data = fe_data_reg3;
     assign fifo_fe_status = fe_status_bits_reg3;
 
-
-    // data output to pattern matcher;
-    always @ (posedge fe_clk) begin
-       if (reset_i) begin
-          O_pm_data <= 8'd0;
-          O_pm_wr <= 1'b0;
-       end
-       else begin
-          if (fe_rxvalid) begin
-             O_pm_data <= fe_data;
-             O_pm_wr <= 1'b1;
-          end
-          else begin
-             O_pm_wr <= 1'b0;
-          end
-       end
-    end
-
     // manage capture mode:
     always @ (posedge fe_clk) begin
        if (reset_i) begin
@@ -309,6 +289,7 @@ module fe_capture #(
 
     assign O_capturing = capture_allowed;
 
+    // TODO: move logic to FE-specific
     assign capture_allowed = I_capture_enable & ((capture_count < capture_len_r) || (capture_len_r == 0)) & 
                             !I_fifo_full & !I_fifo_overflow_blocked;
 
@@ -384,7 +365,7 @@ module fe_capture #(
    end
 
 
-   // TODO-later: move to FE-specific block
+   // TODO-later: move to FE-specific block(?)
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
          O_fifo_flush <= 1'b0;
