@@ -174,6 +174,11 @@ module phywhisperer_top(
    wire fifo_empty;
    wire capture_done;
 
+   wire fe_event;
+   wire [1:0] fe_data_cmd;
+   wire [pTIMESTAMP_FULL_WIDTH-1:0] fe_time;
+   wire [1:0] fe_command;
+   wire fe_fifo_wr;
 
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
@@ -343,11 +348,42 @@ module phywhisperer_top(
    );
 
 
-   fe_capture #(
+   fe_capture_main #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
-   ) U_fe_capture (
+   ) U_fe_capture_main (
+      .reset_i                  (reset_i), 
+      .cwusb_clk                (clk_usb_buf),
+      .fe_clk                   (clk_fe_buf), 
+
+      .I_timestamps_disable     (timestamps_disable),
+      .I_arm                    (arm),
+      .I_reg_arm                (reg_arm),
+      .I_capture_len            (capture_len),
+
+      .I_event                  (fe_event),
+      .I_data_cmd               (fe_data_cmd),
+      .O_fifo_time              (fe_time),
+      .O_fifo_command           (fe_command),
+      .O_fifo_wr                (fe_fifo_wr),
+
+      .O_fifo_flush             (fifo_flush),
+      .O_capture_done           (capture_done),
+      .I_fifo_overflow_blocked  (fifo_overflow_blocked),
+      .I_fifo_full              (fifo_full),
+      .I_fifo_empty             (fifo_empty),
+
+      .O_capturing              (capturing),
+      .I_capture_enable         (capture_enable)
+   );
+
+
+   fe_capture_usb #(
+      .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
+      .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
+   ) U_fe_capture_usb (
       .reset_i                  (reset_i), 
       .cwusb_clk                (clk_usb_buf),
       .fe_clk                   (clk_fe_buf), 
@@ -359,23 +395,17 @@ module phywhisperer_top(
       .fe_vbusvld               (fe_vbusvld ),
       .fe_sessend               (fe_sessend ),
 
-      .I_arm                    (arm),
-      .I_reg_arm                (reg_arm),
-      .I_timestamps_disable     (timestamps_disable),
-      .I_capture_len            (capture_len),
-      .O_capture_done           (capture_done),
+      .O_event                  (fe_event),
+      .O_data_cmd               (fe_data_cmd),
+      .I_fifo_time              (fe_time),
+      .I_fifo_command           (fe_command),
+      .I_fifo_wr                (fe_fifo_wr),
+
       .O_fifo_fe_status         (fe_capture_stat),
 
       .O_fifo_data              (fifo_in_data),
       .O_fifo_wr                (fifo_wr),
-      .O_fifo_flush             (fifo_flush),
-      .I_fifo_full              (fifo_full),
-      .I_fifo_overflow_blocked  (fifo_overflow_blocked),
-      .I_fifo_empty             (fifo_empty),
-      .I_fifo_write_allowed     (fifo_write_allowed),
-
-      .O_capturing              (capturing),
-      .I_capture_enable         (capture_enable)
+      .I_fifo_write_allowed     (fifo_write_allowed)
    );
 
 

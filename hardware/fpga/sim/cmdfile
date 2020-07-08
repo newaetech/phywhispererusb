@@ -4,7 +4,8 @@ tb_pw.v
 ../hdl/reg_main.v 
 ../hdl/reg_pw.v 
 ../hdl/fifo.v 
-../hdl/fe_capture.v
+../hdl/fe_capture_main.v
+../hdl/fe_capture_usb.v
 ../hdl/pw_trigger.v
 ../hdl/pw_pattern_matcher.v
 ../hdl/usb_autodetect.v
