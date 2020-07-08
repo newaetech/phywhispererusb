@@ -21,7 +21,7 @@
 
 `default_nettype none
 `timescale 1ns / 1ps
-`include "defines.v"
+`include "defines_pw.v"
 
 module reg_main #(
    parameter pBYTECNT_SIZE = 7
@@ -31,7 +31,7 @@ module reg_main #(
 
 // Interface to usb_reg_main:
    input  wire         cwusb_clk,
-   input  wire [5:0]   reg_address,  // Address of register
+   input  wire [7:0]   reg_address,  // Address of register
    input  wire [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    output reg  [7:0]   read_data,    //
    input  wire [7:0]   write_data,   //
@@ -50,7 +50,7 @@ module reg_main #(
 
 // Interface to top-level:
    output reg  [`FE_SELECT_WIDTH-1:0] fe_select,
-   output reg          O_active_read
+   output wire selected
 
 );
 
@@ -60,19 +60,14 @@ module reg_main #(
    reg  fifo_empty_r;
    reg  [17:0] read_data_fifo;
 
+   assign selected = reg_addrvalid & reg_address[7:6] == `MAIN_REG_SELECT;
+   wire [5:0] address = reg_address[5:0];
+
    // read logic:
    always @(posedge cwusb_clk) begin
-      if (reg_addrvalid && reg_read) begin
+      if (selected && reg_read) begin
 
-         if ( (reg_address == `REG_BUILDTIME) ||
-              (reg_address == `REG_SNIFF_FIFO_STAT) ||
-              (reg_address == `REG_SNIFF_FIFO_RD) ||
-              (reg_address == `REG_FE_SELECT) )
-            O_active_read <= 1'b1;
-         else
-            O_active_read <= 1'b0;
-
-         case (reg_address)
+         case (address)
             `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, I_fifo_status};
             `REG_FE_SELECT: reg_read_data <= fe_select;
@@ -80,14 +75,13 @@ module reg_main #(
 
       end
       else begin
-         O_active_read <= 1'b0;
          reg_read_data <= 8'h0;
       end
    end
 
    // FIFO read logic: perform a FIFO read on first read access to FIFO register:
-   assign O_fifo_read = reg_addrvalid && reg_read && ~fifo_empty_r &&
-                       (reg_address == `REG_SNIFF_FIFO_RD) &&
+   assign O_fifo_read = selected && reg_read && ~fifo_empty_r &&
+                       (address == `REG_SNIFF_FIFO_RD) &&
                       ((reg_bytecnt % 4) == 0) && ~empty_fifo_read;
 
    always @(posedge cwusb_clk) begin
@@ -97,11 +91,11 @@ module reg_main #(
       end
       else begin
          fifo_empty_r <= I_fifo_empty;
-         if (reg_addrvalid && reg_read && (reg_address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && fifo_empty_r)
+         if (selected && reg_read && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && fifo_empty_r)
             empty_fifo_read <= 1'b1;
          // NOTE: this works because the 4th byte of a FIFO read is dummy data; it
          // will have to be tweaked if the 4th byte contains valid data 
-         else if (reg_addrvalid && reg_read && (reg_address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 3) && ~fifo_empty_r)
+         else if (selected && reg_read && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 3) && ~fifo_empty_r)
             empty_fifo_read <= 1'b0;
 
       end
@@ -119,7 +113,7 @@ module reg_main #(
       else
          read_data_fifo = I_fifo_data;
       
-      if (reg_address == `REG_SNIFF_FIFO_RD) begin
+      if (address == `REG_SNIFF_FIFO_RD) begin
          case (reg_bytecnt % 4)
             0: read_data = read_data_fifo[7:0];
             1: read_data = read_data_fifo[15:8];
@@ -138,8 +132,8 @@ module reg_main #(
          fe_select <= `FE_USB;
       end
       else begin
-         if (reg_addrvalid && reg_write) begin
-            case (reg_address)
+         if (selected && reg_write) begin
+            case (address)
                `REG_FE_SELECT: fe_select <= write_data[`FE_SELECT_WIDTH-1:0];
             endcase
          end
@@ -157,7 +151,22 @@ module reg_main #(
       assign buildtime = 0;
    `endif
 
-// TODO: add ILA?
+   `ifdef ILA_REG
+       wire [51:0] ila_probe;
+       assign ila_probe[7:0] = address;
+       assign ila_probe[23:8] = reg_bytecnt;
+       assign ila_probe[31:24] = read_data;
+       assign ila_probe[39:32] = write_data;
+       assign ila_probe[40] = reg_read;
+       assign ila_probe[41] = reg_write;
+       assign ila_probe[42] = reg_addrvalid;
+       assign ila_probe[50:43] = reg_read_data;
+       assign ila_probe[51] = selected;
+
+       ila_2 U_reg_ila (cwusb_clk, ila_probe);
+
+   `endif
+
 
 endmodule
 

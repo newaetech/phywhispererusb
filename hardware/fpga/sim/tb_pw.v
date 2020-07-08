@@ -20,7 +20,8 @@
 
 `timescale 1ns / 1ps
 `default_nettype none
-`include "defines.v"
+`include "defines_pw.v"
+`include "defines_usb.v"
 
 module tb_pw();
 
@@ -226,8 +227,8 @@ module tb_pw();
       pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
-      write_1byte(`REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
-      rw_lots_bytes(`REG_CAPTURE_LEN);
+      write_1byte(`USB_REG_SELECT, `REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_CAPTURE_LEN);
       if (pNO_CAPTURE_LIMIT) begin
          write_next_byte(0);
          write_next_byte(0);
@@ -254,7 +255,7 @@ module tb_pw();
          if (pTRIGGER_ENABLE)
             set_trigger();
 
-         write_1byte(`REG_ARM, 8'h01);
+         write_1byte(`USB_REG_SELECT, `REG_ARM, 8'h01);
          armed = 1;
          // give some time for the arm process to complete:
          if (pPRETRIG_BYTES_MIN < 10)
@@ -361,12 +362,12 @@ module tb_pw();
             end
 
             if ( (pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1) )
-               rw_lots_bytes(`REG_SNIFF_FIFO_RD);
+               rw_lots_bytes(`MAIN_REG_SELECT, `REG_SNIFF_FIFO_RD);
 
             for (rx_readindex = 0; rx_readindex < pNUM_EVENTS; rx_readindex = rx_readindex + 1) begin
                if ( !((pREAD_CONCURRENTLY == 0) || (pSTREAM_MODE == 1)) ) begin
                   wait_fifo_not_empty();
-                  rw_lots_bytes(`REG_SNIFF_FIFO_RD);
+                  rw_lots_bytes(`MAIN_REG_SELECT, `REG_SNIFF_FIFO_RD);
                end
 
                read_next_fifo_word();
@@ -427,11 +428,12 @@ module tb_pw();
    assign USB_SPARE0 = reset;
 
    task write_1byte;
-      input [7:0] address;
+      input [1:0] block;
+      input [5:0] address;
       input [7:0] data;
       @(posedge usb_clk);
       USB_SPARE1 = 0;
-      USB_Addr = address;
+      USB_Addr = {block, address};
       @(posedge usb_clk);
       USB_SPARE1 = 1;
       repeat(4) @(posedge usb_clk);
@@ -447,11 +449,12 @@ module tb_pw();
 
 
    task read_1byte;
-      input [7:0] address;
+      input [1:0] block;
+      input [5:0] address;
       output [7:0] data;
       @(posedge usb_clk);
       USB_SPARE1 = 0;
-      USB_Addr = address;
+      USB_Addr = {block, address};
       @(posedge usb_clk);
       USB_SPARE1 = 1;
       repeat(2) @(posedge usb_clk);
@@ -467,10 +470,11 @@ module tb_pw();
    endtask
 
    task rw_lots_bytes;
-      input [7:0] address;
+      input [1:0] block;
+      input [5:0] address;
       @(posedge usb_clk);
       USB_SPARE1 = 0;
-      USB_Addr = address;
+      USB_Addr = {block, address};
       @(posedge usb_clk);
       USB_SPARE1 = 1;
       repeat(2) @(posedge usb_clk);
@@ -563,10 +567,10 @@ module tb_pw();
    task set_trigger;
       int i;
       $display("Programming %0d trigger parameters for iteration #%0d", num_triggers, send_iteration);
-      write_1byte(`REG_NUM_TRIGGERS, num_triggers);
+      write_1byte(`USB_REG_SELECT, `REG_NUM_TRIGGERS, num_triggers);
 
       // trigger delays:
-      rw_lots_bytes(`REG_TRIGGER_DELAY);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_TRIGGER_DELAY);
       for (i = 0; i < num_triggers; i = i + 1) begin
          trigger_delay[i] = $urandom_range(pTRIGGER_DELAY_MIN, pTRIGGER_DELAY_MAX);
          // zero-delay not allowed after first trigger:
@@ -581,13 +585,13 @@ module tb_pw();
 
       // TODO: capture_delay independent of trigger_delay
       capture_delay = trigger_delay[0] >> 2;
-      rw_lots_bytes(`REG_CAPTURE_DELAY);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_CAPTURE_DELAY);
       write_next_byte(capture_delay & 255);
       write_next_byte((capture_delay >> 8) & 255);
       write_next_byte((capture_delay >> 16) & 255);
 
       // trigger widths:
-      rw_lots_bytes(`REG_TRIGGER_WIDTH);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_TRIGGER_WIDTH);
       for (i = 0; i < num_triggers; i = i + 1) begin
          trigger_width[i] = $urandom_range(pTRIGGER_WIDTH_MIN, pTRIGGER_WIDTH_MAX);
          write_next_byte(trigger_width[i] & 255);
@@ -608,7 +612,7 @@ module tb_pw();
       for (i = 0; i < pPATTERN_ACTUAL_SIZE; i = i + 1)
          match_mask[i] = 0;
 
-      rw_lots_bytes(`REG_PATTERN);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_PATTERN);
       for (i = 0; i < pattern_bytes; i = i + 1)
          match_pattern[i] = $urandom;
       for (i = pattern_bytes-1; i >= 0; i = i - 1)
@@ -625,11 +629,11 @@ module tb_pw();
                match_mask[i] = $urandom;
          end
       end
-      rw_lots_bytes(`REG_PATTERN_MASK);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_PATTERN_MASK);
       for (i = pPATTERN_ACTUAL_SIZE-1; i >= 0; i = i - 1)
          write_next_byte(match_mask[i]);
 
-      write_1byte(`REG_PATTERN_BYTES, pattern_bytes);
+      write_1byte(`USB_REG_SELECT, `REG_PATTERN_BYTES, pattern_bytes);
 
       $write("Pattern: ");
       for (i = 0; i < pattern_bytes; i = i + 1)
@@ -648,7 +652,7 @@ module tb_pw();
       //stat_mask = 5'h1f;
       if (pVERBOSE)
          $display("Stat pattern=%h, mask=%h", stat_pattern, stat_mask);
-      rw_lots_bytes(`REG_STAT_PATTERN);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_STAT_PATTERN);
       write_next_byte(stat_pattern);
       write_next_byte(stat_mask);
       if ((last_stat & stat_mask) == (stat_pattern[4:0] & stat_mask[4:0])) begin
@@ -663,7 +667,7 @@ module tb_pw();
 
 
    task check_stat_pattern;
-      rw_lots_bytes(`REG_STAT_MATCH);
+      rw_lots_bytes(`USB_REG_SELECT, `REG_STAT_MATCH);
       read_next_byte(read_data[7:0]);
       read_next_byte(read_data[15:8]);
       if (stat_matched != read_data[0]) begin
@@ -697,16 +701,16 @@ module tb_pw();
    task wait_fifo_empty;
       bit fifo_empty = 0;
       while (fifo_empty == 0) begin
-         read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
+         read_1byte(`MAIN_REG_SELECT, `REG_SNIFF_FIFO_STAT, fifo_empty);
       end
    endtask
 
 
    task wait_fifo_not_empty;
       bit fifo_empty = 1;
-      read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
+      read_1byte(`MAIN_REG_SELECT, `REG_SNIFF_FIFO_STAT, fifo_empty);
       while (fifo_empty == 1) begin
-         read_1byte(`REG_SNIFF_FIFO_STAT, fifo_empty);
+         read_1byte(`MAIN_REG_SELECT, `REG_SNIFF_FIFO_STAT, fifo_empty);
       end
    endtask
 

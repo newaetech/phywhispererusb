@@ -20,7 +20,7 @@
 
 `default_nettype none
 `timescale 1ns / 1ps
-`include "defines.v"
+`include "defines_pw.v"
 
 module fifo (
    input  wire         reset_i,

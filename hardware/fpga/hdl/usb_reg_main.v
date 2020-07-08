@@ -37,7 +37,7 @@ module usb_reg_main #(
    input  wire         cwusb_cen,
 
  /* Interface to registers */
-   output reg  [5:0]   reg_address,  // Address of register
+   output reg  [7:0]   reg_address,  // Address of register
    output reg  [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    output reg  [7:0]   reg_datao,    // Data to write
    input  wire [7:0]   reg_datai,    // Data to read
@@ -86,7 +86,7 @@ module usb_reg_main #(
    //Address valid on rising edge of ALEn, simplify and just latch when ALEn low
    always @(posedge cwusb_clk) begin
       if (cwusb_alen_rs_dly == 1'b0) begin
-         reg_address <= cwusb_addr[5:0];
+         reg_address <= cwusb_addr;
       end
    end
 

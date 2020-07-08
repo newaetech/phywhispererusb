@@ -20,7 +20,8 @@
 
 `default_nettype none
 `timescale 1ns / 1ps
-`include "defines.v"
+`include "defines_pw.v"
+`include "defines_usb.v"
 
 module reg_pw #(
    parameter pTIMESTAMP_FULL_WIDTH = 16,
@@ -40,7 +41,7 @@ module reg_pw #(
 
 // Interface to usb_reg_main:
    input  wire                                  cwusb_clk,
-   input  wire [5:0]                            reg_address,  // Address of register
+   input  wire [7:0]                            reg_address,  // Address of register
    input  wire [pBYTECNT_SIZE-1:0]              reg_bytecnt,  // Current byte count
    output wire [7:0]                            read_data,    //
    input  wire [7:0]                            write_data,   //
@@ -87,7 +88,9 @@ module reg_pw #(
 // To top-level:
    output wire [1:0]                            O_usb_speed,
    output wire [1:0]                            O_usb_xcvrsel_auto,
-   output wire                                  O_usb_termsel_auto
+   output wire                                  O_usb_termsel_auto,
+
+   output wire                                  selected
 
 );
 
@@ -145,10 +148,13 @@ module reg_pw #(
    assign O_usb_auto_wait1 = reg_usb_auto_wait1;
    assign O_usb_auto_wait2 = reg_usb_auto_wait2;
 
+   assign selected = reg_addrvalid & reg_address[7:6] == `USB_REG_SELECT;
+   wire [5:0] address = reg_address[5:0];
+
    // read logic:
    always @(posedge cwusb_clk) begin
-      if (reg_addrvalid && reg_read) begin
-         case (reg_address)
+      if (selected && reg_read) begin
+         case (address)
             `REG_ARM: reg_read_data <= reg_arm;
             `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
             `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
@@ -202,8 +208,8 @@ module reg_pw #(
 
       end
       else begin
-         if (reg_addrvalid && reg_write) begin
-            case (reg_address)
+         if (selected && reg_write) begin
+            case (address)
                `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
                `REG_PATTERN: reg_pattern[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_MASK: reg_pattern_mask[reg_bytecnt*8 +: 8] <= write_data;
@@ -222,19 +228,19 @@ module reg_pw #(
          end
 
          // ARM register is special:
-         if (reg_addrvalid && reg_write && (reg_address == `REG_ARM))
+         if (selected && reg_write && (address == `REG_ARM))
             reg_arm <= write_data[0];
          else if (capture_enable_pulse)
             reg_arm <= 1'b0;
 
          // USB auto restart register is special:
-         if (reg_addrvalid && reg_write && (reg_address == `REG_USB_SPEED) && (write_data == `USB_SPEED_AUTO))
+         if (selected && reg_write && (address == `REG_USB_SPEED) && (write_data == `USB_SPEED_AUTO))
             O_usb_auto_restart <= 1'b1;
          else
             O_usb_auto_restart <= 1'b0;
 
          // Phase shift for trigger clock register is special: (reference: Xilinx UG472)
-         if (reg_addrvalid && reg_write && (reg_address == `REG_TRIG_CLK_PHASE_SHIFT) && ~phaseshift_active) begin
+         if (selected && reg_write && (address == `REG_TRIG_CLK_PHASE_SHIFT) && ~phaseshift_active) begin
             O_psincdec <= write_data[0];
             O_psen <= 1'b1;
             phaseshift_active <= 1'b1;
@@ -246,7 +252,7 @@ module reg_pw #(
          end
 
          // STAT match register is special:
-         if (reg_addrvalid && reg_write && (reg_address == `REG_STAT_PATTERN)) begin
+         if (selected && reg_write && (address == `REG_STAT_PATTERN)) begin
             reg_stat_pattern[reg_bytecnt*5 +: 5] <= write_data[4:0];
             if (reg_bytecnt == 0)
                stat_match_update_pulse <= 1'b1;
@@ -316,49 +322,19 @@ module reg_pw #(
       end
    end
 
-
-   // TODO: sort out these ILAs
    `ifdef ILA_REG
-       wire [63:0] ila_probe;
-       assign ila_probe[5:0] = reg_address;
-       assign ila_probe[21:6] = reg_bytecnt;
-       assign ila_probe[29:22] = read_data;
-       assign ila_probe[37:30] = write_data;
-       assign ila_probe[38] = reg_read;
-       assign ila_probe[39] = reg_write;
-       assign ila_probe[40] = reg_addrvalid;
-       assign ila_probe[41] = sniff_fifo_rd_en;
-       assign ila_probe[42] = sniff_fifo_empty;
-       assign ila_probe[43] = sniff_fifo_underflow_sticky;
-       assign ila_probe[51:44] = sniff_fifo_dout[15:8]; // TODO: upsize
-       assign ila_probe[59:52] = reg_read_data;
-       assign ila_probe[63:60] = 0;
+       wire [51:0] ila_probe;
+       assign ila_probe[7:0] = address;
+       assign ila_probe[23:8] = reg_bytecnt;
+       assign ila_probe[31:24] = read_data;
+       assign ila_probe[39:32] = write_data;
+       assign ila_probe[40] = reg_read;
+       assign ila_probe[41] = reg_write;
+       assign ila_probe[42] = reg_addrvalid;
+       assign ila_probe[50:43] = reg_read_data;
+       assign ila_probe[51] = selected;
 
        ila_2 U_reg_ila (cwusb_clk, ila_probe);
-
-   `endif
-
-   `ifdef ILA_FIFO
-       ila_3 U_fe_fifo_wr_ila (
-          .clk          (fe_clk),
-          .probe0       (sniff_fifo_wr_en),
-          .probe1       (sniff_fifo_full),
-          .probe2       (sniff_fifo_overflow_blocked),
-          .probe3       (1'b0),
-          .probe4       (sniff_fifo_din)
-       );
-   `endif
-
-   `ifdef ILA_FIFO
-       ila_3 U_fe_fifo_rd_ila (
-          .clk          (cwusb_clk),
-          .probe0       (sniff_fifo_rd_en),
-          .probe1       (sniff_fifo_empty),
-          .probe2       (sniff_fifo_underflow_sticky),
-          .probe3       (sniff_fifo_overflow_blocked_usbclk),
-          .probe4       (sniff_fifo_dout)
-       );
-
 
    `endif
 

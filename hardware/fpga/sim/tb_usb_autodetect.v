@@ -20,7 +20,7 @@
 
 `timescale 1ns / 1ps
 `default_nettype none
-`include "defines.v"
+`include "defines_usb.v"
 
 module tb_usb_autodetect;
 

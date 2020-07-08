@@ -20,7 +20,7 @@
 
 `timescale 1ns / 1ps
 `default_nettype none
-`include "defines.v"
+`include "defines_pw.v"
 
 module fe_capture_main #(
     parameter pTIMESTAMP_FULL_WIDTH = 16,
@@ -39,6 +39,7 @@ module fe_capture_main #(
     output reg  [pTIMESTAMP_FULL_WIDTH-1:0] O_fifo_time,
     output reg  [1:0] O_fifo_command,
     output reg  O_fifo_wr,
+    input  wire [15:0] I_max_short_timestamp,
 
     /* REGISTER CONNECTIONS */
     input  wire I_timestamps_disable,
@@ -86,8 +87,8 @@ module fe_capture_main #(
     reg  arm_r2;
     reg  capturing;
 
-    assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr < 2**`FE_FIFO_SHORTTIME_LEN);
-    assign short_timestamp_pre = timestamps_disable_r? 1'b1: (timestamp_ctr < 2**`FE_FIFO_SHORTTIME_LEN-1);
+    assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr <= I_max_short_timestamp);
+    assign short_timestamp_pre = timestamps_disable_r? 1'b1: (timestamp_ctr < I_max_short_timestamp);
 
     // FSM:
     always @ (posedge fe_clk) begin
@@ -222,10 +223,8 @@ module fe_capture_main #(
 
     assign O_capturing = capture_allowed;
 
-    // TODO: move logic to FE-specific? nahh, keep it generic; there should be enough flexibility in here
     assign capture_allowed = I_capture_enable & ((capture_count < capture_len_r) || (capture_len_r == 0)) & 
                             !I_fifo_full & !I_fifo_overflow_blocked;
-
 
    // CDC:
    always @(posedge cwusb_clk) begin

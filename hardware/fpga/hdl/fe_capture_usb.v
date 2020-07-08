@@ -20,7 +20,8 @@
 
 `timescale 1ns / 1ps
 `default_nettype none
-`include "defines.v"
+`include "defines_usb.v"
+`include "defines_pw.v"
 
 module fe_capture_usb #(
     parameter pTIMESTAMP_FULL_WIDTH = 16,
@@ -46,7 +47,7 @@ module fe_capture_usb #(
     input  wire [pTIMESTAMP_FULL_WIDTH-1:0] I_fifo_time,
     input  wire [1:0] I_fifo_command,
     input  wire I_fifo_wr,
-
+    output wire [15:0] O_max_short_timestamp,
 
     /* REGISTER CONNECTIONS */
     output wire [4:0] O_fifo_fe_status,
@@ -89,6 +90,7 @@ module fe_capture_usb #(
 
     assign O_data_cmd = fe_rxvalid_reg2? `FE_FIFO_CMD_DATA : `FE_FIFO_CMD_STAT;
 
+    assign O_max_short_timestamp = 2**`FE_FIFO_SHORTTIME_LEN-1;
 
     // Delay incoming fe_* signals by one cycle to avoid issuing
     // FE_FIFO_CMD_STAT at the same time as an fe_* data event, which could

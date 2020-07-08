@@ -1,6 +1,7 @@
 `default_nettype none
 `timescale 1ns / 1ps
-`include "defines.v"
+`include "defines_pw.v"
+`include "defines_usb.v"
 //////////////////////////////////////////////////////////////////////////////////
 // Company: NewAE
 // Engineer: Colin O'Flynn, Jean-Pierre Thibault
@@ -107,11 +108,11 @@ module phywhisperer_top(
    wire clk_fe_buf;
    wire reset_i = USB_SPARE0;
 
-   wire [5:0]   reg_address;
+   wire [7:0]   reg_address;
    wire [pBYTECNT_SIZE-1:0]  reg_bytecnt;
    wire [7:0]   write_data;
    wire [7:0]   read_data;
-   wire [7:0]   read_data_pw;
+   wire [7:0]   read_data_usb;
    wire [7:0]   read_data_main;
    wire [5:0]   fifo_status;
    wire         reg_read;
@@ -162,7 +163,6 @@ module phywhisperer_top(
    wire [pUSB_AUTO_COUNTER_WIDTH-1:0] usb_auto_wait2;
    
    wire [`FE_SELECT_WIDTH-1:0] fe_select;
-   wire main_active_read;
 
    wire [17:0] fifo_in_data;
    wire [17:0] fifo_out_data;
@@ -179,6 +179,11 @@ module phywhisperer_top(
    wire [pTIMESTAMP_FULL_WIDTH-1:0] fe_time;
    wire [1:0] fe_command;
    wire fe_fifo_wr;
+
+   wire reg_main_selected;
+   wire reg_usb_selected;
+
+   wire [15:0] max_short_timestamp;
 
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
@@ -254,10 +259,12 @@ module phywhisperer_top(
       .O_fifo_read      (fifo_read),
       .I_fifo_status    (fifo_status),
 
-      .O_active_read    (main_active_read)
+      .selected         (reg_main_selected)
+
    );
 
-   assign read_data = main_active_read? read_data_main : read_data_pw;
+   assign read_data = reg_main_selected? read_data_main :
+                      reg_usb_selected?  read_data_usb : 0;
 
 
    reg_pw #(
@@ -276,7 +283,7 @@ module phywhisperer_top(
       .cwusb_clk                (clk_usb_buf), 
       .reg_address              (reg_address), 
       .reg_bytecnt              (reg_bytecnt), 
-      .read_data                (read_data_pw), 
+      .read_data                (read_data_usb), 
       .write_data               (write_data),
       .reg_read                 (reg_read), 
       .reg_write                (reg_write), 
@@ -319,7 +326,9 @@ module phywhisperer_top(
       .O_psen                   (psen),
       .I_psdone                 (psdone),
 
-      .I_usb_auto_speed         (usb_auto_speed)
+      .I_usb_auto_speed         (usb_auto_speed),
+
+      .selected                 (reg_usb_selected)
 
    );
 
@@ -364,6 +373,7 @@ module phywhisperer_top(
 
       .I_event                  (fe_event),
       .I_data_cmd               (fe_data_cmd),
+      .I_max_short_timestamp    (max_short_timestamp),
       .O_fifo_time              (fe_time),
       .O_fifo_command           (fe_command),
       .O_fifo_wr                (fe_fifo_wr),
@@ -397,6 +407,7 @@ module phywhisperer_top(
 
       .O_event                  (fe_event),
       .O_data_cmd               (fe_data_cmd),
+      .O_max_short_timestamp    (max_short_timestamp),
       .I_fifo_time              (fe_time),
       .I_fifo_command           (fe_command),
       .I_fifo_wr                (fe_fifo_wr),
@@ -488,16 +499,18 @@ module phywhisperer_top(
           .probe2       (USB_nRD),              // input wire [0:0]  probe2 
           .probe3       (USB_nWE),              // input wire [0:0]  probe3 
           .probe4       (USB_nCS),              // input wire [0:0]  probe4 
-          .probe5       (reg_address),          // input wire [5:0]  probe5 
-          //.probe6       ({9'b0, reg_bytecnt}),  // input wire [15:0]  probe6 
-          .probe6       ({6'b0, psen, psdone, psincdec, reg_bytecnt}),  // input wire [15:0]  probe6 
+          .probe5       (reg_address),          // input wire [7:0]  probe5
+          .probe6       (reg_bytecnt),          // input wire [6:0]  probe6 
           .probe7       (write_data),           // input wire [7:0]  probe7 
-          .probe8       (read_data),            // input wire [15:0]  probe8 
+          .probe8       (read_data),            // input wire [8:0]  probe8 
           .probe9       (reg_read),             // input wire [0:0]  probe9 
           .probe10      (reg_write),            // input wire [0:0]  probe10 
           .probe11      (reg_addrvalid),        // input wire [0:0]  probe11 
           .probe12      (USB_SPARE0),           // input wire [0:0]  probe12 
           .probe13      (USB_SPARE1)            // input wire [0:0]  probe13 
+          .probe14      (psen)                  // input wire [0:0]  probe14 
+          .probe15      (psdone)                // input wire [0:0]  probe15 
+          .probe16      (psincdec)              // input wire [0:0]  probe16 
        );
     `endif
 
