@@ -55,6 +55,7 @@ module tb_pw();
     parameter pNUM_TRIGGERS_MAX = 8;
     parameter pREAD_CONCURRENTLY = 1;
     parameter pSTREAM_MODE = 0;
+    parameter pDUMP = 0;
 
     reg           usb_clk;
     wire [7:0]    USB_Data;
@@ -116,8 +117,10 @@ module tb_pw();
       seed = pSEED;
       $display("Running with pSEED=%0d", pSEED);
       $urandom(seed);
-      $dumpfile("results/tb.fst");
-      $dumpvars(0, tb_pw);
+      if (pDUMP) begin
+         $dumpfile("results/tb.fst");
+         $dumpvars(0, tb_pw);
+      end
       usb_clk = 1'b1;
       fe_clk = 1'b1;
       trigger_clk = 1'b1;

@@ -13,6 +13,7 @@ group.add_argument("--test", help="Testcase to run")
 parser.add_argument("--seed", type=int, help="Seed to use when running a single test with --test.")
 parser.add_argument("--tests", help="Run all tests whose name contains TESTS", default='')
 parser.add_argument("--list", help="List available tests.", action='store_true')
+parser.add_argument("--dump", help="Enable waveform dumping.", action='store_true')
 args = parser.parse_args()
 
 random.seed()
@@ -168,6 +169,7 @@ tests.append(dict(name  = 'shortpattern',
              description = 'Pattern of 3 bytes or less.',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
+             TIMEOUT = 15000,
              DELAY_MODE = 0,
              PATTERN_MIN = 1,
              PATTERN_MAX = 3))
@@ -302,6 +304,8 @@ for test in tests:
       run_test = True
       # build make command:
       makeargs = ['make', 'all', 'VERBOSE=1']
+      if args.dump:
+         makeargs.append('DUMP=1')
       for key in test.keys():
          if key == 'name':
             logfile = "results/%s%d.log" % (test[key], i) 

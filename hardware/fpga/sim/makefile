@@ -22,6 +22,7 @@ TRIGGER_WIDTH_MAX=512
 NUM_TRIGGERS_MIN=1
 NUM_TRIGGERS_MAX=8
 WAVEFORMAT=fst
+DUMP=0
 TOP=tb_pw
 
 # This here is a bit clumsy, but necessary because iverilog fails to compile
@@ -65,6 +66,7 @@ compile:
 	-P tb_pw.pNUM_TRIGGERS_MIN=$(NUM_TRIGGERS_MIN) \
 	-P tb_pw.pNUM_TRIGGERS_MAX=$(NUM_TRIGGERS_MAX) \
 	-P tb_pw.pVERBOSE=$(VERBOSE) \
+	-P tb_pw.pDUMP=$(DUMP) \
 
 run:
 	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)
