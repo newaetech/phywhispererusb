@@ -19,13 +19,13 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`define MAIN_REG_SELECT              2'b00
-`define USB_REG_SELECT               2'b01
+`define MAIN_REG_SELECT              3'b000
+`define USB_REG_SELECT               3'b001
 
-`define REG_BUILDTIME                6'h00
-`define REG_FE_SELECT                6'h01
-`define REG_SNIFF_FIFO_STAT          6'h02
-`define REG_SNIFF_FIFO_RD            6'h03
+`define REG_BUILDTIME                5'h00
+`define REG_FE_SELECT                5'h01
+`define REG_SNIFF_FIFO_STAT          5'h02
+`define REG_SNIFF_FIFO_RD            5'h03
 
 // front end select definitions
 `define FE_SELECT_WIDTH 2

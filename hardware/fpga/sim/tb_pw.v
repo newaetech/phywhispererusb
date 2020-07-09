@@ -428,8 +428,8 @@ module tb_pw();
    assign USB_SPARE0 = reset;
 
    task write_1byte;
-      input [1:0] block;
-      input [5:0] address;
+      input [2:0] block;
+      input [4:0] address;
       input [7:0] data;
       @(posedge usb_clk);
       USB_SPARE1 = 0;
@@ -449,8 +449,8 @@ module tb_pw();
 
 
    task read_1byte;
-      input [1:0] block;
-      input [5:0] address;
+      input [2:0] block;
+      input [4:0] address;
       output [7:0] data;
       @(posedge usb_clk);
       USB_SPARE1 = 0;
@@ -470,8 +470,8 @@ module tb_pw();
    endtask
 
    task rw_lots_bytes;
-      input [1:0] block;
-      input [5:0] address;
+      input [2:0] block;
+      input [4:0] address;
       @(posedge usb_clk);
       USB_SPARE1 = 0;
       USB_Addr = {block, address};

@@ -23,7 +23,7 @@
 `include "defines_pw.v"
 `include "defines_usb.v"
 
-module reg_pw #(
+module reg_usb #(
    parameter pTIMESTAMP_FULL_WIDTH = 16,
    parameter pTIMESTAMP_SHORT_WIDTH = 3,
    parameter pPATTERN_BYTES = 8,
@@ -148,8 +148,8 @@ module reg_pw #(
    assign O_usb_auto_wait1 = reg_usb_auto_wait1;
    assign O_usb_auto_wait2 = reg_usb_auto_wait2;
 
-   assign selected = reg_addrvalid & reg_address[7:6] == `USB_REG_SELECT;
-   wire [5:0] address = reg_address[5:0];
+   assign selected = reg_addrvalid & reg_address[6:5] == `USB_REG_SELECT;
+   wire [4:0] address = reg_address[4:0];
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -316,25 +316,28 @@ module reg_pw #(
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
          reg_arm_r <= 1'b0;
+         usb_speed_auto <= 0;
       end
       else begin
          reg_arm_r <= reg_arm;
+         usb_speed_auto <= I_usb_auto_speed;
       end
    end
 
    `ifdef ILA_REG
-       wire [51:0] ila_probe;
-       assign ila_probe[7:0] = address;
-       assign ila_probe[23:8] = reg_bytecnt;
-       assign ila_probe[31:24] = read_data;
-       assign ila_probe[39:32] = write_data;
-       assign ila_probe[40] = reg_read;
-       assign ila_probe[41] = reg_write;
-       assign ila_probe[42] = reg_addrvalid;
-       assign ila_probe[50:43] = reg_read_data;
-       assign ila_probe[51] = selected;
-
-       ila_2 U_reg_ila (cwusb_clk, ila_probe);
+       ila_2 U_reg_ila (
+	.clk            (cwusb_clk),                    // input wire clk
+	.probe0         (reg_address),                  // input wire [7:0]  probe0  
+	.probe1         (reg_bytecnt),                  // input wire [6:0]  probe1 
+	.probe2         (read_data),                    // input wire [7:0]  probe2 
+	.probe3         (write_data),                   // input wire [7:0]  probe3 
+	.probe4         (reg_read),                     // input wire [0:0]  probe4 
+	.probe5         (reg_write),                    // input wire [0:0]  probe5 
+	.probe6         (reg_addrvalid),                // input wire [0:0]  probe6 
+	.probe7         (reg_read_data),                // input wire [7:0]  probe7 
+	.probe8         (selected),                     // input wire [0:0]  probe8 
+	.probe9         ({4'b0, reg_num_triggers})      // input wire [7:0]  probe9
+       );
 
    `endif
 

@@ -60,8 +60,8 @@ module reg_main #(
    reg  fifo_empty_r;
    reg  [17:0] read_data_fifo;
 
-   assign selected = reg_addrvalid & reg_address[7:6] == `MAIN_REG_SELECT;
-   wire [5:0] address = reg_address[5:0];
+   assign selected = reg_addrvalid & reg_address[6:5] == `MAIN_REG_SELECT;
+   wire [4:0] address = reg_address[4:0];
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -151,19 +151,22 @@ module reg_main #(
       assign buildtime = 0;
    `endif
 
-   `ifdef ILA_REG
-       wire [51:0] ila_probe;
-       assign ila_probe[7:0] = address;
-       assign ila_probe[23:8] = reg_bytecnt;
-       assign ila_probe[31:24] = read_data;
-       assign ila_probe[39:32] = write_data;
-       assign ila_probe[40] = reg_read;
-       assign ila_probe[41] = reg_write;
-       assign ila_probe[42] = reg_addrvalid;
-       assign ila_probe[50:43] = reg_read_data;
-       assign ila_probe[51] = selected;
+   `ifdef ILA_REG_MAIN
 
-       ila_2 U_reg_ila (cwusb_clk, ila_probe);
+       ila_2 U_reg_ila (
+	.clk            (cwusb_clk),                    // input wire clk
+	.probe0         (reg_address),                  // input wire [7:0]  probe0  
+	.probe1         (reg_bytecnt),                  // input wire [6:0]  probe1 
+	.probe2         (read_data),                    // input wire [7:0]  probe2 
+	.probe3         (write_data),                   // input wire [7:0]  probe3 
+	.probe4         (reg_read),                     // input wire [0:0]  probe4 
+	.probe5         (reg_write),                    // input wire [0:0]  probe5 
+	.probe6         (reg_addrvalid),                // input wire [0:0]  probe6 
+	.probe7         (reg_read_data),                // input wire [7:0]  probe7 
+	.probe8         (selected),                     // input wire [0:0]  probe8 
+	.probe9         (read_data_fifo[7:0])           // input wire [7:0]  probe9
+       );
+
 
    `endif
 

@@ -267,7 +267,7 @@ module phywhisperer_top(
                       reg_usb_selected?  read_data_usb : 0;
 
 
-   reg_pw #(
+   reg_usb #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pPATTERN_BYTES           (pPATTERN_BYTES),
@@ -278,7 +278,7 @@ module phywhisperer_top(
       .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
       .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
 
-   ) U_reg_pw (
+   ) U_reg_usb (
       .reset_i                  (reset_i), 
       .cwusb_clk                (clk_usb_buf), 
       .reg_address              (reg_address), 
@@ -471,6 +471,13 @@ module phywhisperer_top(
     assign userio_d[0] = fe_linestate0;
     assign userio_d[1] = fe_linestate1;
     assign userio_d[2] = trigger_clk;
+    assign userio_d[3] = usb_auto_speed[0];
+    assign userio_d[4] = usb_auto_speed[1];
+
+    wire [2:0] auto_state;
+    assign userio_d[5] = auto_state[0];
+    assign userio_d[6] = auto_state[1];
+    assign userio_d[7] = auto_state[2];
 
 
     `ifdef ILA_FE
@@ -588,7 +595,8 @@ module phywhisperer_top(
         .I_restart          (usb_auto_restart),
         .I_wait1            (usb_auto_wait1),
         .I_wait2            (usb_auto_wait2),
-        .O_speed            (usb_auto_speed)
+        .O_speed            (usb_auto_speed),
+        .state              (auto_state)
     );
 
 

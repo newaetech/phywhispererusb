@@ -35,21 +35,36 @@ update_ip_catalog
 set_property ip_output_repo c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 set_property include_dirs C:/Users/jp/GitHub/phywhispererusb/software/phywhisperer/firmware [current_fileset]
-set_property verilog_define ILA [current_fileset]
+set_property verilog_define {ILA_USB_AUTODETECT ILA_REG} [current_fileset]
 read_verilog -library xil_defaultlib {
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/cdc_pulse.v
-  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fe_capture.v
+  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fe_capture_main.v
+  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fe_capture_usb.v
+  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fifo.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/pw_pattern_matcher.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/pw_trigger.v
-  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_pw.v
+  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_main.v
+  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_usb.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/usb_autodetect.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/usb_reg_main.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/phywhisperer_top.v
 }
+read_ip -quiet C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_2.xci
+set_property used_in_synthesis false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_2_ooc.xdc]
+
 read_ip -quiet C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
 set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_board.xdc]
 set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc]
 set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_ooc.xdc]
+
+read_ip -quiet C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_5/ila_5.xci
+set_property used_in_synthesis false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_5/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_5/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_5/ila_v6_2/constraints/ila.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_5/ila_5_ooc.xdc]
 
 read_ip -quiet C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0.xci
 set_property used_in_implementation false [get_files -all c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0.xdc]

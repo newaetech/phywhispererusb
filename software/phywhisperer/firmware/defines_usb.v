@@ -18,24 +18,24 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`define REG_TIMESTAMPS_DISABLE       6'h00
-`define REG_ARM                      6'h01
-`define REG_PATTERN                  6'h02
-`define REG_PATTERN_MASK             6'h03
-`define REG_TRIGGER_ENABLE           6'h04
-`define REG_PATTERN_BYTES            6'h05
-`define REG_CAPTURE_LEN              6'h06
-`define REG_TRIGGER_DELAY            6'h07
-`define REG_TRIGGER_WIDTH            6'h08
-`define REG_USB_SPEED                6'h09
-`define REG_USB_AUTO_DEFAULTS        6'h0a
-`define REG_CAPTURE_DELAY            6'h0b
-`define REG_USB_AUTO_WAIT1           6'h0c
-`define REG_USB_AUTO_WAIT2           6'h0d
-`define REG_TRIG_CLK_PHASE_SHIFT     6'h0e
-`define REG_STAT_PATTERN             6'h0f
-`define REG_STAT_MATCH               6'h10
-`define REG_NUM_TRIGGERS             6'h11
+`define REG_TIMESTAMPS_DISABLE       5'h00
+`define REG_ARM                      5'h01
+`define REG_PATTERN                  5'h02
+`define REG_PATTERN_MASK             5'h03
+`define REG_TRIGGER_ENABLE           5'h04
+`define REG_PATTERN_BYTES            5'h05
+`define REG_CAPTURE_LEN              5'h06
+`define REG_TRIGGER_DELAY            5'h07
+`define REG_TRIGGER_WIDTH            5'h08
+`define REG_USB_SPEED                5'h09
+`define REG_USB_AUTO_DEFAULTS        5'h0a
+`define REG_CAPTURE_DELAY            5'h0b
+`define REG_USB_AUTO_WAIT1           5'h0c
+`define REG_USB_AUTO_WAIT2           5'h0d
+`define REG_TRIG_CLK_PHASE_SHIFT     5'h0e
+`define REG_STAT_PATTERN             5'h0f
+`define REG_STAT_MATCH               5'h10
+`define REG_NUM_TRIGGERS             5'h11
 
 
 // FIFO bitfields:
