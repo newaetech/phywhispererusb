@@ -541,7 +541,7 @@ module phywhisperer_top(
     `endif
 
 
-   pw_pattern_matcher #(
+   pattern_matcher_usb #(
       .pPATTERN_BYTES  (pPATTERN_BYTES)
    ) U_pattern_matcher (
       .reset_i          (reset_i),

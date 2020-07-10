@@ -6,7 +6,7 @@
 // 
 // Create Date: 
 // Design Name: 
-// Module Name: pw_pattern_matcher
+// Module Name: pattern_matcher_usb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -21,7 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module pw_pattern_matcher #(
+module pattern_matcher_usb #(
    parameter pPATTERN_BYTES = 8
 )(
    input  wire  reset_i,
