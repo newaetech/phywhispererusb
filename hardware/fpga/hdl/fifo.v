@@ -27,23 +27,26 @@ module fifo (
    input  wire         cwusb_clk,
    input  wire         fe_clk,
 
-// Interface to front end capture:
+// Interface to fe_capture_main:
+   input  wire         I_fifo_flush,
+   input  wire         I_custom_fifo_stat_flag,
    output wire         O_fifo_full,
+   output wire         O_fifo_empty,
    output wire         O_fifo_overflow_blocked,
+
+// Interface to fe_capture_<specific front-end>:
    input  wire [17:0]  I_data,
    input  wire         I_wr,
+   output wire         O_fifo_write_allowed,
 
+// Interface to reg_main:
    input  wire         I_fifo_read,
-   input  wire         I_fifo_flush,
-   input  wire         I_clear_read_flags,
-   input  wire         I_clear_write_flags,
-
    output wire [17:0]  O_data,
    output wire [5:0]   O_fifo_status,
-   output wire         O_fifo_write_allowed,
-   output wire         O_fifo_empty,
 
-   input  wire         I_custom_fifo_stat_flag
+// Interface to reg_<specific front-end>:
+   input  wire         I_clear_read_flags,
+   input  wire         I_clear_write_flags
 
 );
 
