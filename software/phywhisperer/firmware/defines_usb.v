@@ -19,7 +19,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `define REG_TIMESTAMPS_DISABLE       5'h00
-`define REG_ARM                      5'h01
 `define REG_PATTERN                  5'h02
 `define REG_PATTERN_MASK             5'h03
 `define REG_TRIGGER_ENABLE           5'h04

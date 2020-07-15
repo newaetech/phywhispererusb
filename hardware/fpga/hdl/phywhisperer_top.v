@@ -259,6 +259,12 @@ module phywhisperer_top(
       .O_fifo_read      (fifo_read),
       .I_fifo_status    (fifo_status),
 
+      .fe_clk           (clk_fe_buf),
+      .O_arm            (arm),
+      .O_reg_arm        (reg_arm),
+      .I_flushing       (fifo_flush),
+      .I_capture_enable_pulse (capture_enable_pulse),
+
       .selected         (reg_main_selected)
 
    );
@@ -293,11 +299,8 @@ module phywhisperer_top(
       .fe_clk                   (clk_fe_buf),
       .I_fe_capture_stat        (fe_capture_stat),
       .O_timestamps_disable     (timestamps_disable),
-      .O_arm                    (arm),
-      .O_reg_arm                (reg_arm),
       .O_reg_arm_feclk          (reg_arm_feclk),
       .O_capture_len            (capture_len),
-      .I_flushing               (fifo_flush),
 
       // Trigger:
       .O_capture_delay          (capture_delay),
@@ -310,7 +313,6 @@ module phywhisperer_top(
       .O_pattern                (pattern),
       .O_pattern_mask           (pattern_mask),
       .O_pattern_bytes          (pattern_bytes),
-      .I_capture_enable_pulse   (capture_enable_pulse),
 
       .O_usb_speed              (usb_speed),
       .O_usb_xcvrsel_auto       (usb_xcvrsel_auto),

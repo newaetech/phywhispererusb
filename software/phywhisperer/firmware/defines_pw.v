@@ -26,6 +26,7 @@
 `define REG_FE_SELECT                5'h01
 `define REG_SNIFF_FIFO_STAT          5'h02
 `define REG_SNIFF_FIFO_RD            5'h03
+`define REG_ARM                      5'h04
 
 // front end select definitions
 `define FE_SELECT_WIDTH 2

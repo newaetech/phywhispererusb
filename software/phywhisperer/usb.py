@@ -594,7 +594,7 @@ class Usb(PWPacketDispatcher):
         Use set_trigger to program the trigger parameters.
         Use set_capture_size and set_capture_delay to program the capture parameters.
         """
-        self.write_reg(self.REG_ARM, [1])
+        self.write_reg(self.REG_ARM, [1], self.MAIN_REG_SELECT)
 
 
     def check_fifo_errors(self, underflow=0, overflow=0):
@@ -635,7 +635,7 @@ class Usb(PWPacketDispatcher):
     def armed(self):
         """Returns True if the PhyWhisperer is armed.
         """
-        if self.read_reg(self.REG_ARM, 1)[0]:
+        if self.read_reg(self.REG_ARM, 1, self.MAIN_REG_SELECT)[0]:
             return True
         else:
             return False

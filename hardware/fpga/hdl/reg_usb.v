@@ -54,12 +54,12 @@ module reg_usb #(
 // Interface to front end capture:
    input  wire                                  fe_clk,
    output wire                                  O_timestamps_disable,
-   output wire                                  O_arm,
-   output wire                                  O_reg_arm,
    output wire                                  O_reg_arm_feclk,
    output wire [pCAPTURE_LEN_WIDTH-1:0]         O_capture_len,
    input  wire [4:0]                            I_fe_capture_stat,
-   input  wire                                  I_flushing,
+
+// Interface to main register block:
+   input  wire                                  I_reg_arm,
 
 // Interface to pattern matcher:
    output wire         [8*pPATTERN_BYTES-1:0]   O_pattern,
@@ -72,7 +72,6 @@ module reg_usb #(
    output wire [pCAPTURE_DELAY_WIDTH-1:0]       O_capture_delay,
    output wire [pNUM_TRIGGER_WIDTH-1:0]         O_num_triggers,
    output wire                                  O_trigger_enable,
-   input  wire                                  I_capture_enable_pulse,
 
 // Interface to USB autodetect:
    output reg                                   O_usb_auto_restart,
@@ -95,8 +94,6 @@ module reg_usb #(
 );
 
 
-   reg reg_arm;
-   reg reg_arm_r;
    reg reg_arm_feclk;
    reg reg_arm_feclk_r;
    reg reg_timestamps_disable;
@@ -128,10 +125,7 @@ module reg_usb #(
 
    reg  phaseshift_active;
 
-   wire capture_enable_pulse;
 
-   assign O_arm = reg_arm_r & ~I_flushing;
-   assign O_reg_arm = reg_arm;
    assign O_timestamps_disable = reg_timestamps_disable;
    assign O_pattern = reg_pattern;
    assign O_pattern_mask = reg_pattern_mask;
@@ -147,6 +141,7 @@ module reg_usb #(
    assign O_usb_termsel_auto = reg_usb_auto_defaults[2];
    assign O_usb_auto_wait1 = reg_usb_auto_wait1;
    assign O_usb_auto_wait2 = reg_usb_auto_wait2;
+   assign O_reg_arm_feclk = reg_arm_feclk;
 
    assign selected = reg_addrvalid & reg_address[6:5] == `USB_REG_SELECT;
    wire [4:0] address = reg_address[4:0];
@@ -155,7 +150,6 @@ module reg_usb #(
    always @(posedge cwusb_clk) begin
       if (selected && reg_read) begin
          case (address)
-            `REG_ARM: reg_read_data <= reg_arm;
             `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
             `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
             `REG_TRIGGER_ENABLE: reg_read_data <= reg_trigger_enable;
@@ -185,7 +179,6 @@ module reg_usb #(
    // write logic (USB clock domain):
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
-         reg_arm <= 1'b0;
          reg_timestamps_disable <= 1'b0;
          reg_pattern <= 0;
          reg_pattern_mask <= 64'h0;
@@ -227,12 +220,6 @@ module reg_usb #(
             endcase
          end
 
-         // ARM register is special:
-         if (selected && reg_write && (address == `REG_ARM))
-            reg_arm <= write_data[0];
-         else if (capture_enable_pulse)
-            reg_arm <= 1'b0;
-
          // USB auto restart register is special:
          if (selected && reg_write && (address == `REG_USB_SPEED) && (write_data == `USB_SPEED_AUTO))
             O_usb_auto_restart <= 1'b1;
@@ -265,14 +252,6 @@ module reg_usb #(
 
    (* ASYNC_REG = "TRUE" *) reg  [1:0] reg_arm_pipe;
 
-   cdc_pulse U_match_cdc (
-      .reset_i       (reset_i),
-      .src_clk       (fe_clk),
-      .src_pulse     (I_capture_enable_pulse),
-      .dst_clk       (cwusb_clk),
-      .dst_pulse     (capture_enable_pulse)
-   );
-
    cdc_pulse U_stat_update_cdc (
       .reset_i       (reset_i),
       .src_clk       (cwusb_clk),
@@ -297,7 +276,7 @@ module reg_usb #(
          // CDC:
          stat_pattern <= reg_stat_pattern[4:0];
          stat_mask <= reg_stat_pattern[9:5];
-         {reg_arm_feclk_r, reg_arm_feclk, reg_arm_pipe} <= {reg_arm_feclk, reg_arm_pipe, reg_arm};
+         {reg_arm_feclk_r, reg_arm_feclk, reg_arm_pipe} <= {reg_arm_feclk, reg_arm_pipe, I_reg_arm};
 
          // reset stat match upon arming:
          if (reg_arm_feclk && ~reg_arm_feclk_r || stat_match_update_pulse_fe)
@@ -315,11 +294,9 @@ module reg_usb #(
 
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
-         reg_arm_r <= 1'b0;
          usb_speed_auto <= 0;
       end
       else begin
-         reg_arm_r <= reg_arm;
          usb_speed_auto <= I_usb_auto_speed;
       end
    end

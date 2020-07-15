@@ -255,7 +255,7 @@ module tb_pw();
          if (pTRIGGER_ENABLE)
             set_trigger();
 
-         write_1byte(`USB_REG_SELECT, `REG_ARM, 8'h01);
+         write_1byte(`MAIN_REG_SELECT, `REG_ARM, 8'h99);
          armed = 1;
          // give some time for the arm process to complete:
          if (pPRETRIG_BYTES_MIN < 10)

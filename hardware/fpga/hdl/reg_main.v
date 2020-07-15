@@ -47,6 +47,13 @@ module reg_main #(
    input  wire         I_fifo_empty,
    output wire         O_fifo_read,
 
+// Interface to front-end capture:
+   input  wire         fe_clk,
+   output wire         O_arm,
+   output wire         O_reg_arm,
+   input  wire         I_flushing,
+
+   input  wire         I_capture_enable_pulse,
 
 // Interface to top-level:
    output reg  [`FE_SELECT_WIDTH-1:0] fe_select,
@@ -59,9 +66,15 @@ module reg_main #(
    reg  empty_fifo_read;
    reg  fifo_empty_r;
    reg  [17:0] read_data_fifo;
+   reg  reg_arm;
+   reg  reg_arm_r;
+   wire capture_enable_pulse;
 
    assign selected = reg_addrvalid & reg_address[6:5] == `MAIN_REG_SELECT;
    wire [4:0] address = reg_address[4:0];
+
+   assign O_arm = reg_arm_r & ~I_flushing;
+   assign O_reg_arm = reg_arm;
 
    // read logic:
    always @(posedge cwusb_clk) begin
@@ -71,6 +84,7 @@ module reg_main #(
             `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, I_fifo_status};
             `REG_FE_SELECT: reg_read_data <= fe_select;
+            `REG_ARM: reg_read_data <= reg_arm;
          endcase
 
       end
@@ -130,15 +144,35 @@ module reg_main #(
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
          fe_select <= `FE_USB;
+         reg_arm <= 1'b0;
+         reg_arm_r <= 1'b0;
       end
+
       else begin
+         reg_arm_r <= reg_arm;
          if (selected && reg_write) begin
             case (address)
                `REG_FE_SELECT: fe_select <= write_data[`FE_SELECT_WIDTH-1:0];
             endcase
          end
+
+         // ARM register is special:
+         if (selected && reg_write && (address == `REG_ARM))
+            reg_arm <= write_data[0];
+         else if (capture_enable_pulse)
+            reg_arm <= 1'b0;
+
       end
    end
+
+
+   cdc_pulse U_match_cdc (
+      .reset_i       (reset_i),
+      .src_clk       (fe_clk),
+      .src_pulse     (I_capture_enable_pulse),
+      .dst_clk       (cwusb_clk),
+      .dst_pulse     (capture_enable_pulse)
+   );
 
 
    `ifndef __ICARUS__
