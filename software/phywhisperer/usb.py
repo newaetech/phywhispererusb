@@ -533,7 +533,7 @@ class Usb(PWPacketDispatcher):
             if (delay >= 2**20) or (delay < 0) or (delay < 1 and i > 0):
                 raise ValueError('Illegal delay value.')
             data += delay << i*24
-        self.write_reg(self.REG_TRIGGER_DELAY, int.to_bytes(data, length=3*num_triggers, byteorder='little'))
+        self.write_reg(self.REG_TRIGGER_DELAY, int.to_bytes(data, length=3*num_triggers, byteorder='little'), self.MAIN_REG_SELECT)
 
         data = 0
         for i in range(num_triggers):
@@ -541,14 +541,14 @@ class Usb(PWPacketDispatcher):
             if (width >= 2**17) or (width < 1):
                 raise ValueError('Illegal width value.')
             data += width << i*24
-        self.write_reg(self.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num_triggers, byteorder='little'))
+        self.write_reg(self.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num_triggers, byteorder='little'), self.MAIN_REG_SELECT)
 
-        self.write_reg(self.REG_NUM_TRIGGERS, [num_triggers])
+        self.write_reg(self.REG_NUM_TRIGGERS, [num_triggers], self.MAIN_REG_SELECT)
         self.set_capture_delay(int(delay/4))
         if enable == True:
-            self.write_reg(self.REG_TRIGGER_ENABLE, [1])
+            self.write_reg(self.REG_TRIGGER_ENABLE, [1], self.MAIN_REG_SELECT)
         else:
-            self.write_reg(self.REG_TRIGGER_ENABLE, [0])
+            self.write_reg(self.REG_TRIGGER_ENABLE, [0], self.MAIN_REG_SELECT)
 
 
     def set_capture_delay(self, delay):
@@ -675,8 +675,8 @@ class Usb(PWPacketDispatcher):
         else:
             value = [0]
         for i in range(abs(steps)):
-            self.write_reg(self.REG_TRIG_CLK_PHASE_SHIFT, value)
-            while (self.read_reg(self.REG_TRIG_CLK_PHASE_SHIFT, 1)[0] == 1):
+            self.write_reg(self.REG_TRIG_CLK_PHASE_SHIFT, value, self.MAIN_REG_SELECT)
+            while (self.read_reg(self.REG_TRIG_CLK_PHASE_SHIFT, 1)[0] == 1, self.MAIN_REG_SELECT):
                 # phase shift incomplete; wait:
                 pass
 

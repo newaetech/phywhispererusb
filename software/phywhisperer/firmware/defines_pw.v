@@ -28,6 +28,12 @@
 `define REG_SNIFF_FIFO_RD            5'h03
 `define REG_ARM                      5'h04
 
+`define REG_TRIGGER_ENABLE           5'h05
+`define REG_NUM_TRIGGERS             5'h06
+`define REG_TRIGGER_DELAY            5'h07
+`define REG_TRIGGER_WIDTH            5'h08
+`define REG_TRIG_CLK_PHASE_SHIFT     5'h09
+
 // front end select definitions
 `define FE_SELECT_WIDTH 2
 `define FE_USB 0

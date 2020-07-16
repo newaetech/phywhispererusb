@@ -227,7 +227,7 @@ module tb_pw();
       pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
-      write_1byte(`USB_REG_SELECT, `REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
+      write_1byte(`MAIN_REG_SELECT, `REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
       rw_lots_bytes(`USB_REG_SELECT, `REG_CAPTURE_LEN);
       if (pNO_CAPTURE_LIMIT) begin
          write_next_byte(0);
@@ -567,10 +567,10 @@ module tb_pw();
    task set_trigger;
       int i;
       $display("Programming %0d trigger parameters for iteration #%0d", num_triggers, send_iteration);
-      write_1byte(`USB_REG_SELECT, `REG_NUM_TRIGGERS, num_triggers);
+      write_1byte(`MAIN_REG_SELECT, `REG_NUM_TRIGGERS, num_triggers);
 
       // trigger delays:
-      rw_lots_bytes(`USB_REG_SELECT, `REG_TRIGGER_DELAY);
+      rw_lots_bytes(`MAIN_REG_SELECT, `REG_TRIGGER_DELAY);
       for (i = 0; i < num_triggers; i = i + 1) begin
          trigger_delay[i] = $urandom_range(pTRIGGER_DELAY_MIN, pTRIGGER_DELAY_MAX);
          // zero-delay not allowed after first trigger:
@@ -591,7 +591,7 @@ module tb_pw();
       write_next_byte((capture_delay >> 16) & 255);
 
       // trigger widths:
-      rw_lots_bytes(`USB_REG_SELECT, `REG_TRIGGER_WIDTH);
+      rw_lots_bytes(`MAIN_REG_SELECT, `REG_TRIGGER_WIDTH);
       for (i = 0; i < num_triggers; i = i + 1) begin
          trigger_width[i] = $urandom_range(pTRIGGER_WIDTH_MIN, pTRIGGER_WIDTH_MAX);
          write_next_byte(trigger_width[i] & 255);

@@ -24,7 +24,11 @@
 `include "defines_pw.v"
 
 module reg_main #(
-   parameter pBYTECNT_SIZE = 7
+   parameter pBYTECNT_SIZE = 7,
+   parameter pNUM_TRIGGER_PULSES = 8,
+   parameter pNUM_TRIGGER_WIDTH = 4,
+   parameter pALL_TRIGGER_DELAY_WIDTHS = 24*pNUM_TRIGGER_PULSES,
+   parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES
 
 )(
    input  wire         reset_i,
@@ -55,6 +59,18 @@ module reg_main #(
 
    input  wire         I_capture_enable_pulse,
 
+// Interface to trigger generator:
+   output wire [pALL_TRIGGER_DELAY_WIDTHS-1:0]  O_trigger_delay,
+   output wire [pALL_TRIGGER_WIDTH_WIDTHS-1:0]  O_trigger_width,
+   output wire [pNUM_TRIGGER_WIDTH-1:0]         O_num_triggers,
+   output wire                                  O_trigger_enable,
+
+
+// Interface to trigger clock phase shift:
+   output reg          O_psincdec,
+   output reg          O_psen,
+   input  wire         I_psdone,  
+
 // Interface to top-level:
    output reg  [`FE_SELECT_WIDTH-1:0] fe_select,
    output wire selected
@@ -69,6 +85,18 @@ module reg_main #(
    reg  reg_arm;
    reg  reg_arm_r;
    wire capture_enable_pulse;
+   reg  phaseshift_active;
+
+   reg reg_trigger_enable;
+   reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
+   reg [pALL_TRIGGER_DELAY_WIDTHS-1:0] reg_trigger_delay;
+   reg [pALL_TRIGGER_WIDTH_WIDTHS-1:0] reg_trigger_width;
+
+   assign O_trigger_enable = reg_trigger_enable;
+   assign O_num_triggers = reg_num_triggers;
+   assign O_trigger_delay = reg_trigger_delay;
+   assign O_trigger_width = reg_trigger_width;
+
 
    assign selected = reg_addrvalid & reg_address[6:5] == `MAIN_REG_SELECT;
    wire [4:0] address = reg_address[4:0];
@@ -85,6 +113,11 @@ module reg_main #(
             `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, I_fifo_status};
             `REG_FE_SELECT: reg_read_data <= fe_select;
             `REG_ARM: reg_read_data <= reg_arm;
+            `REG_TRIGGER_ENABLE: reg_read_data <= reg_trigger_enable;
+            `REG_TRIGGER_DELAY: reg_read_data <= reg_trigger_delay[reg_bytecnt*8 +: 8];
+            `REG_TRIGGER_WIDTH: reg_read_data <= reg_trigger_width[reg_bytecnt*8 +: 8];
+            `REG_NUM_TRIGGERS: reg_read_data <= {4'b0, reg_num_triggers};
+            `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
          endcase
 
       end
@@ -146,6 +179,13 @@ module reg_main #(
          fe_select <= `FE_USB;
          reg_arm <= 1'b0;
          reg_arm_r <= 1'b0;
+         reg_trigger_enable <= 0;
+         reg_trigger_delay <= 0;
+         reg_trigger_width <= 0;
+         reg_num_triggers <= 1;
+         O_psen <= 1'b0;
+         O_psincdec <= 1'b0;
+         phaseshift_active <= 1'b0;
       end
 
       else begin
@@ -153,6 +193,10 @@ module reg_main #(
          if (selected && reg_write) begin
             case (address)
                `REG_FE_SELECT: fe_select <= write_data[`FE_SELECT_WIDTH-1:0];
+               `REG_TRIGGER_ENABLE: reg_trigger_enable <= write_data;
+               `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_NUM_TRIGGERS: reg_num_triggers <= write_data[pNUM_TRIGGER_WIDTH-1:0];
             endcase
          end
 
@@ -161,6 +205,18 @@ module reg_main #(
             reg_arm <= write_data[0];
          else if (capture_enable_pulse)
             reg_arm <= 1'b0;
+
+         // Phase shift for trigger clock register is special: (reference: Xilinx UG472)
+         if (selected && reg_write && (address == `REG_TRIG_CLK_PHASE_SHIFT) && ~phaseshift_active) begin
+            O_psincdec <= write_data[0];
+            O_psen <= 1'b1;
+            phaseshift_active <= 1'b1;
+         end
+         else begin
+            O_psen <= 1'b0;
+            if (I_psdone)
+               phaseshift_active <= 1'b0;
+         end
 
       end
    end

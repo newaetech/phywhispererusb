@@ -240,7 +240,9 @@ module phywhisperer_top(
    );
 
    reg_main #(
-      .pBYTECNT_SIZE            (pBYTECNT_SIZE)
+      .pBYTECNT_SIZE            (pBYTECNT_SIZE),
+      .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
+      .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
    ) U_reg_main (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -265,6 +267,17 @@ module phywhisperer_top(
       .I_flushing       (fifo_flush),
       .I_capture_enable_pulse (capture_enable_pulse),
 
+      // Trigger:
+      .O_trigger_delay  (trigger_delay),
+      .O_trigger_width  (trigger_width),
+      .O_trigger_enable (trigger_enable),
+      .O_num_triggers   (num_triggers),
+
+      // Trigger clock phase shift:
+      .O_psincdec               (psincdec),
+      .O_psen                   (psen),
+      .I_psdone                 (psdone),
+
       .selected         (reg_main_selected)
 
    );
@@ -280,9 +293,7 @@ module phywhisperer_top(
       .pCAPTURE_DELAY_WIDTH     (pCAPTURE_DELAY_WIDTH),
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
       .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH),
-      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH),
-      .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
-      .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
 
    ) U_reg_usb (
       .reset_i                  (reset_i), 
@@ -304,10 +315,6 @@ module phywhisperer_top(
 
       // Trigger:
       .O_capture_delay          (capture_delay),
-      .O_trigger_delay          (trigger_delay),
-      .O_trigger_width          (trigger_width),
-      .O_trigger_enable         (trigger_enable),
-      .O_num_triggers           (num_triggers),
 
       // PM:
       .O_pattern                (pattern),
@@ -322,11 +329,6 @@ module phywhisperer_top(
       .O_usb_auto_restart       (usb_auto_restart),
       .O_usb_auto_wait1         (usb_auto_wait1),
       .O_usb_auto_wait2         (usb_auto_wait2),
-
-      // Trigger clock phase shift:
-      .O_psincdec               (psincdec),
-      .O_psen                   (psen),
-      .I_psdone                 (psdone),
 
       .I_usb_auto_speed         (usb_auto_speed),
 
