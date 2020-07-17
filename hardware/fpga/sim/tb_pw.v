@@ -228,7 +228,8 @@ module tb_pw();
       #(pFE_CLOCK_PERIOD*100);
 
       write_1byte(`MAIN_REG_SELECT, `REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
-      rw_lots_bytes(`USB_REG_SELECT, `REG_CAPTURE_LEN);
+      write_1byte(`MAIN_REG_SELECT, `REG_COUNT_WRITES, 1);
+      rw_lots_bytes(`MAIN_REG_SELECT, `REG_CAPTURE_LEN);
       if (pNO_CAPTURE_LIMIT) begin
          write_next_byte(0);
          write_next_byte(0);

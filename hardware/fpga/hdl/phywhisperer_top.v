@@ -136,6 +136,7 @@ module phywhisperer_top(
    wire trigger_match;
    wire timestamps_disable;
    wire [pCAPTURE_LEN_WIDTH-1:0] capture_len;
+   wire count_writes;
    wire fifo_full;
    wire arm;
    wire reg_arm;
@@ -242,7 +243,8 @@ module phywhisperer_top(
    reg_main #(
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
       .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
-      .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
+      .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH),
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
    ) U_reg_main (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -265,6 +267,8 @@ module phywhisperer_top(
       .O_arm            (arm),
       .O_reg_arm        (reg_arm),
       .I_flushing       (fifo_flush),
+      .O_capture_len    (capture_len),
+      .O_count_writes   (count_writes),
       .I_capture_enable_pulse (capture_enable_pulse),
 
       // Trigger:
@@ -292,8 +296,7 @@ module phywhisperer_top(
       .pPATTERN_BYTES           (pPATTERN_BYTES),
       .pCAPTURE_DELAY_WIDTH     (pCAPTURE_DELAY_WIDTH),
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
-      .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH),
-      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
+      .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH)
 
    ) U_reg_usb (
       .reset_i                  (reset_i), 
@@ -311,7 +314,6 @@ module phywhisperer_top(
       .I_fe_capture_stat        (fe_capture_stat),
       .O_timestamps_disable     (timestamps_disable),
       .O_reg_arm_feclk          (reg_arm_feclk),
-      .O_capture_len            (capture_len),
 
       // Trigger:
       .O_capture_delay          (capture_delay),
@@ -374,6 +376,7 @@ module phywhisperer_top(
       .I_arm                    (arm),
       .I_reg_arm                (reg_arm),
       .I_capture_len            (capture_len),
+      .I_count_writes           (count_writes),
 
       .I_event                  (fe_event),
       .I_data_cmd               (fe_data_cmd),

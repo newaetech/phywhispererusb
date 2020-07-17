@@ -56,6 +56,7 @@ class Usb(PWPacketDispatcher):
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
         self.slurp_defines()
+        self.write_reg(self.REG_COUNT_WRITES, [1], self.MAIN_REG_SELECT)
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
             super().__init__(verbose=False)
@@ -481,7 +482,7 @@ class Usb(PWPacketDispatcher):
         if (size >= 2**24) or (size < 0):
             raise ValueError('Illegal size value.')
         self.capture_size = size
-        self.write_reg(self.REG_CAPTURE_LEN, int.to_bytes(size, length=2, byteorder='little'))
+        self.write_reg(self.REG_CAPTURE_LEN, int.to_bytes(size, length=2, byteorder='little'), self.MAIN_REG_SELECT)
 
 
     def ns_trigger(self, delay_in_ns):

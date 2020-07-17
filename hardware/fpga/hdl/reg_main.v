@@ -28,7 +28,8 @@ module reg_main #(
    parameter pNUM_TRIGGER_PULSES = 8,
    parameter pNUM_TRIGGER_WIDTH = 4,
    parameter pALL_TRIGGER_DELAY_WIDTHS = 24*pNUM_TRIGGER_PULSES,
-   parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES
+   parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES,
+   parameter pCAPTURE_LEN_WIDTH = 24
 
 )(
    input  wire         reset_i,
@@ -56,6 +57,8 @@ module reg_main #(
    output wire         O_arm,
    output wire         O_reg_arm,
    input  wire         I_flushing,
+   output wire [pCAPTURE_LEN_WIDTH-1:0] O_capture_len,
+   output wire         O_count_writes,
 
    input  wire         I_capture_enable_pulse,
 
@@ -86,6 +89,8 @@ module reg_main #(
    reg  reg_arm_r;
    wire capture_enable_pulse;
    reg  phaseshift_active;
+   reg [pCAPTURE_LEN_WIDTH-1:0] reg_capture_len;
+   reg  reg_count_writes;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -96,6 +101,8 @@ module reg_main #(
    assign O_num_triggers = reg_num_triggers;
    assign O_trigger_delay = reg_trigger_delay;
    assign O_trigger_width = reg_trigger_width;
+   assign O_capture_len = reg_capture_len;
+   assign O_count_writes = reg_count_writes;
 
 
    assign selected = reg_addrvalid & reg_address[6:5] == `MAIN_REG_SELECT;
@@ -118,6 +125,8 @@ module reg_main #(
             `REG_TRIGGER_WIDTH: reg_read_data <= reg_trigger_width[reg_bytecnt*8 +: 8];
             `REG_NUM_TRIGGERS: reg_read_data <= {4'b0, reg_num_triggers};
             `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
+            `REG_CAPTURE_LEN: reg_read_data <= reg_capture_len[reg_bytecnt*8 +: 8];
+            `REG_COUNT_WRITES: reg_read_data <= reg_count_writes;
          endcase
 
       end
@@ -186,6 +195,8 @@ module reg_main #(
          O_psen <= 1'b0;
          O_psincdec <= 1'b0;
          phaseshift_active <= 1'b0;
+         reg_capture_len <= 0;
+         reg_count_writes <= 0;
       end
 
       else begin
@@ -197,6 +208,8 @@ module reg_main #(
                `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data;
                `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data;
                `REG_NUM_TRIGGERS: reg_num_triggers <= write_data[pNUM_TRIGGER_WIDTH-1:0];
+               `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_COUNT_WRITES: reg_count_writes <= write_data;
             endcase
          end
 

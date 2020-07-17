@@ -29,8 +29,7 @@ module reg_usb #(
    parameter pPATTERN_BYTES = 8,
    parameter pCAPTURE_DELAY_WIDTH = 18,
    parameter pBYTECNT_SIZE = 7,
-   parameter pUSB_AUTO_COUNTER_WIDTH = 24,
-   parameter pCAPTURE_LEN_WIDTH = 24
+   parameter pUSB_AUTO_COUNTER_WIDTH = 24
 
 )(
    input  wire         reset_i,
@@ -51,7 +50,6 @@ module reg_usb #(
    input  wire                                  fe_clk,
    output wire                                  O_timestamps_disable,
    output wire                                  O_reg_arm_feclk,
-   output wire [pCAPTURE_LEN_WIDTH-1:0]         O_capture_len,
    input  wire [4:0]                            I_fe_capture_stat,
 
 // Interface to main register block:
@@ -87,7 +85,6 @@ module reg_usb #(
    reg [8*pPATTERN_BYTES-1:0] reg_pattern;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
    reg [7:0] reg_pattern_bytes;
-   reg [pCAPTURE_LEN_WIDTH-1:0] reg_capture_len;
    reg [pCAPTURE_DELAY_WIDTH-1:0] reg_capture_delay;
    reg [1:0] reg_usb_speed;
    reg [pUSB_AUTO_COUNTER_WIDTH-1:0] reg_usb_auto_wait1;
@@ -111,7 +108,6 @@ module reg_usb #(
    assign O_pattern = reg_pattern;
    assign O_pattern_mask = reg_pattern_mask;
    assign O_pattern_bytes = reg_pattern_bytes;
-   assign O_capture_len = reg_capture_len;
    assign O_capture_delay = reg_capture_delay;
    assign O_usb_speed = (reg_usb_speed == `USB_SPEED_AUTO)? usb_speed_auto : reg_usb_speed;
    assign O_usb_xcvrsel_auto = reg_usb_auto_defaults[1:0];
@@ -133,7 +129,6 @@ module reg_usb #(
             `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
             `REG_STAT_MATCH: reg_read_data <= reg_stat_matched[reg_bytecnt*8 +: 8];
             `REG_TIMESTAMPS_DISABLE: reg_read_data <= reg_timestamps_disable;
-            `REG_CAPTURE_LEN: reg_read_data <= reg_capture_len[reg_bytecnt*8 +: 8];
             `REG_USB_AUTO_DEFAULTS: reg_read_data <= reg_usb_auto_defaults;
             `REG_CAPTURE_DELAY: reg_read_data <= reg_capture_delay[reg_bytecnt*8 +: 8];
             `REG_USB_AUTO_WAIT1: reg_read_data <= reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
@@ -155,7 +150,6 @@ module reg_usb #(
          reg_pattern <= 0;
          reg_pattern_mask <= 64'h0;
          reg_pattern_bytes <= 8'd0;
-         reg_capture_len <= 0;
          reg_capture_delay <= 0;
          reg_usb_speed <= `USB_SPEED_AUTO;
          O_usb_auto_restart <= 1'b0;
@@ -173,7 +167,6 @@ module reg_usb #(
                `REG_PATTERN: reg_pattern[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_MASK: reg_pattern_mask[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_BYTES: reg_pattern_bytes <= write_data;
-               `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_SPEED: reg_usb_speed <= write_data;
                `REG_USB_AUTO_DEFAULTS: reg_usb_auto_defaults <= write_data[2:0];
                `REG_CAPTURE_DELAY: reg_capture_delay[reg_bytecnt*8 +: 8] <= write_data;

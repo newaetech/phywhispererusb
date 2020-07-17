@@ -33,6 +33,8 @@
 `define REG_TRIGGER_DELAY            5'h07
 `define REG_TRIGGER_WIDTH            5'h08
 `define REG_TRIG_CLK_PHASE_SHIFT     5'h09
+`define REG_CAPTURE_LEN              5'h0a
+`define REG_COUNT_WRITES             5'h0b
 
 // front end select definitions
 `define FE_SELECT_WIDTH 2

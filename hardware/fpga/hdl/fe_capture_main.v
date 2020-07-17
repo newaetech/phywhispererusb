@@ -47,6 +47,7 @@ module fe_capture_main #(
     input  wire I_reg_arm, // TODO: yes this is confusing but there are two different arms..
                            // maybe there's a better way?
     input  wire [pCAPTURE_LEN_WIDTH-1:0] I_capture_len,
+    input  wire I_count_writes,
 
     /* FIFO CONNECTIONS */
     output reg  O_fifo_flush,
@@ -216,7 +217,7 @@ module fe_capture_main #(
        else begin
           if (arm_r & !arm_r2)
              capture_count <= 24'd0;
-          else if (O_fifo_wr)
+          else if (I_count_writes? O_fifo_wr : 1)
              capture_count <= capture_count + 1;
        end
     end
