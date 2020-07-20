@@ -48,6 +48,7 @@ module fe_capture_main #(
                            // maybe there's a better way?
     input  wire [pCAPTURE_LEN_WIDTH-1:0] I_capture_len,
     input  wire I_count_writes,
+    input  wire I_counter_quick_start,
 
     /* FIFO CONNECTIONS */
     output reg  O_fifo_flush,
@@ -158,7 +159,7 @@ module fe_capture_main #(
           state_r2 <= state_r;
           timestamp_reg <= timestamp;
 
-          if (I_capture_enable && event_reg)
+          if (I_capture_enable && (I_counter_quick_start? 1'b1 : event_reg))
              ctr_running <= 1'b1;
           else if (!I_capture_enable)
              ctr_running <= 1'b0;

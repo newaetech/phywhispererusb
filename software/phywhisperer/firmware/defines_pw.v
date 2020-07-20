@@ -35,6 +35,7 @@
 `define REG_TRIG_CLK_PHASE_SHIFT     5'h09
 `define REG_CAPTURE_LEN              5'h0a
 `define REG_COUNT_WRITES             5'h0b
+`define REG_COUNTER_QUICK_START      5'h0c
 
 // front end select definitions
 `define FE_SELECT_WIDTH 2

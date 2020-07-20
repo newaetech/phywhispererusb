@@ -59,6 +59,7 @@ module reg_main #(
    input  wire         I_flushing,
    output wire [pCAPTURE_LEN_WIDTH-1:0] O_capture_len,
    output wire         O_count_writes,
+   output wire         O_counter_quick_start,
 
    input  wire         I_capture_enable_pulse,
 
@@ -91,6 +92,7 @@ module reg_main #(
    reg  phaseshift_active;
    reg [pCAPTURE_LEN_WIDTH-1:0] reg_capture_len;
    reg  reg_count_writes;
+   reg  reg_counter_quick_start;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -103,6 +105,7 @@ module reg_main #(
    assign O_trigger_width = reg_trigger_width;
    assign O_capture_len = reg_capture_len;
    assign O_count_writes = reg_count_writes;
+   assign O_counter_quick_start = reg_counter_quick_start;
 
 
    assign selected = reg_addrvalid & reg_address[6:5] == `MAIN_REG_SELECT;
@@ -127,6 +130,7 @@ module reg_main #(
             `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
             `REG_CAPTURE_LEN: reg_read_data <= reg_capture_len[reg_bytecnt*8 +: 8];
             `REG_COUNT_WRITES: reg_read_data <= reg_count_writes;
+            `REG_COUNTER_QUICK_START: reg_read_data <= reg_counter_quick_start;
          endcase
 
       end
@@ -197,6 +201,7 @@ module reg_main #(
          phaseshift_active <= 1'b0;
          reg_capture_len <= 0;
          reg_count_writes <= 0;
+         reg_counter_quick_start <= 0;
       end
 
       else begin
@@ -210,6 +215,7 @@ module reg_main #(
                `REG_NUM_TRIGGERS: reg_num_triggers <= write_data[pNUM_TRIGGER_WIDTH-1:0];
                `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
                `REG_COUNT_WRITES: reg_count_writes <= write_data;
+               `REG_COUNTER_QUICK_START: reg_counter_quick_start <= write_data;
             endcase
          end
 
