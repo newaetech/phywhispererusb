@@ -88,7 +88,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../hdl/pw_pattern_matcher.v">
+      <File Path="$PPRDIR/../hdl/pattern_matcher_usb.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -141,8 +141,6 @@
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="phywhisperer_top"/>
         <Option Name="VerilogDir" Val="$PPRDIR/../../../software/phywhisperer/firmware"/>
-        <Define Name="ILA_USB_AUTODETECT"/>
-        <Define Name="ILA_REG"/>
       </Config>
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
@@ -208,6 +206,7 @@
     <FileSet Name="ila_2" Type="BlockSrcs" RelSrcDir="$PSRCDIR/ila_2">
       <File Path="$PSRCDIR/sources_1/ip/ila_2/ila_2.xci">
         <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -266,6 +265,7 @@
     <FileSet Name="ila_5" Type="BlockSrcs" RelSrcDir="$PSRCDIR/ila_5">
       <File Path="$PSRCDIR/sources_1/ip/ila_5/ila_5.xci">
         <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>

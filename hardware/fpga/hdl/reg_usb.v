@@ -256,7 +256,7 @@ module reg_usb #(
 	.probe6         (reg_addrvalid),                // input wire [0:0]  probe6 
 	.probe7         (reg_read_data),                // input wire [7:0]  probe7 
 	.probe8         (selected),                     // input wire [0:0]  probe8 
-	.probe9         ({4'b0, reg_num_triggers})      // input wire [7:0]  probe9
+	.probe9         (reg_pattern[7:0])              // input wire [7:0]  probe9
        );
 
    `endif

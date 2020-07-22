@@ -56,7 +56,6 @@ class Usb(PWPacketDispatcher):
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
         self.slurp_defines()
-        self.write_reg(self.REG_COUNT_WRITES, [1], self.MAIN_REG_SELECT)
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
             super().__init__(verbose=False)
@@ -95,10 +94,8 @@ class Usb(PWPacketDispatcher):
                             setattr(self, match.group(1), int(match.group(2),10))
                         else:
                             logging.warning("Couldn't parse line: %s", define)
-            # TODO- make sure everything is cool:
-            #assert self.verilog_define_matches == 58, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
-            print("Found %d defines\n" % self.verilog_define_matches)
             defines.close()
+        assert self.verilog_define_matches == 66, "Trouble parsing Verilog defines files: didn't find the right number of defines (expected 66, got %d)." % self.verilog_define_matches
 
 
     def con(self, PID=0xC610, sn=None, program_fpga=True, bitstream_file=None):
@@ -127,6 +124,8 @@ class Usb(PWPacketDispatcher):
                 with open(bitstream_file,"rb") as bitstream:
                     self._llint.FPGAProgram(bitstream) 
 
+        self.write_reg(self.REG_COUNT_WRITES, [1], self.MAIN_REG_SELECT)
+
 
     def set_power_source(self, src):
         """Set power source for target.
@@ -154,6 +153,7 @@ class Usb(PWPacketDispatcher):
         """ Reset FPGA registers to defaults, use liberally to clear incorrect states.
         """
         self._llint.resetFPGA()
+        self.write_reg(self.REG_COUNT_WRITES, [1], self.MAIN_REG_SELECT)
 
     def load_bitstream(self, bitfile):
         """Load bitstream onto FPGA"""

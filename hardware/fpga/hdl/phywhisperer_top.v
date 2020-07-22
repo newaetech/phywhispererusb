@@ -478,16 +478,12 @@ module phywhisperer_top(
     //assign userio_d[2] = USB_nWE;
     //assign userio_d[3] = USB_nCS;
     //assign userio_d[7:4] = USB_Addr[3:0];
-    assign userio_d[0] = fe_linestate0;
-    assign userio_d[1] = fe_linestate1;
-    assign userio_d[2] = trigger_clk;
-    assign userio_d[3] = usb_auto_speed[0];
-    assign userio_d[4] = usb_auto_speed[1];
 
-    wire [2:0] auto_state;
-    assign userio_d[5] = auto_state[0];
-    assign userio_d[6] = auto_state[1];
-    assign userio_d[7] = auto_state[2];
+    //assign userio_d[0] = fe_linestate0;
+    //assign userio_d[1] = fe_linestate1;
+    //assign userio_d[2] = trigger_clk;
+    //assign userio_d[3] = usb_auto_speed[0];
+    //assign userio_d[4] = usb_auto_speed[1];
 
 
     `ifdef ILA_FE
@@ -605,8 +601,7 @@ module phywhisperer_top(
         .I_restart          (usb_auto_restart),
         .I_wait1            (usb_auto_wait1),
         .I_wait2            (usb_auto_wait2),
-        .O_speed            (usb_auto_speed),
-        .state              (auto_state)
+        .O_speed            (usb_auto_speed)
     );
 
 

@@ -36,12 +36,10 @@ module usb_autodetect #(
     input  wire I_restart,
     input  wire [pCOUNTER_WIDTH-1:0] I_wait1,
     input  wire [pCOUNTER_WIDTH-1:0] I_wait2,
-    output reg  [1:0] O_speed,
-    output reg  [2:0] state // TODO-temp debug
+    output reg  [1:0] O_speed
 );
 
-    //reg  [2:0] state, next_state, state_r; TODO-temp
-    reg  [2:0] next_state, state_r;
+    reg  [2:0] state, next_state, state_r;
     localparam pS_IDLE = 0;
     localparam pS_LS = 1;
     localparam pS_FS = 2;
