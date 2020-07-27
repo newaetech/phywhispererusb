@@ -318,7 +318,7 @@ class Usb(PWPacketDispatcher):
                     if timeout and time.time() - starttime > timeout:
                         logging.warning("Capture timed out!")
                         break
-                data.append(self.read_reg(self.REG_SNIFF_FIFO_RD, 4, self.MAIN_REG_SELECT)[0:3])
+                data.append(self.read_reg(self.REG_SNIFF_FIFO_RD, 4, self.MAIN_REG_SELECT)[1:4])
                 entries_read += 1
 
         else:
@@ -329,10 +329,10 @@ class Usb(PWPacketDispatcher):
                 raw.extend(self.read_reg(self.REG_SNIFF_FIFO_RD, 4*burst_size, self.MAIN_REG_SELECT))
                 # check CAPTURE_DONE and EMPTY flags on last entry read:
                 bitmask = 2**self.FE_FIFO_STAT_CAPTURE_DONE + 2**self.FE_FIFO_STAT_EMPTY
-                if raw[-2] & bitmask == bitmask:
+                if raw[-1] & bitmask == bitmask:
                     notdone = False
                     # did we also overflow?
-                    if raw[-2] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
+                    if raw[-1] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
                         logging.warning("FIFO overflowed, capture stopped.")
                         early_exit = True
                 elif timeout and time.time() - starttime > timeout:
@@ -341,8 +341,8 @@ class Usb(PWPacketDispatcher):
                     early_exit = True
             # reformat the return array and at the same time, filter out the (possibly numerous) empty FIFO reads:
             for i in range(int(len(raw)/4)):
-                if raw[i*4+2] & 3 != self.FE_FIFO_CMD_STRM:
-                    data.append(raw[i*4:i*4+3])
+                if raw[i*4+3] & 3 != self.FE_FIFO_CMD_STRM:
+                    data.append(raw[i*4+1:i*4+4])
             self.entries_captured = len(data)
             if early_exit:
                 logging.warning("%d entries captured." % self.entries_captured)
@@ -794,9 +794,9 @@ class Usb(PWPacketDispatcher):
             while notdone:
                 raw = self.read_reg(self.REG_SNIFF_FIFO_RD, 4*burst_size, self.MAIN_REG_SELECT)
                 bitmask = 2**self.FE_FIFO_STAT_CAPTURE_DONE + 2**self.FE_FIFO_STAT_EMPTY
-                if raw[-2] & bitmask == bitmask:
+                if raw[-3] & bitmask == bitmask:
                     notdone = False
-                    if raw[-2] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
+                    if raw[-3] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
                         logging.warning("FIFO overflowed, capture stopped")
                         early_exit = True
                 elif timeout and time.time() - starttime > timeout:
@@ -806,8 +806,8 @@ class Usb(PWPacketDispatcher):
                 # filter out the empty FIFO reads:
                 rawdata = []
                 for i in range(int(len(raw)/4)):
-                    if raw[i*4+2] & 3 != self.FE_FIFO_CMD_STRM:
-                        rawdata.append(raw[i*4:i*4+3])
+                    if raw[i*4+3] & 3 != self.FE_FIFO_CMD_STRM:
+                        rawdata.append(raw[i*4+1:i*4+4])
                 self.handle_incoming_bytes(rawdata)
                 self.entries_captured += len(rawdata)
                 if early_exit:

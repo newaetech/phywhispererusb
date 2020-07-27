@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="xc7s15-rev03" LaunchPart="xc7s15ftgb196-2" LaunchTime="1595375619">
+<GenRun Id="xc7s15-rev03" LaunchPart="xc7s15ftgb196-2" LaunchTime="1595860591">
   <File Type="BITSTR-BMM" Name="phywhisperer_top_bd.bmm"/>
   <File Type="OPT-METHODOLOGY-DRC" Name="phywhisperer_top_methodology_drc_opted.rpt"/>
   <File Type="INIT-TIMING" Name="phywhisperer_top_timing_summary_init.rpt"/>
@@ -173,9 +173,7 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2018">
-      <Desc>Default settings for Implementation.</Desc>
-    </StratHandle>
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2018"/>
     <Step Id="init_design"/>
     <Step Id="opt_design"/>
     <Step Id="power_opt_design"/>

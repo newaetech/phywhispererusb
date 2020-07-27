@@ -54,9 +54,7 @@ module fe_capture_usb #(
 
     /* FIFO CONNECTIONS */
     output reg [17:0] O_fifo_data,
-    output reg  O_fifo_wr,
-    input  wire I_fifo_write_allowed
-
+    output reg  O_fifo_wr
 );
 
     reg  fe_rxvalid_reg;
@@ -133,10 +131,7 @@ module fe_capture_usb #(
          O_fifo_data <= 0;
       end
       else begin
-         // don't overflow the FIFO:
-         // Because back-to-back writes are possible, checking sniff_fifo_full may not prevent overflow,
-         // and so the last few FIFO entries are wasted :-(
-         if (I_fifo_wr & I_fifo_write_allowed) begin
+         if (I_fifo_wr) begin
             O_fifo_wr <= 1'b1;
             O_fifo_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN] <= I_fifo_command;
             case (I_fifo_command)

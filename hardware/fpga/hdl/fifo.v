@@ -37,7 +37,6 @@ module fifo (
 // Interface to fe_capture_<specific front-end>:
    input  wire [17:0]  I_data,
    input  wire         I_wr,
-   output wire         O_fifo_write_allowed,
 
 // Interface to reg_main:
    input  wire         I_fifo_read,
@@ -68,7 +67,6 @@ module fifo (
    wire fifo_empty_threshold;
    reg  fifo_overflow_blocked;
 
-   assign O_fifo_write_allowed = ~fifo_full_threshold_xilinx;
    assign O_fifo_empty = fifo_empty;
 
    // CDC:

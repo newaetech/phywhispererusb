@@ -171,7 +171,6 @@ module phywhisperer_top(
    wire fifo_wr;
    wire fifo_read;
    wire fifo_flush;
-   wire fifo_write_allowed;
    wire fifo_overflow_blocked;
    wire fifo_empty;
    wire capture_done;
@@ -358,7 +357,6 @@ module phywhisperer_top(
 
       .O_data                   (fifo_out_data),
       .O_fifo_status            (fifo_status),
-      .O_fifo_write_allowed     (fifo_write_allowed),
       .O_fifo_empty             (fifo_empty),
 
       .I_custom_fifo_stat_flag  (capture_done)
@@ -425,8 +423,7 @@ module phywhisperer_top(
       .O_fifo_fe_status         (fe_capture_stat),
 
       .O_fifo_data              (fifo_in_data),
-      .O_fifo_wr                (fifo_wr),
-      .I_fifo_write_allowed     (fifo_write_allowed)
+      .O_fifo_wr                (fifo_wr)
    );
 
 

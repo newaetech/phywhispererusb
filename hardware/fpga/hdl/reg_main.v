@@ -85,6 +85,7 @@ module reg_main #(
    reg  [7:0] reg_read_data;
    reg  empty_fifo_read;
    reg  fifo_empty_r;
+   reg  reg_read_r;
    reg  [17:0] read_data_fifo;
    reg  reg_arm;
    reg  reg_arm_r;
@@ -98,6 +99,7 @@ module reg_main #(
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
    reg [pALL_TRIGGER_DELAY_WIDTHS-1:0] reg_trigger_delay;
    reg [pALL_TRIGGER_WIDTH_WIDTHS-1:0] reg_trigger_width;
+   reg [1:0] reg_bytecnt_r20;
 
    assign O_trigger_enable = reg_trigger_enable;
    assign O_num_triggers = reg_num_triggers;
@@ -115,6 +117,7 @@ module reg_main #(
    assign O_reg_arm = reg_arm;
 
    // read logic:
+   /*
    always @(posedge cwusb_clk) begin
       if (selected && reg_read) begin
 
@@ -134,13 +137,34 @@ module reg_main #(
          endcase
 
       end
-      else begin
-         reg_read_data <= 8'h0;
+   end
+   */
+
+   always @(*) begin
+      if (selected && reg_read) begin
+         case (address)
+            `REG_BUILDTIME: reg_read_data = buildtime[reg_bytecnt*8 +: 8];
+            `REG_SNIFF_FIFO_STAT: reg_read_data = {2'b00, I_fifo_status};
+            `REG_FE_SELECT: reg_read_data = fe_select;
+            `REG_ARM: reg_read_data = reg_arm;
+            `REG_TRIGGER_ENABLE: reg_read_data = reg_trigger_enable;
+            `REG_TRIGGER_DELAY: reg_read_data = reg_trigger_delay[reg_bytecnt*8 +: 8];
+            `REG_TRIGGER_WIDTH: reg_read_data = reg_trigger_width[reg_bytecnt*8 +: 8];
+            `REG_NUM_TRIGGERS: reg_read_data = {4'b0, reg_num_triggers};
+            `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data = {7'b0, phaseshift_active};
+            `REG_CAPTURE_LEN: reg_read_data = reg_capture_len[reg_bytecnt*8 +: 8];
+            `REG_COUNT_WRITES: reg_read_data = reg_count_writes;
+            `REG_COUNTER_QUICK_START: reg_read_data = reg_counter_quick_start;
+            default: reg_read_data = 0;
+         endcase
       end
+      else
+         reg_read_data = 0;
    end
 
+
    // FIFO read logic: perform a FIFO read on first read access to FIFO register:
-   assign O_fifo_read = selected && reg_read && ~fifo_empty_r &&
+   assign O_fifo_read = selected && reg_read && ~reg_read_r && ~fifo_empty_r &&
                        (address == `REG_SNIFF_FIFO_RD) &&
                       ((reg_bytecnt % 4) == 0) && ~empty_fifo_read;
 
@@ -148,14 +172,16 @@ module reg_main #(
       if (reset_i) begin
          empty_fifo_read <= 1'b0;
          fifo_empty_r <= 1'b0;
+         reg_read_r <= 1'b0;
+         reg_bytecnt_r20 <= 2'b0;
       end
       else begin
          fifo_empty_r <= I_fifo_empty;
-         if (selected && reg_read && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && fifo_empty_r)
+         reg_read_r <= reg_read;
+         reg_bytecnt_r20 <= reg_bytecnt[1:0];
+         if (selected && reg_read && ~reg_read_r && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && fifo_empty_r)
             empty_fifo_read <= 1'b1;
-         // NOTE: this works because the 4th byte of a FIFO read is dummy data; it
-         // will have to be tweaked if the 4th byte contains valid data 
-         else if (selected && reg_read && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 3) && ~fifo_empty_r)
+         else if (selected && reg_read && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && reg_bytecnt_r20 == 2'b11 && ~fifo_empty_r)
             empty_fifo_read <= 1'b0;
 
       end
@@ -175,9 +201,9 @@ module reg_main #(
       
       if (address == `REG_SNIFF_FIFO_RD) begin
          case (reg_bytecnt % 4)
-            0: read_data = read_data_fifo[7:0];
-            1: read_data = read_data_fifo[15:8];
-            2: read_data = {I_fifo_status, read_data_fifo[17:16]};
+            1: read_data = read_data_fifo[7:0];
+            2: read_data = read_data_fifo[15:8];
+            3: read_data = {I_fifo_status, read_data_fifo[17:16]};
             default: read_data = 0;
          endcase
       end

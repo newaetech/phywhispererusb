@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Tue Jul 21 19:56:32 2020
+| Date             : Mon Jul 27 10:39:09 2020
 | Host             : qed running 64-bit major release  (build 9200)
 | Command          : report_power -file phywhisperer_top_power_routed.rpt -pb phywhisperer_top_power_summary_routed.pb -rpx phywhisperer_top_power_routed.rpx
 | Design           : phywhisperer_top
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.171        |
+| Total On-Chip Power (W)  | 0.169        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.151        |
+| Dynamic (W)              | 0.149        |
 | Device Static (W)        | 0.020        |
 | Effective TJA (C/W)      | 3.4          |
 | Max Ambient (C)          | 84.4         |
@@ -53,19 +53,19 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.026 |        6 |       --- |             --- |
-| Slice Logic             |     0.002 |     6752 |       --- |             --- |
-|   LUT as Logic          |     0.002 |     1936 |      8000 |           24.20 |
+| Slice Logic             |     0.002 |     6550 |       --- |             --- |
+|   LUT as Logic          |     0.002 |     1812 |      8000 |           22.65 |
+|   Register              |    <0.001 |     3884 |     16000 |           24.28 |
 |   CARRY4                |    <0.001 |       98 |      2000 |            4.90 |
-|   Register              |    <0.001 |     3892 |     16000 |           24.33 |
-|   F7/F8 Muxes           |    <0.001 |      262 |      8000 |            3.28 |
+|   F7/F8 Muxes           |    <0.001 |      247 |      8000 |            3.09 |
 |   Others                |     0.000 |       40 |       --- |             --- |
 |   LUT as Shift Register |     0.000 |        1 |      2400 |            0.04 |
-| Signals                 |     0.003 |     5827 |       --- |             --- |
+| Signals                 |     0.003 |     5669 |       --- |             --- |
 | Block RAM               |     0.003 |        4 |        10 |           40.00 |
 | MMCM                    |     0.106 |        1 |         2 |           50.00 |
-| I/O                     |     0.010 |       56 |       100 |           56.00 |
+| I/O                     |     0.009 |       56 |       100 |           56.00 |
 | Static Power            |     0.020 |          |           |                 |
-| Total                   |     0.171 |          |           |                 |
+| Total                   |     0.169 |          |           |                 |
 +-------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -75,9 +75,9 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.039 |       0.035 |      0.004 |
+| Vccint    |       1.000 |     0.038 |       0.034 |      0.004 |
 | Vccaux    |       1.800 |     0.066 |       0.059 |      0.007 |
-| Vcco33    |       3.300 |     0.004 |       0.003 |      0.001 |
+| Vcco33    |       3.300 |     0.003 |       0.002 |      0.001 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |
@@ -145,11 +145,11 @@ Table of Contents
 +---------------------+-----------+
 | Name                | Power (W) |
 +---------------------+-----------+
-| phywhisperer_top    |     0.151 |
+| phywhisperer_top    |     0.149 |
 |   U_fifo            |     0.004 |
 |     U_fifo          |     0.003 |
 |       U0            |     0.003 |
-|   U_pattern_matcher |     0.016 |
+|   U_pattern_matcher |     0.015 |
 |   U_reg_main        |     0.002 |
 |   U_reg_usb         |     0.004 |
 |   U_trigger         |     0.005 |

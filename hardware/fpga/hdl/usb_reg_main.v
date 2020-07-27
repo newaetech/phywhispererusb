@@ -77,7 +77,7 @@ module usb_reg_main #(
 
    //TODO: this should be synchronous to device clock, but is phase OK? Might need to
    //use resyncronized version...
-   assign reg_read = rdflag_rs;
+   assign reg_read = cwusb_isout;
    assign cwusb_dout = reg_datai;
 
    //Don't immediatly turn off output drivers

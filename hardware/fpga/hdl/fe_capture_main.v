@@ -219,6 +219,7 @@ module fe_capture_main #(
           if (arm_r & !arm_r2)
              capture_count <= 24'd0;
           else if (I_count_writes? O_fifo_wr : 1)
+             // TODO: qualify this with a 'capturing'-type signal (for the case where we are counting clock cycles!)
              capture_count <= capture_count + 1;
        end
     end
@@ -276,6 +277,20 @@ module fe_capture_main #(
             O_fifo_flush <= 1'b1;
       end
    end
+
+   `ifdef ILA_FE_CAPTURE_MAIN
+      ila_fe_capture_main I_ila_fe_capture_main (
+         .clk          (fe_clk),                        // input wire clk
+         .probe0       (state_idle),                    // input wire [0:0]  probe0  
+         .probe1       (state_data),                    // input wire [0:0]  probe1 
+         .probe2       (state_time),                    // input wire [0:0]  probe2 
+         .probe3       (capture_count[7:0]),            // input wire [7:0]  probe3 
+         .probe4       (capture_allowed),               // input wire [0:0]  probe4 
+         .probe5       (ctr_running),                   // input wire [0:0]  probe5 
+         .probe6       (O_fifo_wr),                     // input wire [0:0]  probe6 
+         .probe7       (I_capture_enable)               // input wire [0:0]  probe7 
+      );
+   `endif
 
 
 endmodule

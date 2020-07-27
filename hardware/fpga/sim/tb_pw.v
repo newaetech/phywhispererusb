@@ -54,8 +54,10 @@ module tb_pw();
     parameter pTRIGGER_WIDTH_MAX= 2**17-1;
     parameter pNUM_TRIGGERS_MIN = 1;
     parameter pNUM_TRIGGERS_MAX = 8;
+    parameter pOVERFLOW_EXPECTED = 0;
     parameter pREAD_CONCURRENTLY = 1;
     parameter pSTREAM_MODE = 0;
+    parameter pSLOW_READS = 0;
     parameter pDUMP = 0;
 
     reg           usb_clk;
@@ -221,6 +223,7 @@ module tb_pw();
    end
 
 
+   reg [7:0] rdata;
    // FE feeding thread:
    initial begin
       errors = 0;
@@ -377,6 +380,10 @@ module tb_pw();
                   if (!overflow_noted) begin
                      $display("%s*** Received overflow flag, will read FIFO until empty\n", rxalign);
                      overflow_noted = 1;
+                     if (pOVERFLOW_EXPECTED == 0) begin
+                        errors += 1;
+                        $display("*** ERROR: overflow was not expected for this testcase!");
+                     end
                   end
                   if (fifo_stat_empty_threshold) begin
                      rx_readindex = pNUM_EVENTS - 1;
@@ -384,8 +391,7 @@ module tb_pw();
                   end
                end
                else if (fifo_stat_underflow | fifo_stat_overflow_blocked) begin
-                  $display("%s*** ERROR on read #%0d at time %0t: underflow=%d, overflow=%d", rxalign, rx_dataindex, $time, fifo_stat_underflow, 
-                                                                                              fifo_stat_overflow_blocked);
+                  $display("%s*** ERROR on read #%0d at time %0t: underflow=%d, overflow=%d", rxalign, rx_dataindex, $time, fifo_stat_underflow, fifo_stat_overflow_blocked);
                   errors += 1;
                end
 
@@ -468,6 +474,7 @@ module tb_pw();
       #1 data = USB_Data;
       @(posedge usb_clk);
       USB_nRD = 1;
+      @(posedge usb_clk);
    endtask
 
    task rw_lots_bytes;
@@ -479,6 +486,8 @@ module tb_pw();
       @(posedge usb_clk);
       USB_SPARE1 = 1;
       repeat(2) @(posedge usb_clk);
+      if (pSLOW_READS)
+         repeat($urandom_range(2, 20)) @(posedge usb_clk);
    endtask
 
    task read_next_byte;
@@ -491,7 +500,9 @@ module tb_pw();
       #1 data = USB_Data;
       @(posedge usb_clk);
       USB_nRD = 1;
-      @(posedge usb_clk);
+      repeat (2) @(posedge usb_clk);
+      if (pSLOW_READS)
+         repeat($urandom_range(2, 20)) @(posedge usb_clk);
    endtask
 
    task write_next_byte;
@@ -683,10 +694,16 @@ module tb_pw();
 
 
    task read_next_fifo_word;
+      /* NOTE: FIFO read timing changed, used to be that last byte is dummy, now it's the first one
       read_next_byte(read_data[7:0]);
       read_next_byte(read_data[15:8]);
       read_next_byte(read_data[23:16]);
       read_next_byte(dummy);
+      */
+      read_next_byte(dummy);
+      read_next_byte(read_data[7:0]);
+      read_next_byte(read_data[15:8]);
+      read_next_byte(read_data[23:16]);
       command = read_data[`FE_FIFO_CMD_START +: `FE_FIFO_CMD_BIT_LEN];
 
       fifo_stat_empty =           read_data[18+`FIFO_STAT_EMPTY];
