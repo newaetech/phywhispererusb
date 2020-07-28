@@ -219,7 +219,6 @@ module fe_capture_main #(
           if (arm_r & !arm_r2)
              capture_count <= 24'd0;
           else if (I_count_writes? O_fifo_wr : I_capture_enable)
-             // TODO: qualify this with a 'capturing'-type signal (for the case where we are counting clock cycles!)
              capture_count <= capture_count + 1;
        end
     end
