@@ -66,7 +66,7 @@ void exit_cs(void)
 
 void FPGA_setaddr(uint32_t addr)
 {
-  pio_sync_output_write(FPGA_ADDR_PORT, addr);
+  FPGA_ADDR_PORT->PIO_ODSR = (FPGA_ADDR_PORT->PIO_ODSR & 0x40) | (addr & 0x3F) | ((addr & 0xC0) << 1);
   gpio_set_pin_low(PIN_EBI_USB_SPARE1);
   gpio_set_pin_high(PIN_EBI_USB_SPARE1);
 }
