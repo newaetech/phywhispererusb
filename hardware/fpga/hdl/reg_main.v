@@ -29,7 +29,8 @@ module reg_main #(
    parameter pNUM_TRIGGER_WIDTH = 4,
    parameter pALL_TRIGGER_DELAY_WIDTHS = 24*pNUM_TRIGGER_PULSES,
    parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES,
-   parameter pCAPTURE_LEN_WIDTH = 24
+   parameter pCAPTURE_LEN_WIDTH = 24,
+   parameter pQUICK_START_DEFAULT = 0  // set to 0 for PW-USB, 1 for PW-Trace
 
 )(
    input  wire         reset_i,
@@ -227,7 +228,7 @@ module reg_main #(
          phaseshift_active <= 1'b0;
          reg_capture_len <= 0;
          reg_count_writes <= 0;
-         reg_counter_quick_start <= 0;
+         reg_counter_quick_start <= pQUICK_START_DEFAULT;
       end
 
       else begin
