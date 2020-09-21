@@ -1,10 +1,10 @@
 # This file was auto-generated. Do not manually edit or save. What are you doing looking at it? Close it now!
-# Generated on 2020-09-08 13:51:44.782259
+# Generated on 2020-09-21 14:51:45.348554
 #
 import binascii
 import io
 
-fwver = [0, 0]
+fwver = [1, 0]
 def getsome(item, filelike=True):
     data = _contents[item].encode('latin-1')
     data = binascii.a2b_base64(data)
