@@ -62,6 +62,9 @@ module reg_main #(
    output wire         O_count_writes,
    output wire         O_counter_quick_start,
 
+// user-settable to allow for FPGA pin assignment changes across board revisions
+   output wire [3:0]   O_board_rev,
+
    input  wire         I_capture_enable_pulse,
 
 // Interface to trigger generator:
@@ -95,6 +98,7 @@ module reg_main #(
    reg [pCAPTURE_LEN_WIDTH-1:0] reg_capture_len;
    reg  reg_count_writes;
    reg  reg_counter_quick_start;
+   reg  [3:0] reg_board_rev;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -109,6 +113,7 @@ module reg_main #(
    assign O_capture_len = reg_capture_len;
    assign O_count_writes = reg_count_writes;
    assign O_counter_quick_start = reg_counter_quick_start;
+   assign O_board_rev = reg_board_rev;
 
 
    assign selected = reg_addrvalid & reg_address[6:5] == `MAIN_REG_SELECT;
@@ -156,6 +161,7 @@ module reg_main #(
             `REG_CAPTURE_LEN: reg_read_data = reg_capture_len[reg_bytecnt*8 +: 8];
             `REG_COUNT_WRITES: reg_read_data = reg_count_writes;
             `REG_COUNTER_QUICK_START: reg_read_data = reg_counter_quick_start;
+            `REG_BOARD_REV: reg_read_data = reg_board_rev;
             default: reg_read_data = 0;
          endcase
       end
@@ -229,6 +235,7 @@ module reg_main #(
          reg_capture_len <= 0;
          reg_count_writes <= 0;
          reg_counter_quick_start <= pQUICK_START_DEFAULT;
+         reg_board_rev <= 4; // production boards
       end
 
       else begin
@@ -243,6 +250,7 @@ module reg_main #(
                `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
                `REG_COUNT_WRITES: reg_count_writes <= write_data;
                `REG_COUNTER_QUICK_START: reg_counter_quick_start <= write_data;
+               `REG_BOARD_REV: reg_board_rev <= write_data;
             endcase
          end
 

@@ -36,6 +36,7 @@
 `define REG_CAPTURE_LEN              5'h0a
 `define REG_COUNT_WRITES             5'h0b
 `define REG_COUNTER_QUICK_START      5'h0c
+`define REG_BOARD_REV                5'h0d
 
 // front end select definitions
 `define FE_SELECT_WIDTH 2
