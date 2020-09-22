@@ -241,7 +241,7 @@ class Usb(PWPacketDispatcher):
             address: int
             data: bytes
         """
-        address = (block << 5) + address;
+        address = (block << 6) + address;
         return self.usb.cmdWriteMem(address, data)
 
 
@@ -254,7 +254,7 @@ class Usb(PWPacketDispatcher):
             size: int, number of bytes to read
         Returns:
         """
-        address = (block << 5) + address;
+        address = (block << 6) + address;
         return self.usb.cmdReadMem(address, size)
 
 

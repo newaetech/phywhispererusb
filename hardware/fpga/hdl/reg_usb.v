@@ -116,7 +116,7 @@ module reg_usb #(
    assign O_usb_auto_wait2 = reg_usb_auto_wait2;
    assign O_reg_arm_feclk = reg_arm_feclk;
 
-   assign selected = reg_addrvalid & reg_address[6:5] == `USB_REG_SELECT;
+   assign selected = reg_addrvalid & reg_address[7:6] == `USB_REG_SELECT;
    wire [4:0] address = reg_address[4:0];
 
    /* read logic:

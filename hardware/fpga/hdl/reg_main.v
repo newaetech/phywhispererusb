@@ -116,7 +116,7 @@ module reg_main #(
    assign O_board_rev = reg_board_rev;
 
 
-   assign selected = reg_addrvalid & reg_address[6:5] == `MAIN_REG_SELECT;
+   assign selected = reg_addrvalid & reg_address[7:6] == `MAIN_REG_SELECT;
    wire [4:0] address = reg_address[4:0];
 
    assign O_arm = reg_arm_r & ~I_flushing;
