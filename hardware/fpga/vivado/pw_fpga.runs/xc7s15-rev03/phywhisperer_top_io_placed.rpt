@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date                      : Mon Jul 27 10:38:40 2020
+| Date                      : Tue Sep 22 12:57:39 2020
 | Host                      : qed running 64-bit major release  (build 9200)
 | Command                   : report_io -file phywhisperer_top_io_placed.rpt
 | Design                    : phywhisperer_top
@@ -175,8 +175,8 @@ Table of Contents
 | K12        | fe_sessend     | High Range | IO_L19N_T3_D25_VREF_14       | INPUT         | LVCMOS33    |      14 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | K13        |                | High Range | VCCO_14                      | VCCO          |             |      14 |            |      |                     |                      |    3.30 |            |           |          |      |                  |              |                   |              |
 | K14        |                |            | GND                          | GND           |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
-| L1         | USB_Addr[7]    | High Range | IO_L18N_T2_34                | INPUT         | LVCMOS33    |      34 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
-| L2         | USB_Addr[6]    | High Range | IO_L22N_T3_34                | INPUT         | LVCMOS33    |      34 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
+| L1         | USB_Addr[6]    | High Range | IO_L18N_T2_34                | INPUT         | LVCMOS33    |      34 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
+| L2         | USB_Addr[7]    | High Range | IO_L22N_T3_34                | INPUT         | LVCMOS33    |      34 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | L3         |                | High Range | IO_L22P_T3_34                | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | L4         |                |            | GND                          | GND           |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
 | L5         |                | High Range | IO_25_34                     | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |

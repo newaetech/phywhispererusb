@@ -2,8 +2,8 @@
 # Vivado v2018.3 (64-bit)
 # SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Mon Jul 27 10:36:33 2020
-# Process ID: 21456
+# Start of session at: Tue Sep 22 12:55:49 2020
+# Process ID: 22244
 # Current directory: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1
 # Command line: vivado.exe -log phywhisperer_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source phywhisperer_top.tcl
 # Log file: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.vds
@@ -18,9 +18,9 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7s6'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7s6'
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 19368 
+INFO: Helper process launched with PID 18460 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 414.512 ; gain = 105.480
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 414.258 ; gain = 104.926
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'phywhisperer_top' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/phywhisperer_top.v:26]
 	Parameter pTIMESTAMP_FULL_WIDTH bound to: 16 - type: integer 
@@ -60,7 +60,8 @@ INFO: [Synth 8-6157] synthesizing module 'reg_main' [C:/Users/jp/GitHub/phywhisp
 	Parameter pALL_TRIGGER_DELAY_WIDTHS bound to: 192 - type: integer 
 	Parameter pALL_TRIGGER_WIDTH_WIDTHS bound to: 192 - type: integer 
 	Parameter pCAPTURE_LEN_WIDTH bound to: 24 - type: integer 
-INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_main.v:237]
+	Parameter pQUICK_START_DEFAULT bound to: 0 - type: integer 
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_main.v:244]
 INFO: [Synth 8-6157] synthesizing module 'cdc_pulse' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/cdc_pulse.v:24]
 	Parameter pSYNC_STAGES bound to: 2 - type: integer 
 INFO: [Synth 8-5534] Detected attribute (* ASYNC_REG = "TRUE" *) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/cdc_pulse.v:34]
@@ -69,6 +70,7 @@ INFO: [Synth 8-6155] done synthesizing module 'cdc_pulse' (4#1) [C:/Users/jp/Git
 INFO: [Synth 8-6157] synthesizing module 'USR_ACCESSE2' [C:/Xilinx/Vivado/2018.3/scripts/rt/data/unisim_comp.v:53018]
 INFO: [Synth 8-6155] done synthesizing module 'USR_ACCESSE2' (5#1) [C:/Xilinx/Vivado/2018.3/scripts/rt/data/unisim_comp.v:53018]
 INFO: [Synth 8-6155] done synthesizing module 'reg_main' (6#1) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_main.v:26]
+WARNING: [Synth 8-350] instance 'U_reg_main' of module 'reg_main' requires 31 connections, but only 30 given [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/phywhisperer_top.v:248]
 INFO: [Synth 8-6157] synthesizing module 'reg_usb' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_usb.v:26]
 	Parameter pTIMESTAMP_FULL_WIDTH bound to: 16 - type: integer 
 	Parameter pTIMESTAMP_SHORT_WIDTH bound to: 3 - type: integer 
@@ -86,8 +88,8 @@ WARNING: [Synth 8-350] instance 'U_reg_usb' of module 'reg_usb' requires 26 conn
 INFO: [Synth 8-6157] synthesizing module 'fifo' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fifo.v:25]
 INFO: [Synth 8-5534] Detected attribute (* ASYNC_REG = "TRUE" *) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fifo.v:55]
 INFO: [Synth 8-5534] Detected attribute (* ASYNC_REG = "TRUE" *) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fifo.v:56]
-INFO: [Synth 8-6157] synthesizing module 'fifo_generator_0' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-21456-qed/realtime/fifo_generator_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'fifo_generator_0' (8#1) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-21456-qed/realtime/fifo_generator_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'fifo_generator_0' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-22244-qed/realtime/fifo_generator_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'fifo_generator_0' (8#1) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-22244-qed/realtime/fifo_generator_0_stub.v:6]
 INFO: [Synth 8-6155] done synthesizing module 'fifo' (9#1) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fifo.v:25]
 INFO: [Synth 8-6157] synthesizing module 'fe_capture_main' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fe_capture_main.v:25]
 	Parameter pTIMESTAMP_FULL_WIDTH bound to: 16 - type: integer 
@@ -107,8 +109,8 @@ INFO: [Synth 8-6157] synthesizing module 'fe_capture_usb' [C:/Users/jp/GitHub/ph
 	Parameter pCAPTURE_LEN_WIDTH bound to: 24 - type: integer 
 INFO: [Synth 8-155] case statement is not full and has no default [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fe_capture_usb.v:137]
 INFO: [Synth 8-6155] done synthesizing module 'fe_capture_usb' (11#1) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/fe_capture_usb.v:26]
-INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-21456-qed/realtime/clk_wiz_0_stub.v:5]
-INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (12#1) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-21456-qed/realtime/clk_wiz_0_stub.v:5]
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-22244-qed/realtime/clk_wiz_0_stub.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (12#1) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/.Xil/Vivado-22244-qed/realtime/clk_wiz_0_stub.v:5]
 INFO: [Synth 8-6157] synthesizing module 'pattern_matcher_usb' [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/pattern_matcher_usb.v:24]
 	Parameter pPATTERN_BYTES bound to: 64 - type: integer 
 INFO: [Synth 8-5534] Detected attribute (* ASYNC_REG = "TRUE" *) [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/pattern_matcher_usb.v:61]
@@ -247,8 +249,8 @@ WARNING: [Synth 8-3331] design pw_trigger has unconnected port I_trigger_width[1
 WARNING: [Synth 8-3331] design pw_trigger has unconnected port I_trigger_width[18]
 WARNING: [Synth 8-3331] design pw_trigger has unconnected port I_trigger_width[17]
 WARNING: [Synth 8-3331] design fe_capture_usb has unconnected port cwusb_clk
-WARNING: [Synth 8-3331] design reg_usb has unconnected port reg_address[7]
-WARNING: [Synth 8-3331] design reg_main has unconnected port reg_address[7]
+WARNING: [Synth 8-3331] design reg_usb has unconnected port reg_address[5]
+WARNING: [Synth 8-3331] design reg_main has unconnected port reg_address[5]
 WARNING: [Synth 8-3331] design phywhisperer_top has unconnected port userio_d[7]
 WARNING: [Synth 8-3331] design phywhisperer_top has unconnected port userio_d[6]
 WARNING: [Synth 8-3331] design phywhisperer_top has unconnected port userio_d[5]
@@ -260,7 +262,7 @@ WARNING: [Synth 8-3331] design phywhisperer_top has unconnected port userio_d[0]
 WARNING: [Synth 8-3331] design phywhisperer_top has unconnected port userio_clk
 INFO: [Common 17-14] Message 'Synth 8-3331' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 474.355 ; gain = 165.324
+Finished RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 474.785 ; gain = 165.453
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -274,10 +276,10 @@ WARNING: [Synth 8-3295] tying undriven pin U_reg_usb:I_reg_arm to constant 0 [C:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 474.355 ; gain = 165.324
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 474.785 ; gain = 165.453
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 474.355 ; gain = 165.324
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 474.785 ; gain = 165.453
 ---------------------------------------------------------------------------------
 INFO: [Netlist 29-17] Analyzing 4 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
@@ -306,27 +308,27 @@ Finished Parsing XDC File [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/viva
 WARNING: [Project 1-498] One or more constraints failed evaluation while reading constraint file [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc] and the design contains unresolved black boxes. These constraints will be read post-synthesis (as long as their source constraint file is marked as used_in_implementation) and should be applied correctly then. You should review the constraints listed in the file [.Xil/phywhisperer_top_propImpl.xdc] and check the run log file to verify that these constraints were correctly applied.
 INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/phywhisperer_top_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/phywhisperer_top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 808.156 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 807.758 ; gain = 0.000
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 808.156 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 807.758 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 2 instances were transformed.
   IBUFG => IBUF: 2 instances
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 808.156 ; gain = 0.000
-Constraint Validation Runtime : Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.022 . Memory (MB): peak = 808.156 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 807.758 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.022 . Memory (MB): peak = 807.758 ; gain = 0.000
 WARNING: [Timing 38-316] Clock period '16.667' specified during out-of-context synthesis of instance 'U_trigger_clock' at clock pin 'clk_in1' is different from the actual clock period '16.000', this can lead to different synthesis results.
 WARNING: [Timing 38-316] Clock period '1000.000' specified during out-of-context synthesis of instance 'U_fifo/U_fifo' at clock pin 'rd_clk' is different from the actual clock period '10.000', this can lead to different synthesis results.
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:13 ; elapsed = 00:00:16 . Memory (MB): peak = 808.156 ; gain = 499.125
+Finished Constraint Validation : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 807.758 ; gain = 498.426
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7s6ftgb196-2
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:13 ; elapsed = 00:00:16 . Memory (MB): peak = 808.156 ; gain = 499.125
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 807.758 ; gain = 498.426
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -334,13 +336,14 @@ Start Applying 'set_property' XDC Constraints
 Applied set_property DONT_TOUCH = true for U_trigger_clock. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for U_fifo/U_fifo. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:16 . Memory (MB): peak = 808.156 ; gain = 499.125
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 807.758 ; gain = 498.426
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5546] ROM "fe_select" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "reg_trigger_enable" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "reg_num_triggers" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "reg_count_writes" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "reg_counter_quick_start" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "reg_board_rev" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "reg_timestamps_disable" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "reg_pattern_bytes" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "reg_usb_speed" won't be mapped to RAM because it is too sparse
@@ -384,7 +387,7 @@ INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'usb_autodetect'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 808.156 ; gain = 499.125
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:15 ; elapsed = 00:00:17 . Memory (MB): peak = 807.758 ; gain = 498.426
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -414,7 +417,7 @@ Detailed RTL Component Info :
 	                8 Bit    Registers := 10    
 	                7 Bit    Registers := 1     
 	                5 Bit    Registers := 6     
-	                4 Bit    Registers := 3     
+	                4 Bit    Registers := 4     
 	                3 Bit    Registers := 2     
 	                2 Bit    Registers := 22    
 	                1 Bit    Registers := 75    
@@ -422,10 +425,9 @@ Detailed RTL Component Info :
 	   2 Input    512 Bit        Muxes := 4     
 	  10 Input    512 Bit        Muxes := 2     
 	   2 Input    192 Bit        Muxes := 4     
-	   9 Input    192 Bit        Muxes := 2     
+	  10 Input    192 Bit        Muxes := 2     
 	   2 Input     24 Bit        Muxes := 6     
-	   9 Input     24 Bit        Muxes := 1     
-	  10 Input     24 Bit        Muxes := 2     
+	  10 Input     24 Bit        Muxes := 3     
 	   2 Input     20 Bit        Muxes := 2     
 	   3 Input     20 Bit        Muxes := 2     
 	   2 Input     18 Bit        Muxes := 4     
@@ -445,9 +447,8 @@ Detailed RTL Component Info :
 	   2 Input      2 Bit        Muxes := 7     
 	   3 Input      2 Bit        Muxes := 3     
 	   5 Input      2 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 50    
-	   9 Input      1 Bit        Muxes := 5     
-	  10 Input      1 Bit        Muxes := 4     
+	   2 Input      1 Bit        Muxes := 51    
+	  10 Input      1 Bit        Muxes := 10    
 	   3 Input      1 Bit        Muxes := 10    
 	   4 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
@@ -483,19 +484,19 @@ Detailed RTL Component Info :
 +---Registers : 
 	              192 Bit    Registers := 2     
 	               24 Bit    Registers := 1     
-	                4 Bit    Registers := 1     
+	                4 Bit    Registers := 2     
 	                2 Bit    Registers := 2     
 	                1 Bit    Registers := 11    
 +---Muxes : 
 	   2 Input    192 Bit        Muxes := 4     
-	   9 Input    192 Bit        Muxes := 2     
+	  10 Input    192 Bit        Muxes := 2     
 	   2 Input     24 Bit        Muxes := 2     
-	   9 Input     24 Bit        Muxes := 1     
+	  10 Input     24 Bit        Muxes := 1     
 	   2 Input     18 Bit        Muxes := 1     
 	   4 Input      8 Bit        Muxes := 1     
 	   2 Input      8 Bit        Muxes := 2     
-	   2 Input      1 Bit        Muxes := 8     
-	   9 Input      1 Bit        Muxes := 5     
+	   2 Input      1 Bit        Muxes := 9     
+	  10 Input      1 Bit        Muxes := 6     
 Module reg_usb 
 Detailed RTL Component Info : 
 +---Registers : 
@@ -629,7 +630,7 @@ WARNING: [Synth 8-3917] design phywhisperer_top has port fe_dischrgvbus driven b
 WARNING: [Synth 8-3917] design phywhisperer_top has port fe_dppd driven by constant 0
 WARNING: [Synth 8-3917] design phywhisperer_top has port fe_dmpd driven by constant 0
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:33 ; elapsed = 00:00:36 . Memory (MB): peak = 808.156 ; gain = 499.125
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 807.758 ; gain = 498.426
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -644,13 +645,13 @@ INFO: [Synth 8-5578] Moved timing constraint from pin 'U_trigger_clock/clk_out1'
 INFO: [Synth 8-5783] Moving clock source from hierarchical pin 'U_trigger_clock/clk_in1' to 'i_17/U_trigger/delay_counter_fe_reg[0]/C'
 INFO: [Synth 8-5819] Moved 2 constraints on hierarchical pins to their respective driving/loading pins
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:43 ; elapsed = 00:00:46 . Memory (MB): peak = 808.156 ; gain = 499.125
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:37 ; elapsed = 00:00:39 . Memory (MB): peak = 807.758 ; gain = 498.426
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:44 ; elapsed = 00:00:47 . Memory (MB): peak = 808.156 ; gain = 499.125
+Finished Timing Optimization : Time (s): cpu = 00:00:38 ; elapsed = 00:00:40 . Memory (MB): peak = 807.758 ; gain = 498.426
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -672,7 +673,7 @@ INFO: [Synth 8-3886] merging instance 'U_pattern_matcher/fe_data_reg[7]' (FDRE) 
 INFO: [Synth 8-3886] merging instance 'U_fe_capture_usb/fe_rxvalid_reg_reg' (FDR) to 'U_pattern_matcher/fe_data_valid_reg'
 INFO: [Synth 8-3886] merging instance 'U_trigger/capturing_r_reg' (FDR) to 'U_pattern_matcher/capturing_r_reg'
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:47 ; elapsed = 00:00:50 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished Technology Mapping : Time (s): cpu = 00:00:40 ; elapsed = 00:00:43 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -696,7 +697,7 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished IO Insertion : Time (s): cpu = 00:00:42 ; elapsed = 00:00:44 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -709,7 +710,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -721,25 +722,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -760,18 +761,18 @@ Report Cell Usage:
 |1     |clk_wiz_0        |     1|
 |2     |fifo_generator_0 |     1|
 |3     |CARRY4           |    98|
-|4     |LUT1             |    14|
-|5     |LUT2             |   114|
-|6     |LUT3             |   553|
-|7     |LUT4             |   481|
-|8     |LUT5             |   215|
-|9     |LUT6             |   898|
-|10    |MUXF7            |   192|
+|4     |LUT1             |    15|
+|5     |LUT2             |    92|
+|6     |LUT3             |   556|
+|7     |LUT4             |   508|
+|8     |LUT5             |   228|
+|9     |LUT6             |   888|
+|10    |MUXF7            |   195|
 |11    |MUXF8            |    55|
 |12    |ODDR             |     2|
 |13    |USR_ACCESSE2     |     1|
-|14    |FDRE             |  3845|
-|15    |FDSE             |    28|
+|14    |FDRE             |  3846|
+|15    |FDSE             |    29|
 |16    |IBUF             |    28|
 |17    |IBUFG            |     2|
 |18    |IOBUF            |     8|
@@ -782,12 +783,12 @@ Report Instance Areas:
 +------+----------------------+--------------------+------+
 |      |Instance              |Module              |Cells |
 +------+----------------------+--------------------+------+
-|1     |top                   |                    |  6578|
-|2     |  U_fe_capture_main   |fe_capture_main     |   215|
+|1     |top                   |                    |  6595|
+|2     |  U_fe_capture_main   |fe_capture_main     |   214|
 |3     |  U_fe_capture_usb    |fe_capture_usb      |    65|
-|4     |  U_fifo              |fifo                |    42|
-|5     |  U_pattern_matcher   |pattern_matcher_usb |  1977|
-|6     |  U_reg_main          |reg_main            |   676|
+|4     |  U_fifo              |fifo                |    41|
+|5     |  U_pattern_matcher   |pattern_matcher_usb |  1978|
+|6     |  U_reg_main          |reg_main            |   695|
 |7     |    U_match_cdc       |cdc_pulse_2         |    11|
 |8     |  U_reg_usb           |reg_usb             |  1633|
 |9     |    U_stat_update_cdc |cdc_pulse_1         |    13|
@@ -795,32 +796,32 @@ Report Instance Areas:
 |11    |    U_match_cdc       |cdc_pulse_0         |    15|
 |12    |  U_usb_autodetect    |usb_autodetect      |   141|
 |13    |    U_match_cdc       |cdc_pulse           |    15|
-|14    |  U_usb_reg_main      |usb_reg_main        |  1092|
+|14    |  U_usb_reg_main      |usb_reg_main        |  1091|
 +------+----------------------+--------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:49 ; elapsed = 00:00:52 . Memory (MB): peak = 842.918 ; gain = 533.887
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 842.105 ; gain = 532.773
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 24 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:39 ; elapsed = 00:00:45 . Memory (MB): peak = 842.918 ; gain = 200.086
-Synthesis Optimization Complete : Time (s): cpu = 00:00:50 ; elapsed = 00:00:53 . Memory (MB): peak = 842.918 ; gain = 533.887
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:33 ; elapsed = 00:00:38 . Memory (MB): peak = 842.105 ; gain = 199.801
+Synthesis Optimization Complete : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 842.105 ; gain = 532.773
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 357 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 360 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 842.918 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 842.105 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 10 instances were transformed.
   IBUFG => IBUF: 2 instances
   IOBUF => IOBUF (IBUF, OBUFT): 8 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-117 Infos, 130 Warnings, 2 Critical Warnings and 0 Errors encountered.
+118 Infos, 131 Warnings, 2 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:53 ; elapsed = 00:00:56 . Memory (MB): peak = 842.918 ; gain = 545.355
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 842.918 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:45 ; elapsed = 00:00:49 . Memory (MB): peak = 842.105 ; gain = 544.254
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 842.105 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
 INFO: [Common 17-1381] The checkpoint 'C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file phywhisperer_top_utilization_synth.rpt -pb phywhisperer_top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Mon Jul 27 10:37:38 2020...
+INFO: [Common 17-206] Exiting Vivado at Tue Sep 22 12:56:45 2020...

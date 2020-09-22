@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Mon Jul 27 10:39:09 2020
+| Date             : Tue Sep 22 12:58:04 2020
 | Host             : qed running 64-bit major release  (build 9200)
 | Command          : report_power -file phywhisperer_top_power_routed.rpt -pb phywhisperer_top_power_summary_routed.pb -rpx phywhisperer_top_power_routed.rpx
 | Design           : phywhisperer_top
@@ -53,14 +53,14 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.026 |        6 |       --- |             --- |
-| Slice Logic             |     0.002 |     6550 |       --- |             --- |
-|   LUT as Logic          |     0.002 |     1812 |      8000 |           22.65 |
-|   Register              |    <0.001 |     3884 |     16000 |           24.28 |
+| Slice Logic             |     0.002 |     6566 |       --- |             --- |
+|   LUT as Logic          |     0.002 |     1819 |      8000 |           22.74 |
+|   Register              |    <0.001 |     3886 |     16000 |           24.29 |
 |   CARRY4                |    <0.001 |       98 |      2000 |            4.90 |
-|   F7/F8 Muxes           |    <0.001 |      247 |      8000 |            3.09 |
+|   F7/F8 Muxes           |    <0.001 |      250 |      8000 |            3.13 |
 |   Others                |     0.000 |       40 |       --- |             --- |
 |   LUT as Shift Register |     0.000 |        1 |      2400 |            0.04 |
-| Signals                 |     0.003 |     5669 |       --- |             --- |
+| Signals                 |     0.003 |     5689 |       --- |             --- |
 | Block RAM               |     0.003 |        4 |        10 |           40.00 |
 | MMCM                    |     0.106 |        1 |         2 |           50.00 |
 | I/O                     |     0.009 |       56 |       100 |           56.00 |
