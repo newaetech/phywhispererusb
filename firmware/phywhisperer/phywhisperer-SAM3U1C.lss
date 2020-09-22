@@ -31,7 +31,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  13 .debug_line   0001196e  00000000  00000000  00066f2e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    00059490  00000000  00000000  0007889c  2**0
+ 14 .debug_str    0005948f  00000000  00000000  0007889c  2**0
                   CONTENTS, READONLY, DEBUGGING
  15 .debug_frame  00004fc4  00000000  00000000  000d1d2c  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -3102,11 +3102,11 @@ bool main_setup_in_received(void)
     case REQ_FW_VERSION:
         respbuf[0] = FW_VER_MAJOR;
    81290:	4b1d      	ldr	r3, [pc, #116]	; (81308 <main_setup_in_received+0xb8>)
-   81292:	2200      	movs	r2, #0
+   81292:	2201      	movs	r2, #1
    81294:	701a      	strb	r2, [r3, #0]
         respbuf[1] = FW_VER_MINOR;
    81296:	4b1c      	ldr	r3, [pc, #112]	; (81308 <main_setup_in_received+0xb8>)
-   81298:	220a      	movs	r2, #10
+   81298:	2200      	movs	r2, #0
    8129a:	705a      	strb	r2, [r3, #1]
         respbuf[2] = FW_VER_DEBUG;
    8129c:	4b1a      	ldr	r3, [pc, #104]	; (81308 <main_setup_in_received+0xb8>)

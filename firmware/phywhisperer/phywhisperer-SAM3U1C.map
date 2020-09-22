@@ -10882,54 +10882,54 @@ OUTPUT(phywhisperer-SAM3U1C.elf elf32-littlearm)
  .debug_line    0x0000f76c     0x12e3 objdir/udphs_device.o
  .debug_line    0x00010a4f      0xf1f objdir/usart.o
 
-.debug_str      0x00000000    0x59490
+.debug_str      0x00000000    0x5948f
  .debug_str     0x00000000    0x4f034 objdir/main.o
                               0x4f4d1 (size before relaxing)
- .debug_str     0x0004f034      0x663 objdir/usb.o
-                              0x4f069 (size before relaxing)
- .debug_str     0x0004f697       0xd4 objdir/usb_xmem.o
+ .debug_str     0x0004f034      0x662 objdir/usb.o
+                              0x4f068 (size before relaxing)
+ .debug_str     0x0004f696       0xd4 objdir/usb_xmem.o
                               0x4e5fd (size before relaxing)
- .debug_str     0x0004f76b      0x196 objdir/fpga_program.o
+ .debug_str     0x0004f76a      0x196 objdir/fpga_program.o
                               0x4ea58 (size before relaxing)
- .debug_str     0x0004f901      0x2b6 objdir/efc.o
+ .debug_str     0x0004f900      0x2b6 objdir/efc.o
                               0x490c1 (size before relaxing)
- .debug_str     0x0004fbb7       0x2c objdir/exceptions.o
+ .debug_str     0x0004fbb6       0x2c objdir/exceptions.o
                               0x48c62 (size before relaxing)
- .debug_str     0x0004fbe3      0x4cc objdir/flash_efc.o
+ .debug_str     0x0004fbe2      0x4cc objdir/flash_efc.o
                               0x4afbe (size before relaxing)
- .debug_str     0x000500af       0xff objdir/init.o
+ .debug_str     0x000500ae       0xff objdir/init.o
                               0x4b26d (size before relaxing)
- .debug_str     0x000501ae       0x26 objdir/interrupt_sam_nvic.o
+ .debug_str     0x000501ad       0x26 objdir/interrupt_sam_nvic.o
                               0x48ca9 (size before relaxing)
- .debug_str     0x000501d4      0x3b3 objdir/pio.o
+ .debug_str     0x000501d3      0x3b3 objdir/pio.o
                               0x49604 (size before relaxing)
- .debug_str     0x00050587      0x3ac objdir/pio_handler.o
+ .debug_str     0x00050586      0x3ac objdir/pio_handler.o
                               0x49665 (size before relaxing)
- .debug_str     0x00050933      0x49f objdir/pmc.o
+ .debug_str     0x00050932      0x49f objdir/pmc.o
                               0x495d5 (size before relaxing)
- .debug_str     0x00050dd2      0x151 objdir/sleep.o
+ .debug_str     0x00050dd1      0x151 objdir/sleep.o
                               0x4a3df (size before relaxing)
- .debug_str     0x00050f23       0x1c objdir/sleepmgr.o
+ .debug_str     0x00050f22       0x1c objdir/sleepmgr.o
                               0x48ddf (size before relaxing)
- .debug_str     0x00050f3f      0x2d0 objdir/smc.o
+ .debug_str     0x00050f3e      0x2d0 objdir/smc.o
                               0x4a557 (size before relaxing)
- .debug_str     0x0005120f       0xaf objdir/startup_sam3u.o
+ .debug_str     0x0005120e       0xaf objdir/startup_sam3u.o
                               0x48d5a (size before relaxing)
- .debug_str     0x000512be      0x749 objdir/syscalls.o
+ .debug_str     0x000512bd      0x749 objdir/syscalls.o
                                0x7c82 (size before relaxing)
- .debug_str     0x00051a07       0xb4 objdir/sysclk.o
+ .debug_str     0x00051a06       0xb4 objdir/sysclk.o
                               0x4ab37 (size before relaxing)
- .debug_str     0x00051abb      0x154 objdir/system_sam3u.o
+ .debug_str     0x00051aba      0x154 objdir/system_sam3u.o
                               0x48efc (size before relaxing)
- .debug_str     0x00051c0f      0xa36 objdir/udc.o
+ .debug_str     0x00051c0e      0xa36 objdir/udc.o
                               0x4bb2f (size before relaxing)
- .debug_str     0x00052645       0xb0 objdir/udi_vendor.o
+ .debug_str     0x00052644       0xb0 objdir/udi_vendor.o
                               0x4b2b1 (size before relaxing)
- .debug_str     0x000526f5      0x149 objdir/udi_vendor_desc.o
+ .debug_str     0x000526f4      0x149 objdir/udi_vendor_desc.o
                               0x4b3df (size before relaxing)
- .debug_str     0x0005283e     0x6406 objdir/udphs_device.o
+ .debug_str     0x0005283d     0x6406 objdir/udphs_device.o
                               0x53d81 (size before relaxing)
- .debug_str     0x00058c44      0x84c objdir/usart.o
+ .debug_str     0x00058c43      0x84c objdir/usart.o
                               0x496b4 (size before relaxing)
 
 .debug_frame    0x00000000     0x4fc4
