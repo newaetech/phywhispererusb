@@ -114,7 +114,8 @@ module usb_reg_main #(
    always @(posedge cwusb_clk) begin
       if (cwusb_alen_rs == 1'b0) begin
          reg_bytecnt <= 0;
-      end else if ((rdflag_rs_dly) || (reg_write_dly) ) begin
+      //end else if ((rdflag_rs_dly) || (reg_write_dly) ) begin
+      end else if ((isoutregdly & !isoutreg) || (reg_write_dly) ) begin
          //roll-over is allowed (only access to use it is FIFO read, where we
          //only look at reg_bytecnt % 4)
          reg_bytecnt <= reg_bytecnt + 1;

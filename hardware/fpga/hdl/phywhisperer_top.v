@@ -335,11 +335,14 @@ module phywhisperer_top(
 
       .I_usb_auto_speed         (usb_auto_speed),
 
-      .selected                 (reg_usb_selected)
+      .selected                 (reg_usb_selected),
+
+      .I_reg_arm                (1'b0)
 
    );
 
 
+   `ifndef NOFIFO // for clean compilation
    fifo U_fifo (
       .reset_i                  (reset_i),
       .cwusb_clk                (clk_usb_buf),
@@ -361,6 +364,7 @@ module phywhisperer_top(
 
       .I_custom_fifo_stat_flag  (capture_done)
    );
+   `endif
 
 
    fe_capture_main #(

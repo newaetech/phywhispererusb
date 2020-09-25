@@ -38,7 +38,7 @@ module reg_usb #(
    input  wire                                  cwusb_clk,
    input  wire [7:0]                            reg_address,  // Address of register
    input  wire [pBYTECNT_SIZE-1:0]              reg_bytecnt,  // Current byte count
-   output wire [7:0]                            read_data,    //
+   output reg  [7:0]                            read_data,    //
    input  wire [7:0]                            write_data,   //
    input  wire                                  reg_read,     // Read flag. One clock cycle AFTER this flag is high
                                                               // valid data must be present on the read_data bus
@@ -119,31 +119,8 @@ module reg_usb #(
    assign selected = reg_addrvalid & reg_address[7:6] == `USB_REG_SELECT;
    wire [4:0] address = reg_address[4:0];
 
-   /* read logic:
-   // NOTE: tentatively replacing with block below to save one cycle latency on reads
-   always @(posedge cwusb_clk) begin
-      if (selected && reg_read) begin
-         case (address)
-            `REG_PATTERN: reg_read_data <= reg_pattern[reg_bytecnt*8 +: 8];
-            `REG_PATTERN_MASK: reg_read_data <= reg_pattern_mask[reg_bytecnt*8 +: 8];
-            `REG_PATTERN_BYTES: reg_read_data <= reg_pattern_bytes;
-            `REG_USB_SPEED: reg_read_data <= {6'b0, O_usb_speed};
-            `REG_STAT_MATCH: reg_read_data <= reg_stat_matched[reg_bytecnt*8 +: 8];
-            `REG_TIMESTAMPS_DISABLE: reg_read_data <= reg_timestamps_disable;
-            `REG_USB_AUTO_DEFAULTS: reg_read_data <= reg_usb_auto_defaults;
-            `REG_CAPTURE_DELAY: reg_read_data <= reg_capture_delay[reg_bytecnt*8 +: 8];
-            `REG_USB_AUTO_WAIT1: reg_read_data <= reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
-            `REG_USB_AUTO_WAIT2: reg_read_data <= reg_usb_auto_wait2[reg_bytecnt*8 +: 8];
-            `REG_STAT_PATTERN: reg_read_data <= reg_stat_pattern[reg_bytecnt*5 +: 5];
-         endcase
-      end
-      else
-         reg_read_data <= 8'h0;
-   end
-   */
-
    // read logic:
-   always @(posedge cwusb_clk) begin
+   always @(*) begin
       if (selected && reg_read) begin
          case (address)
             `REG_PATTERN: reg_read_data = reg_pattern[reg_bytecnt*8 +: 8];
@@ -165,7 +142,10 @@ module reg_usb #(
    end
 
 
-   assign read_data = reg_read_data;
+   // Register output read data to ease timing. If you need data one clock
+   // cycle earlier, simply remove this stage.
+   always @(posedge cwusb_clk)
+      read_data <= reg_read_data;
 
 
    // write logic (USB clock domain):
@@ -281,7 +261,7 @@ module reg_usb #(
 	.probe6         (reg_addrvalid),                // input wire [0:0]  probe6 
 	.probe7         (reg_read_data),                // input wire [7:0]  probe7 
 	.probe8         (selected),                     // input wire [0:0]  probe8 
-	.probe9         ({4'b0, reg_num_triggers})      // input wire [7:0]  probe9
+	.probe9         ({6'b0, reg_usb_speed})         // input wire [7:0]  probe9
        );
 
    `endif

@@ -72,6 +72,15 @@ compile:
 	-P tb_pw.pVERBOSE=$(VERBOSE) \
 	-P tb_pw.pDUMP=$(DUMP) \
 
+nofifo:
+	iverilog -ccmdfile_nofifo \
+	-g2005-sv \
+	-Wportbind \
+	-Wselect-range \
+	-I../hdl \
+	-I../../../software/phywhisperer/firmware \
+	-DNOFIFO \
+
 run:
 	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)
 

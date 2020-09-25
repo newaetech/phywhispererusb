@@ -230,6 +230,12 @@ module tb_pw();
       pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
+      write_1byte(`MAIN_REG_SELECT, `REG_COUNT_WRITES, 1);
+      read_1byte(`MAIN_REG_SELECT, `REG_COUNT_WRITES, rdata);
+
+      write_1byte(`USB_REG_SELECT, `REG_PATTERN_BYTES, 8'haa);
+      read_1byte(`USB_REG_SELECT, `REG_PATTERN_BYTES, rdata);
+
       write_1byte(`MAIN_REG_SELECT, `REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
       write_1byte(`MAIN_REG_SELECT, `REG_COUNT_WRITES, 1);
       rw_lots_bytes(`MAIN_REG_SELECT, `REG_CAPTURE_LEN);
@@ -430,9 +436,18 @@ module tb_pw();
    end
 
 
-   assign USB_Data = USB_nWE? 8'bz : USB_wdata;
+   reg read_select;
+
+   assign USB_Data = read_select? 8'bz : USB_wdata;
    assign fe_data = fe_wdata;
    assign USB_SPARE0 = reset;
+
+   always @(*) begin
+      if (USB_nWE == 1'b0)
+         read_select = 1'b0;
+      else if (USB_nRD == 1'b0)
+         read_select = 1'b1;
+   end
 
    task write_1byte;
       input [1:0] block;
@@ -451,6 +466,7 @@ module tb_pw();
       USB_nCS = 0;
       @(posedge usb_clk);
       USB_nCS = 1;
+      @(posedge usb_clk);
    endtask
 
 
@@ -471,9 +487,9 @@ module tb_pw();
       USB_nCS = 1;
       //data = USB_Data;
       @(posedge usb_clk);
-      #1 data = USB_Data;
       @(posedge usb_clk);
       USB_nRD = 1;
+      #1 data = USB_Data;
       @(posedge usb_clk);
    endtask
 
@@ -497,9 +513,9 @@ module tb_pw();
       @(posedge usb_clk);
       USB_nCS = 1;
       @(posedge usb_clk);
-      #1 data = USB_Data;
       @(posedge usb_clk);
       USB_nRD = 1;
+      #1 data = USB_Data;
       repeat (2) @(posedge usb_clk);
       if (pSLOW_READS)
          repeat($urandom_range(2, 20)) @(posedge usb_clk);
@@ -514,6 +530,7 @@ module tb_pw();
       USB_nCS = 0;
       @(posedge usb_clk);
       USB_nCS = 1;
+      @(posedge usb_clk);
    endtask
 
 
@@ -683,11 +700,11 @@ module tb_pw();
       read_next_byte(read_data[7:0]);
       read_next_byte(read_data[15:8]);
       if (stat_matched != read_data[0]) begin
-         $display("*** ERROR: expected stat_matched=%b, got %b", stat_matched, read_data[0]);
+         $display("*** ERROR at %0t: expected stat_matched=%b, got %b", $time, stat_matched, read_data[0]);
          errors += 1;
       end
       if (stat_matched_value != read_data[12:8]) begin
-         $display("*** ERROR: expected stat_matched_value=%h, got %h", stat_matched_value, read_data[12:8]);
+         $display("*** ERROR at %0t: expected stat_matched_value=%h, got %h", $time, stat_matched_value, read_data[12:8]);
          errors += 1;
       end
    endtask
@@ -890,16 +907,24 @@ module tb_pw();
    wire #1 fe_rxerror_out     = fe_rxerror;
    wire #1 fe_vbusvld_out     = fe_vbusvld;
 
+   wire [7:0] #1 USB_Addr_out   = USB_Addr;
+   wire       #1 USB_nRD_out    = USB_nRD;
+   wire       #1 USB_nWE_out    = USB_nWE;
+   wire       #1 USB_nCS_out    = USB_nCS;
+   wire       #1 USB_SPARE0_out = USB_SPARE0;
+   wire       #1 USB_SPARE1_out = USB_SPARE1;
+
+
 phywhisperer_top U_dut (
     /* USB CHIP CONNECTIONS */
-    .usb_clk            (usb_clk    ),
-    .USB_Data           (USB_Data   ),
-    .USB_Addr           (USB_Addr   ),
-    .USB_nRD            (USB_nRD    ),
-    .USB_nWE            (USB_nWE    ),
-    .USB_nCS            (USB_nCS    ),
-    .USB_SPARE0         (USB_SPARE0 ),
-    .USB_SPARE1         (USB_SPARE1 ),
+    .usb_clk            (usb_clk        ),
+    .USB_Data           (USB_Data       ),
+    .USB_Addr           (USB_Addr_out   ),
+    .USB_nRD            (USB_nRD_out    ),
+    .USB_nWE            (USB_nWE_out    ),
+    .USB_nCS            (USB_nCS_out    ),
+    .USB_SPARE0         (USB_SPARE0_out ),
+    .USB_SPARE1         (USB_SPARE1_out ),
 
     /* SIMULATION-ONLY PORTS */
     .I_trigger_clk      (trigger_clk),

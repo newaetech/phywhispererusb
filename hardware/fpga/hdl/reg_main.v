@@ -99,6 +99,7 @@ module reg_main #(
    reg  reg_count_writes;
    reg  reg_counter_quick_start;
    reg  [3:0] reg_board_rev;
+   reg  [7:0] read_data_pre;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -115,36 +116,11 @@ module reg_main #(
    assign O_counter_quick_start = reg_counter_quick_start;
    assign O_board_rev = reg_board_rev;
 
-
    assign selected = reg_addrvalid & reg_address[7:6] == `MAIN_REG_SELECT;
    wire [4:0] address = reg_address[4:0];
 
    assign O_arm = reg_arm_r & ~I_flushing;
    assign O_reg_arm = reg_arm;
-
-   // read logic:
-   /*
-   always @(posedge cwusb_clk) begin
-      if (selected && reg_read) begin
-
-         case (address)
-            `REG_BUILDTIME: reg_read_data <= buildtime[reg_bytecnt*8 +: 8];
-            `REG_SNIFF_FIFO_STAT: reg_read_data <= {2'b00, I_fifo_status};
-            `REG_FE_SELECT: reg_read_data <= fe_select;
-            `REG_ARM: reg_read_data <= reg_arm;
-            `REG_TRIGGER_ENABLE: reg_read_data <= reg_trigger_enable;
-            `REG_TRIGGER_DELAY: reg_read_data <= reg_trigger_delay[reg_bytecnt*8 +: 8];
-            `REG_TRIGGER_WIDTH: reg_read_data <= reg_trigger_width[reg_bytecnt*8 +: 8];
-            `REG_NUM_TRIGGERS: reg_read_data <= {4'b0, reg_num_triggers};
-            `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data <= {7'b0, phaseshift_active};
-            `REG_CAPTURE_LEN: reg_read_data <= reg_capture_len[reg_bytecnt*8 +: 8];
-            `REG_COUNT_WRITES: reg_read_data <= reg_count_writes;
-            `REG_COUNTER_QUICK_START: reg_read_data <= reg_counter_quick_start;
-         endcase
-
-      end
-   end
-   */
 
    always @(*) begin
       if (selected && reg_read) begin
@@ -175,6 +151,7 @@ module reg_main #(
                        (address == `REG_SNIFF_FIFO_RD) &&
                       ((reg_bytecnt % 4) == 0) && ~empty_fifo_read;
 
+   // catch empty FIFO reads (for streaming mode)
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
          empty_fifo_read <= 1'b0;
@@ -188,7 +165,7 @@ module reg_main #(
          reg_bytecnt_r20 <= reg_bytecnt[1:0];
          if (selected && reg_read && ~reg_read_r && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && fifo_empty_r)
             empty_fifo_read <= 1'b1;
-         else if (selected && reg_read && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && reg_bytecnt_r20 == 2'b11 && ~fifo_empty_r)
+         else if (selected && reg_read_r && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && reg_bytecnt_r20 == 2'b11 && ~fifo_empty_r)
             empty_fifo_read <= 1'b0;
 
       end
@@ -208,16 +185,20 @@ module reg_main #(
       
       if (address == `REG_SNIFF_FIFO_RD) begin
          case (reg_bytecnt % 4)
-            1: read_data = read_data_fifo[7:0];
-            2: read_data = read_data_fifo[15:8];
-            3: read_data = {I_fifo_status, read_data_fifo[17:16]};
-            default: read_data = 0;
+            1: read_data_pre = read_data_fifo[7:0];
+            2: read_data_pre = read_data_fifo[15:8];
+            3: read_data_pre = {I_fifo_status, read_data_fifo[17:16]};
+            default: read_data_pre = 0;
          endcase
       end
       else
-         read_data = reg_read_data;
+         read_data_pre = reg_read_data;
    end
 
+   // Register output read data to ease timing. If you need data one clock
+   // cycle earlier, simply remove this stage.
+   always @(posedge cwusb_clk)
+      read_data <= read_data_pre;
 
    // write logic (USB clock domain):
    always @(posedge cwusb_clk) begin
