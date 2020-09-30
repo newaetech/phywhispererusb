@@ -6,7 +6,7 @@
 // 
 // Create Date: 
 // Design Name: 
-// Module Name: pw_pattern_matcher
+// Module Name: pattern_matcher_usb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -21,7 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module pw_pattern_matcher #(
+module pattern_matcher_usb #(
    parameter pPATTERN_BYTES = 8
 )(
    input  wire  reset_i,
@@ -64,12 +64,14 @@ module pw_pattern_matcher #(
    (* ASYNC_REG = "TRUE" *) reg  [7:0] pattern_bytes_r;
 
    reg  [7:0] bytes_received;
+   reg  [7:0] fe_data;
+   reg  fe_data_valid;
 
    // just for easier debugging:
    wire [31:0]  masked_input_first_bytes = {masked_input[24:0], masked_input_byte};
    wire [31:0]  masked_pattern_first_bytes = masked_pattern[31:0];
 
-   assign masked_input_byte = I_fe_data & mask_r[7:0];
+   assign masked_input_byte = fe_data & mask_r[7:0];
 
    assign capture_done = (!I_capturing & capturing_r);
 
@@ -83,10 +85,19 @@ module pw_pattern_matcher #(
          capturing_r <= 1'b0;
          input_data <= 0;
          bytes_received <= 0;
+         fe_data <= 0;
+         fe_data_valid <= 0;
       end
       else begin
          match_trigger_r <= match_trigger;
          capturing_r <= I_capturing;
+
+         if (I_fe_data_valid) begin
+            fe_data_valid <= 1'b1;
+            fe_data <= I_fe_data;
+         end
+         else
+            fe_data_valid <= 1'b0;
 
          // end of capture is a good time to reset these:
          if (match_trigger && capture_done) begin
@@ -95,8 +106,8 @@ module pw_pattern_matcher #(
             bytes_received <= 0;
          end
 
-         else if (I_fe_data_valid && arm_r) begin
-            input_data <= {input_data[pPATTERN_BYTES*8-17:0], I_fe_data};
+         else if (fe_data_valid && arm_r) begin
+            input_data <= {input_data[pPATTERN_BYTES*8-17:0], fe_data};
             if (bytes_received < 8'hff)
                bytes_received <= bytes_received + 1;
             // don't wait for the incoming data byte to be stored, compare immediately:

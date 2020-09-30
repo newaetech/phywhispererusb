@@ -15,13 +15,16 @@ TIMEOUT=50000
 TRIGGER_ENABLE=0
 READ_CONCURRENTLY=1
 STREAM_MODE=0
+SLOW_READS=0
 TRIGGER_DELAY_MIN=0
 TRIGGER_DELAY_MAX=512
 TRIGGER_WIDTH_MIN=1
 TRIGGER_WIDTH_MAX=512
 NUM_TRIGGERS_MIN=1
 NUM_TRIGGERS_MAX=8
+OVERFLOW=0
 WAVEFORMAT=fst
+DUMP=0
 TOP=tb_pw
 
 # This here is a bit clumsy, but necessary because iverilog fails to compile
@@ -58,13 +61,25 @@ compile:
 	-P tb_pw.pTRIGGER_ENABLE=$(TRIGGER_ENABLE) \
 	-P tb_pw.pREAD_CONCURRENTLY=$(READ_CONCURRENTLY) \
 	-P tb_pw.pSTREAM_MODE=$(STREAM_MODE) \
+	-P tb_pw.pSLOW_READS=$(SLOW_READS) \
 	-P tb_pw.pTRIGGER_DELAY_MIN=$(TRIGGER_DELAY_MIN) \
 	-P tb_pw.pTRIGGER_DELAY_MAX=$(TRIGGER_DELAY_MAX) \
 	-P tb_pw.pTRIGGER_WIDTH_MIN=$(TRIGGER_WIDTH_MIN) \
 	-P tb_pw.pTRIGGER_WIDTH_MAX=$(TRIGGER_WIDTH_MAX) \
 	-P tb_pw.pNUM_TRIGGERS_MIN=$(NUM_TRIGGERS_MIN) \
 	-P tb_pw.pNUM_TRIGGERS_MAX=$(NUM_TRIGGERS_MAX) \
+	-P tb_pw.pOVERFLOW_EXPECTED=$(OVERFLOW) \
 	-P tb_pw.pVERBOSE=$(VERBOSE) \
+	-P tb_pw.pDUMP=$(DUMP) \
+
+nofifo:
+	iverilog -ccmdfile_nofifo \
+	-g2005-sv \
+	-Wportbind \
+	-Wselect-range \
+	-I../hdl \
+	-I../../../software/phywhisperer/firmware \
+	-DNOFIFO \
 
 run:
 	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)

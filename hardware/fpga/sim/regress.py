@@ -13,6 +13,7 @@ group.add_argument("--test", help="Testcase to run")
 parser.add_argument("--seed", type=int, help="Seed to use when running a single test with --test.")
 parser.add_argument("--tests", help="Run all tests whose name contains TESTS", default='')
 parser.add_argument("--list", help="List available tests.", action='store_true')
+parser.add_argument("--dump", help="Enable waveform dumping.", action='store_true')
 args = parser.parse_args()
 
 random.seed()
@@ -51,8 +52,8 @@ tests.append(dict(name  = 'stream_long_nooverflow',
              NUM_EVENTS = 8192*2,
              NUM_REPEATS = 1,   # TODO: support repeats with streaming
              STREAM_MODE = 1,
-             MIN_DELAY  = 4,
-             MAX_DELAY  = 8))
+             MIN_DELAY  = 10,
+             MAX_DELAY  = 16))
 
 tests.append(dict(name  = 'stream_long_emptyreads',
              frequency = 10,
@@ -68,15 +69,30 @@ tests.append(dict(name  = 'stream_long_overflow',
              frequency = 5,
              description = 'Stream mode, test overflow.',
              TIMEOUT = 300000,
+             OVERFLOW = 1,
              NUM_EVENTS = 8192*2,
              NUM_REPEATS = 1,   # TODO: support repeats with streaming
              STREAM_MODE = 1,
              MAX_DELAY  = 2))
 
+tests.append(dict(name  = 'stream_slow_overflow',
+             frequency = 5,
+             description = 'Stream mode, test overflow when reads and writes are slow.',
+             TIMEOUT = 600000,
+             OVERFLOW = 1,
+             NUM_EVENTS = 8192*2,
+             NUM_REPEATS = 1,   # TODO: support repeats with streaming
+             STREAM_MODE = 1,
+             SLOW_READS = 1,
+             MIN_DELAY  = 10,
+             MAX_DELAY  = 16))
+
+
 tests.append(dict(name  = 'stream_vlong',
              #frequency = 20,
              frequency = 0,
              description = 'Stream mode, test overflow and repeat.',
+             OVERFLOW = 1,
              NUM_EVENTS = 8192*4,
              NUM_REPEATS = 2,   # TODO: support repeats with streaming
              STREAM_MODE = 1,
@@ -168,6 +184,7 @@ tests.append(dict(name  = 'shortpattern',
              description = 'Pattern of 3 bytes or less.',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
+             TIMEOUT = 15000,
              DELAY_MODE = 0,
              PATTERN_MIN = 1,
              PATTERN_MAX = 3))
@@ -216,6 +233,7 @@ tests.append(dict(name  = 'no_capture_limits',
              frequency = 10,
              description = 'FIFO captures until overflow',
              TIMEOUT = 250000,
+             OVERFLOW = 1,
              NUM_EVENTS = 8192*2,
              NO_CAPTURE_LIMIT = 1,
              #NUM_REPEATS = 2,
@@ -302,6 +320,8 @@ for test in tests:
       run_test = True
       # build make command:
       makeargs = ['make', 'all', 'VERBOSE=1']
+      if args.dump:
+         makeargs.append('DUMP=1')
       for key in test.keys():
          if key == 'name':
             logfile = "results/%s%d.log" % (test[key], i) 

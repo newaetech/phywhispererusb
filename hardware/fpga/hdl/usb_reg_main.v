@@ -37,7 +37,7 @@ module usb_reg_main #(
    input  wire         cwusb_cen,
 
  /* Interface to registers */
-   output reg  [5:0]   reg_address,  // Address of register
+   output reg  [7:0]   reg_address,  // Address of register
    output reg  [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    output reg  [7:0]   reg_datao,    // Data to write
    input  wire [7:0]   reg_datai,    // Data to read
@@ -77,7 +77,7 @@ module usb_reg_main #(
 
    //TODO: this should be synchronous to device clock, but is phase OK? Might need to
    //use resyncronized version...
-   assign reg_read = rdflag_rs;
+   assign reg_read = cwusb_isout;
    assign cwusb_dout = reg_datai;
 
    //Don't immediatly turn off output drivers
@@ -86,7 +86,7 @@ module usb_reg_main #(
    //Address valid on rising edge of ALEn, simplify and just latch when ALEn low
    always @(posedge cwusb_clk) begin
       if (cwusb_alen_rs_dly == 1'b0) begin
-         reg_address <= cwusb_addr[5:0];
+         reg_address <= cwusb_addr;
       end
    end
 
@@ -114,7 +114,8 @@ module usb_reg_main #(
    always @(posedge cwusb_clk) begin
       if (cwusb_alen_rs == 1'b0) begin
          reg_bytecnt <= 0;
-      end else if ((rdflag_rs_dly) || (reg_write_dly) ) begin
+      //end else if ((rdflag_rs_dly) || (reg_write_dly) ) begin
+      end else if ((isoutregdly & !isoutreg) || (reg_write_dly) ) begin
          //roll-over is allowed (only access to use it is FIFO read, where we
          //only look at reg_bytecnt % 4)
          reg_bytecnt <= reg_bytecnt + 1;

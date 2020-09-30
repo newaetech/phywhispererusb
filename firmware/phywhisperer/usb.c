@@ -22,8 +22,8 @@
 #include "fpga_program.h"
 #include <string.h>
 
-#define FW_VER_MAJOR 0
-#define FW_VER_MINOR 10
+#define FW_VER_MAJOR 1
+#define FW_VER_MINOR 1
 #define FW_VER_DEBUG 0
 
 #define REQ_MEMREAD_BULK 0x10

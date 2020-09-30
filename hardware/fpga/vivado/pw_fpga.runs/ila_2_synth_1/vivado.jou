@@ -2,8 +2,8 @@
 # Vivado v2018.3 (64-bit)
 # SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Mon Jul 29 18:37:11 2019
-# Process ID: 21492
+# Start of session at: Wed Jul  8 16:40:48 2020
+# Process ID: 19808
 # Current directory: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/ila_2_synth_1
 # Command line: vivado.exe -log ila_2.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source ila_2.tcl
 # Log file: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/ila_2_synth_1/ila_2.vds

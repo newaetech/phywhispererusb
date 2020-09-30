@@ -18,27 +18,17 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`define REG_SNIFF_FIFO_RD            6'h01
-`define REG_TIMESTAMPS_DISABLE       6'h02
-`define REG_ARM                      6'h03
-`define REG_PATTERN                  6'h04
-`define REG_PATTERN_MASK             6'h05
-`define REG_TRIGGER_ENABLE           6'h06
-`define REG_PATTERN_BYTES            6'h07
-`define REG_CAPTURE_LEN              6'h08
-`define REG_SNIFF_FIFO_STAT          6'h09
-`define REG_TRIGGER_DELAY            6'h0a
-`define REG_TRIGGER_WIDTH            6'h0b
-`define REG_USB_SPEED                6'h0c
-`define REG_USB_AUTO_DEFAULTS        6'h0d
-`define REG_CAPTURE_DELAY            6'h0e
-`define REG_BUILDTIME                6'h0f
-`define REG_USB_AUTO_WAIT1           6'h10
-`define REG_USB_AUTO_WAIT2           6'h11
-`define REG_TRIG_CLK_PHASE_SHIFT     6'h12
-`define REG_STAT_PATTERN             6'h13
-`define REG_STAT_MATCH               6'h14
-`define REG_NUM_TRIGGERS             6'h15
+`define REG_TIMESTAMPS_DISABLE       5'h00
+`define REG_PATTERN                  5'h01
+`define REG_PATTERN_MASK             5'h02
+`define REG_PATTERN_BYTES            5'h03
+`define REG_USB_SPEED                5'h04
+`define REG_USB_AUTO_DEFAULTS        5'h05
+`define REG_CAPTURE_DELAY            5'h06
+`define REG_USB_AUTO_WAIT1           5'h07
+`define REG_USB_AUTO_WAIT2           5'h08
+`define REG_STAT_PATTERN             5'h09
+`define REG_STAT_MATCH               5'h0a
 
 
 // FIFO bitfields:
@@ -52,14 +42,6 @@
 //                 +------------------------++------------------+-----++------------------------++------------------------+
 // stream command: |         zeros          ||    FIFO status   | 1 1 ||      stream status     ||          zeros         |
 //                 +------------------------++------------------+-----++------------------------++------------------------+
-`define FE_FIFO_CMD_DATA 2'b00
-`define FE_FIFO_CMD_STAT 2'b01
-`define FE_FIFO_CMD_TIME 2'b10
-`define FE_FIFO_CMD_STRM 2'b11
-
-`define FE_FIFO_CMD_START 16
-`define FE_FIFO_CMD_BIT_LEN 2
-
 `define FE_FIFO_TIME_START 0
 `define FE_FIFO_SHORTTIME_LEN 3
 `define FE_FIFO_FULLTIME_LEN 16
@@ -71,19 +53,6 @@
 `define FE_FIFO_SESSVLD_BIT 5
 `define FE_FIFO_SESSEND_BIT 6
 `define FE_FIFO_VBUSVLD_BIT 7
-
-`define FE_FIFO_DATA_START 8
-`define FE_FIFO_DATA_LEN 8
-
-`define FE_FIFO_STRM_EMPTY 8'h0
-
-// FIFO status register bits:
-`define FIFO_STAT_EMPTY 0
-`define FIFO_STAT_UNDERFLOW 1
-`define FIFO_STAT_EMPTY_THRESHOLD 2
-`define FIFO_STAT_FULL 3
-`define FIFO_STAT_OVERFLOW_BLOCKED 4
-`define FIFO_STAT_CAPTURE_DONE 5
 
 // and this is where those FIFO status bits show up in the FIFO read,
 // as opposed to register read:

@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Thu Dec  5 14:39:13 2019
+| Date         : Fri Sep 25 11:53:26 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file phywhisperer_top_control_sets_placed.rpt
 | Design       : phywhisperer_top
@@ -23,8 +23,8 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Number of unique control sets                            |   214 |
-| Unused register locations in slices containing registers |    67 |
+| Number of unique control sets                            |   216 |
+| Unused register locations in slices containing registers |    70 |
 +----------------------------------------------------------+-------+
 
 
@@ -35,11 +35,11 @@ Table of Contents
 | Fanout | Control Sets |
 +--------+--------------+
 |      1 |            1 |
-|      4 |            3 |
+|      4 |            4 |
 |      5 |            1 |
-|      6 |            1 |
-|      8 |          192 |
-|     14 |            1 |
+|      7 |            1 |
+|      8 |          193 |
+|     11 |            1 |
 |    16+ |           15 |
 +--------+--------------+
 
@@ -50,235 +50,237 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              78 |           27 |
+| No           | No                    | No                     |              73 |           22 |
 | No           | No                    | Yes                    |               3 |            2 |
-| No           | Yes                   | No                     |            1536 |          390 |
-| Yes          | No                    | No                     |              51 |           23 |
+| No           | Yes                   | No                     |            1562 |          393 |
+| Yes          | No                    | No                     |              52 |           22 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |            2201 |          703 |
+| Yes          | Yes                   | No                     |            2208 |          658 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
 4. Detailed Control Set Information
 -----------------------------------
 
-+--------------------------------+--------------------------------------------------+------------------------------------------------------------------------------------------+------------------+----------------+
-|          Clock Signal          |                   Enable Signal                  |                                     Set/Reset Signal                                     | Slice Load Count | Bel Load Count |
-+--------------------------------+--------------------------------------------------+------------------------------------------------------------------------------------------+------------------+----------------+
-|  clk_fe_buf_BUFG               |                                                  | U_reg_pw/U_sniff_fifo/U0/inst_fifo_gen/gconvfifo.rf/gbi.bi/g7ser_birst.rstbt/wr_rst_reg2 |                1 |              1 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/U_match_cdc/E[0]                       | USB_SPARE0_IBUF                                                                          |                1 |              4 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/FSM_onehot_state[2]_i_1_n_0            | USB_SPARE0_IBUF                                                                          |                1 |              4 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[2]_0[0]           | USB_SPARE0_IBUF                                                                          |                1 |              4 |
-|  clk_fe_buf_BUFG               | U_reg_pw/U_stat_update_cdc/E[0]                  | USB_SPARE0_IBUF                                                                          |                2 |              5 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address[5]_i_1_n_0            |                                                                                          |                3 |              6 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[9]                              | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[60]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[2]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_fe_buf_BUFG               | U_pattern_matcher/bytes_received                 | U_fe_capture/SR[0]                                                                       |                3 |              8 |
-|  clk_fe_buf_BUFG               | fe_rxvalid_IBUF                                  | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_1              | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_datao[7]_i_1_n_0              |                                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_6              | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[11]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[14]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[15]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[8]                              | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[7]                              | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[12]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[13]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[0]                              | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[4]                              | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[2]                              | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[1]                              | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[5]                              | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[6]                              | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[38]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[10]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[3]                              | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[57]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[60]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[46]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[17]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[34]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[33]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[20]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[30]                             | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[45]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[48]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[24]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[55]                             | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[56]                             | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[61]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[50]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[42]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[26]                             | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[37]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[18]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[52]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[21]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[31]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[36]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[51]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[40]                             | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[43]                             | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[58]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[59]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[32]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[23]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[25]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[54]                             | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[39]                             | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[62]                             | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[63]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[28]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[44]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[22]                             | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[19]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[41]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[47]                             | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[53]                             | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[16]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[27]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[29]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[35]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[49]                             | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[5]           | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[15]          | USB_SPARE0_IBUF                                                                          |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[18]          | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[20]          | USB_SPARE0_IBUF                                                                          |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[19]          | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[23]          | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[3]           | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[0]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[2]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[3]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[4]           | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[16]          | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[17]          | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[5]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[6]           | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[9]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[7]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[8]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[9]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[21]          | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[22]          | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[1]           | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[4]           | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[1]           | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[0]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[2]           | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[6]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[10]          | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[7]           | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[8]           | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[11]          | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[12]          | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[13]          | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[14]          | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[13]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[15]          | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[19]          | USB_SPARE0_IBUF                                                                          |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[0]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[10]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[16]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[1]           | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[17]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[18]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_5[0]           | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[4]       | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[5]       | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[11]      | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[14]      | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[15]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[12]          | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[21]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[22]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[24]      | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_3[0]           | U_usb_reg_main/SR[0]                                                                     |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[13]          | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_2[0]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_2[2]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[16]          | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[18]          | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[20]          | USB_SPARE0_IBUF                                                                          |                7 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[14]          | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[3]       | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[19]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[23]      | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[1]       | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[22]          | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[12]      | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[25]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[26]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[2]       | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[23]          | USB_SPARE0_IBUF                                                                          |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[0]       | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_2[1]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[8]       | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[20]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[27]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[28]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[7]       | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[29]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[30]      | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[31]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[11]          | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[6]       | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[10]          | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[21]          | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[9]       | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_1[17]          | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[2]           | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[54]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[40]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[57]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[38]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[51]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[44]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[47]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[58]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[32]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[61]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[63]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[43]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[1]           | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[46]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[35]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[49]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[45]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[42]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[55]      | USB_SPARE0_IBUF                                                                          |                7 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[56]      | USB_SPARE0_IBUF                                                                          |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[36]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[41]      | USB_SPARE0_IBUF                                                                          |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[50]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[62]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[0]           | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[34]      | USB_SPARE0_IBUF                                                                          |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[33]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[39]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[48]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[52]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[59]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[53]      | USB_SPARE0_IBUF                                                                          |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep_2[37]      | USB_SPARE0_IBUF                                                                          |                2 |              8 |
-|  clk_usb_buf_BUFG              |                                                  |                                                                                          |                7 |             14 |
-|  clk_fe_buf_BUFG               | U_fe_capture/O_data_wr_reg_0                     | USB_SPARE0_IBUF                                                                          |                6 |             16 |
-|  clk_fe_buf_BUFG               | U_fe_capture/sel                                 | U_fe_capture/timestamp_ctr[0]_i_1_n_0                                                    |                4 |             16 |
-|  clk_fe_buf_BUFG               | U_fe_capture/usb_event_reg                       | U_fe_capture/timestamp[15]_i_1_n_0                                                       |                6 |             16 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_width[16]_i_1_n_0              |                                                                                          |                5 |             17 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt0                      | U_usb_reg_main/clear                                                                     |                8 |             18 |
-|  clk_fe_buf_BUFG               | U_pattern_matcher/delay_counter_fe               | U_trigger/delay_counter_fe[0]_i_1_n_0                                                    |                5 |             18 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/U_match_cdc/FSM_onehot_state_reg[0][0] | USB_SPARE0_IBUF                                                                          |                8 |             20 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_delay[19]_i_1_n_0              |                                                                                          |               10 |             20 |
-|  clk_fe_buf_BUFG               | U_fe_capture/fe_capture_data_wr                  | U_fe_capture/capture_count[0]_i_1_n_0                                                    |                6 |             24 |
-|  clk_fe_buf_BUFG               | U_usb_autodetect/timer03_out                     | U_usb_autodetect/U_match_cdc/FSM_onehot_state_reg[1]                                     |                6 |             24 |
-|  clk_usb_buf_BUFG              |                                                  | USB_SPARE0_IBUF                                                                          |               27 |             58 |
-|  clk_fe_buf_BUFG               |                                                  |                                                                                          |               20 |             65 |
-|  clk_fe_buf_BUFG               |                                                  | USB_SPARE0_IBUF                                                                          |               45 |            139 |
-|  clk_fe_buf_BUFG               | U_pattern_matcher/match_trigger00_out            | U_fe_capture/SR[0]                                                                       |              148 |            504 |
-|  U_trigger_clock/inst/clk_out1 |                                                  | USB_SPARE0_IBUF                                                                          |              319 |           1341 |
-+--------------------------------+--------------------------------------------------+------------------------------------------------------------------------------------------+------------------+----------------+
++--------------------------------+--------------------------------------------------+----------------------------------------------------------------------------------+------------------+----------------+
+|          Clock Signal          |                   Enable Signal                  |                                 Set/Reset Signal                                 | Slice Load Count | Bel Load Count |
++--------------------------------+--------------------------------------------------+----------------------------------------------------------------------------------+------------------+----------------+
+|  clk_fe_buf_BUFG               |                                                  | U_fifo/U_fifo/U0/inst_fifo_gen/gconvfifo.rf/gbi.bi/g7ser_birst.rstbt/wr_rst_reg2 |                1 |              1 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/U_match_cdc/E[0]                       | USB_SPARE0_IBUF                                                                  |                1 |              4 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_0[0]                | USB_SPARE0_IBUF                                                                  |                2 |              4 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/FSM_onehot_state[2]_i_1_n_0            | USB_SPARE0_IBUF                                                                  |                1 |              4 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[2]_0[0]           | USB_SPARE0_IBUF                                                                  |                2 |              4 |
+|  clk_fe_buf_BUFG               | U_reg_usb/U_stat_update_cdc/E[0]                 | USB_SPARE0_IBUF                                                                  |                2 |              5 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address[7]_i_1_n_0            |                                                                                  |                3 |              7 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[49]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[8]                              | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_fe_buf_BUFG               | U_pattern_matcher/bytes_received                 | U_pattern_matcher/input_data[503]_i_1_n_0                                        |                2 |              8 |
+|  clk_fe_buf_BUFG               | fe_rxvalid_IBUF                                  | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              |                                                  | U_usb_reg_main/SR[0]                                                             |                6 |              8 |
+|  clk_usb_buf_BUFG              |                                                  | U_usb_reg_main/isoutregdly_reg_0[0]                                              |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_1[2]                | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_1[0]                | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_2[0]                | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_1[1]                | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[33]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[61]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[62]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[20]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[41]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[16]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[18]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[32]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[37]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[40]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[47]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[28]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[50]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[56]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[17]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[11]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[48]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[52]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[54]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[23]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[26]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[5]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[14]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[34]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[24]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[25]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[39]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[1]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[7]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[46]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[31]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[19]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[12]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[8]           | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[10]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[27]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[13]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[22]          | USB_SPARE0_IBUF                                                                  |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[29]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[35]          | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[0]           | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[42]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[44]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[21]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[36]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[38]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[6]           | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[45]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[51]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[2]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[30]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[53]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[3]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[15]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[55]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[9]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[4]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[43]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[57]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[58]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[59]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[60]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[54]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[55]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[3]           | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[58]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[20]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[41]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[46]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[42]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[59]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_6[63]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[25]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[9]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[56]          | USB_SPARE0_IBUF                                                                  |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[33]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[6]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[23]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[50]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[2]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[51]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[57]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[12]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[44]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[43]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[60]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[40]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[26]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[11]          | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[22]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[34]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[27]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[13]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[61]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[8]           | USB_SPARE0_IBUF                                                                  |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[24]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[62]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[19]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[28]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[29]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[31]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[14]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[32]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[1]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[35]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[36]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[7]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[38]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[18]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[39]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[48]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[0]           | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[45]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[15]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[21]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[52]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[10]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[4]           | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[16]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[47]          | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[17]          | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[5]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[30]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[37]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[49]          | USB_SPARE0_IBUF                                                                  |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[53]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[6]    | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[19]   | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[2]           | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[5]    | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[23]   | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[14]   | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[13]   | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[16]   | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[3]    | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[0]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[0]    | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[2]    | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[17]   | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[18]   | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__2_1[2]    | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[21]   | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[8]    | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[1]           | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[7]    | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__2_1[1]    | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[1]    | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[20]   | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[22]   | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[10]   | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[9]    | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[12]   | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[15]   | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[4]    | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[63]          | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__1_0[11]   | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[0]_rep__2_1[0]    | USB_SPARE0_IBUF                                                                  |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[0]_2              | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[0]_0              | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_datao0                        |                                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[7]                              | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[0]                              | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[1]                              | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[2]                              | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[3]                              | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[4]                              | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[6]                              | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[9]                              | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[5]                              | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[11]                             | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[12]                             | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[23]                             | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[16]                             | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[10]                             | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[19]                             | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[20]                             | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[21]                             | USB_SPARE0_IBUF                                                                  |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[15]                             | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[22]                             | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[14]                             | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[13]                             | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[17]                             | USB_SPARE0_IBUF                                                                  |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[18]                             | USB_SPARE0_IBUF                                                                  |                4 |              8 |
+|  clk_usb_buf_BUFG              |                                                  |                                                                                  |                5 |             11 |
+|  clk_fe_buf_BUFG               | U_fe_capture_main/event_reg                      | U_fe_capture_main/timestamp[15]_i_1_n_0                                          |                3 |             16 |
+|  clk_fe_buf_BUFG               | U_fe_capture_main/sel                            | U_fe_capture_main/timestamp_ctr[0]_i_1_n_0                                       |                4 |             16 |
+|  clk_fe_buf_BUFG               | U_fe_capture_main/E[0]                           | USB_SPARE0_IBUF                                                                  |                8 |             16 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_width[16]_i_1_n_0              |                                                                                  |                5 |             17 |
+|  clk_fe_buf_BUFG               | U_pattern_matcher/delay_counter_fe               | U_trigger/delay_counter_fe[0]_i_1_n_0                                            |                5 |             18 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/U_match_cdc/FSM_onehot_state_reg[0][0] | USB_SPARE0_IBUF                                                                  |                6 |             20 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_delay[19]_i_1_n_0              |                                                                                  |               10 |             20 |
+|  clk_fe_buf_BUFG               | U_fe_capture_main/capture_count[0]_i_2_n_0       | U_fe_capture_main/capture_count[0]_i_1_n_0                                       |                6 |             24 |
+|  clk_fe_buf_BUFG               | U_usb_autodetect/timer03_out                     | U_usb_autodetect/U_match_cdc/FSM_onehot_state_reg[1]                             |                6 |             24 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt0                      | U_usb_reg_main/clear                                                             |               11 |             29 |
+|  clk_fe_buf_BUFG               |                                                  |                                                                                  |               17 |             63 |
+|  clk_usb_buf_BUFG              |                                                  | USB_SPARE0_IBUF                                                                  |               33 |             66 |
+|  clk_fe_buf_BUFG               |                                                  | USB_SPARE0_IBUF                                                                  |               43 |            141 |
+|  clk_fe_buf_BUFG               | U_pattern_matcher/match_trigger00_out            | U_pattern_matcher/input_data[503]_i_1_n_0                                        |              129 |            504 |
+|  U_trigger_clock/inst/clk_out1 |                                                  | USB_SPARE0_IBUF                                                                  |              308 |           1341 |
++--------------------------------+--------------------------------------------------+----------------------------------------------------------------------------------+------------------+----------------+
 
 

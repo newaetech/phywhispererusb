@@ -271,6 +271,18 @@ module pw_trigger #(
    assign O_capture_enable = capture_enable_start | capture_enable_reg;
    assign O_capture_enable_pulse = capture_enable_pulse;
 
+   `ifdef ILA_TRIG_FE
+      ila_trig_fe I_ila_trigger_fe (
+         .clk          (fe_clk),                        // input wire clk
+         .probe0       (capture_enable_reg),            // input wire [0:0]  probe0  
+         .probe1       (capture_done),                  // input wire [0:0]  probe1 
+         .probe2       (capturing_r),                   // input wire [0:0]  probe2 
+         .probe3       (I_match),                       // input wire [0:0]  probe3 
+         .probe4       (delay_counter_fe_running)       // input wire [0:0]  probe4 
+      );
+   `endif
+
+
 endmodule
 
 `default_nettype wire

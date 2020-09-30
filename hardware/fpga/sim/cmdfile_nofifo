@@ -1,0 +1,11 @@
+tb_pw.v
+../hdl/usb_reg_main.v 
+../hdl/phywhisperer_top.v 
+../hdl/reg_main.v 
+../hdl/reg_usb.v 
+../hdl/fe_capture_main.v
+../hdl/fe_capture_usb.v
+../hdl/pw_trigger.v
+../hdl/pattern_matcher_usb.v
+../hdl/usb_autodetect.v
+../hdl/cdc_pulse.v

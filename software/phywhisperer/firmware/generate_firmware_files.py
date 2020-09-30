@@ -9,7 +9,7 @@ import binascii
 hwdir = r"../../../firmware"
 
 
-phywhisperer_v = [0, 0]
+phywhisperer_v = [1, 1]
 phywhisperer_files = [("phywhisperer-firmware.zip", os.path.join(hwdir, r"fpga/phywhisperer.zip")),
                 ("phywhisperer-SAM3U1C.bin", os.path.join(hwdir, r"phywhisperer/phywhisperer-SAM3U1C.bin"))]
 

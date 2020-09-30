@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Mon Jul 29 18:40:18 2019
+| Date         : Wed Jul  8 12:50:18 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_utilization -file ila_1_utilization_synth.rpt -pb ila_1_utilization_synth.pb
 | Design       : ila_1
@@ -30,16 +30,16 @@ Table of Contents
 +----------------------------+------+-------+-----------+-------+
 |          Site Type         | Used | Fixed | Available | Util% |
 +----------------------------+------+-------+-----------+-------+
-| Slice LUTs*                | 1752 |     0 |      3750 | 46.72 |
-|   LUT as Logic             | 1475 |     0 |      3750 | 39.33 |
-|   LUT as Memory            |  277 |     0 |      2400 | 11.54 |
+| Slice LUTs*                | 1963 |     0 |      3750 | 52.35 |
+|   LUT as Logic             | 1665 |     0 |      3750 | 44.40 |
+|   LUT as Memory            |  298 |     0 |      2400 | 12.42 |
 |     LUT as Distributed RAM |    0 |     0 |           |       |
-|     LUT as Shift Register  |  277 |     0 |           |       |
-| Slice Registers            | 2560 |     0 |      7500 | 34.13 |
-|   Register as Flip Flop    | 2560 |     0 |      7500 | 34.13 |
+|     LUT as Shift Register  |  298 |     0 |           |       |
+| Slice Registers            | 2819 |     0 |      7500 | 37.59 |
+|   Register as Flip Flop    | 2819 |     0 |      7500 | 37.59 |
 |   Register as Latch        |    0 |     0 |      7500 |  0.00 |
-| F7 Muxes                   |   54 |     0 |      4000 |  1.35 |
-| F8 Muxes                   |   17 |     0 |      2000 |  0.85 |
+| F7 Muxes                   |   83 |     0 |      4000 |  2.08 |
+| F8 Muxes                   |   32 |     0 |      2000 |  1.60 |
 +----------------------------+------+-------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
 
@@ -59,7 +59,7 @@ Table of Contents
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
 | 9     |          Yes |         Set |            - |
-| 2551  |          Yes |       Reset |            - |
+| 2810  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -146,18 +146,18 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     | 2551 |        Flop & Latch |
-| LUT6     |  918 |                 LUT |
-| LUT4     |  321 |                 LUT |
-| SRL16E   |  226 |  Distributed Memory |
-| SRLC32E  |  209 |  Distributed Memory |
-| LUT3     |  142 |                 LUT |
-| LUT5     |  111 |                 LUT |
-| CARRY4   |   72 |          CarryLogic |
-| LUT2     |   69 |                 LUT |
-| LUT1     |   57 |                 LUT |
-| MUXF7    |   54 |               MuxFx |
-| MUXF8    |   17 |               MuxFx |
+| FDRE     | 2810 |        Flop & Latch |
+| LUT6     | 1033 |                 LUT |
+| LUT4     |  361 |                 LUT |
+| SRL16E   |  241 |  Distributed Memory |
+| SRLC32E  |  235 |  Distributed Memory |
+| LUT3     |  156 |                 LUT |
+| LUT5     |  149 |                 LUT |
+| MUXF7    |   83 |               MuxFx |
+| CARRY4   |   83 |          CarryLogic |
+| LUT2     |   75 |                 LUT |
+| LUT1     |   62 |                 LUT |
+| MUXF8    |   32 |               MuxFx |
 | FDSE     |    9 |        Flop & Latch |
 | SRLC16E  |    2 |  Distributed Memory |
 | RAMB36E1 |    2 |        Block Memory |
