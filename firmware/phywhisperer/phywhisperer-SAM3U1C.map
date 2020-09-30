@@ -1428,7 +1428,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x45 objdir/chipid.o
  .debug_macro   0x00000000      0x3c3 objdir/chipid.o
  .debug_line    0x00000000      0x9bc objdir/chipid.o
- .debug_str     0x00000000    0x48dae objdir/chipid.o
+ .debug_str     0x00000000    0x48d97 objdir/chipid.o
  .comment       0x00000000       0x80 objdir/chipid.o
  .debug_frame   0x00000000      0x178 objdir/chipid.o
  .ARM.attributes
@@ -1472,7 +1472,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x6a objdir/circbuffer.o
  .debug_macro   0x00000000      0x1df objdir/circbuffer.o
  .debug_line    0x00000000      0x2b9 objdir/circbuffer.o
- .debug_str     0x00000000     0x3dee objdir/circbuffer.o
+ .debug_str     0x00000000     0x3dd7 objdir/circbuffer.o
  .comment       0x00000000       0x80 objdir/circbuffer.o
  .debug_frame   0x00000000       0xd8 objdir/circbuffer.o
  .ARM.attributes
@@ -1702,7 +1702,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3c3 objdir/cycle_counter.o
  .debug_macro   0x00000000       0x22 objdir/cycle_counter.o
  .debug_line    0x00000000      0x922 objdir/cycle_counter.o
- .debug_str     0x00000000    0x48dc6 objdir/cycle_counter.o
+ .debug_str     0x00000000    0x48daf objdir/cycle_counter.o
  .comment       0x00000000       0x80 objdir/cycle_counter.o
  .debug_frame   0x00000000       0x20 objdir/cycle_counter.o
  .ARM.attributes
@@ -3118,7 +3118,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x94 objdir/led.o
  .debug_macro   0x00000000       0x40 objdir/led.o
  .debug_line    0x00000000      0x9c5 objdir/led.o
- .debug_str     0x00000000    0x4a4b3 objdir/led.o
+ .debug_str     0x00000000    0x4a49c objdir/led.o
  .comment       0x00000000       0x80 objdir/led.o
  .debug_frame   0x00000000       0x60 objdir/led.o
  .ARM.attributes
@@ -4130,7 +4130,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x45 objdir/read.o
  .debug_macro   0x00000000      0x3c3 objdir/read.o
  .debug_line    0x00000000      0x925 objdir/read.o
- .debug_str     0x00000000    0x48c56 objdir/read.o
+ .debug_str     0x00000000    0x48c3f objdir/read.o
  .comment       0x00000000       0x80 objdir/read.o
  .debug_frame   0x00000000       0x38 objdir/read.o
  .ARM.attributes
@@ -5121,7 +5121,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x5f objdir/spi.o
  .debug_macro   0x00000000       0x82 objdir/spi.o
  .debug_line    0x00000000      0xb55 objdir/spi.o
- .debug_str     0x00000000    0x4ab6e objdir/spi.o
+ .debug_str     0x00000000    0x4ab57 objdir/spi.o
  .comment       0x00000000       0x80 objdir/spi.o
  .debug_frame   0x00000000      0x2e0 objdir/spi.o
  .ARM.attributes
@@ -6135,7 +6135,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x45 objdir/tc.o
  .debug_macro   0x00000000      0x3c3 objdir/tc.o
  .debug_line    0x00000000      0xaa3 objdir/tc.o
- .debug_str     0x00000000    0x48fb3 objdir/tc.o
+ .debug_str     0x00000000    0x48f9c objdir/tc.o
  .comment       0x00000000       0x80 objdir/tc.o
  .debug_frame   0x00000000      0x358 objdir/tc.o
  .ARM.attributes
@@ -6409,7 +6409,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3c3 objdir/twi.o
  .debug_macro   0x00000000       0x46 objdir/twi.o
  .debug_line    0x00000000      0xb57 objdir/twi.o
- .debug_str     0x00000000    0x49162 objdir/twi.o
+ .debug_str     0x00000000    0x4914b objdir/twi.o
  .comment       0x00000000       0x80 objdir/twi.o
  .debug_frame   0x00000000      0x380 objdir/twi.o
  .ARM.attributes
@@ -6691,7 +6691,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3c3 objdir/uart.o
  .debug_macro   0x00000000       0x16 objdir/uart.o
  .debug_line    0x00000000      0xaed objdir/uart.o
- .debug_str     0x00000000    0x49024 objdir/uart.o
+ .debug_str     0x00000000    0x4900d objdir/uart.o
  .comment       0x00000000       0x80 objdir/uart.o
  .debug_frame   0x00000000      0x420 objdir/uart.o
  .ARM.attributes
@@ -7956,7 +7956,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x1c objdir/ui_cw305.o
  .debug_macro   0x00000000       0x78 objdir/ui_cw305.o
  .debug_line    0x00000000      0xcbb objdir/ui_cw305.o
- .debug_str     0x00000000    0x4dfe9 objdir/ui_cw305.o
+ .debug_str     0x00000000    0x4dfd2 objdir/ui_cw305.o
  .comment       0x00000000       0x80 objdir/ui_cw305.o
  .debug_frame   0x00000000       0x8c objdir/ui_cw305.o
  .ARM.attributes
@@ -8556,7 +8556,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x2e objdir/usart_serial.o
  .debug_macro   0x00000000       0x1c objdir/usart_serial.o
  .debug_line    0x00000000      0xad4 objdir/usart_serial.o
- .debug_str     0x00000000    0x4ac0f objdir/usart_serial.o
+ .debug_str     0x00000000    0x4abf8 objdir/usart_serial.o
  .comment       0x00000000       0x80 objdir/usart_serial.o
  .debug_frame   0x00000000       0xb0 objdir/usart_serial.o
  .ARM.attributes
@@ -8785,7 +8785,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x45 objdir/write.o
  .debug_macro   0x00000000      0x3c3 objdir/write.o
  .debug_line    0x00000000      0x922 objdir/write.o
- .debug_str     0x00000000    0x48c57 objdir/write.o
+ .debug_str     0x00000000    0x48c40 objdir/write.o
  .comment       0x00000000       0x80 objdir/write.o
  .debug_frame   0x00000000       0x38 objdir/write.o
  .ARM.attributes
@@ -9259,7 +9259,7 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/g
                 0x00000400                __stack_size__ = DEFINED (__stack_size__)?__stack_size__:0x400
                 0x20081ffc                __ram_end__ = ((ORIGIN (ram) + LENGTH (ram)) - 0x4)
 
-.text           0x00080000     0xad0c
+.text           0x00080000     0xad54
                 0x00080000                . = ALIGN (0x4)
                 0x00080000                _sfixed = .
  *(.vectors .vectors.*)
@@ -9713,433 +9713,437 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/g
  .text.udc_req_ep
                 0x00083aa8       0x90 objdir/udc.o
  .text.udc_process_setup
-                0x00083b38       0x90 objdir/udc.o
+                0x00083b38       0xb4 objdir/udc.o
                 0x00083b38                udc_process_setup
  .text.udi_vendor_enable
-                0x00083bc8       0x40 objdir/udi_vendor.o
-                0x00083bc8                udi_vendor_enable
+                0x00083bec       0x40 objdir/udi_vendor.o
+                0x00083bec                udi_vendor_enable
  .text.udi_vendor_disable
-                0x00083c08       0x1c objdir/udi_vendor.o
-                0x00083c08                udi_vendor_disable
+                0x00083c2c       0x1c objdir/udi_vendor.o
+                0x00083c2c                udi_vendor_disable
  .text.udi_vendor_setup
-                0x00083c24       0x54 objdir/udi_vendor.o
-                0x00083c24                udi_vendor_setup
+                0x00083c48       0x54 objdir/udi_vendor.o
+                0x00083c48                udi_vendor_setup
  .text.udi_vendor_getsetting
-                0x00083c78       0x14 objdir/udi_vendor.o
-                0x00083c78                udi_vendor_getsetting
+                0x00083c9c       0x14 objdir/udi_vendor.o
+                0x00083c9c                udi_vendor_getsetting
  .text.udi_vendor_bulk_in_run
-                0x00083c8c       0x2c objdir/udi_vendor.o
-                0x00083c8c                udi_vendor_bulk_in_run
+                0x00083cb0       0x2c objdir/udi_vendor.o
+                0x00083cb0                udi_vendor_bulk_in_run
  .text.udi_vendor_bulk_out_run
-                0x00083cb8       0x2c objdir/udi_vendor.o
-                0x00083cb8                udi_vendor_bulk_out_run
+                0x00083cdc       0x2c objdir/udi_vendor.o
+                0x00083cdc                udi_vendor_bulk_out_run
  .text.NVIC_EnableIRQ
-                0x00083ce4       0x30 objdir/udphs_device.o
+                0x00083d08       0x30 objdir/udphs_device.o
  .text.NVIC_SetPriority
-                0x00083d14       0x54 objdir/udphs_device.o
+                0x00083d38       0x54 objdir/udphs_device.o
  .text.cpu_irq_save
-                0x00083d68       0x38 objdir/udphs_device.o
+                0x00083d8c       0x38 objdir/udphs_device.o
  .text.cpu_irq_is_enabled_flags
-                0x00083da0       0x1e objdir/udphs_device.o
- *fill*         0x00083dbe        0x2 
+                0x00083dc4       0x1e objdir/udphs_device.o
+ *fill*         0x00083de2        0x2 
  .text.cpu_irq_restore
-                0x00083dc0       0x30 objdir/udphs_device.o
+                0x00083de4       0x30 objdir/udphs_device.o
  .text.sleepmgr_lock_mode
-                0x00083df0       0x38 objdir/udphs_device.o
+                0x00083e14       0x38 objdir/udphs_device.o
  .text.sleepmgr_unlock_mode
-                0x00083e28       0x38 objdir/udphs_device.o
+                0x00083e4c       0x38 objdir/udphs_device.o
  .text.udd_sleep_mode
-                0x00083e60       0x58 objdir/udphs_device.o
+                0x00083e84       0x58 objdir/udphs_device.o
  .text.UDPHS_Handler
-                0x00083eb8      0x1c4 objdir/udphs_device.o
-                0x00083eb8                UDPHS_Handler
+                0x00083edc      0x1c4 objdir/udphs_device.o
+                0x00083edc                UDPHS_Handler
  .text.udd_enable
-                0x0008407c       0x9c objdir/udphs_device.o
-                0x0008407c                udd_enable
+                0x000840a0       0x9c objdir/udphs_device.o
+                0x000840a0                udd_enable
  .text.udd_attach
-                0x00084118       0xb8 objdir/udphs_device.o
-                0x00084118                udd_attach
+                0x0008413c       0xb8 objdir/udphs_device.o
+                0x0008413c                udd_attach
  .text.udd_detach
-                0x000841d0       0x44 objdir/udphs_device.o
-                0x000841d0                udd_detach
+                0x000841f4       0x44 objdir/udphs_device.o
+                0x000841f4                udd_detach
  .text.udd_is_high_speed
-                0x00084214       0x24 objdir/udphs_device.o
-                0x00084214                udd_is_high_speed
+                0x00084238       0x24 objdir/udphs_device.o
+                0x00084238                udd_is_high_speed
  .text.udd_set_address
-                0x00084238       0x44 objdir/udphs_device.o
-                0x00084238                udd_set_address
+                0x0008425c       0x44 objdir/udphs_device.o
+                0x0008425c                udd_set_address
  .text.udd_getaddress
-                0x0008427c       0x1c objdir/udphs_device.o
-                0x0008427c                udd_getaddress
+                0x000842a0       0x1c objdir/udphs_device.o
+                0x000842a0                udd_getaddress
  .text.udd_set_setup_payload
-                0x00084298       0x28 objdir/udphs_device.o
-                0x00084298                udd_set_setup_payload
+                0x000842bc       0x28 objdir/udphs_device.o
+                0x000842bc                udd_set_setup_payload
  .text.udd_ep_alloc
-                0x000842c0      0x3ac objdir/udphs_device.o
-                0x000842c0                udd_ep_alloc
+                0x000842e4      0x3ac objdir/udphs_device.o
+                0x000842e4                udd_ep_alloc
  .text.udd_ep_free
-                0x0008466c       0x80 objdir/udphs_device.o
-                0x0008466c                udd_ep_free
+                0x00084690       0x80 objdir/udphs_device.o
+                0x00084690                udd_ep_free
  .text.udd_ep_is_halted
-                0x000846ec       0x68 objdir/udphs_device.o
-                0x000846ec                udd_ep_is_halted
+                0x00084710       0x68 objdir/udphs_device.o
+                0x00084710                udd_ep_is_halted
  .text.udd_ep_set_halt
-                0x00084754      0x114 objdir/udphs_device.o
-                0x00084754                udd_ep_set_halt
+                0x00084778      0x114 objdir/udphs_device.o
+                0x00084778                udd_ep_set_halt
  .text.udd_ep_clear_halt
-                0x00084868      0x130 objdir/udphs_device.o
-                0x00084868                udd_ep_clear_halt
+                0x0008488c      0x130 objdir/udphs_device.o
+                0x0008488c                udd_ep_clear_halt
  .text.udd_ep_run
-                0x00084998      0x108 objdir/udphs_device.o
-                0x00084998                udd_ep_run
+                0x000849bc      0x108 objdir/udphs_device.o
+                0x000849bc                udd_ep_run
  .text.udd_ep_abort
-                0x00084aa0       0x88 objdir/udphs_device.o
-                0x00084aa0                udd_ep_abort
+                0x00084ac4       0x88 objdir/udphs_device.o
+                0x00084ac4                udd_ep_abort
  .text.udd_test_mode_j
-                0x00084b28       0x34 objdir/udphs_device.o
-                0x00084b28                udd_test_mode_j
+                0x00084b4c       0x34 objdir/udphs_device.o
+                0x00084b4c                udd_test_mode_j
  .text.udd_test_mode_k
-                0x00084b5c       0x34 objdir/udphs_device.o
-                0x00084b5c                udd_test_mode_k
+                0x00084b80       0x34 objdir/udphs_device.o
+                0x00084b80                udd_test_mode_k
  .text.udd_test_mode_se0_nak
-                0x00084b90       0x24 objdir/udphs_device.o
-                0x00084b90                udd_test_mode_se0_nak
+                0x00084bb4       0x24 objdir/udphs_device.o
+                0x00084bb4                udd_test_mode_se0_nak
  .text.udd_test_mode_packet
-                0x00084bb4       0xcc objdir/udphs_device.o
-                0x00084bb4                udd_test_mode_packet
+                0x00084bd8       0xcc objdir/udphs_device.o
+                0x00084bd8                udd_test_mode_packet
  .text.udd_reset_ep_ctrl
-                0x00084c80       0x80 objdir/udphs_device.o
+                0x00084ca4       0x80 objdir/udphs_device.o
  .text.udd_ctrl_init
-                0x00084d00       0x5c objdir/udphs_device.o
+                0x00084d24       0x5c objdir/udphs_device.o
  .text.udd_ctrl_setup_received
-                0x00084d5c      0x140 objdir/udphs_device.o
+                0x00084d80      0x140 objdir/udphs_device.o
  .text.udd_ctrl_in_sent
-                0x00084e9c      0x168 objdir/udphs_device.o
+                0x00084ec0      0x168 objdir/udphs_device.o
  .text.udd_ctrl_out_received
-                0x00085004      0x1bc objdir/udphs_device.o
+                0x00085028      0x1bc objdir/udphs_device.o
  .text.udd_ctrl_underflow
-                0x000851c0       0x44 objdir/udphs_device.o
+                0x000851e4       0x44 objdir/udphs_device.o
  .text.udd_ctrl_overflow
-                0x00085204       0x34 objdir/udphs_device.o
+                0x00085228       0x34 objdir/udphs_device.o
  .text.udd_ctrl_stall_data
-                0x00085238       0x24 objdir/udphs_device.o
+                0x0008525c       0x24 objdir/udphs_device.o
  .text.udd_ctrl_send_zlp_in
-                0x0008525c       0x64 objdir/udphs_device.o
+                0x00085280       0x64 objdir/udphs_device.o
  .text.udd_ctrl_send_zlp_out
-                0x000852c0       0x44 objdir/udphs_device.o
+                0x000852e4       0x44 objdir/udphs_device.o
  .text.udd_ctrl_endofrequest
-                0x00085304       0x1c objdir/udphs_device.o
+                0x00085328       0x1c objdir/udphs_device.o
  .text.udd_ctrl_interrupt
-                0x00085320       0xe4 objdir/udphs_device.o
+                0x00085344       0xe4 objdir/udphs_device.o
  .text.udd_ep_job_table_reset
-                0x00085404       0x5c objdir/udphs_device.o
+                0x00085428       0x5c objdir/udphs_device.o
  .text.udd_ep_job_table_kill
-                0x00085460       0x44 objdir/udphs_device.o
+                0x00085484       0x44 objdir/udphs_device.o
  .text.udd_ep_abort_job
-                0x000854a4       0x3c objdir/udphs_device.o
+                0x000854c8       0x3c objdir/udphs_device.o
  .text.udd_ep_finish_job
-                0x000854e0       0x70 objdir/udphs_device.o
+                0x00085504       0x70 objdir/udphs_device.o
  .text.udd_ep_trans_done
-                0x00085550      0x1e8 objdir/udphs_device.o
+                0x00085574      0x1e8 objdir/udphs_device.o
  .text.udd_ep_interrupt
-                0x00085738      0x1f4 objdir/udphs_device.o
+                0x0008575c      0x1f4 objdir/udphs_device.o
  .text.usart_set_spi_master_baudrate
-                0x0008592c       0x40 objdir/usart.o
+                0x00085950       0x40 objdir/usart.o
  .text.usart_reset
-                0x0008596c       0x60 objdir/usart.o
-                0x0008596c                usart_reset
+                0x00085990       0x60 objdir/usart.o
+                0x00085990                usart_reset
  .text.usart_init_spi_master
-                0x000859cc      0x110 objdir/usart.o
-                0x000859cc                usart_init_spi_master
+                0x000859f0      0x110 objdir/usart.o
+                0x000859f0                usart_init_spi_master
  .text.usart_enable_tx
-                0x00085adc       0x18 objdir/usart.o
-                0x00085adc                usart_enable_tx
+                0x00085b00       0x18 objdir/usart.o
+                0x00085b00                usart_enable_tx
  .text.usart_reset_tx
-                0x00085af4       0x18 objdir/usart.o
-                0x00085af4                usart_reset_tx
+                0x00085b18       0x18 objdir/usart.o
+                0x00085b18                usart_reset_tx
  .text.usart_reset_rx
-                0x00085b0c       0x18 objdir/usart.o
-                0x00085b0c                usart_reset_rx
+                0x00085b30       0x18 objdir/usart.o
+                0x00085b30                usart_reset_rx
  .text.usart_reset_status
-                0x00085b24       0x1a objdir/usart.o
-                0x00085b24                usart_reset_status
+                0x00085b48       0x1a objdir/usart.o
+                0x00085b48                usart_reset_status
  .text.usart_drive_DTR_pin_high
-                0x00085b3e       0x1a objdir/usart.o
-                0x00085b3e                usart_drive_DTR_pin_high
+                0x00085b62       0x1a objdir/usart.o
+                0x00085b62                usart_drive_DTR_pin_high
  .text.usart_drive_RTS_pin_high
-                0x00085b58       0x1a objdir/usart.o
-                0x00085b58                usart_drive_RTS_pin_high
+                0x00085b7c       0x1a objdir/usart.o
+                0x00085b7c                usart_drive_RTS_pin_high
  .text.usart_putchar
-                0x00085b72       0x2e objdir/usart.o
-                0x00085b72                usart_putchar
+                0x00085b96       0x2e objdir/usart.o
+                0x00085b96                usart_putchar
  .text.usart_disable_writeprotect
-                0x00085ba0       0x20 objdir/usart.o
-                0x00085ba0                usart_disable_writeprotect
+                0x00085bc4       0x20 objdir/usart.o
+                0x00085bc4                usart_disable_writeprotect
  .text.__libc_init_array
-                0x00085bc0       0x48 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-init.o)
-                0x00085bc0                __libc_init_array
- .text          0x00085c08       0xec c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memcpy.o)
-                0x00085c08                memcpy
- .text.memset   0x00085cf4       0x94 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memset.o)
-                0x00085cf4                memset
- .text.sprintf  0x00085d88       0x44 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-sprintf.o)
-                0x00085d88                sprintf
+                0x00085be4       0x48 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-init.o)
+                0x00085be4                __libc_init_array
+ .text          0x00085c2c       0xec c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memcpy.o)
+                0x00085c2c                memcpy
+ .text.memset   0x00085d18       0x94 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memset.o)
+                0x00085d18                memset
+ .text.sprintf  0x00085dac       0x44 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-sprintf.o)
+                0x00085dac                sprintf
  .text._svfprintf_r
-                0x00085dcc     0x1a04 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
-                0x00085dcc                _svfprintf_r
+                0x00085df0     0x1a04 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
+                0x00085df0                _svfprintf_r
  .text.startup.register_fini
-                0x000877d0       0x14 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
- .text.atexit   0x000877e4        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-atexit.o)
-                0x000877e4                atexit
- .text.quorem   0x000877f0      0x124 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-dtoa.o)
- *fill*         0x00087914        0x4 
- .text._dtoa_r  0x00087918      0xe30 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-dtoa.o)
-                0x00087918                _dtoa_r
+                0x000877f4       0x14 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
+ .text.atexit   0x00087808        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-atexit.o)
+                0x00087808                atexit
+ .text.quorem   0x00087814      0x124 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-dtoa.o)
+ .text._dtoa_r  0x00087938      0xe30 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-dtoa.o)
+                0x00087938                _dtoa_r
  .text.__libc_fini_array
-                0x00088748       0x34 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-fini.o)
-                0x00088748                __libc_fini_array
+                0x00088768       0x34 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-fini.o)
+                0x00088768                __libc_fini_array
  .text._malloc_trim_r
-                0x0008877c       0xa0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-freer.o)
-                0x0008877c                _malloc_trim_r
- .text._free_r  0x0008881c      0x1e8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-freer.o)
-                0x0008881c                _free_r
+                0x0008879c       0xa0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-freer.o)
+                0x0008879c                _malloc_trim_r
+ .text._free_r  0x0008883c      0x1e8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-freer.o)
+                0x0008883c                _free_r
  .text._localeconv_r
-                0x00088a04       0x1c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-localeconv.o)
-                0x00088a04                _localeconv_r
+                0x00088a24       0x1c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-localeconv.o)
+                0x00088a24                _localeconv_r
  .text.__retarget_lock_acquire_recursive
-                0x00088a20        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
-                0x00088a20                __retarget_lock_acquire_recursive
+                0x00088a40        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
+                0x00088a40                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x00088a24        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
-                0x00088a24                __retarget_lock_release_recursive
+                0x00088a44        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
+                0x00088a44                __retarget_lock_release_recursive
  .text._malloc_r
-                0x00088a28      0x524 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x00088a28                _malloc_r
+                0x00088a48      0x524 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x00088a48                _malloc_r
  .text.__ascii_mbtowc
-                0x00088f4c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mbtowc_r.o)
-                0x00088f4c                __ascii_mbtowc
- .text.memchr   0x00088f78       0x8c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memchr-stub.o)
-                0x00088f78                memchr
- .text.memmove  0x00089004       0xc4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memmove.o)
-                0x00089004                memmove
+                0x00088f6c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mbtowc_r.o)
+                0x00088f6c                __ascii_mbtowc
+ .text.memchr   0x00088f98       0x8c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memchr-stub.o)
+                0x00088f98                memchr
+ .text.memmove  0x00089024       0xc4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-memmove.o)
+                0x00089024                memmove
  .text.__malloc_lock
-                0x000890c8        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mlock.o)
-                0x000890c8                __malloc_lock
+                0x000890e8        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mlock.o)
+                0x000890e8                __malloc_lock
  .text.__malloc_unlock
-                0x000890d4        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mlock.o)
-                0x000890d4                __malloc_unlock
- .text._Balloc  0x000890e0       0x4c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x000890e0                _Balloc
- .text._Bfree   0x0008912c       0x14 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x0008912c                _Bfree
+                0x000890f4        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mlock.o)
+                0x000890f4                __malloc_unlock
+ .text._Balloc  0x00089100       0x4c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089100                _Balloc
+ .text._Bfree   0x0008914c       0x14 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x0008914c                _Bfree
  .text.__multadd
-                0x00089140       0x84 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089140                __multadd
+                0x00089160       0x84 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089160                __multadd
  .text.__hi0bits
-                0x000891c4       0x40 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x000891c4                __hi0bits
+                0x000891e4       0x40 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x000891e4                __hi0bits
  .text.__lo0bits
-                0x00089204       0x60 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089204                __lo0bits
- .text.__i2b    0x00089264       0x14 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089264                __i2b
+                0x00089224       0x60 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089224                __lo0bits
+ .text.__i2b    0x00089284       0x14 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089284                __i2b
  .text.__multiply
-                0x00089278      0x14c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089278                __multiply
+                0x00089298      0x14c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089298                __multiply
  .text.__pow5mult
-                0x000893c4       0xa0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x000893c4                __pow5mult
+                0x000893e4       0xa0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x000893e4                __pow5mult
  .text.__lshift
-                0x00089464       0xb4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089464                __lshift
- .text.__mcmp   0x00089518       0x38 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089518                __mcmp
- .text.__mdiff  0x00089550      0x100 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089550                __mdiff
- .text.__d2b    0x00089650       0xb0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x00089650                __d2b
+                0x00089484       0xb4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089484                __lshift
+ .text.__mcmp   0x00089538       0x38 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089538                __mcmp
+ .text.__mdiff  0x00089570      0x100 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089570                __mdiff
+ .text.__d2b    0x00089670       0xb0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x00089670                __d2b
  .text._realloc_r
-                0x00089700      0x374 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-reallocr.o)
-                0x00089700                _realloc_r
- .text.frexp    0x00089a74       0x64 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-s_frexp.o)
-                0x00089a74                frexp
- .text._sbrk_r  0x00089ad8       0x24 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-sbrkr.o)
-                0x00089ad8                _sbrk_r
- .text.strlen   0x00089afc       0x5c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-strlen-stub.o)
-                0x00089afc                strlen
- .text.strncpy  0x00089b58       0x64 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-strncpy.o)
-                0x00089b58                strncpy
+                0x00089720      0x374 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-reallocr.o)
+                0x00089720                _realloc_r
+ .text.frexp    0x00089a94       0x64 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-s_frexp.o)
+                0x00089a94                frexp
+ .text._sbrk_r  0x00089af8       0x24 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-sbrkr.o)
+                0x00089af8                _sbrk_r
+ .text.strlen   0x00089b1c       0x5c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-strlen-stub.o)
+                0x00089b1c                strlen
+ .text.strncpy  0x00089b78       0x64 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-strncpy.o)
+                0x00089b78                strncpy
  .text.__ssprint_r
-                0x00089bbc       0xf4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfiprintf.o)
-                0x00089bbc                __ssprint_r
+                0x00089bdc       0xf4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfiprintf.o)
+                0x00089bdc                __ssprint_r
  .text.__ascii_wctomb
-                0x00089cb0       0x18 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-wctomb_r.o)
-                0x00089cb0                __ascii_wctomb
+                0x00089cd0       0x18 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-wctomb_r.o)
+                0x00089cd0                __ascii_wctomb
  .text.__register_exitproc
-                0x00089cc8       0xc0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__atexit.o)
-                0x00089cc8                __register_exitproc
+                0x00089ce8       0xc0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__atexit.o)
+                0x00089ce8                __register_exitproc
  .text._calloc_r
-                0x00089d88       0x6c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-callocr.o)
-                0x00089d88                _calloc_r
- .text          0x00089df4      0x378 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
-                0x00089df4                __aeabi_drsub
-                0x00089dfc                __aeabi_dsub
-                0x00089dfc                __subdf3
-                0x00089e00                __aeabi_dadd
-                0x00089e00                __adddf3
-                0x0008a078                __floatunsidf
-                0x0008a078                __aeabi_ui2d
-                0x0008a098                __floatsidf
-                0x0008a098                __aeabi_i2d
-                0x0008a0bc                __aeabi_f2d
-                0x0008a0bc                __extendsfdf2
-                0x0008a100                __floatundidf
-                0x0008a100                __aeabi_ul2d
-                0x0008a110                __floatdidf
-                0x0008a110                __aeabi_l2d
- .text          0x0008a16c      0x424 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_muldivdf3.o)
-                0x0008a16c                __aeabi_dmul
-                0x0008a16c                __muldf3
-                0x0008a3c0                __divdf3
-                0x0008a3c0                __aeabi_ddiv
- .text          0x0008a590      0x110 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_cmpdf2.o)
-                0x0008a590                __gtdf2
-                0x0008a590                __gedf2
-                0x0008a598                __ltdf2
-                0x0008a598                __ledf2
-                0x0008a5a0                __nedf2
-                0x0008a5a0                __eqdf2
-                0x0008a5a0                __cmpdf2
-                0x0008a61c                __aeabi_cdrcmple
-                0x0008a62c                __aeabi_cdcmpeq
-                0x0008a62c                __aeabi_cdcmple
-                0x0008a63c                __aeabi_dcmpeq
-                0x0008a650                __aeabi_dcmplt
-                0x0008a664                __aeabi_dcmple
-                0x0008a678                __aeabi_dcmpge
-                0x0008a68c                __aeabi_dcmpgt
- .text          0x0008a6a0       0x2c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_unorddf2.o)
-                0x0008a6a0                __unorddf2
-                0x0008a6a0                __aeabi_dcmpun
- .text          0x0008a6cc       0x50 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_fixdfsi.o)
-                0x0008a6cc                __aeabi_d2iz
-                0x0008a6cc                __fixdfsi
- .text          0x0008a71c       0x30 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_aeabi_uldivmod.o)
-                0x0008a71c                __aeabi_uldivmod
- .text          0x0008a74c      0x2d0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
-                0x0008a74c                __udivmoddi4
- .text          0x0008aa1c        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_dvmd_tls.o)
-                0x0008aa1c                __aeabi_idiv0
-                0x0008aa1c                __aeabi_ldiv0
+                0x00089da8       0x6c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-callocr.o)
+                0x00089da8                _calloc_r
+ .text          0x00089e14      0x378 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
+                0x00089e14                __aeabi_drsub
+                0x00089e1c                __aeabi_dsub
+                0x00089e1c                __subdf3
+                0x00089e20                __aeabi_dadd
+                0x00089e20                __adddf3
+                0x0008a098                __floatunsidf
+                0x0008a098                __aeabi_ui2d
+                0x0008a0b8                __floatsidf
+                0x0008a0b8                __aeabi_i2d
+                0x0008a0dc                __aeabi_f2d
+                0x0008a0dc                __extendsfdf2
+                0x0008a120                __floatundidf
+                0x0008a120                __aeabi_ul2d
+                0x0008a130                __floatdidf
+                0x0008a130                __aeabi_l2d
+ .text          0x0008a18c      0x424 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_muldivdf3.o)
+                0x0008a18c                __aeabi_dmul
+                0x0008a18c                __muldf3
+                0x0008a3e0                __divdf3
+                0x0008a3e0                __aeabi_ddiv
+ .text          0x0008a5b0      0x110 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_cmpdf2.o)
+                0x0008a5b0                __gtdf2
+                0x0008a5b0                __gedf2
+                0x0008a5b8                __ltdf2
+                0x0008a5b8                __ledf2
+                0x0008a5c0                __nedf2
+                0x0008a5c0                __eqdf2
+                0x0008a5c0                __cmpdf2
+                0x0008a63c                __aeabi_cdrcmple
+                0x0008a64c                __aeabi_cdcmpeq
+                0x0008a64c                __aeabi_cdcmple
+                0x0008a65c                __aeabi_dcmpeq
+                0x0008a670                __aeabi_dcmplt
+                0x0008a684                __aeabi_dcmple
+                0x0008a698                __aeabi_dcmpge
+                0x0008a6ac                __aeabi_dcmpgt
+ .text          0x0008a6c0       0x2c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_unorddf2.o)
+                0x0008a6c0                __unorddf2
+                0x0008a6c0                __aeabi_dcmpun
+ .text          0x0008a6ec       0x50 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_arm_fixdfsi.o)
+                0x0008a6ec                __aeabi_d2iz
+                0x0008a6ec                __fixdfsi
+ .text          0x0008a73c       0x30 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_aeabi_uldivmod.o)
+                0x0008a73c                __aeabi_uldivmod
+ .text          0x0008a76c      0x2d0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
+                0x0008a76c                __udivmoddi4
+ .text          0x0008aa3c        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_dvmd_tls.o)
+                0x0008aa3c                __aeabi_idiv0
+                0x0008aa3c                __aeabi_ldiv0
  *(.glue_7t)
- .glue_7t       0x0008aa20        0x0 linker stubs
+ .glue_7t       0x0008aa40        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x0008aa20        0x0 linker stubs
+ .glue_7        0x0008aa40        0x0 linker stubs
  *(.rodata .rodata* .gnu.linkonce.r.*)
- .rodata        0x0008aa20        0x5 objdir/main.o
- *fill*         0x0008aa25        0x3 
- .rodata        0x0008aa28       0x35 objdir/udphs_device.o
- *fill*         0x0008aa5d        0x3 
+ .rodata        0x0008aa40        0x5 objdir/main.o
+ *fill*         0x0008aa45        0x3 
+ .rodata.BOS_DESC
+                0x0008aa48       0x21 objdir/udc.o
+                0x0008aa48                BOS_DESC
+ *fill*         0x0008aa69        0x3 
+ .rodata        0x0008aa6c       0x35 objdir/udphs_device.o
+ *fill*         0x0008aaa1        0x3 
  .rodata._global_impure_ptr
-                0x0008aa60        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
-                0x0008aa60                _global_impure_ptr
+                0x0008aaa4        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
+                0x0008aaa4                _global_impure_ptr
  .rodata._svfprintf_r.str1.4
-                0x0008aa64       0x42 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
- *fill*         0x0008aaa6        0x2 
+                0x0008aaa8       0x42 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
+ *fill*         0x0008aaea        0x2 
  .rodata.blanks.7315
-                0x0008aaa8       0x10 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
+                0x0008aaec       0x10 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
  .rodata.zeroes.7316
-                0x0008aab8       0x10 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
+                0x0008aafc       0x10 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-svfprintf.o)
  .rodata._dtoa_r.str1.4
-                0x0008aac8       0x10 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-dtoa.o)
+                0x0008ab0c       0x10 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-dtoa.o)
                                  0x12 (size before relaxing)
  .rodata._setlocale_r.str1.4
-                0x0008aad8        0xa c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-locale.o)
+                0x0008ab1c        0xa c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-locale.o)
                                   0xd (size before relaxing)
- *fill*         0x0008aae2        0x2 
+ *fill*         0x0008ab26        0x2 
  .rodata.str1.4
-                0x0008aae4        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-locale.o)
+                0x0008ab28        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-locale.o)
                                   0x2 (size before relaxing)
+ *fill*         0x0008ab2c        0x4 
  .rodata.__mprec_bigtens
-                0x0008aae8       0x28 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x0008aae8                __mprec_bigtens
+                0x0008ab30       0x28 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x0008ab30                __mprec_bigtens
  .rodata.__mprec_tens
-                0x0008ab10       0xc8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
-                0x0008ab10                __mprec_tens
+                0x0008ab58       0xc8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x0008ab58                __mprec_tens
  .rodata.p05.6092
-                0x0008abd8        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
+                0x0008ac20        0xc c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mprec.o)
  .rodata._ctype_
-                0x0008abe4      0x101 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-ctype_.o)
-                0x0008abe4                _ctype_
+                0x0008ac2c      0x101 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-ctype_.o)
+                0x0008ac2c                _ctype_
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x0008ace8                . = ALIGN (0x4)
- *fill*         0x0008ace5        0x3 
+                0x0008ad30                . = ALIGN (0x4)
+ *fill*         0x0008ad2d        0x3 
  *(.init)
- .init          0x0008ace8        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crti.o
-                0x0008ace8                _init
- .init          0x0008acec        0x8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtn.o
-                0x0008acf4                . = ALIGN (0x4)
-                0x0008acf4                __preinit_array_start = .
+ .init          0x0008ad30        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crti.o
+                0x0008ad30                _init
+ .init          0x0008ad34        0x8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtn.o
+                0x0008ad3c                . = ALIGN (0x4)
+                0x0008ad3c                __preinit_array_start = .
  *(.preinit_array)
-                0x0008acf4                __preinit_array_end = .
-                0x0008acf4                . = ALIGN (0x4)
-                0x0008acf4                __init_array_start = .
+                0x0008ad3c                __preinit_array_end = .
+                0x0008ad3c                . = ALIGN (0x4)
+                0x0008ad3c                __init_array_start = .
  *(SORT_BY_NAME(.init_array.*))
  .init_array.00000
-                0x0008acf4        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
+                0x0008ad3c        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
  *(.init_array)
- .init_array    0x0008acf8        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
-                0x0008acfc                __init_array_end = .
-                0x0008acfc                . = ALIGN (0x4)
+ .init_array    0x0008ad40        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
+                0x0008ad44                __init_array_end = .
+                0x0008ad44                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT_BY_NAME(.ctors.*))
  *crtend.o(.ctors)
-                0x0008acfc                . = ALIGN (0x4)
+                0x0008ad44                . = ALIGN (0x4)
  *(.fini)
- .fini          0x0008acfc        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crti.o
-                0x0008acfc                _fini
- .fini          0x0008ad00        0x8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtn.o
-                0x0008ad08                . = ALIGN (0x4)
-                0x0008ad08                __fini_array_start = .
+ .fini          0x0008ad44        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crti.o
+                0x0008ad44                _fini
+ .fini          0x0008ad48        0x8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtn.o
+                0x0008ad50                . = ALIGN (0x4)
+                0x0008ad50                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x0008ad08        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
+ .fini_array    0x0008ad50        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
  *(SORT_BY_NAME(.fini_array.*))
-                0x0008ad0c                __fini_array_end = .
+                0x0008ad54                __fini_array_end = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT_BY_NAME(.dtors.*))
  *crtend.o(.dtors)
-                0x0008ad0c                . = ALIGN (0x4)
-                0x0008ad0c                _efixed = .
+                0x0008ad54                . = ALIGN (0x4)
+                0x0008ad54                _efixed = .
                 [!provide]                PROVIDE (__exidx_start = .)
 
-.vfp11_veneer   0x0008ad0c        0x0
- .vfp11_veneer  0x0008ad0c        0x0 linker stubs
+.vfp11_veneer   0x0008ad54        0x0
+ .vfp11_veneer  0x0008ad54        0x0 linker stubs
 
-.v4_bx          0x0008ad0c        0x0
- .v4_bx         0x0008ad0c        0x0 linker stubs
+.v4_bx          0x0008ad54        0x0
+ .v4_bx         0x0008ad54        0x0 linker stubs
 
-.iplt           0x0008ad0c        0x0
- .iplt          0x0008ad0c        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
+.iplt           0x0008ad54        0x0
+ .iplt          0x0008ad54        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
 
-.igot.plt       0x0008ad0c        0x0
- .igot.plt      0x0008ad0c        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
+.igot.plt       0x0008ad54        0x0
+ .igot.plt      0x0008ad54        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
 
-.ARM.exidx      0x0008ad0c        0x8
+.ARM.exidx      0x0008ad54        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x0008ad0c        0x8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
+ .ARM.exidx     0x0008ad54        0x8 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
                 [!provide]                PROVIDE (__exidx_end = .)
 
-.eh_frame       0x0008ad14        0x0
- .eh_frame      0x0008ad14        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
+.eh_frame       0x0008ad5c        0x0
+ .eh_frame      0x0008ad5c        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
 
-.rel.dyn        0x0008ad14        0x0
- .rel.iplt      0x0008ad14        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
-                0x0008ad14                . = ALIGN (0x4)
-                0x0008ad14                _etext = .
+.rel.dyn        0x0008ad5c        0x0
+ .rel.iplt      0x0008ad5c        0x0 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
+                0x0008ad5c                . = ALIGN (0x4)
+                0x0008ad5c                _etext = .
 
-.relocate       0x20000000      0xd60 load address 0x0008ad14
+.relocate       0x20000000      0xe00 load address 0x0008ad5c
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _srelocate = .
  *(.ramfunc .ramfunc.*)
@@ -10181,164 +10185,168 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/g
  .data.udc_string_desc
                 0x200002cc       0x42 objdir/udc.o
  *fill*         0x2000030e        0x2 
+ .data.winusb_20_desc
+                0x20000310       0x9e objdir/udc.o
+                0x20000310                winusb_20_desc
+ *fill*         0x200003ae        0x2 
  .data.udi_api_vendor
-                0x20000310       0x14 objdir/udi_vendor.o
-                0x20000310                udi_api_vendor
+                0x200003b0       0x14 objdir/udi_vendor.o
+                0x200003b0                udi_api_vendor
  .data.udc_device_desc
-                0x20000324       0x12 objdir/udi_vendor_desc.o
-                0x20000324                udc_device_desc
- *fill*         0x20000336        0x2 
+                0x200003c4       0x12 objdir/udi_vendor_desc.o
+                0x200003c4                udc_device_desc
+ *fill*         0x200003d6        0x2 
  .data.udc_device_qual
-                0x20000338        0xa objdir/udi_vendor_desc.o
-                0x20000338                udc_device_qual
- *fill*         0x20000342        0x2 
+                0x200003d8        0xa objdir/udi_vendor_desc.o
+                0x200003d8                udc_device_qual
+ *fill*         0x200003e2        0x2 
  .data.udc_desc_fs
-                0x20000344       0x20 objdir/udi_vendor_desc.o
-                0x20000344                udc_desc_fs
+                0x200003e4       0x20 objdir/udi_vendor_desc.o
+                0x200003e4                udc_desc_fs
  .data.udc_desc_hs
-                0x20000364       0x20 objdir/udi_vendor_desc.o
-                0x20000364                udc_desc_hs
+                0x20000404       0x20 objdir/udi_vendor_desc.o
+                0x20000404                udc_desc_hs
  .data.udi_apis
-                0x20000384        0x4 objdir/udi_vendor_desc.o
-                0x20000384                udi_apis
+                0x20000424        0x4 objdir/udi_vendor_desc.o
+                0x20000424                udi_apis
  .data.udc_config_lsfs
-                0x20000388        0x8 objdir/udi_vendor_desc.o
-                0x20000388                udc_config_lsfs
+                0x20000428        0x8 objdir/udi_vendor_desc.o
+                0x20000428                udc_config_lsfs
  .data.udc_config_hs
-                0x20000390        0x8 objdir/udi_vendor_desc.o
-                0x20000390                udc_config_hs
+                0x20000430        0x8 objdir/udi_vendor_desc.o
+                0x20000430                udc_config_hs
  .data.udc_config
-                0x20000398       0x18 objdir/udi_vendor_desc.o
-                0x20000398                udc_config
+                0x20000438       0x18 objdir/udi_vendor_desc.o
+                0x20000438                udc_config
  .data._impure_ptr
-                0x200003b0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
-                0x200003b0                _impure_ptr
- *fill*         0x200003b4        0x4 
+                0x20000450        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
+                0x20000450                _impure_ptr
+ *fill*         0x20000454        0x4 
  .data.impure_data
-                0x200003b8      0x428 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
+                0x20000458      0x428 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-impure.o)
  .data.__atexit_recursive_mutex
-                0x200007e0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
-                0x200007e0                __atexit_recursive_mutex
+                0x20000880        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-__call_atexit.o)
+                0x20000880                __atexit_recursive_mutex
  .data.__global_locale
-                0x200007e4      0x16c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-locale.o)
-                0x200007e4                __global_locale
+                0x20000884      0x16c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-locale.o)
+                0x20000884                __global_locale
  .data.__malloc_av_
-                0x20000950      0x408 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x20000950                __malloc_av_
+                0x200009f0      0x408 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x200009f0                __malloc_av_
  .data.__malloc_sbrk_base
-                0x20000d58        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x20000d58                __malloc_sbrk_base
+                0x20000df8        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x20000df8                __malloc_sbrk_base
  .data.__malloc_trim_threshold
-                0x20000d5c        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x20000d5c                __malloc_trim_threshold
-                0x20000d60                . = ALIGN (0x4)
-                0x20000d60                _erelocate = .
+                0x20000dfc        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x20000dfc                __malloc_trim_threshold
+                0x20000e00                . = ALIGN (0x4)
+                0x20000e00                _erelocate = .
 
-.bss            0x20000d60      0x600 load address 0x0008ba74
-                0x20000d60                . = ALIGN (0x4)
-                0x20000d60                _sbss = .
-                0x20000d60                _szero = .
+.bss            0x20000e00      0x600 load address 0x0008bb5c
+                0x20000e00                . = ALIGN (0x4)
+                0x20000e00                _sbss = .
+                0x20000e00                _szero = .
  *(.bss .bss.*)
- .bss           0x20000d60       0x1c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
+ .bss           0x20000e00       0x1c c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
  .bss.USB_PWR_STATE
-                0x20000d7c        0x1 objdir/usb.o
-                0x20000d7c                USB_PWR_STATE
- *fill*         0x20000d7d        0x3 
+                0x20000e1c        0x1 objdir/usb.o
+                0x20000e1c                USB_PWR_STATE
+ *fill*         0x20000e1d        0x3 
  .bss.main_buf_loopback
-                0x20000d80      0x400 objdir/usb.o
+                0x20000e20      0x400 objdir/usb.o
  .bss.ctrlbuffer
-                0x20001180       0x40 objdir/usb.o
+                0x20001220       0x40 objdir/usb.o
  .bss.blockendpoint_usage
-                0x200011c0        0x1 objdir/usb.o
- *fill*         0x200011c1        0x3 
+                0x20001260        0x1 objdir/usb.o
+ *fill*         0x20001261        0x3 
  .bss.ctrlmemread_buf
-                0x200011c4        0x4 objdir/usb.o
+                0x20001264        0x4 objdir/usb.o
  .bss.ctrlmemread_size
-                0x200011c8        0x4 objdir/usb.o
+                0x20001268        0x4 objdir/usb.o
  .bss.respbuf.9232
-                0x200011cc       0x40 objdir/usb.o
+                0x2000126c       0x40 objdir/usb.o
  .bss._fpga_locked
-                0x2000120c        0x1 objdir/usb_xmem.o
- *fill*         0x2000120d        0x3 
+                0x200012ac        0x1 objdir/usb_xmem.o
+ *fill*         0x200012ad        0x3 
  .bss.cpu_irq_critical_section_counter
-                0x20001210        0x4 objdir/interrupt_sam_nvic.o
+                0x200012b0        0x4 objdir/interrupt_sam_nvic.o
  .bss.cpu_irq_prev_interrupt_state
-                0x20001214        0x1 objdir/interrupt_sam_nvic.o
- *fill*         0x20001215        0x3 
+                0x200012b4        0x1 objdir/interrupt_sam_nvic.o
+ *fill*         0x200012b5        0x3 
  .bss.gs_interrupt_sources
-                0x20001218       0x70 objdir/pio_handler.o
+                0x200012b8       0x70 objdir/pio_handler.o
  .bss.b_is_sleep_clock_used
-                0x20001288        0x1 objdir/sleep.o
- *fill*         0x20001289        0x3 
+                0x20001328        0x1 objdir/sleep.o
+ *fill*         0x20001329        0x3 
  .bss.callback_clocks_restored
-                0x2000128c        0x4 objdir/sleep.o
+                0x2000132c        0x4 objdir/sleep.o
  .bss.heap.5319
-                0x20001290        0x4 objdir/syscalls.o
+                0x20001330        0x4 objdir/syscalls.o
  .bss.udc_device_status
-                0x20001294        0x2 objdir/udc.o
+                0x20001334        0x2 objdir/udc.o
  .bss.udc_num_configuration
-                0x20001296        0x1 objdir/udc.o
- *fill*         0x20001297        0x1 
+                0x20001336        0x1 objdir/udc.o
+ *fill*         0x20001337        0x1 
  .bss.udc_ptr_conf
-                0x20001298        0x4 objdir/udc.o
+                0x20001338        0x4 objdir/udc.o
  .bss.udc_ptr_iface
-                0x2000129c        0x4 objdir/udc.o
+                0x2000133c        0x4 objdir/udc.o
  .bss.udc_ep_status.7301
-                0x200012a0        0x2 objdir/udc.o
- .bss.udc_iface_setting.7371
-                0x200012a2        0x1 objdir/udc.o
+                0x20001340        0x2 objdir/udc.o
+ .bss.udc_iface_setting.7372
+                0x20001342        0x1 objdir/udc.o
  .bss.udi_vendor_alternate_setting
-                0x200012a3        0x1 objdir/udi_vendor.o
+                0x20001343        0x1 objdir/udi_vendor.o
  .bss.udd_b_idle
-                0x200012a4        0x1 objdir/udphs_device.o
+                0x20001344        0x1 objdir/udphs_device.o
  .bss.udd_ep_control_state
-                0x200012a5        0x1 objdir/udphs_device.o
+                0x20001345        0x1 objdir/udphs_device.o
  .bss.udd_ctrl_prev_payload_buf_cnt
-                0x200012a6        0x2 objdir/udphs_device.o
+                0x20001346        0x2 objdir/udphs_device.o
  .bss.udd_ctrl_payload_buf_cnt
-                0x200012a8        0x2 objdir/udphs_device.o
- *fill*         0x200012aa        0x2 
+                0x20001348        0x2 objdir/udphs_device.o
+ *fill*         0x2000134a        0x2 
  .bss.udd_ep_job
-                0x200012ac       0x30 objdir/udphs_device.o
+                0x2000134c       0x30 objdir/udphs_device.o
  .bss.b_shortpacket.8402
-                0x200012dc        0x1 objdir/udphs_device.o
- *fill*         0x200012dd        0x3 
+                0x2000137c        0x1 objdir/udphs_device.o
+ *fill*         0x2000137d        0x3 
  .bss.ul_reg_val.7157
-                0x200012e0        0x4 objdir/usart.o
+                0x20001380        0x4 objdir/usart.o
  .bss.__malloc_current_mallinfo
-                0x200012e4       0x28 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x200012e4                __malloc_current_mallinfo
+                0x20001384       0x28 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x20001384                __malloc_current_mallinfo
  .bss.__malloc_max_sbrked_mem
-                0x2000130c        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x2000130c                __malloc_max_sbrked_mem
+                0x200013ac        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x200013ac                __malloc_max_sbrked_mem
  .bss.__malloc_max_total_mem
-                0x20001310        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x20001310                __malloc_max_total_mem
+                0x200013b0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x200013b0                __malloc_max_total_mem
  .bss.__malloc_top_pad
-                0x20001314        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
-                0x20001314                __malloc_top_pad
+                0x200013b4        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-mallocr.o)
+                0x200013b4                __malloc_top_pad
  *(COMMON)
- COMMON         0x20001318        0x6 objdir/sleepmgr.o
-                0x20001318                sleepmgr_locks
- *fill*         0x2000131e        0x2 
- COMMON         0x20001320       0x18 objdir/udphs_device.o
-                0x20001320                udd_g_ctrlreq
- COMMON         0x20001338       0x21 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
-                0x20001338                __lock___atexit_recursive_mutex
-                0x2000133c                __lock___arc4random_mutex
-                0x20001340                __lock___env_recursive_mutex
-                0x20001344                __lock___sinit_recursive_mutex
-                0x20001348                __lock___malloc_recursive_mutex
-                0x2000134c                __lock___at_quick_exit_mutex
-                0x20001350                __lock___dd_hash_mutex
-                0x20001354                __lock___tz_mutex
-                0x20001358                __lock___sfp_recursive_mutex
- *fill*         0x20001359        0x3 
- COMMON         0x2000135c        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-reent.o)
-                0x2000135c                errno
-                0x20001360                . = ALIGN (0x4)
-                0x20001360                _ebss = .
-                0x20001360                _ezero = .
+ COMMON         0x200013b8        0x6 objdir/sleepmgr.o
+                0x200013b8                sleepmgr_locks
+ *fill*         0x200013be        0x2 
+ COMMON         0x200013c0       0x18 objdir/udphs_device.o
+                0x200013c0                udd_g_ctrlreq
+ COMMON         0x200013d8       0x21 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-lock.o)
+                0x200013d8                __lock___atexit_recursive_mutex
+                0x200013dc                __lock___arc4random_mutex
+                0x200013e0                __lock___env_recursive_mutex
+                0x200013e4                __lock___sinit_recursive_mutex
+                0x200013e8                __lock___malloc_recursive_mutex
+                0x200013ec                __lock___at_quick_exit_mutex
+                0x200013f0                __lock___dd_hash_mutex
+                0x200013f4                __lock___tz_mutex
+                0x200013f8                __lock___sfp_recursive_mutex
+ *fill*         0x200013f9        0x3 
+ COMMON         0x200013fc        0x4 c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-reent.o)
+                0x200013fc                errno
+                0x20001400                . = ALIGN (0x4)
+                0x20001400                _ebss = .
+                0x20001400                _ezero = .
 
 .stack          0x20080000      0x400
                 0x20080000                . = ALIGN (0x8)
@@ -10513,7 +10521,7 @@ OUTPUT(phywhisperer-SAM3U1C.elf elf32-littlearm)
  .comment       0x0000007f       0x80 objdir/udphs_device.o
  .comment       0x0000007f       0x80 objdir/usart.o
 
-.debug_info     0x00000000    0x1f80c
+.debug_info     0x00000000    0x1f860
  .debug_info    0x00000000     0x2663 objdir/main.o
  .debug_info    0x00002663     0x1c11 objdir/usb.o
  .debug_info    0x00004274     0x1a04 objdir/usb_xmem.o
@@ -10533,13 +10541,13 @@ OUTPUT(phywhisperer-SAM3U1C.elf elf32-littlearm)
  .debug_info    0x000143fe      0xddb objdir/syscalls.o
  .debug_info    0x000151d9     0x1210 objdir/sysclk.o
  .debug_info    0x000163e9      0xd62 objdir/system_sam3u.o
- .debug_info    0x0001714b     0x1aec objdir/udc.o
- .debug_info    0x00018c37     0x1106 objdir/udi_vendor.o
- .debug_info    0x00019d3d     0x119b objdir/udi_vendor_desc.o
- .debug_info    0x0001aed8     0x2a4c objdir/udphs_device.o
- .debug_info    0x0001d924     0x1ee8 objdir/usart.o
+ .debug_info    0x0001714b     0x1b40 objdir/udc.o
+ .debug_info    0x00018c8b     0x1106 objdir/udi_vendor.o
+ .debug_info    0x00019d91     0x119b objdir/udi_vendor_desc.o
+ .debug_info    0x0001af2c     0x2a4c objdir/udphs_device.o
+ .debug_info    0x0001d978     0x1ee8 objdir/usart.o
 
-.debug_abbrev   0x00000000     0x3dee
+.debug_abbrev   0x00000000     0x3dff
  .debug_abbrev  0x00000000      0x3cc objdir/main.o
  .debug_abbrev  0x000003cc      0x37f objdir/usb.o
  .debug_abbrev  0x0000074b      0x28b objdir/usb_xmem.o
@@ -10559,11 +10567,11 @@ OUTPUT(phywhisperer-SAM3U1C.elf elf32-littlearm)
  .debug_abbrev  0x000028a8      0x22d objdir/syscalls.o
  .debug_abbrev  0x00002ad5      0x265 objdir/sysclk.o
  .debug_abbrev  0x00002d3a      0x1e7 objdir/system_sam3u.o
- .debug_abbrev  0x00002f21      0x355 objdir/udc.o
- .debug_abbrev  0x00003276      0x259 objdir/udi_vendor.o
- .debug_abbrev  0x000034cf      0x1f0 objdir/udi_vendor_desc.o
- .debug_abbrev  0x000036bf      0x499 objdir/udphs_device.o
- .debug_abbrev  0x00003b58      0x296 objdir/usart.o
+ .debug_abbrev  0x00002f21      0x366 objdir/udc.o
+ .debug_abbrev  0x00003287      0x259 objdir/udi_vendor.o
+ .debug_abbrev  0x000034e0      0x1f0 objdir/udi_vendor_desc.o
+ .debug_abbrev  0x000036d0      0x499 objdir/udphs_device.o
+ .debug_abbrev  0x00003b69      0x296 objdir/usart.o
 
 .debug_loc      0x00000000     0x88ca
  .debug_loc     0x00000000      0x890 objdir/main.o
@@ -10663,7 +10671,7 @@ OUTPUT(phywhisperer-SAM3U1C.elf elf32-littlearm)
  .debug_ranges  0x00000ac0      0x1a0 objdir/udphs_device.o
  .debug_ranges  0x00000c60      0x238 objdir/usart.o
 
-.debug_macro    0x00000000    0x183d2
+.debug_macro    0x00000000    0x183d8
  .debug_macro   0x00000000      0x80c objdir/main.o
  .debug_macro   0x0000080c      0xa8a objdir/main.o
  .debug_macro   0x00001296      0x16d objdir/main.o
@@ -10847,16 +10855,16 @@ OUTPUT(phywhisperer-SAM3U1C.elf elf32-littlearm)
  .debug_macro   0x000154d7      0x56b objdir/sysclk.o
  .debug_macro   0x00015a42      0x509 objdir/system_sam3u.o
  .debug_macro   0x00015f4b       0x26 objdir/system_sam3u.o
- .debug_macro   0x00015f71      0x5a1 objdir/udc.o
- .debug_macro   0x00016512       0xa7 objdir/udc.o
- .debug_macro   0x000165b9      0x5b9 objdir/udi_vendor.o
- .debug_macro   0x00016b72      0x586 objdir/udi_vendor_desc.o
- .debug_macro   0x000170f8      0x726 objdir/udphs_device.o
- .debug_macro   0x0001781e      0x65e objdir/udphs_device.o
- .debug_macro   0x00017e7c      0x52e objdir/usart.o
- .debug_macro   0x000183aa       0x28 objdir/usart.o
+ .debug_macro   0x00015f71      0x5a7 objdir/udc.o
+ .debug_macro   0x00016518       0xa7 objdir/udc.o
+ .debug_macro   0x000165bf      0x5b9 objdir/udi_vendor.o
+ .debug_macro   0x00016b78      0x586 objdir/udi_vendor_desc.o
+ .debug_macro   0x000170fe      0x726 objdir/udphs_device.o
+ .debug_macro   0x00017824      0x65e objdir/udphs_device.o
+ .debug_macro   0x00017e82      0x52e objdir/usart.o
+ .debug_macro   0x000183b0       0x28 objdir/usart.o
 
-.debug_line     0x00000000    0x1196e
+.debug_line     0x00000000    0x11974
  .debug_line    0x00000000     0x10bf objdir/main.o
  .debug_line    0x000010bf      0xf7e objdir/usb.o
  .debug_line    0x0000203d      0xdae objdir/usb_xmem.o
@@ -10876,61 +10884,61 @@ OUTPUT(phywhisperer-SAM3U1C.elf elf32-littlearm)
  .debug_line    0x0000bd32      0x3ed objdir/syscalls.o
  .debug_line    0x0000c11f      0xb6f objdir/sysclk.o
  .debug_line    0x0000cc8e      0x9b8 objdir/system_sam3u.o
- .debug_line    0x0000d646      0xd37 objdir/udc.o
- .debug_line    0x0000e37d      0xa4e objdir/udi_vendor.o
- .debug_line    0x0000edcb      0x9a1 objdir/udi_vendor_desc.o
- .debug_line    0x0000f76c     0x12e3 objdir/udphs_device.o
- .debug_line    0x00010a4f      0xf1f objdir/usart.o
+ .debug_line    0x0000d646      0xd3d objdir/udc.o
+ .debug_line    0x0000e383      0xa4e objdir/udi_vendor.o
+ .debug_line    0x0000edd1      0x9a1 objdir/udi_vendor_desc.o
+ .debug_line    0x0000f772     0x12e3 objdir/udphs_device.o
+ .debug_line    0x00010a55      0xf1f objdir/usart.o
 
-.debug_str      0x00000000    0x5948f
- .debug_str     0x00000000    0x4f034 objdir/main.o
-                              0x4f4d1 (size before relaxing)
- .debug_str     0x0004f034      0x662 objdir/usb.o
-                              0x4f068 (size before relaxing)
- .debug_str     0x0004f696       0xd4 objdir/usb_xmem.o
-                              0x4e5fd (size before relaxing)
- .debug_str     0x0004f76a      0x196 objdir/fpga_program.o
-                              0x4ea58 (size before relaxing)
- .debug_str     0x0004f900      0x2b6 objdir/efc.o
-                              0x490c1 (size before relaxing)
- .debug_str     0x0004fbb6       0x2c objdir/exceptions.o
-                              0x48c62 (size before relaxing)
- .debug_str     0x0004fbe2      0x4cc objdir/flash_efc.o
-                              0x4afbe (size before relaxing)
- .debug_str     0x000500ae       0xff objdir/init.o
-                              0x4b26d (size before relaxing)
- .debug_str     0x000501ad       0x26 objdir/interrupt_sam_nvic.o
-                              0x48ca9 (size before relaxing)
- .debug_str     0x000501d3      0x3b3 objdir/pio.o
-                              0x49604 (size before relaxing)
- .debug_str     0x00050586      0x3ac objdir/pio_handler.o
-                              0x49665 (size before relaxing)
- .debug_str     0x00050932      0x49f objdir/pmc.o
-                              0x495d5 (size before relaxing)
- .debug_str     0x00050dd1      0x151 objdir/sleep.o
-                              0x4a3df (size before relaxing)
- .debug_str     0x00050f22       0x1c objdir/sleepmgr.o
-                              0x48ddf (size before relaxing)
- .debug_str     0x00050f3e      0x2d0 objdir/smc.o
-                              0x4a557 (size before relaxing)
- .debug_str     0x0005120e       0xaf objdir/startup_sam3u.o
-                              0x48d5a (size before relaxing)
- .debug_str     0x000512bd      0x749 objdir/syscalls.o
-                               0x7c82 (size before relaxing)
- .debug_str     0x00051a06       0xb4 objdir/sysclk.o
-                              0x4ab37 (size before relaxing)
- .debug_str     0x00051aba      0x154 objdir/system_sam3u.o
-                              0x48efc (size before relaxing)
- .debug_str     0x00051c0e      0xa36 objdir/udc.o
-                              0x4bb2f (size before relaxing)
- .debug_str     0x00052644       0xb0 objdir/udi_vendor.o
-                              0x4b2b1 (size before relaxing)
- .debug_str     0x000526f4      0x149 objdir/udi_vendor_desc.o
-                              0x4b3df (size before relaxing)
- .debug_str     0x0005283d     0x6406 objdir/udphs_device.o
-                              0x53d81 (size before relaxing)
- .debug_str     0x00058c43      0x84c objdir/usart.o
-                              0x496b4 (size before relaxing)
+.debug_str      0x00000000    0x594b7
+ .debug_str     0x00000000    0x4f01d objdir/main.o
+                              0x4f4ba (size before relaxing)
+ .debug_str     0x0004f01d      0x662 objdir/usb.o
+                              0x4f051 (size before relaxing)
+ .debug_str     0x0004f67f       0xd4 objdir/usb_xmem.o
+                              0x4e5e6 (size before relaxing)
+ .debug_str     0x0004f753      0x196 objdir/fpga_program.o
+                              0x4ea41 (size before relaxing)
+ .debug_str     0x0004f8e9      0x2b6 objdir/efc.o
+                              0x490aa (size before relaxing)
+ .debug_str     0x0004fb9f       0x2c objdir/exceptions.o
+                              0x48c4b (size before relaxing)
+ .debug_str     0x0004fbcb      0x4cc objdir/flash_efc.o
+                              0x4afa7 (size before relaxing)
+ .debug_str     0x00050097       0xff objdir/init.o
+                              0x4b256 (size before relaxing)
+ .debug_str     0x00050196       0x26 objdir/interrupt_sam_nvic.o
+                              0x48c92 (size before relaxing)
+ .debug_str     0x000501bc      0x3b3 objdir/pio.o
+                              0x495ed (size before relaxing)
+ .debug_str     0x0005056f      0x3ac objdir/pio_handler.o
+                              0x4964e (size before relaxing)
+ .debug_str     0x0005091b      0x49f objdir/pmc.o
+                              0x495be (size before relaxing)
+ .debug_str     0x00050dba      0x151 objdir/sleep.o
+                              0x4a3c8 (size before relaxing)
+ .debug_str     0x00050f0b       0x1c objdir/sleepmgr.o
+                              0x48dc8 (size before relaxing)
+ .debug_str     0x00050f27      0x2d0 objdir/smc.o
+                              0x4a540 (size before relaxing)
+ .debug_str     0x000511f7       0xaf objdir/startup_sam3u.o
+                              0x48d43 (size before relaxing)
+ .debug_str     0x000512a6      0x749 objdir/syscalls.o
+                               0x7c6b (size before relaxing)
+ .debug_str     0x000519ef       0xb4 objdir/sysclk.o
+                              0x4ab20 (size before relaxing)
+ .debug_str     0x00051aa3      0x154 objdir/system_sam3u.o
+                              0x48ee5 (size before relaxing)
+ .debug_str     0x00051bf7      0xa75 objdir/udc.o
+                              0x4bb57 (size before relaxing)
+ .debug_str     0x0005266c       0xb0 objdir/udi_vendor.o
+                              0x4b29a (size before relaxing)
+ .debug_str     0x0005271c      0x149 objdir/udi_vendor_desc.o
+                              0x4b3c8 (size before relaxing)
+ .debug_str     0x00052865     0x6406 objdir/udphs_device.o
+                              0x53d6a (size before relaxing)
+ .debug_str     0x00058c6b      0x84c objdir/usart.o
+                              0x4969d (size before relaxing)
 
 .debug_frame    0x00000000     0x4fc4
  .debug_frame   0x00000000      0x444 objdir/main.o
@@ -10998,6 +11006,7 @@ ADC12B_Handler                                    objdir/exceptions.o
                                                   objdir/startup_sam3u.o
 ADC_Handler                                       objdir/exceptions.o
                                                   objdir/startup_sam3u.o
+BOS_DESC                                          objdir/udc.o
 BusFault_Handler                                  objdir/exceptions.o
                                                   objdir/startup_sam3u.o
 DMAC_Handler                                      objdir/exceptions.o
@@ -12127,5 +12136,6 @@ usb_serial_number                                 objdir/main.o
                                                   objdir/udc.o
 vfiprintf                                         c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-vfiprintf.o)
 wcrtomb                                           c:/program files (x86)/gnu tools arm embedded/7 2018-q2-update/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a(lib_a-wcrtomb.o)
+winusb_20_desc                                    objdir/udc.o
 xram                                              objdir/usb_xmem.o
                                                   objdir/usb.o

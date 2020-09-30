@@ -23,7 +23,7 @@
 #include <string.h>
 
 #define FW_VER_MAJOR 1
-#define FW_VER_MINOR 0
+#define FW_VER_MINOR 1
 #define FW_VER_DEBUG 0
 
 #define REQ_MEMREAD_BULK 0x10
