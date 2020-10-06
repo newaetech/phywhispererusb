@@ -30,6 +30,9 @@
 `define REG_STAT_PATTERN             5'h09
 `define REG_STAT_MATCH               5'h0a
 
+`define REG_USERIO_DATA              6'h0b
+`define REG_USERIO_PWDRIVEN          6'h0c
+
 
 // FIFO bitfields:
 //                   31 30 29 28 27 26 25 24   23 22 21 20 19 18 17 16   15 14 13 12 11 10  9  8   7  6  5  4  3  2  1  0

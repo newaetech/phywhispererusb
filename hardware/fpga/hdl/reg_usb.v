@@ -46,6 +46,11 @@ module reg_usb #(
                                                               // present on write_data
    input  wire                                  reg_addrvalid,// Address valid flag
 
+// USERIO pins:
+   input  wire [7:0]                            userio_d,
+   output wire [7:0]                            O_userio_pwdriven,
+   output wire [7:0]                            O_userio_drive_data,
+
 // Interface to front end capture:
    input  wire                                  fe_clk,
    output wire                                  O_timestamps_disable,
@@ -90,6 +95,8 @@ module reg_usb #(
    reg [pUSB_AUTO_COUNTER_WIDTH-1:0] reg_usb_auto_wait1;
    reg [pUSB_AUTO_COUNTER_WIDTH-1:0] reg_usb_auto_wait2;
    reg [15:0] reg_stat_pattern;
+   reg [7:0] reg_userio_pwdriven;
+   reg [7:0] reg_userio_drive_data;
    reg stat_match_captured;
    reg [4:0] stat_match;
    wire [15:0] reg_stat_matched;
@@ -115,6 +122,8 @@ module reg_usb #(
    assign O_usb_auto_wait1 = reg_usb_auto_wait1;
    assign O_usb_auto_wait2 = reg_usb_auto_wait2;
    assign O_reg_arm_feclk = reg_arm_feclk;
+   assign O_userio_pwdriven = reg_userio_pwdriven;
+   assign O_userio_drive_data = reg_userio_drive_data;
 
    assign selected = reg_addrvalid & reg_address[7:6] == `USB_REG_SELECT;
    wire [5:0] address = reg_address[5:0];
@@ -134,6 +143,8 @@ module reg_usb #(
             `REG_USB_AUTO_WAIT1: reg_read_data = reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
             `REG_USB_AUTO_WAIT2: reg_read_data = reg_usb_auto_wait2[reg_bytecnt*8 +: 8];
             `REG_STAT_PATTERN: reg_read_data = reg_stat_pattern[reg_bytecnt*5 +: 5];
+            `REG_USERIO_DATA: reg_read_data = userio_d;
+            `REG_USERIO_PWDRIVEN: reg_read_data = reg_userio_pwdriven;
             default: reg_read_data = 8'h0;
          endcase
       end
@@ -163,6 +174,8 @@ module reg_usb #(
          reg_usb_auto_wait2 <= 3600000; // 60ms
          reg_stat_pattern <= 10'b11111_00000;
          stat_match_update_pulse <= 1'b0;
+         reg_userio_pwdriven <= 8'b0;
+         reg_userio_drive_data <= 8'b0;
 
       end
       else begin
@@ -177,6 +190,8 @@ module reg_usb #(
                `REG_CAPTURE_DELAY: reg_capture_delay[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_AUTO_WAIT1: reg_usb_auto_wait1[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_AUTO_WAIT2: reg_usb_auto_wait2[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_USERIO_DATA: reg_userio_drive_data = write_data;
+               `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
             endcase
          end
 
