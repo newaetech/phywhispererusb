@@ -93,7 +93,7 @@ class Usb(PWPacketDispatcher):
                     else:
                         logging.warning("Couldn't parse line: %s", define)
         # make sure everything is cool:
-        assert self.verilog_define_matches == 58, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
+        assert self.verilog_define_matches == 60, "Trouble parsing Verilog defines file (%s): didn't find the right number of defines." % defines_file
         defines.close()
 
 
