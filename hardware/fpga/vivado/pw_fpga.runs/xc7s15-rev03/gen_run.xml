@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="xc7s15-rev03" LaunchPart="xc7s15ftgb196-2" LaunchTime="1575574627">
+<GenRun Id="xc7s15-rev03" LaunchPart="xc7s15ftgb196-2" LaunchTime="1601999659">
   <File Type="BITSTR-BMM" Name="phywhisperer_top_bd.bmm"/>
   <File Type="OPT-METHODOLOGY-DRC" Name="phywhisperer_top_methodology_drc_opted.rpt"/>
   <File Type="INIT-TIMING" Name="phywhisperer_top_timing_summary_init.rpt"/>
@@ -114,6 +114,13 @@
       </FileInfo>
     </File>
     <File Path="$PPRDIR/../hdl/usb_reg_main.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../hdl/userio.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>

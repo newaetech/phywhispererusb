@@ -223,6 +223,14 @@ module tb_pw();
       pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
+      write_1byte(`REG_USERIO_PWDRIVEN, 8'hff);
+      write_1byte(`REG_USERIO_DATA, 8'ha5);
+      repeat (10) @(posedge usb_clk);
+      write_1byte(`REG_USERIO_PWDRIVEN, 8'hf0);
+      repeat (10) @(posedge usb_clk);
+      write_1byte(`REG_USERIO_PWDRIVEN, 8'h0f);
+
+
       write_1byte(`REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
       rw_lots_bytes(`REG_CAPTURE_LEN);
       if (pNO_CAPTURE_LIMIT) begin

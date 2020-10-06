@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Thu Dec  5 14:39:39 2019
+| Date         : Tue Oct  6 11:56:58 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_clock_utilization -file phywhisperer_top_clock_utilization_routed.rpt
 | Design       : phywhisperer_top
@@ -48,9 +48,9 @@ Table of Contents
 +-----------+-----------+-----------------+------------+---------------+--------------+-------------------+-------------+-----------------+--------------+--------------------+------------------------------------+---------------------------------------------+
 | Global Id | Source Id | Driver Type/Pin | Constraint | Site          | Clock Region | Load Clock Region | Clock Loads | Non-Clock Loads | Clock Period | Clock              | Driver Pin                         | Net                                         |
 +-----------+-----------+-----------------+------------+---------------+--------------+-------------------+-------------+-----------------+--------------+--------------------+------------------------------------+---------------------------------------------+
-| g0        | src0      | BUFG/O          | None       | BUFGCTRL_X0Y2 | n/a          |                 2 |        1628 |               0 |       10.000 | usb_clk            | clk_usb_buf_BUFG_inst/O            | clk_usb_buf_BUFG                            |
-| g1        | src1      | BUFG/O          | None       | BUFGCTRL_X0Y0 | n/a          |                 2 |        1406 |               1 |        4.000 | trigger_clk        | U_trigger_clock/inst/clkout1_buf/O | U_trigger_clock/inst/clk_out1               |
-| g2        | src2      | BUFG/O          | None       | BUFGCTRL_X0Y1 | n/a          |                 2 |         846 |               0 |       16.000 | fe_clk             | clk_fe_buf_BUFG_inst/O             | clk_fe_buf_BUFG                             |
+| g0        | src0      | BUFG/O          | None       | BUFGCTRL_X0Y1 | n/a          |                 2 |        1644 |               0 |       10.000 | usb_clk            | clk_usb_buf_BUFG_inst/O            | clk_usb_buf_BUFG                            |
+| g1        | src1      | BUFG/O          | None       | BUFGCTRL_X0Y2 | n/a          |                 2 |        1406 |               0 |        4.000 | trigger_clk        | U_trigger_clock/inst/clkout1_buf/O | U_trigger_clock/inst/clk_out1               |
+| g2        | src2      | BUFG/O          | None       | BUFGCTRL_X0Y0 | n/a          |                 2 |         846 |               0 |       16.000 | fe_clk             | clk_fe_buf_BUFG_inst/O             | clk_fe_buf_BUFG                             |
 | g3        | src2      | BUFG/O          | None       | BUFGCTRL_X0Y4 | n/a          |                 1 |           1 |               0 |       16.000 | fe_clk             | U_trigger_clock/inst/clkin1_bufg/O | U_trigger_clock/inst/clk_in1_clk_wiz_0      |
 | g4        | src1      | BUFG/O          | None       | BUFGCTRL_X0Y3 | n/a          |                 1 |           1 |               0 |       16.000 | clkfbout_clk_wiz_0 | U_trigger_clock/inst/clkf_buf/O    | U_trigger_clock/inst/clkfbout_buf_clk_wiz_0 |
 +-----------+-----------+-----------------+------------+---------------+--------------+-------------------+-------------+-----------------+--------------+--------------------+------------------------------------+---------------------------------------------+
@@ -81,8 +81,8 @@ Table of Contents
 +-------------------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+
 | Clock Region Name | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail | Used | Avail |
 +-------------------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+
-| X0Y0              |    5 |    12 |    0 |     4 |    0 |     2 |    0 |     4 |    1 |     1 |    0 |     1 |    0 |     0 |    0 |     0 |    0 |    50 |    0 |    50 | 2115 |   900 |  556 |   200 |    0 |     0 |    0 |     0 |    0 |     0 |
-| X1Y0              |    3 |    12 |    0 |     4 |    0 |     2 |    0 |     4 |    0 |     1 |    0 |     1 |    0 |     0 |    0 |     0 |    0 |    50 |    1 |    50 | 1754 |  1100 |  737 |   400 |    0 |    20 |    4 |    10 |    0 |    20 |
+| X0Y0              |    5 |    12 |    0 |     4 |    0 |     2 |    0 |     4 |    1 |     1 |    0 |     1 |    0 |     0 |    0 |     0 |    0 |    50 |    0 |    50 | 1826 |   900 |  428 |   200 |    0 |     0 |    0 |     0 |    0 |     0 |
+| X1Y0              |    3 |    12 |    0 |     4 |    0 |     2 |    0 |     4 |    0 |     1 |    0 |     1 |    0 |     0 |    0 |     0 |    0 |    50 |    1 |    50 | 2059 |  1100 |  858 |   400 |    0 |    20 |    4 |    10 |    0 |    20 |
 +-------------------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+------+-------+
 * Global Clock column represents track count; while other columns represents cell counts
 
@@ -104,7 +104,7 @@ All Modules
 +-----------+-----------------+-------------------+---------+-------------+---------------+-------------+----------+----------------+----------+------------------+
 | Global Id | Driver Type/Pin | Driver Region (D) | Clock   | Period (ns) | Waveform (ns) | Slice Loads | IO Loads | Clocking Loads | GT Loads | Net              |
 +-----------+-----------------+-------------------+---------+-------------+---------------+-------------+----------+----------------+----------+------------------+
-| g0        | BUFG/O          | n/a               | usb_clk |      10.000 | {0.000 5.000} |        1624 |        0 |              1 |        0 | clk_usb_buf_BUFG |
+| g0        | BUFG/O          | n/a               | usb_clk |      10.000 | {0.000 5.000} |        1640 |        0 |              1 |        0 | clk_usb_buf_BUFG |
 +-----------+-----------------+-------------------+---------+-------------+---------------+-------------+----------+----------------+----------+------------------+
 * Logic Loads column represents load cell count of all cell types other than IO, GT and clock resources
 ** IO Loads column represents load cell count of IO types
@@ -115,7 +115,7 @@ All Modules
 +----+------+------+
 |    | X0   | X1   |
 +----+------+------+
-| Y0 |  955 |  670 |
+| Y0 |  822 |  819 |
 +----+------+------+
 
 
@@ -125,7 +125,7 @@ All Modules
 +-----------+-----------------+-------------------+-------------+-------------+---------------+-------------+----------+----------------+----------+-------------------------------+
 | Global Id | Driver Type/Pin | Driver Region (D) | Clock       | Period (ns) | Waveform (ns) | Slice Loads | IO Loads | Clocking Loads | GT Loads | Net                           |
 +-----------+-----------------+-------------------+-------------+-------------+---------------+-------------+----------+----------------+----------+-------------------------------+
-| g1        | BUFG/O          | n/a               | trigger_clk |       4.000 | {0.000 2.000} |        1406 |        1 |              0 |        0 | U_trigger_clock/inst/clk_out1 |
+| g1        | BUFG/O          | n/a               | trigger_clk |       4.000 | {0.000 2.000} |        1406 |        0 |              0 |        0 | U_trigger_clock/inst/clk_out1 |
 +-----------+-----------------+-------------------+-------------+-------------+---------------+-------------+----------+----------------+----------+-------------------------------+
 * Logic Loads column represents load cell count of all cell types other than IO, GT and clock resources
 ** IO Loads column represents load cell count of IO types
@@ -136,7 +136,7 @@ All Modules
 +----+------+------+
 |    | X0   | X1   |
 +----+------+------+
-| Y0 |  879 |  528 |
+| Y0 |  775 |  631 |
 +----+------+------+
 
 
@@ -157,7 +157,7 @@ All Modules
 +----+------+------+
 |    | X0   | X1   |
 +----+------+------+
-| Y0 |  283 |  563 |
+| Y0 |  230 |  616 |
 +----+------+------+
 
 
@@ -209,9 +209,9 @@ All Modules
 +-----------+-------+-----------------+------------+-------------+-----------------+-----+--------+------+-----+----+------+-----+---------+---------------------------------------------+
 | Global Id | Track | Driver Type/Pin | Constraint | Clock Loads | Non-Clock Loads | FF  | LUTRAM | RAMB | DSP | GT | MMCM | PLL | Hard IP | Net                                         |
 +-----------+-------+-----------------+------------+-------------+-----------------+-----+--------+------+-----+----+------+-----+---------+---------------------------------------------+
-| g0        | n/a   | BUFG/O          | None       |         955 |               0 | 954 |      0 |    0 |   0 |  0 |    1 |   0 |       0 | clk_usb_buf_BUFG                            |
-| g1        | n/a   | BUFG/O          | None       |         878 |               1 | 878 |      0 |    0 |   0 |  0 |    0 |   0 |       0 | U_trigger_clock/inst/clk_out1               |
-| g2        | n/a   | BUFG/O          | None       |         283 |               0 | 283 |      0 |    0 |   0 |  0 |    0 |   0 |       0 | clk_fe_buf_BUFG                             |
+| g0        | n/a   | BUFG/O          | None       |         822 |               0 | 821 |      0 |    0 |   0 |  0 |    1 |   0 |       0 | clk_usb_buf_BUFG                            |
+| g1        | n/a   | BUFG/O          | None       |         775 |               0 | 775 |      0 |    0 |   0 |  0 |    0 |   0 |       0 | U_trigger_clock/inst/clk_out1               |
+| g2        | n/a   | BUFG/O          | None       |         230 |               0 | 230 |      0 |    0 |   0 |  0 |    0 |   0 |       0 | clk_fe_buf_BUFG                             |
 | g3        | n/a   | BUFG/O          | None       |           1 |               0 |   0 |      0 |    0 |   0 |  0 |    1 |   0 |       0 | U_trigger_clock/inst/clk_in1_clk_wiz_0      |
 | g4        | n/a   | BUFG/O          | None       |           1 |               0 |   0 |      0 |    0 |   0 |  0 |    1 |   0 |       0 | U_trigger_clock/inst/clkfbout_buf_clk_wiz_0 |
 +-----------+-------+-----------------+------------+-------------+-----------------+-----+--------+------+-----+----+------+-----+---------+---------------------------------------------+
@@ -226,9 +226,9 @@ All Modules
 +-----------+-------+-----------------+------------+-------------+-----------------+-----+--------+------+-----+----+------+-----+---------+-------------------------------+
 | Global Id | Track | Driver Type/Pin | Constraint | Clock Loads | Non-Clock Loads | FF  | LUTRAM | RAMB | DSP | GT | MMCM | PLL | Hard IP | Net                           |
 +-----------+-------+-----------------+------------+-------------+-----------------+-----+--------+------+-----+----+------+-----+---------+-------------------------------+
-| g0        | n/a   | BUFG/O          | None       |         670 |               0 | 666 |      0 |    4 |   0 |  0 |    0 |   0 |       0 | clk_usb_buf_BUFG              |
-| g1        | n/a   | BUFG/O          | None       |         528 |               0 | 528 |      0 |    0 |   0 |  0 |    0 |   0 |       0 | U_trigger_clock/inst/clk_out1 |
-| g2        | n/a   | BUFG/O          | None       |         563 |               0 | 560 |      1 |    1 |   0 |  0 |    0 |   0 |       0 | clk_fe_buf_BUFG               |
+| g0        | n/a   | BUFG/O          | None       |         819 |               0 | 815 |      0 |    4 |   0 |  0 |    0 |   0 |       0 | clk_usb_buf_BUFG              |
+| g1        | n/a   | BUFG/O          | None       |         631 |               0 | 631 |      0 |    0 |   0 |  0 |    0 |   0 |       0 | U_trigger_clock/inst/clk_out1 |
+| g2        | n/a   | BUFG/O          | None       |         616 |               0 | 613 |      1 |    1 |   0 |  0 |    0 |   0 |       0 | clk_fe_buf_BUFG               |
 +-----------+-------+-----------------+------------+-------------+-----------------+-----+--------+------+-----+----+------+-----+---------+-------------------------------+
 * Clock Loads column represents the clock pin loads (pin count)
 ** Non-Clock Loads column represents the non-clock pin loads (pin count)
@@ -237,36 +237,35 @@ All Modules
 
 
 # Location of BUFG Primitives 
-set_property LOC BUFGCTRL_X0Y2 [get_cells clk_usb_buf_BUFG_inst]
-set_property LOC BUFGCTRL_X0Y1 [get_cells clk_fe_buf_BUFG_inst]
+set_property LOC BUFGCTRL_X0Y1 [get_cells clk_usb_buf_BUFG_inst]
+set_property LOC BUFGCTRL_X0Y0 [get_cells clk_fe_buf_BUFG_inst]
 set_property LOC BUFGCTRL_X0Y3 [get_cells U_trigger_clock/inst/clkf_buf]
-set_property LOC BUFGCTRL_X0Y0 [get_cells U_trigger_clock/inst/clkout1_buf]
+set_property LOC BUFGCTRL_X0Y2 [get_cells U_trigger_clock/inst/clkout1_buf]
 set_property LOC BUFGCTRL_X0Y4 [get_cells U_trigger_clock/inst/clkin1_bufg]
 
 # Location of IO Primitives which is load of clock spine
-set_property LOC IOB_X0Y9 [get_cells userio_d_OBUF[2]_inst]
 
 # Location of clock ports
 set_property LOC IOB_X0Y22 [get_ports fe_clk]
 set_property LOC IOB_X1Y28 [get_ports usb_clk]
 
-# Clock net "clk_usb_buf_BUFG" driven by instance "clk_usb_buf_BUFG_inst" located at site "BUFGCTRL_X0Y2"
+# Clock net "clk_usb_buf_BUFG" driven by instance "clk_usb_buf_BUFG_inst" located at site "BUFGCTRL_X0Y1"
 #startgroup
 create_pblock {CLKAG_clk_usb_buf_BUFG}
 add_cells_to_pblock [get_pblocks  {CLKAG_clk_usb_buf_BUFG}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL && NAME!=U_trigger_clock/inst/mmcm_adv_inst} -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="clk_usb_buf_BUFG"}]]]
 resize_pblock [get_pblocks {CLKAG_clk_usb_buf_BUFG}] -add {CLOCKREGION_X0Y0:CLOCKREGION_X0Y0 CLOCKREGION_X1Y0:CLOCKREGION_X1Y0}
 #endgroup
 
-# Clock net "clk_fe_buf_BUFG" driven by instance "clk_fe_buf_BUFG_inst" located at site "BUFGCTRL_X0Y1"
+# Clock net "clk_fe_buf_BUFG" driven by instance "clk_fe_buf_BUFG_inst" located at site "BUFGCTRL_X0Y0"
 #startgroup
 create_pblock {CLKAG_clk_fe_buf_BUFG}
 add_cells_to_pblock [get_pblocks  {CLKAG_clk_fe_buf_BUFG}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL } -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="clk_fe_buf_BUFG"}]]]
 resize_pblock [get_pblocks {CLKAG_clk_fe_buf_BUFG}] -add {CLOCKREGION_X0Y0:CLOCKREGION_X0Y0 CLOCKREGION_X1Y0:CLOCKREGION_X1Y0}
 #endgroup
 
-# Clock net "U_trigger_clock/inst/clk_out1" driven by instance "U_trigger_clock/inst/clkout1_buf" located at site "BUFGCTRL_X0Y0"
+# Clock net "U_trigger_clock/inst/clk_out1" driven by instance "U_trigger_clock/inst/clkout1_buf" located at site "BUFGCTRL_X0Y2"
 #startgroup
 create_pblock {CLKAG_U_trigger_clock/inst/clk_out1}
-add_cells_to_pblock [get_pblocks  {CLKAG_U_trigger_clock/inst/clk_out1}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL && NAME!=userio_d_OBUF[2]_inst} -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="U_trigger_clock/inst/clk_out1"}]]]
+add_cells_to_pblock [get_pblocks  {CLKAG_U_trigger_clock/inst/clk_out1}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL } -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="U_trigger_clock/inst/clk_out1"}]]]
 resize_pblock [get_pblocks {CLKAG_U_trigger_clock/inst/clk_out1}] -add {CLOCKREGION_X0Y0:CLOCKREGION_X0Y0 CLOCKREGION_X1Y0:CLOCKREGION_X1Y0}
 #endgroup

@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Thu Dec  5 14:39:37 2019
+| Date         : Tue Oct  6 11:56:55 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_methodology -file phywhisperer_top_methodology_drc_routed.rpt -pb phywhisperer_top_methodology_drc_routed.pb -rpx phywhisperer_top_methodology_drc_routed.rpx
 | Design       : phywhisperer_top
@@ -23,14 +23,14 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 46
+             Violations found: 54
 +-----------+----------+------------------------------------------+------------+
 | Rule      | Severity | Description                              | Violations |
 +-----------+----------+------------------------------------------+------------+
 | LUTAR-1   | Warning  | LUT drives async reset alert             | 1          |
 | TIMING-9  | Warning  | Unknown CDC Logic                        | 1          |
 | TIMING-10 | Warning  | Missing property on synchronizer         | 1          |
-| TIMING-18 | Warning  | Missing input or output delay            | 2          |
+| TIMING-18 | Warning  | Missing input or output delay            | 10         |
 | XDCH-2    | Warning  | Same min and max delay values on IO port | 41         |
 +-----------+----------+------------------------------------------+------------+
 
@@ -58,6 +58,46 @@ Related violations: <none>
 
 TIMING-18#2 Warning
 Missing input or output delay  
+An input delay is missing on userio_d[0] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#3 Warning
+Missing input or output delay  
+An input delay is missing on userio_d[1] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#4 Warning
+Missing input or output delay  
+An input delay is missing on userio_d[2] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#5 Warning
+Missing input or output delay  
+An input delay is missing on userio_d[3] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#6 Warning
+Missing input or output delay  
+An input delay is missing on userio_d[4] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#7 Warning
+Missing input or output delay  
+An input delay is missing on userio_d[5] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#8 Warning
+Missing input or output delay  
+An input delay is missing on userio_d[6] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#9 Warning
+Missing input or output delay  
+An input delay is missing on userio_d[7] relative to clock(s) usb_clk
+Related violations: <none>
+
+TIMING-18#10 Warning
+Missing input or output delay  
 An output delay is missing on cw_clk relative to clock(s) fe_clk
 Related violations: <none>
 
@@ -65,287 +105,287 @@ XDCH-2#1 Warning
 Same min and max delay values on IO port  
 The same input delay of 0.000 ns has been defined on port 'fe_hostdisc' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock fe_clk 0.000 [get_ports fe_hostdisc]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 147)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 148)
 Related violations: <none>
 
 XDCH-2#2 Warning
 Same min and max delay values on IO port  
 The same input delay of 0.000 ns has been defined on port 'fe_id_dig' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock fe_clk 0.000 [get_ports fe_id_dig]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 146)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 147)
 Related violations: <none>
 
 XDCH-2#3 Warning
 Same min and max delay values on IO port  
 The same input delay of 0.000 ns has been defined on port 'fe_sessend' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock fe_clk 0.000 [get_ports fe_sessend]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 148)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 149)
 Related violations: <none>
 
 XDCH-2#4 Warning
 Same min and max delay values on IO port  
 The same input delay of 0.000 ns has been defined on port 'fe_sessvld' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock fe_clk 0.000 [get_ports fe_sessvld]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 149)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 150)
 Related violations: <none>
 
 XDCH-2#5 Warning
 Same min and max delay values on IO port  
 The same input delay of 0.000 ns has been defined on port 'fe_vbusvld' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock fe_clk 0.000 [get_ports fe_vbusvld]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 150)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 151)
 Related violations: <none>
 
 XDCH-2#6 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[0]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#7 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[1]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#8 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[2]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#9 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[3]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#10 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[4]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#11 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[5]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#12 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[6]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#13 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Addr[7]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Addr]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 171)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
 Related violations: <none>
 
 XDCH-2#14 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[0]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#15 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[1]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#16 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[2]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#17 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[3]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#18 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[4]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#19 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[5]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#20 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[6]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#21 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_Data[7]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 172)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
 Related violations: <none>
 
 XDCH-2#22 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_SPARE0' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_SPARE0]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 173)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 174)
 Related violations: <none>
 
 XDCH-2#23 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_SPARE1' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_SPARE1]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 174)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 175)
 Related violations: <none>
 
 XDCH-2#24 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_nCS' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_nCS]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 175)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 176)
 Related violations: <none>
 
 XDCH-2#25 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_nRD' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_nRD]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 176)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 177)
 Related violations: <none>
 
 XDCH-2#26 Warning
 Same min and max delay values on IO port  
 The same input delay of 2.000 ns has been defined on port 'USB_nWE' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_input_delay -clock usb_clk 2.000 [get_ports USB_nWE]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 177)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 178)
 Related violations: <none>
 
 XDCH-2#27 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'LED_CAP' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock fe_clk 0.000 [get_ports LED_CAP]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 125)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 126)
 Related violations: <none>
 
 XDCH-2#28 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'LED_TRIG' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock fe_clk 0.000 [get_ports LED_TRIG]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 124)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 125)
 Related violations: <none>
 
 XDCH-2#29 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[0]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#30 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[1]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#31 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[2]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#32 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[3]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#33 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[4]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#34 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[5]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#35 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[6]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#36 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'USB_Data[7]' relative to clock usb_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock usb_clk 0.000 [get_ports USB_Data]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 161)
 Related violations: <none>
 
 XDCH-2#37 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'cw_trig' relative to clock trigger_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock trigger_clk 0.000 [get_ports cw_trig]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 158)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 159)
 Related violations: <none>
 
 XDCH-2#38 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'fe_termsel' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock fe_clk 0.000 [get_ports fe_termsel]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 117)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 118)
 Related violations: <none>
 
 XDCH-2#39 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'fe_xcvrsel0' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock fe_clk 0.000 [get_ports fe_xcvrsel0]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 116)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 117)
 Related violations: <none>
 
 XDCH-2#40 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'fe_xcvrsel1' relative to clock fe_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock fe_clk 0.000 [get_ports fe_xcvrsel1]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 115)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 116)
 Related violations: <none>
 
 XDCH-2#41 Warning
 Same min and max delay values on IO port  
 The same output delay of 0.000 ns has been defined on port 'mcx_trig' relative to clock trigger_clk for both max and min. Make sure this reflects the design intent.
 set_output_delay -clock trigger_clk 0.000 [get_ports mcx_trig]
-C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 159)
+C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc (Line: 160)
 Related violations: <none>
 
 

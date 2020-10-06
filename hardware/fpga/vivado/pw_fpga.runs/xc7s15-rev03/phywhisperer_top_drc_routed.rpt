@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Thu Dec  5 14:39:34 2019
+| Date         : Tue Oct  6 11:56:52 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_drc -file phywhisperer_top_drc_routed.rpt -pb phywhisperer_top_drc_routed.pb -rpx phywhisperer_top_drc_routed.rpx
 | Design       : phywhisperer_top
@@ -24,28 +24,12 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 3
-+--------+----------+---------------------------------+------------+
-| Rule   | Severity | Description                     | Violations |
-+--------+----------+---------------------------------+------------+
-| RPBF-3 | Warning  | IO port buffering is incomplete | 3          |
-+--------+----------+---------------------------------+------------+
+             Violations found: 0
++------+----------+-------------+------------+
+| Rule | Severity | Description | Violations |
++------+----------+-------------+------------+
++------+----------+-------------+------------+
 
 2. REPORT DETAILS
 -----------------
-RPBF-3#1 Warning
-IO port buffering is incomplete  
-Device port userio_d[0] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
-RPBF-3#2 Warning
-IO port buffering is incomplete  
-Device port userio_d[1] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
-RPBF-3#3 Warning
-IO port buffering is incomplete  
-Device port userio_d[2] expects both input and output buffering but the buffers are incomplete.
-Related violations: <none>
-
 

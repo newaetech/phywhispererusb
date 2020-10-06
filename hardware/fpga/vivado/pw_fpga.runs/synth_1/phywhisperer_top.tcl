@@ -17,8 +17,6 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
-set_param tcl.collectionResultDisplayLimit 0
-set_param xicom.use_bs_reader 1
 create_project -in_memory -part xc7s6ftgb196-2
 
 set_param project.singleFileAddWarning.threshold 0
@@ -44,6 +42,7 @@ read_verilog -library xil_defaultlib {
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/reg_pw.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/usb_autodetect.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/usb_reg_main.v
+  C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/userio.v
   C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/hdl/phywhisperer_top.v
 }
 read_ip -quiet C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci

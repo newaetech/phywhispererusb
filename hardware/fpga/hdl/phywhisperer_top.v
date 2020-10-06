@@ -70,7 +70,7 @@ module phywhisperer_top(
 
     /* 20-PIN USER HEADER CONNECTOR */
     inout  wire [7:0] userio_d,
-    inout  wire userio_clk,
+    input  wire userio_clk,
 
     /* 20-PIN CHIPWHISPERER CONNECTOR */
     output wire cw_clk,
@@ -214,6 +214,20 @@ module phywhisperer_top(
       .reg_addrvalid    (reg_addrvalid)
    );
 
+   wire [7:0] userio_pwdriven;
+   wire [7:0] userio_drive_data;
+
+   userio #(
+      .pWIDTH                   (8)
+   ) U_userio (
+      .reset_i                  (reset_i),
+      .usb_clk                  (clk_usb_buf),
+      .userio_d                 (userio_d),
+      .userio_clk               (userio_clk),
+      .I_userio_pwdriven        (userio_pwdriven),
+      .I_userio_drive_data      (userio_drive_data)
+   );
+
 
    reg_pw #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
@@ -236,6 +250,11 @@ module phywhisperer_top(
       .reg_read         (reg_read), 
       .reg_write        (reg_write), 
       .reg_addrvalid    (reg_addrvalid),
+
+      // USERIO:
+      .userio_d                 (userio_d),
+      .O_userio_pwdriven        (userio_pwdriven),
+      .O_userio_drive_data      (userio_drive_data),
 
       // FE:
       .fe_clk                   (clk_fe_buf),
@@ -363,9 +382,9 @@ module phywhisperer_top(
     //assign userio_d[2] = USB_nWE;
     //assign userio_d[3] = USB_nCS;
     //assign userio_d[7:4] = USB_Addr[3:0];
-    assign userio_d[0] = fe_linestate0;
-    assign userio_d[1] = fe_linestate1;
-    assign userio_d[2] = trigger_clk;
+    //assign userio_d[0] = fe_linestate0;
+    //assign userio_d[1] = fe_linestate1;
+    //assign userio_d[2] = trigger_clk;
 
 
     `ifdef ILA_FE

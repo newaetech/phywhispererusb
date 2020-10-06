@@ -50,6 +50,11 @@ module reg_pw #(
                                      // present on write_data
    input  wire         reg_addrvalid,// Address valid flag
 
+// USERIO pins:
+   input  wire [7:0]                            userio_d,
+   output wire [7:0]                            O_userio_pwdriven,
+   output wire [7:0]                            O_userio_drive_data,
+
 // Interface to front end capture:
    input  wire         fe_clk,
    output wire         O_timestamps_disable,
@@ -95,6 +100,10 @@ module reg_pw #(
 
 );
 
+   reg [7:0] reg_userio_pwdriven;
+   reg [7:0] reg_userio_drive_data;
+   assign O_userio_pwdriven = reg_userio_pwdriven;
+   assign O_userio_drive_data = reg_userio_drive_data;
 
    reg reg_arm;
    reg reg_arm_r;
@@ -192,6 +201,8 @@ module reg_pw #(
             `REG_USB_AUTO_WAIT1: reg_read_data <= reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
             `REG_USB_AUTO_WAIT2: reg_read_data <= reg_usb_auto_wait2[reg_bytecnt*8 +: 8];
             `REG_STAT_PATTERN: reg_read_data <= reg_stat_pattern[reg_bytecnt*5 +: 5];
+            `REG_USERIO_DATA: reg_read_data <= userio_d;
+            `REG_USERIO_PWDRIVEN: reg_read_data <= reg_userio_pwdriven;
          endcase
       end
       else
@@ -245,6 +256,8 @@ module reg_pw #(
          O_psen <= 1'b0;
          reg_stat_pattern <= 10'b11111_00000;
          stat_match_update_pulse <= 1'b0;
+         reg_userio_pwdriven <= 8'b0;
+         reg_userio_drive_data <= 8'b0;
 
       end
       else begin
@@ -264,6 +277,8 @@ module reg_pw #(
                `REG_CAPTURE_DELAY: reg_capture_delay[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_AUTO_WAIT1: reg_usb_auto_wait1[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_AUTO_WAIT2: reg_usb_auto_wait2[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_USERIO_DATA: reg_userio_drive_data = write_data;
+               `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
             endcase
          end
 

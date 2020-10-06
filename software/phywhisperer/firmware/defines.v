@@ -39,6 +39,8 @@
 `define REG_STAT_PATTERN             6'h13
 `define REG_STAT_MATCH               6'h14
 `define REG_NUM_TRIGGERS             6'h15
+`define REG_USERIO_DATA              6'h16
+`define REG_USERIO_PWDRIVEN          6'h17
 
 
 // FIFO bitfields:
