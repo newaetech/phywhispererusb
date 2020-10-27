@@ -610,7 +610,7 @@ class Usb(PWPacketDispatcher):
             underflow (int, optional): expected status, 0 or 1
             overflow (int, optional): expected status, 0 or 1
         """
-        status = self.read_reg(self.REG_SNIFF_FIFO_STAT, 1)
+        status = self.read_reg(self.REG_SNIFF_FIFO_STAT, 1)[0]
         fifo_underflow = (status & 2) >> 1
         fifo_overflow = (status & 16) >> 4
         assert fifo_underflow == underflow
