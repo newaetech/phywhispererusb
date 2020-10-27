@@ -262,6 +262,10 @@ module phywhisperer_top(
 
       .fe_select        (fe_select),
 
+      .userio_d         (userio_d),
+      .O_userio_pwdriven (userio_pwdriven),
+      .O_userio_drive_data (userio_drive_data),
+
       .I_fifo_data      (fifo_out_data),
       .I_fifo_empty     (fifo_empty),
       .O_fifo_read      (fifo_read),
@@ -323,11 +327,6 @@ module phywhisperer_top(
       .reg_read                 (reg_read), 
       .reg_write                (reg_write), 
       .reg_addrvalid            (reg_addrvalid),
-
-      // USERIO:
-      .userio_d                 (userio_d),
-      .O_userio_pwdriven        (userio_pwdriven),
-      .O_userio_drive_data      (userio_drive_data),
 
       // FE:
       .fe_clk                   (clk_fe_buf),

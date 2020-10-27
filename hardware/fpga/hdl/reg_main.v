@@ -47,6 +47,11 @@ module reg_main #(
                                      // present on write_data
    input  wire         reg_addrvalid,// Address valid flag
 
+// USERIO pins:
+   input  wire [7:0]                            userio_d,
+   output wire [7:0]                            O_userio_pwdriven,
+   output wire [7:0]                            O_userio_drive_data,
+
 // Interface to FIFO:
    input  wire [17:0]  I_fifo_data,
    input  wire [5:0]   I_fifo_status,
@@ -116,12 +121,18 @@ module reg_main #(
    assign O_counter_quick_start = reg_counter_quick_start;
    assign O_board_rev = reg_board_rev;
 
+   reg [7:0] reg_userio_pwdriven;
+   reg [7:0] reg_userio_drive_data;
+
    assign selected = reg_addrvalid & reg_address[7:6] == `MAIN_REG_SELECT;
    wire [5:0] address = reg_address[5:0];
 
    assign O_arm = reg_arm_r & ~I_flushing;
    assign O_reg_arm = reg_arm;
+   assign O_userio_pwdriven = reg_userio_pwdriven;
+   assign O_userio_drive_data = reg_userio_drive_data;
 
+   // read logic:
    always @(*) begin
       if (selected && reg_read) begin
          case (address)
@@ -138,6 +149,8 @@ module reg_main #(
             `REG_COUNT_WRITES: reg_read_data = reg_count_writes;
             `REG_COUNTER_QUICK_START: reg_read_data = reg_counter_quick_start;
             `REG_BOARD_REV: reg_read_data = reg_board_rev;
+            `REG_USERIO_DATA: reg_read_data = userio_d;
+            `REG_USERIO_PWDRIVEN: reg_read_data = reg_userio_pwdriven;
             default: reg_read_data = 0;
          endcase
       end
@@ -217,6 +230,8 @@ module reg_main #(
          reg_count_writes <= 0;
          reg_counter_quick_start <= pQUICK_START_DEFAULT;
          reg_board_rev <= 4; // production boards
+         reg_userio_pwdriven <= 8'b0;
+         reg_userio_drive_data <= 8'b0;
       end
 
       else begin
@@ -232,6 +247,8 @@ module reg_main #(
                `REG_COUNT_WRITES: reg_count_writes <= write_data;
                `REG_COUNTER_QUICK_START: reg_counter_quick_start <= write_data;
                `REG_BOARD_REV: reg_board_rev <= write_data;
+               `REG_USERIO_DATA: reg_userio_drive_data = write_data;
+               `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
             endcase
          end
 
