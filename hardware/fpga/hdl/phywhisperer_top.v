@@ -97,6 +97,7 @@ module phywhisperer_top(
    parameter pCAPTURE_DELAY_WIDTH = pTRIGGER_DELAY_WIDTH-2;
    parameter pUSB_AUTO_COUNTER_WIDTH = 24;
    parameter pCAPTURE_LEN_WIDTH = 24;
+   parameter pUSERIO_WIDTH = 8;
    
    parameter pALL_TRIGGER_DELAY_WIDTHS = 24*pNUM_TRIGGER_PULSES;
    parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES;
@@ -186,8 +187,8 @@ module phywhisperer_top(
 
    wire [15:0] max_short_timestamp;
 
-   wire [7:0] userio_pwdriven;
-   wire [7:0] userio_drive_data;
+   wire [pUSERIO_WIDTH-1:0] userio_pwdriven;
+   wire [pUSERIO_WIDTH-1:0] userio_drive_data;
 
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
@@ -248,7 +249,8 @@ module phywhisperer_top(
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
       .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
       .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH),
-      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH),
+      .pUSERIO_WIDTH            (pUSERIO_WIDTH)
    ) U_reg_main (
       .reset_i          (reset_i), 
       .cwusb_clk        (clk_usb_buf), 
@@ -299,7 +301,7 @@ module phywhisperer_top(
                       reg_usb_selected?  read_data_usb : 0;
 
    userio #(
-      .pWIDTH                   (8)
+      .pWIDTH                   (pUSERIO_WIDTH)
    ) U_userio (
       .reset_i                  (reset_i),
       .usb_clk                  (clk_usb_buf),

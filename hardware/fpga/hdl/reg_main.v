@@ -30,7 +30,8 @@ module reg_main #(
    parameter pALL_TRIGGER_DELAY_WIDTHS = 24*pNUM_TRIGGER_PULSES,
    parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES,
    parameter pCAPTURE_LEN_WIDTH = 24,
-   parameter pQUICK_START_DEFAULT = 0  // set to 0 for PW-USB, 1 for PW-Trace
+   parameter pQUICK_START_DEFAULT = 0, // set to 0 for PW-USB, 1 for PW-Trace
+   parameter pUSERIO_WIDTH = 8
 
 )(
    input  wire         reset_i,
@@ -48,9 +49,9 @@ module reg_main #(
    input  wire         reg_addrvalid,// Address valid flag
 
 // USERIO pins:
-   input  wire [7:0]                            userio_d,
-   output wire [7:0]                            O_userio_pwdriven,
-   output wire [7:0]                            O_userio_drive_data,
+   input  wire [pUSERIO_WIDTH-1:0]              userio_d,
+   output wire [pUSERIO_WIDTH-1:0]              O_userio_pwdriven,
+   output wire [pUSERIO_WIDTH-1:0]              O_userio_drive_data,
 
 // Interface to FIFO:
    input  wire [17:0]  I_fifo_data,
@@ -121,8 +122,8 @@ module reg_main #(
    assign O_counter_quick_start = reg_counter_quick_start;
    assign O_board_rev = reg_board_rev;
 
-   reg [7:0] reg_userio_pwdriven;
-   reg [7:0] reg_userio_drive_data;
+   reg [pUSERIO_WIDTH-1:0] reg_userio_pwdriven;
+   reg [pUSERIO_WIDTH-1:0] reg_userio_drive_data;
 
    assign selected = reg_addrvalid & reg_address[7:6] == `MAIN_REG_SELECT;
    wire [5:0] address = reg_address[5:0];
