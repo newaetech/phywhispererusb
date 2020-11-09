@@ -9,6 +9,10 @@ There are 9 modules in PhyWhisperer-USB. Some of these (e.g. the register
 modules; the front-end modules) *could* have been combined into a single
 module; they were separated to facilitate different front-ends.
 
+[TraceWhisperer](https://github.com/newaetech/DesignStartTrace/tree/master/hardware/tracewhisperer)
+is a fully worked example of a completely different front-end which uses
+this architecture; it records Arm trace data.
+
 Note that:
 * Modules with black borders are generic interface-agnostic modules, which
   are meant to be used with all front-ends;
