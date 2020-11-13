@@ -282,6 +282,9 @@ module phywhisperer_top(
       .O_counter_quick_start (counter_quick_start),
       .I_capture_enable_pulse (capture_enable_pulse),
 
+      .I_locked1        (trigger_clk_locked),
+      .I_locked2        (1'b0),
+
       // Trigger:
       .O_trigger_delay  (trigger_delay),
       .O_trigger_width  (trigger_width),

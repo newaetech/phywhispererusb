@@ -85,6 +85,10 @@ module reg_main #(
    output reg          O_psen,
    input  wire         I_psdone,  
 
+// MMCM locked status bits:
+   input  wire         I_locked1,
+   input  wire         I_locked2,
+
 // Interface to top-level:
    output reg  [`FE_SELECT_WIDTH-1:0] fe_select,
    output wire selected
@@ -152,6 +156,7 @@ module reg_main #(
             `REG_BOARD_REV: reg_read_data = reg_board_rev;
             `REG_USERIO_DATA: reg_read_data = userio_d;
             `REG_USERIO_PWDRIVEN: reg_read_data = reg_userio_pwdriven;
+            `REG_MMCM_LOCKED: reg_read_data = {6'd0, I_locked2, I_locked1};
             default: reg_read_data = 0;
          endcase
       end

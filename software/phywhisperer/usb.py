@@ -55,6 +55,7 @@ class Usb(PWPacketDispatcher):
         self.capture_size = 8188 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
+        self.expected_verilog_matches = 70
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -104,7 +105,7 @@ class Usb(PWPacketDispatcher):
                         else:
                             logging.warning("Couldn't parse line: %s", define)
             defines.close()
-        assert self.verilog_define_matches == 69, "Trouble parsing Verilog defines files: didn't find the right number of defines (expected 69, got %d)." % self.verilog_define_matches
+        assert self.verilog_define_matches == self.expected_verilog_matches, "Trouble parsing Verilog defines files: didn't find the right number of defines (expected %d, got %d)." % (self.expected_verilog_matches, self.verilog_define_matches)
 
 
     def con(self, PID=0xC610, sn=None, program_fpga=True, bitstream_file=None):
