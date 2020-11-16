@@ -67,6 +67,7 @@ module reg_main #(
    output wire [pCAPTURE_LEN_WIDTH-1:0] O_capture_len,
    output wire         O_count_writes,
    output wire         O_counter_quick_start,
+   output wire         O_capture_now,
 
 // user-settable to allow for FPGA pin assignment changes across board revisions
    output wire [3:0]   O_board_rev,
@@ -103,6 +104,8 @@ module reg_main #(
    reg  [17:0] read_data_fifo;
    reg  reg_arm;
    reg  reg_arm_r;
+   reg  capture_now;
+   reg  capture_now_r;
    wire capture_enable_pulse;
    reg  phaseshift_active;
    reg [pCAPTURE_LEN_WIDTH-1:0] reg_capture_len;
@@ -136,6 +139,7 @@ module reg_main #(
    assign O_reg_arm = reg_arm;
    assign O_userio_pwdriven = reg_userio_pwdriven;
    assign O_userio_drive_data = reg_userio_drive_data;
+   assign O_capture_now = capture_now & ~capture_now_r;
 
    // read logic:
    always @(*) begin
@@ -238,10 +242,13 @@ module reg_main #(
          reg_board_rev <= 4; // production boards
          reg_userio_pwdriven <= 8'b0;
          reg_userio_drive_data <= 8'b0;
+         capture_now <= 1'b0;
+         capture_now_r <= 1'b0;
       end
 
       else begin
          reg_arm_r <= reg_arm;
+         capture_now_r <= capture_now;
          if (selected && reg_write) begin
             case (address)
                `REG_FE_SELECT: fe_select <= write_data[`FE_SELECT_WIDTH-1:0];
@@ -259,10 +266,16 @@ module reg_main #(
          end
 
          // ARM register is special:
-         if (selected && reg_write && (address == `REG_ARM))
-            reg_arm <= write_data[0];
+         if (selected && reg_write && (address == `REG_ARM)) begin
+            if (write_data[0])
+               reg_arm <= 1'b1;
+            if (write_data[1])
+               capture_now <= 1'b1;
+         end
          else if (capture_enable_pulse)
             reg_arm <= 1'b0;
+         else 
+            capture_now <= 1'b0;
 
          // Phase shift for trigger clock register is special: (reference: Xilinx UG472)
          if (selected && reg_write && (address == `REG_TRIG_CLK_PHASE_SHIFT) && ~phaseshift_active) begin
