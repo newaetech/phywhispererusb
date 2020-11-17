@@ -63,6 +63,7 @@ module reg_main #(
    input  wire         fe_clk,
    output wire         O_arm,
    output wire         O_reg_arm,
+   output wire         O_arm_pulse,
    input  wire         I_flushing,
    output wire [pCAPTURE_LEN_WIDTH-1:0] O_capture_len,
    output wire         O_count_writes,
@@ -136,6 +137,7 @@ module reg_main #(
    wire [5:0] address = reg_address[5:0];
 
    assign O_arm = reg_arm_r & ~I_flushing;
+   assign O_arm_pulse = reg_arm & ~reg_arm_r;
    assign O_reg_arm = reg_arm;
    assign O_userio_pwdriven = reg_userio_pwdriven;
    assign O_userio_drive_data = reg_userio_drive_data;

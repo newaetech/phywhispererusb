@@ -276,6 +276,7 @@ module phywhisperer_top(
       .fe_clk           (clk_fe_buf),
       .O_arm            (arm),
       .O_reg_arm        (reg_arm),
+      .O_arm_pulse      ( ), // unused
       .I_flushing       (fifo_flush),
       .O_capture_len    (capture_len),
       .O_count_writes   (count_writes),
