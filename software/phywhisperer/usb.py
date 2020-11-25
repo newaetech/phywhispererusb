@@ -266,11 +266,13 @@ class Usb(PWPacketDispatcher):
     def get_usb_mode(self):
         """Returns USB PHY speed.
            Return values:
-               'auto': the speed has not been determined yet (was the mode set
+
+               - 'auto': the speed has not been determined yet (was the mode set
                    to 'auto' _before_ the target was connected or powered up?).
-               'LS': low speed
-               'FS': full speed
-               'HS: high speed
+               - 'LS': low speed
+               - 'FS': full speed
+               - 'HS: high speed
+        
         """
         value = self.read_reg(self.REG_USB_SPEED)[0]
         if value == self.USB_SPEED_AUTO:
