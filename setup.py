@@ -14,7 +14,7 @@ setup(
     url='http://www.PhyWhisperer.com',
     packages=find_packages('software'),
     package_dir={'': 'software'},
-    package_data={'': ['firmware/defines.v']},
+    package_data={'': ['firmware/defines_usb.v', 'firmware/defines_pw.v']},
     install_requires=[
         'pyserial',
         'crcmod',
