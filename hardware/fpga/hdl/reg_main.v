@@ -34,7 +34,8 @@ module reg_main #(
    parameter pUSERIO_WIDTH = 8
 
 )(
-   input  wire         reset_i,
+   input  wire         reset_pin,
+   output wire         fpga_reset,
 
 // Interface to usb_reg_main:
    input  wire         cwusb_clk,
@@ -133,6 +134,8 @@ module reg_main #(
    reg [pUSERIO_WIDTH-1:0] reg_userio_pwdriven;
    reg [pUSERIO_WIDTH-1:0] reg_userio_drive_data;
 
+   reg reg_reset = 1'b0;
+
    assign selected = reg_addrvalid & reg_address[7:6] == `MAIN_REG_SELECT;
    wire [5:0] address = reg_address[5:0];
 
@@ -142,6 +145,8 @@ module reg_main #(
    assign O_userio_pwdriven = reg_userio_pwdriven;
    assign O_userio_drive_data = reg_userio_drive_data;
    assign O_capture_now = capture_now & ~capture_now_r;
+
+   assign fpga_reset = reset_pin || reg_reset;
 
    // read logic:
    always @(*) begin
@@ -178,7 +183,7 @@ module reg_main #(
 
    // catch empty FIFO reads (for streaming mode)
    always @(posedge cwusb_clk) begin
-      if (reset_i) begin
+      if (fpga_reset) begin
          empty_fifo_read <= 1'b0;
          fifo_empty_r <= 1'b0;
          reg_read_r <= 1'b0;
@@ -227,7 +232,7 @@ module reg_main #(
 
    // write logic (USB clock domain):
    always @(posedge cwusb_clk) begin
-      if (reset_i) begin
+      if (fpga_reset) begin
          fe_select <= `FE_USB;
          reg_arm <= 1'b0;
          reg_arm_r <= 1'b0;
@@ -295,8 +300,15 @@ module reg_main #(
    end
 
 
+   // special case: register-triggered reset:
+   always @(posedge cwusb_clk) begin
+      if (selected && reg_write && (address == `REG_RESET_REG))
+         reg_reset <= write_data[0];
+   end
+
+
    cdc_pulse U_match_cdc (
-      .reset_i       (reset_i),
+      .reset_i       (fpga_reset),
       .src_clk       (fe_clk),
       .src_pulse     (I_capture_enable_pulse),
       .dst_clk       (cwusb_clk),

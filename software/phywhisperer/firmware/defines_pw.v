@@ -43,6 +43,8 @@
 
 `define REG_MMCM_LOCKED              6'h10
 
+`define REG_RESET_REG                6'h11
+
 
 // front end select definitions
 `define FE_SELECT_WIDTH 2

@@ -45,7 +45,7 @@ module usb_reg_main #(
                                      // valid data must be present on the reg_datai bus
    output reg          reg_write,    // Write flag. When high on rising edge valid data is
                                      // present on reg_datao
-   output reg          reg_addrvalid // Address valid flag
+   output wire         reg_addrvalid // Address valid flag
 );
 
 
@@ -80,23 +80,13 @@ module usb_reg_main #(
    assign reg_read = cwusb_isout;
    assign cwusb_dout = reg_datai;
 
+   assign reg_addrvalid = 1'b1;
+
    //Don't immediatly turn off output drivers
    assign cwusb_isout = isoutreg | isoutregdly;
 
-   //Address valid on rising edge of ALEn, simplify and just latch when ALEn low
    always @(posedge cwusb_clk) begin
-      if (cwusb_alen_rs_dly == 1'b0) begin
-         reg_address <= cwusb_addr;
-      end
-   end
-
-//Address valid from ALEn until next falling edge of ALEn
-   always @(posedge cwusb_clk) begin
-      if (cwusb_alen_rs == 1'b0) begin
-         reg_addrvalid <= 1'b0;
-      end else if ((cwusb_alen_rs == 1'b1) &&(cwusb_alen_rs_dly == 1'b0)) begin
-         reg_addrvalid <= 1'b1;
-      end
+      reg_address <= cwusb_addr;
    end
 
    always @(posedge cwusb_clk) begin
@@ -106,15 +96,12 @@ module usb_reg_main #(
       end
    end
 
-
    /* Byte count block. We need to increment after a read or after a write */
    always @(posedge cwusb_clk) reg_write_dly <= reg_write;
 
-
    always @(posedge cwusb_clk) begin
-      if (cwusb_alen_rs == 1'b0) begin
+      if (reg_address != cwusb_addr) begin
          reg_bytecnt <= 0;
-      //end else if ((rdflag_rs_dly) || (reg_write_dly) ) begin
       end else if ((isoutregdly & !isoutreg) || (reg_write_dly) ) begin
          //roll-over is allowed (only access to use it is FIFO read, where we
          //only look at reg_bytecnt % 4)

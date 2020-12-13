@@ -55,7 +55,7 @@ class Usb(PWPacketDispatcher):
         self.capture_size = 8188 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
-        self.expected_verilog_matches = 70
+        self.expected_verilog_matches = 71
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -162,7 +162,9 @@ class Usb(PWPacketDispatcher):
     def reset_fpga(self):
         """ Reset FPGA registers to defaults, use liberally to clear incorrect states.
         """
-        self._llint.resetFPGA()
+        #self._llint.resetFPGA()
+        self.write_reg(self.REG_RESET_REG, [1])
+        self.write_reg(self.REG_RESET_REG, [0])
         self.write_reg(self.REG_COUNT_WRITES, [1])
 
     def load_bitstream(self, bitfile):

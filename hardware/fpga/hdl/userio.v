@@ -24,7 +24,6 @@
 module userio #(
    parameter pWIDTH = 8
 )(
-   input  wire                          reset_i,
    input  wire                          usb_clk,
    inout  wire [pWIDTH-1:0]             userio_d,
    input  wire [pWIDTH-1:0]             I_userio_drive_data,
