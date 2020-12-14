@@ -55,7 +55,7 @@ class Usb(PWPacketDispatcher):
         self.capture_size = 8188 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
-        self.expected_verilog_matches = 71
+        self.expected_verilog_matches = 72
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:

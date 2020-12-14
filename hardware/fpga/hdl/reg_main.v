@@ -104,6 +104,7 @@ module reg_main #(
    reg  fifo_empty_r;
    reg  reg_read_r;
    reg  [17:0] read_data_fifo;
+   reg  [17:0] fifo_data_r;
    reg  reg_arm;
    reg  reg_arm_r;
    reg  capture_now;
@@ -115,6 +116,7 @@ module reg_main #(
    reg  reg_counter_quick_start;
    reg  [3:0] reg_board_rev;
    reg  [7:0] read_data_pre;
+   reg  reg_fast_fifo_rd_en;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -168,6 +170,7 @@ module reg_main #(
             `REG_USERIO_DATA: reg_read_data = userio_d;
             `REG_USERIO_PWDRIVEN: reg_read_data = reg_userio_pwdriven;
             `REG_MMCM_LOCKED: reg_read_data = {6'd0, I_locked2, I_locked1};
+            `REG_FAST_FIFO_RD_EN: reg_read_data = reg_fast_fifo_rd_en;
             default: reg_read_data = 0;
          endcase
       end
@@ -188,11 +191,14 @@ module reg_main #(
          fifo_empty_r <= 1'b0;
          reg_read_r <= 1'b0;
          reg_bytecnt_r20 <= 2'b0;
+         fifo_data_r <= 18'b0;
       end
       else begin
          fifo_empty_r <= I_fifo_empty;
          reg_read_r <= reg_read;
          reg_bytecnt_r20 <= reg_bytecnt[1:0];
+         if (O_fifo_read)
+            fifo_data_r <= I_fifo_data;
          if (selected && reg_read && ~reg_read_r && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && fifo_empty_r)
             empty_fifo_read <= 1'b1;
          else if (selected && reg_read_r && (address == `REG_SNIFF_FIFO_RD) && ((reg_bytecnt % 4) == 0) && reg_bytecnt_r20 == 2'b11 && ~fifo_empty_r)
@@ -211,7 +217,7 @@ module reg_main #(
          read_data_fifo[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] = `FE_FIFO_STRM_EMPTY;
       end
       else
-         read_data_fifo = I_fifo_data;
+         read_data_fifo = fifo_data_r;
       
       if (address == `REG_SNIFF_FIFO_RD) begin
          case (reg_bytecnt % 4)
@@ -251,6 +257,7 @@ module reg_main #(
          reg_userio_drive_data <= 8'b0;
          capture_now <= 1'b0;
          capture_now_r <= 1'b0;
+         reg_fast_fifo_rd_en <= 1'b0;
       end
 
       else begin
@@ -269,6 +276,7 @@ module reg_main #(
                `REG_BOARD_REV: reg_board_rev <= write_data;
                `REG_USERIO_DATA: reg_userio_drive_data = write_data;
                `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
+               `REG_FAST_FIFO_RD_EN: reg_fast_fifo_rd_en <= write_data;
             endcase
          end
 

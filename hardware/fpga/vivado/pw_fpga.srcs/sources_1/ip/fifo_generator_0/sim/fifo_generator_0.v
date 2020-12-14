@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2019 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2020 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -125,8 +125,8 @@ output wire prog_empty;
     .C_MIF_FILE_NAME("BlankString"),
     .C_OPTIMIZATION_MODE(0),
     .C_OVERFLOW_LOW(0),
-    .C_PRELOAD_LATENCY(1),
-    .C_PRELOAD_REGS(0),
+    .C_PRELOAD_LATENCY(0),
+    .C_PRELOAD_REGS(1),
     .C_PRIM_FIFO_TYPE("2kx18"),
     .C_PROG_EMPTY_THRESH_ASSERT_VAL(128),
     .C_PROG_EMPTY_THRESH_NEGATE_VAL(129),

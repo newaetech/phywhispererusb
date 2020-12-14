@@ -1,11 +1,11 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Mon Oct  7 14:32:26 2019
+-- Date        : Mon Dec 14 09:23:53 2020
 -- Host        : qed running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim
---               C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_sim_netlist.vhdl
--- Design      : fifo_generator_0
+-- Command     : write_vhdl -force -mode funcsim -rename_top fifo_generator_0 -prefix
+--               fifo_generator_0_ fifo_generator_fallthrough_sim_netlist.vhdl
+-- Design      : fifo_generator_fallthrough
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7s6ftgb196-2
@@ -27,8 +27,6 @@ entity fifo_generator_0_builtin_prim_v6 is
     din : in STD_LOGIC_VECTOR ( 17 downto 0 );
     p_17_out : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_builtin_prim_v6 : entity is "builtin_prim_v6";
 end fifo_generator_0_builtin_prim_v6;
 
 architecture STRUCTURE of fifo_generator_0_builtin_prim_v6 is
@@ -73,7 +71,7 @@ begin
 \gf36e1_inst.sngfifo36e1\: unisim.vcomponents.FIFO36E1
     generic map(
       ALMOST_EMPTY_OFFSET => X"000A",
-      ALMOST_FULL_OFFSET => X"0007",
+      ALMOST_FULL_OFFSET => X"0008",
       DATA_WIDTH => 18,
       DO_REG => 1,
       EN_ECC_READ => false,
@@ -215,7 +213,7 @@ begin
 \gf36e1_inst.sngfifo36e1\: unisim.vcomponents.FIFO36E1
     generic map(
       ALMOST_EMPTY_OFFSET => X"000A",
-      ALMOST_FULL_OFFSET => X"0007",
+      ALMOST_FULL_OFFSET => X"0008",
       DATA_WIDTH => 18,
       DO_REG => 1,
       EN_ECC_READ => false,
@@ -357,7 +355,7 @@ begin
 \gf36e1_inst.sngfifo36e1\: unisim.vcomponents.FIFO36E1
     generic map(
       ALMOST_EMPTY_OFFSET => X"000A",
-      ALMOST_FULL_OFFSET => X"0007",
+      ALMOST_FULL_OFFSET => X"0008",
       DATA_WIDTH => 18,
       DO_REG => 1,
       EN_ECC_READ => false,
@@ -506,7 +504,7 @@ begin
       EN_ECC_WRITE => false,
       EN_SYN => false,
       FIFO_MODE => "FIFO36",
-      FIRST_WORD_FALL_THROUGH => false,
+      FIRST_WORD_FALL_THROUGH => true,
       INIT => X"000000000000000000",
       IS_RDCLK_INVERTED => '0',
       IS_RDEN_INVERTED => '0',
@@ -590,8 +588,6 @@ entity fifo_generator_0_reset_builtin is
     rst : in STD_LOGIC;
     rd_clk : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_reset_builtin : entity is "reset_builtin";
 end fifo_generator_0_reset_builtin;
 
 architecture STRUCTURE of fifo_generator_0_reset_builtin is
@@ -924,8 +920,6 @@ entity fifo_generator_0_builtin_extdepth_v6 is
     wr_en : in STD_LOGIC;
     din : in STD_LOGIC_VECTOR ( 17 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_builtin_extdepth_v6 : entity is "builtin_extdepth_v6";
 end fifo_generator_0_builtin_extdepth_v6;
 
 architecture STRUCTURE of fifo_generator_0_builtin_extdepth_v6 is
@@ -1053,8 +1047,6 @@ entity fifo_generator_0_builtin_top_v6 is
     wr_en : in STD_LOGIC;
     din : in STD_LOGIC_VECTOR ( 17 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_builtin_top_v6 : entity is "builtin_top_v6";
 end fifo_generator_0_builtin_top_v6;
 
 architecture STRUCTURE of fifo_generator_0_builtin_top_v6 is
@@ -1106,8 +1098,6 @@ entity fifo_generator_0_fifo_generator_v13_2_3_builtin is
     rd_en : in STD_LOGIC;
     rst : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_v13_2_3_builtin : entity is "fifo_generator_v13_2_3_builtin";
 end fifo_generator_0_fifo_generator_v13_2_3_builtin;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_v13_2_3_builtin is
@@ -1155,8 +1145,6 @@ entity fifo_generator_0_fifo_generator_top is
     rd_en : in STD_LOGIC;
     rst : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_top : entity is "fifo_generator_top";
 end fifo_generator_0_fifo_generator_top;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_top is
@@ -1196,8 +1184,6 @@ entity fifo_generator_0_fifo_generator_v13_2_3_synth is
     rd_en : in STD_LOGIC;
     rst : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_v13_2_3_synth : entity is "fifo_generator_v13_2_3_synth";
 end fifo_generator_0_fifo_generator_v13_2_3_synth;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_v13_2_3_synth is
@@ -1679,9 +1665,9 @@ entity fifo_generator_0_fifo_generator_v13_2_3 is
   attribute C_POWER_SAVING_MODE : integer;
   attribute C_POWER_SAVING_MODE of fifo_generator_0_fifo_generator_v13_2_3 : entity is 0;
   attribute C_PRELOAD_LATENCY : integer;
-  attribute C_PRELOAD_LATENCY of fifo_generator_0_fifo_generator_v13_2_3 : entity is 1;
+  attribute C_PRELOAD_LATENCY of fifo_generator_0_fifo_generator_v13_2_3 : entity is 0;
   attribute C_PRELOAD_REGS : integer;
-  attribute C_PRELOAD_REGS of fifo_generator_0_fifo_generator_v13_2_3 : entity is 0;
+  attribute C_PRELOAD_REGS of fifo_generator_0_fifo_generator_v13_2_3 : entity is 1;
   attribute C_PRIM_FIFO_TYPE : string;
   attribute C_PRIM_FIFO_TYPE of fifo_generator_0_fifo_generator_v13_2_3 : entity is "2kx18";
   attribute C_PRIM_FIFO_TYPE_AXIS : string;
@@ -1860,8 +1846,6 @@ entity fifo_generator_0_fifo_generator_v13_2_3 is
   attribute C_WR_PNTR_WIDTH_WRCH of fifo_generator_0_fifo_generator_v13_2_3 : entity is 4;
   attribute C_WR_RESPONSE_LATENCY : integer;
   attribute C_WR_RESPONSE_LATENCY of fifo_generator_0_fifo_generator_v13_2_3 : entity is 1;
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_v13_2_3 : entity is "fifo_generator_v13_2_3";
 end fifo_generator_0_fifo_generator_v13_2_3;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_v13_2_3 is
@@ -2445,7 +2429,7 @@ entity fifo_generator_0 is
   attribute NotValidForBitStream : boolean;
   attribute NotValidForBitStream of fifo_generator_0 : entity is true;
   attribute CHECK_LICENSE_TYPE : string;
-  attribute CHECK_LICENSE_TYPE of fifo_generator_0 : entity is "fifo_generator_0,fifo_generator_v13_2_3,{}";
+  attribute CHECK_LICENSE_TYPE of fifo_generator_0 : entity is "fifo_generator_fallthrough,fifo_generator_v13_2_3,{}";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of fifo_generator_0 : entity is "yes";
   attribute x_core_info : string;
@@ -2796,9 +2780,9 @@ architecture STRUCTURE of fifo_generator_0 is
   attribute C_POWER_SAVING_MODE : integer;
   attribute C_POWER_SAVING_MODE of U0 : label is 0;
   attribute C_PRELOAD_LATENCY : integer;
-  attribute C_PRELOAD_LATENCY of U0 : label is 1;
+  attribute C_PRELOAD_LATENCY of U0 : label is 0;
   attribute C_PRELOAD_REGS : integer;
-  attribute C_PRELOAD_REGS of U0 : label is 0;
+  attribute C_PRELOAD_REGS of U0 : label is 1;
   attribute C_PRIM_FIFO_TYPE : string;
   attribute C_PRIM_FIFO_TYPE of U0 : label is "2kx18";
   attribute C_PRIM_FIFO_TYPE_AXIS : string;

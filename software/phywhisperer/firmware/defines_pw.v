@@ -44,6 +44,7 @@
 `define REG_MMCM_LOCKED              6'h10
 
 `define REG_RESET_REG                6'h11
+`define REG_FAST_FIFO_RD_EN          6'h12
 
 
 // front end select definitions

@@ -2,11 +2,11 @@
 # Vivado v2018.3 (64-bit)
 # SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Tue Oct 27 09:16:29 2020
-# Process ID: 22472
-# Current directory: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1
+# Start of session at: Mon Dec 14 09:25:13 2020
+# Process ID: 20964
+# Current directory: C:/Users/jp/GitHub/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/synth_1
 # Command line: vivado.exe -log phywhisperer_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source phywhisperer_top.tcl
-# Log file: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.vds
-# Journal file: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1\vivado.jou
+# Log file: C:/Users/jp/GitHub/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.vds
+# Journal file: C:/Users/jp/GitHub/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source phywhisperer_top.tcl -notrace
