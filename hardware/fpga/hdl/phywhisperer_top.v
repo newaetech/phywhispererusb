@@ -234,7 +234,6 @@ module phywhisperer_top(
       .cwusb_rdn        (USB_nRD), 
       .cwusb_wrn        (USB_nWE),
       .cwusb_cen        (USB_nCS),
-      .cwusb_alen       (USB_SPARE1),
       .cwusb_addr       (USB_Addr),
       .cwusb_isout      (cmdfifo_isout), 
       .reg_address      (reg_address), 

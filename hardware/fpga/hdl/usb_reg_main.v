@@ -33,7 +33,6 @@ module usb_reg_main #(
    input  wire [7:0]   cwusb_addr,
    input  wire         cwusb_rdn,
    input  wire         cwusb_wrn,
-   input  wire         cwusb_alen,
    input  wire         cwusb_cen,
 
  /* Interface to registers */
@@ -49,8 +48,6 @@ module usb_reg_main #(
 );
 
 
-   reg cwusb_alen_rs, cwusb_alen_rs_dly;
-
    wire rdflag = ~cwusb_rdn & ~cwusb_cen;
    reg rdflag_rs, rdflag_rs_dly;
    reg isoutreg, isoutregdly;
@@ -60,9 +57,6 @@ module usb_reg_main #(
 
    // note: could possibly be simplified, and delays reduced?
    always @(posedge cwusb_clk) begin
-      cwusb_alen_rs <= cwusb_alen;
-      cwusb_alen_rs_dly <= cwusb_alen_rs;
-
       rdflag_rs <= rdflag;
       rdflag_rs_dly <= rdflag_rs;
 
