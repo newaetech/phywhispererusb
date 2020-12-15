@@ -59,8 +59,12 @@ module reg_main #(
    input  wire [5:0]   I_fifo_status,
    input  wire         I_fifo_empty,
    output wire         O_fifo_read,
+
+// Fast fifo read:
    output wire         O_data_available,
-   input  wire         I_fast_fifo_rd,
+   input  wire         I_fast_fifo_rdn,
+   input  wire         I_usb_cen,
+   output wire         O_usb_drive_data,
 
 // Interface to front-end capture:
    input  wire         fe_clk,
@@ -126,12 +130,10 @@ module reg_main #(
    reg [pALL_TRIGGER_WIDTH_WIDTHS-1:0] reg_trigger_width;
    reg [1:0] reg_bytecnt_r20;
    reg [1:0] fast_fifo_rd_bytecnt;
-   wire fast_fifo_rd;
+   reg fast_fifo_rd;
    wire reg_fifo_rd;
-   reg  fast_fifo_rd_r;
-   reg  fast_fifo_rd_r2;
-   reg  fast_fifo_rd_r3;
-   wire fast_fifo_rd_out;
+   reg fast_fifo_rdn_r;
+   reg fast_fifo_rd_out;
 
    assign O_trigger_enable = reg_trigger_enable;
    assign O_num_triggers = reg_num_triggers;
@@ -157,6 +159,7 @@ module reg_main #(
    assign O_userio_drive_data = reg_userio_drive_data;
    assign O_capture_now = capture_now & ~capture_now_r;
    assign O_data_available = ~I_fifo_empty;
+   assign O_usb_drive_data = fast_fifo_rd_out;
 
    assign fpga_reset = reset_pin || reg_reset;
 
@@ -189,8 +192,24 @@ module reg_main #(
    end
 
 
+   // fast FIFO read logic:
+   always @(posedge cwusb_clk) begin
+      fast_fifo_rdn_r <= I_fast_fifo_rdn;
+      //if (~I_usb_cen & ~fast_fifo_rd & ~I_fast_fifo_rdn & reg_fast_fifo_rd_en & (fast_fifo_rd_bytecnt == 3))
+      if (~fast_fifo_rdn_r & I_fast_fifo_rdn & reg_fast_fifo_rd_en & (fast_fifo_rd_bytecnt == 3))
+         fast_fifo_rd <= 1'b1;
+      else
+         fast_fifo_rd <= 1'b0;
+
+      // select fast FIFO read output:
+      if (~I_usb_cen & ~I_fast_fifo_rdn & reg_fast_fifo_rd_en)
+         fast_fifo_rd_out <= 1'b1;
+      else if (I_usb_cen)
+         fast_fifo_rd_out <= 1'b0;
+   end
+
+
    // FIFO read logic: perform a FIFO read on first read access to FIFO register:
-   assign fast_fifo_rd = I_fast_fifo_rd && reg_fast_fifo_rd_en && (fast_fifo_rd_bytecnt == 0);
    assign reg_fifo_rd = selected && reg_read && ~reg_read_r && ~fifo_empty_r &&
                        (address == `REG_SNIFF_FIFO_RD) &&
                       ((reg_bytecnt % 4) == 0) && ~empty_fifo_read;
@@ -220,7 +239,6 @@ module reg_main #(
    end
 
 
-
    // MUX read output between registers and FIFO output:
    always @(*) begin
       if (empty_fifo_read) begin
@@ -229,7 +247,8 @@ module reg_main #(
          read_data_fifo[`FE_FIFO_DATA_START +: `FE_FIFO_DATA_LEN] = `FE_FIFO_STRM_EMPTY;
       end
       else
-         read_data_fifo = fifo_data_r;
+         // bit messy, driven by need for data to be available asap in fast FIFO read mode:
+         read_data_fifo = reg_fast_fifo_rd_en? I_fifo_data : fifo_data_r;
       
       if (address == `REG_SNIFF_FIFO_RD) begin
          case (reg_bytecnt % 4)
@@ -330,17 +349,10 @@ module reg_main #(
          // REG_FAST_FIFO_RD_EN is special: it has a side-effect to reset the FIFO byte counter
          if (selected && reg_write && (address == `REG_FAST_FIFO_RD_EN))
             fast_fifo_rd_bytecnt <= 0;
-         else if (fast_fifo_rd_r3)
+         else if (reg_fast_fifo_rd_en & ~fast_fifo_rdn_r & I_fast_fifo_rdn)
             fast_fifo_rd_bytecnt <= fast_fifo_rd_bytecnt + 1; // overflow ok and expected
       end
    end
-
-   always @(posedge cwusb_clk) begin
-      fast_fifo_rd_r <= I_fast_fifo_rd;
-      fast_fifo_rd_r2 <= fast_fifo_rd_r;
-      fast_fifo_rd_r3 <= fast_fifo_rd_r2;
-   end
-   assign fast_fifo_rd_out = I_fast_fifo_rd | fast_fifo_rd_r | fast_fifo_rd_r2 | fast_fifo_rd_r3;
 
    // special case: register-triggered reset:
    always @(posedge cwusb_clk) begin

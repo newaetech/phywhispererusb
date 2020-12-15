@@ -236,8 +236,7 @@ module phywhisperer_top(
       .cwusb_cen        (USB_nCS),
       .cwusb_addr       (USB_Addr),
       .cwusb_isout      (cmdfifo_isout), 
-      .I_fast_fifo_rdn  (1'b1),
-      .O_fast_fifo_rd   (), // unused
+      .I_drive_data     (1'b0), // unused
       .reg_address      (reg_address), 
       .reg_bytecnt      (reg_bytecnt), 
       .reg_datao        (write_data), 
@@ -275,7 +274,11 @@ module phywhisperer_top(
       .I_fifo_empty     (fifo_empty),
       .O_fifo_read      (fifo_read),
       .I_fifo_status    (fifo_status),
-      .I_fast_fifo_rd   (1'b0), // unused
+
+      .O_data_available (), // unused
+      .O_usb_drive_data (), // unused
+      .I_fast_fifo_rdn  (1'b1), // unused
+      .I_usb_cen        (1'b1), // unused
 
       .fe_clk           (clk_fe_buf),
       .O_arm            (arm),
