@@ -34,8 +34,10 @@ module usb_reg_main #(
    input  wire         cwusb_rdn,
    input  wire         cwusb_wrn,
    input  wire         cwusb_cen,
+   input  wire         I_fast_fifo_rdn,
 
  /* Interface to registers */
+   output reg          O_fast_fifo_rd,
    output reg  [7:0]   reg_address,  // Address of register
    output reg  [pBYTECNT_SIZE-1:0]  reg_bytecnt,  // Current byte count
    output reg  [7:0]   reg_datao,    // Data to write
@@ -60,7 +62,7 @@ module usb_reg_main #(
       rdflag_rs <= rdflag;
       rdflag_rs_dly <= rdflag_rs;
 
-      isoutreg <= ~cwusb_rdn;
+      isoutreg <= ~cwusb_rdn | ~I_fast_fifo_rdn;
       isoutregdly <= isoutreg;
 
       cwusb_wrn_rs <= cwusb_wrn;
@@ -101,6 +103,14 @@ module usb_reg_main #(
          //only look at reg_bytecnt % 4)
          reg_bytecnt <= reg_bytecnt + 1;
       end
+   end
+
+   // fast fifo read:
+   always @(posedge cwusb_clk) begin
+      if (~cwusb_cen & ~O_fast_fifo_rd & ~I_fast_fifo_rdn)
+         O_fast_fifo_rd <= 1'b1;
+      else
+         O_fast_fifo_rd <= 1'b0;
    end
 
 endmodule
