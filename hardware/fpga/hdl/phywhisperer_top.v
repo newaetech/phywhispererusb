@@ -289,6 +289,8 @@ module phywhisperer_top(
       .O_count_writes   (count_writes),
       .O_counter_quick_start (counter_quick_start),
       .I_capture_enable_pulse (capture_enable_pulse),
+      .O_timestamps_disable (timestamps_disable),
+      .O_capture_now    ( ), // unused
 
       .I_locked1        (trigger_clk_locked),
       .I_locked2        (1'b0),
@@ -343,7 +345,6 @@ module phywhisperer_top(
       // FE:
       .fe_clk                   (clk_fe_buf),
       .I_fe_capture_stat        (fe_capture_stat),
-      .O_timestamps_disable     (timestamps_disable),
       .O_reg_arm_feclk          (reg_arm_feclk),
 
       // Trigger:

@@ -76,6 +76,7 @@ module reg_main #(
    output wire         O_count_writes,
    output wire         O_counter_quick_start,
    output wire         O_capture_now,
+   output wire         O_timestamps_disable,
 
 // user-settable to allow for FPGA pin assignment changes across board revisions
    output wire [3:0]   O_board_rev,
@@ -123,6 +124,7 @@ module reg_main #(
    reg  [3:0] reg_board_rev;
    reg  [7:0] read_data_pre;
    reg  reg_fast_fifo_rd_en;
+   reg reg_timestamps_disable;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -135,6 +137,7 @@ module reg_main #(
    reg fast_fifo_rdn_r;
    reg fast_fifo_rd_out;
 
+   assign O_timestamps_disable = reg_timestamps_disable;
    assign O_trigger_enable = reg_trigger_enable;
    assign O_num_triggers = reg_num_triggers;
    assign O_trigger_delay = reg_trigger_delay;
@@ -184,6 +187,7 @@ module reg_main #(
             `REG_USERIO_PWDRIVEN: reg_read_data = reg_userio_pwdriven;
             `REG_MMCM_LOCKED: reg_read_data = {6'd0, I_locked2, I_locked1};
             `REG_FAST_FIFO_RD_EN: reg_read_data = reg_fast_fifo_rd_en;
+            `REG_TIMESTAMPS_DISABLE: reg_read_data = reg_timestamps_disable;
             default: reg_read_data = 0;
          endcase
       end
@@ -196,12 +200,17 @@ module reg_main #(
    always @(posedge cwusb_clk) begin
       fast_fifo_rdn_r <= I_fast_fifo_rdn;
       //if (~I_usb_cen & ~fast_fifo_rd & ~I_fast_fifo_rdn & reg_fast_fifo_rd_en & (fast_fifo_rd_bytecnt == 3))
-      if (~fast_fifo_rdn_r & I_fast_fifo_rdn & reg_fast_fifo_rd_en & (fast_fifo_rd_bytecnt == 3))
+      if ( (~fast_fifo_rdn_r & I_fast_fifo_rdn & reg_fast_fifo_rd_en) && (reg_timestamps_disable || (fast_fifo_rd_bytecnt == 3)) )
          fast_fifo_rd <= 1'b1;
       else
          fast_fifo_rd <= 1'b0;
 
-      // select fast FIFO read output:
+      // Select fast FIFO read output: when we see the first fast FIFO read, we grab hold of driving the output
+      // data bus until cen goes back high - this allows us to have the read data ready before it's requested.
+      // Caveats: 
+      // 1- can't insert a write in the middle of a fast fifo read (will cause bus contention)
+      // 2- data can't be presented early for the very first read (this only matters when timestamps are disabled:
+      //    when timestamps are enabled, the first read byte is always 0)
       if (~I_usb_cen & ~I_fast_fifo_rdn & reg_fast_fifo_rd_en)
          fast_fifo_rd_out <= 1'b1;
       else if (I_usb_cen)
@@ -261,12 +270,16 @@ module reg_main #(
 
       // fast FIFO reads follow the same logic but there is no address and the byte counter is different:
       else if (fast_fifo_rd_out) begin
-         case (fast_fifo_rd_bytecnt % 4)
-            1: read_data_pre = read_data_fifo[7:0];
-            2: read_data_pre = read_data_fifo[15:8];
-            3: read_data_pre = {I_fifo_status, read_data_fifo[17:16]};
-            default: read_data_pre = 0;
-         endcase
+         if (reg_timestamps_disable) // grab data straight from FIFO
+            read_data_pre = I_fifo_data[15:8];
+         else begin
+            case (fast_fifo_rd_bytecnt % 4)
+               1: read_data_pre = read_data_fifo[7:0];
+               2: read_data_pre = read_data_fifo[15:8];
+               3: read_data_pre = {I_fifo_status, read_data_fifo[17:16]};
+               default: read_data_pre = 0;
+            endcase
+         end
       end
 
       else
@@ -300,6 +313,7 @@ module reg_main #(
          capture_now <= 1'b0;
          capture_now_r <= 1'b0;
          reg_fast_fifo_rd_en <= 1'b0;
+         reg_timestamps_disable <= 1'b0;
       end
 
       else begin
@@ -319,6 +333,7 @@ module reg_main #(
                `REG_USERIO_DATA: reg_userio_drive_data = write_data;
                `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
                `REG_FAST_FIFO_RD_EN: reg_fast_fifo_rd_en <= write_data;
+               `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
             endcase
          end
 
