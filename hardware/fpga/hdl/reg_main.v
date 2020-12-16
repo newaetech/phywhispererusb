@@ -215,6 +215,12 @@ module reg_main #(
          fast_fifo_rd_out <= 1'b1;
       else if (I_usb_cen)
          fast_fifo_rd_out <= 1'b0;
+
+      if (I_usb_cen)
+         fast_fifo_rd_bytecnt <= 0;
+      else if (reg_fast_fifo_rd_en & ~fast_fifo_rdn_r & I_fast_fifo_rdn)
+         fast_fifo_rd_bytecnt <= fast_fifo_rd_bytecnt + 1; // overflow ok and expected
+
    end
 
 
@@ -361,11 +367,6 @@ module reg_main #(
                phaseshift_active <= 1'b0;
          end
 
-         // REG_FAST_FIFO_RD_EN is special: it has a side-effect to reset the FIFO byte counter
-         if (selected && reg_write && (address == `REG_FAST_FIFO_RD_EN))
-            fast_fifo_rd_bytecnt <= 0;
-         else if (reg_fast_fifo_rd_en & ~fast_fifo_rdn_r & I_fast_fifo_rdn)
-            fast_fifo_rd_bytecnt <= fast_fifo_rd_bytecnt + 1; // overflow ok and expected
       end
    end
 
