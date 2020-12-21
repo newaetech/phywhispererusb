@@ -1,11 +1,11 @@
-Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Mon Dec 14 09:26:42 2020
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Mon Dec 21 12:03:40 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_utilization -file phywhisperer_top_utilization_synth.rpt -pb phywhisperer_top_utilization_synth.pb
 | Design       : phywhisperer_top
-| Device       : 7s6ftgb196-2
+| Device       : 7s15ftgb196-2
 | Design State : Synthesized
 ---------------------------------------------------------------------------------------------------------------------------
 
@@ -30,14 +30,14 @@ Table of Contents
 +-------------------------+------+-------+-----------+-------+
 |        Site Type        | Used | Fixed | Available | Util% |
 +-------------------------+------+-------+-----------+-------+
-| Slice LUTs*             | 1802 |     0 |      3750 | 48.05 |
-|   LUT as Logic          | 1802 |     0 |      3750 | 48.05 |
+| Slice LUTs*             | 1857 |     0 |      8000 | 23.21 |
+|   LUT as Logic          | 1857 |     0 |      8000 | 23.21 |
 |   LUT as Memory         |    0 |     0 |      2400 |  0.00 |
-| Slice Registers         | 3920 |     0 |      7500 | 52.27 |
-|   Register as Flip Flop | 3920 |     0 |      7500 | 52.27 |
-|   Register as Latch     |    0 |     0 |      7500 |  0.00 |
-| F7 Muxes                |  210 |     0 |      4000 |  5.25 |
-| F8 Muxes                |   57 |     0 |      2000 |  2.85 |
+| Slice Registers         | 3922 |     0 |     16000 | 24.51 |
+|   Register as Flip Flop | 3922 |     0 |     16000 | 24.51 |
+|   Register as Latch     |    0 |     0 |     16000 |  0.00 |
+| F7 Muxes                |  197 |     0 |      4000 |  4.93 |
+| F8 Muxes                |   48 |     0 |      2000 |  2.40 |
 +-------------------------+------+-------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
 
@@ -57,7 +57,7 @@ Table of Contents
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
 | 37    |          Yes |         Set |            - |
-| 3883  |          Yes |       Reset |            - |
+| 3885  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -67,9 +67,9 @@ Table of Contents
 +----------------+------+-------+-----------+-------+
 |    Site Type   | Used | Fixed | Available | Util% |
 +----------------+------+-------+-----------+-------+
-| Block RAM Tile |    0 |     0 |         5 |  0.00 |
-|   RAMB36/FIFO* |    0 |     0 |         5 |  0.00 |
-|   RAMB18       |    0 |     0 |        10 |  0.00 |
+| Block RAM Tile |    0 |     0 |        10 |  0.00 |
+|   RAMB36/FIFO* |    0 |     0 |        10 |  0.00 |
+|   RAMB18       |    0 |     0 |        20 |  0.00 |
 +----------------+------+-------+-----------+-------+
 * Note: Each Block RAM Tile only has one FIFO logic available and therefore can accommodate only one FIFO36E1 or one FIFO18E1. However, if a FIFO18E1 occupies a Block RAM Tile, that tile can still accommodate a RAMB18E1
 
@@ -80,7 +80,7 @@ Table of Contents
 +-----------+------+-------+-----------+-------+
 | Site Type | Used | Fixed | Available | Util% |
 +-----------+------+-------+-----------+-------+
-| DSPs      |    0 |     0 |        10 |  0.00 |
+| DSPs      |    0 |     0 |        20 |  0.00 |
 +-----------+------+-------+-----------+-------+
 
 
@@ -144,18 +144,18 @@ Table of Contents
 +--------------+------+---------------------+
 |   Ref Name   | Used | Functional Category |
 +--------------+------+---------------------+
-| FDRE         | 3883 |        Flop & Latch |
-| LUT6         |  866 |                 LUT |
-| LUT3         |  553 |                 LUT |
-| LUT4         |  471 |                 LUT |
-| LUT5         |  225 |                 LUT |
-| MUXF7        |  210 |               MuxFx |
-| LUT2         |  111 |                 LUT |
+| FDRE         | 3885 |        Flop & Latch |
+| LUT6         |  877 |                 LUT |
+| LUT3         |  566 |                 LUT |
+| LUT4         |  564 |                 LUT |
+| LUT5         |  221 |                 LUT |
+| MUXF7        |  197 |               MuxFx |
 | CARRY4       |   98 |          CarryLogic |
-| MUXF8        |   57 |               MuxFx |
+| LUT2         |   96 |                 LUT |
+| MUXF8        |   48 |               MuxFx |
 | IBUF         |   46 |                  IO |
 | FDSE         |   37 |        Flop & Latch |
-| LUT1         |   30 |                 LUT |
+| LUT1         |   29 |                 LUT |
 | OBUF         |   18 |                  IO |
 | OBUFT        |   16 |                  IO |
 | PULLUP       |    8 |                 I/O |
@@ -167,12 +167,12 @@ Table of Contents
 8. Black Boxes
 --------------
 
-+----------------------------+------+
-|          Ref Name          | Used |
-+----------------------------+------+
-| fifo_generator_fallthrough |    1 |
-| clk_wiz_0                  |    1 |
-+----------------------------+------+
++------------------+------+
+|     Ref Name     | Used |
++------------------+------+
+| fifo_generator_0 |    1 |
+| clk_wiz_0        |    1 |
++------------------+------+
 
 
 9. Instantiated Netlists

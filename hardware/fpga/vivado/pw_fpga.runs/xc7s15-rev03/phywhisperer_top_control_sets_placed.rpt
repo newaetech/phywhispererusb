@@ -1,7 +1,7 @@
-Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Mon Dec 14 09:28:05 2020
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Mon Dec 21 12:04:41 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file phywhisperer_top_control_sets_placed.rpt
 | Design       : phywhisperer_top
@@ -23,23 +23,33 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Number of unique control sets                            |   219 |
-| Unused register locations in slices containing registers |    85 |
+| Total control sets                                       |   218 |
+|    Minimum number of control sets                        |   218 |
+|    Addition due to synthesis replication                 |     0 |
+|    Addition due to physical synthesis replication        |     0 |
+| Unused register locations in slices containing registers |    83 |
 +----------------------------------------------------------+-------+
+* Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
+** Run report_qor_suggestions for automated merging and remapping suggestions
 
 
 2. Histogram
 ------------
 
-+--------+--------------+
-| Fanout | Control Sets |
-+--------+--------------+
-|      1 |            1 |
-|      4 |            4 |
-|      5 |            1 |
-|      8 |          195 |
-|    16+ |           18 |
-+--------+--------------+
++--------------------+-------+
+|       Fanout       | Count |
++--------------------+-------+
+| Total control sets |   218 |
+| >= 0 to < 4        |     1 |
+| >= 4 to < 6        |     5 |
+| >= 6 to < 8        |     0 |
+| >= 8 to < 10       |   194 |
+| >= 10 to < 12      |     0 |
+| >= 12 to < 14      |     0 |
+| >= 14 to < 16      |     0 |
+| >= 16              |    18 |
++--------------------+-------+
+* Control sets can be remapped at either synth_design or opt_design
 
 
 3. Flip-Flop Distribution
@@ -48,12 +58,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |             384 |           93 |
+| No           | No                    | No                     |             392 |          107 |
 | No           | No                    | Yes                    |               3 |            2 |
-| No           | Yes                   | No                     |            1261 |          334 |
-| Yes          | No                    | No                     |              49 |           20 |
+| No           | Yes                   | No                     |            1254 |          330 |
+| Yes          | No                    | No                     |              49 |           26 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |            2234 |          703 |
+| Yes          | Yes                   | No                     |            2235 |          717 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -64,224 +74,223 @@ Table of Contents
 |          Clock Signal          |                 Enable Signal                 |                                 Set/Reset Signal                                 | Slice Load Count | Bel Load Count |
 +--------------------------------+-----------------------------------------------+----------------------------------------------------------------------------------+------------------+----------------+
 |  clk_fe_buf_BUFG               |                                               | U_fifo/U_fifo/U0/inst_fifo_gen/gconvfifo.rf/gbi.bi/g7ser_birst.rstbt/wr_rst_reg2 |                1 |              1 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[1]_1[0]        | U_reg_main/fpga_reset                                                            |                3 |              4 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/U_match_cdc/E[0]                    |                                                                                  |                1 |              4 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/U_match_cdc/E[0]                    |                                                                                  |                2 |              4 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_10[0]       | U_reg_main/fpga_reset                                                            |                4 |              4 |
 |  U_trigger_clock/inst/clk_out1 | U_trigger/FSM_onehot_state[2]_i_1_n_0         | U_reg_main/fpga_reset                                                            |                1 |              4 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_2[0]             | U_reg_main/fpga_reset                                                            |                1 |              4 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[5]_0[0]        | U_reg_main/fpga_reset                                                            |                1 |              4 |
 |  clk_fe_buf_BUFG               | U_reg_usb/U_stat_update_cdc/E[0]              | U_reg_main/fpga_reset                                                            |                1 |              5 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[2]                           | U_reg_main/fpga_reset                                                            |                8 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_0[1]             | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_1[0]             | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_0[0]             | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_fe_buf_BUFG               | U_pattern_matcher/bytes_received              | U_pattern_matcher/input_data[503]_i_1_n_0                                        |                2 |              8 |
-|  clk_fe_buf_BUFG               | fe_rxvalid_IBUF                               | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              |                                               | U_usb_reg_main/SR[0]                                                             |                5 |              8 |
-|  clk_usb_buf_BUFG              |                                               | U_usb_reg_main/reg_address_reg[2]_0[0]                                           |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_10          | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[0]_3           | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[0]_2           | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_datao0                     |                                                                                  |                7 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[6]                           | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[3]                           | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[4]                           | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[9]                           | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[10]                          | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[11]                          | U_reg_main/fpga_reset                                                            |                7 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[0]                           | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[0]                           | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_1[2]             | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_1[1]             | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_3[0]             | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_1[0]             | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_fe_buf_BUFG               | U_pattern_matcher/bytes_received              | U_reg_main/capturing_r_reg[0]                                                    |                2 |              8 |
+|  clk_fe_buf_BUFG               | fe_rxvalid_IBUF                               | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              |                                               | U_usb_reg_main/SR[0]                                                             |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_datao0                     |                                                                                  |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_userio_pwdriven            | U_reg_main/fpga_reset                                                            |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[21]                          | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_2                | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[1]                           | U_reg_main/fpga_reset                                                            |                2 |              8 |
 |  clk_usb_buf_BUFG              | U_usb_reg_main/E[14]                          | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[15]                          | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[20]                          | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[21]                          | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[1]_0[2]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[7]                           | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[18]                          | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[17]                          | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[22]                          | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[13]                          | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[23]                          | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[1]                           | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[12]                          | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[13]                          | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[15]                          | U_reg_main/fpga_reset                                                            |                2 |              8 |
 |  clk_usb_buf_BUFG              | U_usb_reg_main/E[16]                          | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[8]                           | U_reg_main/fpga_reset                                                            |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[12]                          | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[19]                          | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/E[5]                           | U_reg_main/fpga_reset                                                            |                7 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[3]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[5]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[6]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[7]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[8]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[10]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[11]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[9]        | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[12]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[2]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[4]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[1]_0[1]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[2]_1[0]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[2]_1[1]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_0[0]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[13]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[14]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[15]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[1]_0[0]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[2]_1[2]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[0]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[1]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[4]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[6]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[9]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[22]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[53]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[11]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[12]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[48]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[28]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[43]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[14]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[7]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[8]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[25]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[23]       | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[50]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[38]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[57]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[40]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[32]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[36]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[58]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[55]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[5]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[49]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[10]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[13]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[15]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[26]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[39]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[37]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[31]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[16]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[51]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[54]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[7]                           | U_reg_main/fpga_reset                                                            |                6 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[18]                          | U_reg_main/fpga_reset                                                            |                6 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[6]                           | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[5]                           | U_reg_main/fpga_reset                                                            |                6 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[2]                           | U_reg_main/fpga_reset                                                            |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[4]                           | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[18]       | U_reg_main/fpga_reset                                                            |                5 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_0                | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[23]                          | U_reg_main/fpga_reset                                                            |                7 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[3]                           | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[9]                           | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[8]                           | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[11]                          | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[19]                          | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[17]                          | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[22]                          | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[20]                          | U_reg_main/fpga_reset                                                            |                7 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/E[10]                          | U_reg_main/fpga_reset                                                            |                2 |              8 |
 |  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[34]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[42]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[47]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[62]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[24]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[3]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[60]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[41]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[18]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[59]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[35]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[33]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[63]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[27]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[20]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[21]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[45]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[17]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[30]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[56]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[61]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[1]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[2]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[35]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[37]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[38]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[31]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[5]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
 |  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[29]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[44]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[52]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[19]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[46]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[0]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[1]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[35]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[2]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[4]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[42]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[46]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[39]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[5]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[58]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[38]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[55]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[60]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[6]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[40]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[9]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[52]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[7]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[8]        | U_reg_main/fpga_reset                                                            |                8 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[50]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[30]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[39]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[1]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[6]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[4]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[14]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[19]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[20]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[0]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[16]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[12]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[21]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[26]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[33]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[36]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[40]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[42]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[0]_0[1]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[41]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[11]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[0]_0[0]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[10]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[17]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[13]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[3]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[15]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[25]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[23]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[2]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[0]_0[2]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[8]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[9]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[24]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[22]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[27]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[7]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[28]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[32]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[6]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[12]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[13]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[17]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[18]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[1]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[61]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[7]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[10]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
 |  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[21]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[28]       | U_reg_main/fpga_reset                                                            |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[47]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[17]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[20]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[16]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[37]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[48]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[29]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[31]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[3]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[18]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[44]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[26]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[51]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[54]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[22]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[41]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[30]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[24]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[45]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[53]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[43]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[27]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[34]       | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[32]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[33]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[49]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[25]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[36]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[56]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[19]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
 |  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[23]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[59]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[61]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[63]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[0]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[62]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[57]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[23]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[11]       | U_reg_main/fpga_reset                                                            |                6 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[18]       | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[12]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[19]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[14]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[16]       | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[10]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[13]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[15]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[17]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[20]       | U_reg_main/fpga_reset                                                            |                6 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[25]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[43]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[28]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[11]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[24]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[29]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[31]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[62]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[36]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[38]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[47]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[41]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[59]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[63]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[22]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[20]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[37]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[55]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[26]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[30]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[48]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[52]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[46]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[42]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[60]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[0]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[9]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[44]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[51]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[56]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[2]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[4]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[50]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[58]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[14]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[15]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[54]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[57]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[5]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[8]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[27]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[16]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[32]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[33]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[3]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[19]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[53]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[34]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[35]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[39]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[40]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[45]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_7[49]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[48]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[63]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[13]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[61]       | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[19]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[4]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[46]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[51]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
 |  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[21]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[22]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_write_reg_0[2]             | U_reg_main/fpga_reset                                                            |                5 |              8 |
-|  clk_fe_buf_BUFG               | U_fe_capture_main/E[0]                        | U_reg_main/fpga_reset                                                            |                6 |             16 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[54]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[49]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[0]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[17]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[11]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[22]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[20]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[9]        | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[5]_1[0]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[23]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[18]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[55]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[62]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[57]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[44]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[53]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[14]       | U_reg_main/fpga_reset                                                            |                6 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[15]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[3]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[16]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[43]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[45]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[50]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[52]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[58]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[60]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[59]       | U_reg_main/fpga_reset                                                            |                2 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[1]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[2]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[2]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[5]        | U_reg_main/fpga_reset                                                            |                8 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[7]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[8]        | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[56]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[4]_0[0]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_address_reg[3]_8[47]       | U_reg_main/fpga_reset                                                            |                3 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[1]        | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[6]        | U_reg_main/fpga_reset                                                            |                1 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[10]       | U_reg_main/fpga_reset                                                            |                4 |              8 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt_reg[5]_0[12]       | U_reg_main/fpga_reset                                                            |                5 |              8 |
 |  clk_fe_buf_BUFG               | U_fe_capture_main/sel                         | U_fe_capture_main/timestamp_ctr[0]_i_1_n_0                                       |                4 |             16 |
-|  clk_fe_buf_BUFG               | U_fe_capture_main/event_reg                   | U_reg_main/SR[0]                                                                 |                6 |             16 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_width[16]_i_1_n_0           |                                                                                  |                6 |             17 |
-|  clk_usb_buf_BUFG              |                                               |                                                                                  |                9 |             17 |
+|  clk_fe_buf_BUFG               | U_fe_capture_main/event_reg                   | U_reg_main/SR[0]                                                                 |                3 |             16 |
+|  clk_fe_buf_BUFG               | U_fe_capture_main/E[0]                        | U_reg_main/fpga_reset                                                            |                8 |             16 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_width[16]_i_1_n_0           |                                                                                  |               10 |             17 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/fifo_empty_r_reg[0]            | U_reg_main/fpga_reset                                                            |                6 |             18 |
 |  clk_fe_buf_BUFG               | U_pattern_matcher/delay_counter_fe            | U_trigger/delay_counter_fe[0]_i_1_n_0                                            |                5 |             18 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_read_r_reg[0]              | U_reg_main/fpga_reset                                                            |                4 |             18 |
 |  U_trigger_clock/inst/clk_out1 | U_trigger/U_match_cdc/FSM_onehot_state_reg[0] | U_trigger/delay_counter[19]_i_1_n_0                                              |                5 |             19 |
-|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_delay[19]_i_1_n_0           |                                                                                  |                6 |             20 |
+|  U_trigger_clock/inst/clk_out1 | U_trigger/trigger_delay[19]_i_1_n_0           |                                                                                  |                9 |             20 |
 |  clk_fe_buf_BUFG               | U_fe_capture_main/capture_count[0]_i_2_n_0    | U_fe_capture_main/capture_count[0]_i_1_n_0                                       |                6 |             24 |
 |  clk_fe_buf_BUFG               | U_usb_autodetect/timer03_out                  | U_usb_autodetect/U_match_cdc/FSM_onehot_state_reg[1]                             |                6 |             24 |
-|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt0                   | U_usb_reg_main/clear                                                             |                9 |             26 |
-|  clk_fe_buf_BUFG               |                                               |                                                                                  |               15 |             63 |
-|  clk_usb_buf_BUFG              |                                               | U_reg_main/fpga_reset                                                            |               32 |             66 |
-|  clk_fe_buf_BUFG               |                                               | U_reg_main/fpga_reset                                                            |               43 |            141 |
-|  U_trigger_clock/inst/clk_out1 |                                               |                                                                                  |               69 |            305 |
-|  clk_fe_buf_BUFG               | U_pattern_matcher/match_trigger00_out         | U_pattern_matcher/input_data[503]_i_1_n_0                                        |              129 |            504 |
-|  U_trigger_clock/inst/clk_out1 |                                               | U_reg_main/fpga_reset                                                            |              249 |           1040 |
+|  clk_usb_buf_BUFG              |                                               |                                                                                  |               13 |             25 |
+|  clk_usb_buf_BUFG              | U_usb_reg_main/reg_bytecnt0                   | U_usb_reg_main/clear                                                             |                9 |             27 |
+|  clk_fe_buf_BUFG               |                                               |                                                                                  |               16 |             63 |
+|  clk_usb_buf_BUFG              |                                               | U_reg_main/fpga_reset                                                            |               32 |             67 |
+|  clk_fe_buf_BUFG               |                                               | U_reg_main/fpga_reset                                                            |               48 |            141 |
+|  U_trigger_clock/inst/clk_out1 |                                               |                                                                                  |               78 |            305 |
+|  clk_fe_buf_BUFG               | U_pattern_matcher/match_trigger00_out         | U_reg_main/capturing_r_reg[0]                                                    |              136 |            504 |
+|  U_trigger_clock/inst/clk_out1 |                                               | U_reg_main/fpga_reset                                                            |              247 |           1040 |
 +--------------------------------+-----------------------------------------------+----------------------------------------------------------------------------------+------------------+----------------+
 
 

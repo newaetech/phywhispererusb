@@ -47,7 +47,7 @@
 // DO NOT MODIFY THIS FILE.
 
 // IP VLNV: xilinx.com:ip:fifo_generator:13.2
-// IP Revision: 3
+// IP Revision: 4
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections

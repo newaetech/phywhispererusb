@@ -438,7 +438,6 @@ module phywhisperer_top(
       .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
    ) U_fe_capture_usb (
       .reset_i                  (fpga_reset), 
-      .cwusb_clk                (clk_usb_buf),
       .fe_clk                   (clk_fe_buf), 
       .fe_data                  (fe_data),
       .fe_rxvalid               (fe_rxvalid),

@@ -1,3 +1,13 @@
+2019.1:
+ * Version 13.2 (Rev. 4)
+ * Bug Fix: Destination Clock not connected properly for some XPM_CDC instances when in common clock mode. Conditions added to connect the correct clock
+ * Other: IP Waivers added in constraint files. No functional changes
+ * Revision change in one or more subcores
+
+2018.3.1:
+ * Version 13.2 (Rev. 3)
+ * No changes
+
 2018.3:
  * Version 13.2 (Rev. 3)
  * Feature Enhancement: None
@@ -160,7 +170,7 @@
  * Native Vivado Release
  * There have been no functional or interface changes to this IP.  The version number has changed to support unique versioning in Vivado starting with 2013.1.
 
-(c) Copyright 2002 - 2018 Xilinx, Inc. All rights reserved.
+(c) Copyright 2002 - 2019 Xilinx, Inc. All rights reserved.
 
 This file contains confidential and proprietary information
 of Xilinx, Inc. and is protected under U.S. and

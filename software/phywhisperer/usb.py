@@ -21,7 +21,8 @@
 #    along with PhyWhisperer-USB.  If not, see <http://www.gnu.org/licenses/>.
 #=================================================
 
-import phywhisperer.interface.naeusb as NAE
+#import phywhisperer.interface.naeusb as NAE
+import chipwhisperer.hardware.naeusb.naeusb as NAE
 import phywhisperer.interface.program_fpga as LLINT
 import os
 import re
