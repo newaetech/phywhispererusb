@@ -183,6 +183,9 @@ class Usb(PWPacketDispatcher):
         
         Args:
             port (str): Serial port name, such as 'COM36' or '/dev/ttyACM0'.        
+
+            fw_path (str): Path to firmware binary to program the sam3u with.
+                            If None, use default firmware. Defautls to None.
         """
 
         fw_data = None
