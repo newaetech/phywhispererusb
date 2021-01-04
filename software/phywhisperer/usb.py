@@ -174,6 +174,23 @@ class Usb(PWPacketDispatcher):
         pass
 
 
+    def auto_program(self):
+        import time, serial.tools.list_ports
+        before = serial.tools.list_ports.comports()
+        before = [b.device for b in before]
+        time.sleep(0.5)
+        self.erase_sam3u()
+        time.sleep(0.5)
+        after = serial.tools.list_ports.comports()
+        after = [a.device for a in after]
+        candidate = list(set(before) ^ set(after))
+        if len(candidate) == 0:
+            raise OSError("Could not detect COMPORT. Continue using programmer.program()")
+        com = candidate[0]
+        print("Detected com port {}".format(com))
+        self.program_sam3u(com)
+        
+        
     def erase_sam3u(self):
         """Erase the SAM3U Firmware, which forces it into bootloader mode."""
         self._llint.eraseFW(confirm=True)
