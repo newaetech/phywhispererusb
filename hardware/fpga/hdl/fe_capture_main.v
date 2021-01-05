@@ -57,6 +57,10 @@ module fe_capture_main #(
     input  wire I_fifo_empty,
     input  wire I_fifo_full,
 
+    /* TRIGGER CONNECTIONS */
+    input  wire I_target_trig,
+    input  wire I_capture_while_trig,
+
     /* PATTERN MATCH CONNECTIONS */
     output wire O_capturing,
 
@@ -225,8 +229,9 @@ module fe_capture_main #(
 
     assign O_capturing = capture_allowed;
 
-    assign capture_allowed = I_capture_enable & ((capture_count < capture_len_r) || (capture_len_r == 0)) & 
-                            !I_fifo_full & !I_fifo_overflow_blocked;
+    assign capture_allowed = I_capture_enable & !I_fifo_full & !I_fifo_overflow_blocked &
+                            (I_capture_while_trig? I_target_trig : ((capture_count < capture_len_r) || (capture_len_r == 0)));
+
 
    // CDC:
    always @(posedge cwusb_clk) begin

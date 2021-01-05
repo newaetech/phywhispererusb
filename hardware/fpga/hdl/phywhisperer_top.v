@@ -291,6 +291,8 @@ module phywhisperer_top(
       .I_capture_enable_pulse (capture_enable_pulse),
       .O_timestamps_disable (timestamps_disable),
       .O_capture_now    ( ), // unused
+      .O_board_rev      ( ), // unused
+      .O_capture_while_trig ( ), // unused
 
       .I_locked1        (trigger_clk_locked),
       .I_locked2        (1'b0),
@@ -426,6 +428,9 @@ module phywhisperer_top(
       .I_fifo_overflow_blocked  (fifo_overflow_blocked),
       .I_fifo_full              (fifo_full),
       .I_fifo_empty             (fifo_empty),
+
+      .I_target_trig            (1'b0), // unused
+      .I_capture_while_trig     (1'b0), // unused
 
       .O_capturing              (capturing),
       .I_capture_enable         (capture_enable)
