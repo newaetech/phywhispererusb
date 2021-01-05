@@ -175,12 +175,17 @@ class Usb(PWPacketDispatcher):
 
 
     def auto_program(self):
+        """ Erases the firmware of the onboard SAM3U, and reprograms it with default firmware
+
+        Attempts to autodetect the COM PORT that the SAM3U shows up as. If this fails, it will
+        be necessary to flash new firmware via :code:`program_sam3u`
+        """
         import time, serial.tools.list_ports
         before = serial.tools.list_ports.comports()
         before = [b.device for b in before]
         time.sleep(0.5)
         self.erase_sam3u()
-        time.sleep(0.5)
+        time.sleep(1.5)
         after = serial.tools.list_ports.comports()
         after = [a.device for a in after]
         candidate = list(set(before) ^ set(after))
