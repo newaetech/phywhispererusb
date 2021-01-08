@@ -2,8 +2,8 @@
 # Vivado v2019.1 (64-bit)
 # SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
 # IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Mon Dec 21 11:26:21 2020
-# Process ID: 9748
+# Start of session at: Fri Jan  8 11:54:31 2021
+# Process ID: 7932
 # Current directory: W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/clk_wiz_0_synth_1
 # Command line: vivado.exe -log clk_wiz_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source clk_wiz_0.tcl
 # Log file: W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/clk_wiz_0_synth_1/clk_wiz_0.vds

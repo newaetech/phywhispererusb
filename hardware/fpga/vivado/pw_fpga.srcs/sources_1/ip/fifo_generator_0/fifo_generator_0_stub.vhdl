@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
--- Date        : Mon Dec 21 11:09:31 2020
+-- Date        : Mon Dec 21 11:09:30 2020
 -- Host        : qed running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub
---               W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/fifo_generator_0_synth_1/fifo_generator_0_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top fifo_generator_0 -prefix
+--               fifo_generator_0_ fifo_generator_0_stub.vhdl
 -- Design      : fifo_generator_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7s6ftgb196-2

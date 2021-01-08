@@ -58,6 +58,7 @@ module tb_pw();
     parameter pREAD_CONCURRENTLY = 1;
     parameter pSTREAM_MODE = 0;
     parameter pSLOW_READS = 0;
+    parameter pMAX_TIMESTAMP = 'hFFFF;
     parameter pDUMP = 0;
 
     reg           usb_clk;
@@ -187,6 +188,7 @@ module tb_pw();
    reg [7:0] stat_mask;
    reg stat_matched;
    reg [4:0] stat_matched_value;
+   reg [15:0] max_timestamp;
 
    int matchtime;
    int triggertime;
@@ -244,17 +246,31 @@ module tb_pw();
       write_1byte(`USB_REG_SELECT, `REG_PATTERN_BYTES, 8'haa);
       read_1byte(`USB_REG_SELECT, `REG_PATTERN_BYTES, rdata);
 
+      max_timestamp = $urandom_range('h08, pMAX_TIMESTAMP);
+      $display("Setting max timestamp to %h", max_timestamp);
+      rw_lots_bytes(`MAIN_REG_SELECT, `REG_MAX_TIMESTAMP);
+      write_next_byte(max_timestamp & 255);
+      write_next_byte((max_timestamp >> 8) & 255);
+
       write_1byte(`MAIN_REG_SELECT, `REG_TRIGGER_ENABLE, pTRIGGER_ENABLE);
       write_1byte(`MAIN_REG_SELECT, `REG_COUNT_WRITES, 1);
       rw_lots_bytes(`MAIN_REG_SELECT, `REG_CAPTURE_LEN);
       if (pNO_CAPTURE_LIMIT) begin
          write_next_byte(0);
          write_next_byte(0);
+         write_next_byte(0);
+         write_next_byte(0);
       end
       else begin
       end
          write_next_byte(pNUM_EVENTS & 255);
-         write_next_byte(pNUM_EVENTS >> 8);
+         write_next_byte((pNUM_EVENTS >> 8) & 255);
+         write_next_byte((pNUM_EVENTS >> 16) & 255);
+         write_next_byte((pNUM_EVENTS >> 24) & 255);
+
+         write_next_byte(trigger_width[i] & 255);
+         write_next_byte((trigger_width[i] >> 8) & 255);
+         write_next_byte((trigger_width[i] >> 16) & 255);
 
       if (pVERBOSE) begin
          $display("---------------------------------------------|-------------------------------");
@@ -777,7 +793,7 @@ module tb_pw();
       end
 
       timestamp = read_data[`FE_FIFO_TIME_START +: `FE_FIFO_SHORTTIME_LEN];
-      time_counter = time_counter + timestamp;
+      time_counter = time_counter + timestamp - 1;
       if ( (data == expected_data) && (dut_usbstat == fe_stat[rx_dataindex]) && (time_counter == fe_times[rx_dataindex]) ) begin
          if (pVERBOSE)
             $display("%sRead %4d: %s: data=%h, stat=%h, time=%0d, total time=%0d", rxalign, rx_dataindex, str, data, dut_usbstat, timestamp, time_counter);

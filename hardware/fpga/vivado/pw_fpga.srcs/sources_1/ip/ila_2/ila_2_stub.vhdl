@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
--- Date        : Mon Dec 21 11:26:33 2020
+-- Date        : Mon Dec 21 11:26:29 2020
 -- Host        : qed running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub
---               W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_2_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top ila_2 -prefix
+--               ila_2_ ila_2_stub.vhdl
 -- Design      : ila_2
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7s6ftgb196-2

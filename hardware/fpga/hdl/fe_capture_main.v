@@ -49,6 +49,7 @@ module fe_capture_main #(
     input  wire [pCAPTURE_LEN_WIDTH-1:0] I_capture_len,
     input  wire I_count_writes,
     input  wire I_counter_quick_start,
+    input  wire [15:0] I_max_timestamp,
 
     /* FIFO CONNECTIONS */
     output reg  O_fifo_flush,
@@ -96,6 +97,28 @@ module fe_capture_main #(
     assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr <= I_max_short_timestamp);
     assign short_timestamp_pre = timestamps_disable_r? 1'b1: (timestamp_ctr < I_max_short_timestamp);
 
+    wire long_timestamp = (timestamp_ctr == I_max_timestamp);
+    reg long_timestamp_r;
+    reg long_corner;
+
+    always @ (posedge fe_clk) begin
+       if (reset_i) begin
+          long_timestamp_r <= 1'b0;
+       end
+       else begin
+          if (long_timestamp)
+             long_timestamp_r <= 1'b1;
+          else if (state == pS_IDLE)
+             long_timestamp_r <= 1'b0;
+          
+          if (state == pS_IDLE)
+             long_corner <= 1'b0;
+          else if (event_reg & long_timestamp_r)
+             long_corner <= 1'b1;
+       end
+    end
+
+
     // FSM:
     always @ (posedge fe_clk) begin
        if (reset_i)
@@ -118,7 +141,7 @@ module fe_capture_main #(
                 // do FE_FIFO_CMD_TIME packet one cycle early so we don't get caught behind, 
                 // for the corner case of back-to-back events following a long idle time:
                 next_state = pS_TIME;
-             else if (timestamp_ctr == { {(pTIMESTAMP_FULL_WIDTH-1){1'b1}}, 1'b0})
+             else if (long_timestamp && !timestamps_disable_r)
                 next_state = pS_TIME;
              else
                 next_state = pS_IDLE;
@@ -169,14 +192,14 @@ module fe_capture_main #(
              ctr_running <= 1'b0;
 
           if (!ctr_running) begin
-             timestamp_ctr <= 0;
-             timestamp <= 0;
+             timestamp_ctr <= 1;
+             timestamp <= 1;
           end
-          else if (event_reg) begin
+          else if (event_reg || long_timestamp) begin
              timestamp <= timestamp_ctr;
-             timestamp_ctr <= 0;
+             timestamp_ctr <= 1;
           end
-          else if (timestamp_ctr < {pTIMESTAMP_FULL_WIDTH{1'b1}})
+          else if (timestamp_ctr < I_max_timestamp)
              timestamp_ctr <= timestamp_ctr + 1;
        end
     end
@@ -205,23 +228,33 @@ module fe_capture_main #(
     end
 
     always @(*) begin
-       if (state_r == pS_TIME)
-          O_fifo_time = timestamp;
-       else if (state_r2 == pS_TIME)
-          O_fifo_time = 0;
-       else
-          O_fifo_time = timestamp_reg;
+       if (long_corner) begin
+          if (state_r == pS_TIME)
+             O_fifo_time = timestamp_reg;
+          else if (state_r2 == pS_TIME)
+             O_fifo_time = 1;
+          else // shouldn't happen, just here to avoid latch inference
+             O_fifo_time = 0;
+       end
+       else begin
+          if (state_r == pS_TIME)
+             O_fifo_time = timestamp;
+          else if (state_r2 == pS_TIME)
+             O_fifo_time = 0;
+          else
+             O_fifo_time = timestamp_reg;
+       end
     end
 
 
     // manage capture mode:
     always @ (posedge fe_clk) begin
        if (reset_i) begin
-          capture_count <= 24'd0;
+          capture_count <= 32'd0;
        end
        else begin
           if (arm_r & !arm_r2)
-             capture_count <= 24'd0;
+             capture_count <= 32'd0;
           else if (I_count_writes? O_fifo_wr : I_capture_enable)
              capture_count <= capture_count + 1;
        end

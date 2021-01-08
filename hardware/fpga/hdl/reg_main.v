@@ -78,6 +78,7 @@ module reg_main #(
    output wire         O_capture_now,
    output wire         O_timestamps_disable,
    output wire         O_capture_while_trig,
+   output wire [15:0]  O_max_timestamp,
 
 // user-settable to allow for FPGA pin assignment changes across board revisions
    output wire [3:0]   O_board_rev,
@@ -127,6 +128,7 @@ module reg_main #(
    reg  reg_fast_fifo_rd_en;
    reg reg_timestamps_disable;
    reg reg_capture_while_trig;
+   reg [15:0] reg_max_timestamp;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -149,6 +151,7 @@ module reg_main #(
    assign O_counter_quick_start = reg_counter_quick_start;
    assign O_board_rev = reg_board_rev;
    assign O_capture_while_trig = reg_capture_while_trig;
+   assign O_max_timestamp = reg_max_timestamp;
 
    reg [pUSERIO_WIDTH-1:0] reg_userio_pwdriven;
    reg [pUSERIO_WIDTH-1:0] reg_userio_drive_data;
@@ -192,6 +195,7 @@ module reg_main #(
             `REG_FAST_FIFO_RD_EN: reg_read_data = reg_fast_fifo_rd_en;
             `REG_TIMESTAMPS_DISABLE: reg_read_data = reg_timestamps_disable;
             `REG_CAPTURE_WHILE_TRIG: reg_read_data = reg_capture_while_trig;
+            `REG_MAX_TIMESTAMP: reg_read_data = reg_max_timestamp[reg_bytecnt*8 +: 8];
             default: reg_read_data = 0;
          endcase
       end
@@ -325,6 +329,7 @@ module reg_main #(
          reg_fast_fifo_rd_en <= 1'b0;
          reg_timestamps_disable <= 1'b0;
          reg_capture_while_trig <= 1'b0;
+         reg_max_timestamp <= 16'hFFFF;
       end
 
       else begin
@@ -346,6 +351,7 @@ module reg_main #(
                `REG_FAST_FIFO_RD_EN: reg_fast_fifo_rd_en <= write_data;
                `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
                `REG_CAPTURE_WHILE_TRIG: reg_capture_while_trig <= write_data[0];
+               `REG_MAX_TIMESTAMP: reg_max_timestamp[reg_bytecnt*8 +: 8] <= write_data;
             endcase
          end
 

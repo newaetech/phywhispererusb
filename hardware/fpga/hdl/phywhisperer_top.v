@@ -187,6 +187,7 @@ module phywhisperer_top(
    wire reg_usb_selected;
 
    wire [15:0] max_short_timestamp;
+   wire [15:0] max_timestamp;
 
    wire [pUSERIO_WIDTH-1:0] userio_pwdriven;
    wire [pUSERIO_WIDTH-1:0] userio_drive_data;
@@ -293,6 +294,7 @@ module phywhisperer_top(
       .O_capture_now    ( ), // unused
       .O_board_rev      ( ), // unused
       .O_capture_while_trig ( ), // unused
+      .O_max_timestamp  (max_timestamp),
 
       .I_locked1        (trigger_clk_locked),
       .I_locked2        (1'b0),
@@ -415,6 +417,7 @@ module phywhisperer_top(
       .I_capture_len            (capture_len),
       .I_count_writes           (count_writes),
       .I_counter_quick_start    (counter_quick_start),
+      .I_max_timestamp          (max_timestamp),
 
       .I_event                  (fe_event),
       .I_data_cmd               (fe_data_cmd),
