@@ -21,8 +21,7 @@
 #    along with PhyWhisperer-USB.  If not, see <http://www.gnu.org/licenses/>.
 #=================================================
 
-#import phywhisperer.interface.naeusb as NAE
-import chipwhisperer.hardware.naeusb.naeusb as NAE
+import phywhisperer.interface.naeusb as NAE
 import phywhisperer.interface.program_fpga as LLINT
 import os
 import re
@@ -415,9 +414,7 @@ class Usb(PWPacketDispatcher):
                 data = raw[1]
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
-                #hardware reports the number of cycles between events, so to
-                #obtain elapsed time we add one:
-                timestep += (ts+1)
+                timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
                    print("%8d   flags=%02x data=%02x"%(timestep, flags, data))
@@ -431,7 +428,7 @@ class Usb(PWPacketDispatcher):
             elif (command == self.FE_FIFO_CMD_STAT):
                 ts = raw[0] & 0x7
                 self.short_timestamps[ts] += 1
-                timestep += (ts+1)
+                timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
                    print("%8d   flags=%02x"%(timestep, flags))

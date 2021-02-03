@@ -21,7 +21,7 @@ random.seed()
 # Define testcases:
 tests = []
 tests.append(dict(name  = 'short_timestamps',
-             frequency = 1,
+             frequency = 5,
              description = 'Short timestamps only.',
              NUM_EVENTS = 50,
              NUM_REPEATS = 4,
@@ -35,7 +35,7 @@ tests.append(dict(name  = 'usb_autodetect',
              TOP = 'tb_usb_autodetect'))
 
 tests.append(dict(name  = 'stream_short',
-             frequency = 1,
+             frequency = 5,
              description = 'Stream mode, test empty FIFO reads.',
              NUM_EVENTS = 100,
              TIMEOUT = 4000,
@@ -99,13 +99,35 @@ tests.append(dict(name  = 'stream_vlong',
              MAX_DELAY  = 1))
 
 tests.append(dict(name  = 'long_timestamps',
-             frequency = 1,
+             frequency = 2,
              description = 'Long timestamps only (but not too long).',
              NUM_EVENTS = 30,
              NUM_REPEATS = 2,
              DELAY_MODE = 0,
              MIN_DELAY  = 16,
              MAX_DELAY  = 64))
+
+tests.append(dict(name  = 'overflow_timestamps',
+             frequency = 1,
+             description = 'Overflow timestamp counter.',
+             NUM_EVENTS = 30,
+             NUM_REPEATS = 2,
+             MAX_TIMESTAMP = 64,
+             DELAY_MODE = 0,
+             MIN_DELAY  = 4,
+             MAX_DELAY  = 128))
+
+tests.append(dict(name  = 'lots_overflow_timestamps',
+             frequency = 1,
+             description = 'Overflow timestamp counter, consecutively.',
+             NUM_EVENTS = 30,
+             NUM_REPEATS = 2,
+             MAX_TIMESTAMP = 32,
+             DELAY_MODE = 0,
+             MIN_DELAY  = 4,
+             MAX_DELAY  = 128))
+
+
 
 tests.append(dict(name  = 'burst_fifo_read',
              frequency = 2,
@@ -117,7 +139,7 @@ tests.append(dict(name  = 'burst_fifo_read',
              PRETRIG_MAX = 20))
 
 tests.append(dict(name  = 'trigger',
-             frequency = 1,
+             frequency = 5,
              description = 'Basic trigger test.',
              NUM_REPEATS = 10,
              TRIGGER_ENABLE = 1))
@@ -131,7 +153,7 @@ tests.append(dict(name  = 'trigger_corner',
              TRIGGER_ENABLE = 1))
 
 tests.append(dict(name  = 'short_trigger',
-             frequency = 2,
+             frequency = 5,
              description = 'Small trigger delay and width.',
              TRIGGER_DELAY_MIN = 0,
              TRIGGER_DELAY_MAX = 16,
@@ -171,7 +193,7 @@ tests.append(dict(name  = 'corner_timestamps',
              MAX_DELAY  = 9))
 
 tests.append(dict(name  = 'bursts',
-             frequency = 2,
+             frequency = 5,
              description = 'Bursty inputs, alternating between no delay and long delay.',
              NUM_EVENTS = 50,
              NUM_REPEATS = 2,
@@ -180,7 +202,7 @@ tests.append(dict(name  = 'bursts',
              MAX_DELAY  = 16))
 
 tests.append(dict(name  = 'shortpattern',
-             frequency = 2,
+             frequency = 5,
              description = 'Pattern of 3 bytes or less.',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
@@ -190,7 +212,7 @@ tests.append(dict(name  = 'shortpattern',
              PATTERN_MAX = 3))
 
 tests.append(dict(name  = 'longpattern',
-             frequency = 2,
+             frequency = 5,
              description = 'Pattern of 16 bytes or more.',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
@@ -199,7 +221,7 @@ tests.append(dict(name  = 'longpattern',
              PATTERN_MAX = 64))
 
 tests.append(dict(name  = 'vlongpattern',
-             frequency = 4,
+             frequency = 5,
              description = 'Pattern of 60-64 bytes.',
              NUM_EVENTS = 10,
              NUM_REPEATS = 5,
@@ -251,7 +273,7 @@ overflow event that they cover:
 tests.append(dict(name  = 'vlong_timestamps',
              frequency = 0,
              description = 'Very long delay between events, to cause consecutive "Time" events.',
-             TIMEOUT = 400000,
+             TIMEOUT = 4000000,
              NUM_EVENTS = 5,
              DELAY_MODE = 0,
              PRETRIG_MAX = 2,
@@ -274,7 +296,7 @@ tests.append(dict(name  = 'anything_goes',
 def print_tests():
     print("Available tests:")
     for test in tests:
-       print("%s: %s" % (test['name'], test['description']))
+       print("%s:\t\t%s" % (test['name'], test['description']))
     quit()
 
 if (args.list):

@@ -17,9 +17,12 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_param tcl.collectionResultDisplayLimit 0
+set_param chipscope.maxJobs 2
+set_param xicom.use_bs_reader 1
 set_param project.vivado.isBlockSynthRun true
 set_msg_config -msgmgr_mode ooc_run
-create_project -in_memory -part xc7s6ftgb196-2
+create_project -in_memory -part xc7s15ftgb196-2
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
@@ -58,7 +61,7 @@ set cached_ip [config_ip_cache -export -no_bom  -dir W:/hardware/phywhisperer/ha
 if { $cached_ip eq {} } {
 close [open __synthesis_is_running__ w]
 
-synth_design -top ila_2 -part xc7s6ftgb196-2 -mode out_of_context
+synth_design -top ila_2 -part xc7s15ftgb196-2 -mode out_of_context
 
 #---------------------------------------------------------
 # Generate Checkpoint/Stub/Simulation Files For IP Cache
