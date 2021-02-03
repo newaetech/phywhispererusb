@@ -38,6 +38,16 @@
 `define REG_COUNTER_QUICK_START      6'h0c
 `define REG_BOARD_REV                6'h0d
 
+`define REG_USERIO_DATA              6'h0e
+`define REG_USERIO_PWDRIVEN          6'h0f
+
+`define REG_MMCM_LOCKED              6'h10
+
+`define REG_RESET_REG                6'h11
+`define REG_FAST_FIFO_RD_EN          6'h12
+`define REG_TIMESTAMPS_DISABLE       6'h13
+
+
 // front end select definitions
 `define FE_SELECT_WIDTH 2
 `define FE_USB 0

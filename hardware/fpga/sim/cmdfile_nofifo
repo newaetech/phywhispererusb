@@ -9,3 +9,4 @@ tb_pw.v
 ../hdl/pattern_matcher_usb.v
 ../hdl/usb_autodetect.v
 ../hdl/cdc_pulse.v
+../hdl/userio.v

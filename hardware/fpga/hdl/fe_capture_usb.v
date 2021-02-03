@@ -28,7 +28,6 @@ module fe_capture_usb #(
     parameter pTIMESTAMP_SHORT_WIDTH = 3,
     parameter pCAPTURE_LEN_WIDTH = 24
 )(
-    input  wire cwusb_clk,
     input  wire reset_i,
 
     /* FRONT END CONNECTIONS */

@@ -1,7 +1,7 @@
-Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Fri Sep 25 11:53:51 2020
+| Tool Version     : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date             : Mon Dec 21 12:05:06 2020
 | Host             : qed running 64-bit major release  (build 9200)
 | Command          : report_power -file phywhisperer_top_power_routed.rpt -pb phywhisperer_top_power_summary_routed.pb -rpx phywhisperer_top_power_routed.rpx
 | Design           : phywhisperer_top
@@ -53,17 +53,17 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.026 |        6 |       --- |             --- |
-| Slice Logic             |     0.002 |     6740 |       --- |             --- |
-|   LUT as Logic          |     0.002 |     2083 |      8000 |           26.04 |
-|   Register              |    <0.001 |     3898 |     16000 |           24.36 |
+| Slice Logic             |    <0.001 |     6676 |       --- |             --- |
+|   LUT as Logic          |    <0.001 |     1854 |      8000 |           23.18 |
 |   CARRY4                |    <0.001 |       98 |      2000 |            4.90 |
-|   F7/F8 Muxes           |    <0.001 |      158 |      8000 |            1.98 |
-|   Others                |     0.000 |       40 |       --- |             --- |
-|   LUT as Shift Register |     0.000 |        1 |      2400 |            0.04 |
-| Signals                 |     0.003 |     6009 |       --- |             --- |
+|   Register              |    <0.001 |     3933 |     16000 |           24.58 |
+|   LUT as Shift Register |    <0.001 |        1 |      2400 |            0.04 |
+|   F7/F8 Muxes           |    <0.001 |      245 |      8000 |            3.06 |
+|   Others                |     0.000 |       49 |       --- |             --- |
+| Signals                 |     0.002 |     5792 |       --- |             --- |
 | Block RAM               |     0.003 |        4 |        10 |           40.00 |
 | MMCM                    |     0.106 |        1 |         2 |           50.00 |
-| I/O                     |     0.009 |       56 |       100 |           56.00 |
+| I/O                     |     0.012 |       64 |       100 |           64.00 |
 | Static Power            |     0.020 |          |           |                 |
 | Total                   |     0.170 |          |           |                 |
 +-------------------------+-----------+----------+-----------+-----------------+
@@ -75,7 +75,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.039 |       0.035 |      0.004 |
+| Vccint    |       1.000 |     0.036 |       0.033 |      0.004 |
 | Vccaux    |       1.800 |     0.066 |       0.059 |      0.007 |
 | Vcco33    |       3.300 |     0.004 |       0.003 |      0.001 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
@@ -150,12 +150,12 @@ Table of Contents
 |     U_fifo          |     0.003 |
 |       U0            |     0.003 |
 |   U_pattern_matcher |     0.015 |
-|   U_reg_main        |     0.001 |
-|   U_reg_usb         |     0.004 |
+|   U_reg_main        |     0.002 |
+|   U_reg_usb         |     0.003 |
 |   U_trigger         |     0.005 |
 |   U_trigger_clock   |     0.106 |
 |     inst            |     0.106 |
-|   U_usb_reg_main    |     0.004 |
+|   U_usb_reg_main    |     0.001 |
 +---------------------+-----------+
 
 

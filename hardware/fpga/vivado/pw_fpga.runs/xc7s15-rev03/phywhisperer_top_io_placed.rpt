@@ -1,7 +1,7 @@
-Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
-| Tool Version              : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date                      : Fri Sep 25 11:53:26 2020
+| Tool Version              : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date                      : Mon Dec 21 12:04:41 2020
 | Host                      : qed running 64-bit major release  (build 9200)
 | Command                   : report_io -file phywhisperer_top_io_placed.rpt
 | Design                    : phywhisperer_top
@@ -129,7 +129,7 @@ Table of Contents
 | G8         |                |            | NC                           | Not Connected |             |         |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | G9         |                |            | VCCINT                       | VCCINT        |             |         |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | G10        |                |            | GND                          | GND           |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
-| G11        | userio_clk     | High Range | IO_L12P_T1_MRCC_14           | BIDIR         | LVCMOS33    |      14 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
+| G11        | userio_clk     | High Range | IO_L12P_T1_MRCC_14           | INPUT         | LVCMOS33    |      14 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | G12        |                |            | GND                          | GND           |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
 | G13        |                | High Range | VCCO_14                      | VCCO          |             |      14 |            |      |                     |                      |    3.30 |            |           |          |      |                  |              |                   |              |
 | G14        | fe_chrgvbus    | High Range | IO_L9P_T1_DQS_14             | OUTPUT        | LVCMOS33    |      14 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |

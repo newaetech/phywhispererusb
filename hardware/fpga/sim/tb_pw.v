@@ -230,6 +230,14 @@ module tb_pw();
       pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
+      write_1byte(`USB_REG_SELECT, `REG_USERIO_PWDRIVEN, 8'hff);
+      write_1byte(`USB_REG_SELECT, `REG_USERIO_DATA, 8'ha5);
+      repeat (10) @(posedge usb_clk);
+      write_1byte(`USB_REG_SELECT, `REG_USERIO_PWDRIVEN, 8'hf0);
+      repeat (10) @(posedge usb_clk);
+      write_1byte(`USB_REG_SELECT, `REG_USERIO_PWDRIVEN, 8'h0f);
+
+
       write_1byte(`MAIN_REG_SELECT, `REG_COUNT_WRITES, 1);
       read_1byte(`MAIN_REG_SELECT, `REG_COUNT_WRITES, rdata);
 

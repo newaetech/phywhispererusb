@@ -48,7 +48,6 @@ module reg_usb #(
 
 // Interface to front end capture:
    input  wire                                  fe_clk,
-   output wire                                  O_timestamps_disable,
    output wire                                  O_reg_arm_feclk,
    input  wire [4:0]                            I_fe_capture_stat,
 
@@ -81,7 +80,6 @@ module reg_usb #(
 
    reg reg_arm_feclk;
    reg reg_arm_feclk_r;
-   reg reg_timestamps_disable;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
    reg [7:0] reg_pattern_bytes;
@@ -104,7 +102,6 @@ module reg_usb #(
    reg  [7:0] reg_read_data;
 
 
-   assign O_timestamps_disable = reg_timestamps_disable;
    assign O_pattern = reg_pattern;
    assign O_pattern_mask = reg_pattern_mask;
    assign O_pattern_bytes = reg_pattern_bytes;
@@ -128,7 +125,6 @@ module reg_usb #(
             `REG_PATTERN_BYTES: reg_read_data = reg_pattern_bytes;
             `REG_USB_SPEED: reg_read_data = {6'b0, O_usb_speed};
             `REG_STAT_MATCH: reg_read_data = reg_stat_matched[reg_bytecnt*8 +: 8];
-            `REG_TIMESTAMPS_DISABLE: reg_read_data = reg_timestamps_disable;
             `REG_USB_AUTO_DEFAULTS: reg_read_data = reg_usb_auto_defaults;
             `REG_CAPTURE_DELAY: reg_read_data = reg_capture_delay[reg_bytecnt*8 +: 8];
             `REG_USB_AUTO_WAIT1: reg_read_data = reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
@@ -151,7 +147,6 @@ module reg_usb #(
    // write logic (USB clock domain):
    always @(posedge cwusb_clk) begin
       if (reset_i) begin
-         reg_timestamps_disable <= 1'b0;
          reg_pattern <= 0;
          reg_pattern_mask <= 64'h0;
          reg_pattern_bytes <= 8'd0;
@@ -168,7 +163,6 @@ module reg_usb #(
       else begin
          if (selected && reg_write) begin
             case (address)
-               `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
                `REG_PATTERN: reg_pattern[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_MASK: reg_pattern_mask[reg_bytecnt*8 +: 8] <= write_data;
                `REG_PATTERN_BYTES: reg_pattern_bytes <= write_data;

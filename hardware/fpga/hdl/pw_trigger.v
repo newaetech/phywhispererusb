@@ -74,6 +74,8 @@ module pw_trigger #(
    // and should not be changing while the downstream logic is active, a 
    // single sync stage is sufficient:
    always @ (posedge trigger_clk) begin
+      // ease timing by foregoing reset here:
+      /*
       if (reset_i) begin
          trigger_delay_r[0] <= 0;
          trigger_delay_r[1] <= 0;
@@ -83,7 +85,6 @@ module pw_trigger #(
          trigger_delay_r[5] <= 0;
          trigger_delay_r[6] <= 0;
          trigger_delay_r[7] <= 0;
-
          trigger_width_r[0] <= 0;
          trigger_width_r[1] <= 0;
          trigger_width_r[2] <= 0;
@@ -92,33 +93,31 @@ module pw_trigger #(
          trigger_width_r[5] <= 0;
          trigger_width_r[6] <= 0;
          trigger_width_r[7] <= 0;
-
          num_triggers_r <= 0;
          trigger_enable_r <= 0;
       end
-
       else begin
-         trigger_delay_r[0] <= I_trigger_delay[0*24+:pTRIGGER_DELAY_WIDTH];
-         trigger_delay_r[1] <= I_trigger_delay[1*24+:pTRIGGER_DELAY_WIDTH];
-         trigger_delay_r[2] <= I_trigger_delay[2*24+:pTRIGGER_DELAY_WIDTH];
-         trigger_delay_r[3] <= I_trigger_delay[3*24+:pTRIGGER_DELAY_WIDTH];
-         trigger_delay_r[4] <= I_trigger_delay[4*24+:pTRIGGER_DELAY_WIDTH];
-         trigger_delay_r[5] <= I_trigger_delay[5*24+:pTRIGGER_DELAY_WIDTH];
-         trigger_delay_r[6] <= I_trigger_delay[6*24+:pTRIGGER_DELAY_WIDTH];
-         trigger_delay_r[7] <= I_trigger_delay[7*24+:pTRIGGER_DELAY_WIDTH];
+      */
+      trigger_delay_r[0] <= I_trigger_delay[0*24+:pTRIGGER_DELAY_WIDTH];
+      trigger_delay_r[1] <= I_trigger_delay[1*24+:pTRIGGER_DELAY_WIDTH];
+      trigger_delay_r[2] <= I_trigger_delay[2*24+:pTRIGGER_DELAY_WIDTH];
+      trigger_delay_r[3] <= I_trigger_delay[3*24+:pTRIGGER_DELAY_WIDTH];
+      trigger_delay_r[4] <= I_trigger_delay[4*24+:pTRIGGER_DELAY_WIDTH];
+      trigger_delay_r[5] <= I_trigger_delay[5*24+:pTRIGGER_DELAY_WIDTH];
+      trigger_delay_r[6] <= I_trigger_delay[6*24+:pTRIGGER_DELAY_WIDTH];
+      trigger_delay_r[7] <= I_trigger_delay[7*24+:pTRIGGER_DELAY_WIDTH];
 
-         trigger_width_r[0] <= I_trigger_width[0*24+:pTRIGGER_WIDTH_WIDTH];
-         trigger_width_r[1] <= I_trigger_width[1*24+:pTRIGGER_WIDTH_WIDTH];
-         trigger_width_r[2] <= I_trigger_width[2*24+:pTRIGGER_WIDTH_WIDTH];
-         trigger_width_r[3] <= I_trigger_width[3*24+:pTRIGGER_WIDTH_WIDTH];
-         trigger_width_r[4] <= I_trigger_width[4*24+:pTRIGGER_WIDTH_WIDTH];
-         trigger_width_r[5] <= I_trigger_width[5*24+:pTRIGGER_WIDTH_WIDTH];
-         trigger_width_r[6] <= I_trigger_width[6*24+:pTRIGGER_WIDTH_WIDTH];
-         trigger_width_r[7] <= I_trigger_width[7*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[0] <= I_trigger_width[0*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[1] <= I_trigger_width[1*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[2] <= I_trigger_width[2*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[3] <= I_trigger_width[3*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[4] <= I_trigger_width[4*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[5] <= I_trigger_width[5*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[6] <= I_trigger_width[6*24+:pTRIGGER_WIDTH_WIDTH];
+      trigger_width_r[7] <= I_trigger_width[7*24+:pTRIGGER_WIDTH_WIDTH];
 
-         num_triggers_r <= I_num_triggers;
-         trigger_enable_r <= I_trigger_enable;
-      end
+      num_triggers_r <= I_num_triggers;
+      trigger_enable_r <= I_trigger_enable;
    end
 
    cdc_pulse U_match_cdc (
@@ -158,13 +157,15 @@ module pw_trigger #(
     wire state_wait_for_off = (state == pS_WAIT_FOR_OFF);
 
     reg  [pNUM_TRIGGER_WIDTH-1:0] trigger_index;
+    reg  [pNUM_TRIGGER_WIDTH-1:0] trigger_delay_index;
 
 
    always @ (posedge trigger_clk) begin
       if (reset_i) begin
          state <= pS_IDLE;
-         trigger_index <= 0;
-         delay_counter <= 0;
+         //trigger_index <= 0;
+         //trigger_delay_index <= 0;
+         //delay_counter <= 0;
          O_trigger <= 0;
       end
       else begin
@@ -185,18 +186,22 @@ module pw_trigger #(
             end
 
             pS_WAIT_FOR_ON: begin
+               // setup the next trigger width:
+               trigger_width <= trigger_width_r[trigger_index];
                if ((delay_counter < trigger_delay) & ~O_trigger)
                   delay_counter <= delay_counter + 1;
                else begin
                   delay_counter <= 1;
                   O_trigger <= 1'b1;
-                  // setup the next trigger delay:
-                  trigger_delay <= trigger_delay_r[trigger_index+1];
+                  // setup for the next trigger delay, part 1:
+                  trigger_delay_index <= trigger_index + 1;
                   state <= pS_WAIT_FOR_OFF;
                end
             end
 
             pS_WAIT_FOR_OFF: begin
+               // setup for the next trigger delay, part 2:
+               trigger_delay <= trigger_delay_r[trigger_delay_index];
                if (delay_counter < trigger_width)
                   delay_counter <= delay_counter + 1;
                else begin
@@ -204,8 +209,6 @@ module pw_trigger #(
                   if (trigger_index < num_triggers_r-1) begin
                      trigger_index <= trigger_index + 1;
                      delay_counter <= 1;
-                     // setup the next trigger width:
-                     trigger_width <= trigger_width_r[trigger_index+1];
                      state <= pS_WAIT_FOR_ON;
                   end
                   else begin

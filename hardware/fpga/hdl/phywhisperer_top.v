@@ -71,7 +71,7 @@ module phywhisperer_top(
 
     /* 20-PIN USER HEADER CONNECTOR */
     inout  wire [7:0] userio_d,
-    inout  wire userio_clk,
+    input  wire userio_clk,
 
     /* 20-PIN CHIPWHISPERER CONNECTOR */
     output wire cw_clk,
@@ -97,6 +97,7 @@ module phywhisperer_top(
    parameter pCAPTURE_DELAY_WIDTH = pTRIGGER_DELAY_WIDTH-2;
    parameter pUSB_AUTO_COUNTER_WIDTH = 24;
    parameter pCAPTURE_LEN_WIDTH = 24;
+   parameter pUSERIO_WIDTH = 8;
    
    parameter pALL_TRIGGER_DELAY_WIDTHS = 24*pNUM_TRIGGER_PULSES;
    parameter pALL_TRIGGER_WIDTH_WIDTHS = 24*pNUM_TRIGGER_PULSES;
@@ -107,6 +108,7 @@ module phywhisperer_top(
    wire clk_usb_buf;
    wire clk_fe_buf;
    wire reset_i = USB_SPARE0;
+   wire fpga_reset;
 
    wire [7:0]   reg_address;
    wire [pBYTECNT_SIZE-1:0]  reg_bytecnt;
@@ -186,6 +188,9 @@ module phywhisperer_top(
 
    wire [15:0] max_short_timestamp;
 
+   wire [pUSERIO_WIDTH-1:0] userio_pwdriven;
+   wire [pUSERIO_WIDTH-1:0] userio_drive_data;
+
    assign LED_CAP = arm;
    assign LED_TRIG = capturing;
 
@@ -214,6 +219,7 @@ module phywhisperer_top(
         .S(1'b0)    // 1-bit set
      );
 
+
    `endif
 
    assign USB_Data = cmdfifo_isout ? cmdfifo_dout : 8'bZ;
@@ -228,9 +234,9 @@ module phywhisperer_top(
       .cwusb_rdn        (USB_nRD), 
       .cwusb_wrn        (USB_nWE),
       .cwusb_cen        (USB_nCS),
-      .cwusb_alen       (USB_SPARE1),
       .cwusb_addr       (USB_Addr),
       .cwusb_isout      (cmdfifo_isout), 
+      .I_drive_data     (1'b0), // unused
       .reg_address      (reg_address), 
       .reg_bytecnt      (reg_bytecnt), 
       .reg_datao        (write_data), 
@@ -244,9 +250,11 @@ module phywhisperer_top(
       .pBYTECNT_SIZE            (pBYTECNT_SIZE),
       .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
       .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH),
-      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
+      .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH),
+      .pUSERIO_WIDTH            (pUSERIO_WIDTH)
    ) U_reg_main (
-      .reset_i          (reset_i), 
+      .reset_pin        (reset_i), 
+      .fpga_reset       (fpga_reset),
       .cwusb_clk        (clk_usb_buf), 
       .reg_address      (reg_address), 
       .reg_bytecnt      (reg_bytecnt), 
@@ -258,19 +266,34 @@ module phywhisperer_top(
 
       .fe_select        (fe_select),
 
+      .userio_d         (userio_d),
+      .O_userio_pwdriven (userio_pwdriven),
+      .O_userio_drive_data (userio_drive_data),
+
       .I_fifo_data      (fifo_out_data),
       .I_fifo_empty     (fifo_empty),
       .O_fifo_read      (fifo_read),
       .I_fifo_status    (fifo_status),
 
+      .O_data_available (), // unused
+      .O_usb_drive_data (), // unused
+      .I_fast_fifo_rdn  (1'b1), // unused
+      .I_usb_cen        (1'b1), // unused
+
       .fe_clk           (clk_fe_buf),
       .O_arm            (arm),
       .O_reg_arm        (reg_arm),
+      .O_arm_pulse      ( ), // unused
       .I_flushing       (fifo_flush),
       .O_capture_len    (capture_len),
       .O_count_writes   (count_writes),
       .O_counter_quick_start (counter_quick_start),
       .I_capture_enable_pulse (capture_enable_pulse),
+      .O_timestamps_disable (timestamps_disable),
+      .O_capture_now    ( ), // unused
+
+      .I_locked1        (trigger_clk_locked),
+      .I_locked2        (1'b0),
 
       // Trigger:
       .O_trigger_delay  (trigger_delay),
@@ -290,6 +313,15 @@ module phywhisperer_top(
    assign read_data = reg_main_selected? read_data_main :
                       reg_usb_selected?  read_data_usb : 0;
 
+   userio #(
+      .pWIDTH                   (pUSERIO_WIDTH)
+   ) U_userio (
+      .usb_clk                  (clk_usb_buf),
+      .userio_d                 (userio_d),
+      .userio_clk               (userio_clk),
+      .I_userio_pwdriven        (userio_pwdriven),
+      .I_userio_drive_data      (userio_drive_data)
+   );
 
    reg_usb #(
       .pTIMESTAMP_FULL_WIDTH    (pTIMESTAMP_FULL_WIDTH),
@@ -300,7 +332,7 @@ module phywhisperer_top(
       .pUSB_AUTO_COUNTER_WIDTH  (pUSB_AUTO_COUNTER_WIDTH)
 
    ) U_reg_usb (
-      .reset_i                  (reset_i), 
+      .reset_i                  (fpga_reset), 
       .cwusb_clk                (clk_usb_buf), 
       .reg_address              (reg_address), 
       .reg_bytecnt              (reg_bytecnt), 
@@ -313,7 +345,6 @@ module phywhisperer_top(
       // FE:
       .fe_clk                   (clk_fe_buf),
       .I_fe_capture_stat        (fe_capture_stat),
-      .O_timestamps_disable     (timestamps_disable),
       .O_reg_arm_feclk          (reg_arm_feclk),
 
       // Trigger:
@@ -344,7 +375,7 @@ module phywhisperer_top(
 
    `ifndef NOFIFO // for clean compilation
    fifo U_fifo (
-      .reset_i                  (reset_i),
+      .reset_i                  (fpga_reset),
       .cwusb_clk                (clk_usb_buf),
       .fe_clk                   (clk_fe_buf),
 
@@ -372,7 +403,7 @@ module phywhisperer_top(
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
    ) U_fe_capture_main (
-      .reset_i                  (reset_i), 
+      .reset_i                  (fpga_reset), 
       .cwusb_clk                (clk_usb_buf),
       .fe_clk                   (clk_fe_buf), 
 
@@ -406,8 +437,7 @@ module phywhisperer_top(
       .pTIMESTAMP_SHORT_WIDTH   (pTIMESTAMP_SHORT_WIDTH),
       .pCAPTURE_LEN_WIDTH       (pCAPTURE_LEN_WIDTH)
    ) U_fe_capture_usb (
-      .reset_i                  (reset_i), 
-      .cwusb_clk                (clk_usb_buf),
+      .reset_i                  (fpga_reset), 
       .fe_clk                   (clk_fe_buf), 
       .fe_data                  (fe_data),
       .fe_rxvalid               (fe_rxvalid),
@@ -472,20 +502,6 @@ module phywhisperer_top(
     assign fe_dppd = 0;
     assign fe_dmpd = 0;
 
-    //assign userio_d = fe_data;
-    //assign userio_clk = usb_clk_copy;
-    //assign userio_d[0] = USB_SPARE1;
-    //assign userio_d[1] = USB_nRD;
-    //assign userio_d[2] = USB_nWE;
-    //assign userio_d[3] = USB_nCS;
-    //assign userio_d[7:4] = USB_Addr[3:0];
-
-    //assign userio_d[0] = fe_linestate0;
-    //assign userio_d[1] = fe_linestate1;
-    //assign userio_d[2] = trigger_clk;
-    //assign userio_d[3] = usb_auto_speed[0];
-    //assign userio_d[4] = usb_auto_speed[1];
-
 
     `ifdef ILA_FE
        wire [17:0] ila_probe;
@@ -530,7 +546,7 @@ module phywhisperer_top(
 
     `ifndef __ICARUS__
         clk_wiz_0 U_trigger_clock (
-          .reset        (reset_i),
+          .reset        (fpga_reset),
           .clk_in1      (clk_fe_buf),
           .clk_out1     (trigger_clk),
           // Dynamic phase shift ports
@@ -551,7 +567,7 @@ module phywhisperer_top(
    pattern_matcher_usb #(
       .pPATTERN_BYTES  (pPATTERN_BYTES)
    ) U_pattern_matcher (
-      .reset_i          (reset_i),
+      .reset_i          (fpga_reset),
       .fe_clk           (clk_fe_buf),
       .trigger_clk      (trigger_clk),
       .I_arm            (arm),
@@ -574,7 +590,7 @@ module phywhisperer_top(
       .pNUM_TRIGGER_PULSES      (pNUM_TRIGGER_PULSES),
       .pNUM_TRIGGER_WIDTH       (pNUM_TRIGGER_WIDTH)
    ) U_trigger (
-      .reset_i          (reset_i),
+      .reset_i          (fpga_reset),
       .trigger_clk      (trigger_clk),
       .fe_clk           (clk_fe_buf),
       .O_trigger        (cw_trig),
@@ -593,7 +609,7 @@ module phywhisperer_top(
     usb_autodetect #(
         .pCOUNTER_WIDTH     (pUSB_AUTO_COUNTER_WIDTH)
     ) U_usb_autodetect (
-        .reset_i            (reset_i),
+        .reset_i            (fpga_reset),
         .fe_clk             (clk_fe_buf),
         .cwusb_clk          (clk_usb_buf),
         .fe_linestate0      (fe_linestate0),

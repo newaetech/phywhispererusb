@@ -1,7 +1,7 @@
-Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Wed Jul  8 16:43:17 2020
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Mon Dec 21 11:26:33 2020
 | Host         : qed running 64-bit major release  (build 9200)
 | Command      : report_utilization -file ila_2_utilization_synth.rpt -pb ila_2_utilization_synth.pb
 | Design       : ila_2
@@ -30,8 +30,8 @@ Table of Contents
 +----------------------------+------+-------+-----------+-------+
 |          Site Type         | Used | Fixed | Available | Util% |
 +----------------------------+------+-------+-----------+-------+
-| Slice LUTs*                | 1029 |     0 |      3750 | 27.44 |
-|   LUT as Logic             |  869 |     0 |      3750 | 23.17 |
+| Slice LUTs*                | 1036 |     0 |      3750 | 27.63 |
+|   LUT as Logic             |  876 |     0 |      3750 | 23.36 |
 |   LUT as Memory            |  160 |     0 |      2400 |  6.67 |
 |     LUT as Distributed RAM |    0 |     0 |           |       |
 |     LUT as Shift Register  |  160 |     0 |           |       |
@@ -148,13 +148,13 @@ Table of Contents
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
 | FDRE     | 1678 |        Flop & Latch |
-| LUT6     |  546 |                 LUT |
-| LUT4     |  164 |                 LUT |
+| LUT6     |  554 |                 LUT |
+| LUT4     |  162 |                 LUT |
 | SRL16E   |  127 |  Distributed Memory |
+| LUT3     |  108 |                 LUT |
 | SRLC32E  |  103 |  Distributed Memory |
-| LUT3     |  102 |                 LUT |
-| LUT5     |   71 |                 LUT |
-| LUT2     |   51 |                 LUT |
+| LUT5     |   64 |                 LUT |
+| LUT2     |   54 |                 LUT |
 | LUT1     |   39 |                 LUT |
 | CARRY4   |   32 |          CarryLogic |
 | FDSE     |    9 |        Flop & Latch |

@@ -21,7 +21,8 @@
 #    along with PhyWhisperer-USB.  If not, see <http://www.gnu.org/licenses/>.
 #=================================================
 
-import phywhisperer.interface.naeusb as NAE
+#import phywhisperer.interface.naeusb as NAE
+import chipwhisperer.hardware.naeusb.naeusb as NAE
 import phywhisperer.interface.program_fpga as LLINT
 import os
 import re
@@ -55,6 +56,7 @@ class Usb(PWPacketDispatcher):
         self.capture_size = 8188 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
+        self.expected_verilog_matches = 72
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -104,7 +106,7 @@ class Usb(PWPacketDispatcher):
                         else:
                             logging.warning("Couldn't parse line: %s", define)
             defines.close()
-        assert self.verilog_define_matches == 67, "Trouble parsing Verilog defines files: didn't find the right number of defines (expected 67, got %d)." % self.verilog_define_matches
+        assert self.verilog_define_matches == self.expected_verilog_matches, "Trouble parsing Verilog defines files: didn't find the right number of defines (expected %d, got %d)." % (self.expected_verilog_matches, self.verilog_define_matches)
 
 
     def con(self, PID=0xC610, sn=None, program_fpga=True, bitstream_file=None):
@@ -161,7 +163,9 @@ class Usb(PWPacketDispatcher):
     def reset_fpga(self):
         """ Reset FPGA registers to defaults, use liberally to clear incorrect states.
         """
-        self._llint.resetFPGA()
+        #self._llint.resetFPGA()
+        self.write_reg(self.REG_RESET_REG, [1])
+        self.write_reg(self.REG_RESET_REG, [0])
         self.write_reg(self.REG_COUNT_WRITES, [1])
 
     def load_bitstream(self, bitfile):
