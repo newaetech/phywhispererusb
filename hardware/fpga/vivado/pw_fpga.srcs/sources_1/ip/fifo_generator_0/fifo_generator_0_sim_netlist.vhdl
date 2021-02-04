@@ -1,14 +1,14 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
--- Date        : Mon Dec 21 11:09:31 2020
+-- Date        : Thu Feb  4 11:39:11 2021
 -- Host        : qed running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top fifo_generator_0 -prefix
---               fifo_generator_0_ fifo_generator_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_sim_netlist.vhdl
 -- Design      : fifo_generator_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
--- Device      : xc7s6ftgb196-2
+-- Device      : xc7s15ftgb196-2
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -27,6 +27,8 @@ entity fifo_generator_0_builtin_prim_v6 is
     din : in STD_LOGIC_VECTOR ( 17 downto 0 );
     p_17_out : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_builtin_prim_v6 : entity is "builtin_prim_v6";
 end fifo_generator_0_builtin_prim_v6;
 
 architecture STRUCTURE of fifo_generator_0_builtin_prim_v6 is
@@ -588,6 +590,8 @@ entity fifo_generator_0_reset_builtin is
     rst : in STD_LOGIC;
     rd_clk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_reset_builtin : entity is "reset_builtin";
 end fifo_generator_0_reset_builtin;
 
 architecture STRUCTURE of fifo_generator_0_reset_builtin is
@@ -920,6 +924,8 @@ entity fifo_generator_0_builtin_extdepth_v6 is
     wr_en : in STD_LOGIC;
     din : in STD_LOGIC_VECTOR ( 17 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_builtin_extdepth_v6 : entity is "builtin_extdepth_v6";
 end fifo_generator_0_builtin_extdepth_v6;
 
 architecture STRUCTURE of fifo_generator_0_builtin_extdepth_v6 is
@@ -1047,6 +1053,8 @@ entity fifo_generator_0_builtin_top_v6 is
     wr_en : in STD_LOGIC;
     din : in STD_LOGIC_VECTOR ( 17 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_builtin_top_v6 : entity is "builtin_top_v6";
 end fifo_generator_0_builtin_top_v6;
 
 architecture STRUCTURE of fifo_generator_0_builtin_top_v6 is
@@ -1098,6 +1106,8 @@ entity fifo_generator_0_fifo_generator_v13_2_4_builtin is
     rd_en : in STD_LOGIC;
     rst : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_v13_2_4_builtin : entity is "fifo_generator_v13_2_4_builtin";
 end fifo_generator_0_fifo_generator_v13_2_4_builtin;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_v13_2_4_builtin is
@@ -1145,6 +1155,8 @@ entity fifo_generator_0_fifo_generator_top is
     rd_en : in STD_LOGIC;
     rst : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_top : entity is "fifo_generator_top";
 end fifo_generator_0_fifo_generator_top;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_top is
@@ -1184,6 +1196,8 @@ entity fifo_generator_0_fifo_generator_v13_2_4_synth is
     rd_en : in STD_LOGIC;
     rst : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_v13_2_4_synth : entity is "fifo_generator_v13_2_4_synth";
 end fifo_generator_0_fifo_generator_v13_2_4_synth;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_v13_2_4_synth is
@@ -1846,6 +1860,8 @@ entity fifo_generator_0_fifo_generator_v13_2_4 is
   attribute C_WR_PNTR_WIDTH_WRCH of fifo_generator_0_fifo_generator_v13_2_4 : entity is 4;
   attribute C_WR_RESPONSE_LATENCY : integer;
   attribute C_WR_RESPONSE_LATENCY of fifo_generator_0_fifo_generator_v13_2_4 : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of fifo_generator_0_fifo_generator_v13_2_4 : entity is "fifo_generator_v13_2_4";
 end fifo_generator_0_fifo_generator_v13_2_4;
 
 architecture STRUCTURE of fifo_generator_0_fifo_generator_v13_2_4 is

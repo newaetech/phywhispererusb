@@ -1,13 +1,13 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-// Date        : Mon Dec 21 11:09:30 2020
+// Date        : Thu Feb  4 11:39:11 2021
 // Host        : qed running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub -rename_top fifo_generator_0 -prefix
-//               fifo_generator_0_ fifo_generator_0_stub.v
+// Command     : write_verilog -force -mode synth_stub
+//               C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_stub.v
 // Design      : fifo_generator_0
 // Purpose     : Stub declaration of top-level module interface
-// Device      : xc7s6ftgb196-2
+// Device      : xc7s15ftgb196-2
 // --------------------------------------------------------------------------------
 
 // This empty module with port declaration file causes synthesis tools to infer a black box for IP.

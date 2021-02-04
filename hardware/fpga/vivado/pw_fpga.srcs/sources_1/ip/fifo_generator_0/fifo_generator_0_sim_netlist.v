@@ -1,14 +1,14 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-// Date        : Mon Dec 21 11:09:30 2020
+// Date        : Thu Feb  4 11:39:11 2021
 // Host        : qed running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim -rename_top fifo_generator_0 -prefix
-//               fifo_generator_0_ fifo_generator_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim
+//               C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_sim_netlist.v
 // Design      : fifo_generator_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
-// Device      : xc7s6ftgb196-2
+// Device      : xc7s15ftgb196-2
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
@@ -609,6 +609,7 @@ module fifo_generator_0
         .wr_rst_busy(NLW_U0_wr_rst_busy_UNCONNECTED));
 endmodule
 
+(* ORIG_REF_NAME = "builtin_extdepth_v6" *) 
 module fifo_generator_0_builtin_extdepth_v6
    (underflow_i_ic,
     empty,
@@ -723,6 +724,7 @@ module fifo_generator_0_builtin_extdepth_v6
         .O(dbr_as_reg));
 endmodule
 
+(* ORIG_REF_NAME = "builtin_prim_v6" *) 
 module fifo_generator_0_builtin_prim_v6
    (prog_full,
     full,
@@ -1191,6 +1193,7 @@ module fifo_generator_0_builtin_prim_v6__parameterized0
         .O(underflow_i_ic));
 endmodule
 
+(* ORIG_REF_NAME = "builtin_top_v6" *) 
 module fifo_generator_0_builtin_top_v6
    (underflow,
     empty,
@@ -1254,6 +1257,7 @@ module fifo_generator_0_builtin_top_v6
         .R(1'b0));
 endmodule
 
+(* ORIG_REF_NAME = "fifo_generator_top" *) 
 module fifo_generator_0_fifo_generator_top
    (prog_full,
     full,
@@ -1375,7 +1379,7 @@ endmodule
 (* C_WR_DEPTH_WRCH = "16" *) (* C_WR_FREQ = "1" *) (* C_WR_PNTR_WIDTH = "13" *) 
 (* C_WR_PNTR_WIDTH_AXIS = "10" *) (* C_WR_PNTR_WIDTH_RACH = "4" *) (* C_WR_PNTR_WIDTH_RDCH = "10" *) 
 (* C_WR_PNTR_WIDTH_WACH = "4" *) (* C_WR_PNTR_WIDTH_WDCH = "10" *) (* C_WR_PNTR_WIDTH_WRCH = "4" *) 
-(* C_WR_RESPONSE_LATENCY = "1" *) 
+(* C_WR_RESPONSE_LATENCY = "1" *) (* ORIG_REF_NAME = "fifo_generator_v13_2_4" *) 
 module fifo_generator_0_fifo_generator_v13_2_4
    (backup,
     backup_marker,
@@ -2405,6 +2409,7 @@ module fifo_generator_0_fifo_generator_v13_2_4
         .wr_en(wr_en));
 endmodule
 
+(* ORIG_REF_NAME = "fifo_generator_v13_2_4_builtin" *) 
 module fifo_generator_0_fifo_generator_v13_2_4_builtin
    (prog_full,
     full,
@@ -2465,6 +2470,7 @@ module fifo_generator_0_fifo_generator_v13_2_4_builtin
         .wr_rst_i(wr_rst_i));
 endmodule
 
+(* ORIG_REF_NAME = "fifo_generator_v13_2_4_synth" *) 
 module fifo_generator_0_fifo_generator_v13_2_4_synth
    (prog_full,
     full,
@@ -2519,6 +2525,7 @@ module fifo_generator_0_fifo_generator_v13_2_4_synth
         .wr_en(wr_en));
 endmodule
 
+(* ORIG_REF_NAME = "reset_builtin" *) 
 module fifo_generator_0_reset_builtin
    (wr_rst_i,
     wr_clk,

@@ -24,7 +24,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/synth_1'
+HD_PWD='C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
