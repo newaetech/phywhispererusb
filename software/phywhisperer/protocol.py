@@ -166,9 +166,7 @@ class PWPacketHandler:
                 sess_end = (entry[0] & 64) >> 6
                 vbus_valid = (entry[0] & 128) >> 7
                 ts = entry[0] & 0x7
-                #hardware reports the number of cycles between events, so to
-                #obtain elapsed time we add one:
-                self._timestep += (ts+1)
+                self._timestep += ts
                 if rx_active and not self._in_packet:
                     self._in_packet = True
                     self._packet_start_time = self._timestep
