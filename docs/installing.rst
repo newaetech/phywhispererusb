@@ -188,44 +188,45 @@ the board. You can install it using **brew**:
 Python
 ======
 
-You will require a python version >= to 3.5. You can get the binary from the
-Python Software Foundation's website. Choose one of the stable versions that
-has an installer for your machine. You can also run this command in your terminal:
+MacOS's default outdated Python usually interferes with the desired
+Python version (Python 3.6 or newer required and 3.7.x recommended).
+As such, we recommend using pyenv to install Python.
+
+You can get pyenv via brew:
 
 .. code:: bash
 
-    brew install python3
+    brew install pyenv
 
-You will have to check the version this downloads. It is best to have python 3.7.x
-
-
-.. code:: bash
-
-    python --version
-
-If this installs a version lower than 3.5, just download and manually install the
-Python interpreter from the Python Software Foundation's website. If you
-download and install the python interpreter manually from the website it should
-be available on the bash terminal after installation as:
+From there you can use pyenv to install the desired Python version (3.7.3 in this case):
 
 .. code:: bash
 
-    python3.7
+    pyenv install 3.7.3
+    pyenv global 3.7.3
 
-or the equivalent for your version.
+In addition, you'll want to add the following lines to your shell's startup file 
+(usually .bashrc or .zshrc) to ensure that pyenv sets your shell's path correctly
+at startup:
+
+.. code:: bash
+
+    if command -v pyenv 1>/dev/null 2>&1; then
+        eval "$(pyenv init -)"
+    fi
 
 Installing PhyWhisperer
 =======================
 
 .. _install_phywhisperer:
 
-You can either grab phywhisperer from pip:
+You can either grab phywhisperer from pip, which installest the latest full release:
 
 .. code:: bash
 
     pip install phywhisperer
 
-Or, if you want the latest update before they make it to release, install via git:
+Or, if you want the latest updates before they make it to a full release, install via git:
 
 .. code:: bash
 
