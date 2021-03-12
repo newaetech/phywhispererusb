@@ -161,6 +161,8 @@ class Usb(PWPacketDispatcher):
 
     def reset_fpga(self):
         """ Reset FPGA registers to defaults, use liberally to clear incorrect states.
+
+        This method clears all settings - everything will be set back to default!
         """
         #self._llint.resetFPGA()
         self.write_reg(self.REG_RESET_REG, [1])

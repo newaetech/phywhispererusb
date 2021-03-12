@@ -74,12 +74,6 @@ have to make a file called :code:`/etc/udev/rules.d/99-newae.rules`. The content
 Alternatively, you can just copy :code:`phywhispererusb/drivers/99-newae.rules`
 to :code:`/etc/udev/rules.d/`.
 
-Then add your username to the plugdev group:
-
-.. code:: bash
-
-    sudo usermod -a -G plugdev YOUR-USERNAME
-
 And reset the udev system:
 
 .. code:: bash
