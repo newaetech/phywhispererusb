@@ -1,20 +1,29 @@
 .. _installing:
 
 #############
-Prerequisites
+Installation
 #############
+
+Before installing, grab prerequisites for your platform:
+
 
  * :ref:`GNU/Linux <prerequisites-linux>`
  * :ref:`Windows <prerequisites-windows>`
  * :ref:`Mac <prerequisites-mac>`
+
+Then install:
+
+ * :ref:`Installation <install_phywhisperer>`
+
+*************
+Prerequisites
+*************
 
 .. _prerequisites-linux:
 
 *********
 GNU/Linux
 *********
-
-There is only manual install available on GNU/Linux.
 
 Python
 ======
@@ -28,6 +37,16 @@ On Ubuntu or similar:
 .. code:: bash
 
     sudo apt install python3 python3-pip
+
+Git
+===
+
+If you want the newest PhyWhisperer updates before they make it to release,
+grab git as well:
+
+.. code:: bash
+    
+    sudo apt install git
 
 
 Packages
@@ -44,29 +63,13 @@ as **pyusb** to work. Install using:
 Hardware Drivers
 ================
 
-The driver for Linux is built in; however, you need to allow your user account to access the peripheral. To do so, you'll have to make a file called :code:`/etc/udev/rules.d/99-newae.rules`. The contents of this file should be (this includes other NewAE
-products, you only really need the PhyWhisperer line):
+The driver for Linux is built in; however, you need to allow your user account to access the peripheral. To do so, you'll 
+have to make a file called :code:`/etc/udev/rules.d/99-newae.rules`. The contents of this file should be:
 
 .. code::
 
-    # CW-Lite
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace2", MODE="0664", GROUP="plugdev"
-
-    # CW-1200
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace3", MODE="0664", GROUP="plugdev"
-
-    # CW-Nano
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace0", MODE="0664", GROUP="plugdev"
-
-    # CW-305 (Artix Target)
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="c305", MODE="0664", GROUP="plugdev"
-    
-    # PhyWhisperer
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="c610", MODE="0664", GROUP="plugdev"
-
-    # CW-CR2
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="8613", MODE="0664", GROUP="plugdev"
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="221a", ATTRS{idProduct}=="0100", MODE="0664", GROUP="plugdev"
+    # Match all CW devices
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace[0-9]|c[3-6][0-9][0-9]", TAG+="uaccess"
 
 Alternatively, you can just copy :code:`phywhispererusb/drivers/99-newae.rules`
 to :code:`/etc/udev/rules.d/`.
@@ -131,11 +134,18 @@ notebooks.
 
 .. _WinPython: http://winpython.sourceforge.net/
 
+Git
+===
+
+If you want the newest PhyWhisperer updates before they make it to release,
+grab git as well: https://git-scm.com/download/win
+
 
 Installing Hardware Drivers
 ===========================
 
-Drivers can be downloaded as a .zip file for Windows. To install them:
+On firmware >= 1.1, drivers will be installed automatically upon plugging in
+your PhyWhisperer to Windows 8 or newer. Otherwise, drivers can be downloaded as a .zip file for Windows. To install them:
 
 1. Unzip the zip-file somewhere. Also remember where.
 2. Open your Device Manager.
@@ -146,13 +156,6 @@ Drivers can be downloaded as a .zip file for Windows. To install them:
 7. Point the wizard to the folder you unzipped, ensure the "look in subfolders" option is selected.
 
 .. _releases: https://github.com/newaetech/phywhispererusb/tree/master/drivers
-
-
-ChipWhisperer
-=============
-
-Remember that any time you install packages for python during the installation,
-use the *WinPython Command Prompt.exe*.
 
 .. _prerequisites-mac:
 
@@ -217,3 +220,21 @@ be available on the bash terminal after installation as:
 
 or the equivalent for your version.
 
+Installing PhyWhisperer
+=======================
+
+.. _install_phywhisperer:
+
+You can either grab phywhisperer from pip:
+
+.. code:: bash
+
+    pip install phywhisperer
+
+Or, if you want the latest update before they make it to release, install via git:
+
+.. code:: bash
+
+    git clone https://github.com/newaetech/phywhispererusb
+    cd phywhispererusb
+    python setup.py develop
