@@ -18,7 +18,7 @@ setup(
     install_requires=[
         'pyserial',
         'crcmod',
-        'pyusb',
+        'libusb1',
     ],
     project_urls={
         'Documentation': 'https://phywhispererusb.readthedocs.io',

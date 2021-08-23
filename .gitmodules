@@ -1,0 +1,3 @@
+[submodule "firmware/phywhisperer/naeusb"]
+	path = firmware/phywhisperer/naeusb
+	url = https://github.com/newaetech/naeusb

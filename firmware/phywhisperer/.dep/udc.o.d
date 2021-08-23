@@ -1,4 +1,4 @@
-objdir/udc.o.s: .././hal/sam3u1c/udc.c conf_usb.h \
+objdir/naeusb/udc.o.s: naeusb/udc.c conf_usb.h \
  .././hal/sam3u1c/inc/compiler.h .././hal/sam3u1c/inc/parts.h \
  .././hal/sam3u1c/inc/preprocessor.h .././hal/sam3u1c/inc/tpaste.h \
  .././hal/sam3u1c/inc/stringz.h .././hal/sam3u1c/inc/mrepeat.h \
@@ -69,7 +69,7 @@ objdir/udc.o.s: .././hal/sam3u1c/udc.c conf_usb.h \
  .././hal/sam3u1c/inc/ui.h .././hal/sam3u1c/inc/main.h \
  .././hal/sam3u1c/inc/usb_protocol.h .././hal/sam3u1c/inc/udd.h \
  .././hal/sam3u1c/inc/udc_desc.h .././hal/sam3u1c/inc/udi.h \
- .././hal/sam3u1c/inc/udc.h
+ .././hal/sam3u1c/inc/udc.h naeusb/naeusb_os_desc.h
 
 conf_usb.h:
 
@@ -242,3 +242,5 @@ conf_usb.h:
 .././hal/sam3u1c/inc/udi.h:
 
 .././hal/sam3u1c/inc/udc.h:
+
+naeusb/naeusb_os_desc.h:

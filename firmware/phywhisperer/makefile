@@ -34,7 +34,10 @@ TARGET = phywhisperer
 
 # List C source files here.
 # Header files (.h) are automatically pulled in.
-SRC += main.c usb.c usb_xmem.c fpga_program.c
+SRC += main.c naeusb/usb_xmem.c naeusb/fpga_program.c
+SRC += naeusb/naeusb.c naeusb/naeusb_default.c naeusb/naeusb_openadc.c naeusb_phywhisperer.c
+SRC += naeusb/udc.c
+
 
 # -----------------------------------------------------------------------------
 OPT=0
@@ -42,5 +45,6 @@ OPT=0
 PLATFORM=SAM3U1C
 
 FIRMWAREPATH = ../.
+EXTRAINCDIRS += ./naeusb
 include $(FIRMWAREPATH)/Makefile.inc
 

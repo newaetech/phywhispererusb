@@ -1,12 +1,12 @@
-objdir/fpga_program.o.s: fpga_program.c .././hal/sam3u1c/inc/asf.h \
- .././hal/sam3u1c/inc/chipid.h .././hal/sam3u1c/inc/compiler.h \
- .././hal/sam3u1c/inc/parts.h .././hal/sam3u1c/inc/preprocessor.h \
- .././hal/sam3u1c/inc/tpaste.h .././hal/sam3u1c/inc/stringz.h \
- .././hal/sam3u1c/inc/mrepeat.h .././hal/sam3u1c/inc/io.h \
- .././hal/sam3u1c/inc/sam3u.h .././hal/sam3u1c/inc/sam3u1c.h \
- .././hal/sam3u1c/inc/core_cm3.h .././hal/sam3u1c/inc/core_cmInstr.h \
- .././hal/sam3u1c/inc/core_cmFunc.h .././hal/sam3u1c/inc/system_sam3u.h \
- .././hal/sam3u1c/inc/compiler.h \
+objdir/naeusb/fpga_program.o.s: naeusb/fpga_program.c \
+ .././hal/sam3u1c/inc/asf.h .././hal/sam3u1c/inc/chipid.h \
+ .././hal/sam3u1c/inc/compiler.h .././hal/sam3u1c/inc/parts.h \
+ .././hal/sam3u1c/inc/preprocessor.h .././hal/sam3u1c/inc/tpaste.h \
+ .././hal/sam3u1c/inc/stringz.h .././hal/sam3u1c/inc/mrepeat.h \
+ .././hal/sam3u1c/inc/io.h .././hal/sam3u1c/inc/sam3u.h \
+ .././hal/sam3u1c/inc/sam3u1c.h .././hal/sam3u1c/inc/core_cm3.h \
+ .././hal/sam3u1c/inc/core_cmInstr.h .././hal/sam3u1c/inc/core_cmFunc.h \
+ .././hal/sam3u1c/inc/system_sam3u.h .././hal/sam3u1c/inc/compiler.h \
  .././hal/sam3u1c/inc/component/component_adc.h \
  .././hal/sam3u1c/inc/component/component_adc12b.h \
  .././hal/sam3u1c/inc/component/component_chipid.h \
@@ -67,21 +67,21 @@ objdir/fpga_program.o.s: fpga_program.c .././hal/sam3u1c/inc/asf.h \
  .././hal/sam3u1c/inc/sysclk.h .././hal/sam3u1c/inc/parts.h conf_clock.h \
  .././hal/sam3u1c/inc/sam3u/sysclk.h .././hal/sam3u1c/inc/osc.h \
  .././hal/sam3u1c/inc/sam3u/osc.h .././hal/sam3u1c/inc/board.h \
- .././hal/sam3u1c/inc/cw521/cw521.h .././hal/sam3u1c/inc/system_sam3u.h \
- .././hal/sam3u1c/inc/exceptions.h .././hal/sam3u1c/inc/pmc.h \
- .././hal/sam3u1c/inc/pll.h .././hal/sam3u1c/inc/sam3u/pll.h \
+ .././hal/sam3u1c/inc/cw521.h .././hal/sam3u1c/inc/exceptions.h \
+ .././hal/sam3u1c/inc/pmc.h .././hal/sam3u1c/inc/pll.h \
+ .././hal/sam3u1c/inc/sam3u/pll.h \
  .././hal/sam3u1c/inc/sam/cycle_counter.h .././hal/sam3u1c/inc/efc.h \
  .././hal/sam3u1c/inc/flash_efc.h .././hal/sam3u1c/inc/efc.h \
  .././hal/sam3u1c/inc/gpio.h .././hal/sam3u1c/inc/sam_gpio/sam_gpio.h \
  .././hal/sam3u1c/inc/pio.h .././hal/sam3u1c/inc/ioport.h \
  .././hal/sam3u1c/inc/sam/ioport_pio.h .././hal/sam3u1c/inc/interrupt.h \
  .././hal/sam3u1c/inc/sleep.h .././hal/sam3u1c/inc/led.h \
- .././hal/sam3u1c/inc/gpio.h .././hal/sam3u1c/inc/smc.h \
- .././hal/sam3u1c/inc/spi.h .././hal/sam3u1c/inc/sam/sleepmgr.h \
- conf_sleepmgr.h .././hal/sam3u1c/inc/sleepmgr.h \
- .././hal/sam3u1c/inc/sam/sleepmgr.h .././hal/sam3u1c/inc/tc.h \
- .././hal/sam3u1c/inc/sam_twi/twi_master.h .././hal/sam3u1c/inc/twi.h \
- .././hal/sam3u1c/inc/sam_twi/twi_slave.h \
+ .././hal/sam3u1c/inc/gpio.h .././hal/sam3u1c/inc/exceptions.h \
+ .././hal/sam3u1c/inc/smc.h .././hal/sam3u1c/inc/spi.h \
+ .././hal/sam3u1c/inc/sam/sleepmgr.h conf_sleepmgr.h \
+ .././hal/sam3u1c/inc/sleepmgr.h .././hal/sam3u1c/inc/sam/sleepmgr.h \
+ .././hal/sam3u1c/inc/tc.h .././hal/sam3u1c/inc/sam_twi/twi_master.h \
+ .././hal/sam3u1c/inc/twi.h .././hal/sam3u1c/inc/sam_twi/twi_slave.h \
  .././hal/sam3u1c/inc/twi_master.h \
  .././hal/sam3u1c/inc/sam_twi/twi_master.h \
  .././hal/sam3u1c/inc/twi_slave.h \
@@ -96,7 +96,7 @@ objdir/fpga_program.o.s: fpga_program.c .././hal/sam3u1c/inc/asf.h \
  .././hal/sam3u1c/inc/ui.h .././hal/sam3u1c/inc/main.h \
  .././hal/sam3u1c/inc/udd.h .././hal/sam3u1c/inc/udi_vendor.h \
  .././hal/sam3u1c/inc/usb_protocol_vendor.h \
- .././hal/sam3u1c/inc/pio_handler.h fpga_program.h
+ .././hal/sam3u1c/inc/pio_handler.h naeusb/fpga_program.h
 
 .././hal/sam3u1c/inc/asf.h:
 
@@ -262,9 +262,7 @@ conf_clock.h:
 
 .././hal/sam3u1c/inc/board.h:
 
-.././hal/sam3u1c/inc/cw521/cw521.h:
-
-.././hal/sam3u1c/inc/system_sam3u.h:
+.././hal/sam3u1c/inc/cw521.h:
 
 .././hal/sam3u1c/inc/exceptions.h:
 
@@ -299,6 +297,8 @@ conf_clock.h:
 .././hal/sam3u1c/inc/led.h:
 
 .././hal/sam3u1c/inc/gpio.h:
+
+.././hal/sam3u1c/inc/exceptions.h:
 
 .././hal/sam3u1c/inc/smc.h:
 
@@ -372,4 +372,4 @@ conf_usb.h:
 
 .././hal/sam3u1c/inc/pio_handler.h:
 
-fpga_program.h:
+naeusb/fpga_program.h:

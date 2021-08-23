@@ -72,6 +72,10 @@ extern char usb_serial_number[33];
 #define  USB_DEVICE_PRODUCT_NAME          "PhyWhisperer-USB"
 #define  USB_DEVICE_GET_SERIAL_NAME_POINTER usb_serial_number
 #define  USB_DEVICE_GET_SERIAL_NAME_LENGTH 32
+
+#define FW_VER_MAJOR 1
+#define FW_VER_MINOR 50
+#define FW_VER_DEBUG 0
 //We get serial number from unique ID buitl into chip
 //#define  USB_DEVICE_SERIAL_NAME "1234"
 

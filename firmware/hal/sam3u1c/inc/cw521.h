@@ -90,7 +90,31 @@
 #define sam3u
 /** Core definition */
 #define cortexm3
+#define BUTTON_IN PIO_PA24_IDX
+#define F_VB5V PIO_PA26_IDX
+#define F_VBHOST PIO_PA25_IDX
 
+#define FPGA_PROG_USART_ID ID_USART0
+#define FPGA_ADDR_PINS (PIO_PB0 | PIO_PB1 | PIO_PB2 | PIO_PB3 | PIO_PB4 | PIO_PB5 | PIO_PB7 | PIO_PB8 )
+#define FPGA_ADDR_PORT PIOB
+
+#define PIN_FPGA_PROGRAM_GPIO PIO_PA20_IDX
+#define PIN_FPGA_INITB_GPIO PIO_PA21_IDX
+#define PIN_FPGA_DONE_GPIO PIO_PA19_IDX
+#define FPGA_PROG_USART USART0
+#define PIN_FPGA_CCLK_GPIO PIO_PA17_IDX
+#define PIN_FPGA_DO_GPIO PIO_PA18_IDX
+#define PIN_FPGA_CCLK_FLAGS (PIO_PERIPH_A | PIO_DEFAULT)
+#define PIN_FPGA_DO_FLAGS (PIO_PERIPH_A | PIO_DEFAULT)
+
+#define SPI_MISO_GPIO       (PIO_PA13_IDX)
+#define SPI_MISO_FLAGS (PIO_PERIPH_A | PIO_DEFAULT)
+/** SPI MOSI pin definition. */
+#define SPI_MOSI_GPIO       (PIO_PA14_IDX)
+#define SPI_MOSI_FLAGS (PIO_PERIPH_A | PIO_DEFAULT)
+/** SPI SPCK pin definition. */
+#define SPI_SPCK_GPIO       (PIO_PA15_IDX)
+#define SPI_SPCK_FLAGS (PIO_PERIPH_A | PIO_DEFAULT)
 /*----------------------------------------------------------------------------*/
 //! Pins ADC
 #define PINS_ADC12B_TRIG  PIO_PA2_IDX
@@ -108,8 +132,6 @@
 #define PINS_UART_TYPE PIO_PERIPH_A
 #define PINS_UART_ATTR PIO_DEFAULT
 
-
-
 /** EBI Data Bus pins */
 #define PIN_EBI_DATA_BUS_D0        PIO_PB9_IDX
 #define PIN_EBI_DATA_BUS_D1        PIO_PB10_IDX
@@ -119,14 +141,12 @@
 #define PIN_EBI_DATA_BUS_D5        PIO_PB14_IDX
 #define PIN_EBI_DATA_BUS_D6        PIO_PB15_IDX
 #define PIN_EBI_DATA_BUS_D7        PIO_PB16_IDX
-#define PIN_EBI_DATA_BUS_D8        PIO_PB25_IDX
-#define PIN_EBI_DATA_BUS_D9        PIO_PB26_IDX
-#define PIN_EBI_DATA_BUS_D10        PIO_PB27_IDX
-#define PIN_EBI_DATA_BUS_D11        PIO_PB28_IDX
-#define PIN_EBI_DATA_BUS_D12        PIO_PB29_IDX
-#define PIN_EBI_DATA_BUS_D13        PIO_PB30_IDX
-#define PIN_EBI_DATA_BUS_D14        PIO_PB31_IDX
-#define PIN_EBI_DATA_BUS_D15        PIO_PB6_IDX
+
+#define PIN_EBI_USB_SPARE0          PIO_PB6_IDX
+#define PIN_EBI_USB_SPARE1          PIO_PB17_IDX
+
+#define PIN_EBI_USB_SPARE0_FLAGS    (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT)
+#define PIN_EBI_USB_SPARE1_FLAGS    (PIO_TYPE_PIO_OUTPUT_1 | PIO_DEFAULT)
 
 #define PIN_EBI_DATA_BUS_FLAG1   PIO_PERIPH_A | PIO_PULLUP
 #define PIN_EBI_DATA_BUS_FLAG2   PIO_PERIPH_B | PIO_PULLUP
@@ -141,26 +161,13 @@
 
 #define PIN_EBI_ADDR_BUS_A0        PIO_PB7_IDX
 #define PIN_EBI_ADDR_BUS_A1        PIO_PB8_IDX
-#define PIN_EBI_ADDR_BUS_A2        PIO_PC0_IDX
-#define PIN_EBI_ADDR_BUS_A3        PIO_PC1_IDX
-#define PIN_EBI_ADDR_BUS_A4        PIO_PC2_IDX
-#define PIN_EBI_ADDR_BUS_A5        PIO_PC3_IDX
-#define PIN_EBI_ADDR_BUS_A6        PIO_PC4_IDX
-#define PIN_EBI_ADDR_BUS_A7        PIO_PC5_IDX
-#define PIN_EBI_ADDR_BUS_A8        PIO_PC6_IDX
-#define PIN_EBI_ADDR_BUS_A9        PIO_PC7_IDX
-#define PIN_EBI_ADDR_BUS_A10       PIO_PC8_IDX
-#define PIN_EBI_ADDR_BUS_A11       PIO_PC9_IDX
-#define PIN_EBI_ADDR_BUS_A12       PIO_PC10_IDX
-#define PIN_EBI_ADDR_BUS_A13       PIO_PC11_IDX
-#define PIN_EBI_ADDR_BUS_A14       PIO_PC20_IDX
-#define PIN_EBI_ADDR_BUS_A15       PIO_PC21_IDX
-#define PIN_EBI_ADDR_BUS_A16       PIO_PC22_IDX
-#define PIN_EBI_ADDR_BUS_A17       PIO_PC23_IDX
-#define PIN_EBI_ADDR_BUS_A18       PIO_PC24_IDX
-#define PIN_EBI_ADDR_BUS_A19       PIO_PC25_IDX
-#define PIN_EBI_ADDR_BUS_A20       PIO_PC26_IDX
-#define PIN_EBI_ADDR_BUS_A21       PIO_PB21_IDX
+#define PIN_EBI_ADDR_BUS_A2        PIO_PB0_IDX
+#define PIN_EBI_ADDR_BUS_A3        PIO_PB1_IDX
+#define PIN_EBI_ADDR_BUS_A4        PIO_PB2_IDX
+#define PIN_EBI_ADDR_BUS_A5        PIO_PB3_IDX
+#define PIN_EBI_ADDR_BUS_A6        PIO_PB4_IDX
+#define PIN_EBI_ADDR_BUS_A7        PIO_PB5_IDX
+
 
 
 /** EBI NRD pin */
@@ -195,24 +202,18 @@
 #define LED0_ACTIVE_LEVEL 1
 
 //! LED #1 pin definition
-#define LED_1_NAME    "red TX"
+#define LED_1_NAME    "red Error"
 #define LED1_GPIO     (PIO_PA31_IDX)
 #define LED1_FLAGS    (PIO_TYPE_PIO_OUTPUT_1 | PIO_DEFAULT)
 #define LED1_ACTIVE_LEVEL 1
 
-//! LED #1 pin definition
-#define LED_2_NAME    "red RX"
-#define LED2_GPIO     (PIO_PC12_IDX)
-#define LED2_FLAGS    (PIO_TYPE_PIO_OUTPUT_1 | PIO_DEFAULT)
-#define LED2_ACTIVE_LEVEL 1
-
-#define BOARD_NUM_OF_LED 3
+#define BOARD_NUM_OF_LED 2
 
 //! General Pins
-#define PIN_PWRON_GPIO	  PIO_PC19_IDX
+#define PIN_PWRON_GPIO	  PIO_PA24_IDX
 #define PIN_PWRON_FLAGS  (PIO_TYPE_PIO_OUTPUT_0 | PIO_DEFAULT) 
-#define board_sram_pwron() gpio_set_pin_low(PIN_PWRON_GPIO)
-#define board_sram_pwroff() gpio_set_pin_high(PIN_PWRON_GPIO)
+#define board_pwron()     gpio_set_pin_low(PIN_PWRON_GPIO)
+#define board_pwroff()    gpio_set_pin_high(PIN_PWRON_GPIO)
 
 	
 /** Base address of PSRAM */

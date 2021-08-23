@@ -4,11 +4,18 @@
 #include "ui.h"
 #include "genclk.h"
 #include "tasks.h"
-#include "usb_xmem.h"
+#include "naeusb/usb_xmem.h"
 #include "fpga_program.h"
 #include "usb.h"
 #include "sysclk.h"
+#include "cw521.h"
 #include <string.h>
+
+#include "naeusb/naeusb_default.h"
+#include "naeusb/naeusb_openadc.h"
+#include "naeusb_phywhisperer.h"
+
+uint8_t USB_PWR_STATE;
 
 //Serial Number - will be read by device ID
 char usb_serial_number[33] = "000000000000DEADBEEF";
@@ -169,6 +176,9 @@ int main(void)
     gpio_set_pin_low(LED1_GPIO);
 
     phywhisperer_no_pwr();
+    naeusb_register_handlers();
+    openadc_register_handlers();
+    phywhisperer_register_handlers();
     USB_PWR_STATE = 0;
 
     uint8_t curr_pwr_setting = 0;
