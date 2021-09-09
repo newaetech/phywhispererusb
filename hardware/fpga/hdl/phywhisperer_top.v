@@ -410,6 +410,7 @@ module phywhisperer_top(
       .reset_i                  (fpga_reset), 
       .cwusb_clk                (clk_usb_buf),
       .fe_clk                   (clk_fe_buf), 
+      .trace_clock_sel          (1'b0),
 
       .I_timestamps_disable     (timestamps_disable),
       .I_arm                    (arm),

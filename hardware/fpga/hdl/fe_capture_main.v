@@ -32,6 +32,7 @@ module fe_capture_main #(
 
     /* FRONT END CONNECTIONS */
     input  wire fe_clk,
+    input  wire trace_clock_sel,
 
     /* SPECIFIC FRONTEND CONNECTIONS */
     input  wire I_event,
@@ -171,6 +172,9 @@ module fe_capture_main #(
        endcase
     end
 
+    // TraceWhisperer: if we're using the trace clock, every tick is equal to 2 target clocks
+    wire  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_ctr_incr = trace_clock_sel? 2 : 1;
+
     // manage timestamp counter:
     always @ (posedge fe_clk) begin
        if (reset_i) begin
@@ -192,15 +196,16 @@ module fe_capture_main #(
              ctr_running <= 1'b0;
 
           if (!ctr_running) begin
-             timestamp_ctr <= 1;
-             timestamp <= 1;
+             timestamp_ctr <= timestamp_ctr_incr;
+             timestamp <= timestamp_ctr_incr;
           end
           else if (event_reg || long_timestamp) begin
              timestamp <= timestamp_ctr;
-             timestamp_ctr <= 1;
+             timestamp_ctr <= timestamp_ctr_incr;
           end
           else if (timestamp_ctr < I_max_timestamp)
-             timestamp_ctr <= timestamp_ctr + 1;
+             // if we're using the trace clock, every tick is equal to 2 target clocks
+             timestamp_ctr <= timestamp_ctr + timestamp_ctr_incr;
        end
     end
 
