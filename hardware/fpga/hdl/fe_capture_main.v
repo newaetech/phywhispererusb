@@ -95,12 +95,14 @@ module fe_capture_main #(
     reg  arm_r2;
     reg  capturing;
 
+    wire [15:0] max_timestamp = trace_clock_sel? {I_max_timestamp[15:1], 1'b0} : I_max_timestamp;
+
     assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr <= I_max_short_timestamp);
     assign short_timestamp_pre = timestamps_disable_r? 1'b1: (timestamp_ctr <= I_max_short_timestamp - timestamp_ctr_incr);
 
     // "long_timestamp" is meant to trigger a time event, so we don't flag it if the max gets reached as we are processing
     // a front-end event:
-    wire long_timestamp = ~event_reg && (timestamp_ctr == I_max_timestamp);
+    wire long_timestamp = ~event_reg && (timestamp_ctr == max_timestamp);
     reg long_timestamp_r;
     reg long_corner;
     reg long_corner_r;
@@ -212,7 +214,7 @@ module fe_capture_main #(
              timestamp <= timestamp_ctr;
              timestamp_ctr <= timestamp_ctr_incr;
           end
-          else if (timestamp_ctr < I_max_timestamp)
+          else if (timestamp_ctr < max_timestamp)
              timestamp_ctr <= timestamp_ctr + timestamp_ctr_incr;
        end
     end
