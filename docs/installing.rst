@@ -83,7 +83,7 @@ And reset the udev system:
 Finally log out & in again for the group change to take effect.
 
 You can always find the latest version of this file on
-`Github <https://raw.githubusercontent.com/newaetech/chipwhisperer/master/hardware/99-newae.rules>`_.
+`Github <https://raw.githubusercontent.com/newaetech/phywhispererusb/master/drivers/99-newae.rules>`_.
 
 
 .. _prerequisites-windows:
