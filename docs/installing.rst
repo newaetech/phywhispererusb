@@ -69,21 +69,28 @@ have to make a file called :code:`/etc/udev/rules.d/99-newae.rules`. The content
 .. code::
 
     # Match all CW devices
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace[0-9]|c[3-6][0-9][0-9]", TAG+="uaccess"
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace[0-9]|c[3-6][0-9][0-9]", MODE="660", GROUP="plugdev", TAG+="uaccess"
 
 Alternatively, you can just copy :code:`phywhispererusb/drivers/99-newae.rules`
-to :code:`/etc/udev/rules.d/`.
+to :code:`/etc/udev/rules.d/`. You can always find the latest version of this
+file on
+`Github <https://raw.githubusercontent.com/newaetech/phywhispererusb/master/drivers/99-newae.rules>`_.
 
-And reset the udev system:
+Tell udev to reload its rules to make the new rules take effect:
 
 .. code:: bash
 
     sudo udevadm control --reload-rules
 
-Finally log out & in again for the group change to take effect.
+On systems that don't use systemd, and on systems that are "headless" (being
+operated remotely over SSH), you will need to add your user to the
+:code:`plugdev` group:
 
-You can always find the latest version of this file on
-`Github <https://raw.githubusercontent.com/newaetech/phywhispererusb/master/drivers/99-newae.rules>`_.
+.. code:: bash
+
+    sudo usermod -a -G plugdev YOUR-USERNAME
+
+Log out and in again for the group change to take effect.
 
 
 .. _prerequisites-windows:
