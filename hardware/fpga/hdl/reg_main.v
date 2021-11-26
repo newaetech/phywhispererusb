@@ -346,7 +346,7 @@ module reg_main #(
                `REG_COUNT_WRITES: reg_count_writes <= write_data;
                `REG_COUNTER_QUICK_START: reg_counter_quick_start <= write_data;
                `REG_BOARD_REV: reg_board_rev <= write_data;
-               `REG_USERIO_DATA: reg_userio_drive_data = write_data;
+               `REG_USERIO_DATA: reg_userio_drive_data <= write_data;
                `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
                `REG_FAST_FIFO_RD_EN: reg_fast_fifo_rd_en <= write_data;
                `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
@@ -389,7 +389,7 @@ module reg_main #(
    end
 
 
-   cdc_pulse U_match_cdc (
+   cdc_pulse U_capture_enable_cdc (
       .reset_i       (fpga_reset),
       .src_clk       (fe_clk),
       .src_pulse     (I_capture_enable_pulse),

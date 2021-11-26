@@ -1,4 +1,3 @@
-tb_pw.v
 ../hdl/usb_reg_main.v 
 ../hdl/phywhisperer_top.v 
 ../hdl/reg_main.v 

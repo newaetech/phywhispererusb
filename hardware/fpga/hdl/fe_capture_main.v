@@ -103,26 +103,16 @@ module fe_capture_main #(
     // "long_timestamp" is meant to trigger a time event, so we don't flag it if the max gets reached as we are processing
     // a front-end event:
     wire long_timestamp = ~event_reg && (timestamp_ctr == max_timestamp);
-    reg long_timestamp_r;
     reg long_corner;
-    reg long_corner_r;
 
     always @ (posedge fe_clk) begin
        if (reset_i) begin
-          long_timestamp_r <= 1'b0;
           long_corner <= 1'b0;
-          long_corner_r <= 1'b0;
        end
        else begin
-          if (long_timestamp)
-             long_timestamp_r <= 1'b1;
-          else if ((state == pS_IDLE) || long_corner)
-             long_timestamp_r <= 1'b0;
-          
          // "long_corner" is when a long timestamp event which would've triggered a FIFO write occurs
          // on the same cycle as a front-end event ("I_event"); it results in a time event being recorded
          // to the FIFO followed immediately by the front-end event
-          long_corner_r <= long_corner;
           if (state_r == pS_DATA)
              long_corner <= 1'b0;
           else if (I_event && ~event_reg & long_timestamp)

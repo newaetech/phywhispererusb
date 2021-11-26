@@ -85,6 +85,17 @@ nofifo:
 	-I../../../software/phywhisperer/firmware \
 	-DNOFIFO \
 
+lint:
+	verilator --lint-only -Wall \
+	-Wno-PINCONNECTEMPTY \
+	-f cmdfile_nofifo \
+	-I../hdl \
+	-I../../../software/phywhisperer/firmware \
+	-D__ICARUS__ \
+	-DNOFIFO \
+	--top-module phywhisperer_top \
+	2>&1 | tee lint.out \
+
 run:
 	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)
 
