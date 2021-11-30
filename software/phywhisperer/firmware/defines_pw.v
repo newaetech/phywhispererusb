@@ -49,6 +49,8 @@
 `define REG_CAPTURE_WHILE_TRIG       6'h14
 `define REG_MAX_TIMESTAMP            6'h15
 
+`define REG_LED_SELECT               6'h16
+
 
 // front end select definitions
 `define FE_SELECT_WIDTH 2

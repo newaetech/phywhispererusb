@@ -293,6 +293,7 @@ module phywhisperer_top(
       .O_timestamps_disable (timestamps_disable),
       .O_capture_now    ( ), // unused
       .O_board_rev      ( ), // unused
+      .O_led_select     ( ), // unused
       .O_capture_while_trig ( ), // unused
       .O_max_timestamp  (max_timestamp),
 
