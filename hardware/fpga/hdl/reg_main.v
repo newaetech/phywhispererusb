@@ -79,6 +79,7 @@ module reg_main #(
    output wire         O_timestamps_disable,
    output wire         O_capture_while_trig,
    output wire [15:0]  O_max_timestamp,
+   output reg          O_clear_errors,
 
 // user-settable to allow for FPGA pin assignment changes across board revisions
    output wire [3:0]   O_board_rev,
@@ -335,6 +336,7 @@ module reg_main #(
          reg_capture_while_trig <= 1'b0;
          reg_max_timestamp <= 16'hFFFF;
          reg_led_select <= 1'b0;
+         O_clear_errors <= 1'b0;
          `ifdef REV3
              reg_board_rev <= 3;
          `else
@@ -389,6 +391,12 @@ module reg_main #(
             if (I_psdone)
                phaseshift_active <= 1'b0;
          end
+
+         // Clear errors register is special:
+         if (selected && reg_write && (address == `REG_CLEAR_ERRORS) && ~O_clear_errors)
+             O_clear_errors <= 1'b1;
+         else
+             O_clear_errors <= 1'b0;
 
       end
    end

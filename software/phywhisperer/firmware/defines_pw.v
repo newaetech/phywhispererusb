@@ -50,6 +50,7 @@
 `define REG_MAX_TIMESTAMP            6'h15
 
 `define REG_LED_SELECT               6'h16
+`define REG_CLEAR_ERRORS             6'h17
 
 
 // front end select definitions
