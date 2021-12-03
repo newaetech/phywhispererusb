@@ -326,7 +326,6 @@ module reg_main #(
          reg_capture_len <= 0;
          reg_count_writes <= 0;
          reg_counter_quick_start <= pQUICK_START_DEFAULT;
-         reg_board_rev <= 4; // production boards
          reg_userio_pwdriven <= 8'b0;
          reg_userio_drive_data <= 8'b0;
          capture_now <= 1'b0;
@@ -336,6 +335,11 @@ module reg_main #(
          reg_capture_while_trig <= 1'b0;
          reg_max_timestamp <= 16'hFFFF;
          reg_led_select <= 1'b0;
+         `ifdef REV3
+             reg_board_rev <= 3;
+         `else
+             reg_board_rev <= 4; // production boards
+         `endif
       end
 
       else begin
@@ -351,7 +355,7 @@ module reg_main #(
                `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
                `REG_COUNT_WRITES: reg_count_writes <= write_data;
                `REG_COUNTER_QUICK_START: reg_counter_quick_start <= write_data;
-               `REG_BOARD_REV: reg_board_rev <= write_data;
+               //`REG_BOARD_REV: reg_board_rev <= write_data;
                `REG_USERIO_DATA: reg_userio_drive_data <= write_data;
                `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
                `REG_FAST_FIFO_RD_EN: reg_fast_fifo_rd_en <= write_data;
