@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="ila_3_synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1639413408">
+<GenRun Id="ila_3_synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1639416264">
   <File Type="VDS-TIMINGSUMMARY" Name="ila_3_timing_summary_synth.rpt"/>
   <File Type="RDS-DCP" Name="ila_3.dcp"/>
   <File Type="RDS-UTIL-PB" Name="ila_3_utilization_synth.pb"/>
@@ -42,7 +42,7 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020">
       <Desc>Vivado Synthesis Defaults</Desc>
     </StratHandle>
     <Step Id="synth_design"/>

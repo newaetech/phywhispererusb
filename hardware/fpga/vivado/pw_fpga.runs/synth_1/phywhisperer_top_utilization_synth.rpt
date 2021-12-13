@@ -1,7 +1,7 @@
-Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date         : Mon Dec 13 11:46:03 2021
+| Tool Version : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
+| Date         : Mon Dec 13 12:26:02 2021
 | Host         : red running 64-bit Ubuntu 18.04.6 LTS
 | Command      : report_utilization -file phywhisperer_top_utilization_synth.rpt -pb phywhisperer_top_utilization_synth.pb
 | Design       : phywhisperer_top
@@ -30,14 +30,14 @@ Table of Contents
 +-------------------------+------+-------+-----------+-------+
 |        Site Type        | Used | Fixed | Available | Util% |
 +-------------------------+------+-------+-----------+-------+
-| Slice LUTs*             | 1934 |     0 |      8000 | 24.18 |
-|   LUT as Logic          | 1934 |     0 |      8000 | 24.18 |
+| Slice LUTs*             | 1954 |     0 |      8000 | 24.43 |
+|   LUT as Logic          | 1954 |     0 |      8000 | 24.43 |
 |   LUT as Memory         |    0 |     0 |      2400 |  0.00 |
-| Slice Registers         | 3943 |     0 |     16000 | 24.64 |
-|   Register as Flip Flop | 3943 |     0 |     16000 | 24.64 |
+| Slice Registers         | 3941 |     0 |     16000 | 24.63 |
+|   Register as Flip Flop | 3941 |     0 |     16000 | 24.63 |
 |   Register as Latch     |    0 |     0 |     16000 |  0.00 |
-| F7 Muxes                |  199 |     0 |      4000 |  4.98 |
-| F8 Muxes                |   41 |     0 |      2000 |  2.05 |
+| F7 Muxes                |  182 |     0 |      4000 |  4.55 |
+| F8 Muxes                |   40 |     0 |      2000 |  2.00 |
 +-------------------------+------+-------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
 
@@ -57,7 +57,7 @@ Table of Contents
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
 | 52    |          Yes |         Set |            - |
-| 3891  |          Yes |       Reset |            - |
+| 3889  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -144,18 +144,18 @@ Table of Contents
 +--------------+------+---------------------+
 |   Ref Name   | Used | Functional Category |
 +--------------+------+---------------------+
-| FDRE         | 3891 |        Flop & Latch |
-| LUT6         |  926 |                 LUT |
-| LUT3         |  565 |                 LUT |
-| LUT4         |  538 |                 LUT |
-| LUT5         |  230 |                 LUT |
-| MUXF7        |  199 |               MuxFx |
-| LUT2         |  136 |                 LUT |
+| FDRE         | 3889 |        Flop & Latch |
+| LUT6         |  953 |                 LUT |
+| LUT4         |  565 |                 LUT |
+| LUT3         |  563 |                 LUT |
+| LUT5         |  207 |                 LUT |
+| MUXF7        |  182 |               MuxFx |
+| LUT2         |  145 |                 LUT |
 | CARRY4       |  106 |          CarryLogic |
 | FDSE         |   52 |        Flop & Latch |
 | IBUF         |   46 |                  IO |
-| MUXF8        |   41 |               MuxFx |
-| LUT1         |   29 |                 LUT |
+| MUXF8        |   40 |               MuxFx |
+| LUT1         |   27 |                 LUT |
 | OBUF         |   18 |                  IO |
 | OBUFT        |   16 |                  IO |
 | PULLUP       |    8 |                 I/O |
