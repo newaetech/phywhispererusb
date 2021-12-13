@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version     : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-| Date             : Fri Jan  8 11:57:35 2021
-| Host             : qed running 64-bit major release  (build 9200)
+| Tool Version     : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
+| Date             : Mon Dec 13 11:46:38 2021
+| Host             : red running 64-bit Ubuntu 18.04.6 LTS
 | Command          : report_power -file phywhisperer_top_power_routed.rpt -pb phywhisperer_top_power_summary_routed.pb -rpx phywhisperer_top_power_routed.rpx
 | Design           : phywhisperer_top
 | Device           : xc7s15ftgb196-2
@@ -53,14 +53,14 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.026 |        6 |       --- |             --- |
-| Slice Logic             |     0.001 |     6679 |       --- |             --- |
-|   LUT as Logic          |    <0.001 |     1859 |      8000 |           23.24 |
-|   Register              |    <0.001 |     3951 |     16000 |           24.69 |
-|   CARRY4                |    <0.001 |      102 |      2000 |            5.10 |
-|   F7/F8 Muxes           |    <0.001 |      238 |      8000 |            2.98 |
+| Slice Logic             |     0.001 |     6771 |       --- |             --- |
+|   LUT as Logic          |    <0.001 |     1931 |      8000 |           24.14 |
+|   CARRY4                |    <0.001 |      106 |      2000 |            5.30 |
+|   Register              |    <0.001 |     3952 |     16000 |           24.70 |
+|   F7/F8 Muxes           |    <0.001 |      240 |      8000 |            3.00 |
 |   LUT as Shift Register |    <0.001 |        1 |      2400 |            0.04 |
-|   Others                |     0.000 |       49 |       --- |             --- |
-| Signals                 |     0.002 |     5774 |       --- |             --- |
+|   Others                |     0.000 |       51 |       --- |             --- |
+| Signals                 |     0.002 |     5817 |       --- |             --- |
 | Block RAM               |     0.003 |        4 |        10 |           40.00 |
 | MMCM                    |     0.106 |        1 |         2 |           50.00 |
 | I/O                     |     0.012 |       64 |       100 |           64.00 |

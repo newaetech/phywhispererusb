@@ -1,14 +1,14 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-// Date        : Mon Dec 21 11:27:04 2020
-// Host        : qed running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim -rename_top clk_wiz_0 -prefix
-//               clk_wiz_0_ clk_wiz_0_sim_netlist.v
+// Tool Version: Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
+// Date        : Mon Dec 13 11:37:05 2021
+// Host        : red running 64-bit Ubuntu 18.04.6 LTS
+// Command     : write_verilog -force -mode funcsim
+//               /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_sim_netlist.v
 // Design      : clk_wiz_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
-// Device      : xc7s6ftgb196-2
+// Device      : xc7s15ftgb196-2
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
@@ -51,6 +51,7 @@ module clk_wiz_0
         .reset(reset));
 endmodule
 
+(* ORIG_REF_NAME = "clk_wiz_0_clk_wiz" *) 
 module clk_wiz_0_clk_wiz_0_clk_wiz
    (clk_out1,
     psclk,

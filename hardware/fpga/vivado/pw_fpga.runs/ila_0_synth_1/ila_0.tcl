@@ -17,9 +17,6 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
-set_param tcl.collectionResultDisplayLimit 0
-set_param chipscope.maxJobs 2
-set_param xicom.use_bs_reader 1
 set_param project.vivado.isBlockSynthRun true
 set_msg_config -msgmgr_mode ooc_run
 create_project -in_memory -part xc7s15ftgb196-2
@@ -28,8 +25,8 @@ set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
-set_property webtalk.parent_dir W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.cache/wt [current_project]
-set_property parent.project_path W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.xpr [current_project]
+set_property webtalk.parent_dir /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.cache/wt [current_project]
+set_property parent.project_path /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.xpr [current_project]
 set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
@@ -37,12 +34,12 @@ set_property ip_repo_paths v:/vivado/Arm_ipi_repository [current_project]
 update_ip_catalog
 set_property ip_output_repo c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
-set_property include_dirs W:/hardware/phywhisperer/software/phywhisperer/firmware [current_fileset]
-read_ip -quiet W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.xci
-set_property used_in_synthesis false [get_files -all w:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all w:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all w:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila.xdc]
-set_property used_in_implementation false [get_files -all w:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_ooc.xdc]
+set_property include_dirs /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/software/phywhisperer/firmware [current_fileset]
+read_ip -quiet /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.xci
+set_property used_in_synthesis false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_ooc.xdc]
 
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -56,7 +53,7 @@ read_xdc dont_touch.xdc
 set_property used_in_implementation false [get_files dont_touch.xdc]
 set_param ips.enableIPCacheLiteLoad 1
 
-set cached_ip [config_ip_cache -export -no_bom  -dir W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1 -new_name ila_0 -ip [get_ips ila_0]]
+set cached_ip [config_ip_cache -export -no_bom  -dir /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1 -new_name ila_0 -ip [get_ips ila_0]]
 
 if { $cached_ip eq {} } {
 close [open __synthesis_is_running__ w]
@@ -97,32 +94,32 @@ write_checkpoint -force -noxdef ila_0.dcp
 create_report "ila_0_synth_1_synth_report_utilization_0" "report_utilization -file ila_0_utilization_synth.rpt -pb ila_0_utilization_synth.pb"
 
 if { [catch {
-  file copy -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0.dcp W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.dcp
+  file copy -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0.dcp /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.dcp
 } _RESULT ] } { 
   send_msg_id runtcl-3 error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  write_verilog -force -mode synth_stub W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.v
+  write_verilog -force -mode synth_stub /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode synth_stub W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.vhdl
+  write_vhdl -force -mode synth_stub /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_verilog -force -mode funcsim W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.v
+  write_verilog -force -mode funcsim /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode funcsim W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.vhdl
+  write_vhdl -force -mode funcsim /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
@@ -132,47 +129,47 @@ if { [catch {
 
 
 if { [catch {
-  file copy -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0.dcp W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.dcp
+  file copy -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0.dcp /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.dcp
 } _RESULT ] } { 
   send_msg_id runtcl-3 error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  file rename -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_stub.v W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.v
+  file rename -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_stub.v /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_stub.vhdl W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.vhdl
+  file rename -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_stub.vhdl /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_sim_netlist.v W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.v
+  file rename -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_sim_netlist.v /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_sim_netlist.vhdl W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.vhdl
+  file rename -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/ila_0_synth_1/ila_0_sim_netlist.vhdl /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_sim_netlist.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 }; # end if cached_ip 
 
-if {[file isdir W:/../phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0]} {
+if {[file isdir /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0]} {
   catch { 
-    file copy -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.v W:/../phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0
+    file copy -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.v /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0
   }
 }
 
-if {[file isdir W:/../phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0]} {
+if {[file isdir /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0]} {
   catch { 
-    file copy -force W:/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.vhdl W:/../phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0
+    file copy -force /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_stub.vhdl /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.ip_user_files/ip/ila_0
   }
 }
 file delete __synthesis_is_running__

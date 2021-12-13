@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
-| Tool Version              : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-| Date                      : Fri Jan  8 11:57:07 2021
-| Host                      : qed running 64-bit major release  (build 9200)
+| Tool Version              : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
+| Date                      : Mon Dec 13 11:46:27 2021
+| Host                      : red running 64-bit Ubuntu 18.04.6 LTS
 | Command                   : report_io -file phywhisperer_top_io_placed.rpt
 | Design                    : phywhisperer_top
 | Device                    : xc7s15
