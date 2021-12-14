@@ -68,7 +68,7 @@ module pattern_matcher_usb #(
    reg  fe_data_valid;
 
    // just for easier debugging:
-   wire [31:0]  masked_input_first_bytes = {masked_input[24:0], masked_input_byte};
+   wire [31:0]  masked_input_first_bytes = {masked_input[23:0], masked_input_byte};
    wire [31:0]  masked_pattern_first_bytes = masked_pattern[31:0];
 
    assign masked_input_byte = fe_data & mask_r[7:0];

@@ -127,7 +127,17 @@ tests.append(dict(name  = 'lots_overflow_timestamps',
              MIN_DELAY  = 4,
              MAX_DELAY  = 128))
 
-
+tests.append(dict(name  = 'long_corners',
+             frequency = 2,
+             description = 'Test the long_corner cases.',
+             NUM_EVENTS = 30,
+             NUM_REPEATS = 20,
+             CHECK_LONG_CORNER = 1,
+             TIMEOUT = 200000,
+             MAX_TIMESTAMP = 64,
+             DELAY_MODE = 1,
+             MIN_DELAY  = 4,
+             MAX_DELAY  = 128))
 
 tests.append(dict(name  = 'burst_fifo_read',
              frequency = 2,
@@ -196,8 +206,17 @@ tests.append(dict(name  = 'bursts',
              frequency = 5,
              description = 'Bursty inputs, alternating between no delay and long delay.',
              NUM_EVENTS = 50,
-             NUM_REPEATS = 2,
+             NUM_REPEATS = 3,
              DELAY_MODE = 1,
+             MIN_DELAY  = 0,
+             MAX_DELAY  = 16))
+
+tests.append(dict(name  = 'morebursts',
+             frequency = 5,
+             description = 'Bursty inputs, biased towards mostly back-to-back events.',
+             NUM_EVENTS = 50,
+             NUM_REPEATS = 3,
+             DELAY_MODE = 2,
              MIN_DELAY  = 0,
              MAX_DELAY  = 16))
 
@@ -316,7 +335,7 @@ if (args.test):
       print_tests()
 
 
-pass_regex = re.compile(r'^Simulation passed')
+pass_regex = re.compile(r'^Simulation passed! \((\d+) warnings\)')
 fail_regex = re.compile(r'^SIMULATION FAILED \((\d+) errors\)')
 seed_regex = re.compile(r'^Running with pSEED=(\d+)$')
 test_regex = re.compile(args.tests)
@@ -379,7 +398,7 @@ for test in tests:
                seed = int(seed_matches.group(1))
             elif pass_matches:
                passed += 1
-               print("pass")
+               print("pass (%d warnings)" % int(pass_matches.group(1)))
                break
             elif fail_matches:
                failed += 1

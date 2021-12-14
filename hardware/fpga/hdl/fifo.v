@@ -45,7 +45,10 @@ module fifo (
 
 // Interface to reg_<specific front-end>:
    input  wire         I_clear_read_flags,
-   input  wire         I_clear_write_flags
+   input  wire         I_clear_write_flags,
+   input  wire         I_clear_errors,
+
+   output wire         O_error_flag
 
 );
 
@@ -66,8 +69,11 @@ module fifo (
    wire fifo_underflow;
    wire fifo_empty_threshold;
    reg  fifo_overflow_blocked;
+   wire clear_errors_fe;
 
    assign O_fifo_empty = fifo_empty;
+
+   assign O_error_flag = fifo_underflow_sticky | fifo_overflow_blocked_usbclk;
 
    // CDC:
    always @(posedge cwusb_clk) begin
@@ -83,6 +89,14 @@ module fifo (
       end
    end
 
+   cdc_pulse U_reset_sync_cdc (
+      .reset_i       (reset_i),
+      .src_clk       (cwusb_clk),
+      .src_pulse     (I_clear_errors),
+      .dst_clk       (fe_clk),
+      .dst_pulse     (clear_errors_fe)
+   );
+
 
    // fe_clk (write side) logic:
    always @(posedge fe_clk) begin
@@ -93,7 +107,7 @@ module fifo (
          // if a write WOULD have overflowed the FIFO, log it:
          if (I_wr & fifo_full_threshold_xilinx)
             fifo_overflow_blocked <= 1'b1;
-         else if (I_clear_write_flags)
+         else if (I_clear_write_flags || clear_errors_fe)
             fifo_overflow_blocked <= 1'b0;
 
       end
@@ -112,7 +126,7 @@ module fifo (
          // Xilinx FIFO underflow flag isn't sticky, so create our own:
          if (fifo_underflow)
             fifo_underflow_sticky <= 1'b1;
-         else if (I_clear_read_flags)
+         else if (I_clear_read_flags || I_clear_errors)
             fifo_underflow_sticky <= 1'b0;
       end
    end

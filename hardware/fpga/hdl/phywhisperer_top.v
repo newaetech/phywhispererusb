@@ -293,6 +293,7 @@ module phywhisperer_top(
       .O_timestamps_disable (timestamps_disable),
       .O_capture_now    ( ), // unused
       .O_board_rev      ( ), // unused
+      .O_led_select     ( ), // unused
       .O_capture_while_trig ( ), // unused
       .O_max_timestamp  (max_timestamp),
 
@@ -410,6 +411,7 @@ module phywhisperer_top(
       .reset_i                  (fpga_reset), 
       .cwusb_clk                (clk_usb_buf),
       .fe_clk                   (clk_fe_buf), 
+      .trace_clock_sel          (1'b0),
 
       .I_timestamps_disable     (timestamps_disable),
       .I_arm                    (arm),

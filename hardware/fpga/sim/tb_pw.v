@@ -58,6 +58,7 @@ module tb_pw();
     parameter pREAD_CONCURRENTLY = 1;
     parameter pSTREAM_MODE = 0;
     parameter pSLOW_READS = 0;
+    parameter pCHECK_LONG_CORNER = 0;
     parameter pMAX_TIMESTAMP = 'hFFFF;
     parameter pDUMP = 0;
 
@@ -166,6 +167,7 @@ module tb_pw();
    int receive_iteration;
    int trigger_receive_iteration;
    int errors;
+   int warnings;
    int time_counter;
    string str;
    string rxalign = "                                            ";
@@ -184,6 +186,8 @@ module tb_pw();
    bit overflow_noted;
    bit pattern_match_marker;
    bit checking_pulses;
+   bit long_corner;
+   bit pre_long_corner;
    reg [7:0] stat_pattern;
    reg [7:0] stat_mask;
    reg stat_matched;
@@ -224,11 +228,27 @@ module tb_pw();
       end
    end
 
+   // DIY code coverage:
+   initial begin
+       long_corner = 0;
+       wait (U_dut.U_fe_capture_main.long_corner)
+           long_corner = 1;
+   end
+
+   // DIY code coverage:
+   initial begin
+       pre_long_corner = 0;
+       wait (U_dut.U_fe_capture_main.event_reg && 
+             U_dut.U_fe_capture_main.timestamp_ctr == U_dut.U_fe_capture_main.I_max_timestamp)
+           pre_long_corner = 1;
+   end
+
 
    reg [7:0] rdata;
    // FE feeding thread:
    initial begin
       errors = 0;
+      warnings = 0;
       pattern_match_marker = 0;
       #(pFE_CLOCK_PERIOD*100);
 
@@ -322,10 +342,20 @@ module tb_pw();
          errors += 1;
       end
 
+      if (!long_corner && pCHECK_LONG_CORNER) begin
+          $display("WARNING: no long corner seen");
+          warnings += 1;
+      end
+
+      if (!pre_long_corner && pCHECK_LONG_CORNER) begin
+          $display("WARNING: no pre long corner seen");
+          warnings += 1;
+      end
+
       if (errors)
          $display("SIMULATION FAILED (%0d errors).", errors);
       else
-         $display("Simulation passed!");
+         $display("Simulation passed! (%0d warnings)", warnings);
       $finish;
    end
 
@@ -601,8 +631,13 @@ module tb_pw();
       if (pDELAY_MODE == 0)
          delay = $urandom_range(pMIN_FE_DELAY, pMAX_FE_DELAY);
       else if (pDELAY_MODE == 1) begin
-         delay = $urandom_range(0, 1);
-         if (delay == 1) delay = $urandom_range(pMIN_FE_DELAY, pMAX_FE_DELAY);
+         delay = $urandom_range(0, 4);
+         if (delay == 4) delay = $urandom_range(pMIN_FE_DELAY, pMAX_FE_DELAY);
+         else delay = 0;
+      end
+      else if (pDELAY_MODE == 2) begin
+         delay = $urandom_range(0, 50);
+         if (delay == 50) delay = $urandom_range(pMIN_FE_DELAY, pMAX_FE_DELAY);
          else delay = 0;
       end
    endtask

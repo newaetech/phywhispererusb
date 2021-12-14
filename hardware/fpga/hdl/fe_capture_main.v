@@ -32,6 +32,7 @@ module fe_capture_main #(
 
     /* FRONT END CONNECTIONS */
     input  wire fe_clk,
+    input  wire trace_clock_sel,
 
     /* SPECIFIC FRONTEND CONNECTIONS */
     input  wire I_event,
@@ -94,26 +95,27 @@ module fe_capture_main #(
     reg  arm_r2;
     reg  capturing;
 
-    assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr <= I_max_short_timestamp);
-    assign short_timestamp_pre = timestamps_disable_r? 1'b1: (timestamp_ctr < I_max_short_timestamp);
+    wire [15:0] max_timestamp = trace_clock_sel? {I_max_timestamp[15:1], 1'b0} : I_max_timestamp;
 
-    wire long_timestamp = (timestamp_ctr == I_max_timestamp);
-    reg long_timestamp_r;
+    assign short_timestamp = timestamps_disable_r? 1'b1 : (timestamp_ctr <= I_max_short_timestamp);
+    assign short_timestamp_pre = timestamps_disable_r? 1'b1: (timestamp_ctr <= I_max_short_timestamp - timestamp_ctr_incr);
+
+    // "long_timestamp" is meant to trigger a time event, so we don't flag it if the max gets reached as we are processing
+    // a front-end event:
+    wire long_timestamp = ~event_reg && (timestamp_ctr == max_timestamp);
     reg long_corner;
 
     always @ (posedge fe_clk) begin
        if (reset_i) begin
-          long_timestamp_r <= 1'b0;
+          long_corner <= 1'b0;
        end
        else begin
-          if (long_timestamp)
-             long_timestamp_r <= 1'b1;
-          else if (state == pS_IDLE)
-             long_timestamp_r <= 1'b0;
-          
-          if (state == pS_IDLE)
+         // "long_corner" is when a long timestamp event which would've triggered a FIFO write occurs
+         // on the same cycle as a front-end event ("I_event"); it results in a time event being recorded
+         // to the FIFO followed immediately by the front-end event
+          if (state_r == pS_DATA)
              long_corner <= 1'b0;
-          else if (event_reg & long_timestamp_r)
+          else if (I_event && ~event_reg & long_timestamp)
              long_corner <= 1'b1;
        end
     end
@@ -171,6 +173,9 @@ module fe_capture_main #(
        endcase
     end
 
+    // TraceWhisperer: if we're using the trace clock, every tick is equal to 2 target clocks
+    wire  [pTIMESTAMP_FULL_WIDTH-1:0] timestamp_ctr_incr = trace_clock_sel? 2 : 1;
+
     // manage timestamp counter:
     always @ (posedge fe_clk) begin
        if (reset_i) begin
@@ -192,15 +197,15 @@ module fe_capture_main #(
              ctr_running <= 1'b0;
 
           if (!ctr_running) begin
-             timestamp_ctr <= 1;
-             timestamp <= 1;
+             timestamp_ctr <= timestamp_ctr_incr;
+             timestamp <= timestamp_ctr_incr;
           end
           else if (event_reg || long_timestamp) begin
              timestamp <= timestamp_ctr;
-             timestamp_ctr <= 1;
+             timestamp_ctr <= timestamp_ctr_incr;
           end
-          else if (timestamp_ctr < I_max_timestamp)
-             timestamp_ctr <= timestamp_ctr + 1;
+          else if (timestamp_ctr < max_timestamp)
+             timestamp_ctr <= timestamp_ctr + timestamp_ctr_incr;
        end
     end
 
@@ -232,9 +237,10 @@ module fe_capture_main #(
           if (state_r == pS_TIME)
              O_fifo_time = timestamp_reg;
           else if (state_r2 == pS_TIME)
-             O_fifo_time = 1;
-          else // shouldn't happen, just here to avoid latch inference
+             O_fifo_time = timestamp_ctr_incr;
+         else begin // shouldn't happen, just here to avoid latch inference
              O_fifo_time = 0;
+         end
        end
        else begin
           if (state_r == pS_TIME)

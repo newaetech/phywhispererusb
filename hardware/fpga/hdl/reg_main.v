@@ -79,9 +79,12 @@ module reg_main #(
    output wire         O_timestamps_disable,
    output wire         O_capture_while_trig,
    output wire [15:0]  O_max_timestamp,
+   output reg          O_clear_errors,
 
 // user-settable to allow for FPGA pin assignment changes across board revisions
    output wire [3:0]   O_board_rev,
+
+   output wire         O_led_select,
 
    input  wire         I_capture_enable_pulse,
 
@@ -129,6 +132,7 @@ module reg_main #(
    reg reg_timestamps_disable;
    reg reg_capture_while_trig;
    reg [15:0] reg_max_timestamp;
+   reg reg_led_select;
 
    reg reg_trigger_enable;
    reg [pNUM_TRIGGER_WIDTH-1:0] reg_num_triggers;
@@ -152,6 +156,7 @@ module reg_main #(
    assign O_board_rev = reg_board_rev;
    assign O_capture_while_trig = reg_capture_while_trig;
    assign O_max_timestamp = reg_max_timestamp;
+   assign O_led_select = reg_led_select;
 
    reg [pUSERIO_WIDTH-1:0] reg_userio_pwdriven;
    reg [pUSERIO_WIDTH-1:0] reg_userio_drive_data;
@@ -176,16 +181,16 @@ module reg_main #(
    always @(*) begin
       if (selected && reg_read) begin
          case (address)
-            `REG_BUILDTIME: reg_read_data = buildtime[reg_bytecnt*8 +: 8];
+            `REG_BUILDTIME: reg_read_data = buildtime[reg_bytecnt[1:0]*8 +: 8];
             `REG_SNIFF_FIFO_STAT: reg_read_data = {2'b00, I_fifo_status};
             `REG_FE_SELECT: reg_read_data = fe_select;
             `REG_ARM: reg_read_data = reg_arm;
             `REG_TRIGGER_ENABLE: reg_read_data = reg_trigger_enable;
-            `REG_TRIGGER_DELAY: reg_read_data = reg_trigger_delay[reg_bytecnt*8 +: 8];
-            `REG_TRIGGER_WIDTH: reg_read_data = reg_trigger_width[reg_bytecnt*8 +: 8];
+            `REG_TRIGGER_DELAY: reg_read_data = reg_trigger_delay[reg_bytecnt*8 +: 8]; // warning: repeated access may not work as expected
+            `REG_TRIGGER_WIDTH: reg_read_data = reg_trigger_width[reg_bytecnt*8 +: 8]; // warning: repeated access may not work as expected
             `REG_NUM_TRIGGERS: reg_read_data = {4'b0, reg_num_triggers};
             `REG_TRIG_CLK_PHASE_SHIFT: reg_read_data = {7'b0, phaseshift_active};
-            `REG_CAPTURE_LEN: reg_read_data = reg_capture_len[reg_bytecnt*8 +: 8];
+            `REG_CAPTURE_LEN: reg_read_data = reg_capture_len[reg_bytecnt*8 +: 8]; // warning: repeated access may not work as expected
             `REG_COUNT_WRITES: reg_read_data = reg_count_writes;
             `REG_COUNTER_QUICK_START: reg_read_data = reg_counter_quick_start;
             `REG_BOARD_REV: reg_read_data = reg_board_rev;
@@ -195,7 +200,8 @@ module reg_main #(
             `REG_FAST_FIFO_RD_EN: reg_read_data = reg_fast_fifo_rd_en;
             `REG_TIMESTAMPS_DISABLE: reg_read_data = reg_timestamps_disable;
             `REG_CAPTURE_WHILE_TRIG: reg_read_data = reg_capture_while_trig;
-            `REG_MAX_TIMESTAMP: reg_read_data = reg_max_timestamp[reg_bytecnt*8 +: 8];
+            `REG_MAX_TIMESTAMP: reg_read_data = reg_max_timestamp[reg_bytecnt[0]*8 +: 8];
+            `REG_LED_SELECT: reg_read_data = reg_led_select;
             default: reg_read_data = 0;
          endcase
       end
@@ -321,7 +327,6 @@ module reg_main #(
          reg_capture_len <= 0;
          reg_count_writes <= 0;
          reg_counter_quick_start <= pQUICK_START_DEFAULT;
-         reg_board_rev <= 4; // production boards
          reg_userio_pwdriven <= 8'b0;
          reg_userio_drive_data <= 8'b0;
          capture_now <= 1'b0;
@@ -330,6 +335,13 @@ module reg_main #(
          reg_timestamps_disable <= 1'b0;
          reg_capture_while_trig <= 1'b0;
          reg_max_timestamp <= 16'hFFFF;
+         reg_led_select <= 1'b0;
+         O_clear_errors <= 1'b0;
+         `ifdef REV3
+             reg_board_rev <= 3;
+         `else
+             reg_board_rev <= 4; // production boards
+         `endif
       end
 
       else begin
@@ -339,19 +351,20 @@ module reg_main #(
             case (address)
                `REG_FE_SELECT: fe_select <= write_data[`FE_SELECT_WIDTH-1:0];
                `REG_TRIGGER_ENABLE: reg_trigger_enable <= write_data;
-               `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data;
-               `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_TRIGGER_DELAY: reg_trigger_delay[reg_bytecnt*8 +: 8] <= write_data; // warning: repeated access may not work as expected
+               `REG_TRIGGER_WIDTH: reg_trigger_width[reg_bytecnt*8 +: 8] <= write_data; // warning: repeated access may not work as expected
                `REG_NUM_TRIGGERS: reg_num_triggers <= write_data[pNUM_TRIGGER_WIDTH-1:0];
-               `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_CAPTURE_LEN: reg_capture_len[reg_bytecnt*8 +: 8] <= write_data; // warning: repeated access may not work as expected
                `REG_COUNT_WRITES: reg_count_writes <= write_data;
                `REG_COUNTER_QUICK_START: reg_counter_quick_start <= write_data;
-               `REG_BOARD_REV: reg_board_rev <= write_data;
-               `REG_USERIO_DATA: reg_userio_drive_data = write_data;
+               //`REG_BOARD_REV: reg_board_rev <= write_data;
+               `REG_USERIO_DATA: reg_userio_drive_data <= write_data;
                `REG_USERIO_PWDRIVEN: reg_userio_pwdriven <= write_data;
                `REG_FAST_FIFO_RD_EN: reg_fast_fifo_rd_en <= write_data;
                `REG_TIMESTAMPS_DISABLE: reg_timestamps_disable <= write_data[0];
                `REG_CAPTURE_WHILE_TRIG: reg_capture_while_trig <= write_data[0];
-               `REG_MAX_TIMESTAMP: reg_max_timestamp[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_MAX_TIMESTAMP: reg_max_timestamp[reg_bytecnt[0]*8 +: 8] <= write_data;
+               `REG_LED_SELECT: reg_led_select <= write_data[0];
             endcase
          end
 
@@ -379,6 +392,12 @@ module reg_main #(
                phaseshift_active <= 1'b0;
          end
 
+         // Clear errors register is special:
+         if (selected && reg_write && (address == `REG_CLEAR_ERRORS) && ~O_clear_errors)
+             O_clear_errors <= 1'b1;
+         else
+             O_clear_errors <= 1'b0;
+
       end
    end
 
@@ -389,7 +408,7 @@ module reg_main #(
    end
 
 
-   cdc_pulse U_match_cdc (
+   cdc_pulse U_capture_enable_cdc (
       .reset_i       (fpga_reset),
       .src_clk       (fe_clk),
       .src_pulse     (I_capture_enable_pulse),
