@@ -1,0 +1,3 @@
+[submodule "phywhisperer-common"]
+	path = phywhisperer-common
+	url = git@github.com:newaetech/phywhisperer-common.git

@@ -1,11 +1,11 @@
-../hdl/usb_reg_main.v 
 ../hdl/phywhisperer_top.v 
-../hdl/reg_main.v 
 ../hdl/reg_usb.v 
-../hdl/fe_capture_main.v
 ../hdl/fe_capture_usb.v
-../hdl/pw_trigger.v
 ../hdl/pattern_matcher_usb.v
 ../hdl/usb_autodetect.v
-../hdl/cdc_pulse.v
-../hdl/userio.v
+../../../phywhisperer-common/hardware/hdl/usb_reg_main.v 
+../../../phywhisperer-common/hardware/hdl/fe_capture_main.v
+../../../phywhisperer-common/hardware/hdl/reg_main.v 
+../../../phywhisperer-common/hardware/hdl/pw_trigger.v
+../../../phywhisperer-common/hardware/hdl/userio.v
+../../../phywhisperer-common/hardware/hdl/cdc_pulse.v
