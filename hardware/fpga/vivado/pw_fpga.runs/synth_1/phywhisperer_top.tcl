@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "/home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.tcl"
+  variable script "/home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.tcl"
   variable category "vivado_synth"
 }
 
@@ -80,8 +80,8 @@ set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
-set_property webtalk.parent_dir /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.cache/wt [current_project]
-set_property parent.project_path /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.xpr [current_project]
+set_property webtalk.parent_dir /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.cache/wt [current_project]
+set_property parent.project_path /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.xpr [current_project]
 set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
@@ -89,56 +89,56 @@ set_property ip_repo_paths v:/vivado/Arm_ipi_repository [current_project]
 update_ip_catalog
 set_property ip_output_repo c:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
-set_property include_dirs /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/software/phywhisperer/firmware [current_fileset]
+set_property include_dirs /home/jpnewae/git/phywhispererusb/software/phywhisperer/firmware [current_fileset]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib {
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/cdc_pulse.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/fe_capture_main.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/fe_capture_usb.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/fifo.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/pattern_matcher_usb.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/pw_trigger.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/reg_main.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/reg_usb.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/usb_autodetect.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/usb_reg_main.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/userio.v
-  /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/hdl/phywhisperer_top.v
+  /home/jpnewae/git/phywhispererusb/hardware/fpga/hdl/fe_capture_usb.v
+  /home/jpnewae/git/phywhispererusb/hardware/fpga/hdl/pattern_matcher_usb.v
+  /home/jpnewae/git/phywhispererusb/hardware/fpga/hdl/reg_usb.v
+  /home/jpnewae/git/phywhispererusb/hardware/fpga/hdl/usb_autodetect.v
+  /home/jpnewae/git/phywhispererusb/hardware/fpga/hdl/phywhisperer_top.v
+  /home/jpnewae/git/phywhispererusb/phywhisperer-common/hardware/hdl/userio.v
+  /home/jpnewae/git/phywhispererusb/phywhisperer-common/hardware/hdl/fe_capture_main.v
+  /home/jpnewae/git/phywhispererusb/phywhisperer-common/hardware/hdl/cdc_pulse.v
+  /home/jpnewae/git/phywhispererusb/phywhisperer-common/hardware/hdl/reg_main.v
+  /home/jpnewae/git/phywhispererusb/phywhisperer-common/hardware/hdl/pw_trigger.v
+  /home/jpnewae/git/phywhispererusb/phywhisperer-common/hardware/hdl/usb_reg_main.v
+  /home/jpnewae/git/phywhispererusb/phywhisperer-common/hardware/hdl/fifo.v
 }
-read_ip -quiet /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.xci
-set_property used_in_synthesis false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_ooc.xdc]
+read_ip -quiet /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0.xci
+set_property used_in_synthesis false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_v6_2/constraints/ila.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_0/ila_0_ooc.xdc]
 
-read_ip -quiet /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_2.xci
-set_property used_in_synthesis false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_2_ooc.xdc]
+read_ip -quiet /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_2.xci
+set_property used_in_synthesis false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_v6_2/constraints/ila.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_2/ila_2_ooc.xdc]
 
-read_ip -quiet /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_1.xci
-set_property used_in_synthesis false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_v6_2/constraints/ila.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_1_ooc.xdc]
+read_ip -quiet /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_1.xci
+set_property used_in_synthesis false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_v6_2/constraints/ila.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_1/ila_1_ooc.xdc]
 
-read_ip -quiet /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_board.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_ooc.xdc]
+read_ip -quiet /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_board.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_ooc.xdc]
 
-read_ip -quiet /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0.xci
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_clocks.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_ooc.xdc]
+read_ip -quiet /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0.xci
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_clocks.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/fifo_generator_0/fifo_generator_0_ooc.xdc]
 
-read_ip -quiet /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_3.xci
-set_property used_in_synthesis false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_v6_2/constraints/ila.xdc]
-set_property used_in_implementation false [get_files -all /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_3_ooc.xdc]
+read_ip -quiet /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_3.xci
+set_property used_in_synthesis false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_v6_2/constraints/ila_impl.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_v6_2/constraints/ila.xdc]
+set_property used_in_implementation false [get_files -all /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/sources_1/ip/ila_3/ila_3_ooc.xdc]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -149,8 +149,8 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc
-set_property used_in_implementation false [get_files /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc]
+read_xdc /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc
+set_property used_in_implementation false [get_files /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.srcs/constrs_1/new/phywhisperer.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]

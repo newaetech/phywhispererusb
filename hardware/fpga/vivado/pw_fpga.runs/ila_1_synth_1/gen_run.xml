@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="ila_1_synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1639416264">
+<GenRun Id="ila_1_synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1639518078">
   <File Type="VDS-TIMINGSUMMARY" Name="ila_1_timing_summary_synth.rpt"/>
   <File Type="RDS-DCP" Name="ila_1.dcp"/>
   <File Type="RDS-UTIL-PB" Name="ila_1_utilization_synth.pb"/>
   <File Type="RDS-UTIL" Name="ila_1_utilization_synth.rpt"/>
+  <File Type="RDS-PROPCONSTRS" Name="ila_1_drc_synth.rpt"/>
+  <File Type="RDS-RDS" Name="ila_1.vds"/>
+  <File Type="REPORTS-TCL" Name="ila_1_reports.tcl"/>
   <File Type="VDS-TIMING-PB" Name="ila_1_timing_summary_synth.pb"/>
   <File Type="PA-TCL" Name="ila_1.tcl"/>
-  <File Type="REPORTS-TCL" Name="ila_1_reports.tcl"/>
-  <File Type="RDS-RDS" Name="ila_1.vds"/>
-  <File Type="RDS-PROPCONSTRS" Name="ila_1_drc_synth.rpt"/>
   <FileSet Name="sources" Type="BlockSrcs" RelSrcDir="$PSRCDIR/ila_1">
     <File Path="$PSRCDIR/sources_1/ip/ila_1/ila_1.xci">
       <FileInfo>
@@ -42,9 +42,7 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020">
-      <Desc>Vivado Synthesis Defaults</Desc>
-    </StratHandle>
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
     <Step Id="synth_design"/>
   </Strategy>
 </GenRun>

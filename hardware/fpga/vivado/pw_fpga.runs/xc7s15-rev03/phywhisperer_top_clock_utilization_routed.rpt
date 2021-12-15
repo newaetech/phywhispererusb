@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-| Date         : Mon Dec 13 12:26:42 2021
+| Date         : Tue Dec 14 16:43:33 2021
 | Host         : red running 64-bit Ubuntu 18.04.6 LTS
 | Command      : report_clock_utilization -file phywhisperer_top_clock_utilization_routed.rpt
 | Design       : phywhisperer_top
