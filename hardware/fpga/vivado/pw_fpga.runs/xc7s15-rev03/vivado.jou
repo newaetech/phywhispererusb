@@ -2,11 +2,11 @@
 # Vivado v2020.2 (64-bit)
 # SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
 # IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
-# Start of session at: Mon Dec 13 12:26:06 2021
-# Process ID: 18334
-# Current directory: /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03
+# Start of session at: Tue Dec 14 16:42:58 2021
+# Process ID: 27210
+# Current directory: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03
 # Command line: vivado -log phywhisperer_top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source phywhisperer_top.tcl -notrace
-# Log file: /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03/phywhisperer_top.vdi
-# Journal file: /home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03/vivado.jou
+# Log file: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03/phywhisperer_top.vdi
+# Journal file: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03/vivado.jou
 #-----------------------------------------------------------
 source phywhisperer_top.tcl -notrace

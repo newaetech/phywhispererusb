@@ -20,7 +20,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/jpnewae/git/DesignStartTrace/hardware/phywhisperer/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03'
+HD_PWD='/home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
