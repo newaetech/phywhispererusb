@@ -146,6 +146,7 @@ module phywhisperer_top(
    wire reg_arm_feclk;
    wire capturing;
    wire capture_enable;
+   wire [31:0] buildtime;
 
    wire [pCAPTURE_DELAY_WIDTH-1:0] capture_delay;
    wire [pALL_TRIGGER_DELAY_WIDTHS-1:0] trigger_delay;
@@ -299,6 +300,7 @@ module phywhisperer_top(
 
       .I_locked1        (trigger_clk_locked),
       .I_locked2        (1'b0),
+      .buildtime        (buildtime),
 
       // Trigger:
       .O_trigger_delay  (trigger_delay),
@@ -646,6 +648,17 @@ module phywhisperer_top(
    `else
       assign cw_clk = clk_fe_buf;
    `endif
+
+   `ifndef __ICARUS__
+      USR_ACCESSE2 U_buildtime (
+         .CFGCLK(),
+         .DATA(buildtime),
+         .DATAVALID()
+      );
+   `else
+      assign buildtime = 0;
+   `endif
+
 
 endmodule
 `default_nettype wire

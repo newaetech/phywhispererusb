@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-| Date         : Tue Dec 14 16:43:23 2021
+| Date         : Tue Feb 15 11:57:15 2022
 | Host         : red running 64-bit Ubuntu 18.04.6 LTS
 | Command      : report_utilization -file phywhisperer_top_utilization_placed.rpt -pb phywhisperer_top_utilization_placed.pb
 | Design       : phywhisperer_top
@@ -69,12 +69,12 @@ Table of Contents
 +--------------------------------------------+------+-------+-----------+-------+
 |                  Site Type                 | Used | Fixed | Available | Util% |
 +--------------------------------------------+------+-------+-----------+-------+
-| Slice                                      | 1194 |     0 |      2000 | 59.70 |
-|   SLICEL                                   |  818 |     0 |           |       |
-|   SLICEM                                   |  376 |     0 |           |       |
+| Slice                                      | 1197 |     0 |      2000 | 59.85 |
+|   SLICEL                                   |  823 |     0 |           |       |
+|   SLICEM                                   |  374 |     0 |           |       |
 | LUT as Logic                               | 1939 |     0 |      8000 | 24.24 |
-|   using O5 output only                     |    1 |       |           |       |
-|   using O6 output only                     | 1419 |       |           |       |
+|   using O5 output only                     |    0 |       |           |       |
+|   using O6 output only                     | 1420 |       |           |       |
 |   using O5 and O6                          |  519 |       |           |       |
 | LUT as Memory                              |    1 |     0 |      2400 |  0.04 |
 |   LUT as Distributed RAM                   |    0 |     0 |           |       |
@@ -83,10 +83,10 @@ Table of Contents
 |     using O6 output only                   |    0 |       |           |       |
 |     using O5 and O6                        |    0 |       |           |       |
 | Slice Registers                            | 3950 |     0 |     16000 | 24.69 |
-|   Register driven from within the Slice    |  464 |       |           |       |
-|   Register driven from outside the Slice   | 3486 |       |           |       |
-|     LUT in front of the register is unused | 2490 |       |           |       |
-|     LUT in front of the register is used   |  996 |       |           |       |
+|   Register driven from within the Slice    |  469 |       |           |       |
+|   Register driven from outside the Slice   | 3481 |       |           |       |
+|     LUT in front of the register is unused | 2466 |       |           |       |
+|     LUT in front of the register is used   | 1015 |       |           |       |
 | Unique Control Sets                        |  220 |       |      2000 | 11.00 |
 +--------------------------------------------+------+-------+-----------+-------+
 * * Note: Available Control Sets calculated as Slice * 1, Review the Control Sets Report for more information regarding control sets.

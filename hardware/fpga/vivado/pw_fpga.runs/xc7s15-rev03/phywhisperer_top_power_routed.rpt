@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-| Date             : Tue Dec 14 16:43:33 2021
+| Date             : Tue Feb 15 11:57:24 2022
 | Host             : red running 64-bit Ubuntu 18.04.6 LTS
 | Command          : report_power -file phywhisperer_top_power_routed.rpt -pb phywhisperer_top_power_summary_routed.pb -rpx phywhisperer_top_power_routed.rpx
 | Design           : phywhisperer_top
@@ -52,7 +52,7 @@ Table of Contents
 +-------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
-| Clocks                  |     0.026 |        6 |       --- |             --- |
+| Clocks                  |     0.027 |        6 |       --- |             --- |
 | Slice Logic             |     0.001 |     6788 |       --- |             --- |
 |   LUT as Logic          |    <0.001 |     1939 |      8000 |           24.24 |
 |   Register              |    <0.001 |     3950 |     16000 |           24.69 |
@@ -75,7 +75,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.037 |       0.033 |      0.004 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.037 |       0.034 |      0.004 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.066 |       0.059 |      0.007 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.004 |       0.003 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
