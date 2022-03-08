@@ -29,6 +29,7 @@ from threading import Thread
 import usb1
 import os
 import array
+from typing import Optional, Union, List, Tuple, Dict, cast
 
 # from chipwhisperer.hardware.firmware import cwlite as fw_cwlite
 # from chipwhisperer.hardware.firmware import cw1200 as fw_cw1200
@@ -200,14 +201,15 @@ class NAEUSB_Backend:
         return dev_list[0]
 
 
-    def open(self, serial_number=None, idProduct=None, connect_to_first=False):
+    def open(self, serial_number : Optional[str]=None, idProduct : Optional[List[int]]=None, 
+        connect_to_first : bool =False, hw_location : Optional[Tuple[int, int]]=None) -> Optional[usb1.USBDeviceHandle]:
         """
         Connect to device using default VID/PID
         """
 
-        self.device = self.find(serial_number, idProduct)
+        self.device = self.find(serial_number, idProduct, hw_location=hw_location)
         if connect_to_first == False:
-            return
+            return None
         try:
             self.handle = self.device.open()
         except usb1.USBError as e:
@@ -233,7 +235,7 @@ class NAEUSB_Backend:
         else:
             self.rep = 0x81
             self.wep = 0x02
-        self._timeout = 200
+        self._timeout = 20000
 
         return self.handle
 
@@ -482,23 +484,26 @@ class NAEUSB:
                 devices.append({"port": port.device, "interface": port.location.split('.')[-1]})
         return devices
 
-    def con(self, idProduct=[0xACE2], connect_to_first=False, serial_number=None):
+    def con(self, idProduct : Tuple[int]=(0xACE2,), connect_to_first : bool=False, 
+        serial_number : Optional[str]=None, hw_location : Optional[Tuple[int, int]]=None, **kwargs) -> int:
         """
         Connect to device using default VID/PID
         """
-        self.usbtx.open(idProduct=idProduct, serial_number=serial_number, connect_to_first=True)
+        self.usbtx.open(idProduct=idProduct, serial_number=serial_number, connect_to_first=True, hw_location=hw_location)
 
 
         self.snum=self.usbtx.sn
         fwver = self.readFwVersion()
         naeusb_logger.info('SAM3U Firmware version = %d.%d b%d' % (fwver[0], fwver[1], fwver[2]))
 
+
+        fw_latest : List[int] = [0, 0]
+
         if self.usbtx.pid in NEWAE_PIDS:
             name = NEWAE_PIDS[self.usbtx.pid]['name']
-            fw_latest = NEWAE_PIDS[self.usbtx.pid]['fwver']
+            fw_latest = cast(List[int], NEWAE_PIDS[self.usbtx.pid]['fwver'])
         else:
             name = "Unknown (PID = %04x)"%self.usbtx.pid
-            fw_latest = [0, 0]
 
         latest = fwver[0] > fw_latest[0] or (fwver[0] == fw_latest[0] and fwver[1] >= fw_latest[1])
         if not latest:

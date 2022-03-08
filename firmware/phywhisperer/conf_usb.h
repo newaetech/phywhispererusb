@@ -72,6 +72,7 @@ extern char usb_serial_number[33];
 #define  USB_DEVICE_PRODUCT_NAME          "PhyWhisperer-USB"
 #define  USB_DEVICE_GET_SERIAL_NAME_POINTER usb_serial_number
 #define  USB_DEVICE_GET_SERIAL_NAME_LENGTH 32
+#define USB_DEVICE_NB_INTERFACE 1
 
 #define FW_VER_MAJOR 1
 #define FW_VER_MINOR 50

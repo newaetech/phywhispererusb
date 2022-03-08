@@ -62,6 +62,11 @@
 extern "C" {
 #endif
 
+#ifdef printf
+#undef printf
+#define printf(...)
+#endif
+
 
 /*! \name Base Boards
  */
@@ -143,6 +148,7 @@ extern "C" {
 #define DUMMY_BOARD               100  //!< Dummy board to support board-independent applications (e.g. bootloader)
 #define CWLITE                    101  //!<ChipWhisperer Lite
 #define CW521                     106  //!<ChipWhisperer CW521
+#define CW1190                    107  //!<ChipWhisperer CW Husky
 //! @}
 
 /*! \name Extension Boards
@@ -162,6 +168,9 @@ extern "C" {
 #define SECURITY_XPLAINED           12  //!< Xplained ATSHA204 board
 #define USER_EXT_BOARD              99  //!< User-reserved extension board (if any).
 //! @}
+#ifndef BOARD
+#define BOARD CW521
+#endif
 
 #if BOARD == EVK1100
 #  include "evk1100/evk1100.h"
