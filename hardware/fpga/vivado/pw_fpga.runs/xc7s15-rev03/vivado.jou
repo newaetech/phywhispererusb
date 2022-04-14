@@ -2,8 +2,8 @@
 # Vivado v2020.2 (64-bit)
 # SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
 # IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
-# Start of session at: Tue Feb 15 11:56:51 2022
-# Process ID: 8762
+# Start of session at: Wed Apr 13 17:13:30 2022
+# Process ID: 13556
 # Current directory: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03
 # Command line: vivado -log phywhisperer_top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source phywhisperer_top.tcl -notrace
 # Log file: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03/phywhisperer_top.vdi

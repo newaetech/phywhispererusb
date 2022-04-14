@@ -141,9 +141,8 @@ module phywhisperer_top(
    wire count_writes;
    wire counter_quick_start;
    wire fifo_full;
-   wire arm;
-   wire reg_arm;
-   wire reg_arm_feclk;
+   wire arm_usb;
+   wire arm_fe;
    wire capturing;
    wire capture_enable;
    wire [31:0] buildtime;
@@ -167,8 +166,6 @@ module phywhisperer_top(
    wire [pUSB_AUTO_COUNTER_WIDTH-1:0] usb_auto_wait1;
    wire [pUSB_AUTO_COUNTER_WIDTH-1:0] usb_auto_wait2;
    
-   wire [`FE_SELECT_WIDTH-1:0] fe_select;
-
    wire [17:0] fifo_in_data;
    wire [17:0] fifo_out_data;
    wire fifo_wr;
@@ -193,7 +190,7 @@ module phywhisperer_top(
    wire [pUSERIO_WIDTH-1:0] userio_pwdriven;
    wire [pUSERIO_WIDTH-1:0] userio_drive_data;
 
-   assign LED_CAP = arm;
+   assign LED_CAP = arm_usb;
    assign LED_TRIG = capturing;
 
    assign mcx_trig = cw_trig;
@@ -266,8 +263,6 @@ module phywhisperer_top(
       .reg_write        (reg_write), 
       .reg_addrvalid    (reg_addrvalid),
 
-      .fe_select        (fe_select),
-
       .userio_d         (userio_d),
       .O_userio_pwdriven (userio_pwdriven),
       .O_userio_drive_data (userio_drive_data),
@@ -283,9 +278,9 @@ module phywhisperer_top(
       .I_usb_cen        (1'b1), // unused
 
       .fe_clk           (clk_fe_buf),
-      .O_arm            (arm),
-      .O_reg_arm        (reg_arm),
-      .O_arm_pulse      ( ), // unused
+      .I_external_arm   (1'b0), // unused
+      .O_arm_usb        (arm_usb),
+      .O_arm_fe         (arm_fe),
       .I_flushing       (fifo_flush),
       .O_capture_len    (capture_len),
       .O_count_writes   (count_writes),
@@ -296,6 +291,7 @@ module phywhisperer_top(
       .O_board_rev      ( ), // unused
       .O_led_select     ( ), // unused
       .O_capture_while_trig ( ), // unused
+      .I_triggers_generated (4'b0), // unused
       .O_max_timestamp  (max_timestamp),
 
       .I_locked1        (trigger_clk_locked),
@@ -351,8 +347,8 @@ module phywhisperer_top(
 
       // FE:
       .fe_clk                   (clk_fe_buf),
+      .arm_fe                   (arm_fe),
       .I_fe_capture_stat        (fe_capture_stat),
-      .O_reg_arm_feclk          (reg_arm_feclk),
 
       // Trigger:
       .O_capture_delay          (capture_delay),
@@ -373,10 +369,7 @@ module phywhisperer_top(
 
       .I_usb_auto_speed         (usb_auto_speed),
 
-      .selected                 (reg_usb_selected),
-
-      .I_reg_arm                (1'b0)
-
+      .selected                 (reg_usb_selected)
    );
 
 
@@ -393,8 +386,9 @@ module phywhisperer_top(
 
       .I_fifo_read              (fifo_read),
       .I_fifo_flush             (fifo_flush),
-      .I_clear_read_flags       (reg_arm),
-      .I_clear_write_flags      (reg_arm_feclk),
+      .I_clear_read_flags       (arm_usb),
+      .I_clear_write_flags      (arm_fe),
+      .I_clear_errors           (1'b0), // unused; TODO: add?
 
       .O_data                   (fifo_out_data),
       .O_fifo_status            (fifo_status),
@@ -416,8 +410,7 @@ module phywhisperer_top(
       .trace_clock_sel          (1'b0),
 
       .I_timestamps_disable     (timestamps_disable),
-      .I_arm                    (arm),
-      .I_reg_arm                (reg_arm),
+      .I_arm_fe                 (arm_fe),
       .I_capture_len            (capture_len),
       .I_count_writes           (count_writes),
       .I_counter_quick_start    (counter_quick_start),
@@ -438,6 +431,7 @@ module phywhisperer_top(
 
       .I_target_trig            (1'b0), // unused
       .I_capture_while_trig     (1'b0), // unused
+      .I_capture_off            (1'b0), // unused
 
       .O_capturing              (capturing),
       .I_capture_enable         (capture_enable)
@@ -582,7 +576,7 @@ module phywhisperer_top(
       .reset_i          (fpga_reset),
       .fe_clk           (clk_fe_buf),
       .trigger_clk      (trigger_clk),
-      .I_arm            (arm),
+      .I_arm            (arm_usb),
       .I_pattern        (pattern),
       .I_mask           (pattern_mask),
       .I_pattern_bytes  (pattern_bytes),

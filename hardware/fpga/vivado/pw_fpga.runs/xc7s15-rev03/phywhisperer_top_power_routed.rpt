@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-| Date             : Tue Feb 15 11:57:24 2022
+| Date             : Wed Apr 13 17:14:02 2022
 | Host             : red running 64-bit Ubuntu 18.04.6 LTS
 | Command          : report_power -file phywhisperer_top_power_routed.rpt -pb phywhisperer_top_power_summary_routed.pb -rpx phywhisperer_top_power_routed.rpx
 | Design           : phywhisperer_top
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.171        |
+| Total On-Chip Power (W)  | 0.172        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.151        |
+| Dynamic (W)              | 0.152        |
 | Device Static (W)        | 0.020        |
 | Effective TJA (C/W)      | 3.4          |
 | Max Ambient (C)          | 84.4         |
@@ -52,20 +52,20 @@ Table of Contents
 +-------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
-| Clocks                  |     0.027 |        6 |       --- |             --- |
-| Slice Logic             |     0.001 |     6788 |       --- |             --- |
-|   LUT as Logic          |    <0.001 |     1939 |      8000 |           24.24 |
-|   Register              |    <0.001 |     3950 |     16000 |           24.69 |
+| Clocks                  |     0.026 |        6 |       --- |             --- |
+| Slice Logic             |     0.001 |     6748 |       --- |             --- |
+|   LUT as Logic          |     0.001 |     1962 |      8000 |           24.53 |
+|   Register              |    <0.001 |     3948 |     16000 |           24.68 |
 |   CARRY4                |    <0.001 |      106 |      2000 |            5.30 |
-|   F7/F8 Muxes           |    <0.001 |      222 |      8000 |            2.78 |
 |   LUT as Shift Register |    <0.001 |        1 |      2400 |            0.04 |
+|   F7/F8 Muxes           |    <0.001 |      187 |      8000 |            2.34 |
 |   Others                |     0.000 |       51 |       --- |             --- |
-| Signals                 |     0.002 |     5877 |       --- |             --- |
+| Signals                 |     0.002 |     5913 |       --- |             --- |
 | Block RAM               |     0.003 |        4 |        10 |           40.00 |
 | MMCM                    |     0.106 |        1 |         2 |           50.00 |
-| I/O                     |     0.012 |       64 |       100 |           64.00 |
+| I/O                     |     0.013 |       64 |       100 |           64.00 |
 | Static Power            |     0.020 |          |           |                 |
-| Total                   |     0.171 |          |           |                 |
+| Total                   |     0.172 |          |           |                 |
 +-------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -75,9 +75,9 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.037 |       0.034 |      0.004 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.038 |       0.034 |      0.004 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.066 |       0.059 |      0.007 |       NA    | Unspecified | NA         |
-| Vcco33    |       3.300 |     0.004 |       0.003 |      0.001 |       NA    | Unspecified | NA         |
+| Vcco33    |       3.300 |     0.005 |       0.004 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -145,14 +145,14 @@ Table of Contents
 +---------------------+-----------+
 | Name                | Power (W) |
 +---------------------+-----------+
-| phywhisperer_top    |     0.151 |
+| phywhisperer_top    |     0.152 |
 |   U_fifo            |     0.003 |
 |     U_fifo          |     0.003 |
 |       U0            |     0.003 |
 |   U_pattern_matcher |     0.016 |
 |   U_reg_main        |     0.002 |
 |   U_reg_usb         |     0.003 |
-|   U_trigger         |     0.005 |
+|   U_trigger         |     0.006 |
 |   U_trigger_clock   |     0.106 |
 |     inst            |     0.106 |
 |   U_usb_reg_main    |     0.001 |

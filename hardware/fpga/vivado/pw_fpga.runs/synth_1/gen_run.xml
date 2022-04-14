@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1644944177">
+<GenRun Id="synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1649884375">
   <File Type="VDS-TIMINGSUMMARY" Name="phywhisperer_top_timing_summary_synth.rpt"/>
   <File Type="RDS-DCP" Name="phywhisperer_top.dcp"/>
   <File Type="RDS-UTIL-PB" Name="phywhisperer_top_utilization_synth.pb"/>
