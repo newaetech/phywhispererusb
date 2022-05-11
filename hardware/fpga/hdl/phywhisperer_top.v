@@ -274,6 +274,8 @@ module phywhisperer_top(
 
       .O_data_available (), // unused
       .O_usb_drive_data (), // unused
+      .O_capture_off    (), // unused
+      .O_clear_errors   (), // unused
       .I_fast_fifo_rdn  (1'b1), // unused
       .I_usb_cen        (1'b1), // unused
 
