@@ -1,12 +1,12 @@
 #-----------------------------------------------------------
-# Vivado v2019.1 (64-bit)
-# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
-# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Thu Feb  4 11:44:09 2021
-# Process ID: 10760
-# Current directory: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1
-# Command line: vivado.exe -log phywhisperer_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source phywhisperer_top.tcl
-# Log file: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.vds
-# Journal file: C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1\vivado.jou
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Mon May  9 10:57:11 2022
+# Process ID: 12214
+# Current directory: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1
+# Command line: vivado -log phywhisperer_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source phywhisperer_top.tcl
+# Log file: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/phywhisperer_top.vds
+# Journal file: /home/jpnewae/git/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/synth_1/vivado.jou
 #-----------------------------------------------------------
 source phywhisperer_top.tcl -notrace

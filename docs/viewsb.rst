@@ -32,7 +32,8 @@ Note that for high-speed targets, you may be able to capture considerably more d
 using ViewSB, due to the additional overhead that ViewSB incurs.
 
 As with all other ViewSB backends, you can specify a variety of front-ends,
-including a prototype QT-based GUI::
+including a prototype QT-based GUI (PhyWhisperer command-line options must
+immediately follow the "phywhisperer" backend specifier) ::
 
-    viewsb.sh phywhisperer qt --pattern 45 --mask 255
+    viewsb.sh phywhisperer --pattern 45 --mask 255 qt 
     

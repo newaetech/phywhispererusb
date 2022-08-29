@@ -1,90 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="xc7s15-rev03" LaunchPart="xc7s15ftgb196-2" LaunchTime="1612457126">
-  <File Type="BITSTR-BMM" Name="phywhisperer_top_bd.bmm"/>
-  <File Type="OPT-METHODOLOGY-DRC" Name="phywhisperer_top_methodology_drc_opted.rpt"/>
-  <File Type="INIT-TIMING" Name="phywhisperer_top_timing_summary_init.rpt"/>
-  <File Type="ROUTE-PWR" Name="phywhisperer_top_power_routed.rpt"/>
-  <File Type="PA-TCL" Name="phywhisperer_top.tcl"/>
-  <File Type="OPT-TIMING" Name="phywhisperer_top_timing_summary_opted.rpt"/>
-  <File Type="OPT-DCP" Name="phywhisperer_top_opt.dcp"/>
-  <File Type="ROUTE-PWR-SUM" Name="phywhisperer_top_power_summary_routed.pb"/>
-  <File Type="REPORTS-TCL" Name="phywhisperer_top_reports.tcl"/>
-  <File Type="OPT-DRC" Name="phywhisperer_top_drc_opted.rpt"/>
-  <File Type="OPT-HWDEF" Name="phywhisperer_top.hwdef"/>
-  <File Type="PWROPT-DCP" Name="phywhisperer_top_pwropt.dcp"/>
-  <File Type="PWROPT-DRC" Name="phywhisperer_top_drc_pwropted.rpt"/>
-  <File Type="PWROPT-TIMING" Name="phywhisperer_top_timing_summary_pwropted.rpt"/>
-  <File Type="PLACE-DCP" Name="phywhisperer_top_placed.dcp"/>
-  <File Type="PLACE-IO" Name="phywhisperer_top_io_placed.rpt"/>
-  <File Type="PLACE-CLK" Name="phywhisperer_top_clock_utilization_placed.rpt"/>
-  <File Type="PLACE-UTIL" Name="phywhisperer_top_utilization_placed.rpt"/>
-  <File Type="PLACE-UTIL-PB" Name="phywhisperer_top_utilization_placed.pb"/>
-  <File Type="PLACE-CTRL" Name="phywhisperer_top_control_sets_placed.rpt"/>
-  <File Type="PLACE-SIMILARITY" Name="phywhisperer_top_incremental_reuse_placed.rpt"/>
-  <File Type="PLACE-PRE-SIMILARITY" Name="phywhisperer_top_incremental_reuse_pre_placed.rpt"/>
+<GenRun Id="xc7s15-rev03" LaunchPart="xc7s15ftgb196-2" LaunchTime="1652108230">
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="RDI-RDI" Name="phywhisperer_top.vdi"/>
+  <File Type="BG-DRC" Name="phywhisperer_top.drc"/>
   <File Type="BG-BGN" Name="phywhisperer_top.bgn"/>
-  <File Type="PLACE-TIMING" Name="phywhisperer_top_timing_summary_placed.rpt"/>
-  <File Type="POSTPLACE-PWROPT-DCP" Name="phywhisperer_top_postplace_pwropt.dcp"/>
-  <File Type="BG-BIN" Name="phywhisperer_top.bin"/>
-  <File Type="POSTPLACE-PWROPT-TIMING" Name="phywhisperer_top_timing_summary_postplace_pwropted.rpt"/>
-  <File Type="PHYSOPT-DCP" Name="phywhisperer_top_physopt.dcp"/>
-  <File Type="PHYSOPT-DRC" Name="phywhisperer_top_drc_physopted.rpt"/>
-  <File Type="BITSTR-MSK" Name="phywhisperer_top.msk"/>
-  <File Type="PHYSOPT-TIMING" Name="phywhisperer_top_timing_summary_physopted.rpt"/>
-  <File Type="ROUTE-ERROR-DCP" Name="phywhisperer_top_routed_error.dcp"/>
-  <File Type="ROUTE-DCP" Name="phywhisperer_top_routed.dcp"/>
-  <File Type="ROUTE-BLACKBOX-DCP" Name="phywhisperer_top_routed_bb.dcp"/>
-  <File Type="ROUTE-DRC" Name="phywhisperer_top_drc_routed.rpt"/>
-  <File Type="ROUTE-DRC-PB" Name="phywhisperer_top_drc_routed.pb"/>
+  <File Type="BITSTR-SYSDEF" Name="phywhisperer_top.sysdef"/>
   <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
   <File Type="BITSTR-LTX" Name="phywhisperer_top.ltx"/>
-  <File Type="ROUTE-DRC-RPX" Name="phywhisperer_top_drc_routed.rpx"/>
+  <File Type="RBD_FILE" Name="phywhisperer_top.rbd"/>
+  <File Type="NPI_FILE" Name="phywhisperer_top.npi"/>
+  <File Type="RNPI_FILE" Name="phywhisperer_top.rnpi"/>
+  <File Type="CFI_FILE" Name="phywhisperer_top.cfi"/>
+  <File Type="RCFI_FILE" Name="phywhisperer_top.rcfi"/>
+  <File Type="PDI-FILE" Name="phywhisperer_top.pdi"/>
   <File Type="BITSTR-MMI" Name="phywhisperer_top.mmi"/>
-  <File Type="ROUTE-METHODOLOGY-DRC" Name="phywhisperer_top_methodology_drc_routed.rpt"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="phywhisperer_top_methodology_drc_routed.rpx"/>
-  <File Type="BITSTR-SYSDEF" Name="phywhisperer_top.sysdef"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="phywhisperer_top_methodology_drc_routed.pb"/>
-  <File Type="ROUTE-PWR-RPX" Name="phywhisperer_top_power_routed.rpx"/>
-  <File Type="ROUTE-STATUS" Name="phywhisperer_top_route_status.rpt"/>
-  <File Type="ROUTE-STATUS-PB" Name="phywhisperer_top_route_status.pb"/>
-  <File Type="ROUTE-TIMINGSUMMARY" Name="phywhisperer_top_timing_summary_routed.rpt"/>
-  <File Type="ROUTE-TIMING-PB" Name="phywhisperer_top_timing_summary_routed.pb"/>
-  <File Type="ROUTE-TIMING-RPX" Name="phywhisperer_top_timing_summary_routed.rpx"/>
-  <File Type="ROUTE-SIMILARITY" Name="phywhisperer_top_incremental_reuse_routed.rpt"/>
-  <File Type="ROUTE-CLK" Name="phywhisperer_top_clock_utilization_routed.rpt"/>
-  <File Type="ROUTE-BUS-SKEW" Name="phywhisperer_top_bus_skew_routed.rpt"/>
-  <File Type="ROUTE-BUS-SKEW-PB" Name="phywhisperer_top_bus_skew_routed.pb"/>
-  <File Type="ROUTE-BUS-SKEW-RPX" Name="phywhisperer_top_bus_skew_routed.rpx"/>
-  <File Type="POSTROUTE-PHYSOPT-DCP" Name="phywhisperer_top_postroute_physopt.dcp"/>
-  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="phywhisperer_top_postroute_physopt_bb.dcp"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="phywhisperer_top_timing_summary_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="phywhisperer_top_timing_summary_postroute_physopted.pb"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="phywhisperer_top_timing_summary_postroute_physopted.rpx"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="phywhisperer_top_bus_skew_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="phywhisperer_top_bus_skew_postroute_physopted.pb"/>
+  <File Type="BITSTR-BMM" Name="phywhisperer_top_bd.bmm"/>
+  <File Type="BITSTR-NKY" Name="phywhisperer_top.nky"/>
+  <File Type="BITSTR-RBT" Name="phywhisperer_top.rbt"/>
+  <File Type="BITSTR-MSK" Name="phywhisperer_top.msk"/>
+  <File Type="BG-BIN" Name="phywhisperer_top.bin"/>
   <File Type="BG-BIT" Name="phywhisperer_top.bit"/>
   <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="phywhisperer_top_bus_skew_postroute_physopted.rpx"/>
-  <File Type="BITSTR-RBT" Name="phywhisperer_top.rbt"/>
-  <File Type="BITSTR-NKY" Name="phywhisperer_top.nky"/>
-  <File Type="BG-DRC" Name="phywhisperer_top.drc"/>
-  <File Type="RDI-RDI" Name="phywhisperer_top.vdi"/>
-  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
-  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="phywhisperer_top_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="phywhisperer_top_bus_skew_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="phywhisperer_top_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="phywhisperer_top_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="phywhisperer_top_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="phywhisperer_top_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="phywhisperer_top_postroute_physopt.dcp"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="phywhisperer_top_bus_skew_routed.rpx"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="phywhisperer_top_bus_skew_routed.pb"/>
+  <File Type="ROUTE-BUS-SKEW" Name="phywhisperer_top_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="phywhisperer_top_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-SIMILARITY" Name="phywhisperer_top_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-TIMING-RPX" Name="phywhisperer_top_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-TIMING-PB" Name="phywhisperer_top_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="phywhisperer_top_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="phywhisperer_top_route_status.pb"/>
+  <File Type="ROUTE-STATUS" Name="phywhisperer_top_route_status.rpt"/>
+  <File Type="ROUTE-PWR-RPX" Name="phywhisperer_top_power_routed.rpx"/>
+  <File Type="ROUTE-PWR-SUM" Name="phywhisperer_top_power_summary_routed.pb"/>
+  <File Type="ROUTE-PWR" Name="phywhisperer_top_power_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="phywhisperer_top_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="phywhisperer_top_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="phywhisperer_top_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-RPX" Name="phywhisperer_top_drc_routed.rpx"/>
+  <File Type="ROUTE-DRC-PB" Name="phywhisperer_top_drc_routed.pb"/>
+  <File Type="ROUTE-DRC" Name="phywhisperer_top_drc_routed.rpt"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="phywhisperer_top_routed_bb.dcp"/>
+  <File Type="ROUTE-DCP" Name="phywhisperer_top_routed.dcp"/>
+  <File Type="ROUTE-ERROR-DCP" Name="phywhisperer_top_routed_error.dcp"/>
+  <File Type="PHYSOPT-TIMING" Name="phywhisperer_top_timing_summary_physopted.rpt"/>
+  <File Type="PHYSOPT-DRC" Name="phywhisperer_top_drc_physopted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="phywhisperer_top_physopt.dcp"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="phywhisperer_top_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="phywhisperer_top_postplace_pwropt.dcp"/>
+  <File Type="PLACE-TIMING" Name="phywhisperer_top_timing_summary_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="phywhisperer_top_incremental_reuse_pre_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="phywhisperer_top_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-CTRL" Name="phywhisperer_top_control_sets_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="phywhisperer_top_utilization_placed.pb"/>
+  <File Type="PLACE-UTIL" Name="phywhisperer_top_utilization_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="phywhisperer_top_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-IO" Name="phywhisperer_top_io_placed.rpt"/>
+  <File Type="PLACE-DCP" Name="phywhisperer_top_placed.dcp"/>
+  <File Type="PWROPT-DRC" Name="phywhisperer_top_drc_pwropted.rpt"/>
+  <File Type="PWROPT-DCP" Name="phywhisperer_top_pwropt.dcp"/>
+  <File Type="OPT-HWDEF" Name="phywhisperer_top.hwdef"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="phywhisperer_top_methodology_drc_opted.rpt"/>
+  <File Type="OPT-DRC" Name="phywhisperer_top_drc_opted.rpt"/>
+  <File Type="OPT-DCP" Name="phywhisperer_top_opt.dcp"/>
+  <File Type="INIT-TIMING" Name="phywhisperer_top_timing_summary_init.rpt"/>
+  <File Type="PWROPT-TIMING" Name="phywhisperer_top_timing_summary_pwropted.rpt"/>
+  <File Type="REPORTS-TCL" Name="phywhisperer_top_reports.tcl"/>
+  <File Type="OPT-TIMING" Name="phywhisperer_top_timing_summary_opted.rpt"/>
+  <File Type="PA-TCL" Name="phywhisperer_top.tcl"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
-    <File Path="$PPRDIR/../hdl/cdc_pulse.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/../hdl/fe_capture_main.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PPRDIR/../hdl/fe_capture_usb.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -92,28 +84,7 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../hdl/fifo.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PPRDIR/../hdl/pattern_matcher_usb.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/../hdl/pw_trigger.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/../hdl/reg_main.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
@@ -134,21 +105,56 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PPRDIR/../hdl/usb_reg_main.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PPRDIR/../hdl/userio.v">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PPRDIR/../hdl/phywhisperer_top.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../phywhisperer-common/hardware/hdl/userio.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../phywhisperer-common/hardware/hdl/fe_capture_main.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../phywhisperer-common/hardware/hdl/cdc_pulse.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../phywhisperer-common/hardware/hdl/reg_main.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../phywhisperer-common/hardware/hdl/pw_trigger.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../phywhisperer-common/hardware/hdl/usb_reg_main.v">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../../../phywhisperer-common/hardware/hdl/fifo.v">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
@@ -180,9 +186,7 @@
     </Config>
   </FileSet>
   <Strategy Version="1" Minor="2">
-    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2018">
-      <Desc>Default settings for Implementation.</Desc>
-    </StratHandle>
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2018"/>
     <Step Id="init_design"/>
     <Step Id="opt_design"/>
     <Step Id="power_opt_design"/>
@@ -193,10 +197,10 @@
     <Step Id="post_route_phys_opt_design"/>
     <Step Id="write_bitstream"/>
   </Strategy>
-  <BlockFileSet Type="BlockSrcs" Name="ila_0"/>
   <BlockFileSet Type="BlockSrcs" Name="ila_3"/>
-  <BlockFileSet Type="BlockSrcs" Name="ila_2"/>
   <BlockFileSet Type="BlockSrcs" Name="fifo_generator_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="clk_wiz_0"/>
   <BlockFileSet Type="BlockSrcs" Name="ila_1"/>
+  <BlockFileSet Type="BlockSrcs" Name="ila_2"/>
+  <BlockFileSet Type="BlockSrcs" Name="clk_wiz_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="ila_0"/>
 </GenRun>

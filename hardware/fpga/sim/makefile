@@ -11,6 +11,7 @@ VALID=50
 LOGFILE=sim.log
 SEED=0
 VERBOSE=0
+CHECK_LONG_CORNER=0
 TIMEOUT=50000
 TRIGGER_ENABLE=0
 READ_CONCURRENTLY=1
@@ -69,8 +70,9 @@ compile:
 	-P tb_pw.pTRIGGER_WIDTH_MAX=$(TRIGGER_WIDTH_MAX) \
 	-P tb_pw.pNUM_TRIGGERS_MIN=$(NUM_TRIGGERS_MIN) \
 	-P tb_pw.pNUM_TRIGGERS_MAX=$(NUM_TRIGGERS_MAX) \
+	-P tb_pw.pCHECK_LONG_CORNER=$(CHECK_LONG_CORNER) \
 	-P tb_pw.pOVERFLOW_EXPECTED=$(OVERFLOW) \
-        -P tb_pw.pMAX_TIMESTAMP=$(MAX_TIMESTAMP) \
+	-P tb_pw.pMAX_TIMESTAMP=$(MAX_TIMESTAMP) \
 	-P tb_pw.pVERBOSE=$(VERBOSE) \
 	-P tb_pw.pDUMP=$(DUMP) \
 
@@ -82,6 +84,17 @@ nofifo:
 	-I../hdl \
 	-I../../../software/phywhisperer/firmware \
 	-DNOFIFO \
+
+lint:
+	verilator --lint-only -Wall \
+	-Wno-PINCONNECTEMPTY \
+	-f cmdfile_nofifo \
+	-I../hdl \
+	-I../../../software/phywhisperer/firmware \
+	-D__ICARUS__ \
+	-DNOFIFO \
+	--top-module phywhisperer_top \
+	2>&1 | tee lint.out \
 
 run:
 	vvp -l$(LOGFILE) a.out -$(WAVEFORMAT)

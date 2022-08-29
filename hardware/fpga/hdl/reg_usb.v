@@ -48,11 +48,8 @@ module reg_usb #(
 
 // Interface to front end capture:
    input  wire                                  fe_clk,
-   output wire                                  O_reg_arm_feclk,
+   input  wire                                  arm_fe,
    input  wire [4:0]                            I_fe_capture_stat,
-
-// Interface to main register block:
-   input  wire                                  I_reg_arm,
 
 // Interface to pattern matcher:
    output wire         [8*pPATTERN_BYTES-1:0]   O_pattern,
@@ -78,8 +75,6 @@ module reg_usb #(
 );
 
 
-   reg reg_arm_feclk;
-   reg reg_arm_feclk_r;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern;
    reg [8*pPATTERN_BYTES-1:0] reg_pattern_mask;
    reg [7:0] reg_pattern_bytes;
@@ -95,6 +90,7 @@ module reg_usb #(
    (* ASYNC_REG = "TRUE" *) reg  [4:0] stat_mask;
    reg  stat_match_update_pulse;
    wire stat_match_update_pulse_fe;
+   reg arm_fe_r;
 
    reg [2:0] reg_usb_auto_defaults;
    (* ASYNC_REG = "TRUE" *) reg [1:0] usb_speed_auto;
@@ -111,7 +107,6 @@ module reg_usb #(
    assign O_usb_termsel_auto = reg_usb_auto_defaults[2];
    assign O_usb_auto_wait1 = reg_usb_auto_wait1;
    assign O_usb_auto_wait2 = reg_usb_auto_wait2;
-   assign O_reg_arm_feclk = reg_arm_feclk;
 
    assign selected = reg_addrvalid & reg_address[7:6] == `USB_REG_SELECT;
    wire [5:0] address = reg_address[5:0];
@@ -192,8 +187,6 @@ module reg_usb #(
       end
    end
 
-   (* ASYNC_REG = "TRUE" *) reg  [1:0] reg_arm_pipe;
-
    cdc_pulse U_stat_update_cdc (
       .reset_i       (reset_i),
       .src_clk       (cwusb_clk),
@@ -202,8 +195,6 @@ module reg_usb #(
       .dst_pulse     (stat_match_update_pulse_fe)
    );
 
-
-
    // USB STAT monitor logic:
    always @(posedge fe_clk) begin
       if (reset_i) begin
@@ -211,17 +202,14 @@ module reg_usb #(
          stat_mask <= 0;
          stat_match <= 0;
          stat_match_captured <= 0;
-         reg_arm_feclk <= 0;
-         reg_arm_pipe <= 0;
+         arm_fe_r <= 0;
       end
       else begin
-         // CDC:
+         arm_fe_r <= arm_fe;
          stat_pattern <= reg_stat_pattern[4:0];
          stat_mask <= reg_stat_pattern[9:5];
-         {reg_arm_feclk_r, reg_arm_feclk, reg_arm_pipe} <= {reg_arm_feclk, reg_arm_pipe, I_reg_arm};
-
          // reset stat match upon arming:
-         if (reg_arm_feclk && ~reg_arm_feclk_r || stat_match_update_pulse_fe)
+         if (arm_fe && ~arm_fe_r || stat_match_update_pulse_fe)
             stat_match_captured <= 1'b0;
          else if (~stat_match_captured && ((stat_pattern & stat_mask) == (I_fe_capture_stat & stat_mask))) begin
             stat_match_captured <= 1'b1;

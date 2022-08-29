@@ -144,7 +144,7 @@ module tb_usb_autodetect;
       if (errors)
          $display("SIMULATION FAILED (%0d errors).", errors);
       else
-         $display("Simulation passed!");
+         $display("Simulation passed! (0 warnings)");
       $finish;
 
 
