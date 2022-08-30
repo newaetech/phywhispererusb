@@ -21,19 +21,43 @@
 #    along with PhyWhisperer-USB.  If not, see <http://www.gnu.org/licenses/>.
 #=================================================
 
-import phywhisperer.interface.naeusb as NAE
-import phywhisperer.interface.program_fpga as LLINT
+from .interface import naeusb as NAE
+from .interface import program_fpga as LLINT
 import os
 import re
 import logging
 import pkg_resources
 import threading
 import time
-from phywhisperer.interface.bootloader_sam3u import Samba
-from phywhisperer.sniffer import USBSniffer, USBSimplePrintSink
-from phywhisperer.protocol import PWPacketDispatcher, PWPacketHandler, IncompletePacket
+from .interface.bootloader_sam3u import Samba
+from .sniffer import USBSniffer, USBSimplePrintSink
+from .protocol import PWPacketDispatcher, PWPacketHandler, IncompletePacket
 from zipfile import ZipFile
-from phywhisperer.firmware.phywhisperer import getsome
+from .firmware.phywhisperer import getsome
+from .ChipWhispererSAM3Update import *
+
+def program_sam_firmware(serial_port=None, hardware_type=None, fw_path=None):
+    """Program firmware onto an erased chipwhisperer scope or target
+
+    See https://chipwhisperer.readthedocs.io/en/latest/firmware.html for more information
+
+    .. versionadded:: 5.6.1
+        Improved programming interface
+    """
+    if (hardware_type, fw_path) == (None, None):
+        raise ValueError("Must specify hardware_type or fw_path, see https://chipwhisperer.readthedocs.io/en/latest/firmware.html")
+
+    if serial_port is None:
+        at91_ports = get_at91_ports()
+        if len(at91_ports) == 0:
+            raise OSError("Could not find bootloader serial port, please see https://chipwhisperer.readthedocs.io/en/latest/firmware.html")
+        if len(at91_ports) > 1:
+            raise OSError("Found multiple bootloaders, please specify com port. See https://chipwhisperer.readthedocs.io/en/latest/firmware.html")
+
+        serial_port = at91_ports[0]
+        print("Found {}".format(serial_port))
+    prog = SAMFWLoader(None)
+    prog.program(serial_port, hardware_type=hardware_type, fw_path=fw_path)
 
 class Usb(PWPacketDispatcher):
     """PhyWhisperer-USB Interface"""
@@ -63,6 +87,12 @@ class Usb(PWPacketDispatcher):
             self.sniffer = USBSniffer()
             self.register_packet_handler(self.sniffer)
 
+    
+    def _getNAEUSB(self):
+        return self.usb
+
+    def _getCWType(self):
+        return "phywhisperer"
 
     def slurp_defines(self):
         """ Parse Verilog defines file so we can access register and bit

@@ -8,6 +8,8 @@
 *.pyc
 *.vcd
 *.gtkw
+*.o
+*.o.d
 a.out
 /firmware/phywhisperer/objdir/
 /firmware/phywhisperer/objdir/
