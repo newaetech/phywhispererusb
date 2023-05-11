@@ -156,6 +156,7 @@ module phywhisperer_top(
    wire trigger_enable;
    wire [pNUM_TRIGGER_WIDTH-1:0] num_triggers;
    wire [7:0] pattern_bytes;
+   wire [15:0] num_pm_triggers;
 
    wire [1:0] usb_speed;
 
@@ -359,6 +360,7 @@ module phywhisperer_top(
       .O_pattern                (pattern),
       .O_pattern_mask           (pattern_mask),
       .O_pattern_bytes          (pattern_bytes),
+      .O_num_pm_triggers        (num_pm_triggers),
 
       .O_usb_speed              (usb_speed),
       .O_usb_xcvrsel_auto       (usb_xcvrsel_auto),
@@ -582,6 +584,7 @@ module phywhisperer_top(
       .I_pattern        (pattern),
       .I_mask           (pattern_mask),
       .I_pattern_bytes  (pattern_bytes),
+      .I_num_triggers   (num_pm_triggers),
       .I_fe_data        (fe_data),
       .I_fe_data_valid  (fe_rxvalid),
       .I_capturing      (capturing),

@@ -28,6 +28,7 @@
 `define REG_USB_AUTO_WAIT2           6'h08
 `define REG_STAT_PATTERN             6'h09
 `define REG_STAT_MATCH               6'h0a
+`define REG_NUM_PM_TRIGGERS          6'h0b
 
 
 // FIFO bitfields:

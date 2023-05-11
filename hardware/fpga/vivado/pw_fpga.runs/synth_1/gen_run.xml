@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1652108230">
+<GenRun Id="synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1683832626">
+  <File Type="VDS-TIMING-PB" Name="phywhisperer_top_timing_summary_synth.pb"/>
   <File Type="VDS-TIMINGSUMMARY" Name="phywhisperer_top_timing_summary_synth.rpt"/>
   <File Type="RDS-DCP" Name="phywhisperer_top.dcp"/>
   <File Type="RDS-UTIL-PB" Name="phywhisperer_top_utilization_synth.pb"/>
@@ -7,7 +8,6 @@
   <File Type="RDS-PROPCONSTRS" Name="phywhisperer_top_drc_synth.rpt"/>
   <File Type="RDS-RDS" Name="phywhisperer_top.vds"/>
   <File Type="REPORTS-TCL" Name="phywhisperer_top_reports.tcl"/>
-  <File Type="VDS-TIMING-PB" Name="phywhisperer_top_timing_summary_synth.pb"/>
   <File Type="PA-TCL" Name="phywhisperer_top.tcl"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PSRCDIR/sources_1">
     <Filter Type="Srcs"/>
@@ -126,7 +126,7 @@
   <BlockFileSet Type="BlockSrcs" Name="ila_3"/>
   <BlockFileSet Type="BlockSrcs" Name="fifo_generator_0"/>
   <BlockFileSet Type="BlockSrcs" Name="ila_1"/>
-  <BlockFileSet Type="BlockSrcs" Name="ila_2"/>
   <BlockFileSet Type="BlockSrcs" Name="clk_wiz_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="ila_2"/>
   <BlockFileSet Type="BlockSrcs" Name="ila_0"/>
 </GenRun>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="ila_3_synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1639518079">
-  <File Type="RDS-DCP" Name="ila_3.dcp"/>
-  <File Type="RDS-UTIL-PB" Name="ila_3_utilization_synth.pb"/>
-  <File Type="PA-TCL" Name="ila_3.tcl"/>
-  <File Type="RDS-UTIL" Name="ila_3_utilization_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="ila_3_reports.tcl"/>
+  <File Type="PA-TCL" Name="ila_3.tcl"/>
+  <File Type="RDS-DCP" Name="ila_3.dcp"/>
   <File Type="RDS-RDS" Name="ila_3.vds"/>
+  <File Type="RDS-UTIL" Name="ila_3_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="ila_3_utilization_synth.pb"/>
   <FileSet Name="sources" Type="BlockSrcs" RelSrcDir="$PSRCDIR/ila_3">
     <File Path="$PSRCDIR/sources_1/ip/ila_3/ila_3.xci">
       <FileInfo>

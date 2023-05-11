@@ -1,8 +1,8 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-| Date             : Mon May  9 10:58:18 2022
-| Host             : red running 64-bit Ubuntu 18.04.6 LTS
+| Date             : Thu May 11 15:18:13 2023
+| Host             : red running 64-bit Ubuntu 20.04.6 LTS
 | Command          : report_power -file phywhisperer_top_power_routed.rpt -pb phywhisperer_top_power_summary_routed.pb -rpx phywhisperer_top_power_routed.rpx
 | Design           : phywhisperer_top
 | Device           : xc7s15ftgb196-2
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.173        |
+| Total On-Chip Power (W)  | 0.162        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.153        |
+| Dynamic (W)              | 0.142        |
 | Device Static (W)        | 0.020        |
 | Effective TJA (C/W)      | 3.4          |
-| Max Ambient (C)          | 84.4         |
-| Junction Temperature (C) | 25.6         |
+| Max Ambient (C)          | 84.5         |
+| Junction Temperature (C) | 25.5         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -52,20 +52,20 @@ Table of Contents
 +-------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
-| Clocks                  |     0.027 |        6 |       --- |             --- |
-| Slice Logic             |     0.001 |     6767 |       --- |             --- |
-|   LUT as Logic          |     0.001 |     1974 |      8000 |           24.68 |
-|   Register              |    <0.001 |     3945 |     16000 |           24.66 |
-|   CARRY4                |    <0.001 |      106 |      2000 |            5.30 |
-|   F7/F8 Muxes           |    <0.001 |      185 |      8000 |            2.31 |
+| Clocks                  |     0.015 |        6 |       --- |             --- |
+| Slice Logic             |     0.001 |     6815 |       --- |             --- |
+|   LUT as Logic          |     0.001 |     2026 |      8000 |           25.33 |
+|   Register              |    <0.001 |     3978 |     16000 |           24.86 |
+|   CARRY4                |    <0.001 |      112 |      2000 |            5.60 |
+|   F7/F8 Muxes           |    <0.001 |      177 |      8000 |            2.21 |
 |   LUT as Shift Register |    <0.001 |        1 |      2400 |            0.04 |
 |   Others                |     0.000 |       51 |       --- |             --- |
-| Signals                 |     0.002 |     5920 |       --- |             --- |
+| Signals                 |     0.003 |     5975 |       --- |             --- |
 | Block RAM               |     0.003 |        4 |        10 |           40.00 |
 | MMCM                    |     0.106 |        1 |         2 |           50.00 |
 | I/O                     |     0.014 |       64 |       100 |           64.00 |
 | Static Power            |     0.020 |          |           |                 |
-| Total                   |     0.173 |          |           |                 |
+| Total                   |     0.162 |          |           |                 |
 +-------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -75,7 +75,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.038 |       0.034 |      0.004 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.027 |       0.023 |      0.004 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.066 |       0.059 |      0.007 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.005 |       0.004 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -145,17 +145,17 @@ Table of Contents
 +---------------------+-----------+
 | Name                | Power (W) |
 +---------------------+-----------+
-| phywhisperer_top    |     0.153 |
+| phywhisperer_top    |     0.142 |
 |   U_fifo            |     0.003 |
 |     U_fifo          |     0.003 |
 |       U0            |     0.003 |
-|   U_pattern_matcher |     0.016 |
+|   U_pattern_matcher |     0.004 |
 |   U_reg_main        |     0.002 |
 |   U_reg_usb         |     0.003 |
 |   U_trigger         |     0.006 |
 |   U_trigger_clock   |     0.106 |
 |     inst            |     0.106 |
-|   U_usb_reg_main    |     0.001 |
+|   U_usb_reg_main    |     0.002 |
 +---------------------+-----------+
 
 

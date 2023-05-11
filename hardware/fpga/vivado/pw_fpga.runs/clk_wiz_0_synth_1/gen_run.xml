@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="clk_wiz_0_synth_1" LaunchPart="xc7s15ftgb196-2" LaunchTime="1639416264">
-  <File Type="PA-TCL" Name="clk_wiz_0.tcl"/>
   <File Type="REPORTS-TCL" Name="clk_wiz_0_reports.tcl"/>
-  <File Type="RDS-RDS" Name="clk_wiz_0.vds"/>
+  <File Type="PA-TCL" Name="clk_wiz_0.tcl"/>
   <File Type="RDS-DCP" Name="clk_wiz_0.dcp"/>
+  <File Type="RDS-RDS" Name="clk_wiz_0.vds"/>
   <FileSet Name="sources" Type="BlockSrcs" RelSrcDir="$PSRCDIR/clk_wiz_0">
     <File Path="$PSRCDIR/sources_1/ip/clk_wiz_0/clk_wiz_0.xci">
       <FileInfo>

@@ -55,7 +55,7 @@ class Usb(PWPacketDispatcher):
         self.capture_size = 8188 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
-        self.expected_verilog_matches = 80
+        self.expected_verilog_matches = 81
         self.slurp_defines()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
@@ -596,6 +596,8 @@ class Usb(PWPacketDispatcher):
             raise ValueError('Illegal delay value.')
         self.write_reg(self.REG_CAPTURE_DELAY, int.to_bytes(delay, length=3, byteorder='little'))
 
+    def set_num_pm_triggers(self, num):
+        self.write_reg(self.REG_NUM_PM_TRIGGERS,int.to_bytes(num, length=2, byteorder='little'))
 
     def set_pattern(self, pattern, mask=None):
         """Set the pattern and its bitmask used for capture and trigger output.

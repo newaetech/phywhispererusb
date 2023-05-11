@@ -55,6 +55,7 @@ module reg_usb #(
    output wire         [8*pPATTERN_BYTES-1:0]   O_pattern,
    output wire         [8*pPATTERN_BYTES-1:0]   O_pattern_mask,
    output wire         [7:0]                    O_pattern_bytes,
+   output wire         [15:0]                   O_num_pm_triggers,
 
 // Interface to trigger generator:
    output wire [pCAPTURE_DELAY_WIDTH-1:0]       O_capture_delay,
@@ -91,6 +92,7 @@ module reg_usb #(
    reg  stat_match_update_pulse;
    wire stat_match_update_pulse_fe;
    reg arm_fe_r;
+   reg [15:0] reg_num_pm_triggers;
 
    reg [2:0] reg_usb_auto_defaults;
    (* ASYNC_REG = "TRUE" *) reg [1:0] usb_speed_auto;
@@ -107,6 +109,7 @@ module reg_usb #(
    assign O_usb_termsel_auto = reg_usb_auto_defaults[2];
    assign O_usb_auto_wait1 = reg_usb_auto_wait1;
    assign O_usb_auto_wait2 = reg_usb_auto_wait2;
+   assign O_num_pm_triggers = reg_num_pm_triggers;
 
    assign selected = reg_addrvalid & reg_address[7:6] == `USB_REG_SELECT;
    wire [5:0] address = reg_address[5:0];
@@ -125,6 +128,7 @@ module reg_usb #(
             `REG_USB_AUTO_WAIT1: reg_read_data = reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
             `REG_USB_AUTO_WAIT2: reg_read_data = reg_usb_auto_wait2[reg_bytecnt*8 +: 8];
             `REG_STAT_PATTERN: reg_read_data = reg_stat_pattern[reg_bytecnt*5 +: 5];
+            `REG_NUM_PM_TRIGGERS: reg_read_data = reg_num_pm_triggers[reg_bytecnt*8 +: 8];
             default: reg_read_data = 8'h0;
          endcase
       end
@@ -153,6 +157,7 @@ module reg_usb #(
          reg_usb_auto_wait2 <= 3600000; // 60ms
          reg_stat_pattern <= 10'b11111_00000;
          stat_match_update_pulse <= 1'b0;
+         reg_num_pm_triggers <= 16'd1;
 
       end
       else begin
@@ -166,6 +171,7 @@ module reg_usb #(
                `REG_CAPTURE_DELAY: reg_capture_delay[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_AUTO_WAIT1: reg_usb_auto_wait1[reg_bytecnt*8 +: 8] <= write_data;
                `REG_USB_AUTO_WAIT2: reg_usb_auto_wait2[reg_bytecnt*8 +: 8] <= write_data;
+               `REG_NUM_PM_TRIGGERS: reg_num_pm_triggers[reg_bytecnt*8 +: 8] <= write_data;
             endcase
          end
 
