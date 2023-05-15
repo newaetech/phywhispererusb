@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<Runs Version="1" Minor="0">
-	<Run Id="xc7s15-rev03" LaunchDir="C:/Users/jp/GitHub/phywhispererusb/hardware/fpga/vivado/pw_fpga.runs/xc7s15-rev03" FlowId="Vivado_Implementation" FromStepId="write_bitstream" ToStepId="write_bitstream"/>
-	<Parameters>
-		<Parameter Name="runs.monitorLSFJobs" Val="true" Type="bool"/>
-	</Parameters>
-</Runs>
-
