@@ -39,7 +39,6 @@ module pattern_matcher_usb #(
    // from capture block:
    input  wire  [7:0] I_fe_data,
    input  wire  I_fe_data_valid,
-   input  wire  I_capturing,    // TODO: no longer needed?
 
    // to trigger block:
    output wire  O_match_trigger,
@@ -57,14 +56,12 @@ module pattern_matcher_usb #(
 
    reg  match_trigger;
    reg  match_trigger_r;
-   reg  capturing_r;
    reg  arm_r, arm_r2;
    reg  done, done_r;
    reg  [15:0] triggers;
 
    wire [7:0] masked_input_byte;
 
-   wire capture_done;
 
    (* ASYNC_REG = "TRUE" *) reg  [1:0] arm_pipe;
    (* ASYNC_REG = "TRUE" *) reg  [pPATTERN_BYTES*8-1:0] pattern_r;
@@ -81,8 +78,6 @@ module pattern_matcher_usb #(
 
    assign masked_input_byte = fe_data & mask_r[7:0];
 
-   assign capture_done = (!I_capturing & capturing_r);
-
    assign masked_input = input_data & mask_r[pPATTERN_BYTES*8-1:8];
    assign masked_pattern = pattern_r & mask_r;
 
@@ -92,7 +87,6 @@ module pattern_matcher_usb #(
       if (reset_i) begin
          match_trigger <= 1'b0;
          match_trigger_r <= 1'b0;
-         capturing_r <= 1'b0;
          input_data <= 0;
          bytes_received <= 0;
          fe_data <= 0;
@@ -102,7 +96,6 @@ module pattern_matcher_usb #(
       end
       else begin
          match_trigger_r <= match_trigger;
-         capturing_r <= I_capturing;
          done_r <= done;
 
          if (I_fe_data_valid) begin

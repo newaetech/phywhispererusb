@@ -591,7 +591,6 @@ module phywhisperer_top(
       .O_num_triggers   (num_pm_triggers_seen),
       .I_fe_data        (fe_data),
       .I_fe_data_valid  (fe_rxvalid),
-      .I_capturing      (capturing),
       .O_match_trigger  (trigger_match),
       .O_disarm_pulse   (disarm_pulse)
    );
@@ -616,7 +615,6 @@ module phywhisperer_top(
       .I_trigger_width  (trigger_width),
       .I_trigger_enable (trigger_enable),
       .I_num_triggers   (num_triggers),
-      .O_capture_enable_pulse (),               // TODO: no longer needed?
       .I_match          (trigger_match),
       .I_capturing      (capturing),
       .O_capture_enable (capture_enable)
