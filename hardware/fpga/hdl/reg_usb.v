@@ -56,6 +56,7 @@ module reg_usb #(
    output wire         [8*pPATTERN_BYTES-1:0]   O_pattern_mask,
    output wire         [7:0]                    O_pattern_bytes,
    output wire         [15:0]                   O_num_pm_triggers,
+   input  wire         [15:0]                   I_num_pm_triggers,
 
 // Interface to trigger generator:
    output wire [pCAPTURE_DELAY_WIDTH-1:0]       O_capture_delay,
@@ -128,7 +129,7 @@ module reg_usb #(
             `REG_USB_AUTO_WAIT1: reg_read_data = reg_usb_auto_wait1[reg_bytecnt*8 +: 8];
             `REG_USB_AUTO_WAIT2: reg_read_data = reg_usb_auto_wait2[reg_bytecnt*8 +: 8];
             `REG_STAT_PATTERN: reg_read_data = reg_stat_pattern[reg_bytecnt*5 +: 5];
-            `REG_NUM_PM_TRIGGERS: reg_read_data = reg_num_pm_triggers[reg_bytecnt*8 +: 8];
+            `REG_NUM_PM_TRIGGERS: reg_read_data = I_num_pm_triggers[reg_bytecnt*8 +: 8];
             default: reg_read_data = 8'h0;
          endcase
       end
