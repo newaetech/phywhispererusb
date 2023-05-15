@@ -119,7 +119,7 @@ module pattern_matcher_usb #(
          end
          else if (O_match_trigger && ~done) begin
              triggers <= triggers + 1;
-             if (triggers == I_num_triggers)
+             if ((triggers == I_num_triggers) && (I_num_triggers < {16{1'b1}}))
                  done <= 1'b1;
          end
 
