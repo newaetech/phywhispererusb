@@ -134,7 +134,6 @@ module phywhisperer_top(
    wire psincdec;
    wire psdone;
    wire trigger_clk_locked;
-   wire capture_enable_pulse;
    wire trigger_match;
    wire timestamps_disable;
    wire [pCAPTURE_LEN_WIDTH-1:0] capture_len;
@@ -288,7 +287,7 @@ module phywhisperer_top(
       .O_capture_len    (capture_len),
       .O_count_writes   (count_writes),
       .O_counter_quick_start (counter_quick_start),
-      .I_capture_enable_pulse (capture_enable_pulse),
+      .I_capture_enable_pulse (trigger_match),
       .O_timestamps_disable (timestamps_disable),
       .O_capture_now    ( ), // unused
       .O_board_rev      ( ), // unused
@@ -610,7 +609,7 @@ module phywhisperer_top(
       .I_trigger_width  (trigger_width),
       .I_trigger_enable (trigger_enable),
       .I_num_triggers   (num_triggers),
-      .O_capture_enable_pulse (capture_enable_pulse),
+      .O_capture_enable_pulse (),               // TODO: no longer needed?
       .I_match          (trigger_match),
       .I_capturing      (capturing),
       .O_capture_enable (capture_enable)
