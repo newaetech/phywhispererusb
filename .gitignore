@@ -24,9 +24,7 @@ a.out
 *.rpx
 *.xml
 *.wdf
-*.txt
 *.sh
-*.rst
 *.tcl
 *.vdi
 *.dcp
