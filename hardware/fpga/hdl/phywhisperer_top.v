@@ -120,6 +120,7 @@ module phywhisperer_top(
    wire         reg_read;
    wire         reg_write;
    wire         reg_addrvalid;
+   wire         capture_off;
 
    wire usb_clk_copy;
 
@@ -276,7 +277,7 @@ module phywhisperer_top(
 
       .O_data_available (), // unused
       .O_usb_drive_data (), // unused
-      .O_capture_off    (), // unused
+      .O_capture_off    (capture_off),
       .O_clear_errors   (), // unused
       .I_fast_fifo_rdn  (1'b1), // unused
       .I_usb_cen        (1'b1), // unused
@@ -437,7 +438,7 @@ module phywhisperer_top(
 
       .I_target_trig            (1'b0), // unused
       .I_capture_while_trig     (1'b0), // unused
-      .I_capture_off            (1'b0), // unused
+      .I_capture_off            (capture_off),
 
       .O_capturing              (capturing),
       .I_capture_enable         (capture_enable)
@@ -609,6 +610,7 @@ module phywhisperer_top(
       .trigger_clk      (trigger_clk),
       .fe_clk           (clk_fe_buf),
       .O_trigger        (cw_trig),
+      .I_capture_off    (capture_off), 
       .I_capture_delay  (capture_delay),
       .I_trigger_delay  (trigger_delay),
       .I_trigger_width  (trigger_width),
