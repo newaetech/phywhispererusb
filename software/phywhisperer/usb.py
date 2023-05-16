@@ -52,11 +52,12 @@ class Usb(PWPacketDispatcher):
         self.short_timestamps = [0] * 2**3
         self.long_timestamps = [0] * 2**16
         self.stat_pattern_match_value = 0
-        self.capture_size = 8188 # default to FIFO size
+        self.capture_size = 16376 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
         self.entries_captured = 0
-        self.expected_verilog_matches = 81
+        self.expected_verilog_matches = 82
         self.slurp_defines()
+        self._prev_addr = self.REG_DUMMY
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
             super().__init__(verbose=False)
@@ -277,6 +278,11 @@ class Usb(PWPacketDispatcher):
             address: int
             data: bytes
         """
+        # consecutive multi-byte accesses to the same register can pose a problem,
+        # so we throw in a dummy read to avoid it:
+        if address == self._prev_addr:
+            self.usb.cmdReadMem(self.REG_DUMMY, 1)
+        self._prev_addr = address
         return self.usb.cmdWriteMem(address, data)
 
 
@@ -288,6 +294,11 @@ class Usb(PWPacketDispatcher):
             size: int, number of bytes to read
         Returns:
         """
+        # consecutive multi-byte accesses to the same register can pose a problem,
+        # so we throw in a dummy read to avoid it, EXCEPT when we're reading the FIFO
+        if address == self._prev_addr and address != self.REG_SNIFF_FIFO_RD:
+            self.usb.cmdReadMem(self.REG_DUMMY, 1)
+        self._prev_addr = address
         return self.usb.cmdReadMem(address, size)
 
 
@@ -505,41 +516,48 @@ class Usb(PWPacketDispatcher):
         print('rx_active  = %d' % (1 if stat_byte & 0x01 else 0))
 
 
-    def set_capture_size(self, size=8188):
+    def set_capture_size(self, size=16376):
         """Set how many events to capture (events include data, USB status, and timestamps).
         
         Args:
-            size(int, option): number of events to capture. 0 = unlimited (until overflow). Max = 2^24-1. Since the capture FIFO can hold 8188 events, setting this to > 8188 may result in overflow.
+            size(int, option): number of events to capture. 0 = unlimited (until overflow). Max = 2^24-1. Since the capture FIFO can hold 16376 events, setting this to > 16376 may result in overflow.
 
         """
         if (size >= 2**24) or (size < 0):
             raise ValueError('Illegal size value.')
         self.capture_size = size
-        self.write_reg(self.REG_CAPTURE_LEN, int.to_bytes(size, length=2, byteorder='little'))
+        self.write_reg(self.REG_CAPTURE_LEN, int.to_bytes(size, length=3, byteorder='little'))
 
 
     def ns_trigger(self, delay_in_ns):
-        """Convert a nS number to delay or width cycles for set_trigger()"""
+        """Convert a nS number to delay or width cycles for set_trigger_sequence()"""
         cycles = (float(delay_in_ns) * 1.0E-9) / (1.0 / float(self.usb_trigger_freq))
         return round(cycles)
 
     def us_trigger(self, delay_in_us):
-        """Convert a uS number to delay or width cycles for set_trigger()"""
+        """Convert a uS number to delay or width cycles for set_trigger_sequence()"""
         cycles = (float(delay_in_us) * 1.0E-6) / (1.0 / float(self.usb_trigger_freq))
         return round(cycles)
 
     def ms_trigger(self, delay_in_ms):
-        """Convert a mS number to delay or width cycles for set_trigger()"""
+        """Convert a mS number to delay or width cycles for set_trigger_sequence()"""
         cycles = (float(delay_in_ms) * 1.0E-3) / (1.0 / float(self.usb_trigger_freq))
         return round(cycles)
 
-
     def set_trigger(self, num_triggers=1, delays=[0], widths=[1], enable=True):
-        """Program the output trigger pulse(s) delay and width. Both are measured in clock cycles of USB-derived 
-           240 MHz clock. Note that this is a different time base than set_capture_delay(), which uses a 60 MHz 
-           clock! Up to 8 pulses may be issued.
-           The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
-           different value. Use ns_trigger(), us_trigger(), and ms_trigger() to convert values as needed.
+        logging.warning("use set_trigger_sequence() instead (API changed for clarity)")
+        self.set_trigger_sequence(num_triggers, delays, widths, enable)
+
+    def set_trigger_sequence(self, num_triggers=1, delays=[0], widths=[1], enable=True):
+        """Program the output trigger sequence that is issued when a pattern
+        match occurs.  For each pattern match event, up to 8 pulse(s) of
+        programmable delay and width are issued. Both delay and width are
+        measured in clock cycles of USB-derived 240 MHz clock. Note that this
+        is a different time base than set_capture_delay(), which uses a 60 MHz
+        clock!  The capture delay is automatically set to match the trigger
+        delay; use set_capture_delay to set it to a different value. Use
+        ns_trigger(), us_trigger(), and ms_trigger() to convert values as
+        needed.
         
         Args:
             num_triggers (int): number of trigger pulses, from 1 to 8.
@@ -551,10 +569,10 @@ class Usb(PWPacketDispatcher):
         Examples:
             (a) To set obtain three 2-cycle-wide pulses, each 3 cycles apart, starting immediately after a
                 pattern match:
-                set_trigger(num_triggers=3, delays=[0,3,3], widths=[2,2,2])
+                set_trigger_sequence(num_triggers=3, delays=[0,3,3], widths=[2,2,2])
             (b) To set obtain a 1-cycle wide pulse 10 cycles after a pattern match, followed by a 2-cycle wide
                 pulse 20 cycles later:
-                set_trigger(num_triggers=2, delays=[10,20], widths=[1,2])
+                set_trigger_sequence(num_triggers=2, delays=[10,20], widths=[1,2])
         """
         if num_triggers > 8:
             raise ValueError('Maximum 8 trigger pulses.')
@@ -587,7 +605,7 @@ class Usb(PWPacketDispatcher):
 
     def set_capture_delay(self, delay):
         """Program the capture delay, measured in clock cycles of USB-derived 60 MHz clock.
-        Note that this is a different time base than set_trigger(), which uses a 240 MHz clock!
+        Note that this is a different time base than set_trigger_sequence(), which uses a 240 MHz clock!
         
         Args:
             delay (int): range in [0, 2^18-1] cycles of 60 MHz clock.
@@ -597,7 +615,39 @@ class Usb(PWPacketDispatcher):
         self.write_reg(self.REG_CAPTURE_DELAY, int.to_bytes(delay, length=3, byteorder='little'))
 
     def set_num_pm_triggers(self, num):
-        self.write_reg(self.REG_NUM_PM_TRIGGERS,int.to_bytes(num, length=2, byteorder='little'))
+        """ Maximum number of pattern match triggers to generate. Defaults to
+        1. Each pattern match triggers sets off a sequence of output triggers
+        as specified by set_trigger_sequence().  This property allows triggers
+        to be generated for multiple pattern match events without having to be
+        re-armed.
+
+        Args:
+            num (int): number of triggers; maximum 2**16-2, or set to -1 to
+                generate an infinite number of triggers (until disarmed).
+        """
+        if num > 2**16 -1:
+            raise ValueError("Maximum is 2**16-1")
+        elif num == -1:
+            num = 2**16-1
+        self.write_reg(self.REG_NUM_PM_TRIGGERS, int.to_bytes(num, length=2, byteorder='little'))
+
+    def get_num_pm_triggers(self):
+        """ Number of pattern match triggers generated. Resets upon arming.
+        """
+        return int.from_bytes(self.read_reg(self.REG_NUM_PM_TRIGGERS, 2), byteorder='little') - 1 # not a typo, HW records +1
+
+    def set_capture_enabled(self, enable):
+        """ Set whether USB events are captured or not.
+
+        Args:
+            enable (bool)
+        """
+        if enable:
+            raw = [0]
+        else:
+            raw = [1]
+        self.write_reg(self.REG_CAPTURE_OFF, raw)
+
 
     def set_pattern(self, pattern, mask=None):
         """Set the pattern and its bitmask used for capture and trigger output.
@@ -623,14 +673,26 @@ class Usb(PWPacketDispatcher):
         self.mask = mask
 
 
-    def arm(self):
+    def arm(self, value=True):
         """Arm PhyWhisperer for capture and optionally generating a trigger.
         Use set_pattern to program the pattern and bitmask which will initiate
         the capture and/or trigger operation.
-        Use set_trigger to program the trigger parameters.
+        Use set_trigger_sequence to program the trigger parameters.
         Use set_capture_size and set_capture_delay to program the capture parameters.
+
+        Args:
+            value (bool): True/False = arm/disarm
+
+        Raises:
+            ValueError: if trying to arm an already armed PhyWhisperer.
         """
-        self.write_reg(self.REG_ARM, [1])
+        if value:
+            value = [1]
+            if self.read_reg(self.REG_ARM, 1)[0]:
+                raise ValueError("Already armed! (use arm(False) to disarm)")
+        else:
+            value = [0]
+        self.write_reg(self.REG_ARM, value)
 
 
     def check_fifo_errors(self, underflow=0, overflow=0):
@@ -755,7 +817,7 @@ class Usb(PWPacketDispatcher):
         pass
 
 
-    def run_capture(self, size=8188, burst=True, pattern=[0], mask=[0], timeout=5, statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
+    def run_capture(self, size=16376, burst=True, pattern=[0], mask=[0], timeout=5, statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
         """ Runs a capture for ViewSB, including power cycling the device to catch the descriptors.
         
         Runs following internally::
@@ -767,7 +829,7 @@ class Usb(PWPacketDispatcher):
             self.set_usb_mode("auto")
             self.set_capture_size(size)
             self.arm()
-            self.set_trigger(enable=False)
+            self.set_trigger_sequence(enable=False)
             self.set_pattern(pattern=pattern, mask=mask)
             self.set_power_source("host")
             time.sleep(0.25)
@@ -782,7 +844,7 @@ class Usb(PWPacketDispatcher):
         self.set_usb_mode("auto")
         self.set_capture_size(size)
         self.arm()
-        self.set_trigger(enable=False)
+        self.set_trigger_sequence(enable=False)
         self.set_pattern(pattern=pattern, mask=mask)
         self.set_power_source("host")
         time.sleep(0.25)
