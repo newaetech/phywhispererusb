@@ -2,6 +2,12 @@
 
 What is this thing? This is a hardware trigger for FI or SCA, which triggers on the USB phy. Be sure to read the documentation at http://phywhispererusb.readthedocs.io/ as well!
 
+If you are getting started, there are a few demonstration notebooks showing how to:
+
+* [Sniff Data](https://github.com/newaetech/phywhispererusb/blob/master/software/jupyter/sniff.ipynb)
+* [Stream Longer Captures](https://github.com/newaetech/phywhispererusb/blob/master/software/jupyter/stream.ipynb)
+* [Trigger on Packets](https://github.com/newaetech/phywhispererusb/blob/master/software/jupyter/trigger.ipynb)
+
 ## Get a PhyWhisperer-USB
 
 Check out https://www.crowdsupply.com/newae/phywhisperer-usb for the Crowd Supply!
@@ -11,10 +17,6 @@ Check out https://www.crowdsupply.com/newae/phywhisperer-usb for the Crowd Suppl
 ![](hardware/doc/phywhisperer_03_front.jpg)
 
 ![](hardware/doc/pw_angle.jpg)
-
-## Status
-
-The current PCB (-04) is the final design released to manufacture, and software is considered mostly stable.
 
 ## Comparison to Other Projects
 
