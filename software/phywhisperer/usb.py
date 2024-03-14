@@ -802,6 +802,33 @@ class Usb(PWPacketDispatcher):
         self.stat_pattern_match_value = value
         return matched
 
+    def set_userio_direction(self, setting):
+        """Set the direction of the USERIO data pins (D0-D7) with an
+        8-bit integer, where bit <x> determines the direction of D<x>;
+        bit x = 0: D<x> is an input to PW.
+        bit x = 1: D<x> is driven by PW.
+        Default: input to PW.
+        Use with care.
+        """
+        if not setting in range(0, 256):
+            raise ValueError("Must be integer 0-255")
+        self.write_reg(self.REG_USERIO_PWDRIVEN, [setting])
+
+    def get_userio_direction(self):
+        return self.read_reg(self.REG_USERIO_PWDRIVEN, 1)[0]
+
+    def set_userio_data(self, setting):
+        """8-bit data to drive on the USERIO data bus.
+        """
+        if not setting in range(0, 256):
+            raise ValueError("Must be integer 0-255")
+        self.write_reg(self.REG_USERIO_DATA, [setting])
+
+    def get_userio_status(self):
+        """Returns current value of header pins. LSB=D0, MSB=D7.
+        """
+        return self.read_reg(self.REG_USERIO_DATA, 1)[0]
+
 
     def register_sink(self, event_sink):
         """ ViewSB: Registers a USBEventSink to receive any USB events. 
