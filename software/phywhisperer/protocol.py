@@ -1,4 +1,4 @@
-# Copyright (c) 2019, NewAE Technology Inc
+# Copyright (c) 2019-2024, NewAE Technology Inc
 # All rights reserved.
 #
 #
@@ -178,8 +178,8 @@ class PWPacketHandler:
                     self._in_packet = False
                     if self._firstpacket and defines.addpattern:
                         self._firstpacket = False
-                        self._packet_bytes[0:0] = defines.pattern
-                        self._packet_size += len(defines.pattern)
+                        self._packet_bytes[0:0] = defines._pattern
+                        self._packet_size += len(defines._pattern)
                     if verbose:
                         print("%d-byte packet at time %d: " % (self._packet_size, self._packet_start_time), end = '')
                         for byte in self._packet_bytes:
