@@ -600,7 +600,7 @@ class Usb(PWPacketDispatcher):
 
 
     def print_packets(self, packets):
-        """Print packets using USBSimplePrintSink from ViewSB.
+        """Print packets using USBSimplePrintSink from ViewSB/pyopenvizsla.
         Args:
             packets: list of dictionaries, e.g. obtained from split_packets()
         """
