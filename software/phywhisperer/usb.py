@@ -315,7 +315,7 @@ class Usb(PWPacketDispatcher):
             port (str): Serial port name, such as 'COM36' or '/dev/ttyACM0'.        
 
             fw_path (str): Path to firmware binary to program the sam3u with.
-                            If None, use default firmware. Defautls to None.
+                            If None, use default firmware. Defaults to None.
         """
 
         fw_data = None
@@ -661,7 +661,7 @@ class Usb(PWPacketDispatcher):
         programmable delay and width are issued. Both delay and width are
         measured in clock cycles of USB-derived 240 MHz clock. Note that this
         is a different time base than set_capture_delay(), which uses a 60 MHz
-        clock!  The capture delay is automatically set to match the trigger
+        clock!  The capture delay is automatically set to match the first trigger
         delay; use set_capture_delay to set it to a different value. Use
         ns_trigger(), us_trigger(), and ms_trigger() to convert values as
         needed.
@@ -705,7 +705,7 @@ class Usb(PWPacketDispatcher):
         self.write_reg(self.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num_triggers, byteorder='little'))
 
         self.write_reg(self.REG_NUM_TRIGGERS, [num_triggers])
-        self.set_capture_delay(int(delay/4))
+        self.set_capture_delay(int(delays[0]/4))
         if enable == True:
             self.write_reg(self.REG_TRIGGER_ENABLE, [1])
         else:
@@ -1251,7 +1251,8 @@ class trigger(util.DisableNewAttr):
     @property
     def delays(self):
         """Delays between the output trigger pulses that are generated when a
-        pattern match occurs. Can also be set via set_trigger_sequence().
+        pattern match occurs. Can also be set via set_trigger_sequence(). Unlike
+        set_trigger_sequence(), this property does *not* adjust capture_delay.
         """
         return self.get_delays()
 
