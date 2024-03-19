@@ -67,8 +67,6 @@ class Usb(PWPacketDispatcher):
             self.register_packet_handler(self.sniffer)
 
     def _set_defaults(self):
-        self.short_timestamps = [0] * 2**3
-        self.long_timestamps = [0] * 2**16
         self.stat_pattern_match_value = 0
         self.entries_captured = 0
         self._trigger_clock_phase_shift = 0
@@ -549,7 +547,6 @@ class Usb(PWPacketDispatcher):
             if (command == self.FE_FIFO_CMD_DATA):
                 data = raw[1]
                 ts = raw[0] & 0x7
-                self.short_timestamps[ts] += 1
                 timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
@@ -563,7 +560,6 @@ class Usb(PWPacketDispatcher):
                 data_times.append(timestep)
             elif (command == self.FE_FIFO_CMD_STAT):
                 ts = raw[0] & 0x7
-                self.short_timestamps[ts] += 1
                 timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
@@ -573,7 +569,6 @@ class Usb(PWPacketDispatcher):
                 last_flags = flags
             elif (command == self.FE_FIFO_CMD_TIME):
                 ts = raw[0] + (raw[1] << 8)
-                self.long_timestamps[ts] += 1
                 #Unlike stat and data commands, we don't add one here; if we did
                 #we'd be overcounting in the common case where a time command immediately
                 #preceeds a stat or data command. Consequence is that timestep will be off
