@@ -52,41 +52,45 @@ class Usb(PWPacketDispatcher):
         """
         self.viewsb = viewsb
         self.addpattern = False
-        self.short_timestamps = [0] * 2**3
-        self.long_timestamps = [0] * 2**16
-        self.stat_pattern_match_value = 0
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
-        self.entries_captured = 0
         self.expected_verilog_matches = 82
         self.slurp_defines()
         self._power_source = 'off'
-        self._trigger_clock_phase_shift = 0
-        self._prev_addr = self.REG_DUMMY
         self.userio = userio(self)
         self.trigger = trigger(self)
         self.pattern = pattern(self)
-        self._pattern = None
-        self._mask = None
+        self._set_defaults()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
             super().__init__(verbose=False)
             self.sniffer = USBSniffer()
             self.register_packet_handler(self.sniffer)
 
+    def _set_defaults(self):
+        self.short_timestamps = [0] * 2**3
+        self.long_timestamps = [0] * 2**16
+        self.stat_pattern_match_value = 0
+        self.entries_captured = 0
+        self._trigger_clock_phase_shift = 0
+        self._prev_addr = self.REG_DUMMY
+        self._num_pm_triggers = 1
+        self._pattern = None
+        self._mask = None
 
     def _dict_repr(self):
         rtn = OrderedDict()
-        rtn['fpga_buildtime']   = self.fpga_buildtime
-        rtn['usb_mode']         = self.usb_mode
-        rtn['power_source']     = self.power_source
-        rtn['capture_size']     = self.capture_size
-        rtn['capture_delay']    = self.capture_delay
-        rtn['num_pm_triggers']  = self.num_pm_triggers
-        rtn['capture_enabled']  = self.capture_enabled
-        rtn['fifo_errors']      = self.fifo_errors
-        rtn['pattern']          = self.pattern._dict_repr()
-        rtn['trigger']          = self.trigger._dict_repr()
-        rtn['userio']           = self.userio._dict_repr()
+        rtn['fpga_buildtime']       = self.fpga_buildtime
+        rtn['usb_mode']             = self.usb_mode
+        rtn['power_source']         = self.power_source
+        rtn['capture_size']         = self.capture_size
+        rtn['capture_delay']        = self.capture_delay
+        rtn['num_pm_triggers']      = self.num_pm_triggers
+        rtn['num_pm_triggers_seen'] = self.num_pm_triggers_seen
+        rtn['capture_enabled']      = self.capture_enabled
+        rtn['fifo_errors']          = self.fifo_errors
+        rtn['pattern']              = self.pattern._dict_repr()
+        rtn['trigger']              = self.trigger._dict_repr()
+        rtn['userio']               = self.userio._dict_repr()
         return rtn
 
     def __repr__(self):
@@ -94,7 +98,6 @@ class Usb(PWPacketDispatcher):
 
     def __str__(self):
         return self.__repr__()
-
 
 
     @property
@@ -137,11 +140,28 @@ class Usb(PWPacketDispatcher):
 
     @property 
     def num_pm_triggers(self):
-        return self.get_num_pm_triggers()
+        """ Maximum number of pattern match triggers to generate. Defaults to
+        1. Each pattern match triggers sets off a sequence of output triggers
+        as specified by set_trigger_sequence().  This property allows triggers
+        to be generated for multiple pattern match events without having to be
+        re-armed. Can also be accessed via the num_pm_triggers property.
+
+        Args:
+            num (int): number of triggers; maximum 2**16-2, or set to -1 to
+                generate an infinite number of triggers (until disarmed).
+        """
+        return self._num_pm_triggers
 
     @num_pm_triggers.setter 
     def num_pm_triggers(self, value):
         self.set_num_pm_triggers(value)
+
+    @property 
+    def num_pm_triggers_seen(self):
+        """ Number of pattern match triggers generated. Resets upon arming.
+        """
+        return self.get_num_pm_triggers_seen()
+
 
     @property 
     def capture_enabled(self):
@@ -271,6 +291,7 @@ class Usb(PWPacketDispatcher):
         self.write_reg(self.REG_RESET_REG, [1])
         self.write_reg(self.REG_RESET_REG, [0])
         self.write_reg(self.REG_COUNT_WRITES, [1])
+        self._set_defaults()
 
     def load_bitstream(self, bitfile):
         """Load bitstream onto FPGA"""
@@ -728,23 +749,14 @@ class Usb(PWPacketDispatcher):
         return int.from_bytes(self.read_reg(self.REG_CAPTURE_DELAY, 3), byteorder='little')
 
     def set_num_pm_triggers(self, num):
-        """ Maximum number of pattern match triggers to generate. Defaults to
-        1. Each pattern match triggers sets off a sequence of output triggers
-        as specified by set_trigger_sequence().  This property allows triggers
-        to be generated for multiple pattern match events without having to be
-        re-armed. Can also be accessed via the num_pm_triggers property.
-
-        Args:
-            num (int): number of triggers; maximum 2**16-2, or set to -1 to
-                generate an infinite number of triggers (until disarmed).
-        """
         if num > 2**16 -1:
             raise ValueError("Maximum is 2**16-1")
         elif num == -1:
             num = 2**16-1
+        self._num_pm_triggers = num
         self.write_reg(self.REG_NUM_PM_TRIGGERS, int.to_bytes(num, length=2, byteorder='little'))
 
-    def get_num_pm_triggers(self):
+    def get_num_pm_triggers_seen(self):
         """ Number of pattern match triggers generated. Resets upon arming.
         """
         return int.from_bytes(self.read_reg(self.REG_NUM_PM_TRIGGERS, 2), byteorder='little') - 1 # not a typo, HW records +1
