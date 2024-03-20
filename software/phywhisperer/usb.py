@@ -1290,8 +1290,10 @@ class trigger(util.DisableNewAttr):
         data = 0
         for i in range(num):
             delay = delays[i]
-            if (delay >= 2**20) or (delay < 0) or (delay < 1 and i > 0):
-                raise ValueError('Illegal delay value (%d)' % delay)
+            if delay == 0 and i > self.num_triggers - 1:
+                pass
+            elif (delay >= 2**20) or (delay < 0) or (delay < 1 and i > 0):
+                raise ValueError('Illegal delay value (%d) for index %d' % (delay, i))
             data += delay << i*24
         self.main.write_reg(self.main.REG_TRIGGER_DELAY, int.to_bytes(data, length=3*num, byteorder='little'))
 
@@ -1330,8 +1332,10 @@ class trigger(util.DisableNewAttr):
         data = 0
         for i in range(num):
             width = widths[i]
-            if (width >= 2**17) or (width < 0) or (width < 1):
-                raise ValueError('Illegal width value (%d)' % width)
+            if width == 0 and i > self.num_triggers - 1:
+                pass
+            elif (width >= 2**17) or (width < 1):
+                raise ValueError('Illegal width value (%d) for index %d' % (width, i))
             data += width << i*24
         self.main.write_reg(self.main.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num, byteorder='little'))
 
