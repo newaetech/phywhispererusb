@@ -16,3 +16,16 @@ a.out
 /software/phywhisperer.egg-info/
 /software/phywhisperer.egg-info/
 /software/phywhisperer/firmware/__pycache__/
+*.jou
+*.pb
+*.bat
+*.log
+*.rpt
+*.rpx
+*.xml
+*.wdf
+*.sh
+*.tcl
+*.vdi
+*.dcp
+*.js

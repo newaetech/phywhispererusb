@@ -1,4 +1,4 @@
-# Copyright (c) 2019, NewAE Technology Inc
+# Copyright (c) 2019-2024, NewAE Technology Inc
 # All rights reserved.
 #
 #
@@ -21,11 +21,12 @@
 #    along with PhyWhisperer-USB.  If not, see <http://www.gnu.org/licenses/>.
 #=================================================
 
+import phywhisperer.util as util
 import phywhisperer.interface.naeusb as NAE
 import phywhisperer.interface.program_fpga as LLINT
 import os
 import re
-import logging
+from .logging import *
 import pkg_resources
 import threading
 import time
@@ -34,6 +35,8 @@ from phywhisperer.sniffer import USBSniffer, USBSimplePrintSink
 from phywhisperer.protocol import PWPacketDispatcher, PWPacketHandler, IncompletePacket
 from zipfile import ZipFile
 from phywhisperer.firmware.phywhisperer import getsome
+from collections import OrderedDict
+
 
 class Usb(PWPacketDispatcher):
     """PhyWhisperer-USB Interface"""
@@ -49,19 +52,114 @@ class Usb(PWPacketDispatcher):
         """
         self.viewsb = viewsb
         self.addpattern = False
-        self.short_timestamps = [0] * 2**3
-        self.long_timestamps = [0] * 2**16
-        self.stat_pattern_match_value = 0
-        self.capture_size = 8188 # default to FIFO size
         self.usb_trigger_freq = 240E6 #internal frequency used for trigger ticks
-        self.entries_captured = 0
-        self.expected_verilog_matches = 80
+        self.expected_verilog_matches = 82
         self.slurp_defines()
+        self._power_source = 'off'
+        self.userio = userio(self)
+        self.trigger = trigger(self)
+        self.pattern = pattern(self)
+        self._set_defaults()
         # Set up the PW device to handle packets in ViewSB:
         if viewsb:
             super().__init__(verbose=False)
             self.sniffer = USBSniffer()
             self.register_packet_handler(self.sniffer)
+
+    def _set_defaults(self):
+        self.stat_pattern_match_value = 0
+        self.entries_captured = 0
+        self._trigger_clock_phase_shift = 0
+        self._prev_addr = self.REG_DUMMY
+        self._num_pm_triggers = 1
+        self._pattern = None
+        self._mask = None
+
+    def _dict_repr(self):
+        rtn = OrderedDict()
+        rtn['fpga_buildtime']       = self.fpga_buildtime
+        rtn['usb_mode']             = self.usb_mode
+        rtn['power_source']         = self.power_source
+        rtn['capture_size']         = self.capture_size
+        rtn['capture_delay']        = self.capture_delay
+        rtn['capture_enabled']      = self.capture_enabled
+        rtn['fifo_errors']          = self.fifo_errors
+        rtn['pattern']              = self.pattern._dict_repr()
+        rtn['trigger']              = self.trigger._dict_repr()
+        rtn['userio']               = self.userio._dict_repr()
+        return rtn
+
+    def __repr__(self):
+        return util.dict_to_str(self._dict_repr())
+
+    def __str__(self):
+        return self.__repr__()
+
+
+    @property
+    def fpga_buildtime(self):
+        return self.get_fpga_buildtime()
+
+    @property 
+    def usb_mode(self):
+        return self.get_usb_mode()
+
+    @usb_mode.setter 
+    def usb_mode(self, value):
+        self.set_usb_mode(value)
+
+    @property 
+    def power_source(self):
+        """Power source for target. NOTE: status changes via pushbutton are not reflected here.
+        """
+        return self._power_source
+
+    @power_source.setter 
+    def power_source(self, value):
+        self.set_power_source(value)
+
+    @property 
+    def capture_size(self):
+        return self.get_capture_size()
+
+    @capture_size.setter 
+    def capture_size(self, value):
+        self.set_capture_size(value)
+
+    @property 
+    def capture_delay(self):
+        return self.get_capture_delay()
+
+    @capture_delay.setter 
+    def capture_delay(self, value):
+        self.set_capture_delay(value)
+
+    @property 
+    def capture_enabled(self):
+        return self.get_capture_enabled()
+
+    @capture_enabled.setter 
+    def capture_enabled(self, value):
+        self.set_capture_enabled(value)
+
+    @property
+    def fifo_errors(self):
+        """Flag whether an underflow or overflow occured on the capture FIFO.
+        """
+        raw = self.read_reg(self.REG_SNIFF_FIFO_STAT, 1)[0]
+        status = ''
+        if (raw & 2) >> 1: 
+            status += 'fifo_underflow, '
+        if (raw & 16) >> 4: 
+            status += ' fifo_overflow, '
+        if status == '':
+            status = None
+        return status
+
+
+
+    #def set_stat_pattern(self, pattern, mask=0x1f): (ALSO NEED TO SPLIT)
+    #def stat_pattern_matched(self):
 
 
     def slurp_defines(self):
@@ -103,7 +201,7 @@ class Usb(PWPacketDispatcher):
                             self.verilog_define_matches += 1
                             setattr(self, match.group(1), int(match.group(2),10) + block_offset)
                         else:
-                            logging.warning("Couldn't parse line: %s", define)
+                            pw_logger.warning("Couldn't parse line: %s", define)
             defines.close()
         assert self.verilog_define_matches == self.expected_verilog_matches, "Trouble parsing Verilog defines files: didn't find the right number of defines (expected %d, got %d)." % (self.expected_verilog_matches, self.verilog_define_matches)
 
@@ -138,7 +236,7 @@ class Usb(PWPacketDispatcher):
 
 
     def set_power_source(self, src):
-        """Set power source for target.
+        """Set power source for target. Can also be accessed via the power_source property.
 
         Args:
             src (str):
@@ -148,15 +246,13 @@ class Usb(PWPacketDispatcher):
         """
         if src == "5V":
             self._llint.changePowerSource(self._llint.PWR_SRC_5V)
-            pass
         elif src == "host":
             self._llint.changePowerSource(self._llint.PWR_SRC_HOST)
-            pass
         elif src == "off" or src is None or src == False:
             self._llint.changePowerSource(self._llint.PWR_SRC_OFF)
-            pass
         else:
             raise AttributeError("Unknown source %s, valid sources: '5V', 'host', 'off'")
+        self._power_source = src
 
 
     def reset_fpga(self):
@@ -166,6 +262,7 @@ class Usb(PWPacketDispatcher):
         self.write_reg(self.REG_RESET_REG, [1])
         self.write_reg(self.REG_RESET_REG, [0])
         self.write_reg(self.REG_COUNT_WRITES, [1])
+        self._set_defaults()
 
     def load_bitstream(self, bitfile):
         """Load bitstream onto FPGA"""
@@ -210,7 +307,7 @@ class Usb(PWPacketDispatcher):
             port (str): Serial port name, such as 'COM36' or '/dev/ttyACM0'.        
 
             fw_path (str): Path to firmware binary to program the sam3u with.
-                            If None, use default firmware. Defautls to None.
+                            If None, use default firmware. Defaults to None.
         """
 
         fw_data = None
@@ -243,7 +340,7 @@ class Usb(PWPacketDispatcher):
 
 
     def set_usb_mode(self, mode='auto'):
-        """Set USB PHY speed.
+        """Set USB PHY speed. Can also be accessed via the usb_mode property.
         
         Args:
             mode (str):
@@ -277,6 +374,11 @@ class Usb(PWPacketDispatcher):
             address: int
             data: bytes
         """
+        # consecutive multi-byte accesses to the same register can pose a problem,
+        # so we throw in a dummy read to avoid it:
+        if address == self._prev_addr:
+            self.usb.cmdReadMem(self.REG_DUMMY, 1)
+        self._prev_addr = address
         return self.usb.cmdWriteMem(address, data)
 
 
@@ -288,6 +390,11 @@ class Usb(PWPacketDispatcher):
             size: int, number of bytes to read
         Returns:
         """
+        # consecutive multi-byte accesses to the same register can pose a problem,
+        # so we throw in a dummy read to avoid it, EXCEPT when we're reading the FIFO
+        if address == self._prev_addr and address != self.REG_SNIFF_FIFO_RD:
+            self.usb.cmdReadMem(self.REG_DUMMY, 1)
+        self._prev_addr = address
         return self.usb.cmdReadMem(address, size)
 
 
@@ -351,7 +458,7 @@ class Usb(PWPacketDispatcher):
             while entries_read < entries:
                 while self.fifo_empty():
                     if timeout and time.time() - starttime > timeout:
-                        logging.warning("Capture timed out!")
+                        pw_logger.warning("Capture timed out!")
                         break
                 data.append(self.read_reg(self.REG_SNIFF_FIFO_RD, 4)[1:4])
                 entries_read += 1
@@ -368,10 +475,10 @@ class Usb(PWPacketDispatcher):
                     notdone = False
                     # did we also overflow?
                     if raw[-1] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
-                        logging.warning("FIFO overflowed, capture stopped.")
+                        pw_logger.warning("FIFO overflowed, capture stopped.")
                         early_exit = True
                 elif timeout and time.time() - starttime > timeout:
-                    logging.warning("Capture timed out!")
+                    pw_logger.warning("Capture timed out!")
                     notdone = False
                     early_exit = True
             # reformat the return array and at the same time, filter out the (possibly numerous) empty FIFO reads:
@@ -380,11 +487,11 @@ class Usb(PWPacketDispatcher):
                     data.append(raw[i*4+1:i*4+4])
             self.entries_captured = len(data)
             if early_exit:
-                logging.warning("%d entries captured." % self.entries_captured)
+                pw_logger.warning("%d entries captured." % self.entries_captured)
 
         if len(data): # maybe we only got empty reads
             if data[-1][2] & 2**self.FE_FIFO_STAT_UNDERFLOW:
-                logging.warning("Capture FIFO underflowed!")
+                pw_logger.warning("Capture FIFO underflowed!")
 
         return data
 
@@ -413,7 +520,6 @@ class Usb(PWPacketDispatcher):
             if (command == self.FE_FIFO_CMD_DATA):
                 data = raw[1]
                 ts = raw[0] & 0x7
-                self.short_timestamps[ts] += 1
                 timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
@@ -427,7 +533,6 @@ class Usb(PWPacketDispatcher):
                 data_times.append(timestep)
             elif (command == self.FE_FIFO_CMD_STAT):
                 ts = raw[0] & 0x7
-                self.short_timestamps[ts] += 1
                 timestep += ts
                 flags = (raw[0] & 0xf8) >> 3
                 if verbose:
@@ -437,7 +542,6 @@ class Usb(PWPacketDispatcher):
                 last_flags = flags
             elif (command == self.FE_FIFO_CMD_TIME):
                 ts = raw[0] + (raw[1] << 8)
-                self.long_timestamps[ts] += 1
                 #Unlike stat and data commands, we don't add one here; if we did
                 #we'd be overcounting in the common case where a time command immediately
                 #preceeds a stat or data command. Consequence is that timestep will be off
@@ -485,7 +589,7 @@ class Usb(PWPacketDispatcher):
 
 
     def print_packets(self, packets):
-        """Print packets using USBSimplePrintSink from ViewSB.
+        """Print packets using USBSimplePrintSink from ViewSB/pyopenvizsla.
         Args:
             packets: list of dictionaries, e.g. obtained from split_packets()
         """
@@ -505,41 +609,53 @@ class Usb(PWPacketDispatcher):
         print('rx_active  = %d' % (1 if stat_byte & 0x01 else 0))
 
 
-    def set_capture_size(self, size=8188):
+    def set_capture_size(self, size=16376):
         """Set how many events to capture (events include data, USB status, and timestamps).
+        Can also be accessed via the capture_size property.
         
         Args:
-            size(int, option): number of events to capture. 0 = unlimited (until overflow). Max = 2^24-1. Since the capture FIFO can hold 8188 events, setting this to > 8188 may result in overflow.
+            size(int, option): number of events to capture. 0 = unlimited (until overflow). Max = 2^24-1. Since the capture FIFO can hold 16376 events, setting this to > 16376 may result in overflow.
 
         """
         if (size >= 2**24) or (size < 0):
             raise ValueError('Illegal size value.')
-        self.capture_size = size
-        self.write_reg(self.REG_CAPTURE_LEN, int.to_bytes(size, length=2, byteorder='little'))
+        self.write_reg(self.REG_CAPTURE_LEN, int.to_bytes(size, length=3, byteorder='little'))
+
+    def get_capture_size(self):
+        return int.from_bytes(self.read_reg(self.REG_CAPTURE_LEN, 3), byteorder='little')
 
 
     def ns_trigger(self, delay_in_ns):
-        """Convert a nS number to delay or width cycles for set_trigger()"""
+        """Convert a nS number to delay or width cycles for set_trigger_sequence()"""
         cycles = (float(delay_in_ns) * 1.0E-9) / (1.0 / float(self.usb_trigger_freq))
         return round(cycles)
 
     def us_trigger(self, delay_in_us):
-        """Convert a uS number to delay or width cycles for set_trigger()"""
+        """Convert a uS number to delay or width cycles for set_trigger_sequence()"""
         cycles = (float(delay_in_us) * 1.0E-6) / (1.0 / float(self.usb_trigger_freq))
         return round(cycles)
 
     def ms_trigger(self, delay_in_ms):
-        """Convert a mS number to delay or width cycles for set_trigger()"""
+        """Convert a mS number to delay or width cycles for set_trigger_sequence()"""
         cycles = (float(delay_in_ms) * 1.0E-3) / (1.0 / float(self.usb_trigger_freq))
         return round(cycles)
 
-
     def set_trigger(self, num_triggers=1, delays=[0], widths=[1], enable=True):
-        """Program the output trigger pulse(s) delay and width. Both are measured in clock cycles of USB-derived 
-           240 MHz clock. Note that this is a different time base than set_capture_delay(), which uses a 60 MHz 
-           clock! Up to 8 pulses may be issued.
-           The capture delay is automatically set to match the trigger delay; use set_capture_delay to set it to a
-           different value. Use ns_trigger(), us_trigger(), and ms_trigger() to convert values as needed.
+        pw_logger.warning("use set_trigger_sequence() instead (API changed for clarity)")
+        self.set_trigger_sequence(num_triggers, delays, widths, enable)
+
+    def set_trigger_sequence(self, num_triggers=1, delays=[0], widths=[1], enable=True):
+        """Program the output trigger sequence that is issued when a pattern
+        match occurs.  For each pattern match event, up to 8 pulse(s) of
+        programmable delay and width are issued. Both delay and width are
+        measured in clock cycles of USB-derived 240 MHz clock. Note that this
+        is a different time base than set_capture_delay(), which uses a 60 MHz
+        clock!  The capture delay is automatically set to match the first trigger
+        delay; use set_capture_delay to set it to a different value. Use
+        ns_trigger(), us_trigger(), and ms_trigger() to convert values as
+        needed.
+        Can also be accessed via the trigger.enable, trigger.num_triggers,
+        trigger.delays, and trigger.widths properties.
         
         Args:
             num_triggers (int): number of trigger pulses, from 1 to 8.
@@ -551,10 +667,10 @@ class Usb(PWPacketDispatcher):
         Examples:
             (a) To set obtain three 2-cycle-wide pulses, each 3 cycles apart, starting immediately after a
                 pattern match:
-                set_trigger(num_triggers=3, delays=[0,3,3], widths=[2,2,2])
+                set_trigger_sequence(num_triggers=3, delays=[0,3,3], widths=[2,2,2])
             (b) To set obtain a 1-cycle wide pulse 10 cycles after a pattern match, followed by a 2-cycle wide
                 pulse 20 cycles later:
-                set_trigger(num_triggers=2, delays=[10,20], widths=[1,2])
+                set_trigger_sequence(num_triggers=2, delays=[10,20], widths=[1,2])
         """
         if num_triggers > 8:
             raise ValueError('Maximum 8 trigger pulses.')
@@ -578,7 +694,7 @@ class Usb(PWPacketDispatcher):
         self.write_reg(self.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num_triggers, byteorder='little'))
 
         self.write_reg(self.REG_NUM_TRIGGERS, [num_triggers])
-        self.set_capture_delay(int(delay/4))
+        self.set_capture_delay(int(delays[0]/4))
         if enable == True:
             self.write_reg(self.REG_TRIGGER_ENABLE, [1])
         else:
@@ -587,7 +703,8 @@ class Usb(PWPacketDispatcher):
 
     def set_capture_delay(self, delay):
         """Program the capture delay, measured in clock cycles of USB-derived 60 MHz clock.
-        Note that this is a different time base than set_trigger(), which uses a 240 MHz clock!
+        Note that this is a different time base than set_trigger_sequence(), which uses a 240 MHz clock!
+        Can also be accessed via the capture_delay property.
         
         Args:
             delay (int): range in [0, 2^18-1] cycles of 60 MHz clock.
@@ -596,6 +713,40 @@ class Usb(PWPacketDispatcher):
             raise ValueError('Illegal delay value.')
         self.write_reg(self.REG_CAPTURE_DELAY, int.to_bytes(delay, length=3, byteorder='little'))
 
+    def get_capture_delay(self):
+        return int.from_bytes(self.read_reg(self.REG_CAPTURE_DELAY, 3), byteorder='little')
+
+    def set_num_pm_triggers(self, num):
+        if num > 2**16 -1:
+            raise ValueError("Maximum is 2**16-1")
+        elif num == -1:
+            num = 2**16-1
+        self._num_pm_triggers = num
+        self.write_reg(self.REG_NUM_PM_TRIGGERS, int.to_bytes(num, length=2, byteorder='little'))
+
+    def get_num_pm_triggers_seen(self):
+        """ Number of pattern match triggers generated. Resets upon arming.
+        """
+        return int.from_bytes(self.read_reg(self.REG_NUM_PM_TRIGGERS, 2), byteorder='little') - 1 # not a typo, HW records +1
+
+    def set_capture_enabled(self, enable):
+        """ Set whether USB events are captured or not.
+        Can also be accessed via the capture_enabled property.
+
+        Args:
+            enable (bool)
+        """
+        if enable:
+            raw = [0]
+        else:
+            raw = [1]
+        self.write_reg(self.REG_CAPTURE_OFF, raw)
+
+    def get_capture_enabled(self):
+        if self.read_reg(self.REG_CAPTURE_OFF, 1)[0]:
+            return True
+        else:
+            return False
 
     def set_pattern(self, pattern, mask=None):
         """Set the pattern and its bitmask used for capture and trigger output.
@@ -617,18 +768,30 @@ class Usb(PWPacketDispatcher):
         self.write_reg(self.REG_PATTERN, pattern[::-1])
         self.write_reg(self.REG_PATTERN_MASK, mask[::-1])
         self.write_reg(self.REG_PATTERN_BYTES, [len(pattern)])
-        self.pattern = pattern
-        self.mask = mask
+        self._pattern = pattern
+        self._mask = mask
 
 
-    def arm(self):
+    def arm(self, value=True):
         """Arm PhyWhisperer for capture and optionally generating a trigger.
         Use set_pattern to program the pattern and bitmask which will initiate
         the capture and/or trigger operation.
-        Use set_trigger to program the trigger parameters.
+        Use set_trigger_sequence to program the trigger parameters.
         Use set_capture_size and set_capture_delay to program the capture parameters.
+
+        Args:
+            value (bool): True/False = arm/disarm
+
+        Raises:
+            ValueError: if trying to arm an already armed PhyWhisperer.
         """
-        self.write_reg(self.REG_ARM, [1])
+        if value:
+            value = [1]
+            if self.read_reg(self.REG_ARM, 1)[0]:
+                raise ValueError("Already armed! (use arm(False) to disarm)")
+        else:
+            value = [0]
+        self.write_reg(self.REG_ARM, value)
 
 
     def check_fifo_errors(self, underflow=0, overflow=0):
@@ -643,6 +806,19 @@ class Usb(PWPacketDispatcher):
         fifo_overflow = (status & 16) >> 4
         assert fifo_underflow == underflow
         assert fifo_overflow == overflow
+
+    def get_fifo_errors(self):
+        """Flag whether an underflow or overflow occured on the capture FIFO.
+        """
+        raw = self.read_reg(self.REG_SNIFF_FIFO_STAT, 1)[0]
+        status = ''
+        if (raw & 2) >> 1: 
+            status += 'fifo_underflow, '
+        if (status & 16) >> 4: 
+            status += ' fifo_overflow, '
+        if status == '':
+            status = None
+        return status
 
 
     def fifo_empty(self):
@@ -692,12 +868,13 @@ class Usb(PWPacketDispatcher):
         year = ((raw[2] >> 1) & 0x3f) + 2000
         hour = ((raw[2] & 0x1) << 4) + (raw[1] >> 4)
         minute = ((raw[1] & 0xf) << 2) + (raw[0] >> 6)
-        return "FPGA build time: {}/{}/{}, {}:{}".format(month, day, year, hour, minute)
+        return "{}/{}/{}, {}:{}".format(month, day, year, hour, minute)
 
 
     def trigger_clock_phase_shift(self, steps=1):
-        """Shifts the trigger clock phase (and by extension the output trigger) in steps
-        of 18.6ps (18.6 ps = 1/960 MHz / 56)
+        """Shifts the trigger clock phase (and by extension the output trigger)
+        in steps of 18.6ps (18.6 ps = 1/960 MHz / 56). Can also be accessed via
+        the trigger.clock_phase property.
         
         Args:
             steps (int): Number of steps to shift the phase (positive or negative integer).
@@ -706,8 +883,10 @@ class Usb(PWPacketDispatcher):
             raise ValueError('Illegal steps value, must be non-zero integer.')
         if steps > 0:
             value = [1]
+            self._trigger_clock_phase_shift += steps
         else:
             value = [0]
+            self._trigger_clock_phase_shift -= steps
         for i in range(abs(steps)):
             self.write_reg(self.REG_TRIG_CLK_PHASE_SHIFT, value)
             while (self.read_reg(self.REG_TRIG_CLK_PHASE_SHIFT, 1)[0] == 1):
@@ -739,6 +918,7 @@ class Usb(PWPacketDispatcher):
         return matched
 
 
+
     def register_sink(self, event_sink):
         """ ViewSB: Registers a USBEventSink to receive any USB events. 
         
@@ -753,7 +933,7 @@ class Usb(PWPacketDispatcher):
         pass
 
 
-    def run_capture(self, size=8188, burst=True, pattern=[0], mask=[0], timeout=5, statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
+    def run_capture(self, size=16376, burst=True, pattern=[0], mask=[0], timeout=5, statistics_callback=None, statistics_period=0.1, halt_callback=lambda _ : False, ):
         """ Runs a capture for ViewSB, including power cycling the device to catch the descriptors.
         
         Runs following internally::
@@ -765,7 +945,7 @@ class Usb(PWPacketDispatcher):
             self.set_usb_mode("auto")
             self.set_capture_size(size)
             self.arm()
-            self.set_trigger(enable=False)
+            self.set_trigger_sequence(enable=False)
             self.set_pattern(pattern=pattern, mask=mask)
             self.set_power_source("host")
             time.sleep(0.25)
@@ -780,7 +960,7 @@ class Usb(PWPacketDispatcher):
         self.set_usb_mode("auto")
         self.set_capture_size(size)
         self.arm()
-        self.set_trigger(enable=False)
+        self.set_trigger_sequence(enable=False)
         self.set_pattern(pattern=pattern, mask=mask)
         self.set_power_source("host")
         time.sleep(0.25)
@@ -830,10 +1010,10 @@ class Usb(PWPacketDispatcher):
                 if raw[-3] & bitmask == bitmask:
                     notdone = False
                     if raw[-3] & 2**self.FE_FIFO_STAT_OVERFLOW_BLOCKED:
-                        logging.warning("FIFO overflowed, capture stopped")
+                        pw_logger.warning("FIFO overflowed, capture stopped")
                         early_exit = True
                 elif timeout and time.time() - starttime > timeout:
-                    logging.warning("Capture timed out!")
+                    pw_logger.warning("Capture timed out!")
                     early_exit = True
                     notdone = False
                 # filter out the empty FIFO reads:
@@ -844,7 +1024,7 @@ class Usb(PWPacketDispatcher):
                 self.handle_incoming_bytes(rawdata)
                 self.entries_captured += len(rawdata)
                 if early_exit:
-                    logging.warning("%d entries captured." % self.entries_captured)
+                    pw_logger.warning("%d entries captured." % self.entries_captured)
 
 
     def _start_comms_thread(self, burst, timeout):
@@ -866,5 +1046,363 @@ class Usb(PWPacketDispatcher):
             self.__comm_term = True
             self.commthread.join()
         self.usb.close()
+
+
+class userio(util.DisableNewAttr):
+    ''' USERIO-related settings.
+    '''
+    _name = 'PhyWhisperer USERIO settings'
+
+    def __init__(self, main):
+        super().__init__()
+        self.main = main
+        self.disable_newattr()
+
+    def _dict_repr(self):
+        rtn = OrderedDict()
+        rtn['direction'] = self.direction
+        rtn['data'] = self.data
+        for i in range(8):
+            rtn['D%d' % i] = self._pretty_print(i)
+        return rtn
+
+    def __repr__(self):
+        return util.dict_to_str(self._dict_repr())
+
+    def __str__(self):
+        return self.__repr__()
+
+    def _pretty_print(self, i):
+        if self.direction[i] == 'I':
+            status = 'input,  value='
+        else:
+            status = 'output, value='
+        status += str(self.data[i])
+        return status
+
+    @property
+    def data(self):
+        """Get the status of the USERIO data pins (D0-D7), or set the value to
+        be driven on USERIO pins when the pin's direction property is set to
+        'O'.  Index <x> controls pin D<x>. You can set a single index, a slice
+        of indices, or the full array.
+        """
+        return self._get_data()
+
+    @data.setter
+    def data(self, datas):
+        self._set_data(datas)
+
+    def _get_data(self):
+        """Whether the specified USERIO pin is I/O.
+        """
+        datas = self._read_data()
+        if type(datas) is int:
+            return datas
+        else:
+            return util.Lister(datas, setter=self._set_data, getter=self._read_data)
+
+    def _read_data(self):
+        raw = self.main.read_reg(self.main.REG_USERIO_DATA, 1)[0]
+        datas = []
+        for bit in range(8):
+            if raw & 2**bit:
+                datas.append(1)
+            else:
+                datas.append(0)
+        return datas
+
+    def _set_data(self, datas):
+        if len(datas) > 8:
+            raise ValueError("Too many elements")
+        raw = 0
+        for i, item in enumerate(datas):
+            if item == 1: raw += 2**i
+        self.main.write_reg(self.main.REG_USERIO_DATA, [raw])
+
+
+    @property
+    def direction(self):
+        """Set the direction of the USERIO data pins (D0-D7).
+        Index <x> controls pin D<x>. You can set a single index,
+        a slice of indices, or the full array. Use with care!
+
+        Args:
+            directions (string): set to 'I' to denote an input to PhyWhisperer, 
+                or 'O' to denote driven by PhyWhisperer.
+        """
+        return self._get_direction()
+
+    @direction.setter
+    def direction(self, directions):
+        self._set_direction(directions)
+
+    def _get_direction(self):
+        """Whether the specified USERIO pin is I/O.
+        """
+        directions = self._read_direction()
+        if type(directions) is bool:
+            return directions
+        else:
+            return util.Lister(directions, setter=self._set_direction, getter=self._read_direction)
+
+    def _read_direction(self):
+        raw = self.main.read_reg(self.main.REG_USERIO_PWDRIVEN, 1)[0]
+        directions = []
+        for bit in range(8):
+            if raw & 2**bit:
+                directions.append('O')
+            else:
+                directions.append('I')
+        return directions
+
+    def _set_direction(self, directions):
+        if len(directions) > 8:
+            raise ValueError("Too many elements")
+        raw = 0
+        for i, item in enumerate(directions):
+            if item == 'O': raw += 2**i
+        self.main.write_reg(self.main.REG_USERIO_PWDRIVEN, [raw])
+
+
+class trigger(util.DisableNewAttr):
+    ''' Trigger-related settings.
+    '''
+    _name = 'PhyWhisperer trigger settings'
+
+    def __init__(self, main):
+        super().__init__()
+        self.main = main
+        self.disable_newattr()
+
+    def _dict_repr(self):
+        rtn = OrderedDict()
+        rtn['enable']               = self.enable
+        rtn['num_triggers']         = self.num_triggers
+        rtn['delays']               = self.delays
+        rtn['widths']               = self.widths
+        rtn['clock_phase']          = self.clock_phase
+        rtn['num_pm_triggers']      = self.num_pm_triggers
+        rtn['num_pm_triggers_seen'] = self.num_pm_triggers_seen
+        return rtn
+
+    def __repr__(self):
+        return util.dict_to_str(self._dict_repr())
+
+    def __str__(self):
+        return self.__repr__()
+
+    @property
+    def clock_phase(self):
+        """Wrapper for trigger_clock_phase_shift().
+        """
+        return self.main._trigger_clock_phase_shift
+
+    @clock_phase.setter
+    def clock_phase(self, phase):
+        self.main.trigger_clock_phase_shift(phase)
+
+    @property
+    def enable(self):
+        """Whether trigger output pins (Trig Out MCX and IO4) are driven when a
+        pattern match occurs. Can also be set via set_trigger_sequence().
+        """
+        if self.main.read_reg(self.main.REG_TRIGGER_ENABLE, 1)[0]:
+            return True
+        else:
+            return False
+
+    @enable.setter
+    def enable(self, val):
+        if val:
+            self.main.write_reg(self.main.REG_TRIGGER_ENABLE, [1])
+        else:
+            self.main.write_reg(self.main.REG_TRIGGER_ENABLE, [0])
+
+    @property
+    def num_triggers(self):
+        """Number of output trigger pulses to generate when a pattern match
+        occurs (maximum 8). Can also be set via set_trigger_sequence().
+        """
+        return self.main.read_reg(self.main.REG_NUM_TRIGGERS, 1)[0]
+
+    @num_triggers.setter
+    def num_triggers(self, val):
+        if val > 8:
+            raise ValueError('Maximum 8 trigger pulses.')
+        self.main.write_reg(self.main.REG_NUM_TRIGGERS, [val])
+
+    @property
+    def delays(self):
+        """Delays between the output trigger pulses that are generated when a
+        pattern match occurs. Can also be set via set_trigger_sequence(). Unlike
+        set_trigger_sequence(), this property does *not* adjust capture_delay.
+        """
+        return self._get_delays()
+
+    @delays.setter
+    def delays(self, val):
+        self._set_delays(val)
+
+    def _get_delays(self):
+        """Whether the specified USERIO pin is I/O.
+        """
+        delays = self._read_delays()
+        if type(delays) is int:
+            return delays
+        else:
+            return util.Lister(delays, setter=self._set_delays, getter=self._read_delays)
+
+    def _read_delays(self):
+        raw = self.main.read_reg(self.main.REG_TRIGGER_DELAY, 3*8)
+        delays = []
+        for i in range(8):
+            delays.append(int.from_bytes(raw[i*3:i*3+3], byteorder='little'))
+        return delays
+
+    def _set_delays(self, delays):
+        if len(delays) > 8:
+            raise ValueError("Too many elements")
+        num = len(delays)
+        data = 0
+        for i in range(num):
+            delay = delays[i]
+            if delay == 0 and i > self.num_triggers - 1:
+                pass
+            elif (delay >= 2**20) or (delay < 0) or (delay < 1 and i > 0):
+                raise ValueError('Illegal delay value (%d) for index %d' % (delay, i))
+            data += delay << i*24
+        self.main.write_reg(self.main.REG_TRIGGER_DELAY, int.to_bytes(data, length=3*num, byteorder='little'))
+
+
+    @property
+    def widths(self):
+        """Widths of the output trigger pulses that are generated when a
+        pattern match occurs. Can also be set via set_trigger_sequence().
+        """
+        return self._get_widths()
+
+    @widths.setter
+    def widths(self, val):
+        self._set_widths(val)
+
+    def _get_widths(self):
+        """Whether the specified USERIO pin is I/O.
+        """
+        widths = self._read_widths()
+        if type(widths) is int:
+            return widths
+        else:
+            return util.Lister(widths, setter=self._set_widths, getter=self._read_widths)
+
+    def _read_widths(self):
+        raw = self.main.read_reg(self.main.REG_TRIGGER_WIDTH, 3*8)
+        widths = []
+        for i in range(8):
+            widths.append(int.from_bytes(raw[i*3:i*3+3], byteorder='little'))
+        return widths
+
+    def _set_widths(self, widths):
+        if len(widths) > 8:
+            raise ValueError("Too many elements")
+        num = len(widths)
+        data = 0
+        for i in range(num):
+            width = widths[i]
+            if width == 0 and i > self.num_triggers - 1:
+                pass
+            elif (width >= 2**17) or (width < 1):
+                raise ValueError('Illegal width value (%d) for index %d' % (width, i))
+            data += width << i*24
+        self.main.write_reg(self.main.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num, byteorder='little'))
+
+    @property 
+    def num_pm_triggers(self):
+        """ Maximum number of pattern match triggers to generate. Defaults to
+        1. Each pattern match triggers sets off a sequence of output triggers
+        as specified by set_trigger_sequence().  This property allows triggers
+        to be generated for multiple pattern match events without having to be
+        re-armed. Can also be accessed via the num_pm_triggers property.
+
+        Args:
+            num (int): number of triggers; maximum 2**16-2, or set to -1 to
+                generate an infinite number of triggers (until disarmed).
+        """
+        return self.main._num_pm_triggers
+
+    @num_pm_triggers.setter 
+    def num_pm_triggers(self, value):
+        self.main.set_num_pm_triggers(value)
+
+    @property 
+    def num_pm_triggers_seen(self):
+        """ Number of pattern match triggers generated. Resets upon arming.
+        """
+        return self.main.get_num_pm_triggers_seen()
+
+
+
+class pattern(util.DisableNewAttr):
+    ''' Pattern-related settings (read-only).
+    '''
+    _name = 'PhyWhisperer pattern settings'
+
+    def __init__(self, main):
+        super().__init__()
+        self.main = main
+        self.disable_newattr()
+
+    def _dict_repr(self):
+        rtn = OrderedDict()
+        rtn['num_bytes'] = self.num_bytes
+        rtn['pattern'] = self.pattern
+        rtn['mask'] = self.mask
+        return rtn
+
+    def __repr__(self):
+        return util.dict_to_str(self._dict_repr())
+
+    def __str__(self):
+        return self.__repr__()
+
+    @property
+    def num_bytes(self):
+        """Number of bytes used for pattern matching. Read-only property; set via set_pattern().
+        """
+        return self.main.read_reg(self.main.REG_PATTERN_BYTES, 1)[0]
+
+    @num_bytes.setter
+    def num_bytes(self, phase):
+        pw_logger.error("Can't set here, use set_pattern() instead.")
+
+
+    @property
+    def pattern(self):
+        """Pattern used for pattern matching. Read-only property; set via set_pattern().
+        """
+        if self.num_bytes:
+            return self.main.read_reg(self.main.REG_PATTERN, self.num_bytes)[::-1]
+        else:
+            return None
+
+    @pattern.setter
+    def pattern(self, phase):
+        pw_logger.error("Can't set here, use set_pattern() instead.")
+
+
+    @property
+    def mask(self):
+        """Mask used for pattern matching. Read-only property; set via set_pattern().
+        """
+        if self.num_bytes:
+            return self.main.read_reg(self.main.REG_PATTERN_MASK, self.num_bytes)[::-1]
+        else:
+            return None
+
+    @mask.setter
+    def mask(self, phase):
+        pw_logger.error("Can't set here, use set_pattern() instead.")
+
+
 
 

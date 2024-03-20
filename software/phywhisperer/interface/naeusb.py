@@ -431,7 +431,7 @@ class NAEUSB_Backend(NAEUSB_Serializer_base):
                     if len(dev) == 1:
                         devlist.extend(dev)
                     else:
-                        # Deals with the multiple chipwhisperers attached but user only
+                        # Deals with the multiple phywhisperers attached but user only
                         # has permission to access a subset. The langid error is usually
                         # raised when there are improper permissions, so it is used to
                         # skip the those devices. However, the user is warned when this
@@ -599,8 +599,6 @@ class NAEUSB(object):
 
     stream = False
 
-    # TODO: make this better
-    fwversion_latest = [0, 11]
     def __init__(self):
         self._usbdev = None
         self.usbtx = NAEUSB_Backend()
@@ -663,7 +661,7 @@ class NAEUSB(object):
         if not latest:
             logging.warning('Your firmware is outdated - latest is %d.%d' % (fw_latest[0], fw_latest[1]) +
                             '. Suggested to update firmware, as you may experience errors' +
-                            '\nSee https://chipwhisperer.readthedocs.io/en/latest/api.html#firmware-update')
+                            '\nSee https://phywhispererusb.readthedocs.io/en/latest/api.html#firmware-update')
         return foundId
 
     def usbdev(self):
@@ -852,94 +850,3 @@ class NAEUSB(object):
             logging.debug("Streaming: Received %d bytes in time %.20f)" % (self.drx, diff))
 
 
-if __name__ == '__main__':
-    from chipwhisperer.hardware.naeusb.fpga import FPGA
-    from chipwhisperer.hardware.naeusb.programmer_avr import AVRISP
-    from chipwhisperer.hardware.naeusb.programmer_xmega import XMEGAPDI, supported_xmega
-    from chipwhisperer.hardware.naeusb.serial import USART
-
-    cwtestusb = NAEUSB()
-    cwtestusb.con()
-
-    #Connect required modules up here
-    fpga = FPGA(cwtestusb)
-    xmega = XMEGAPDI(cwtestusb)
-    avr = AVRISP(cwtestusb)
-    usart = USART(cwtestusb)
-
-    force = True
-    if fpga.isFPGAProgrammed() == False or force:
-        from datetime import datetime
-        starttime = datetime.now()
-        fpga.FPGAProgram(open(r"C:\E\Documents\academic\sidechannel\chipwhisperer\hardware\capture\chipwhisperer-lite\hdl\cwlite_ise\cwlite_interface.bit", "rb"))
-        # fpga.FPGAProgram(open(r"C:\Users\colin\dropbox\engineering\git_repos\CW305_ArtixTarget\temp\artix7test\artix7test.runs\impl_1\cw305_top.bit", "rb"))
-        # fpga.FPGAProgram(open(r"C:\E\Documents\academic\sidechannel\chipwhisperer\hardware\api\chipwhisperer-lite\hdl\cwlite_ise_spifake\cwlite_interface.bit", "rb"))
-        stoptime = datetime.now()
-        print("FPGA Config time: %s" % str(stoptime - starttime))
-
-    # print fpga.cmdReadMem(10, 6)
-    # print fpga.cmdReadMem(0x1A, 4)
-    # fpga.cmdWriteMem(0x1A, [235, 126, 5, 4])
-    # print fpga.cmdReadMem(0x1A, 4)
-
-    avrprogram = False
-    if avrprogram:
-        avr.enableISP(True)
-        avr.enableISP(False)
-
-    xmegaprogram = True
-    if xmegaprogram:
-        xmega.setChip(supported_xmega[0])
-        # Worst-case is 75mS for chip erase, so give us some head-room
-        xmega.setParamTimeout(200)
-
-        try:
-            print("Enable")
-            xmega.enablePDI(True)
-
-            print("Read sig")
-            # Read signature bytes
-            data = xmega.readMemory(0x01000090, 3, "signature")
-
-            print(data)
-
-            if data[0] != 0x1E or data[1] != 0x97 or data[2] != 0x46:
-                print("Signature bytes failed: %02x %02x %02x != 1E 97 46" % (data[0], data[1], data[2]))
-            else:
-                print("Detected XMEGA128A4U")
-
-            print("Erasing")
-            # Chip erase
-            try:
-                xmega.eraseChip()
-            except IOError:
-                xmega.enablePDI(False)
-                xmega.enablePDI(True)
-
-            fakedata = [i & 0xff for i in range(0, 2048)]
-            print("Programming FLASH Memory")
-            xmega.writeMemory(0x0800000, fakedata, memname="flash")
-
-            print("Verifying")
-            test = xmega.readMemory(0x0800000, 512)
-
-            print(test)
-
-
-        except TypeError as e:
-            print(str(e))
-
-        except IOError as e:
-            print(str(e))
-
-        xmega.enablePDI(False)
-
-    print("Let's Rock and Roll baby")
-
-    sertest = True
-
-    if sertest:
-        usart.init()
-        usart.write("hello\n")
-        time.sleep(0.1)
-        print(usart.read())

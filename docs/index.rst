@@ -27,10 +27,7 @@ read with the following:
     >>> raw = phy.read_capture_data()
     WARNING:root:Capture FIFO overflow. Capture stopped when overflow detected.
     >>> packets = phy.split_packets(raw)
-    >>> printPackets = pw.USBSimplePrintSink(highspeed=phy.get_usb_mode() == 'HS')
-    >>> for packet in packets:
-    ...    printPackets.handle_usb_packet(ts=packet['timestamp'], buf=bytearray(packet['contents']), flags=0)
-    ...
+    >>> phy.print_packets(packets[:10])
     [        ]   0.000000 d=  0.000000 [   .0 +  0.017] [  3] SETUP: 0.0
     [        ]   0.000000 d=  0.000000 [   .0 +  0.300] [ 11] DATA0: 80 06 00 01 00 00 40 00 dd 94
     [        ]   0.000001 d=  0.000001 [   .0 +  0.817] [  1] ACK
@@ -48,6 +45,9 @@ read with the following:
 This example does a full sniffing via the Python command line. With this versatile
 interface you can interface between other tools, as well as toggling the power of
 the device and triggering on specific byte patterns.
+
+To learn all you can do with PhyWhisperer-USB, go through the Jupyter notebooks
+here: https://github.com/newaetech/phywhispererusb/tree/master/software/jupyter
 
 You can modify the FPGA to add new features, and script triggers with high-resolution
 (~4.167nS step, plus some fine phase shift) offsets from packets being seen "on the wire".
