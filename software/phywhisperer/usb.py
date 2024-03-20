@@ -1087,22 +1087,22 @@ class userio(util.DisableNewAttr):
         'O'.  Index <x> controls pin D<x>. You can set a single index, a slice
         of indices, or the full array.
         """
-        return self.get_data()
+        return self._get_data()
 
     @data.setter
     def data(self, datas):
-        self.set_data(datas)
+        self._set_data(datas)
 
-    def get_data(self):
+    def _get_data(self):
         """Whether the specified USERIO pin is I/O.
         """
-        datas = self.read_data()
+        datas = self._read_data()
         if type(datas) is int:
             return datas
         else:
-            return util.Lister(datas, setter=self.set_data, getter=self.read_data)
+            return util.Lister(datas, setter=self._set_data, getter=self._read_data)
 
-    def read_data(self):
+    def _read_data(self):
         raw = self.main.read_reg(self.main.REG_USERIO_DATA, 1)[0]
         datas = []
         for bit in range(8):
@@ -1112,7 +1112,7 @@ class userio(util.DisableNewAttr):
                 datas.append(0)
         return datas
 
-    def set_data(self, datas):
+    def _set_data(self, datas):
         if len(datas) > 8:
             raise ValueError("Too many elements")
         raw = 0
@@ -1126,25 +1126,27 @@ class userio(util.DisableNewAttr):
         """Set the direction of the USERIO data pins (D0-D7).
         Index <x> controls pin D<x>. You can set a single index,
         a slice of indices, or the full array. Use with care!
-            'I': input to PhyWhisperer
-            'O': driven by PhyWhisperer.
+
+        Args:
+            directions (string): set to 'I' to denote an input to PhyWhisperer, 
+                or 'O' to denote driven by PhyWhisperer.
         """
-        return self.get_direction()
+        return self._get_direction()
 
     @direction.setter
     def direction(self, directions):
-        self.set_direction(directions)
+        self._set_direction(directions)
 
-    def get_direction(self):
+    def _get_direction(self):
         """Whether the specified USERIO pin is I/O.
         """
-        directions = self.read_direction()
+        directions = self._read_direction()
         if type(directions) is bool:
             return directions
         else:
-            return util.Lister(directions, setter=self.set_direction, getter=self.read_direction)
+            return util.Lister(directions, setter=self._set_direction, getter=self._read_direction)
 
-    def read_direction(self):
+    def _read_direction(self):
         raw = self.main.read_reg(self.main.REG_USERIO_PWDRIVEN, 1)[0]
         directions = []
         for bit in range(8):
@@ -1154,7 +1156,7 @@ class userio(util.DisableNewAttr):
                 directions.append('I')
         return directions
 
-    def set_direction(self, directions):
+    def _set_direction(self, directions):
         if len(directions) > 8:
             raise ValueError("Too many elements")
         raw = 0
@@ -1236,29 +1238,29 @@ class trigger(util.DisableNewAttr):
         pattern match occurs. Can also be set via set_trigger_sequence(). Unlike
         set_trigger_sequence(), this property does *not* adjust capture_delay.
         """
-        return self.get_delays()
+        return self._get_delays()
 
     @delays.setter
     def delays(self, val):
-        self.set_delays(val)
+        self._set_delays(val)
 
-    def get_delays(self):
+    def _get_delays(self):
         """Whether the specified USERIO pin is I/O.
         """
-        delays = self.read_delays()
+        delays = self._read_delays()
         if type(delays) is int:
             return delays
         else:
-            return util.Lister(delays, setter=self.set_delays, getter=self.read_delays)
+            return util.Lister(delays, setter=self._set_delays, getter=self._read_delays)
 
-    def read_delays(self):
+    def _read_delays(self):
         raw = self.main.read_reg(self.main.REG_TRIGGER_DELAY, 3*8)
         delays = []
         for i in range(8):
             delays.append(int.from_bytes(raw[i*3:i*3+3], byteorder='little'))
         return delays
 
-    def set_delays(self, delays):
+    def _set_delays(self, delays):
         if len(delays) > 8:
             raise ValueError("Too many elements")
         num = len(delays)
@@ -1278,29 +1280,29 @@ class trigger(util.DisableNewAttr):
         """Widths of the output trigger pulses that are generated when a
         pattern match occurs. Can also be set via set_trigger_sequence().
         """
-        return self.get_widths()
+        return self._get_widths()
 
     @widths.setter
     def widths(self, val):
-        self.set_widths(val)
+        self._set_widths(val)
 
-    def get_widths(self):
+    def _get_widths(self):
         """Whether the specified USERIO pin is I/O.
         """
-        widths = self.read_widths()
+        widths = self._read_widths()
         if type(widths) is int:
             return widths
         else:
-            return util.Lister(widths, setter=self.set_widths, getter=self.read_widths)
+            return util.Lister(widths, setter=self._set_widths, getter=self._read_widths)
 
-    def read_widths(self):
+    def _read_widths(self):
         raw = self.main.read_reg(self.main.REG_TRIGGER_WIDTH, 3*8)
         widths = []
         for i in range(8):
             widths.append(int.from_bytes(raw[i*3:i*3+3], byteorder='little'))
         return widths
 
-    def set_widths(self, widths):
+    def _set_widths(self, widths):
         if len(widths) > 8:
             raise ValueError("Too many elements")
         num = len(widths)
