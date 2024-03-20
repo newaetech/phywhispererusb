@@ -82,8 +82,6 @@ class Usb(PWPacketDispatcher):
         rtn['power_source']         = self.power_source
         rtn['capture_size']         = self.capture_size
         rtn['capture_delay']        = self.capture_delay
-        rtn['num_pm_triggers']      = self.num_pm_triggers
-        rtn['num_pm_triggers_seen'] = self.num_pm_triggers_seen
         rtn['capture_enabled']      = self.capture_enabled
         rtn['fifo_errors']          = self.fifo_errors
         rtn['pattern']              = self.pattern._dict_repr()
@@ -135,31 +133,6 @@ class Usb(PWPacketDispatcher):
     @capture_delay.setter 
     def capture_delay(self, value):
         self.set_capture_delay(value)
-
-    @property 
-    def num_pm_triggers(self):
-        """ Maximum number of pattern match triggers to generate. Defaults to
-        1. Each pattern match triggers sets off a sequence of output triggers
-        as specified by set_trigger_sequence().  This property allows triggers
-        to be generated for multiple pattern match events without having to be
-        re-armed. Can also be accessed via the num_pm_triggers property.
-
-        Args:
-            num (int): number of triggers; maximum 2**16-2, or set to -1 to
-                generate an infinite number of triggers (until disarmed).
-        """
-        return self._num_pm_triggers
-
-    @num_pm_triggers.setter 
-    def num_pm_triggers(self, value):
-        self.set_num_pm_triggers(value)
-
-    @property 
-    def num_pm_triggers_seen(self):
-        """ Number of pattern match triggers generated. Resets upon arming.
-        """
-        return self.get_num_pm_triggers_seen()
-
 
     @property 
     def capture_enabled(self):
@@ -1202,11 +1175,13 @@ class trigger(util.DisableNewAttr):
 
     def _dict_repr(self):
         rtn = OrderedDict()
-        rtn['enable'] = self.enable
-        rtn['num_triggers'] = self.num_triggers
-        rtn['delays'] = self.delays
-        rtn['widths'] = self.widths
-        rtn['clock_phase'] = self.clock_phase
+        rtn['enable']               = self.enable
+        rtn['num_triggers']         = self.num_triggers
+        rtn['delays']               = self.delays
+        rtn['widths']               = self.widths
+        rtn['clock_phase']          = self.clock_phase
+        rtn['num_pm_triggers']      = self.num_pm_triggers
+        rtn['num_pm_triggers_seen'] = self.num_pm_triggers_seen
         return rtn
 
     def __repr__(self):
@@ -1338,6 +1313,31 @@ class trigger(util.DisableNewAttr):
                 raise ValueError('Illegal width value (%d) for index %d' % (width, i))
             data += width << i*24
         self.main.write_reg(self.main.REG_TRIGGER_WIDTH, int.to_bytes(data, length=3*num, byteorder='little'))
+
+    @property 
+    def num_pm_triggers(self):
+        """ Maximum number of pattern match triggers to generate. Defaults to
+        1. Each pattern match triggers sets off a sequence of output triggers
+        as specified by set_trigger_sequence().  This property allows triggers
+        to be generated for multiple pattern match events without having to be
+        re-armed. Can also be accessed via the num_pm_triggers property.
+
+        Args:
+            num (int): number of triggers; maximum 2**16-2, or set to -1 to
+                generate an infinite number of triggers (until disarmed).
+        """
+        return self.main._num_pm_triggers
+
+    @num_pm_triggers.setter 
+    def num_pm_triggers(self, value):
+        self.main.set_num_pm_triggers(value)
+
+    @property 
+    def num_pm_triggers_seen(self):
+        """ Number of pattern match triggers generated. Resets upon arming.
+        """
+        return self.main.get_num_pm_triggers_seen()
+
 
 
 class pattern(util.DisableNewAttr):
