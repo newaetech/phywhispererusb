@@ -63,27 +63,15 @@ as **pyusb** to work. Install using:
 Hardware Drivers
 ================
 
-The driver for Linux is built in; however, you need to allow your user account to access the peripheral. To do so, you'll 
-have to make a file called :code:`/etc/udev/rules.d/99-newae.rules`. The contents of this file should be:
+The driver for Linux is built in; however, you need to allow your user account
+to access the peripheral.  
 
-.. code::
+If you have a recent ChipWhisperer installation, you don't need to do anything
+-- the hardware driver installation steps you would have done there cover
+PhyWhisperer as well.
 
-    # Match all CW devices
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace[0-9]|c[3-6][0-9][0-9]", TAG+="uaccess"
-
-Alternatively, you can just copy :code:`phywhispererusb/drivers/99-newae.rules`
-to :code:`/etc/udev/rules.d/`.
-
-And reset the udev system:
-
-.. code:: bash
-
-    sudo udevadm control --reload-rules
-
-Finally log out & in again for the group change to take effect.
-
-You can always find the latest version of this file on
-`Github <https://raw.githubusercontent.com/newaetech/chipwhisperer/master/hardware/99-newae.rules>`_.
+Otherwise, after you've `installed PhyWhisperer <#_install_phywhisperer>`_,
+follow the instructions in `drivers/99-newae.rules <https://github.com/newaetech/phywhispererusb/blob/master/drivers/99-newae.rules>`_.
 
 
 .. _prerequisites-windows:
@@ -221,7 +209,7 @@ Installing PhyWhisperer
 
 .. _install_phywhisperer:
 
-You can either grab phywhisperer from pip, which installest the latest full release:
+You can either grab phywhisperer from pip, which installs the latest full release:
 
 .. code:: bash
 

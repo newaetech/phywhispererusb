@@ -1,46 +1,23 @@
 # Driver Installation #
 
 ## Linux ##
+If you have already installed ChipWhisperer and followed its driver instruction
+installation instructions, you don't need to do anything else!
 
- - Make a file called /etc/udev/rules.d/99-newae.rules . The contents of this file should be (this adds all NewAE Hardware):
-    ```
-    #allow users to claim the device
-	# CW-Nano
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace0", MODE="0664", GROUP="plugdev"
-	
-	# CW-Lite
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace2", MODE="0664", GROUP="plugdev"
-	
-	# CW-1200
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="ace3", MODE="0664", GROUP="plugdev"
-	
-	# CW-305 (Artix Target)
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="c305", MODE="0664", GROUP="plugdev"
-	
-	# PhyWhisperer
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="c610", MODE="0664", GROUP="plugdev"
-	
-	#Ballistic Gel
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="2b3e", ATTRS{idProduct}=="c521", MODE="0664", GROUP="plugdev"
-	
-	# CW-CR2
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="8613", MODE="0664", GROUP="plugdev"
-	SUBSYSTEM=="usb", ATTRS{idVendor}=="221a", ATTRS{idProduct}=="0100", MODE="0664", GROUP="plugdev"
 
+Otherwise, follow the instructions in [`99-newae.rules`](99-newae.rules):
+- Unplug all NewAE hardware
+- Copy [`99-newae.rules`](99-newae.rules) to `/etc/udev/rules.d/`
+- Add your username to the chipwhisperer group:
     ```
- - Add your username to the plugdev group:
+    $ sudo usermod -aG chipwhisperer $USER
     ```
-    $ sudo usermod -a -G plugdev YOUR-USERNAME
-    ```
- - And reset the udev system:
+- Reset the udev system:
     ```
     $ sudo udevadm control --reload-rules
     ```
-
- - Finally log out & in again for the group change to take effect.
-
- - Connect the USB cable of your device.
-
+- Log in/out again for changes to take effect
+- Connect hardware
 
 ## Windows ##
 
