@@ -37,4 +37,3 @@ The PhyWhisperer-USB adds features a glitch-master would find useful, such as an
 Compared to GreatFET or FaceWhisperer this tool cannot perform tasks such as fuzzing or complex state machines (which are relatively easy with those tools).
 
 Basic USB sniffing capability exists in this tool, as it's useful when deciding on the effect your glitch is having. If you require a more robust USB analyzer the TotalPhase Beagle 480 comes highly recommended by Colin (no connection - he just really likes them).
-
