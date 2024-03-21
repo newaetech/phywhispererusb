@@ -21,9 +21,9 @@ Prerequisites
 
 .. _prerequisites-linux:
 
-*********
+=========
 GNU/Linux
-*********
+=========
 
 Python
 ======
@@ -88,10 +88,9 @@ You can always find the latest version of this file on
 
 .. _prerequisites-windows:
 
-**************
+==============
 Windows Manual
-**************
-
+==============
 
 Python
 ======
@@ -153,9 +152,9 @@ your PhyWhisperer to Windows 8 or newer. Otherwise, drivers can be downloaded as
 
 .. _prerequisites-mac:
 
-********
+========
 Mac OS X
-********
+========
 
 The Mac OS X instructions are similar to the :ref:`GNU/Linux <prerequisites-linux>`
 once you have **brew** installed.
@@ -215,8 +214,10 @@ at startup:
         eval "$(pyenv init -)"
     fi
 
+
+***********************
 Installing PhyWhisperer
-=======================
+***********************
 
 .. _install_phywhisperer:
 
