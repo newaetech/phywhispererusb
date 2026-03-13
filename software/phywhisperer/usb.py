@@ -26,8 +26,8 @@ import phywhisperer.interface.naeusb as NAE
 import phywhisperer.interface.program_fpga as LLINT
 import os
 import re
-from .logging import *
-import pkg_resources
+from phywhisperer.logging import pw_logger, other_logger
+from importlib.resources import files
 import threading
 import time
 from phywhisperer.interface.bootloader_sam3u import Samba
@@ -167,9 +167,10 @@ class Usb(PWPacketDispatcher):
         definitions by name and avoid 'magic numbers'.
         """
         self.verilog_define_matches = 0
-        defines_files = [pkg_resources.resource_filename('phywhisperer', 'firmware/defines_pw.v'),
-                         pkg_resources.resource_filename('phywhisperer', 'firmware/defines_usb.v')]
+        defines_files = [files('phywhisperer').joinpath('firmware/defines_pw.v'),
+                         files('phywhisperer').joinpath('firmware/defines_usb.v')]
         for i,defines_file in enumerate(defines_files):
+            assert defines_file.exists(), "Couldn't find Verilog defines file at expected location %s" % defines_file
             defines = open(defines_file, 'r')
             define_regex_base  =   re.compile(r'`define')
             define_regex_reg   =   re.compile(r'`define\s+?REG_')

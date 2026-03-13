@@ -28,7 +28,7 @@ import tempfile
 
 log_dir =  tempfile.mkdtemp(prefix='phywhisperer')
 
-logging.basicConfig(level=logging.WARNING)
+# logging.basicConfig(level=logging.WARNING)
 cw_formatter = logging.Formatter("(%(name)s %(levelname)s|File %(filename)s:%(lineno)d) %(message)s")
 
 other_logger = logging.getLogger("PhyWhisperer Other")

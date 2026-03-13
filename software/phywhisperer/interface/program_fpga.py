@@ -32,7 +32,6 @@ import zipfile
 
 
 import time
-import logging
 
 class PhyWhispererUSB(object):
 

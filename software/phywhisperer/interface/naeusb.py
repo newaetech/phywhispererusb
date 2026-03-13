@@ -22,7 +22,7 @@
 # ChipWhisperer is a trademark of NewAE Technology Inc., registered in the
 # United States of America, the European Union, and other jurisdictions.
 # ==========================================================================
-import logging
+from phywhisperer.logging import pw_logger, other_logger
 import warnings
 import time
 import math
@@ -383,7 +383,7 @@ class NAEUSB_Backend(NAEUSB_Serializer_base):
             name = "Unknown (PID = %04x)"%foundId
             fw_latest = [0, 0]
 
-        logging.info('Found %s, Serial Number = %s' % (name, self.snum))
+        pw_logger.info('Found %s, Serial Number = %s' % (name, self.snum))
 
         self._usbdev = dev
         self.rep = 0x81
@@ -397,7 +397,7 @@ class NAEUSB_Backend(NAEUSB_Serializer_base):
         try:
             usb.util.dispose_resources(self.usbdev())
         except usb.USBError as e:
-            logging.info('USB Failure calling dispose_resources: %s' % str(e))
+            pw_logger.info('USB Failure calling dispose_resources: %s' % str(e))
 
 
     def get_possible_devices(self, idProduct=None, dictonly=True, backend="libusb1"):
@@ -418,7 +418,7 @@ class NAEUSB_Backend(NAEUSB_Serializer_base):
                 libusb_backend = libusb1.get_backend(find_library=lambda x: str(libusb_path))
             if not libusb_backend:
                 libusb_backend = libusb0.get_backend(find_library=lambda x: r"c:\Windows\System32\libusb0.dll")
-                logging.info("Using libusb0 backend")
+                pw_logger.info("Using libusb0 backend")
             my_kwargs['backend'] = libusb_backend
         devlist = []
         try:
@@ -443,7 +443,7 @@ class NAEUSB_Backend(NAEUSB_Serializer_base):
                                 devlist.append(d)
                             except ValueError as e:
                                 if "langid" in str(e):
-                                    logging.info('A device raised the "no langid" error, it is being skipped')
+                                    pw_logger.info('A device raised the "no langid" error, it is being skipped')
                                 else:
                                     raise
             if dictonly:
@@ -652,14 +652,14 @@ class NAEUSB(object):
 
         self.snum = dev['sn']
 
-        logging.info('Found %s, Serial Number = %s' % (name, self.snum))
+        pw_logger.info('Found %s, Serial Number = %s' % (name, self.snum))
 
         fwver = self.readFwVersion()
-        logging.info('SAM3U Firmware version = %d.%d b%d' % (fwver[0], fwver[1], fwver[2]))
+        pw_logger.info('SAM3U Firmware version = %d.%d b%d' % (fwver[0], fwver[1], fwver[2]))
 
         latest = fwver[0] > fw_latest[0] or (fwver[0] == fw_latest[0] and fwver[1] >= fw_latest[1])
         if not latest:
-            logging.warning('Your firmware is outdated - latest is %d.%d' % (fw_latest[0], fw_latest[1]) +
+            pw_logger.warning('Your firmware is outdated - latest is %d.%d' % (fw_latest[0], fw_latest[1]) +
                             '. Suggested to update firmware, as you may experience errors' +
                             '\nSee https://phywhispererusb.readthedocs.io/en/latest/api.html#firmware-update')
         return foundId
@@ -840,13 +840,13 @@ class NAEUSB(object):
             self.drx = 0
 
         def run(self):
-            logging.debug("Streaming: starting USB read")
+            pw_logger.debug("Streaming: starting USB read")
             start = time.time()
             try:
                 self.drx = self.serial.usbtx.read(self.dbuf_temp, timeout=self.timeout_ms)
             except IOError as e:
-                logging.warning('Streaming: USB stream read timed out')
+                pw_logger.warning('Streaming: USB stream read timed out')
             diff = time.time() - start
-            logging.debug("Streaming: Received %d bytes in time %.20f)" % (self.drx, diff))
+            pw_logger.debug("Streaming: Received %d bytes in time %.20f)" % (self.drx, diff))
 
 

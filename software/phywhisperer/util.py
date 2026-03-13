@@ -22,7 +22,7 @@
 #=================================================
 
 from typing import List
-from .logging import *
+from phywhisperer.logging import pw_logger, other_logger
 
 class DisableNewAttr(object):
     """Provides an ability to disable setting new attributes in a class, useful to prevent typos.

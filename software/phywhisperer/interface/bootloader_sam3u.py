@@ -33,7 +33,7 @@
 #Avoid namespace collision with 'serial'
 
 
-import logging
+from phywhisperer.logging import pw_logger, other_logger
 
 import serial
 import time
@@ -69,17 +69,17 @@ class Samba(object):
 
         cid = self.chip_id()
 
-        logging.info('FWUP: CID = %04x' % cid)
+        pw_logger.info('FWUP: CID = %04x' % cid)
 
         #Originally this was used to limit to SAM3U
         #eproc = (cid >> 5) & 0x7
         #arch = (cid >> 20) & 0xff
         #if eproc == 3 and ((0x80 <= arch <= 0x8a) or (0x93 <= arch <= 0x9a)):
-        #    logging.info('FWUP: Detected SAM3')
+        #    pw_logger.info('FWUP: Detected SAM3')
 
         self.flash = self.get_flash_instance(cid)
 
-        logging.info('FWUP: Detected ' + self.flash.name)
+        pw_logger.info('FWUP: Detected ' + self.flash.name)
         return True
 
 
@@ -235,7 +235,7 @@ class Samba(object):
                 buf = bindata[i:(i + page_size)]
 
             if (page_num % 10) == 0 and doprint:
-                logging.debug('Flashing %d/%d' % (page_num, totalpages))
+                pw_logger.debug('Flashing %d/%d' % (page_num, totalpages))
 
             self.flash.loadBuffer(buf)
             self.flash.writePage(page_num)
@@ -247,7 +247,7 @@ class Samba(object):
             i += page_size
             bytesleft -= page_size
 
-        logging.info('FWUP: Program Successful')
+        pw_logger.info('FWUP: Program Successful')
 
     def verify(self, bindata, doprint=False):
         """ Verify a buffer that was written into chip """
@@ -279,8 +279,8 @@ class Samba(object):
             bufferB = bytearray(self.flash.readPage(page_num))
 
             if bytearray(buf) != bytearray(bufferB):
-                # logging.warning('FWUP: Verify FAILED at %d"=' % i)
-                logging.warning("Verify failed at {} (got {} expected {})".format(i, buf, bufferB))
+                # pw_logger.warning('FWUP: Verify FAILED at %d"=' % i)
+                pw_logger.warning("Verify failed at {} (got {} expected {})".format(i, buf, bufferB))
                 return False
                 # print "fail at %d"%i
                 # print "".join(["%02x"%ord(a) for a in buf])
@@ -292,7 +292,7 @@ class Samba(object):
             i = i + page_size
             bytesleft = bytesleft - page_size
 
-        logging.info('FWUP: Verify successful')
+        pw_logger.info('FWUP: Verify successful')
 
         return True
 
@@ -624,6 +624,7 @@ class EefcFlash(object):
 
 if __name__ == "__main__":
     # Example usage
+    import logging
     logging.basicConfig(level=logging.INFO)
     sam = Samba()
     sam.con('com131')
